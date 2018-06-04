@@ -35,9 +35,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             _workspaceRepository = workspaceRepository;
         }
 
-        public Guid GetWorkspaceID(IIdentity identity)
-        {
-            return _workspaceRepository.GetWorkspaceID(identity as WindowsIdentity);
-        }
+        public Guid GetWorkspaceID(IIdentity identity) => _workspaceRepository.GetWorkspaceID(identity as WindowsIdentity);
     }
 }

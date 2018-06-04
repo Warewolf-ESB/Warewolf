@@ -26,7 +26,12 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
         readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType)
+            : this(response, contentType, DefaultChunkSize)
+        {
+        }
+
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize)
         {
             VerifyArgument.IsNotNull("response", response);
             VerifyArgument.IsNotNull("mediaType", contentType);
@@ -62,7 +67,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
             }
             catch (HttpException e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn("Error writing to stream. " + e.Message, "Warewolf Warn");
             }
             finally
             {

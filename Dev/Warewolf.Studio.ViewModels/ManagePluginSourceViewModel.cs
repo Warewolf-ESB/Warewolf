@@ -121,13 +121,13 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public override void FromModel(IPluginSource pluginSource)
+        public override void FromModel(IPluginSource source)
         {
-            Name = pluginSource.Name;
-            Path = pluginSource.Path;
-            FileSystemAssemblyName = pluginSource.FileSystemAssemblyName;
-            ConfigFilePath = pluginSource.ConfigFilePath;
-            GACAssemblyName = pluginSource.GACAssemblyName;
+            Name = source.Name;
+            Path = source.Path;
+            FileSystemAssemblyName = source.FileSystemAssemblyName;
+            ConfigFilePath = source.ConfigFilePath;
+            GACAssemblyName = source.GACAssemblyName;
         }
 
         public string FileSystemAssemblyName
@@ -270,18 +270,18 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_pluginSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    ResourceName = GetRequestServiceNameViewModel().ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Path = src.Path;
@@ -356,44 +356,38 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        IPluginSource ToNewSource()
+        IPluginSource ToNewSource() => new PluginSourceDefinition
         {
-            return new PluginSourceDefinition
-            {
-                Name = ResourceName,
-                Path = Path,
-                FileSystemAssemblyName = _fileSystemAssemblyName,
-                ConfigFilePath = _configFilePath,
-                GACAssemblyName = _gacAssemblyName,
-                Id = _pluginSource?.Id ?? Guid.NewGuid()
-            };
+            Name = ResourceName,
+            Path = Path,
+            FileSystemAssemblyName = _fileSystemAssemblyName,
+            ConfigFilePath = _configFilePath,
+            GACAssemblyName = _gacAssemblyName,
+            Id = _pluginSource?.Id ?? Guid.NewGuid()
+        };
 
+        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
+        {
+            if (_requestServiceNameViewModel != null)
+            {
+                _requestServiceNameViewModel.Wait();
+                if (_requestServiceNameViewModel.Exception == null)
+                {
+                    return _requestServiceNameViewModel.Result;
+                }
+
+                else
+                {
+                    throw _requestServiceNameViewModel.Exception;
+                }
+            }
+            return null;
         }
 
-        public IRequestServiceNameViewModel RequestServiceNameViewModel
+        public void SetRequestServiceNameViewModel(IRequestServiceNameViewModel value)
         {
-            get
-            {
-                if (_requestServiceNameViewModel != null)
-                {
-                    _requestServiceNameViewModel.Wait();
-                    if (_requestServiceNameViewModel.Exception == null)
-                    {
-                        return _requestServiceNameViewModel.Result;
-                    }
-                    
-                    else
-                    {
-                        throw _requestServiceNameViewModel.Exception;
-                    }
-                }
-                return null;
-            }
-            set
-            {
-                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
-                _requestServiceNameViewModel.Start();
-            }
+            _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+            _requestServiceNameViewModel.Start();
         }
 
         public ICommand OkCommand { get; set; }
@@ -412,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            RequestServiceNameViewModel?.Dispose();
+            GetRequestServiceNameViewModel()?.Dispose();
             DisposeManagePluginSourceViewModel(true);
         }
         

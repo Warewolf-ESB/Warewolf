@@ -26,9 +26,6 @@ namespace Dev2.Studio.Diagnostics
             _environment = environment;
         }
 
-        protected override Task<IExceptionViewModel> CreateExceptionViewModel(Exception ex, ErrorSeverity severity)
-        {
-            return ExceptionFactory.CreateViewModel(ex, _environment, severity);
-        }
+        protected override Task<IExceptionViewModel> CreateExceptionViewModel(Exception exception, ErrorSeverity severity) => ExceptionFactory.CreateViewModel(exception, _environment, severity);
     }
 }

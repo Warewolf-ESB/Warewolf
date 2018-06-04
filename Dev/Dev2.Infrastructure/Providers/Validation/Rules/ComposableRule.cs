@@ -46,9 +46,6 @@ namespace Dev2.Providers.Validation.Rules
             return this;
         }
 
-        public override IActionableErrorInfo Check()
-        {
-            return _check?.Invoke();
-        }
+        public override IActionableErrorInfo Check() => _check?.Invoke();
     }
 }

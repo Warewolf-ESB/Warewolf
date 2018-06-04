@@ -16,6 +16,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
@@ -205,29 +206,11 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Commands
 
-        public ICommand AddCommand
-        {
-            get
-            {
-                return _addCommand ?? (_addCommand = new DelegateCommand(param => AddToActivity()));
-            }
-        }
+        public ICommand AddCommand => _addCommand ?? (_addCommand = new DelegateCommand(param => AddToActivity()));
 
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelCommand ?? (_cancelCommand = new DelegateCommand(param => ClearData()));
-            }
-        }
+        public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new DelegateCommand(param => ClearData()));
 
-        public ICommand PreviewCommand
-        {
-            get
-            {
-                return _previewCommand ?? (_previewCommand = new DelegateCommand(param => Preview()));
-            }
-        }
+        public ICommand PreviewCommand => _previewCommand ?? (_previewCommand = new DelegateCommand(param => Preview()));
 
         #endregion
 
@@ -367,10 +350,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             return results;
         }
 
-        public List<string> MakeDataListReady(IList<string> listToMakeReady)
-        {
-            return listToMakeReady.Where(s => !string.IsNullOrEmpty(s)).Select(s => string.Concat(Prefix, s, Suffix)).Select(DataListUtil.AddBracketsToValueIfNotExist).Select(tmp => tmp.Replace(" ", "")).ToList();
-        }
+        public List<string> MakeDataListReady(IList<string> listToMakeReady) => listToMakeReady.Where(s => !string.IsNullOrEmpty(s)).Select(s => string.Concat(Prefix, s, Suffix)).Select(DataListUtil.AddBracketsToValueIfNotExist).Select(tmp => tmp.Replace(" ", "")).ToList();
 
         #endregion
 
@@ -378,7 +358,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToStringBuilder() };
 
             switch (splitType)
             {

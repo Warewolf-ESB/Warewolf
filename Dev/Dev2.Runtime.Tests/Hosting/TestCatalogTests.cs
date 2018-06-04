@@ -6,6 +6,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.DataList.Contract;
@@ -19,13 +20,16 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
     public class TestCatalogTests
     {
-
+        public static IDirectoryHelper DirectoryHelperInstance()
+        {
+            return new DirectoryHelper();
+        }
         [TestInitialize]
         public void CleanupTestDirectory()
         {
             if (Directory.Exists(EnvironmentVariables.TestPath))
             {
-                DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+                DirectoryHelperInstance().CleanUp(EnvironmentVariables.TestPath);
             }
         }
 
@@ -462,7 +466,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, res2Tests.Count);
             Assert.AreEqual("Test 21", res2Tests[0].TestName);
             Assert.AreEqual("Test 22", res2Tests[1].TestName);
-            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            DirectoryHelperInstance().CleanUp(EnvironmentVariables.TestPath);
             Directory.CreateDirectory(EnvironmentVariables.TestPath);
             //------------Execute Test---------------------------
             testCatalog.ReloadAllTests();
@@ -1011,5 +1015,112 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("", updatedTest2.Outputs[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestCatalog_UpdateTestsBasedOnIOChange")]
+        public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateStepsToInvalid()
+        {
+            //------------Setup for test--------------------------
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false) };
+            var testCatalog = new TestCatalog();
+            var resourceID = Guid.NewGuid();
+            var serviceTestModelTos = new List<IServiceTestModelTO>
+            {
+                new ServiceTestModelTO
+                {
+                    Enabled = true,
+                    TestName = "Test 1",
+                    TestSteps = new List<IServiceTestStep>
+                    {                     
+                        new ServiceTestStepTO
+                        {
+                            StepOutputs = new System.Collections.ObjectModel.ObservableCollection<IServiceTestOutput>
+                            {
+                                new ServiceTestOutputTO
+                                {
+                                    Variable = "OutputMessage"
+                                },
+                                new ServiceTestOutputTO
+                                {
+                                    Variable = "MessageForUser",
+                                    Value = "This is the message"
+                                }
+                            },
+                            Result  = new TestRunResult
+                            {
+                                RunTestResult = RunResult.TestPassed
+                            }
+                        },
+                        new ServiceTestStepTO
+                        {
+                            Result  = new TestRunResult
+                            {
+                                RunTestResult = RunResult.TestFailed
+                            },
+                            Children = new System.Collections.ObjectModel.ObservableCollection<IServiceTestStep>
+                            {
+                                new ServiceTestStepTO
+                                {
+                                    StepOutputs = new System.Collections.ObjectModel.ObservableCollection<IServiceTestOutput>
+                                    {
+                                        new ServiceTestOutputTO
+                                        {
+                                            Variable = "OutputMessage"
+                                        },
+                                        new ServiceTestOutputTO
+                                        {
+                                            Variable = "MessageForUser",
+                                            Value = "This is the message"
+                                        }
+                                    },
+                                    Result  = new TestRunResult
+                                    {
+                                        RunTestResult = RunResult.TestPassed
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    Inputs = new List<IServiceTestInput>
+                    {
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Name"
+                        },
+                        new ServiceTestInputTO
+                        {
+                            Variable = "Age",
+                            Value = "20"
+                        }
+                    },
+                    Outputs = new List<IServiceTestOutput>
+                    {
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "OutputMessage"
+                        },
+                        new ServiceTestOutputTO
+                        {
+                            Variable = "MessageForUser",
+                            Value = "This is the message"
+                        }
+                    }
+                }
+            };
+            testCatalog.SaveTests(resourceID, serviceTestModelTos);
+            //------------Execute Test---------------------------
+            testCatalog.UpdateTestsBasedOnIOChange(resourceID, inputDefs, outputDefs);
+            //------------Assert Results-------------------------
+            var updatedTests = testCatalog.Fetch(resourceID);
+            var updatedTest1 = updatedTests[0];
+
+            Assert.AreEqual("Test 1", updatedTest1.TestName);
+            Assert.IsTrue(updatedTest1.TestInvalid);
+            Assert.AreEqual(RunResult.TestInvalid, updatedTest1.TestSteps[0].Result.RunTestResult);
+            Assert.AreEqual(RunResult.TestInvalid, updatedTest1.TestSteps[0].StepOutputs[0].Result.RunTestResult);
+            Assert.AreEqual(RunResult.TestInvalid, updatedTest1.TestSteps[1].Result.RunTestResult);
+            Assert.AreEqual(RunResult.TestInvalid, updatedTest1.TestSteps[1].Children[0].StepOutputs[0].Result.RunTestResult);
+        }
     }
 }

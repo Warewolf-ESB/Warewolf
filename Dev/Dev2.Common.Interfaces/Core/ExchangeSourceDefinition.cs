@@ -44,12 +44,21 @@ namespace Dev2.Common.Interfaces.Core
             return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
                 && Timeout == other.Timeout;
         }
-        
+
         public bool Equals(IExchangeSource other)
         {
-            return Equals(other as ExchangeSourceDefinition);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
+                && Timeout == other.Timeout;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))

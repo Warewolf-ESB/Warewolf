@@ -30,7 +30,32 @@ namespace Warewolf.UI.Tests
     public partial class UIMap
     {
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfMenuItem floatingMenuItem = this.MainStudioWindow.PaneContextItem.FloatingMenuItem;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Floating' menu item equals 'MenuItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.FloatingMenuItemControlType, floatingMenuItem.ControlType.ToString());
+        }
+        
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -57,9 +82,26 @@ namespace Warewolf.UI.Tests
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private ScriptErrorMessagebox mScriptErrorMessagebox;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Floating' menu item equals 'MenuItem'
+        /// </summary>
+        public string FloatingMenuItemControlType = "MenuItem";
         #endregion
     }
     
@@ -1067,6 +1109,35 @@ namespace Warewolf.UI.Tests
                 return this.mComboboxListItemAsSharepointTestServer;
             }
         }
+        
+        public WpfCustom UnpinnedTab2
+        {
+            get
+            {
+                if ((this.mUnpinnedTab2 == null))
+                {
+                    this.mUnpinnedTab2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUnpinnedTab2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolWindow";
+                    this.mUnpinnedTab2.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FloatingWindow";
+                    this.mUnpinnedTab2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mUnpinnedTab2;
+            }
+        }
+        
+        public PaneContextItem PaneContextItem
+        {
+            get
+            {
+                if ((this.mPaneContextItem == null))
+                {
+                    this.mPaneContextItem = new PaneContextItem(this);
+                }
+                return this.mPaneContextItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1205,6 +1276,10 @@ namespace Warewolf.UI.Tests
         private IntellisenseOptionsList mIntellisenseOptionsList;
         
         private WpfListItem mComboboxListItemAsSharepointTestServer;
+        
+        private WpfCustom mUnpinnedTab2;
+        
+        private PaneContextItem mPaneContextItem;
         #endregion
     }
     
@@ -2934,6 +3009,22 @@ namespace Warewolf.UI.Tests
                 return this.mLockunlockthemenuButton;
             }
         }
+        
+        public WpfButton SearchButton
+        {
+            get
+            {
+                if ((this.mSearchButton == null))
+                {
+                    this.mSearchButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSearchButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Search in Warewolf";
+                    this.mSearchButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSearchButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2956,6 +3047,8 @@ namespace Warewolf.UI.Tests
         private WpfButton mLockMenuButton;
         
         private LockunlockthemenuButton mLockunlockthemenuButton;
+        
+        private WpfButton mSearchButton;
         #endregion
     }
     
@@ -5576,6 +5669,22 @@ namespace Warewolf.UI.Tests
                 return this.mUniqueRecords;
             }
         }
+        
+        public WpfListItem AdvancedRecordset
+        {
+            get
+            {
+                if ((this.mAdvancedRecordset == null))
+                {
+                    this.mAdvancedRecordset = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mAdvancedRecordset.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Advanced Recordset";
+                    this.mAdvancedRecordset.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAdvancedRecordset;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5590,6 +5699,8 @@ namespace Warewolf.UI.Tests
         private Count mCount;
         
         private UniqueRecords mUniqueRecords;
+        
+        private WpfListItem mAdvancedRecordset;
         #endregion
     }
     
@@ -11094,8 +11205,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
-            this.SearchProperties[WpfPane.PropertyNames.Name] = "0";
-            this.SearchProperties[WpfPane.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfPane.PropertyNames.Name] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -11560,10 +11670,47 @@ namespace Warewolf.UI.Tests
                 return this.mSplitPane;
             }
         }
+        
+        public WpfTabPage UnpinnedUnsaved2
+        {
+            get
+            {
+                if ((this.mUnpinnedUnsaved2 == null))
+                {
+                    this.mUnpinnedUnsaved2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUnpinnedUnsaved2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mUnpinnedUnsaved2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mUnpinnedUnsaved2;
+            }
+        }
+        
+        public WpfTabPage UnpinnedUsaved1
+        {
+            get
+            {
+                if ((this.mUnpinnedUsaved1 == null))
+                {
+                    this.mUnpinnedUsaved1 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUnpinnedUsaved1.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mUnpinnedUsaved1.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+                    this.mUnpinnedUsaved1.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mUnpinnedUsaved1;
+            }
+        }
         #endregion
         
         #region Fields
         private SplitPane mSplitPane;
+        
+        private WpfTabPage mUnpinnedUnsaved2;
+        
+        private WpfTabPage mUnpinnedUsaved1;
         #endregion
     }
     
@@ -19931,8 +20078,8 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Local Server Source";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Local Server Source", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -19945,8 +20092,8 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Local Server Source";
-                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Local Server Source", PropertyExpressionOperator.Contains));
+                    this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mText;
@@ -19992,6 +20139,42 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private WpfListItem mFirstOption;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class PaneContextItem : WpfMenu
+    {
+        
+        public PaneContextItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem FloatingMenuItem
+        {
+            get
+            {
+                if ((this.mFloatingMenuItem == null))
+                {
+                    this.mFloatingMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mFloatingMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Floating";
+                    this.mFloatingMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mFloatingMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mFloatingMenuItem;
         #endregion
     }
     

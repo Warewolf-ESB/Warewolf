@@ -29,14 +29,11 @@ namespace Warewolf.Studio.ViewModels
 
         public string ServerName { get; private set; }
 
-        public IList<IFileListing> GetDllListings(IFileListing listing)
-        {
-            return _queryProxy.GetDllListings(listing);
-        }
+        public IList<IFileListing> GetDllListings(IFileListing listing) => _queryProxy.GetDllListings(listing);
 
-        public void Save(IPluginSource source)
+        public void Save(IPluginSource toDbSource)
         {
-            _updateRepository.Save(source);
+            _updateRepository.Save(toDbSource);
         }
 
         public IPluginSource FetchSource(Guid resourceID)

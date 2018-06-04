@@ -75,10 +75,7 @@ namespace Dev2.Converters.Graph
         }
 
         protected virtual IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(
-            IPathSegment pathSegment, IndexedPathSegmentTreeNode<string> parentNode)
-        {
-            return null;
-        }
+            IPathSegment pathSegment, IndexedPathSegmentTreeNode<string> parentNode) => null;
 
         protected void CreateRootNode(IList<IPath> validPaths, Dictionary<IPath, IList<object>> results)
         {

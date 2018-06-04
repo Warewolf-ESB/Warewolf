@@ -24,21 +24,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
-                {
-                    return resourceId;
-                }
+                return resourceId;
             }
+
 
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -143,9 +138,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
-        {
-            return "SaveTests";
-        }
+        public string HandlesType() => "SaveTests";
     }
 }

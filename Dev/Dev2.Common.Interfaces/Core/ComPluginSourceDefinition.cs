@@ -21,19 +21,8 @@ namespace Dev2.Common.Interfaces.Core
                 Is32Bit = db.Is32Bit;
                 ResourceName = db.ResourceName;
         }
-        public bool Equals(IComPluginSource other)
-        {
-            
-            return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Name, ((ComPluginSourceDefinition)other).Name);
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        public bool Equals(IComPluginSource other) => string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Name, other.Name);
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -50,13 +39,7 @@ namespace Dev2.Common.Interfaces.Core
             }
             return Equals((ComPluginSourceDefinition)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
@@ -70,15 +53,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ComPluginSourceDefinition left, ComPluginSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ComPluginSourceDefinition left, ComPluginSourceDefinition right) => !Equals(left, right);
 
         #endregion
 
@@ -90,11 +67,6 @@ namespace Dev2.Common.Interfaces.Core
         public string ClsId { get; set; }
         public IFileListing SelectedDll { get; set; }
         public string ResourcePath { get; set; }
-
-        #endregion
-
-        #region Binding Name added by Nathi 
-
         public string Name => ResourceName;
 
         #endregion

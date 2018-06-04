@@ -50,10 +50,7 @@ namespace Dev2.Studio.AppResources.Comparers
             var returnString = sb.ToString().Replace('-', '_');
             return returnString;
         }
-        
-        public bool Equals(WorkSurfaceKey other)
-        {
-            return WorkSurfaceKeyEqualityComparer.Current.Equals(this, other);
-        }
+
+        public bool Equals(WorkSurfaceKey other) => WorkSurfaceKeyEqualityComparer.Current.Equals(this, other);
     }
 }

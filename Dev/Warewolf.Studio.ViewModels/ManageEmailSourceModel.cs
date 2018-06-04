@@ -34,10 +34,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        public string TestConnection(IEmailServiceSource resource)
-        {
-            return _updateRepository.TestConnection(resource);
-        }
+        public string TestConnection(IEmailServiceSource resource) => _updateRepository.TestConnection(resource);
 
         public void Save(IEmailServiceSource toDbSource)
         {

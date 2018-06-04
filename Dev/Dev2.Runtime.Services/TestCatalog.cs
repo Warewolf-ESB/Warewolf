@@ -8,14 +8,12 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
-
-
-
 
 namespace Dev2.Runtime
 {
@@ -32,7 +30,7 @@ namespace Dev2.Runtime
         }, LazyThreadSafetyMode.PublicationOnly);
 
         public static ITestCatalog Instance => LazyCat.Value;
-
+       
         public TestCatalog()
         {
             _directoryWrapper = new DirectoryWrapper();
@@ -45,55 +43,59 @@ namespace Dev2.Runtime
 
         public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; private set; }
 
-        public void SaveTests(Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
+        public void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos)
         {
             if (serviceTestModelTos != null && serviceTestModelTos.Count > 0)
             {
                 foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
-                    SaveTestToDisk(resourceId, serviceTestModelTo);
+                    SaveTestToDisk(resourceID, serviceTestModelTo);
                 }
-                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceId.ToString());
-                Tests.AddOrUpdate(resourceId, GetTestList(dir), (id, list) => GetTestList(dir));
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
+                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
             }
         }
 
-        public void SaveTest(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        public void SaveTest(Guid resourceID, IServiceTestModelTO test)
         {
-            SaveTestToDisk(resourceId, serviceTestModelTo);
-            Tests.AddOrUpdate(resourceId, new List<IServiceTestModelTO> { serviceTestModelTo }, (id, list) =>
+            SaveTestToDisk(resourceID, test);
+            var existingTests = Tests.GetOrAdd(resourceID, new List<IServiceTestModelTO>());
+            var found = existingTests.FirstOrDefault(to => to.TestName.Equals(test.TestName, StringComparison.CurrentCultureIgnoreCase));
+            if (found == null)
             {
-                var serviceTestModelTos = Fetch(id);
-                var found = serviceTestModelTos.FirstOrDefault(to => to.TestName.Equals(serviceTestModelTo.TestName, StringComparison.CurrentCultureIgnoreCase));
-                if (found != null)
-                {
-                    serviceTestModelTos.Remove(found);
-                }
-                serviceTestModelTos.Add(serviceTestModelTo);
-                return serviceTestModelTos;
-            });
+                existingTests.Add(test);
+            }
+            else
+            {
+                existingTests.Remove(found);
+                existingTests.Add(test);
+            }
         }
 
-        void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
+        static void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
         {
             foreach (var serviceTestModelTO in testsToUpdate)
             {
-                serviceTestModelTO.TestFailing = false;
-                serviceTestModelTO.TestPassed = false;
-                serviceTestModelTO.TestPending = false;
-                serviceTestModelTO.TestInvalid = true;
-                UpdateStepOutputsForTest(serviceTestModelTO);
-                if (serviceTestModelTO.Outputs != null)
+                UpdateTestToInvalid(serviceTestModelTO);
+            }
+        }
+
+        private static void UpdateTestToInvalid(IServiceTestModelTO serviceTestModelTO)
+        {
+            serviceTestModelTO.TestFailing = false;
+            serviceTestModelTO.TestPassed = false;
+            serviceTestModelTO.TestPending = false;
+            serviceTestModelTO.TestInvalid = true;
+            UpdateStepOutputsForTest(serviceTestModelTO);
+            if (serviceTestModelTO.Outputs != null)
+            {
+                foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
                 {
-                    foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
+                    if (serviceTestOutput.Result != null)
                     {
-                        if (serviceTestOutput.Result != null)
-                        {
-                            serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
-                        }
+                        serviceTestOutput.Result.RunTestResult = RunResult.TestInvalid;
                     }
                 }
-
             }
         }
 
@@ -118,31 +120,35 @@ namespace Dev2.Runtime
             }
         }
 
-        void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
+        static void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
         {
             if (serviceTestModelTo.TestSteps != null)
             {
                 foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
                 {
-                    if (serviceTestStep.Children != null)
-                    {
-                        var childs = serviceTestStep.Children.Flatten(step => step.Children);
-                        foreach (var child in childs)
-                        {
-                            child.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
-                            foreach (var serviceTestOutput in child.StepOutputs)
-                            {
-                                serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
-                            }
-                        }
-                    }
-                    serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
-                    foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                    UpdateStepOutputsForTest(serviceTestStep);
+                }
+            }
+        }
+
+        private static void UpdateStepOutputsForTest(IServiceTestStep serviceTestStep)
+        {
+            if (serviceTestStep.Children != null)
+            {
+                var childs = serviceTestStep.Children.Flatten(step => step.Children);
+                foreach (var child in childs)
+                {
+                    child.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+                    foreach (var serviceTestOutput in child.StepOutputs)
                     {
                         serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
                     }
-
                 }
+            }
+            serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
+            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+            {
+                serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestInvalid };
             }
         }
 
@@ -152,7 +158,7 @@ namespace Dev2.Runtime
             Load();
         }
 
-        void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
+        static void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
         {
             if (outputDefs.Count == 0)
             {
@@ -166,40 +172,12 @@ namespace Dev2.Runtime
                 }
                 foreach (var dev2Definition in outputDefs)
                 {
-                    if (dev2Definition.IsRecordSet)
-                    {
-                        ProcessRecordsetOutputs(serviceTestModelTO, dev2Definition);
-                    }
-                    else
-                    {
-                        if (serviceTestModelTO.Outputs.FirstOrDefault(output => output.Variable == dev2Definition.Name) == null)
-                        {
-                            serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
-                            {
-                                Variable = dev2Definition.Name,
-                                AssertOp = "=",
-                                Value = ""
-                            });
-                        }
-                    }
+                    serviceTestModelTO = UpdateOutputsForTest(serviceTestModelTO, dev2Definition);
                 }
 
                 for (int i = serviceTestModelTO.Outputs.Count - 1; i >= 0; i--)
                 {
-                    var output = serviceTestModelTO.Outputs[i];
-                    if (outputDefs.FirstOrDefault(definition =>
-                    {
-                        if (definition.IsRecordSet)
-                        {
-                            var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
-                            var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable);
-                            return rec == inRec;
-                        }
-                        return definition.Name == output.Variable;
-                    }) == null)
-                    {
-                        serviceTestModelTO.Outputs.Remove(output);
-                    }
+                    serviceTestModelTO = UpdateOutputsForTest(serviceTestModelTO, outputDefs, i);
                 }
                 foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
                 {
@@ -207,7 +185,46 @@ namespace Dev2.Runtime
                 }
                 serviceTestModelTO.Outputs.Sort((output, testOutput) => string.Compare(output.Variable, testOutput.Variable, StringComparison.InvariantCultureIgnoreCase));
             }
+        }
 
+        static IServiceTestModelTO UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        {
+            if (dev2Definition.IsRecordSet)
+            {
+                ProcessRecordsetOutputs(serviceTestModelTO, dev2Definition);
+            }
+            else
+            {
+                if (serviceTestModelTO.Outputs.FirstOrDefault(output => output.Variable == dev2Definition.Name) == null)
+                {
+                    serviceTestModelTO.Outputs.Add(new ServiceTestOutputTO
+                    {
+                        Variable = dev2Definition.Name,
+                        AssertOp = "=",
+                        Value = ""
+                    });
+                }
+            }
+            return serviceTestModelTO;
+        }
+
+        static IServiceTestModelTO UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs, int i)
+        {
+            var output = serviceTestModelTO.Outputs[i];
+            if (outputDefs.FirstOrDefault(definition =>
+            {
+                if (definition.IsRecordSet)
+                {
+                    var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
+                    var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(output.Variable);
+                    return rec == inRec;
+                }
+                return definition.Name == output.Variable;
+            }) == null)
+            {
+                serviceTestModelTO.Outputs.Remove(output);
+            }
+            return serviceTestModelTO;
         }
 
         static void ProcessRecordsetOutputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
@@ -241,7 +258,7 @@ namespace Dev2.Runtime
             }
         }
 
-        void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
+        static void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
         {
             if (inputDefs.Count == 0)
             {
@@ -255,42 +272,52 @@ namespace Dev2.Runtime
                 }
                 foreach (var dev2Definition in inputDefs)
                 {
-                    if (dev2Definition.IsRecordSet)
-                    {
-                        ProcessRecordsetInputs(serviceTestModelTO, dev2Definition);
-                    }
-                    else
-                    {
-                        if (serviceTestModelTO.Inputs.FirstOrDefault(input => input.Variable == dev2Definition.Name) == null)
-                        {
-                            serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
-                            {
-                                Variable = dev2Definition.Name,
-                                Value = "",
-                                EmptyIsNull = false
-                            });
-                        }
-                    }
+                    UpdateInputsForTest(serviceTestModelTO, dev2Definition);
                 }
 
                 for (int i = serviceTestModelTO.Inputs.Count - 1; i >= 0; i--)
                 {
-                    var input = serviceTestModelTO.Inputs[i];
-                    if (inputDefs.FirstOrDefault(definition =>
-                        {
-                            if (definition.IsRecordSet)
-                            {
-                                var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
-                                var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable);
-                                return rec == inRec;
-                            }
-                            return definition.Name == input.Variable;
-                        }) == null)
-                    {
-                        serviceTestModelTO.Inputs.Remove(input);
-                    }
+                    UpdateInputsForTest(serviceTestModelTO, inputDefs, i);
                 }
                 serviceTestModelTO.Inputs.Sort((input, testInput) => string.Compare(input.Variable, testInput.Variable, StringComparison.InvariantCultureIgnoreCase));
+            }
+        }
+
+        static void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        {
+            if (dev2Definition.IsRecordSet)
+            {
+                ProcessRecordsetInputs(serviceTestModelTO, dev2Definition);
+            }
+            else
+            {
+                if (serviceTestModelTO.Inputs.FirstOrDefault(input => input.Variable == dev2Definition.Name) == null)
+                {
+                    serviceTestModelTO.Inputs.Add(new ServiceTestInputTO
+                    {
+                        Variable = dev2Definition.Name,
+                        Value = "",
+                        EmptyIsNull = false
+                    });
+                }
+            }
+        }
+
+        static void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs, int i)
+        {
+            var input = serviceTestModelTO.Inputs[i];
+            if (inputDefs.FirstOrDefault(definition =>
+            {
+                if (definition.IsRecordSet)
+                {
+                    var rec = DataListUtil.CreateRecordsetDisplayValue(definition.RecordSetName, definition.Name, "");
+                    var inRec = DataListUtil.ReplaceRecordsetIndexWithBlank(input.Variable);
+                    return rec == inRec;
+                }
+                return definition.Name == input.Variable;
+            }) == null)
+            {
+                serviceTestModelTO.Inputs.Remove(input);
             }
         }
 
@@ -346,7 +373,7 @@ namespace Dev2.Runtime
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
-                var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
+                var resIdString = DirectoryWrapper.GetDirectoryName(resourceTestDirectory);
                 if (Guid.TryParse(resIdString, out Guid resId))
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
@@ -366,6 +393,20 @@ namespace Dev2.Runtime
                 serviceTestModelTos.Add(testModel);
             }
             return serviceTestModelTos;
+        }
+
+        public List<IServiceTestModelTO> FetchAllTests()
+        {
+            var list = new List<IServiceTestModelTO>();
+            if (Tests != null)
+            {
+                foreach (var test in Tests)
+                {
+                    list.AddRange(test.Value);
+                }
+            }
+
+            return list;
         }
 
         public List<IServiceTestModelTO> Fetch(Guid resourceId)
@@ -405,8 +446,8 @@ namespace Dev2.Runtime
                 Tests.TryRemove(resourceId, out List<IServiceTestModelTO> removedTests);
             }
         }
-
-        public void DeleteAllTests(List<string> testsToIgnore)
+        
+        public void DeleteAllTests(List<string> testsToList)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
             if (!info.Exists)
@@ -415,12 +456,14 @@ namespace Dev2.Runtime
             }
 
             var fileInfos = info.GetDirectories();
-            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
+            var dir = new DirectoryHelper();
+            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToList.Contains(fileInfo.Name.ToUpper())))
             {
-                DirectoryHelper.CleanUp(fileInfo.FullName);
+                dir.CleanUp(fileInfo.FullName);
             }
             Load();
         }
+
         static string GetTestPathForResourceId(Guid resourceId)
         {
             var testPath = EnvironmentVariables.TestPath;
@@ -439,6 +482,6 @@ namespace Dev2.Runtime
                 }
             }
             return null;
-        }
+        }           
     }
 }

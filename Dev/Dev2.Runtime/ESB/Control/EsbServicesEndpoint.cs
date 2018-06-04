@@ -29,11 +29,6 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Control
 {
-
-    /// <summary>
-    /// Amended as per PBI 7913
-    /// </summary>
-    /// IEsbActivityChannel
     public class EsbServicesEndpoint :  IEsbWorkspaceChannel
     {
         public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
@@ -49,14 +44,7 @@ namespace Dev2.Runtime.ESB.Control
         readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
         static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
         static ResourceCatalog rCatalog => ResourceCatalog.Instance;
-        /// <summary>
-        /// Executes the request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="request"></param>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
+        
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
 
@@ -112,8 +100,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             return resultID;
         }
-
-
+        
         static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = rCatalog.GetResource(workspaceId, resourceId) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
@@ -121,15 +108,7 @@ namespace Dev2.Runtime.ESB.Control
             return resource;
         }
 
-
-
-        static IResource GetResource(Guid workspaceId, string resourceName)
-        {
-            var resource = rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-            return resource;
-        }
-
-
+        static IResource GetResource(Guid workspaceId, string resourceName) => rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
@@ -139,22 +118,8 @@ namespace Dev2.Runtime.ESB.Control
             executionContainer.PerformLogExecution(uri, update);
         }
 
-        RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace)
-        {
-            return new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
-        }
-
-        /// <summary>
-        /// Executes the sub request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <param name="handleErrors"> buble up errors or not</param>
-        /// <returns></returns>
+        RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace) => new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
+        
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var wasTestExecution = dataObject.IsServiceTestExecution;
@@ -184,39 +149,40 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 else
                 {
-                    if (isLocal)
+                    if (isLocal && GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
-                        if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
-                        {
-                            errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-                            dataObject.StartTime = oldStartTime;
-                            return null;
-                        }
+                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                        dataObject.StartTime = oldStartTime;
+                        return null;
                     }
-                    
+
+
                     var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                     dataObject.IsServiceTestExecution = wasTestExecution;
                     if (executionContainer != null)
                     {
                         CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
-                        if (!isLocal)
-                        {
-                            SetRemoteExecutionDataList(dataObject, executionContainer, errors);
-                        }
-                        if (!errors.HasErrors())
-                        {
-                            executionContainer.InstanceInputDefinition = inputDefs;
-                            executionContainer.InstanceOutputDefinition = outputDefs;
-                            executionContainer.Execute(out invokeErrors, update);
-                            var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+                    }
+                    if (executionContainer != null && !isLocal)
+                    {
+                        SetRemoteExecutionDataList(dataObject, executionContainer, errors);
+                    }
+                    if (executionContainer != null && !errors.HasErrors())
+                    {
+                        executionContainer.InstanceInputDefinition = inputDefs;
+                        executionContainer.InstanceOutputDefinition = outputDefs;
+                        executionContainer.Execute(out invokeErrors, update);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
 
-                            errors.MergeErrors(invokeErrors);
-                            var errorString = dataObject.Environment.FetchErrors();
-                            invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                            errors.MergeErrors(invokeErrors);
-                            dataObject.StartTime = oldStartTime;
-                            return env;
-                        }
+                        errors.MergeErrors(invokeErrors);
+                        var errorString = dataObject.Environment.FetchErrors();
+                        invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                        errors.MergeErrors(invokeErrors);
+                        dataObject.StartTime = oldStartTime;
+                        return env;
+                    }
+                    if (executionContainer != null)
+                    {
                         errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                     }
                 }
@@ -271,17 +237,15 @@ namespace Dev2.Runtime.ESB.Control
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
             if (executionContainer != null)
             {
-                if (!isLocal)
+                if (!isLocal && executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
                 {
-                    if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
+                    if (!remoteContainer.ServerIsUp())
                     {
-                        if (!remoteContainer.ServerIsUp())
-                        {
-                            invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
-                        }
-                        SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
+                        invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                     }
+                    SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
                 }
+
                 if (!invokeErrors.HasErrors())
                 {
                     var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
@@ -308,10 +272,6 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
-        {
-            return new EsbServiceInvoker(this, theWorkspace);
-        }
-
+        protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace) => new EsbServiceInvoker(this, theWorkspace);
     }
 }

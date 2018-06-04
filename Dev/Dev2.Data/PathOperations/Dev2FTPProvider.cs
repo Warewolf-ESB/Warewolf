@@ -24,6 +24,7 @@ using Dev2.PathOperations;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
 using System.Globalization;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Data.PathOperations
 {
@@ -64,10 +65,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsStandardFtp(IActivityIOPath path)
-        {
-            return path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
-        }
+        static bool IsStandardFtp(IActivityIOPath path) => path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
 
         void ReadFromFtp(IActivityIOPath path, ref Stream result)
         {
@@ -152,7 +150,12 @@ namespace Dev2.Data.PathOperations
             var hostName = ExtractHostNameFromPath(path.Path);
             if (hostName.ToLower(CultureInfo.InvariantCulture).StartsWith(@"localhost"))
             {
-                hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+                var ipAddress = new StringBuilder();
+                ipAddress.Append("127");
+                ipAddress.Append(".0");
+                ipAddress.Append(".0");
+                ipAddress.Append(".1");
+                hostName = hostName.Replace(@"localhost", ipAddress.ToString());
             }
 
             var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };
@@ -235,14 +238,17 @@ namespace Dev2.Data.PathOperations
 
             if (ok)
             {
-                try
+                using (src)
                 {
-                    result = IsStandardFtp(dst) ? WriteToFtp(src, dst) : WriteToSftp(src, dst);
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(@"Exception in Put command", ex, GlobalConstants.WarewolfError);
-                    throw;
+                    try
+                    {
+                        result = IsStandardFtp(dst) ? WriteToFtp(src, dst) : WriteToSftp(src, dst);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error(@"Exception in Put command", ex, GlobalConstants.WarewolfError);
+                        throw;
+                    }
                 }
             }
             return result;
@@ -529,10 +535,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public bool RequiresLocalTmpStorage()
-        {
-            return true;
-        }
+        public bool RequiresLocalTmpStorage() => true;
 
         public bool HandlesType(enActivityIOPathType type)
         {
@@ -551,10 +554,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public string PathSeperator()
-        {
-            return @"/";
-        }
+        public string PathSeperator() => @"/";
 
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {
@@ -563,7 +563,7 @@ namespace Dev2.Data.PathOperations
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
                                                  src.IsNotCertVerifiable, src.PrivateKeyFile);
-                dirs = ExtractList(src.Path, tmpDirData, IsDirectory);
+                dirs = ExtractList(tmpDirData, IsDirectory);
 
                 dirs.Remove(@".");
                 dirs.Remove(@"..");
@@ -583,7 +583,7 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src), src.IsNotCertVerifiable, src.PrivateKeyFile);
-                dirs = ExtractList(src.Path, tmpDirData, IsFile);
+                dirs = ExtractList(tmpDirData, IsFile);
             }
             catch (Exception ex)
             {
@@ -731,7 +731,7 @@ namespace Dev2.Data.PathOperations
             }
         }
 
-        List<string> ExtractList(string basePath, string payload, Func<string, bool> matchFunc)
+        static List<string> ExtractList(string payload, Func<string, bool> matchFunc)
         {
             var result = new List<string>();
 
@@ -744,10 +744,6 @@ namespace Dev2.Data.PathOperations
                     var part = p.Substring(idx + 1).Trim();
                     if (matchFunc?.Invoke(p) ?? default(bool))
                     {
-                        if (!basePath.EndsWith(@"/"))
-                        {
-                            basePath += @"/";
-                        }
                         result.Add(part);
                     }
                 }
@@ -762,15 +758,9 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsDirectory(string part)
-        {
-            return Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
-        }
+        static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
 
-        static bool IsFile(string part)
-        {
-            return !IsDirectory(part);
-        }
+        static bool IsFile(string part) => !IsDirectory(part);
 
         static string[] GetParts(string payload)
         {

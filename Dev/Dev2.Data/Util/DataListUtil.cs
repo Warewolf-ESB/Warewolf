@@ -18,6 +18,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -27,8 +28,6 @@ using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
 
 namespace Dev2.Data.Util
 {
@@ -76,13 +75,10 @@ namespace Dev2.Data.Util
         /// <param name="exp">The exp.</param>
         /// <param name="idx">The idx.</param>
         /// <returns></returns>
-        public static string ReplaceStarWithFixedIndex(string exp, int idx)
-        {
-            return idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
-        }
+        public static string ReplaceStarWithFixedIndex(string exp, int idx) => idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -112,6 +108,15 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceRecordsetIndexWithStar(string expression) => RecSetCommon.ReplaceRecordsetIndexWithStar(expression);
 
+        public static string GetVariableNameToMapOutputTo(string mappedTo)
+        {
+            if (IsValueRecordset(mappedTo))
+            {
+                return ExtractFieldNameFromValue(mappedTo);
+            }
+            return RemoveLanguageBrackets(mappedTo);
+        }
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -123,40 +128,31 @@ namespace Dev2.Data.Util
         public static bool IsCalcEvaluation(string expression, out string newExpression)
         {
             var result = false;
-
             newExpression = string.Empty;
 
-            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
+            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix, StringComparison.Ordinal) &&
+                expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix, StringComparison.Ordinal))
             {
-                if (expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
-                {
-                    newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
-                    result = true;
-                }
+                newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
+                result = true;
             }
 
-            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix))
+            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix, StringComparison.Ordinal) &&
+                expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix, StringComparison.Ordinal))
             {
-                if (expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix))
-                {
-                    newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
-                    result = true;
-                }
+                newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
+                result = true;
             }
 
             return result;
         }
-
 
         /// <summary>
         /// Removes the brackets.
         /// </summary>
         /// <param name="val">The value.</param>
         /// <returns></returns>
-        public static string RemoveLanguageBrackets(string val)
-        {
-            return val.Replace("[", string.Empty).Replace("]", string.Empty);
-        }
+        public static string RemoveLanguageBrackets(string val) => val.Replace("[", string.Empty).Replace("]", string.Empty);
 
         /// <summary>
         /// Used to determine if a tag is a system tag or not
@@ -165,26 +161,21 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsSystemTag(string tag)
         {
-
             // Nasty junk that has been carried!
             string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
             // Transfer System Tags
             var result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
-            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
+            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal))
             {
-                tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
-                result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
+                var replacedTag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
+                result = SysTags.Contains(replacedTag) || nastyJunk.Contains(replacedTag);
             }
 
             return result;
         }
 
-        /// <summary>
-        /// Shapes the definitions to data list.
-        /// </summary>
-        /// <returns></returns>
         public static IExecutionEnvironment InputsToEnvironment(IExecutionEnvironment outerEnvironment, string inputDefs, int update)
         {
             var env = new ExecutionEnvironment();
@@ -277,12 +268,12 @@ namespace Dev2.Data.Util
         {
             var result = value;
 
-            if (result.StartsWith(OpeningSquareBrackets))
+            if (result.StartsWith(OpeningSquareBrackets, StringComparison.Ordinal))
             {
                 result = result.Substring(2, result.Length - 2);
             }
 
-            if (result.EndsWith(ClosingSquareBrackets))
+            if (result.EndsWith(ClosingSquareBrackets, StringComparison.Ordinal))
             {
                 result = result.Substring(0, result.Length - 2);
             }
@@ -292,20 +283,31 @@ namespace Dev2.Data.Util
 
         public static string AddBracketsToValueIfNotExist(string value)
         {
-            string result;
+            string WrapInBrackets(string val)
+            {
+                var result = val;
+                if (!value.Contains(OpeningSquareBrackets))
+                {
+                    result = string.Concat(OpeningSquareBrackets, result);
+                }
+                if (!value.Contains(ClosingSquareBrackets))
+                {
+                    result = string.Concat(result, ClosingSquareBrackets);
+                }
+                
+                return result;
+            }
 
-            result = !value.Contains(ClosingSquareBrackets) ? !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets) : value;
-
-            return result;
+            return WrapInBrackets(value); 
         }
 
         public static string MakeValueIntoHighLevelRecordset(string value) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, false);
         public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
-        
+
         public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
-        
+
         public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
-        
+
         public static bool IsFullyEvaluated(string payload)
         {
             var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
@@ -331,14 +333,11 @@ namespace Dev2.Data.Util
             return true;
         }
 
-        public static bool NotEncrypted(string value)
-        {
-            return string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
-        }
+        public static bool NotEncrypted(string value) => string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
 
         /// <summary>
         /// Is the expression evaluated
-        /// </summary>  
+        /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
         ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
@@ -359,28 +358,18 @@ namespace Dev2.Data.Util
 
         //used in the replace node method
 
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
         public static bool IsXml(string data)
         {
             var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
-        public static bool IsXml(string data, out bool isFragment)
-        {
-
-            return XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
-        }
+        public static bool IsXml(string data, out bool isFragment) => XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
 
         public static bool IsJson(string data)
         {
             var tmp = data.Trim();
-            if (tmp.StartsWith("{") && tmp.EndsWith("}"))
+            if (tmp.StartsWith("{", StringComparison.Ordinal) && tmp.EndsWith("}", StringComparison.Ordinal))
             {
                 return true;
             }
@@ -388,10 +377,7 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        public static bool IsXmlOrJson(string data)
-        {
-            return IsJson(data) || IsXml(data);
-        }
+        public static bool IsXmlOrJson(string data) => IsJson(data) || IsXml(data);
 
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
         {
@@ -412,25 +398,11 @@ namespace Dev2.Data.Util
         public static string AdjustForEncodingIssues(string payload)
         {
             var trimedData = payload.Trim();
-            var isXml = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var isXml = trimedData.StartsWith("<", StringComparison.Ordinal) && !trimedData.StartsWith("<![CDATA[", StringComparison.Ordinal);
 
             if (!isXml)
             {
-                if (trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
-                {
-                    trimedData = trimedData.Substring(1);
-                }
-                else if (trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
-                {
-                    trimedData = trimedData.Substring(2);
-                }
-                else
-                {
-                    if (trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
-                    {
-                        trimedData = trimedData.Substring(3);
-                    }
-                }
+                trimedData = TrimNonXmlData(trimedData);
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
             if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
@@ -441,9 +413,31 @@ namespace Dev2.Data.Util
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
-        
+
+        private static string TrimNonXmlData(string trimedData)
+        {
+            var nonXmlData = trimedData;
+            if (nonXmlData.Length > 1 && nonXmlData[1] == '<' && nonXmlData[2] == '?')
+            {
+                nonXmlData = nonXmlData.Substring(1);
+            }
+            else if (nonXmlData.Length > 2 && nonXmlData[2] == '<' && nonXmlData[3] == '?')
+            {
+                nonXmlData = nonXmlData.Substring(2);
+            }
+            else
+            {
+                if (nonXmlData.Length > 3 && nonXmlData[3] == '<' && nonXmlData[4] == '?')
+                {
+                    nonXmlData = nonXmlData.Substring(3);
+                }
+            }
+
+            return nonXmlData;
+        }
+
         public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
-        
+
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
         public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer) => UpsertTokens(target, tokenizer, null, null, true);
@@ -486,8 +480,6 @@ namespace Dev2.Data.Util
             }
         }
 
-
-
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
         public static string ReplaceObjectBlankWithIndex(string objectName, int length) => RecSetCommon.ReplaceObjectBlankWithIndex(objectName, length);
 
@@ -517,7 +509,6 @@ namespace Dev2.Data.Util
             return false;
         }
 
-
         public static string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction)
         {
             var db = new DefinitionBuilder();
@@ -541,11 +532,24 @@ namespace Dev2.Data.Util
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, includeNoneDirection, searchParameters);
+
+        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection,bool includeNoneDirection)
         {
-            return ioDirection == dev2ColumnArgumentDirection ||
-                   ioDirection == enDev2ColumnArgumentDirection.Both &&
-                   (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+            if(includeNoneDirection && dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.None)
+            {
+                return true;
+            }
+            if (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (ioDirection == enDev2ColumnArgumentDirection.Input || ioDirection == enDev2ColumnArgumentDirection.Output);
+            }
+            if (ioDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+            }
+
+            return ioDirection == dev2ColumnArgumentDirection;
         }
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
@@ -553,10 +557,9 @@ namespace Dev2.Data.Util
             var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
-            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
+            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)(Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) ?? enDev2ColumnArgumentDirection.Both) : enDev2ColumnArgumentDirection.Both;
             return ioDirection;
         }
-
        
         public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataListForDebug(dataList, dev2ColumnArgumentDirection);
 
@@ -568,7 +571,6 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static T ConvertFromJsonToModel<T>(StringBuilder payload)
         {
-
             var obj = JsonConvert.DeserializeObject<T>(payload.ToString());
 
             return obj;

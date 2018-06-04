@@ -27,7 +27,7 @@ namespace Dev2.Activities.Scripting
     /// Activity used for executing JavaScript through a tool
     /// </summary>
     [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript")]
-    public class DsfJavascriptActivity : DsfActivityAbstract<string>,IEquatable<DsfJavascriptActivity>
+    public class DsfJavascriptActivity : DsfActivityAbstract<string>, IEquatable<DsfJavascriptActivity>
     {
         public DsfJavascriptActivity()
             : base("JavaScript")
@@ -77,48 +77,19 @@ namespace Dev2.Activities.Scripting
         {
             AddScriptSourcePathsToList();
             var allErrors = new ErrorResultTO();
-            var errors = new ErrorResultTO();
-            allErrors.MergeErrors(errors);
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
-                if (!errors.HasErrors())
+
+                if (dataObject.IsDebugMode())
                 {
-                    if (dataObject.IsDebugMode())
-                    {
-                        var language = ScriptType.GetDescription();
-                        AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
-                    }
-
-                    allErrors.MergeErrors(errors);
-
-                    if (allErrors.HasErrors())
-                    {
-                        return;
-                    }
-
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
-                    while (scriptItr.HasMoreData())
-                    {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
-                        var value = engine.Execute(scriptItr.GetNextValue());
-
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-
-                            env.Assign(region, value, update);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                if (!string.IsNullOrEmpty(region))
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                                }
-                            }
-                        }
-                    }
+                    var language = ScriptType.GetDescription();
+                    AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                    AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
                 }
+                
+                TryExecute(dataObject, update, allErrors, env);
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
@@ -145,6 +116,28 @@ namespace Dev2.Activities.Scripting
                 }
             }
         }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+            while (scriptItr.HasMoreData())
+            {
+                var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                var value = engine.Execute(scriptItr.GetNextValue());
+
+                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+
+                    env.Assign(region, value, update);
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                    }
+
+                }
+            }
+        }
+
         void AddScriptSourcePathsToList()
         {
             if (!string.IsNullOrEmpty(IncludeFile))
@@ -175,14 +168,11 @@ namespace Dev2.Activities.Scripting
         #endregion
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -191,7 +181,7 @@ namespace Dev2.Activities.Scripting
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -204,36 +194,50 @@ namespace Dev2.Activities.Scripting
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Script);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Script);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion GetForEachInputs/Outputs
 
         public bool Equals(DsfJavascriptActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) 
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return base.Equals(other)
                 && string.Equals(Script, other.Script)
                 && ScriptType == other.ScriptType
-                && EscapeScript == other.EscapeScript 
-                && string.Equals(Result, other.Result) 
+                && EscapeScript == other.EscapeScript
+                && string.Equals(Result, other.Result)
                 && string.Equals(IncludeFile, other.IncludeFile);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfJavascriptActivity) obj);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((DsfJavascriptActivity)obj);
         }
 
         public override int GetHashCode()
@@ -243,7 +247,7 @@ namespace Dev2.Activities.Scripting
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int) ScriptType;
+                hashCode = (hashCode * 397) ^ (int)ScriptType;
                 hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);

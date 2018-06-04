@@ -8,7 +8,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -19,12 +18,12 @@ using Dev2.Controller;
 using Dev2.Explorer;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core
 {
     public class QueryManagerProxy : ProxyBase, IQueryManager
     {
-
         public QueryManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection) : base(communicationControllerFactory, connection)
         {
 
@@ -389,12 +388,11 @@ namespace Dev2.Studio.Core
             return fileListings;
         }
 
-
-        public IList<IFileListing> FetchFiles(IFileListing root)
+        public IList<IFileListing> FetchFiles(IFileListing file)
         {
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
-            comsController.AddPayloadArgument("fileListing", serializer.Serialize(root));
+            comsController.AddPayloadArgument("fileListing", serializer.Serialize(file));
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result.HasError)
@@ -489,6 +487,7 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IComPluginSource>>(result.Message.ToString());
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -498,6 +497,7 @@ namespace Dev2.Studio.Core
             return pluginActions;
         }
 
+        [ExcludeFromCodeCoverage]
         IList<IPluginAction> GetPluginActions(IPluginSource source, INamespaceItem ns, ICommunicationController comsController, Dev2JsonSerializer serializer)
         {
             comsController.AddPayloadArgument(nameof(source), serializer.SerializeToBuilder(source));
@@ -521,6 +521,7 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActionsWithReturns(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -529,6 +530,7 @@ namespace Dev2.Studio.Core
             return pluginActions;
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginConstructor> PluginConstructors(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -553,22 +555,21 @@ namespace Dev2.Studio.Core
             }
             var pluginConstructors = serializer.Deserialize<List<IPluginConstructor>>(result.Message.ToString());
 
-            if (DataListSingleton.ActiveDataList != null)
+            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
             {
-                if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
+                pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor
                 {
-                    var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
-                    pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor
-                    {
-                        ConstructorName = objectItemModel.Name,
-                        IsExistingObject = true
-                    }));
-                }
+                    ConstructorName = objectItemModel.Name,
+                    IsExistingObject = true
+                }));
             }
+
 
             return pluginConstructors;
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -643,11 +644,11 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
         }
 
-        public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
+        public IList<IWcfAction> WcfActions(IWcfServerSource source)
         {
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
-            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
+            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(source));
             var workspaceId = Connection.WorkspaceID;
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)

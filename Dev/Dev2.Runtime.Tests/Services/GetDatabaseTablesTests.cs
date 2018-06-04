@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
@@ -127,6 +128,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("GetDatabaseTables_Execute")]
         public void GetDatabaseTables_Execute_ValidDatabaseSource()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
@@ -156,6 +160,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("GetDatabaseTables_Execute")]
         public void GetDatabaseTables_Execute_InValidDatabaseName()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource(true);
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");

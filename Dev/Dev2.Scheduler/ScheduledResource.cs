@@ -341,13 +341,11 @@ namespace Dev2.Scheduler
                 {
                     return false;
                 }
-                if (otherTrigger.Trigger.Repetition == null)
+                if (otherTrigger.Trigger.Repetition == null && otherTrigger.Trigger.Repetition != null)
                 {
-                    if (otherTrigger.Trigger.Repetition != null)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+
                 if (otherTrigger.Trigger.Repetition != null && otherTrigger.Trigger.Repetition == null)
                 {
                     return false;
@@ -371,10 +369,8 @@ namespace Dev2.Scheduler
             return true;
         }
 
-        public override string ToString()
-        {
-            return String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
-        }
+        public override string ToString() => String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
+
         public Guid ResourceId { get; set; }
     }
 }

@@ -64,10 +64,7 @@ namespace Dev2.CustomControls
 
         #region Protected Overrides
 
-        protected override Visual GetVisualChild(int index)
-        {
-            return _contentPresenter;
-        }
+        protected override Visual GetVisualChild(int index) => _contentPresenter;
 
         protected override Size MeasureOverride(Size constraint)
         {

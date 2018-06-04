@@ -114,43 +114,39 @@ namespace Dev2.UI
                 }
 
                 e.Handled = true;
-            }            
+            }
             else if (e.Key == Key.Home || e.Key == Key.End)
             {
-                CloseDropDown(true,false);
+                CloseDropDown(true, false);
             }
-            else if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            else
             {
-                IsPaste = true;
+                if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+                {
+                    IsPaste = true;
+                }
             }
         }
 
         string HandleMultiLine(KeyEventArgs e, bool isOpen, ref bool expand)
         {
             string appendText = null;
-            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None && LineCount < TextBox.MaxLines)
             {
-                if (LineCount < TextBox.MaxLines)
-                {
-                    appendText = Environment.NewLine;
-                    expand = true;
-                }
+                appendText = Environment.NewLine;
+                expand = true;
             }
+
             return appendText;
         }
 
         void HandleSpecialKeys(KeyEventArgs e)
         {
-            if (e.Key != Key.Tab)
+            if (e.Key != Key.Tab && !((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
             {
-                if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
-                {
-                }
-                else
-                {
-                    e.Handled = true;
-                }
+                e.Handled = true;
             }
+
         }
 
         object SetAppendTextBasedOnSelection()
@@ -190,66 +186,76 @@ namespace Dev2.UI
 
             if (appendText != null)
             {
-                var currentText = Text;
-
-                var foundLength = 0;
-                if (isInsert)
-                {
-                    if (currentProvider.HandlesResultInsertion)
-                    {
-                        var context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText };
-
-                        try
-                        {
-                            Text = currentProvider.PerformResultInsertion(appendText, context);
-                        }
-                        
-                        catch
-                        
-                        {
-                            //This try catch is to prevent the intellisense box from ever being crashed from a provider.
-                            //This catch is intentionally blanks since if a provider throws an exception the intellisense
-                            //box should simply ignore that provider.
-                        }
-                        
-                        TextBox?.Select(context.CaretPosition, 0);
-
-                        IsDropDownOpen = false;
-                        appendText = null;
-                    }
-                    else
-                    {
-                        var foundMinimum = -1;
-
-                        for (int i = index - 1; i >= 0; i--)
-                        {
-                            if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
-                            {
-                                foundMinimum = i;
-                                foundLength = index - i;
-                            }
-                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
-                            {
-                                i = -1;
-                            }
-                        }
-
-                        if (foundMinimum != -1)
-                        {
-                            index = foundMinimum;
-                            Text = currentText = currentText.Remove(foundMinimum, foundLength);
-                        }
-                    }
-                }
-
-                if (appendText != null)
-                {
-                    AppendText(currentText, index, appendText);
-                }
+                AppendText(ref appendText, isInsert, ref index, currentProvider);
             }
 
             UpdateErrorState();
             EnsureErrorStatus();
+        }
+
+        void AppendText(ref string appendText, bool isInsert, ref int index, IIntellisenseProvider currentProvider)
+        {
+            var currentText = Text;
+            var foundLength = 0;
+            if (isInsert)
+            {
+                if (currentProvider.HandlesResultInsertion)
+                {
+                    var context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText };
+
+                    try
+                    {
+                        Text = currentProvider.PerformResultInsertion(appendText, context);
+                    }
+                    catch
+                    {
+                        //This try catch is to prevent the intellisense box from ever being crashed from a provider.
+                        //This catch is intentionally blanks since if a provider throws an exception the intellisense
+                        //box should simply ignore that provider.
+                    }
+
+                    TextBox?.Select(context.CaretPosition, 0);
+                    IsDropDownOpen = false;
+                    appendText = null;
+                }
+                else
+                {
+                    PerformResultInsertion(appendText, ref index, ref currentText, ref foundLength);
+                }
+            }
+
+            if (appendText != null)
+            {
+                AppendText(currentText, index, appendText);
+            }
+        }
+
+        void PerformResultInsertion(string appendText, ref int index, ref string currentText, ref int foundLength)
+        {
+            var foundMinimum = -1;
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                {
+                    foundMinimum = i;
+                    foundLength = index - i;
+                }
+                else
+                {
+                    if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+#pragma warning disable S127 // "for" loop stop conditions should be invariant
+                        i = -1;
+#pragma warning restore S127 // "for" loop stop conditions should be invariant
+                    }
+                }
+            }
+
+            if (foundMinimum != -1)
+            {
+                index = foundMinimum;
+                Text = currentText = currentText.Remove(foundMinimum, foundLength);
+            }
         }
 
         IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
@@ -339,6 +345,7 @@ namespace Dev2.UI
                 ValidateText(currentText);
             }
         }
+
         internal void UpdateErrorState()
         {
             EnsureIntellisenseResults(Text, true, _desiredResultSet);
@@ -365,13 +372,6 @@ namespace Dev2.UI
             return false;
         }
 
-        /// <summary>
-        /// Raises the
-        /// <see cref="E:System.Windows.Controls.AutoCompleteBox.TextChanged" />
-        /// event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" />
-        /// that contains the event data.</param>
         protected override void OnTextChanged(RoutedEventArgs e)
         {
             var text = Text ?? string.Empty;
@@ -379,7 +379,7 @@ namespace Dev2.UI
             {
                 return;
             }
-            
+
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
             EnsureErrorStatus();
@@ -443,17 +443,17 @@ namespace Dev2.UI
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
 
-            public bool SelectAllOnGotFocus
+        public bool SelectAllOnGotFocus
+        {
+            get
             {
-                get
-                {
-                    return (bool)GetValue(SelectAllOnGotFocusProperty);
-                }
-                set
-                {
-                    SetValue(SelectAllOnGotFocusProperty, value);
-                }
+                return (bool)GetValue(SelectAllOnGotFocusProperty);
             }
+            set
+            {
+                SetValue(SelectAllOnGotFocusProperty, value);
+            }
+        }
 
         IEnumerable<IntellisenseProviderResult> IntellisenseResults
         {
@@ -485,23 +485,24 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if (IsInCalculateMode)
+                else
                 {
-                    calculateMode = true;
+                    if (IsInCalculateMode)
+                    {
+                        calculateMode = true;
+                    }
                 }
 
                 if (forceUpdate)
                 {
                     var provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
-
-                    if ((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
+                    context.IsInCalculateMode = calculateMode;
+                    if ((context.IsInCalculateMode) && AllowUserCalculateMode && CaretIndex > 0)
                     {
-                        if (CaretIndex > 0)
-                        {
-                            context.CaretPosition = CaretIndex - 1;
-                        }
+                        context.CaretPosition = CaretIndex - 1;
                     }
+
 
                     IList<IntellisenseProviderResult> results = null;
 
@@ -510,80 +511,79 @@ namespace Dev2.UI
                         results = provider.GetIntellisenseResults(context);
                         _intellisenseResults = results.ToList();
                     }
-                    
+
                     catch
-                    
+
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
                         //box should simbly ignore that provider.
                     }
-                    ProcessResults(text, results, false);
+                    ProcessResults(text, results);
 
                 }
             }
         }
 
-        void ProcessResults(string text, IList<IntellisenseProviderResult> results, bool cleared)
+        void ProcessResults(string text, IList<IntellisenseProviderResult> results)
         {
             if (results != null && results.Count > 0)
             {
-                IntellisenseProviderResult popup = null;
-
-                for (int i = 0; i < results.Count; i++)
-                {
-                    var currentResult = results[i];
-
-                    if (!currentResult.IsError)
-                    {
-                        if (!currentResult.IsPopup)
-                        {
-                            if (!cleared)
-                            {
-                                cleared = true;
-                            }
-                        }
-                        else
-                        {
-                            popup = currentResult;
-                        }
-                    }
-                }
-                if (popup != null)
-                {
-                    var description = popup.Description;
-
-                    _toolTip.Content = string.IsNullOrEmpty(description) ? "" : description;
-                    _toolTip.IsOpen = true;
-                    ToolTip = _toolTip;
-                }
+                AppendResults(results);
             }
             else
             {
-                var ttErrorBuilder = new StringBuilder();
-                if (text.Contains("[[") && text.Contains("]]"))
+                AppendError(text);
+            }
+        }
+
+        void AppendResults(IList<IntellisenseProviderResult> results)
+        {
+            IntellisenseProviderResult popup = null;
+
+            foreach (var currentResult in results)
+            {
+                if (!currentResult.IsError && currentResult.IsPopup)
                 {
-                    if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+                    popup = currentResult;
+                }
+            }
+            if (popup != null)
+            {
+                var description = popup.Description;
+
+                _toolTip.Content = string.IsNullOrEmpty(description) ? "" : description;
+                _toolTip.IsOpen = true;
+                ToolTip = _toolTip;
+            }
+        }
+
+        void AppendError(string text)
+        {
+            var ttErrorBuilder = new StringBuilder();
+            if (text.Contains("[[") && text.Contains("]]"))
+            {
+                if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+                {
+                    if (!(text.Contains("(") && text.Contains(")")))
                     {
-                        if (!(text.Contains("(") && text.Contains(")")))
-                        {
-                            HasError = true;
-                            ttErrorBuilder.AppendLine("Scalar is not allowed");
-                        }
-                    }
-                    else if (FilterType == enIntellisensePartType.ScalarsOnly)
-                    {
-                        if (text.Contains("(") && text.Contains(")"))
-                        {
-                            HasError = true;
-                            ttErrorBuilder.AppendLine("Recordset is not allowed");
-                        }
+                        HasError = true;
+                        ttErrorBuilder.AppendLine("Scalar is not allowed");
                     }
                 }
+                else
+                {
+                    if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
+                    {
+                        HasError = true;
+                        ttErrorBuilder.AppendLine("Recordset is not allowed");
+                    }
 
-                var errorText = ttErrorBuilder.ToString();
-                _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
+                }
             }
+
+            var errorText = ttErrorBuilder.ToString();
+            _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
         }
 
         public int CaretIndex
@@ -722,7 +722,7 @@ namespace Dev2.UI
 
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
         {
-            if(TextBox != null)
+            if (TextBox != null)
             {
                 TextBox.AcceptsReturn = newValue;
             }
@@ -744,7 +744,7 @@ namespace Dev2.UI
             }
         }
 
-       
+
         public static readonly DependencyProperty IsInCalculateModeProperty = DependencyProperty.Register("IsInCalculateMode", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false, OnIsInCalculateModeChanged));
 
         public bool IsInCalculateMode
@@ -785,9 +785,9 @@ namespace Dev2.UI
         }
 
 
-       
 
-        public static readonly DependencyProperty FilterTypeProperty = DependencyProperty.Register("FilterType", typeof(enIntellisensePartType), typeof(IntellisenseTextBox), new UIPropertyMetadata(enIntellisensePartType.All));
+
+        public static readonly DependencyProperty FilterTypeProperty = DependencyProperty.Register("FilterType", typeof(enIntellisensePartType), typeof(IntellisenseTextBox), new UIPropertyMetadata(enIntellisensePartType.None));
 
         public enIntellisensePartType FilterType
         {
@@ -856,7 +856,6 @@ namespace Dev2.UI
         void LostFocusImpl()
         {
             ExecWrapBrackets();
-            //CloseDropDown(true, false);
             var be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }
@@ -881,7 +880,7 @@ namespace Dev2.UI
             if (!result.EndsWith("]]"))
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
-            }            
+            }
             if (FilterType == enIntellisensePartType.JsonObject && !result.Contains("@"))
             {
                 result = result.Insert(2, "@");

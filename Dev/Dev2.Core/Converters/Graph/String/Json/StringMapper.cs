@@ -10,9 +10,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
     {
         #region Methods
 
-        public IEnumerable<IPath> Map(object data)
-        {
-            return new List<IPath>
+        public IEnumerable<IPath> Map(object data) => new List<IPath>
             {
                 new StringPath
                 {
@@ -22,7 +20,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     OutputExpression = ""
                 }
             };
-        }
 
         #endregion Methods
 

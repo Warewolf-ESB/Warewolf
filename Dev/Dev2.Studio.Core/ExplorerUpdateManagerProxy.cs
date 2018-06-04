@@ -11,7 +11,7 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Studio.Core
 {
-    public class ExplorerUpdateManagerProxy:ProxyBase,IExplorerUpdateManager
+    public class ExplorerUpdateManagerProxy : ProxyBase, IExplorerUpdateManager
     {
         #region Implementation of IExplorerUpdateManager
 
@@ -19,13 +19,7 @@ namespace Dev2.Studio.Core
         {
 
         }
-
-        /// <summary>
-        /// Add a folder to a warewolf server
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
+        
         public void AddFolder(string path, string name, Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
@@ -36,20 +30,17 @@ namespace Dev2.Studio.Core
                 DisplayName = name,
                 ResourceType = "Folder",
                 ResourcePath = resourcePath,
-                ResourceId = id
+                ResourceId = id,
+                IsFolder = true
             };
             controller.AddPayloadArgument("itemToAdd", serialiser.SerializeToBuilder(explorerItemModel));
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
             if(result.Status != ExecStatus.Success)
             {
                 throw new WarewolfSaveException(result.Message,null);
-            }            
+            }
         }
-
-        /// <summary>
-        /// delete a folder from a warewolf server
-        /// </summary>
-        /// <param name="path">the folder path</param>
+        
         public void DeleteFolder(string path)
         {
             var controller = CommunicationControllerFactory.CreateController("DeleteItemService");
@@ -60,30 +51,19 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(result.Message, null);
             }
         }
-
-        /// <summary>
-        /// delete a resource from a warewolf server
-        /// </summary>
-        /// <param name="id">resource id</param>
+        
         public void DeleteResource(Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("DeleteItemService");
             controller.AddPayloadArgument("itemToDelete", id.ToString());
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            if (result?.Status != ExecStatus.Success)
+            if (result?.Status != ExecStatus.Success && result != null)
             {
-                if(result != null)
-                {
-                    throw new WarewolfSaveException(result.Message, null);
-                }
+                throw new WarewolfSaveException(result.Message, null);
             }
-        }
 
-        /// <summary>
-        /// Rename a resource
-        /// </summary>
-        /// <param name="id">the resource id</param>
-        /// <param name="newName">the new name</param>
+        }
+        
         public void Rename(Guid id, string newName)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
@@ -95,12 +75,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(result.Message, null);
             }
         }
-
-        /// <summary>
-        /// Rename a folder
-        /// </summary>
-        /// <param name="path">the folder path</param>
-        /// <param name="newName">the new name</param>
+        
         public void RenameFolder(string path, string newName)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
@@ -113,12 +88,12 @@ namespace Dev2.Studio.Core
             }
         }
         
-        public async Task<IExplorerRepositoryResult> MoveItem(Guid sourceId, string destinationPath, string resourcePath)
+        public async Task<IExplorerRepositoryResult> MoveItem(Guid sourceId, string destinationPath, string itemPath)
         {
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
             controller.AddPayloadArgument("itemToMove", sourceId.ToString());
             controller.AddPayloadArgument("newPath", destinationPath);
-            controller.AddPayloadArgument("itemToBeRenamedPath", resourcePath);
+            controller.AddPayloadArgument("itemToBeRenamedPath", itemPath);
             return await controller.ExecuteCommandAsync<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID).ConfigureAwait(true);
         }
 

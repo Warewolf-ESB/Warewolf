@@ -5,26 +5,31 @@ namespace Dev2.Comparer
 {
     internal class ServiceInputComparer : IEqualityComparer<IServiceInput>
     {
-        public bool Equals(IServiceInput input1, IServiceInput input2)
+        public bool Equals(IServiceInput x, IServiceInput y)
         {
-            if (input1 == null && input2 == null) return true;
-            if (input1 == null || input2 == null) return false;
-            var inputsAreTheSame = string.Equals(input1.ActionName, input2.ActionName)
-                                   && string.Equals(input1.Dev2ReturnType, input2.Dev2ReturnType)
-                                   && string.Equals(input1.FullName, input2.FullName)
-                                   && string.Equals(input1.Name, input2.Name)
-                                   && string.Equals(input1.Value, input2.Value)
-                                   && string.Equals(input1.ShortTypeName, input2.ShortTypeName)
-                                   && string.Equals(input1.TypeName, input2.TypeName)
-                                   && Equals(input1.RequiredField, input2.RequiredField)
-                                   && Equals(input1.IsObject, input2.IsObject)
-                                   && Equals(input1.EmptyIsNull, input2.EmptyIsNull);
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            var inputsAreTheSame = string.Equals(x.ActionName, y.ActionName)
+                                   && string.Equals(x.Dev2ReturnType, y.Dev2ReturnType)
+                                   && string.Equals(x.FullName, y.FullName)
+                                   && string.Equals(x.Name, y.Name)
+                                   && string.Equals(x.Value, y.Value)
+                                   && string.Equals(x.ShortTypeName, y.ShortTypeName)
+                                   && string.Equals(x.TypeName, y.TypeName)
+                                   && Equals(x.RequiredField, y.RequiredField)
+                                   && Equals(x.IsObject, y.IsObject)
+                                   && Equals(x.EmptyIsNull, y.EmptyIsNull);
             return inputsAreTheSame;
         }
 
-        public int GetHashCode(IServiceInput obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IServiceInput obj) => obj.GetHashCode();
     }
 }

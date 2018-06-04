@@ -58,7 +58,8 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
         }
-        public string NewSourceHelpText
+		
+		public string NewSourceHelpText
         {
             get
             {
@@ -152,10 +153,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public bool CanEditSource()
-        {
-            return SelectedSource != null;
-        }
+        public bool CanEditSource() => SelectedSource != null;
 
         public ICommand EditSourceCommand { get; set; }
 
@@ -191,13 +189,10 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new DatabaseSourceRegion
         {
-            return new DatabaseSourceRegion
-            {
-                SelectedSource = SelectedSource
-            };
-        }
+            SelectedSource = SelectedSource
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {

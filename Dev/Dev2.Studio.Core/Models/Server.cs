@@ -112,10 +112,7 @@ namespace Dev2.Studio.Core.Models
 
         public Guid EnvironmentID { get; private set; }
 
-        public bool IsLocalHostCheck()
-        {
-            return Connection.IsLocalHost;
-        }
+        public bool IsLocalHostCheck() => Connection.IsLocalHost;
 
         public bool IsLocalHost => IsLocalHostCheck();
         public bool HasLoadedResources { get; private set; }
@@ -256,7 +253,7 @@ namespace Dev2.Studio.Core.Models
         {
             if (Connection.IsConnected && CanStudioExecute)
             {
-                ResourceRepository.ForceLoad();
+                ResourceRepository.Load(true);
                 HasLoadedResources = true;
             }
         }
@@ -287,22 +284,18 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
-            if (e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
+            if ((e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline) && AuthorizationService != null)
             {
-                if (AuthorizationService != null)
-                {
-                    AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
-                }
+                AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
             }
-            if (e.ToState == NetworkState.Online)
+
+            if (e.ToState == NetworkState.Online && AuthorizationService == null)
             {
-                if (AuthorizationService == null)
-                {
-                    AuthorizationService = CreateAuthorizationService(Connection);
-                    AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
-                    OnAuthorizationServicePermissionsChanged(null, new EventArgs());
-                }
+                AuthorizationService = CreateAuthorizationService(Connection);
+                AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+                OnAuthorizationServicePermissionsChanged(null, new EventArgs());
             }
+
         }
 
         void RaiseNetworkStateChanged(bool isOnline)
@@ -332,15 +325,9 @@ namespace Dev2.Studio.Core.Models
             return isEqual;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IServer);
-        }
+        public override bool Equals(object obj) => Equals(obj as IServer);
 
-        public override int GetHashCode()
-        {
-            return EnvironmentID.GetHashCode();
-        }
+        public override int GetHashCode() => EnvironmentID.GetHashCode();
 
         #endregion IEquatable
 
@@ -400,7 +387,7 @@ namespace Dev2.Studio.Core.Models
 
         public async Task<bool> ConnectAsync()
         {
-            var connected = await Connection.ConnectAsync(EnvironmentID);
+            var connected = await Connection.ConnectAsync(EnvironmentID).ConfigureAwait(true);
             OnPropertyChanged("IsConnected");
             OnPropertyChanged("DisplayName");
             return connected;
@@ -445,10 +432,7 @@ namespace Dev2.Studio.Core.Models
             return result;
         }
 
-        public Permissions GetPermissions(Guid resourceID)
-        {
-            return AuthorizationService.GetResourcePermissions(resourceID);
-        }
+        public Permissions GetPermissions(Guid resourceID) => AuthorizationService.GetResourcePermissions(resourceID);
 
         public Dictionary<string, string> GetServerInformation()
         {

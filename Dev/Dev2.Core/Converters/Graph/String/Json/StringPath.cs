@@ -62,10 +62,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             yield break;
         }
 
-        public IPathSegment CreatePathSegment(string pathSegmentString)
-        {
-            return null;
-        }
+        public IPathSegment CreatePathSegment(string pathSegmentString) => null;
 
         #endregion
     }

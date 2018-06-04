@@ -19,6 +19,8 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Globalization;
+using Warewolf.Storage;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -828,6 +830,49 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("some value \"testData\" another", actual);
         }
 
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new ObservableCollection<ActivityDTO>();
+            fieldCollection2.Add(new ActivityDTO("[[b]]", "111", fieldCollection.Count));
+            var activity2 = new DsfDotNetMultiAssignActivity {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsFalse(activity1.Equals(activity2));
+        }
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_WhenSameFieldCollectionData_SHouldBeEqual()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new ObservableCollection<ActivityDTO>();
+            fieldCollection2.Add(new ActivityDTO("[[a]]", "12", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignActivity {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2 };
+
+            Assert.IsTrue(activity1.Equals(activity2));
+
+            Assert.IsTrue(activity1.Equals(activity2));
+            activity2.CreateBookmark = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.CreateBookmark = false;
+            activity2.UpdateAllOccurrences = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.UpdateAllOccurrences = false;
+            Assert.IsTrue(activity1.Equals(activity2));
+        }
+
         #endregion Language Tests
 
         #region Calculate Mode Tests
@@ -935,6 +980,55 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             Assert.IsTrue(result.Environment.HasErrors());
+        }
+
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeBlank()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[alist().other]]", "asdf", 0);
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[list().name]]","[[alist().other]]",0)
+                }
+            };
+
+            ob.Execute(data.Object, 0);
+
+            var value = env.EvalAsListOfStrings("[[list().name]]", 0);
+            Assert.AreEqual("asdf", value[0]);
+            var outputs = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[list(1).name]]", outputs[0].ResultsList[1].Variable);
+        }
+
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeBlankReassign()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[alist().other]]", "asdf", 0);
+            env.Assign("[[list().name]]", "fdsa", 0);
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[list().name]]","[[alist().other]]",0)
+                }
+            };
+
+            ob.Execute(data.Object, 0);
+
+            var value = env.EvalAsListOfStrings("[[list().name]]", 0);
+            Assert.AreEqual("asdf", value[0]);
+            var outputs = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[list(2).name]]", outputs[0].ResultsList[1].Variable);
         }
 
         #endregion Calculate Mode Tests

@@ -118,10 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsOutputVariableFocused { get => _isOutputVariableFocused; set => OnPropertyChanged(ref _isOutputVariableFocused, value); }
         public bool IsXpathVariableFocused { get => _isXpathVariableFocused; set => OnPropertyChanged(ref _isXpathVariableFocused, value); }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
@@ -165,8 +162,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(XPathDTO other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return string.Equals(XPath, other.XPath)
                 && string.Equals(OutputVariable, other.OutputVariable)
                 && IndexNumber == other.IndexNumber
@@ -178,9 +183,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ActivityDTO)obj);
         }
 

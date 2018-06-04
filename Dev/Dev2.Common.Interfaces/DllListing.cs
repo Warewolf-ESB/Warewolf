@@ -6,13 +6,13 @@ namespace Dev2.Common.Interfaces
     [Serializable]
     public class DllListing : IFileListing
     {
-        public DllListing(IFileListing selectedDll)
+        public DllListing(IDllListingModel selectedDll)
         {
             Name = selectedDll.Name;
             FullName = selectedDll.FullName;
             IsDirectory = selectedDll.IsDirectory;
-            ClsId = (selectedDll as DllListing)?.ClsId;
-            Is32Bit = (selectedDll as DllListing)?.Is32Bit ?? false;
+            ClsId = selectedDll?.ClsId;
+            Is32Bit = selectedDll?.Is32Bit ?? false;
         }
 
         public DllListing()
@@ -20,10 +20,7 @@ namespace Dev2.Common.Interfaces
         }
         #region Equality members
 
-        public bool Equals(IFileListing other)
-        {
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
-        }
+        public bool Equals(IFileListing other) => string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -48,13 +45,7 @@ namespace Dev2.Common.Interfaces
             }
             return Equals((DllListing)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
@@ -67,15 +58,9 @@ namespace Dev2.Common.Interfaces
             }
         }
 
-        public static bool operator ==(DllListing left, DllListing right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(DllListing left, DllListing right) => Equals(left, right);
 
-        public static bool operator !=(DllListing left, DllListing right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(DllListing left, DllListing right) => !Equals(left, right);
 
         #endregion
 

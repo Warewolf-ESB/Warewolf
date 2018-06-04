@@ -28,9 +28,6 @@ namespace Dev2.DataList
             return false;
         }
 
-        public int GetHashCode(IInputOutputViewModel obj)
-        {
-            return obj.DisplayName.GetHashCode();
-        }
+        public int GetHashCode(IInputOutputViewModel obj) => obj.DisplayName.GetHashCode();
     }
 }

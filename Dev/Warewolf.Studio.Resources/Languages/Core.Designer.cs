@@ -349,6 +349,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your .Net installation appears to be corrupt. Uninstall Warewolf, reinstall the .Net framework and then reinstall Warewolf..
+        /// </summary>
+        public static string DotNetFrameworkInstallError {
+            get {
+                return ResourceManager.GetString("DotNetFrameworkInstallError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Dropbox Source.
         /// </summary>
         public static string DropboxSourceNewHeaderLabel {
@@ -667,6 +676,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string MenuDialogSearchLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string MenuDialogSettingsLabel {
@@ -721,7 +739,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are nor sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select &apos;Show Version History&apos; to view the previous versions..
+        ///   Looks up a localized string similar to Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are not sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select &apos;Show Version History&apos; to view the previous versions..
         /// </summary>
         public static string MergeSelectionViewInformationLabel {
             get {
@@ -1034,6 +1052,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SchedulerUnsavedTaskMessage {
             get {
                 return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server selected is not up to date with the latest server version..
+        /// </summary>
+        public static string SearchVersionConflictError {
+            get {
+                return ResourceManager.GetString("SearchVersionConflictError", resourceCulture);
             }
         }
         

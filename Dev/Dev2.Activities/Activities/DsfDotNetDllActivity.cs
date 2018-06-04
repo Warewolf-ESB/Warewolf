@@ -14,13 +14,13 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 
-
-
 namespace Dev2.Activities
 {
     //[ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
     public class DsfDotNetDllActivity : DsfMethodBasedActivity, ISimpePlugin
     {
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
+
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
 
@@ -31,24 +31,22 @@ namespace Dev2.Activities
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
         }
-
-
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
+                tmpErrors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
             if (Method == null)
             {
-                errors.AddError(ErrorResource.NoMethodSelected);
+                tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
-
-                
-            ExecuteService(update, out errors, Method, Namespace, dataObject);
+            
+            ExecuteService(update, out tmpErrors, Method, Namespace, dataObject);
         }
 
         protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -69,39 +67,7 @@ namespace Dev2.Activities
 
             try
             {
-                while (itrCollection.HasMoreData())
-                {
-                    var pos = 0;
-                    foreach (var itr in itrs)
-                    {
-                        var injectVal = itrCollection.FetchNextValue(itr);
-                        var param = methodParameters.ToList()[pos];
-
-
-                        param.Value = param.EmptyToNull &&
-                                      (injectVal == null ||
-                                       string.Compare(injectVal, string.Empty,
-                                           StringComparison.InvariantCultureIgnoreCase) == 0)
-                            ? null
-                            : injectVal;
-
-                        pos++;
-                    }                    
-                    if (!IsObject)
-                    {
-                        var i = 0;
-                        foreach (var serviceOutputMapping in Outputs)
-                        {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
-                            i++;
-                        }
-                        var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                        args.OutputFormatter = outputFormatter;
-                    }
-                    var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
-                    ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject,false);
-                }
+                TryExecute(update, dataObject, itrs, itrCollection, methodParameters, args);
             }
             catch (Exception e)
             {
@@ -109,16 +75,57 @@ namespace Dev2.Activities
             }
         }
 
-        public IResponseManager ResponseManager { get; set; }
-        public override enFindMissingType GetFindMissingType()
+        private void TryExecute(int update, IDSFDataObject dataObject, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection, List<MethodParameter> methodParameters, PluginInvokeArgs args)
         {
-            return enFindMissingType.DataGridActivity;
+            while (itrCollection.HasMoreData())
+            {
+                var pos = 0;
+                foreach (var itr in itrs)
+                {
+                    var injectVal = itrCollection.FetchNextValue(itr);
+                    var param = methodParameters.ToList()[pos];
+                    
+                    param.Value = param.EmptyToNull &&
+                                  (injectVal == null ||
+                                   string.Compare(injectVal, string.Empty,
+                                       StringComparison.InvariantCultureIgnoreCase) == 0)
+                        ? null
+                        : injectVal;
+
+                    pos++;
+                }
+                if (!IsObject)
+                {
+                    var i = 0;
+                    foreach (var serviceOutputMapping in Outputs)
+                    {
+                        OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                        i++;
+                    }
+                    var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+                    args.OutputFormatter = outputFormatter;
+                }
+                var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
+                ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
+            }
         }
+
+        public IResponseManager ResponseManager { get; set; }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var comparer = new SimplePluginComparer();
             var equals = comparer.Equals(this, other);
             return base.Equals(other) && equals;
@@ -126,9 +133,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ISimpePlugin) obj);
         }
 
@@ -143,5 +162,7 @@ namespace Dev2.Activities
                 return hashCode;
             }
         }
+
+#pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067
     }
 }

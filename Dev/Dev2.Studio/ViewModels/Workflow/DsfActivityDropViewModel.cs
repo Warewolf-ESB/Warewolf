@@ -16,25 +16,17 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.ViewModels.WorkSurface;
-
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
     public class DsfActivityDropViewModel : SimpleBaseViewModel
     {
-
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
-        #region Fields
 
         RelayCommand _executeCommmand;
         DelegateCommand _cancelComand;
 
         IContextualResourceModel _selectedResource;
-
-        #endregion Fields
-
-        #region Ctor
 
         public DsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
         {
@@ -54,30 +46,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void Init()
         {
-            switch (ActivityType)
+            if (ActivityType == enDsfActivityType.Workflow)
             {
-                case enDsfActivityType.Workflow:
-                    ImageSource = "Workflow-32";
-                    Title = "Select A Service";
-                    break;
-                case enDsfActivityType.Service:
-                    ImageSource = "ToolService-32";
-                    Title = "Select A Data Connector";
-                    break;
-                case enDsfActivityType.All:
-                    break;
-                case enDsfActivityType.Source:
-                    break;
-                default:
-                    ImageSource = "ExplorerWarewolfConnection-32";
-                    Title = "Select A Resource";
-                    break;
+                ImageSource = "Workflow-32";
+                Title = "Select A Service";
             }
         }
-
-        #endregion Ctor
-
-        #region Properties
 
         public string Title { get; private set; }
 
@@ -85,14 +59,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public enDsfActivityType ActivityType { get; private set; }
 
-
-
         public IContextualResourceModel SelectedResourceModel
         {
-            get
-            {
-                return _selectedResource;
-            }
+            get => _selectedResource;
             set
             {
                 _selectedResource = value;
@@ -101,19 +70,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        #endregion Properties
+        public RelayCommand OkCommand => _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
 
-        #region Commands
-
-        public RelayCommand OkCommand
-        {
-            get
-            {
-                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
-            }
-        }
         public bool CanOkay => CanSelect();
-
 
         bool CanSelect()
         {
@@ -126,48 +85,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                 isMatched = explorerItemModel.IsService;
             }
 
-            var explorerViewModelBase = ((Warewolf.Studio.ViewModels.ExplorerViewModelBase)SingleEnvironmentExplorerViewModel);
-            var conductorBaseWithActiveItem = (Caliburn.Micro.ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>)
-                ((Warewolf.Studio.ViewModels.ExplorerItemViewModel)explorerViewModelBase?.SelectedItem)?.ShellViewModel;
-            var workSurfaceContextViewModel = conductorBaseWithActiveItem?.ActiveItem;
-            var contextualResourceModel = workSurfaceContextViewModel?.ContextualResourceModel;
-            var guid = contextualResourceModel?.ID;
-            if (explorerItemModel != null && explorerItemModel.ResourceId == guid)
-            {
-                return false;
-            }
-
             return explorerItemModel != null && isMatched;
         }
 
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
-            }
-        }
-
-        #endregion Cammands
-
-        #region Methods
+        public ICommand CancelCommand => _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
 
         readonly Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
-        
+
         public void Okay()
         {
             var selectedItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-
-
-
-            if(selectedItem == null)
+            if (selectedItem == null)
             {
                 return;
             }
 
             var environment = GetEnvironmentRepository().FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
-
-            if(environment == null)
+            if (environment == null)
             {
                 return;
             }
@@ -179,23 +113,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         internal IExplorerTreeItem SelectedExplorerItemModel { get; private set; }
-        
+
         void Cancel()
         {
             RequestClose(ViewModelDialogResults.Cancel);
         }
 
-        #endregion Methods
-
-        #region Implementation of IDisposable
-
         protected override void OnDispose()
         {
-         
             EventPublishers.Aggregator.Unsubscribe(this);
-
             base.OnDispose();
         }
-        #endregion
     }
 }

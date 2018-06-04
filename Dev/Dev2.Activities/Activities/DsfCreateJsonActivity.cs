@@ -60,10 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Create JSON";
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { JsonString };
-        }
+        public override List<string> GetOutputs() => new List<string> { JsonString };
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -134,33 +131,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             )).ToList();
                     results.ForEach(x =>
                     {
-                        if (!x.IsCompound)
-                        {
-                            json.Add(new JProperty(
-                                x.DestinationName,
-                                x.EvaluatedResultIndexed(0))
-                                );
-                        }
-                        else
-                        {
-                            if (!x.EvalResult.IsWarewolfRecordSetResult)
-                            {
-                                json.Add(new JProperty(
-                                            x.DestinationName,
-                                            x.ComplexEvaluatedResultIndexed(0))
-                                            );
-                            }
-                            else
-                            {
-                                if (x.EvalResult.IsWarewolfRecordSetResult)
-                                {
-                                    json.Add(
-                                   x.ComplexEvaluatedResultIndexed(0));
-                                }
-                            }
-                        }
-                    }
-                  );
+                        ParseResultsJSON(x, json);
+                    });
 
 
                     dataObject.Environment.Assign(JsonString, json.ToString(Formatting.None), update);
@@ -202,21 +174,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        bool validMapping(JsonMappingTo a)
+        private static void ParseResultsJSON(JsonMappingCompoundTo x, JObject json)
         {
-            return !(String.IsNullOrEmpty(a.DestinationName) && string.IsNullOrEmpty(a.SourceName));
+            if (!x.IsCompound)
+            {
+                json.Add(new JProperty(
+                    x.DestinationName,
+                    x.EvaluatedResultIndexed(0))
+                    );
+            }
+            else
+            {
+                if (!x.EvalResult.IsWarewolfRecordSetResult)
+                {
+                    json.Add(new JProperty(
+                                x.DestinationName,
+                                x.ComplexEvaluatedResultIndexed(0))
+                                );
+                }
+                else
+                {
+                    if (x.EvalResult.IsWarewolfRecordSetResult)
+                    {
+                        json.Add(
+                       x.ComplexEvaluatedResultIndexed(0));
+                    }
+                }
+            }
         }
+
+        bool validMapping(JsonMappingTo a) => !(String.IsNullOrEmpty(a.DestinationName) && string.IsNullOrEmpty(a.SourceName));
 
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -242,15 +237,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         public bool Equals(DsfCreateJsonActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var jsonMappingsAreEqual = Dev2.Common.CommonEqualityOps.CollectionEquals(JsonMappings, other.JsonMappings, new JsonMappingToComparer());
             return base.Equals(other) 
                 && jsonMappingsAreEqual
@@ -259,9 +259,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfCreateJsonActivity) obj);
         }
 

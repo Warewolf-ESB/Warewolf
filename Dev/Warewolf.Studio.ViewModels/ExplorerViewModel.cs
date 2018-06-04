@@ -283,10 +283,8 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        public IList<IExplorerItemViewModel> FindItems()
-        {
-            return null;
-        }
+        public IList<IExplorerItemViewModel> FindItems() => null;
+
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
 
         public virtual void Dispose()
@@ -363,17 +361,23 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
-                        var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
-                        _environments.Add(environmentModel);
-                        if (shouldLoad)
-                        {
-                            await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
-                        }
-                        environmentViewModel = environmentModel;
+                        environmentViewModel = await CreateEnvironmentViewModelAsync(selectedConnection, shouldLoad).ConfigureAwait(true);
                     }
                 }
             }
             return environmentViewModel;
+        }
+
+        async Task<IEnvironmentViewModel> CreateEnvironmentViewModelAsync(IServer selectedConnection, bool shouldLoad)
+        {
+            var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
+            _environments.Add(environmentModel);
+            if (shouldLoad)
+            {
+                await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
+            }
+
+            return environmentModel;
         }
 
         async void ServerConnected(object _, IServer server)
@@ -492,7 +496,11 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment) => await LoadEnvironmentAsync(localhostEnvironment, false, true).ConfigureAwait(true);
+        
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy) => await LoadEnvironmentAsync(localhostEnvironment, isDeploy, true).ConfigureAwait(true);
+
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy, bool reloadCatalogue)
         {
             IsLoading = true;
             localhostEnvironment.Connect();
@@ -502,9 +510,6 @@ namespace Warewolf.Studio.ViewModels
             return result;
         }
 
-        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
-        {
-            return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
-        }
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel) => new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
     }
 }

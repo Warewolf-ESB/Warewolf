@@ -67,13 +67,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             // Check the cache for a value ;)
             ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
+            if (!dbSource.ReloadActions && GetCachedResult(dbSource, out cacheResult))
             {
-                if (GetCachedResult(dbSource, out cacheResult))
-                {
-                    return cacheResult;
-                }
+                return cacheResult;
             }
+
             // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
@@ -95,10 +93,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         #region Overrides of AbstractDatabaseBroker<ODBCServer>
 
-        protected override ODBCServer CreateDbServer(DbSource dbSource)
-        {
-            return new ODBCServer();
-        }
+        protected override ODBCServer CreateDbServer(DbSource dbSource) => new ODBCServer();
 
         #endregion
 

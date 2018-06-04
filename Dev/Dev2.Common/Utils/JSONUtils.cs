@@ -40,6 +40,14 @@ namespace Dev2.Common.Utils
             return stringToScrub;
         }
 
+        static void Tabs(int pos, ref StringBuilder sb)
+        {
+            for (var i = 0; i < pos; i++)
+            {
+                sb.Append("\t");
+            }
+        }
+
         public static string Format(string text)
         {
             if (String.IsNullOrEmpty(text))
@@ -51,55 +59,13 @@ namespace Dev2.Common.Utils
 
             var offset = 0;
             var output = new StringBuilder();
-            Action<StringBuilder, int> tabs = (sb, pos) => 
-            {
-                for (var i = 0; i < pos; i++)
-                {
-                    sb.Append("\t");
-                }
-            };
             Func<string, int, char?> previousNotEmpty = (s, i) =>
             {
-                if (string.IsNullOrEmpty(s) || i <= 0)
-                {
-                    return null;
-                }
-
-                char? prev = null;
-
-                while (i > 0 && prev == null)
-                {
-                    prev = s[i - 1];
-                    if (prev.ToString() == " ")
-                    {
-                        prev = null;
-                    }
-
-                    i--;
-                }
-
-                return prev;
+                return JSONUtils.previousNotEmpty(s, ref i);
             };
             Func<string, int, char?> nextNotEmpty = (s, i) =>
             {
-                if (String.IsNullOrEmpty(s) || i >= (s.Length - 1))
-                {
-                    return null;
-                }
-
-                char? next = null;
-                i++;
-
-                while (i < (s.Length - 1) && next == null)
-                {
-                    next = s[i++];
-                    if (next.ToString() == " ")
-                    {
-                        next = null;
-                    }
-                }
-
-                return next;
+                return JSONUtils.nextNotEmpty(s, ref i);
             };
 
             for (var i = 0; i < cleanText.Length; i++)
@@ -111,20 +77,20 @@ namespace Dev2.Common.Utils
                     offset++;
                     output.Append(chr);
                     output.Append(Environment.NewLine);
-                    tabs(output, offset);
+                    Tabs(offset, ref output);
                 }
                 else if (chr.ToString() == "}")
                 {
                     offset--;
                     output.Append(Environment.NewLine);
-                    tabs(output, offset);
+                    Tabs(offset, ref output);
                     output.Append(chr);
                 }
                 else if (chr.ToString() == ",")
                 {
                     output.Append(chr);
                     output.Append(Environment.NewLine);
-                    tabs(output, offset);
+                    Tabs(offset, ref output);
                 }
                 else if (chr.ToString() == "[")
                 {
@@ -136,7 +102,7 @@ namespace Dev2.Common.Utils
                     {
                         offset++;
                         output.Append(Environment.NewLine);
-                        tabs(output, offset);
+                        Tabs(offset, ref output);
                     }
                 }
                 else if (chr.ToString() == "]")
@@ -147,7 +113,7 @@ namespace Dev2.Common.Utils
                     {
                         offset--;
                         output.Append(Environment.NewLine);
-                        tabs(output, offset);
+                        Tabs(offset, ref output);
                     }
 
                     output.Append(chr);
@@ -159,6 +125,51 @@ namespace Dev2.Common.Utils
             }
 
             return output.ToString().Trim();
+        }
+
+        private static char? previousNotEmpty(string s, ref int i)
+        {
+            if (string.IsNullOrEmpty(s) || i <= 0)
+            {
+                return null;
+            }
+
+            char? prev = null;
+
+            while (i > 0 && prev == null)
+            {
+                prev = s[i - 1];
+                if (prev.ToString() == " ")
+                {
+                    prev = null;
+                }
+
+                i--;
+            }
+
+            return prev;
+        }
+
+        private static char? nextNotEmpty(string s, ref int i)
+        {
+            if (String.IsNullOrEmpty(s) || i >= (s.Length - 1))
+            {
+                return null;
+            }
+
+            char? next = null;
+            i++;
+
+            while (i < (s.Length - 1) && next == null)
+            {
+                next = s[i++];
+                if (next.ToString() == " ")
+                {
+                    next = null;
+                }
+            }
+
+            return next;
         }
     }
 }

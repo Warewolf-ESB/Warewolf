@@ -44,10 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ConvertCollection = new List<ICaseConvertTO>();
         }
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -63,46 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                CleanArgs();
-
-                allErrors.MergeErrors(errors);
-
-                var inputIndex = 1;
-                var outputIndex = 1;
-
-                foreach (ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
-                {
-                    IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
-                    if (dataObject.IsDebugMode())
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env, update), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
-                        _debugInputs.Add(debugItem);
-                        inputIndex++;
-                    }
-                    if (!allErrors.HasErrors())
-                    {
-                        try
-                        {
-                            env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item, env, update), update);
-                        }
-                        catch (Exception e)
-                        {
-                            allErrors.AddError(e.Message);
-                        }
-
-                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                        {
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env, update), debugItem);
-                            _debugOutputs.Add(debugItem);
-                            outputIndex++;
-                        }
-                    }
-                }
+                TryExecute(dataObject, update, allErrors, errors, env);
             }
             catch (Exception e)
             {
@@ -111,6 +69,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, ErrorResultTO errors, IExecutionEnvironment env)
+        {
+            CleanArgs();
+
+            allErrors.MergeErrors(errors);
+
+            var inputIndex = 1;
+            var outputIndex = 1;
+
+            foreach (ICaseConvertTO item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.StringToConvert)))
+            {
+                IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    AddDebugItem(new DebugEvalResult(item.StringToConvert, "Convert", env, update), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(item.ConvertType, "To"), debugItem);
+                    _debugInputs.Add(debugItem);
+                    inputIndex++;
+                }
+                if (!allErrors.HasErrors())
+                {
+                    try
+                    {
+                        env.ApplyUpdate(item.StringToConvert, TryConvertFunc(item, env, update), update);
+                    }
+                    catch (Exception e)
+                    {
+                        allErrors.AddError(e.Message);
+                    }
+
+                    if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.StringToConvert, "", env, update), debugItem);
+                        _debugOutputs.Add(debugItem);
+                        outputIndex++;
+                    }
+                }
             }
         }
 
@@ -157,10 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         void BuildStringToConvert(int i, List<string> targetList, List<string> resultList)
         {
@@ -231,22 +230,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (mic != null)
                 {
-                    var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                    if (listOfValidRows.Count > 0)
-                    {
-                        var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
-                        foreach (string s in listToAdd)
-                        {
-                            mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
-                            startIndex++;
-                        }
-                        CleanUpCollection(mic, modelItem, startIndex);
-                    }
-                    else
-                    {
-                        AddToCollection(listToAdd, modelItem);
-                    }
+                    AddToConvertCollection(listToAdd, modelItem, mic);
                 }
+            }
+        }
+
+        private void AddToConvertCollection(IEnumerable<string> listToAdd, ModelItem modelItem, ModelItemCollection mic)
+        {
+            var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+            if (listOfValidRows.Count > 0)
+            {
+                var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
+                foreach (string s in listToAdd)
+                {
+                    mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+                    startIndex++;
+                }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
             }
         }
 
@@ -308,7 +312,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment environment, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -317,7 +321,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment environment, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -386,10 +390,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        public int GetCollectionCount()
-        {
-            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
@@ -403,15 +404,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return ConvertCollection.Select(to => to.Result).ToList();
-        }
+        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
 
         public bool Equals(DsfCaseConvertActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
             
             return base.Equals(other) && collectionEquals;
@@ -419,9 +425,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfCaseConvertActivity) obj);
         }
 

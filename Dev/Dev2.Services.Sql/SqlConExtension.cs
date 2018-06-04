@@ -11,11 +11,14 @@ namespace Dev2.Services.Sql
             try
             {
                 if (connection.State != ConnectionState.Open)
-                    connection.Open();
+                {
+                    connection.EnsureOpen();
+                }
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                throw;
             }
         }
 

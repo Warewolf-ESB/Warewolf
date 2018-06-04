@@ -326,65 +326,9 @@ namespace Dev2.Activities.Designers2.ComDLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new ComSourceRegion(Model, ModelItem)
-                {
-                    SourceChangedAction = () =>
-                        {
-                            if (Regions != null)
-                            {
-                                foreach (var toolRegion in Regions)
-                                {
-                                    toolRegion.Errors?.Clear();
-                                }
-                            }
-                        }
-                };
-                regions.Add(SourceRegion);
-                NamespaceRegion = new ComNamespaceRegion(Model, ModelItem, SourceRegion)
-                {
-                    SourceChangedNamespace = () =>
-                        {
-                            OutputsRegion.IsEnabled = false;
-                            if (Regions != null)
-                            {
-                                foreach (var toolRegion in Regions)
-                                {
-                                    toolRegion.Errors?.Clear();
-                                }
-                            }
-                        }
-                };
-                NamespaceRegion.SomethingChanged += (sender, args) =>
-                {
-                    if (args.Errors != null)
-                    {
-                        Errors =
-                            args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
-                                .ToList();
-                    }
-                };
-                regions.Add(NamespaceRegion);
-                ActionRegion = new ComActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
-                {
-                    SourceChangedAction = () =>
-                        {
-                            OutputsRegion.IsEnabled = false;
-                            if (Regions != null)
-                            {
-                                foreach (var toolRegion in Regions)
-                                {
-                                    toolRegion.Errors?.Clear();
-                                }
-                            }
-                        }
-                };
-                ActionRegion.ErrorsHandler += (sender, list) =>
-                {
-                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
-                    UpdateDesignValidationErrors(errorInfos);
-                    Errors = new List<IActionableErrorInfo>(errorInfos);
-                };
-                regions.Add(ActionRegion);
+                AddSourceRegion(regions);
+                AddNamespaceRegion(regions);
+                AddActionRegion(regions);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true);
@@ -404,6 +348,77 @@ namespace Dev2.Activities.Designers2.ComDLL
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
             return regions;
+        }
+
+        private void AddActionRegion(IList<IToolRegion> regions)
+        {
+            ActionRegion = new ComActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
+            {
+                SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            toolRegion.Errors?.Clear();
+                        }
+                    }
+                }
+            };
+            ActionRegion.ErrorsHandler += (sender, list) =>
+            {
+                var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                UpdateDesignValidationErrors(errorInfos);
+                Errors = new List<IActionableErrorInfo>(errorInfos);
+            };
+            regions.Add(ActionRegion);
+        }
+
+        private void AddNamespaceRegion(IList<IToolRegion> regions)
+        {
+            NamespaceRegion = new ComNamespaceRegion(Model, ModelItem, SourceRegion)
+            {
+                SourceChangedNamespace = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            toolRegion.Errors?.Clear();
+                        }
+                    }
+                }
+            };
+            NamespaceRegion.SomethingChanged += (sender, args) =>
+            {
+                if (args.Errors != null)
+                {
+                    Errors =
+                        args.Errors.Select(e => new ActionableErrorInfo { ErrorType = ErrorType.Critical, Message = e } as IActionableErrorInfo)
+                            .ToList();
+                }
+            };
+            regions.Add(NamespaceRegion);
+        }
+
+        private void AddSourceRegion(IList<IToolRegion> regions)
+        {
+            SourceRegion = new ComSourceRegion(Model, ModelItem)
+            {
+                SourceChangedAction = () =>
+                {
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            toolRegion.Errors?.Clear();
+                        }
+                    }
+                }
+            };
+            regions.Add(SourceRegion);
         }
 
         public ErrorRegion ErrorRegion { get; private set; }
@@ -516,7 +531,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -525,15 +540,15 @@ namespace Dev2.Activities.Designers2.ComDLL
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
+            var displayName2 = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName2 + displayName;
             }
         }
 

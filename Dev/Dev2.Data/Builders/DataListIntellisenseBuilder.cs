@@ -32,32 +32,11 @@ namespace Dev2.DataList.Contract
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
 
             var xDoc = new XmlDocument();
-
-            string rawRecsetName;
             
             if (FilterTO == null)
             {
                 FilterTO = new IntellisenseFilterOpsTO();
             }
-            if (FilterTO.FilterCondition != null)
-            {
-                rawRecsetName = FilterTO.FilterCondition;
-                if (rawRecsetName.Contains("[["))
-                {
-                    rawRecsetName = rawRecsetName.Replace("[[", "");
-                }
-                if (rawRecsetName.Contains("]]"))
-                {
-                    rawRecsetName = rawRecsetName.Replace("]]", "");
-                }
-                if (rawRecsetName.Contains("()"))
-                {
-                    
-                    rawRecsetName = rawRecsetName.Replace("()", "");
-                    
-                }
-            }
-
 
             if (!string.IsNullOrEmpty(DataList))
             {
@@ -68,52 +47,55 @@ namespace Dev2.DataList.Contract
                     tmpRootNl = xDoc.ChildNodes;
                 }
                 catch (Exception ex)
-                {
+                {                    
                     Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
 
                 if (tmpRootNl != null)
                 {
                     var nl = tmpRootNl[0].ChildNodes;
-                    for (int i = 0; i < nl.Count; i++)
-                    {
-                        var tmpNode = nl[i];
+                    AddValidNodes(result, nl);
+                }
+            }
+            return result;
+        }
 
-                        if (IsValidChildNode(tmpNode))
-                        {
-                            var recordsetName = tmpNode.Name;
-                            IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
-                            var childNl = tmpNode.ChildNodes;
-                            for (int q = 0; q < childNl.Count; q++)
-                            {
-                                children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
-                            }
-                            if (FilterTO.FilterType == enIntellisensePartType.All)
-                            {
-                                result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
-                            }
-                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetsOnly)
-                            {
-                                result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
-                            }
-                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields)
-                            {
-                                result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
-                            }
-                        }
-                        else
-                        {
-                            if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
-                            {
-                                result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
-                            }
-                        }
+        private void AddValidNodes(IList<IDev2DataLanguageIntellisensePart> result, XmlNodeList nl)
+        {
+            for (int i = 0; i < nl.Count; i++)
+            {
+                var tmpNode = nl[i];
+
+                if (IsValidChildNode(tmpNode))
+                {
+                    var recordsetName = tmpNode.Name;
+                    IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
+                    var childNl = tmpNode.ChildNodes;
+                    for (int q = 0; q < childNl.Count; q++)
+                    {
+                        children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
+                    }
+                    if (FilterTO.FilterType == enIntellisensePartType.None)
+                    {
+                        result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
+                    }
+                    if (FilterTO.FilterType == enIntellisensePartType.RecordsetsOnly)
+                    {
+                        result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
+                    }
+                    if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields)
+                    {
+                        result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
+                    }
+                }
+                else
+                {
+                    if (FilterTO.FilterType == enIntellisensePartType.None || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
+                    {
+                        result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                     }
                 }
             }
-
-
-            return result;
         }
 
         bool IsValidChildNode(XmlNode tmpNode)
@@ -143,21 +125,12 @@ namespace Dev2.DataList.Contract
 
         string ExtractDescription(XmlNode node)
         {
-            var result = string.Empty;
-
-            try
+            var result = string.Empty;            
+            var attribute = node.Attributes?[DescAttribute];
+            if (attribute != null)
             {
-                var attribute = node.Attributes?[DescAttribute];
-                if (attribute != null)
-                {
-                    result = attribute.Value;
-                }
+                result = attribute.Value;
             }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-            }
-
             return result;
         }
     }

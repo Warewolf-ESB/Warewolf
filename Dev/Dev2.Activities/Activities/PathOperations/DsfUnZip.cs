@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         WarewolfIterator _archPassItr;
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         #region Properties
         /// <summary>
         /// Gets or sets the archive password.
@@ -98,24 +98,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #region GetForEachInputs/Outputs
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(ArchivePassword, Overwrite.ToString(), OutputPath, InputPath);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ArchivePassword, Overwrite.ToString(), OutputPath, InputPath);
         #endregion
 
         public bool Equals(DsfUnZip other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && string.Equals(ArchivePassword, other.ArchivePassword);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfUnZip) obj);
         }
 

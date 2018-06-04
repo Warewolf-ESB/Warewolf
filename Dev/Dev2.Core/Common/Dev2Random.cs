@@ -65,10 +65,7 @@ namespace Dev2.Common
             return result;
         }
 
-        bool IsInIntRange(double x)
-        {
-            return x >= int.MinValue && x <= int.MaxValue;
-        }
+        bool IsInIntRange(double x) => x >= int.MinValue && x <= int.MaxValue;
 
         uint GetDecimalPlaces(double from, double to)
         {
@@ -137,7 +134,8 @@ namespace Dev2.Common
         Random GetRandom(ref int seed)
         {
             var r = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
-            return new Random(seed += r.Next(1, 100000));
+            seed += r.Next(1, 100000);
+            return new Random(seed);
         }
     }
 }

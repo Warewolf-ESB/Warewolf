@@ -611,28 +611,19 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        void LostFocusCommand()
-        {
-            IsRenaming = false;
-        }
+        void LostFocusCommand() => IsRenaming = false;
 
-        public void Delete()
-        {
-            _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
-        }
+        public void Delete() => _explorerItemViewModelCommandController.TryDeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
 
         public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
-        public void SetIsResourceChecked(bool? resourceChecked)
+        public void SetIsResourceChecked(bool? isResource)
         {
-            _isResource = resourceChecked;
-            UpdateFolderItems(resourceChecked);
+            _isResource = isResource;
+            UpdateFolderItems(isResource);
         }
 
-        public void AfterResourceChecked()
-        {
-            OnPropertyChanged(() => IsResourceChecked);
-        }
+        public void AfterResourceChecked() => OnPropertyChanged(() => IsResourceChecked);
 
         public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
@@ -910,10 +901,7 @@ namespace Warewolf.Studio.ViewModels
             return hasDuplicate;
         }
 
-        static string NewName(string value)
-        {
-            return value;
-        }
+        static string NewName(string value) => value;
 
         public ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
@@ -1020,7 +1008,10 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    _shellViewModel?.SetActiveServer(Server.EnvironmentID);
+                    if (!IsResourceCheckedEnabled)
+                    {
+                        _shellViewModel?.SetActiveServer(Server.EnvironmentID);
+                    }
                 }
             }
         }
@@ -1482,30 +1473,6 @@ namespace Warewolf.Studio.ViewModels
                 }
                 OnPropertyChanged(() => AreVersionsVisible);
             }
-        }
-
-        VersionViewModel CreateNewVersion(IVersionInfo a)
-        {
-            return new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
-            {
-                ResourceName =
-                "v." + a.VersionNumber + " " +
-                a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
-                a.Reason.Replace(".xml", ""),
-                VersionNumber = a.VersionNumber,
-                VersionInfo = a,
-                ResourceId = ResourceId,
-                IsVersion = true,
-                CanEdit = false,
-                CanCreateWorkflowService = false,
-                ShowContextMenu = true,
-                CanCreateSource = false,
-                IsResourceVersion = true,
-                AllowResourceCheck = false,
-                IsResourceChecked = false,
-                CanDelete = CanDelete,
-                ResourceType = "Version"
-            };
         }
 
         void UpdateResourceVersions()

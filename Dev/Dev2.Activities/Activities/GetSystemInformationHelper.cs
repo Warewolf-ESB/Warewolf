@@ -67,15 +67,9 @@ namespace Dev2.Activities
     {
         #region Implementation of IGetSystemInformation
 
-        public string GetOperatingSystemInformation()
-        {
-            return GetOperatingSystemProperty("Caption");
-        }
+        public string GetOperatingSystemInformation() => GetOperatingSystemProperty("Caption");
 
-        public string GetOperatingSystemVersionInformation()
-        {
-            return GetOperatingSystemProperty("Version");
-        }
+        public string GetOperatingSystemVersionInformation() => GetOperatingSystemProperty("Version");
 
         string GetOperatingSystemProperty(string property)
         {
@@ -103,10 +97,7 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public virtual string GetFullDateTimeInformation()
-        {
-            return DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat);
-        }
+        public virtual string GetFullDateTimeInformation() => DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat);
 
         public virtual string GetDateTimeFormatInformation()
         {
@@ -273,48 +264,41 @@ namespace Dev2.Activities
             {
                 foreach (var sid in identity.Groups)
                 {
-                    try
-                    {
-                        var translatedGroup = sid.Translate(typeof(NTAccount));
-                        var name = translatedGroup.Value;
-                        stringBuilder.AppendFormat(name + ",");
-                    }
-                    catch (Exception)
-                    {
-                        var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
-                        var searcher = new ManagementObjectSearcher(winQuery);
-                        foreach (var o in searcher.Get())
-                        {
-                            var item = (ManagementObject)o;
-                            var name = Convert.ToString(item["Name"]);
-                            stringBuilder.AppendFormat(name + ",");
-                        }
-                    }
+                    stringBuilder = TryAppendGroup(stringBuilder, sid);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');
         }
 
-        public string GetUserNameInformation()
+        static StringBuilder TryAppendGroup(StringBuilder stringBuilder, IdentityReference sid)
         {
-            return Environment.UserName;
+            try
+            {
+                var translatedGroup = sid.Translate(typeof(NTAccount));
+                var name = translatedGroup.Value;
+                stringBuilder.AppendFormat(name + ",");
+            }
+            catch (Exception)
+            {
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var name = Convert.ToString(item["Name"]);
+                    stringBuilder.AppendFormat(name + ",");
+                }
+            }
+            return stringBuilder;
         }
 
-        public string GetDomainInformation()
-        {
-            return Environment.UserDomainName;
-        }
+        public string GetUserNameInformation() => Environment.UserName;
 
-        public string GetComputerName()
-        {
-            return Environment.MachineName;
-        }
+        public string GetDomainInformation() => Environment.UserDomainName;
 
+        public string GetComputerName() => Environment.MachineName;
 
-        public string GetWareWolfVersion()
-        {
-            return GetServerVersion.GetVersion();
-        }
+        public string GetWareWolfVersion() => GetServerVersion.GetVersion();
 
         public string GetWarewolfServerMemory()
         {
@@ -357,15 +341,9 @@ namespace Dev2.Activities
             return string.Join(",", macs);
         }
 
-        public string GetIPv4Adresses()
-        {
-            return GetIPAddress(AddressFamily.InterNetwork);
-        }
+        public string GetIPv4Adresses() => GetIPAddress(AddressFamily.InterNetwork);
 
-        public string GetIPv6Adresses()
-        {
-            return GetIPAddress(AddressFamily.InterNetworkV6);
-        }
+        public string GetIPv6Adresses() => GetIPAddress(AddressFamily.InterNetworkV6);
 
         string GetIPAddress(AddressFamily ipv)
         {

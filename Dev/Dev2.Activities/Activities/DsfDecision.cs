@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,23 +45,18 @@ namespace Dev2.Activities
             _inner = inner;
             UniqueID = _inner.UniqueID;
         }
-        public override string GetDisplayName()
-        {
-            return Conditions.DisplayText;
-        }
-        
+        public override string GetDisplayName() => Conditions.DisplayText;
 
         public override IEnumerable<IDev2Activity> GetNextNodes()
         {
             var nextNodes = new List<IDev2Activity>();
             if (TrueArm != null)
-            {                
+            {
                 nextNodes.Add(TrueArm?.FirstOrDefault());
             }
             if (FalseArm != null)
-            {                
+            {
                 nextNodes.Add(FalseArm?.FirstOrDefault());
-
             }
             return nextNodes;
         }
@@ -66,6 +71,10 @@ namespace Dev2.Activities
                     armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID));
                 }
             }
+            else
+            {
+                armConnectors.Add(($"{GetDisplayName()}: TRUE -> ", "True", UniqueID, Guid.Empty.ToString()));
+            }
             if (FalseArm != null)
             {
                 foreach (var next in FalseArm)
@@ -73,13 +82,17 @@ namespace Dev2.Activities
                     armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID));
                 }
             }
+            else
+            {
+                armConnectors.Add(($"{GetDisplayName()}: FALSE -> ", "False", UniqueID, Guid.Empty.ToString()));
+            }
             return armConnectors;
         }
 
         public DsfDecision()
         : base("Decision") { }
         /// <summary>
-        /// When overridden runs the activity's execution logic 
+        /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
@@ -94,15 +107,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
@@ -205,15 +212,9 @@ namespace Dev2.Activities
             return null;
         }
 
-        public override FlowNode GetFlowNode()
-        {
-            return new FlowDecision(_inner);
-        }
+        public override FlowNode GetFlowNode() => new FlowDecision(_inner);
 
-        public IFlowNodeActivity GetInnerNode()
-        {
-            return _inner;
-        }
+        public IFlowNodeActivity GetInnerNode() => _inner;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -239,17 +240,13 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebugMode())
                 {
-
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
                 }
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
@@ -310,10 +307,7 @@ namespace Dev2.Activities
             return val;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -332,9 +326,7 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-
             catch (Exception)
-
             {
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -351,7 +343,7 @@ namespace Dev2.Activities
             {
                 resultString = dds.TrueArmText;
             }
-            else if (theResult == "False")
+            else
             {
                 if (theResult == "False")
                 {
@@ -392,8 +384,7 @@ namespace Dev2.Activities
 
                 itemResults.ForEach(a =>
                 {
-                    var found = result.SelectMany(r => r.FetchResultsList())
-                                      .SingleOrDefault(r => r.Variable.Equals(a.Variable));
+                    var found = result.SelectMany(r => r.FetchResultsList()).SingleOrDefault(r => r.Variable.Equals(a.Variable));
                     if (found != null)
                     {
                         allReadyAdded.Add(a);
@@ -413,10 +404,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public bool And { get; set; }
 
@@ -430,7 +418,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }            
+            }
             var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
             if (!areConditionsEqual)
             {
@@ -440,7 +428,7 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
-        }      
+        }
 
         public override bool Equals(object obj)
         {
@@ -475,14 +463,12 @@ namespace Dev2.Activities
         }
     }
 
-
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
         readonly DsfDecision _dsfDecision;
 
-
-        public TestMockDecisionStep():base("Mock Decision")
-        {            
+        public TestMockDecisionStep() : base("Mock Decision")
+        {
         }
 
         public TestMockDecisionStep(DsfDecision dsfDecision)
@@ -506,15 +492,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -559,10 +539,20 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
+
+        public bool Equals(TestMockDecisionStep other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestMockDecisionStep instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

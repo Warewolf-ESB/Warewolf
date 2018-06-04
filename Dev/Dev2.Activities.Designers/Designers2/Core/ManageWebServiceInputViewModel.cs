@@ -99,9 +99,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), requestpayLoad);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // 
+                Console.Write(e.Message);
             }
         }
         public void ExecuteTest()
@@ -112,7 +112,6 @@ namespace Dev2.Activities.Designers2.Core
             TestResults = null;
             IsTesting = true;
 
-           
             try
             {
                 var testResult = _serverModel.TestService(Model);
@@ -184,7 +183,7 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (OutputArea != null)
                 {
-                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
+                    _viewmodel.OutputsRegion.ResetOutputs(OutputArea.Outputs);
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
@@ -239,13 +238,7 @@ namespace Dev2.Activities.Designers2.Core
             ResetOutputsView();
         }
 
-        public IGenerateInputArea InputArea
-        {
-            get
-            {
-                return _generateInputArea;
-            }
-        }
+        public IGenerateInputArea InputArea => _generateInputArea;
 
         public string TestResults
         {
@@ -373,13 +366,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public ImageSource TestIconImageSource
-        {
-            get
-            {
-                return Application.Current.TryFindResource("Explorer-WebService-White") as DrawingImage;
-            }
-        }
+        public ImageSource TestIconImageSource => Application.Current.TryFindResource("Explorer-WebService-White") as DrawingImage;
 
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
@@ -402,13 +389,8 @@ namespace Dev2.Activities.Designers2.Core
 
         public Action OkAction { get; set; }
         public ICommand PasteResponseCommand { get; private set; }
-        public IGenerateOutputArea OutputArea
-        {
-            get
-            {
-                return _generateOutputArea;
-            }
-        }
+        public IGenerateOutputArea OutputArea => _generateOutputArea;
+
         public IOutputDescription Description { get; set; }
 
 
@@ -431,10 +413,7 @@ namespace Dev2.Activities.Designers2.Core
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; private set; }
 
-        public IToolRegion CloneRegion()
-        {
-            return this;
-        }
+        public IToolRegion CloneRegion() => this;
 
         public void RestoreRegion(IToolRegion toRestore)
         {

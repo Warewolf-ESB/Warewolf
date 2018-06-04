@@ -72,18 +72,11 @@ namespace Dev2.Activities
 
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
 
         #region Overrides of DsfNativeActivity<string>
-
-        /// <summary>
-        ///     When overridden runs the activity's execution logic
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -103,49 +96,9 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(_errorsTo);
-                if(dataObject.IsDebugMode())
-                {
-                    var debugItem = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
-                    _debugInputs.Add(debugItem);
-                }
-                var colItr = new WarewolfListIterator();
-                var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
-                var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
-                colItr.AddVariableToIterateOn(urlitr);
-                colItr.AddVariableToIterateOn(headerItr);
-                const int IndexToUpsertTo = 1;
-                while(colItr.HasMoreData())
-                {
-                    var c = colItr.FetchNextValue(urlitr);
-                    var headerValue = colItr.FetchNextValue(headerItr);
-                    var headers = string.IsNullOrEmpty(headerValue)
-                        ? new string[0]
-                        : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    var headersEntries = new List<Tuple<string, string>>();
-
-                    foreach(var header in headers)
-                    {
-                        var headerSegments = header.Split(':');
-                        headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
-
-                        if(dataObject.IsDebugMode())
-                        {
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
-                            _debugInputs.Add(debugItem);
-                        }
-                    }
-
-                    var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
-                    allErrors.MergeErrors(_errorsTo);
-                    var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, result, dataObject, update);
-                }
+                allErrors = TryExecute(dataObject, update, allErrors);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFWebGetRequest", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -166,6 +119,52 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        ErrorResultTO TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            allErrors.MergeErrors(_errorsTo);
+            if (dataObject.IsDebugMode())
+            {
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
+                _debugInputs.Add(debugItem);
+            }
+            var colItr = new WarewolfListIterator();
+            var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
+            var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
+            colItr.AddVariableToIterateOn(urlitr);
+            colItr.AddVariableToIterateOn(headerItr);
+            const int IndexToUpsertTo = 1;
+            while (colItr.HasMoreData())
+            {
+                var c = colItr.FetchNextValue(urlitr);
+                var headerValue = colItr.FetchNextValue(headerItr);
+                var headers = string.IsNullOrEmpty(headerValue)
+                    ? new string[0]
+                    : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var headersEntries = new List<Tuple<string, string>>();
+
+                foreach (var header in headers)
+                {
+                    var headerSegments = header.Split(':');
+                    headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
+                        _debugInputs.Add(debugItem);
+                    }
+                }
+
+                var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
+                allErrors.MergeErrors(_errorsTo);
+                var expression = GetExpression(IndexToUpsertTo);
+                PushResultsToDataList(expression, result, dataObject, update);
+            }
+            return allErrors;
         }
 
         string GetExpression(int indexToUpsertTo)
@@ -197,7 +196,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -210,7 +209,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -249,23 +248,25 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Url);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Url);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
         #endregion
 
         public bool Equals(DsfWebGetRequestActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(Method, other.Method) 
                 && string.Equals(Url, other.Url) 
@@ -275,9 +276,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfWebGetRequestActivity) obj);
         }
 

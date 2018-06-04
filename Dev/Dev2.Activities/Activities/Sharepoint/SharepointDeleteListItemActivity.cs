@@ -23,8 +23,6 @@ using Warewolf.Storage.Interfaces;
 
 
 
-
-
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Delete List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_List_Item")]
@@ -40,10 +38,7 @@ namespace Dev2.Activities.Sharepoint
             _sharepointUtils = new SharepointUtils();
             _indexCounter = 1;
         }
-
-        /// <summary>
-        ///     Gets or sets the number of successful deletes.
-        /// </summary>
+        
         [Outputs("DeleteCount")]
         [FindMissing]
         public string DeleteCount { get; set; }
@@ -52,21 +47,14 @@ namespace Dev2.Activities.Sharepoint
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject,0);
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { DeleteCount };
-        }
+        public override List<string> GetOutputs() => new List<string> { DeleteCount };
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -76,20 +64,11 @@ namespace Dev2.Activities.Sharepoint
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         readonly SharepointUtils _sharepointUtils;
         int _indexCounter;
@@ -211,7 +190,7 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -220,7 +199,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -232,8 +211,16 @@ namespace Dev2.Activities.Sharepoint
 
         public bool Equals(SharepointDeleteListItemActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(DeleteCount, other.DeleteCount) 
                 && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer()) 
@@ -246,9 +233,21 @@ namespace Dev2.Activities.Sharepoint
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointDeleteListItemActivity) obj);
         }
 

@@ -48,9 +48,6 @@ namespace Dev2.Runtime.WebServer.Responses
             return content;
         }
 
-        protected virtual string ReadLayoutFile()
-        {
-            return File.ReadAllText(_layoutFile);
-        }
+        protected virtual string ReadLayoutFile() => File.ReadAllText(_layoutFile);
     }
 }

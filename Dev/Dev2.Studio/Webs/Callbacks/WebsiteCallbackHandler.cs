@@ -21,7 +21,12 @@ namespace Dev2.Webs.Callbacks
     {
         protected readonly IEventAggregator EventPublisher;
 
-        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IServerRepository currentServerRepository, IShowDependencyProvider showDependencyProvider = null)
+        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IServerRepository currentServerRepository)
+            : this(eventPublisher, currentServerRepository, null)
+        {
+        }
+
+        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IServerRepository currentServerRepository, IShowDependencyProvider showDependencyProvider)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("currentEnvironmentRepository", currentServerRepository);

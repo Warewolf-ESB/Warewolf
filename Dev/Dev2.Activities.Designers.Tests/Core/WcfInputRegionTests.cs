@@ -146,7 +146,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var regionToRestore = new WcfInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore);
+            region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------
 
         }
@@ -203,7 +203,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new WcfInputRegion(modelItem, actionRegion.Object);
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new WcfInputRegion(modelItem, actionRegion.Object);

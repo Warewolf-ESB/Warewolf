@@ -13,6 +13,7 @@ using System.Configuration;
 
 namespace Dev2.Util
 {
+
     public static class AppUsageStats
     {
         public static string LocalHost { get; set; }

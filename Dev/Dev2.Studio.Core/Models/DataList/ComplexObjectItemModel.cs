@@ -41,13 +41,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             Children = children;
             Parent = parent;
-            if (parent == null)
+            if (parent == null && !Name.StartsWith("@", StringComparison.CurrentCulture))
             {
-                if (!Name.StartsWith("@", StringComparison.CurrentCulture))
-                {
-                    Name = "@" + DisplayName;
-                }
+                Name = "@" + DisplayName;
             }
+
         }
 
         public override bool Input
@@ -79,13 +77,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if (!string.IsNullOrEmpty(_searchText))
+                if (!string.IsNullOrEmpty(_searchText) && _children != null)
                 {
-                    if (_children != null)
-                    {
-                        return _children.Where(model => model.IsVisible).ToObservableCollection();
-                    }
+                    return _children.Where(model => model.IsVisible).ToObservableCollection();
                 }
+
                 return _children ?? (_children = new ObservableCollection<IComplexObjectItemModel>());
             }
             set
@@ -172,7 +168,9 @@ namespace Dev2.Studio.Core.Models.DataList
                         itemModel.Filter(searchText);
                     }
                 }
-                IsVisible = _children != null && _children.Any(model => model.IsVisible) ? true : !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
+                var anyChildrenVisible = _children != null && _children.Any(model => model.IsVisible);
+                var displayNameContainsSearchString = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
+                IsVisible = anyChildrenVisible || displayNameContainsSearchString;
             }
             else
             {
@@ -245,21 +243,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
                 if (!string.IsNullOrEmpty(nameToCheck))
                 {
-                    var intellisenseResult = parser.ValidateName(nameToCheck, "Complex Object");
-                    if (intellisenseResult != null)
-                    {
-                        SetError(intellisenseResult.Message);
-                    }
-                    else
-                    {
-                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
-                    }
+                    ValidateName(nameToCheck, parser);
                 }
             }
             if (isArray)
@@ -269,24 +253,40 @@ namespace Dev2.Studio.Core.Models.DataList
             return nameToCheck;
         }
 
+        private void ValidateName(string name, Dev2DataLanguageParser parser)
+        {
+            var intellisenseResult = parser.ValidateName(name, "Complex Object");
+            if (intellisenseResult != null)
+            {
+                SetError(intellisenseResult.Message);
+            }
+            else
+            {
+                if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                {
+                    RemoveError();
+                }
+            }
+        }
+
         #endregion
 
         #region Overrides of DataListItemModel
-        
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+
+        public override string ToString() => DisplayName;
 
         #endregion
 
         public bool Equals(IComplexObjectItemModel other)
         {
-            var equals = Equals(IsArray, other.IsArray) 
-                      && Equals(HasError, other.HasError)
-                      && Equals(Input, other.Input)
-                      && Equals(Output, other.Output)
-                      && string.Equals(Name, other.Name);
+            var equals = Equals(IsArray, other.IsArray);
+            equals &= Equals(HasError, other.HasError);
+            equals &= Equals(Input, other.Input);
+            equals &= Equals(Output, other.Output);
+            equals &= string.Equals(Name, other.Name);
            
             var collectionEquals = CommonEqualityOps.CollectionEquals(Children, other.Children, new ComplexObjectItemModelComparer());
             return base.Equals(other) && equals && collectionEquals;
@@ -294,15 +294,24 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((IComplexObjectItemModel)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return 1;
-        }
+        public override int GetHashCode() => 1;
     }
 }

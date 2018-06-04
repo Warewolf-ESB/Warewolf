@@ -799,7 +799,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -844,7 +844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -1140,7 +1140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             IPluginAction pluginAction = new PluginAction();
             pluginAction.ID = Guid.NewGuid();
             pluginAction.Method = "Hi";
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDllMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDllMethod", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -1183,7 +1183,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             IPluginAction pluginAction = new PluginAction();
             pluginAction.ID = Guid.NewGuid();
             pluginAction.Method = "Hi";
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddEnhancedDotNetDll", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -1352,8 +1352,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(invoke);
             Assert.IsTrue(invoke);
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void RunSelectedTestInBrowser_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -1390,9 +1389,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             mock.Verify(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
         }
-
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MarkChildrenPending_GivenIsInvoked_ShouldSetAsPending()
@@ -1405,7 +1402,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestStep.Result = new TestRunResult();
             var serviceTestOutput = serviceTestStep.StepOutputs.Single();
             serviceTestOutput.Result = new TestRunResult();
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[] { typeof(IServiceTestStep) }, null);
 
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
@@ -1722,7 +1719,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var message = new NewTestFromDebugMessage { ResourceModel = resourceModel.Object, RootItems = debugTreeMock.Object };
             var testViewModel = new ServiceTestViewModel(resourceModel.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object, message);
             testViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetStepIcon", BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.Any, new[] { typeof(string), typeof(ServiceTestStep) }, new[] { new ParameterModifier(2), });
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetStepIcon", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance, null, CallingConventions.Any, new[] { typeof(string), typeof(ServiceTestStep) }, new[] { new ParameterModifier(2), });
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------

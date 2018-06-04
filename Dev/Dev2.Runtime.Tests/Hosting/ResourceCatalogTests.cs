@@ -15,10 +15,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities;
-using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -29,7 +27,6 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
@@ -3032,11 +3029,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            //ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), null);
-            ////------------Assert Results-------------------------
-            //Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
-            //Assert.AreEqual(@"Duplicated Failure Value cannot be null.Parameter name: key".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
         [TestMethod]
@@ -3058,12 +3050,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            //ResourceCatalogResult resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), "SomeName");
-            ////------------Assert Results-------------------------
-            //Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            //Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectNewDisplayName()
@@ -3149,17 +3137,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
-            //------------Execute Test---------------------------
-            try
-            {
-                Assert.Fail("No Exceptions Thrown");
-            }
-            catch (Exception)
-            {
-                //
-            }
-
-            //------------Assert Results-------------------------
 
         }
 
@@ -3184,7 +3161,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(2, count);
-
         }
 
         [TestMethod]
@@ -3206,7 +3182,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
             //------------Assert Results-------------------------
             Assert.AreEqual(2, resourceList);
-
         }
 
 
@@ -3246,9 +3221,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
 
         }
-        /// <summary>
-        /// Integration through the Fix references expecting no exception
-        /// </summary>
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_GivenFixRefsTrue_ExpectResourceContentsChanges()
@@ -3269,7 +3242,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-
 
             rc.DuplicateFolder("", oldResource.GetResourcePath(workspaceID), "Null", true);
         }
@@ -3312,7 +3284,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test--------------------------
             //------------Assert Results------------------------
             Assert.IsFalse((bool)results);
-
         }
 
         [TestMethod]
@@ -3355,9 +3326,38 @@ namespace Dev2.Tests.Runtime.Hosting
             File.Delete(expectedFile);
         }
 
-        private ExecuteMessage ConvertToMsg(string payload)
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceCatalog_Load")]
+        public void ResourceCatalog_Load_WhenFileIsReadOnly_ShouldUpdateToNormal()
         {
-            return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            Directory.CreateDirectory(sourcesPath);
+            SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
+            var allFiles = Directory.GetFiles(sourcesPath);
+            File.SetAttributes(allFiles[0],FileAttributes.ReadOnly);
+
+            var attributes = File.GetAttributes(allFiles[0]);
+            Assert.AreEqual(FileAttributes.ReadOnly, attributes);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
+
+            attributes = File.GetAttributes(allFiles[0]);
+            Assert.AreNotEqual(FileAttributes.ReadOnly, attributes);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_TryBuildCatalogFromWorkspace_WithNullFolders_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            rc.TryBuildCatalogFromWorkspace("some value", null);
         }
 
         class ResourceSaveProviderMock : ResourceSaveProvider

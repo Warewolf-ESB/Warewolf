@@ -11,7 +11,7 @@ namespace Dev2.Services.Sql
         event SqlInfoMessageEventHandler InfoMessage;
         ConnectionState State { get; }
         IDbTransaction BeginTransaction();
-        void Open();
+        void EnsureOpen();
         DataTable GetSchema(string table);
         IDbCommand CreateCommand();
         void SetInfoMessage(SqlInfoMessageEventHandler a);

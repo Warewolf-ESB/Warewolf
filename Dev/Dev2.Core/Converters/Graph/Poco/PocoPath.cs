@@ -54,10 +54,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Methods
 
-        public override IEnumerable<IPathSegment> GetSegements()
-        {
-            return ActualPath.Split(SeperatorSymbol.ToCharArray()).Select(CreatePathSegment).ToList();
-        }
+        public override IEnumerable<IPathSegment> GetSegements() => ActualPath.Split(SeperatorSymbol.ToCharArray()).Select(CreatePathSegment).ToList();
 
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
@@ -66,10 +63,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return pathSegment;
         }
 
-        public IPathSegment CreatePathSegment(string name, bool isEnumerable)
-        {
-            return new PocoPathSegment(name, isEnumerable);
-        }
+        public IPathSegment CreatePathSegment(string name, bool isEnumerable) => new PocoPathSegment(name, isEnumerable);
 
         #endregion Methods
 

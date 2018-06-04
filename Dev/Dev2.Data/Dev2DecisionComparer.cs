@@ -7,14 +7,19 @@ namespace Dev2.Data
     {
         public bool Equals(Dev2Decision x, Dev2Decision y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 
-        public int GetHashCode(Dev2Decision obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(Dev2Decision obj) => obj.GetHashCode();
     }
 }

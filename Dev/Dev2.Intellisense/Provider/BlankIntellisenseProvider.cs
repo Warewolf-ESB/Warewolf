@@ -34,10 +34,7 @@ namespace Dev2.Intellisense.Provider
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context) => string.Empty;
 
-        public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
-        {
-            return new List<IntellisenseProviderResult>();
-        }
+        public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context) => new List<IntellisenseProviderResult>();
 
         public void Dispose()
         {

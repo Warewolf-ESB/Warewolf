@@ -635,7 +635,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsAllAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.All };
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.None };
             textBox.Text = "[[People(*)]]";
             Assert.IsFalse(textBox.HasError);
         }

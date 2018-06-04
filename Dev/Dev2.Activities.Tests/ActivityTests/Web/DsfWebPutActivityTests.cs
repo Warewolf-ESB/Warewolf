@@ -2,11 +2,11 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -27,10 +27,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     [TestClass]
     public class DsfWebPuttActivityTests
     {
-        const string userAgent = "user-agent";
-        const string contentType = "Content-Type";
-        const string userAgent1 = "Mozilla/4.0";
-        const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+        const string _userAgent = "user-agent";
+        const string _contentType = "Content-Type";
+        const string _userAgent1 = "Mozilla/4.0";
+        const string _userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -89,8 +89,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var DsfWebPutActivity = new TestDsfWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
@@ -128,32 +130,36 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var DsfWebPutActivity = new TestDsfWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            DsfWebPutActivity.QueryString = "";
-            DsfWebPutActivity.PutData = "";
-            DsfWebPutActivity.SourceId = Guid.Empty;
-            DsfWebPutActivity.Headers = new List<INameValue>();
-            //------------Execute Test---------------------------
-            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual("greater than 7 mile(s):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
-            Assert.AreEqual("Paris", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
-            Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
-            Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                DsfWebPutActivity.QueryString = "";
+                DsfWebPutActivity.PutData = "";
+                DsfWebPutActivity.SourceId = Guid.Empty;
+                DsfWebPutActivity.Headers = new List<INameValue>();
+                //------------Execute Test---------------------------
+                DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
+                Assert.AreEqual("greater than 7 mile(s):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
+                Assert.AreEqual("Paris", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
+                Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
+                Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
+            }
         }
 
 
@@ -175,32 +181,36 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var DsfWebPutActivity = new TestDsfWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            DsfWebPutActivity.QueryString = "";
-            DsfWebPutActivity.PutData = "";
-            DsfWebPutActivity.SourceId = Guid.Empty;
-            DsfWebPutActivity.Headers = new List<INameValue>();
-            DsfWebPutActivity.OutputDescription = new OutputDescription();
-            DsfWebPutActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                DsfWebPutActivity.QueryString = "";
+                DsfWebPutActivity.PutData = "";
+                DsfWebPutActivity.SourceId = Guid.Empty;
+                DsfWebPutActivity.Headers = new List<INameValue>();
+                DsfWebPutActivity.OutputDescription = new OutputDescription();
+                DsfWebPutActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape { Paths = new List<IPath> { new StringPath { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
 
-            //------------Execute Test---------------------------
-            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
+                //------------Execute Test---------------------------
+                DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
+                Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
+            }
         }
 
 
@@ -231,30 +241,34 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var DsfWebPutActivity = new TestDsfWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = invalidResponse;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            DsfWebPutActivity.QueryString = "";
-            DsfWebPutActivity.PutData = "";
-            DsfWebPutActivity.SourceId = Guid.Empty;
-            DsfWebPutActivity.Headers = new List<INameValue>();
-            //------------Execute Test---------------------------
-            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual(1, environment.Errors.Count);
-            StringAssert.Contains(environment.Errors.ToList()[0], "Invalid character after parsing property name");
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = invalidResponse;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                DsfWebPutActivity.QueryString = "";
+                DsfWebPutActivity.PutData = "";
+                DsfWebPutActivity.SourceId = Guid.Empty;
+                DsfWebPutActivity.Headers = new List<INameValue>();
+                //------------Execute Test---------------------------
+                DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
+                Assert.AreEqual(1, environment.Errors.Count);
+                StringAssert.Contains(environment.Errors.ToList()[0], "Invalid character after parsing property name");
+            }
         }
 
         [TestMethod]
@@ -277,32 +291,36 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var environment = new ExecutionEnvironment();
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
-            var DsfWebPutActivity = new TestDsfWebPutActivity();
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+            var DsfWebPutActivity = new TestDsfWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
+            };
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Inputs = serviceInputs;
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            DsfWebPutActivity.QueryString = "";
-            DsfWebPutActivity.PutData = "";
-            DsfWebPutActivity.SourceId = Guid.Empty;
-            DsfWebPutActivity.Headers = new List<INameValue>();
-            //------------Execute Test---------------------------
-            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
-            Assert.AreEqual("<greater than 7 mile(s):0>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
-            Assert.AreEqual("<Paris>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
-            Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
-            Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                DsfWebPutActivity.QueryString = "";
+                DsfWebPutActivity.PutData = "";
+                DsfWebPutActivity.SourceId = Guid.Empty;
+                DsfWebPutActivity.Headers = new List<INameValue>();
+                //------------Execute Test---------------------------
+                DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(DsfWebPutActivity.OutputDescription);
+                Assert.AreEqual("<greater than 7 mile(s):0>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Visibility]]", 0)));
+                Assert.AreEqual("<Paris>", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Location]]", 0)));
+                Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
+                Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
+            }
         }
 
         [TestMethod]
@@ -328,31 +346,33 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             {
                 Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
-                PutData = "This is post:[[Post]]"
+                PutData = "This is post:[[Post]]",
+                ResourceCatalog = new Mock<IResourceCatalog>().Object
             };
-            DsfWebPutActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            //------------Assert Preconditions-------------------
-            Assert.AreEqual(1, DsfWebPutActivity.Headers.Count);
-            Assert.AreEqual("Header 1", DsfWebPutActivity.Headers.ToList()[0].Name);
-            Assert.AreEqual("[[City]]", DsfWebPutActivity.Headers.ToList()[0].Value);
-            Assert.AreEqual("http://www.testing.com/[[CountryName]]", DsfWebPutActivity.QueryString);
-            Assert.AreEqual("This is post:[[Post]]", DsfWebPutActivity.PutData);
-            //------------Execute Test---------------------------
-            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("PMB", DsfWebPutActivity.Head.ToList()[0].Value);
-            Assert.AreEqual("http://www.testing.com/South Africa", DsfWebPutActivity.QueryRes);
-            Assert.AreEqual("This is post:Some data", DsfWebPutActivity.PostValue);
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                //------------Assert Preconditions-------------------
+                Assert.AreEqual(1, DsfWebPutActivity.Headers.Count);
+                Assert.AreEqual("Header 1", DsfWebPutActivity.Headers.ToList()[0].Name);
+                Assert.AreEqual("[[City]]", DsfWebPutActivity.Headers.ToList()[0].Value);
+                Assert.AreEqual("http://www.testing.com/[[CountryName]]", DsfWebPutActivity.QueryString);
+                Assert.AreEqual("This is post:[[Post]]", DsfWebPutActivity.PutData);
+                //------------Execute Test---------------------------
+                DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("PMB", DsfWebPutActivity.Head.ToList()[0].Value);
+                Assert.AreEqual("http://www.testing.com/South Africa", DsfWebPutActivity.QueryRes);
+                Assert.AreEqual("This is post:Some data", DsfWebPutActivity.PostValue);
+            }
         }
 
         [TestMethod]
@@ -423,25 +443,27 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             DsfWebPutActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            var service = new WebService(serviceXml) { RequestResponse = response };
-            DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
-            DsfWebPutActivity.ResponseFromWeb = response;
-            var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
-            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
-            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            var cat = new Mock<IResourceCatalog>();
-            var src = new WebSource { Address = "www.example.com" };
-            cat.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(src);
-            DsfWebPutActivity.ResourceCatalog = cat.Object;
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(environment);
-            Assert.IsNotNull(DsfWebPutActivity);
-            //---------------Execute Test ----------------------
-            var debugInputs = DsfWebPutActivity.GetDebugInputs(environment, 0);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(debugInputs);
-            Assert.AreEqual(4, debugInputs.Count);
+            using (var service = new WebService(serviceXml) { RequestResponse = response })
+            {
+                DsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+                DsfWebPutActivity.ResponseFromWeb = response;
+                var dataObjectMock = new Mock<IDSFDataObject>();
+                dataObjectMock.Setup(o => o.Environment).Returns(environment);
+                dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+                DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+                var cat = new Mock<IResourceCatalog>();
+                var src = new WebSource { Address = "www.example.com" };
+                cat.Setup(a => a.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(src);
+                DsfWebPutActivity.ResourceCatalog = cat.Object;
+                //---------------Assert Precondition----------------
+                Assert.IsNotNull(environment);
+                Assert.IsNotNull(DsfWebPutActivity);
+                //---------------Execute Test ----------------------
+                var debugInputs = DsfWebPutActivity.GetDebugInputs(environment, 0);
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(debugInputs);
+                Assert.AreEqual(4, debugInputs.Count);
+            }
         }
 
         [TestMethod]
@@ -537,6 +559,40 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebPutActivity_Execute")]
+        public void DsfWebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Message\":\"Error\"}";
+            var dsfWebPutActivity = new DsfWebPutActivity();
+            dsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var webSource = new WebSource();
+            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
+            webSource.AuthenticationType = AuthenticationType.Anonymous;
+            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
+            dsfWebPutActivity.ResourceCatalog = mockResourceCatalog.Object;
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
+            dsfWebPutActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            var service = new WebService(serviceXml) { RequestResponse = response };
+            dsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+
+            dsfWebPutActivity.QueryString = "Error";
+
+            dsfWebPutActivity.SourceId = Guid.Empty;
+            dsfWebPutActivity.Headers = new List<INameValue>();
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.EsbChannel = new MockEsb();
+            //------------Execute Test---------------------------
+            dsfWebPutActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
+        }
+
         /* [TestMethod]
          [Owner("Nkosinathi Sangweni")]
          public void PerfomWebRequest_GivenLiveUrl_ShouldReturnResponse()
@@ -579,7 +635,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             Head = head;
             QueryRes = query;

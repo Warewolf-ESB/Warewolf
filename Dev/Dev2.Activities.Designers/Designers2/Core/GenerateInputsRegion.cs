@@ -33,10 +33,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public IToolRegion CloneRegion()
-        {
-            return null;
-        }
+        public IToolRegion CloneRegion() => null;
 
         public void RestoreRegion(IToolRegion toRestore)
         {

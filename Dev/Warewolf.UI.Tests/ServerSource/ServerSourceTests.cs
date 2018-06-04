@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
-using System.IO;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.ServerSource
@@ -115,30 +115,25 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestCategory("Server Sources")]
         public void Try_Create_Server_Source_On_Restricted_Server()
         {
-            var ServerSourceName = "Try_Create_Server_Source_On_Restricted_Server";
-            var ServerSourceDefinition = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".xml";
-            if (File.Exists(ServerSourceDefinition))
-            {
-                File.Delete(ServerSourceDefinition);
-            }
             try
             {
                 ExplorerUIMap.ConnectToRestrictedRemoteServer();
+                UIMap.WaitForControlVisible(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem);
+
+                UIMap.Click_Settings_RibbonButton();
+                SettingsUIMap.AddNewServerPermissionsUser();
+
                 ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
                 ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
                 ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
                 ServerSourceUIMap.Select_Server_Authentication_Public();
                 Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
-                UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Can create new server source on server without permission to do so.");
             }
             finally
             {
-                if (File.Exists(ServerSourceDefinition))
-                {
-                    File.Delete(ServerSourceDefinition);
-                    Assert.Fail("Created new server source on server without permission to do so.");
-                }
+                Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
             }
         }
 
@@ -243,6 +238,21 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         private UIMap _UIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

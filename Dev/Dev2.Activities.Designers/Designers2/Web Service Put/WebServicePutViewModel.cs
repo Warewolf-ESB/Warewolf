@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
-            _builder = new ServiceInputBuilder();           
+            _builder = new ServiceInputBuilder();
             SetupCommonProperties();
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_WebMethod_Put;
@@ -56,8 +56,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             _builder = new ServiceInputBuilder();
             SetupCommonProperties();
         }
-
-
 
         Guid UniqueID => GetProperty<Guid>();
 
@@ -122,7 +120,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-        
+
         public override void Validate()
         {
             if (Errors == null)
@@ -131,7 +129,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             }
             Errors.Clear();
 
-            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
@@ -185,7 +183,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
             LabelWidth = 46;
             ButtonDisplayValue = DoneText;
-            
+
+            ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 
@@ -250,10 +249,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public bool IsWorstErrorReadOnly
         {
-            get
-            {
-                return (bool)GetValue(IsWorstErrorReadOnlyProperty);
-            }
+            get => (bool)GetValue(IsWorstErrorReadOnlyProperty);
             private set
             {
                 ButtonDisplayValue = value ? DoneText : FixText;
@@ -265,10 +261,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         public ErrorType WorstError
         {
-            get
-            {
-                return (ErrorType)GetValue(WorstErrorProperty);
-            }
+            get => (ErrorType)GetValue(WorstErrorProperty);
             private set
             {
                 SetValue(WorstErrorProperty, value);
@@ -288,7 +281,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             HasLargeView = true;
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -297,22 +290,19 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
+            var displayName2 = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName2 + displayName;
             }
         }
 
-        public IHeaderRegion GetHeaderRegion()
-        {
-            return InputArea;
-        }
+        public IHeaderRegion GetHeaderRegion() => InputArea;
 
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
@@ -325,7 +315,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
-        
+
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
@@ -336,13 +326,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
                 InputArea.PropertyChanged += (sender, args) =>
                  {
-                     if (args.PropertyName == "PutData")
+                     if (args.PropertyName == "PutData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
                      {
-                         if (InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
-                         {
-                             ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
-                         }
+                         ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
                      }
+
                  };
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true);
@@ -362,13 +350,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
 
         public ErrorRegion ErrorRegion { get; private set; }
-        
+
         public IOutputsToolRegion OutputsRegion
         {
-            get
-            {
-                return _outputsRegion;
-            }
+            get => _outputsRegion;
             set
             {
                 _outputsRegion = value;
@@ -377,10 +362,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
         public IWebPutInputArea InputArea
         {
-            get
-            {
-                return _inputArea;
-            }
+            get => _inputArea;
             set
             {
                 _inputArea = value;
@@ -389,10 +371,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         }
         public ISourceToolRegion<IWebServiceSource> SourceRegion
         {
-            get
-            {
-                return _sourceRegion;
-            }
+            get => _sourceRegion;
             set
             {
                 _sourceRegion = value;
@@ -406,7 +385,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
             }
         }
 
@@ -425,7 +404,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 Name = "",
                 Path = "",
                 Id = Guid.NewGuid(),
-
                 PostData = InputArea.PutData,
                 Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value }).ToList(),
                 QueryString = InputArea.QueryString,
@@ -454,10 +432,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
-            get
-            {
-                return _generateOutputsVisible;
-            }
+            get => _generateOutputsVisible;
             set
             {
                 _generateOutputsVisible = value;
@@ -475,6 +450,5 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             ErrorRegion.IsEnabled = value;
             SourceRegion.IsEnabled = value;
         }
-        
     }
 }

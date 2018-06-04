@@ -34,15 +34,9 @@ namespace Dev2.TO
 
         public int IndexNumber { get => _indexNumber; set => OnPropertyChanged(ref _indexNumber, value); }
 
-        public bool CanRemove()
-        {
-            return false;
-        }
+        public bool CanRemove() => false;
 
-        public bool CanAdd()
-        {
-            return false;
-        }
+        public bool CanAdd() => false;
 
         public void ClearRow()
         {
@@ -52,15 +46,20 @@ namespace Dev2.TO
 
         #endregion
 
-        public override IRuleSet GetRuleSet(string propertyName, string datalist)
-        {
-            return new RuleSet();
-        }
+        public override IRuleSet GetRuleSet(string propertyName, string datalist) => new RuleSet();
 
         public bool Equals(DataColumnMapping other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var outputColumnSame = OutputColumn == null && other.OutputColumn == null;
 
             if (OutputColumn != null)
@@ -75,9 +74,21 @@ namespace Dev2.TO
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DataColumnMapping)obj);
         }
 

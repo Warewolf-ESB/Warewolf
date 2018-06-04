@@ -20,9 +20,6 @@ namespace Dev2.Comparer
             return keysAreEqual;
         }
 
-        public int GetHashCode(Dictionary<string, IDev2Activity> obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(Dictionary<string, IDev2Activity> obj) => 1;
     }
 }

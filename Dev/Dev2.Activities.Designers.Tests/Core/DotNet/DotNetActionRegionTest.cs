@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dotNetActionRegion.Errors.Count);
@@ -60,11 +60,13 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             sourceRegion.SelectedSource = dotNetsrc;
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            var dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
+            var dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion)
+            {
+                SelectedNamespace = namespaceItem
+            };
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
             dotNetActionRegion.SelectedAction = action;
 
             //------------Assert Results-------------------------
@@ -73,7 +75,6 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             Assert.AreEqual(action.Method, dotNetActionRegion.SelectedAction.Method);
             Assert.AreEqual(typeof(string), dotNetActionRegion.SelectedAction.ReturnType);
             Assert.AreEqual(0, dotNetActionRegion.SelectedAction.Variables.Count);
-            Assert.IsTrue(dotNetActionRegion.CanRefresh());
         }
 
         [TestMethod]
@@ -98,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
             dotNetActionRegion.SomethingChanged += (a, b) => { evt = true; };
             dotNetActionRegion.SelectedAction = action;
 
@@ -129,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -170,7 +171,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -208,7 +209,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
             var cloned = dotNetActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -237,9 +238,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            var dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegion = new DotNetActionRegion();
 
-            var dotNetActionRegionToRestore = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
+            var dotNetActionRegionToRestore = new DotNetActionRegion();
             dotNetActionRegionToRestore.IsEnabled = false;
             dotNetActionRegionToRestore.SelectedAction = action;
 

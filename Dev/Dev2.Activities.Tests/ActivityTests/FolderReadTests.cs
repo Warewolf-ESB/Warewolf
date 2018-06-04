@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
+using Dev2.Common;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -23,17 +25,48 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class FolderReadTests : BaseActivityUnitTest
     {
-
-
+        string _inputPath;
+        IDirectory dirHelper;
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
         
+        [TestMethod]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record()
+        {
+            //------------Setup for test--------------------------
+            dirHelper = new DirectoryWrapper();
+            var id = Guid.NewGuid().ToString();
+            _inputPath = EnvironmentVariables.ResourcePath + "\\"+ id.Substring(0, 8);
+            dirHelper.CreateIfNotExists(_inputPath);
+            var act = new DsfFolderRead { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
+            //------------Execute Test---------------------------
+            var results = act.Execute(DataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(DataObject.Environment.HasRecordSet("[[RecordSet()]]"));
+            Assert.AreEqual(1, DataObject.Environment.GetLength("RecordSet"));
+        }
 
-        
+
+        [TestMethod]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record1()
+        {
+            //------------Setup for test--------------------------
+            dirHelper = new DirectoryWrapper();
+            var id = Guid.NewGuid().ToString();
+            _inputPath = EnvironmentVariables.AppDataPath;
+            dirHelper.CreateIfNotExists(_inputPath);
+            var act = new DsfFolderRead { InputPath = _inputPath, Result = "[[RecordSet(*).File]]" };
+            //------------Execute Test---------------------------
+            var results = act.Execute(DataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(DataObject.Environment.HasRecordSet("[[RecordSet()]]"));
+            Assert.IsTrue(0 < DataObject.Environment.GetLength("RecordSet"));
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -164,5 +197,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
 
+        [TestCleanup]
+        public void DeleteDir()
+        {
+            if (!string.IsNullOrEmpty(_inputPath) && dirHelper.Exists(_inputPath))
+            {
+                dirHelper.Delete(_inputPath, true);
+            }
+        }
     }
 }

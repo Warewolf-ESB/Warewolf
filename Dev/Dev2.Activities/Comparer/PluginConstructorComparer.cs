@@ -6,15 +6,23 @@ namespace Dev2.Comparer
 {
     internal class PluginConstructorComparer : IEqualityComparer<IPluginConstructor>
     {
-        public bool Equals(IPluginConstructor p1, IPluginConstructor p2)
+        public bool Equals(IPluginConstructor x, IPluginConstructor y)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
-            var methodsAreEqual = Equals(p1.ID, p2.ID)
-                                  && string.Equals(p1.ConstructorName, p2.ConstructorName)
-                                  && string.Equals(p1.ReturnObject, p2.ReturnObject)
-                                  && Equals(p1.IsExistingObject, p2.IsExistingObject)
-                                  && CommonEqualityOps.CollectionEquals(p1.Inputs, p2.Inputs, EqualityFactory.GetEqualityComparer<IConstructorParameter>(
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            var methodsAreEqual = Equals(x.ID, y.ID)
+                                  && string.Equals(x.ConstructorName, y.ConstructorName)
+                                  && string.Equals(x.ReturnObject, y.ReturnObject)
+                                  && Equals(x.IsExistingObject, y.IsExistingObject)
+                                  && CommonEqualityOps.CollectionEquals(x.Inputs, y.Inputs, EqualityFactory.GetEqualityComparer<IConstructorParameter>(
                                       (parameter, constructorParameter) => string.Equals(parameter.Name, constructorParameter.Name)
                                                                            && string.Equals(parameter.Value, constructorParameter.Value)
                                                                            && Equals(parameter.EmptyToNull, constructorParameter.EmptyToNull)
@@ -22,9 +30,6 @@ namespace Dev2.Comparer
             return methodsAreEqual;
         }
 
-        public int GetHashCode(IPluginConstructor obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IPluginConstructor obj) => obj.GetHashCode();
     }
 }

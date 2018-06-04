@@ -1,5 +1,8 @@
-﻿using Dev2.TO;
+﻿using Dev2.Common.Interfaces.Core;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
 {
@@ -391,6 +394,94 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             var @equals = listTo.Equals(listTo1);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        public void SavedSource_Null_Object_Is_NotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Id = Guid.NewGuid(),
+                Server = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(sharePointServiceSourceDefinition.Equals(null), "Equals operator can't compare to null.");
+        }
+
+        [TestMethod]
+        public void SavedSource_Itself_Is_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Id = Guid.NewGuid(),
+                Server = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(sharePointServiceSourceDefinition.Equals(sharePointServiceSourceDefinition), "Equals operator can't compare to itself.");
+        }
+
+        [TestMethod]
+        public void SavedSource_DifferentType_Is_NotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Id = Guid.NewGuid(),
+                Server = "A"
+            };
+            object differentObject = new SharepointSearchTo
+            {
+                InternalName = Guid.NewGuid().ToString(),
+                FieldName = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(sharePointServiceSourceDefinition.Equals(differentObject), "Equals operator can't compare to differently typed object.");
+        }
+
+        [TestMethod]
+        public void EqualsOperator_WithEqualObjects_AreEqual()
+        {
+            var firstEmailServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Name = "Test",
+                Server = "companyweb",
+                AuthenticationType = AuthenticationType.Windows,
+                UserName = "Me@dev2.io",
+                Password = "me too"
+            };
+
+            var secondEmailServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Name = "Test",
+                Server = "companyweb",
+                AuthenticationType = AuthenticationType.Windows,
+                UserName = "Me@dev2.io",
+                Password = "me too"
+            };
+            Assert.IsTrue(firstEmailServiceSourceDefinition == secondEmailServiceSourceDefinition, "Equals operator doesnt work.");
+        }
+
+        [TestMethod]
+        public void NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
+        {
+            var firstEmailServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Name = "Test",
+                Server = "companyweb",
+                AuthenticationType = AuthenticationType.Windows,
+                UserName = "Me@dev2.io",
+                Password = "me too"
+            };
+
+            var secondEmailServiceSourceDefinition = new SharePointServiceSourceDefinition
+            {
+                Name = "Different Test",
+                Server = "differentcompanyweb",
+                AuthenticationType = AuthenticationType.Anonymous
+            };
+            Assert.IsTrue(firstEmailServiceSourceDefinition != secondEmailServiceSourceDefinition, "Not equals operator doesnt work.");
         }
     }
 }

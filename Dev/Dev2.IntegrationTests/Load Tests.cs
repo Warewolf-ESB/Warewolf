@@ -1,18 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
-using System.Diagnostics;                
+using System.Diagnostics;
 using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Data;
-using Dev2.Studio.ViewModels.DataList;
-using Moq;
-using Dev2.Studio.Interfaces;
-using Caliburn.Micro;
-using Dev2.Studio.Core;
+using Dev2.Common.Common;
 
 namespace Dev2.Integration.Tests
 {
@@ -46,7 +42,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", false);
@@ -73,7 +69,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("AB-", false);
@@ -124,7 +120,7 @@ namespace Dev2.Integration.Tests
             DataListViewModelTests.Setup();
             for (var i = 2500; i > 0; i--)
             {
-                DataListViewModelTests._dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+                DataListViewModelTests._dataListViewModel.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
             }
             var timeBefore = DateTime.Now;
 

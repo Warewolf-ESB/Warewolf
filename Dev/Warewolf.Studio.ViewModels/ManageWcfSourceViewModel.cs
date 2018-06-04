@@ -95,26 +95,21 @@ namespace Warewolf.Studio.ViewModels
 
         void CancelTest()
         {
-            if (_token != null)
+            if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
             {
-                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                _token.Cancel();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        Testing = false;
-                        TestFailed = true;
-                        TestPassed = false;
-                        TestMessage = "Test Cancelled";
-                    });
-                }
+                    Testing = false;
+                    TestFailed = true;
+                    TestPassed = false;
+                    TestMessage = "Test Cancelled";
+                });
             }
+
         }
 
-        public bool CanCancelTest()
-        {
-            return Testing;
-        }
+        public bool CanCancelTest() => Testing;
 
         public IAsyncWorker AsyncWorker { get; set; }
 
@@ -275,16 +270,13 @@ namespace Warewolf.Studio.ViewModels
             _updateManager.TestConnection(wcfServerSource);
         }
 
-        public IWcfServerSource ToNewSource()
+        public IWcfServerSource ToNewSource() => new WcfServiceSourceDefinition
         {
-            return new WcfServiceSourceDefinition
-            {
-                EndpointUrl = EndpointUrl,
-                ResourceType = "WcfSource",
-                Type = enSourceType.WcfSource,
-                Id = _wcfServerSource?.Id ?? Guid.NewGuid()
-            };
-        }
+            EndpointUrl = EndpointUrl,
+            ResourceType = "WcfSource",
+            Type = enSourceType.WcfSource,
+            Id = _wcfServerSource?.Id ?? Guid.NewGuid()
+        };
 
         public string Path { get; set; }
         public override IWcfServerSource ToModel()
@@ -304,37 +296,35 @@ namespace Warewolf.Studio.ViewModels
         }
 
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        public IRequestServiceNameViewModel RequestServiceNameViewModel
+
+        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {
-            get
+            _requestServiceNameViewModel.Wait();
+            if (_requestServiceNameViewModel.Exception == null)
             {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception == null)
-                {
-                    return _requestServiceNameViewModel.Result;
-                }
-                
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
+                return _requestServiceNameViewModel.Result;
+            }
+
+            else
+            {
+                throw _requestServiceNameViewModel.Exception;
             }
         }
         void SaveConnection()
         {
             if (_wcfServerSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
                     var src = ToSource();
-                    src.Name = RequestServiceNameViewModel.ResourceName.Name;
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.Name = GetRequestServiceNameViewModel().ResourceName.Name;
+                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Item = src;
@@ -385,16 +375,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IWcfServerSource service)
+        public override void FromModel(IWcfServerSource source)
         {
-            ResourceName = service.Name;
-            EndpointUrl = service.EndpointUrl;            
+            ResourceName = source.Name;
+            EndpointUrl = source.EndpointUrl;            
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed;
-        }
+        public override bool CanSave() => TestPassed;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

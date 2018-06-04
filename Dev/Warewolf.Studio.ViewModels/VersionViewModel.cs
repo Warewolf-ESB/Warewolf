@@ -43,10 +43,14 @@ namespace Warewolf.Studio.ViewModels
                 {
                     xamlString = xaml.Value;
                 }
+                var resourceName = xamlElement.AttributeSafe("Name");
+
                 var resourceVersion = new ResourceModel(server, EventPublishers.Aggregator)
                 {
                     ResourceType = resourceModel.ResourceType,
-                    ResourceName = resourceModel.ResourceName,
+                    VersionInfo = resourceModel.VersionInfo,
+                    Version = resourceModel.Version,
+                    ResourceName = resourceName,
                     WorkflowXaml = new StringBuilder(xamlString),
                     UserPermissions = Permissions.Contribute,
                     DataList = dataListString,

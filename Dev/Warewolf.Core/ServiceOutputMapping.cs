@@ -18,13 +18,11 @@ using Dev2.Util;
 
 namespace Warewolf.Core
 {
-    public class ServiceOutputMapping : ObservableObject,IServiceOutputMapping, IEquatable<ServiceOutputMapping>
+    public class ServiceOutputMapping : ObservableObject, IServiceOutputMapping, IEquatable<ServiceOutputMapping>
     {
         string _mappedFrom;
         string _mappedTo;
         string _recordSetName;
-
-        #region Equality members
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -33,10 +31,7 @@ namespace Warewolf.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(ServiceOutputMapping other)
-        {
-            return false;
-        }
+        public bool Equals(ServiceOutputMapping other) => false;
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -63,27 +58,16 @@ namespace Warewolf.Core
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        /// Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override int GetHashCode()
-        {
-            return 397 ^ MappedFrom.GetHashCode() ^ MappedTo.GetHashCode();
-        }
+        public override int GetHashCode() => 397 ^ MappedFrom.GetHashCode() ^ MappedTo.GetHashCode();
 
-        public static bool operator ==(ServiceOutputMapping left, ServiceOutputMapping right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ServiceOutputMapping left, ServiceOutputMapping right) => Equals(left, right);
 
-        public static bool operator !=(ServiceOutputMapping left, ServiceOutputMapping right)
-        {
-            return !Equals(left, right);
-        }
-
-        #endregion
+        public static bool operator !=(ServiceOutputMapping left, ServiceOutputMapping right) => !Equals(left, right);
 
         public ServiceOutputMapping(string mappedFrom, string mapping, string recordsetName)
         {
@@ -98,9 +82,8 @@ namespace Warewolf.Core
 
         public ServiceOutputMapping()
             : this("", "", "")
-        {            
+        {
         }
-        #region Implementation of IDbOutputMapping
 
         public string MappedFrom
         {
@@ -125,6 +108,7 @@ namespace Warewolf.Core
             set
             {
                 _mappedTo = value;
+                UpdateMappingRecordSetValue(value);
                 OnPropertyChanged();
             }
         }
@@ -140,7 +124,6 @@ namespace Warewolf.Core
                 UpdateMappedToValue(value);
                 _recordSetName = value;
                 OnPropertyChanged();
-                
             }
         }
 
@@ -150,7 +133,7 @@ namespace Warewolf.Core
             {
                 var recSetName = DataListUtil.ExtractRecordsetNameFromValue(_mappedTo);
                 var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(_mappedTo);
-                if (string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase) && !string.Equals(recSetName, newRecordsetName, StringComparison.OrdinalIgnoreCase))
                 {
                     MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(newRecordsetName, fieldName, ""));
                 }
@@ -168,7 +151,23 @@ namespace Warewolf.Core
                 }
             }
         }
-
-        #endregion
+        void UpdateMappingRecordSetValue(string newMappedTo)
+        {
+            if (!string.IsNullOrEmpty(newMappedTo))
+            {
+                if (!DataListUtil.IsValueRecordset(newMappedTo) && !string.IsNullOrEmpty(RecordSetName))
+                {
+                    _recordSetName = string.Empty;
+                }
+                else
+                {
+                    if (DataListUtil.IsValueRecordset(newMappedTo) && string.IsNullOrEmpty(RecordSetName))
+                    {
+                        _recordSetName = DataListUtil.ExtractRecordsetNameFromValue(newMappedTo);
+                    }
+                }
+                OnPropertyChanged("RecordSetName");
+            }
+        }
     }
 }

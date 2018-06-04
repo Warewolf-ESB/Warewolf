@@ -93,13 +93,11 @@ namespace Dev2.Data
                 var include = xAttribute != null &&
                               (xAttribute.Value == enDev2ColumnArgumentDirection.Input.ToString() ||
                                xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                if (include)
+                if (include && element.Parent != null)
                 {
-                    if (element.Parent != null)
-                    {
-                        return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
-                    }
+                    return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
                 }
+
                 return "";
             }));
 
@@ -109,13 +107,11 @@ namespace Dev2.Data
                 var include = xAttribute != null &&
                               (xAttribute.Value == enDev2ColumnArgumentDirection.Output.ToString() ||
                                xAttribute.Value == enDev2ColumnArgumentDirection.Both.ToString());
-                if (include)
+                if (include && element.Parent != null)
                 {
-                    if (element.Parent != null)
-                    {
-                        return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
-                    }
+                    return DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(element.Parent.Name.ToString(), element.Name.ToString(), "*"));
                 }
+
                 return "";
             }));
         }

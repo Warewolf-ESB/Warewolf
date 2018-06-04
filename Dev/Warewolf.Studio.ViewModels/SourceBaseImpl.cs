@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
 
         public abstract string Name { get; set; }
 
-        public abstract void FromModel(T service);
+        public abstract void FromModel(T source);
 
         #endregion
 
@@ -96,10 +96,7 @@ namespace Warewolf.Studio.ViewModels
 
         public Guid SelectedGuid { get; set; }
 
-        public void Dispose()
-        {
-            OnDispose();
-        }
+        public void Dispose() => OnDispose();
 
         protected virtual void OnDispose()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -34,7 +35,7 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPathFrom = string.Empty;
             ServerInputPathTo = string.Empty;
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         /// <summary>
         /// Gets or sets the input path.
         /// </summary>
@@ -63,44 +64,37 @@ namespace Dev2.Activities.Sharepoint
         public SharepointSource SharepointSource { get; set; }
 
         public Guid SharepointServerResourceId { get; set; }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        [ExcludeFromCodeCoverage]
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        [ExcludeFromCodeCoverage]
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             _debugInputs = new List<DebugItem>();
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
             var colItr = new WarewolfListIterator();
 
-            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(context.WorkspaceID, SharepointServerResourceId);
             if (sharepointSource == null)
             {
                 sharepointSource = SharepointSource;
@@ -109,75 +103,85 @@ namespace Dev2.Activities.Sharepoint
 
             ValidateRequest();
 
-            var serverInputFromItr = new WarewolfIterator(dataObject.Environment.Eval(ServerInputPathFrom, update));
+            var serverInputFromItr = new WarewolfIterator(context.Environment.Eval(ServerInputPathFrom, update));
             colItr.AddVariableToIterateOn(serverInputFromItr);
 
-            var serverInputFromTo = new WarewolfIterator(dataObject.Environment.Eval(ServerInputPathTo, update));
+            var serverInputFromTo = new WarewolfIterator(context.Environment.Eval(ServerInputPathTo, update));
             colItr.AddVariableToIterateOn(serverInputFromTo);
 
-            if (dataObject.IsDebugMode())
+            if (context.IsDebugMode())
             {
-                AddDebugInputItem(ServerInputPathFrom, "ServerInput Path From", dataObject.Environment, update);
-                AddDebugInputItem(ServerInputPathTo, "ServerInput Path To", dataObject.Environment, update);
+                AddDebugInputItem(ServerInputPathFrom, "ServerInput Path From", context.Environment, update);
+                AddDebugInputItem(ServerInputPathTo, "ServerInput Path To", context.Environment, update);
             }
 
             while (colItr.HasMoreData())
             {
                 try
                 {
-                    var serverPath = colItr.FetchNextValue(serverInputFromItr);
-                    var localPath = colItr.FetchNextValue(serverInputFromTo);
-
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                    {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                            var newPath = MoveFile(sharepointSource, serverPath, localPath);
-
-                            var indexToUpsertTo = 1;
-
-                            foreach (var file in newPath)
-                            {
-                                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
-                                indexToUpsertTo++;
-                            }
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                            {
-                                var newPath = MoveFile(sharepointSource, serverPath, localPath);
-
-                                foreach (var folder in newPath)
-                                {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var newPath = MoveFile(sharepointSource, serverPath, localPath);
-
-                        var xmlList = string.Join(",", newPath.Select(c => c));
-                        outputs.Add(DataListFactory.CreateOutputTO(Result));
-                        outputs.Last().OutputStrings.Add(xmlList);
-                    }
+                    ExecuteConcreteAction(outputs, colItr, sharepointSource, serverInputFromItr, serverInputFromTo);
                 }
                 catch (Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(null));
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     break;
                 }
             }
 
             return outputs;
+        }
+
+        private void ExecuteConcreteAction(IList<OutputTO> outputs, WarewolfListIterator colItr, SharepointSource sharepointSource, WarewolfIterator serverInputFromItr, WarewolfIterator serverInputFromTo)
+        {
+            var serverPath = colItr.FetchNextValue(serverInputFromItr);
+            var localPath = colItr.FetchNextValue(serverInputFromTo);
+
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+
+                    var newPath = MoveFile(sharepointSource, serverPath, localPath);
+
+                    var indexToUpsertTo = 1;
+
+                    foreach (var file in newPath)
+                    {
+                        var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                        outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
+                        indexToUpsertTo++;
+                    }
+                }
+                else
+                {
+                    AddBlankIndexDebugOutputs(outputs, sharepointSource, serverPath, localPath);
+                }
+            }
+            else
+            {
+                var newPath = MoveFile(sharepointSource, serverPath, localPath);
+
+                var xmlList = string.Join(",", newPath.Select(c => c));
+                outputs.Add(DataListFactory.CreateOutputTO(Result));
+                outputs.Last().OutputStrings.Add(xmlList);
+            }
+        }
+
+        private void AddBlankIndexDebugOutputs(IList<OutputTO> outputs, SharepointSource sharepointSource, string serverPath, string localPath)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+            {
+                var newPath = MoveFile(sharepointSource, serverPath, localPath);
+
+                foreach (var folder in newPath)
+                {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                }
+            }
         }
 
         void ValidateRequest()
@@ -207,7 +211,7 @@ namespace Dev2.Activities.Sharepoint
             return new List<string> { newPath };
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -216,7 +220,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -227,16 +231,36 @@ namespace Dev2.Activities.Sharepoint
 
         public bool Equals(SharepointMoveFileActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom) && string.Equals(ServerInputPathTo, other.ServerInputPathTo) && Overwrite == other.Overwrite && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointMoveFileActivity) obj);
         }
 

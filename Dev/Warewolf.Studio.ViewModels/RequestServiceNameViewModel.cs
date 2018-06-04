@@ -296,7 +296,7 @@ namespace Warewolf.Studio.ViewModels
                         for (var index = parentNames.Count; index > 0; index--)
                         {
                             var parentName = parentNames[index - 1];
-                            path.Append(path + "\\" + parentName);
+                            path.Append("\\" + parentName);
                         }
                     }
                     if (selectedItem.ResourceType == "Folder")
@@ -465,10 +465,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        bool NameHasInvalidCharacters(string name)
-        {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
-        }
+        bool NameHasInvalidCharacters(string name) => Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
 
         public string ErrorMessage
         {
@@ -504,14 +501,9 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand DoneCommand => IsDuplicate ? DuplicateCommand : OkCommand;
 
-        public IExplorerItemViewModel ExplorerItemViewModelRename()
-        {
-            return _environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(model => model.IsRenaming);
-        }
-        public IExplorerItemViewModel ExplorerItemViewModelIsSelected()
-        {
-            return _environmentViewModel?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.IsSelected);
-        }
+        public IExplorerItemViewModel ExplorerItemViewModelRename() => _environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(model => model.IsRenaming);
+
+        public IExplorerItemViewModel ExplorerItemViewModelIsSelected() => _environmentViewModel?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.IsSelected);
 
         public void Dispose()
         {

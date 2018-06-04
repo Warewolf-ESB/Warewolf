@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 
 namespace Warewolf.UI.Tests.WindowsDesignSurfaceContextMenu
 {
@@ -24,6 +25,7 @@ namespace Warewolf.UI.Tests.WindowsDesignSurfaceContextMenu
             var controlExistsNow = UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF);
             Assert.IsFalse(controlExistsNow);
             UIMap.Click_Close_Workflow_Tab_Button();
+            DialogsUIMap.Click_MessageBox_Yes();
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
         }
 
@@ -95,6 +97,21 @@ namespace Warewolf.UI.Tests.WindowsDesignSurfaceContextMenu
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Windows.Input;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.DebugInputWindow
@@ -11,6 +13,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         [TestCategory("Debug Input")]
         public void DebugInputWindow_Validation_UITest()
         {
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Click_Debug_RibbonButton();
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
@@ -23,6 +26,42 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             UIMap.Click_DebugInput_ViewInBrowser_Button();
         }
 
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        public void DebugInputWindow_TabSelectionChanged_UITest()
+        {
+            ExplorerUIMap.Open_Item_With_Double_Click("DebugInputRecordSet");
+            UIMap.Press_F5_To_Debug();
+            Mouse.Click(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.XMLTab);
+            Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.XMLTab.Exists);
+            Mouse.Click(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab);
+            Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.JSONWindow.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        public void DebugInputWindow_AddAndRemoveRows_UITest()
+        {
+            ExplorerUIMap.Open_Item_With_Double_Click("DebugInputRecordSet");
+            UIMap.Press_F5_To_Debug();
+            Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Exists);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2), "Row 2 exists on startup when previously did not.");
+            Keyboard.SendKeys(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText, "{Insert}", ModifierKeys.Shift);
+            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2));
+            Keyboard.SendKeys(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText, "{Delete}", ModifierKeys.Shift);
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2), "Row 2 exists on after delete.");
+        }
+
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        public void DebugInputWindow_Move_UITest()
+        {
+            ExplorerUIMap.Open_Item_With_Double_Click("DebugInputRecordSet");
+            UIMap.Press_F5_To_Debug();
+            Mouse.StartDragging(UIMap.MainStudioWindow.DebugInputDialog);
+            Mouse.StopDragging(100, 100);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -30,7 +69,6 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_NewWorkflow_RibbonButton();
         }
 
         UIMap UIMap
@@ -48,20 +86,20 @@ namespace Warewolf.UI.Tests.DebugInputWindow
 
         private UIMap _UIMap;
 
-        WorkflowTabUIMap WorkflowTabUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_WorkflowTabUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _WorkflowTabUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private WorkflowTabUIMap _WorkflowTabUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

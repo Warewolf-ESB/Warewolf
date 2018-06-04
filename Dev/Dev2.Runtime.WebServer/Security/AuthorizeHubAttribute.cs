@@ -40,10 +40,10 @@ namespace Dev2.Runtime.WebServer.Security
             return result;
         }
 
-        public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext context, bool appliesToMethod)
+        public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext hubIncomingInvokerContext, bool appliesToMethod)
         {
-            VerifyArgument.IsNotNull("context", context);
-            return Service.IsAuthorized(context.GetAuthorizationRequest());
+            VerifyArgument.IsNotNull("context", hubIncomingInvokerContext);
+            return Service.IsAuthorized(hubIncomingInvokerContext.GetAuthorizationRequest());
         }
     }
 }

@@ -16,10 +16,7 @@ namespace Unlimited.Framework.Converters.Graph
     {
         #region Methods
 
-        public static IDataBrowser CreateDataBrowser()
-        {
-            return new DataBrowser();
-        }
+        public static IDataBrowser CreateDataBrowser() => new DataBrowser();
 
         #endregion Methods
     }

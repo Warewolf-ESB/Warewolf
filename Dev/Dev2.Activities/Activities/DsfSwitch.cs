@@ -42,10 +42,7 @@ namespace Dev2.Activities
 
         public DsfSwitch() { }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public override FlowNode GetFlowNode()
         {
@@ -53,34 +50,28 @@ namespace Dev2.Activities
             return swt;
         }
 
-        public IFlowNodeActivity GetInnerNode()
-        {
-            return Inner;
-        }
+        public IFlowNodeActivity GetInnerNode() => Inner;
 
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
-        public override string GetDisplayName()
-        {
-            return !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
-        }
+        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(DisplayName) ? DisplayName : Switch;
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            if (Switches != null)
-            {
-                foreach (var swt in Switches)
-                {
-                    armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
-                }
-            }
             if (Default != null)
             {
                 foreach (var dft in Default)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: Default->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()} : Default -> {dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                }
+            }
+            if (Switches != null)
+            {
+                foreach (var swt in Switches)
+                {
+                    armConnectors.Add(($"{GetDisplayName()} : {swt.Key} -> {swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
                 }
             }
             return armConnectors;
@@ -118,15 +109,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -148,34 +133,7 @@ namespace Dev2.Activities
                 }
                 if (firstOrDefault != null)
                 {
-                    var a = firstOrDefault;
-                    if (Switches.ContainsKey(a))
-                    {
-                        Result = a;
-                        if (dataObject.IsDebugMode())
-                        {
-                            DebugOutput(dataObject);
-                        }
-
-                        NextNodes = new List<IDev2Activity> { Switches[a] };
-                    }
-                    else
-                    {
-                        if (Default == null)
-                        {
-                            dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
-                        }
-                        else
-                        {
-                            Result = "Default";
-                            var activity = Default.FirstOrDefault();
-                            if (dataObject.IsDebugMode())
-                            {
-                                DebugOutput(dataObject);
-                            }
-                            NextNodes = new List<IDev2Activity> { activity };
-                        }
-                    }
+                    NewNextNodes(dataObject, firstOrDefault);
                 }
             }
             catch (Exception err)
@@ -188,6 +146,38 @@ namespace Dev2.Activities
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
+                }
+            }
+        }
+
+        private void NewNextNodes(IDSFDataObject dataObject, string firstOrDefault)
+        {
+            var a = firstOrDefault;
+            if (Switches.ContainsKey(a))
+            {
+                Result = a;
+                if (dataObject.IsDebugMode())
+                {
+                    DebugOutput(dataObject);
+                }
+
+                NextNodes = new List<IDev2Activity> { Switches[a] };
+            }
+            else
+            {
+                if (Default == null)
+                {
+                    dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
+                }
+                else
+                {
+                    Result = "Default";
+                    var activity = Default.FirstOrDefault();
+                    if (dataObject.IsDebugMode())
+                    {
+                        DebugOutput(dataObject);
+                    }
+                    NextNodes = new List<IDev2Activity> { activity };
                 }
             }
         }
@@ -243,15 +233,9 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         public bool Equals(DsfSwitch other)
         {
@@ -265,7 +249,14 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) && string.Equals(Switch, other.Switch) && string.Equals(Result, other.Result);
+            var eq = base.Equals(other);
+            eq &= string.Equals(Switch, other.Switch);
+            eq &= string.Equals(Result, other.Result);
+            eq &= string.Equals(OnErrorVariable, other.OnErrorVariable);
+            eq &= string.Equals(OnErrorWorkflow, other.OnErrorWorkflow);
+            eq &= IsEndedOnError == other.IsEndedOnError;
+
+            return eq;
         }
 
         public override bool Equals(object obj)
@@ -280,7 +271,7 @@ namespace Dev2.Activities
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -311,10 +302,7 @@ namespace Dev2.Activities
             UniqueID = _dsfSwitch.UniqueID;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public string ConditionToUse { get; set; }
 
@@ -332,15 +320,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -391,6 +373,20 @@ namespace Dev2.Activities
                 throw new ArgumentException($"No matching arm for Switch Mock. Mock Arm value '{ConditionToUse}'. Switch Arms: '{string.Join(",", dsfSwitchSwitches.Select(pair => pair.Key))}'.");
             }
             NextNodes = new List<IDev2Activity> { activity };
+        }
+
+
+        public bool Equals(TestMockSwitchStep other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestMockSwitchStep instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
 
         #endregion

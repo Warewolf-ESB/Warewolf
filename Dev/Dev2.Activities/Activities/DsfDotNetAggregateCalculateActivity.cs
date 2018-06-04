@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -147,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -156,10 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -178,14 +175,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Expression);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Expression);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+
+        public bool Equals(DsfDotNetAggregateCalculateActivity activity)
         {
-            return GetForEachItems(Result);
+            var eq = this.DisplayName.Equals(activity.DisplayName);
+            eq &= this.Expression.Equals(activity.Expression);
+            eq &= this.Result.Equals(activity.Result);
+
+            return eq;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetAggregateCalculateActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
     }
 }

@@ -33,10 +33,7 @@ namespace Dev2.Studio.Diagnostics
 
         #region CreatePopupController
 
-        protected override IAppExceptionPopupController CreatePopupController()
-        {
-            return new AppExceptionPopupController(_mainViewModel.ActiveServer);
-        }
+        protected override IAppExceptionPopupController CreatePopupController() => new AppExceptionPopupController(_mainViewModel.ActiveServer);
 
         #endregion
 

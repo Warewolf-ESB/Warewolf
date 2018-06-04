@@ -26,9 +26,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         where TDbServer : class, IDbServer, new()
     {
         #region TheCache
-        
+
+#pragma warning disable S2743 // Static fields should not be used in generic types
         public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
-        
+#pragma warning restore S2743 // Static fields should not be used in generic types
+
         #endregion
 
         public virtual List<string> GetDatabases(DbSource dbSource)
@@ -45,13 +47,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
             ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
+            if (!dbSource.ReloadActions && GetCachedResult(dbSource, out cacheResult))
             {
-                if (GetCachedResult(dbSource, out cacheResult))
-                {
-                    return cacheResult;
-                }
+                return cacheResult;
             }
+
 
             var serviceMethods = new ServiceMethodList();
             
@@ -123,29 +123,51 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             return result;
         }
+		public virtual IOutputDescription TestSqliteService(SqliteDBService dbService)
+		{
+			VerifyArgument.IsNotNull("SqliteDBService", dbService);
+			VerifyArgument.IsNotNull("SqliteDBService.Source", dbService.Source);
 
-        protected virtual TDbServer CreateDbServer(DbSource dbSource)
-        {
-            return new TDbServer();
-        }
+			IOutputDescription result;
+			using (var server = CreateSqliteDbServer(dbService.Source as SqliteDBSource))
+			{
+				server.Connect(((SqliteDBSource)dbService.Source).ConnectionString);
+				server.BeginTransaction();
+				try
+				{
+					var command = CommandFromServiceMethod(server, dbService.Method);
+					var dataTable = server.FetchDataTable(command);
 
-        protected virtual string NormalizeXmlPayload(string payload)
-        {
-            return payload.Replace("&lt;", "<").Replace("&gt;", ">");
-        }
+					result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+					var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+					result.DataSourceShapes.Add(dataSourceShape);
 
-        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction)
-        {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
-        }
+					var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+					dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+				}
+				catch (Exception ex)
+				{
+					throw new WarewolfDbException(ex.Message);
+				}
+				finally
+				{
+					server.RollbackTransaction();
+				}
+			}
 
-        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
+			return result;
+		}
+
+		protected virtual TDbServer CreateDbServer(DbSource dbSource) => new TDbServer();
+		protected virtual TDbServer CreateSqliteDbServer(SqliteDBSource dbSource) => new TDbServer();
+		protected virtual string NormalizeXmlPayload(string payload) => payload.Replace("&lt;", "<").Replace("&gt;", ">");
+
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction) => new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
+
+        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter) => new MethodParameter
         {
-            return new MethodParameter
-            {
-                Name = parameter.ParameterName.Replace("@", "")
-            };
-        }
+            Name = parameter.ParameterName.Replace("@", "")
+        };
 
         protected static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
         {

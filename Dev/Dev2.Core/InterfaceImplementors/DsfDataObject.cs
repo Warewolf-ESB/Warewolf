@@ -74,91 +74,18 @@ namespace Dev2.DynamicServices
                     {
                         xe = XElement.Parse(xmldata);
                     }
-                }
-                
-                catch (Exception)
-                
+                }                
+                catch (Exception)                
                 {
-                    // we only trying to parse ;)
+                    // try parse ;)
                 }
 
                 if (xe != null)
                 {
-                    bool isDebug;
-                    var debugString = ExtractValue(xe, "IsDebug");
-                    if (!string.IsNullOrEmpty(debugString))
-                    {
-                        bool.TryParse(debugString, out isDebug);
-                    }
-                    else
-                    {
-                        debugString = ExtractValue(xe, "BDSDebugMode");
-                        bool.TryParse(debugString, out isDebug);
-                    }
-                    IsDebug = isDebug;
-
-                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
-                    DebugSessionID = debugSessionId;
-
-                    if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out Guid environmentId))
-                    {
-                        EnvironmentID = environmentId;
-                        DebugEnvironmentId = environmentId;
-                    }
-
-                    var isOnDemandSimulation = false;
-                    var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
-                    if (!string.IsNullOrEmpty(onDemandSimulationString))
-                    {
-                        bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
-                    }
-                    IsOnDemandSimulation = isOnDemandSimulation;
-
-                    ParentServiceName = ExtractValue(xe, "ParentServiceName");
-                    _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
-
-                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out Guid executionCallbackId);
-                    ExecutionCallbackID = executionCallbackId;
-
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid bookmarkExecutionCallbackId);
-                    BookmarkExecutionCallbackID = bookmarkExecutionCallbackId;
-
-                    if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
-                    {
-                        BookmarkExecutionCallbackID = ExecutionCallbackID;
-                    }
-
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
-
-                    ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
-
-                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out int numberOfSteps);
-                    NumberOfSteps = numberOfSteps;
-
-                    CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
-
-
-                    if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out Guid instId))
-                    {
-                        WorkflowInstanceId = instId;
-                    }
-
-
-                    //
-                    // Extract merge data form request
-                    //
-                    ExtractInMergeDataFromRequest(xe);
-                    ExtractOutMergeDataFromRequest(xe);
+                    ExtractXmlValues(xe);
 
                     // set the ID ;)
                     DataListID = dataListId;
-
-                    // set the IsDataListScoped flag ;)
-                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out bool isScoped);
-                    IsDataListScoped = isScoped;
-
-                    // Set incoming service name ;)
-                    ServiceName = ExtractValue(xe, "Service");
 
                     // finally set raw payload
                     RawPayload = new StringBuilder(xmldata);
@@ -169,6 +96,80 @@ namespace Dev2.DynamicServices
             {
                 RawPayload = new StringBuilder(rawPayload);
             }
+        }
+
+        void ExtractXmlValues(XElement xe)
+        {
+            bool isDebug;
+            var debugString = ExtractValue(xe, "IsDebug");
+            if (!string.IsNullOrEmpty(debugString))
+            {
+                bool.TryParse(debugString, out isDebug);
+            }
+            else
+            {
+                debugString = ExtractValue(xe, "BDSDebugMode");
+                bool.TryParse(debugString, out isDebug);
+            }
+            IsDebug = isDebug;
+
+            Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
+            DebugSessionID = debugSessionId;
+
+            if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out Guid environmentId))
+            {
+                EnvironmentID = environmentId;
+                DebugEnvironmentId = environmentId;
+            }
+
+            var isOnDemandSimulation = false;
+            var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
+            if (!string.IsNullOrEmpty(onDemandSimulationString))
+            {
+                bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
+            }
+            IsOnDemandSimulation = isOnDemandSimulation;
+
+            ParentServiceName = ExtractValue(xe, "ParentServiceName");
+            _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
+
+            Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out Guid executionCallbackId);
+            ExecutionCallbackID = executionCallbackId;
+
+            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid bookmarkExecutionCallbackId);
+            BookmarkExecutionCallbackID = bookmarkExecutionCallbackId;
+
+            if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
+            {
+                BookmarkExecutionCallbackID = ExecutionCallbackID;
+            }
+
+            Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
+
+            ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
+
+            Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out int numberOfSteps);
+            NumberOfSteps = numberOfSteps;
+
+            CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
+
+            if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out Guid instId))
+            {
+                WorkflowInstanceId = instId;
+            }
+
+            //
+            // Extract merge data form request
+            //
+            ExtractInMergeDataFromRequest(xe);
+            ExtractOutMergeDataFromRequest(xe);
+
+            // set the IsDataListScoped flag ;)
+            bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out bool isScoped);
+            IsDataListScoped = isScoped;
+
+            // Set incoming service name ;)
+            ServiceName = ExtractValue(xe, "Service");
         }
 
         public Guid DebugEnvironmentId { get; set; }
@@ -386,6 +387,7 @@ namespace Dev2.DynamicServices
             result.WebUrl = WebUrl;
             result.IsSubExecution = IsSubExecution;
             result.QueryString = QueryString;
+            result.ExecutingUser = ExecutingUser;
             if (ServiceTest != null)
             {
                 var serializer = new Dev2JsonSerializer();
@@ -395,10 +397,7 @@ namespace Dev2.DynamicServices
             return result;
         }
 
-        public bool IsDebugMode()
-        {
-            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
-        }
+        public bool IsDebugMode() => (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
 
         #endregion
 

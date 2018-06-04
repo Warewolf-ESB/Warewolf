@@ -15,12 +15,9 @@ namespace Unlimited.Framework.Converters.Graph
 {
     public static class OutputDescriptionFactory
     {
-        public static IOutputDescription CreateOutputDescription(OutputFormats format)
+        public static IOutputDescription CreateOutputDescription(OutputFormats format) => new OutputDescription
         {
-            return new OutputDescription
-            {
-                Format = format,
-            };
-        }
+            Format = format,
+        };
     }
 }

@@ -60,17 +60,16 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
-           
+
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
             IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-          
+
         }
 
-    
         //Needed for Deserialization
         public OutputsRegion()
         {
@@ -78,24 +77,30 @@ namespace Dev2.Activities.Designers2.Core
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 
+        public void ResetOutputs(ICollection<IServiceOutputMapping> outputs)
+        {
+            var newOutputs = new ObservableCollection<IServiceOutputMapping>();
+            newOutputs.CollectionChanged += OutputsCollectionChanged;
+            newOutputs.AddRange(outputs);
+            Outputs = newOutputs;
+        }
+
         void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
             OnPropertyChanged("IsOutputsEmptyRows");
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            
         }
 
 
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
-            if (args.NewItems == null)
+            if (e.NewItems == null)
             {
                 return;
             }
 
-            foreach (INotifyPropertyChanged item in args.NewItems)
+            foreach (INotifyPropertyChanged item in e.NewItems)
             {
                 if (item != null)
                 {
@@ -106,17 +111,20 @@ namespace Dev2.Activities.Designers2.Core
 
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Outputs", _outputs.ToList());
+            if (!Outputs.Equals(_outputs))
+            {
+                _modelItem.SetProperty("Outputs", _outputs.ToList());
+            }
         }
 
-        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
-            if (args.OldItems == null)
+            if (e.OldItems == null)
             {
                 return;
             }
 
-            foreach (INotifyPropertyChanged item in args.OldItems)
+            foreach (INotifyPropertyChanged item in e.OldItems)
             {
                 if (item != null)
                 {
@@ -276,7 +284,6 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-     
                 if (Outputs != null)
                 {
                     _recordsetName = value;
@@ -287,7 +294,7 @@ namespace Dev2.Activities.Designers2.Core
                             serviceOutputMapping.RecordSetName = value;
                         }
                     }
-                }               
+                }
                 OnPropertyChanged();
             }
         }
@@ -300,27 +307,18 @@ namespace Dev2.Activities.Designers2.Core
                 _isObject = value;
                 _modelItem.SetProperty("IsObject", value);
                 OnPropertyChanged();
-            }            
+            }
         }
 
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult
-        {
-            get
-            {
-                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                {
-                    ViewJsonObjects();
-                }, CanRunCommand));
-            }
-        }
+        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                                                              {
+                                                                  ViewJsonObjects();
+                                                              }, CanRunCommand));
 
-        bool CanRunCommand(object obj)
-        {
-            return true;
-        }
+        static bool CanRunCommand(object obj) => true;
 
         void ViewJsonObjects()
         {
@@ -331,43 +329,51 @@ namespace Dev2.Activities.Designers2.Core
 
         public string ObjectName
         {
-            get { return _objectName; }
+            get => _objectName;
             set
             {
-               
-                if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
+                if (IsObject && !string.IsNullOrEmpty(ObjectResult))
                 {
-                    try
-                    {
-                        if (value != null)
-                        {
-                            _objectName = value;
-                            OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                if (_shellViewModel == null)
-                                {
-                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
-                                }
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }                            
-                            _modelItem.SetProperty("ObjectName", value);                            
-                        }
-                        else
-                        {
-                            _objectName = string.Empty;
-                            _modelItem.SetProperty("ObjectName", _objectName);
-                            OnPropertyChanged();
-                        }
-                    }
-                    catch(Exception)
-                    {
-                        //Is not an object identifier
-                    }
-                    
+                    TrySetObjectName(value);
                 }
             }
+        }
+
+        private void TrySetObjectName(string value)
+        {
+            try
+            {
+                if (value != null)
+                {
+                    SetObjectName(value);
+                }
+                else
+                {
+                    _objectName = string.Empty;
+                    _modelItem.SetProperty("ObjectName", _objectName);
+                    OnPropertyChanged();
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+            }
+        }
+
+        private void SetObjectName(string value)
+        {
+            _objectName = value;
+            OnPropertyChanged();
+            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+            if (language.IsJsonIdentifierExpression)
+            {
+                if (_shellViewModel == null)
+                {
+                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                }
+                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+            }
+            _modelItem.SetProperty("ObjectName", value);
         }
 
         public string ObjectResult
@@ -414,7 +420,7 @@ namespace Dev2.Activities.Designers2.Core
                     if (Outputs != null && Outputs.Count > 0 && !IsObject)
                     {
                         var serviceOutputMappings = Outputs.Where(a => !string.IsNullOrEmpty(a.MappedTo) && (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression));
-                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping" + a.MappedTo).ToList();
+                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping: " + a.MappedTo).ToList();
                     }
                 }
                 catch(Exception e)
@@ -438,7 +444,5 @@ namespace Dev2.Activities.Designers2.Core
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-      
     }
 }

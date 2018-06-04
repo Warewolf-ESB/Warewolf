@@ -151,13 +151,10 @@ namespace Dev2.Common
                 return workspacePath;
             }
         }
-        
-        public static string GetWorkspacePath(Guid workspaceID)
-        {
-            return workspaceID == Guid.Empty
+
+        public static string GetWorkspacePath(Guid workspaceID) => workspaceID == Guid.Empty
                        ? Path.Combine(AppDataPath, "Resources")
-                       : Path.Combine( Path.Combine(WorkspacePath, workspaceID.ToString()),"Resources");
-        }
+                       : Path.Combine(Path.Combine(WorkspacePath, workspaceID.ToString()), "Resources");
 
         public static bool IsServerOnline { get; set; }
 

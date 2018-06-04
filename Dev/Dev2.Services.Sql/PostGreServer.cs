@@ -19,15 +19,9 @@ namespace Dev2.Services.Sql
         IDbConnection _connection;
         IDbTransaction _transaction;
 
-        public bool IsConnected
-        {   
-            get { return _connection != null && _connection.State == ConnectionState.Open; }
-        }
+        public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
-        public string ConnectionString
-        {   
-            get { return _connection == null ? null : _connection.ConnectionString; }
-        }
+        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
@@ -42,11 +36,6 @@ namespace Dev2.Services.Sql
             
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                var type = row["proretset"];
-                if (type.ToString().ToUpperInvariant() == "FALSE")
-                {
-                    continue;
-                }
                 var fullProcedureName = row["Name"].ToString();
 
                 if (row["Db"].ToString() == dbName)
@@ -55,22 +44,27 @@ namespace Dev2.Services.Sql
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor?.Invoke(command, parameters, outParameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+
+                var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
+                procedureProcessor?.Invoke(command, parameters, outParameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -141,8 +135,26 @@ namespace Dev2.Services.Sql
 
             return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
 
-        public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
+			return _factory.FetchDataSet(command);
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteNonQuery(command);
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteScalar(command);
+		}
+		public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
@@ -182,21 +194,26 @@ namespace Dev2.Services.Sql
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor?.Invoke(command, parameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
+                procedureProcessor?.Invoke(command, parameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -233,11 +250,10 @@ namespace Dev2.Services.Sql
 
         #region Connect
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connection = (NpgsqlConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
-            return true;
         }
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)
@@ -457,14 +473,7 @@ namespace Dev2.Services.Sql
                         _command.Dispose();
                     }
 
-                    if (_connection != null)
-                    {
-                        if (_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up
@@ -474,6 +483,18 @@ namespace Dev2.Services.Sql
 
                 // Note disposing has been done.
                 _disposed = true;
+            }
+        }
+
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
             }
         }
 

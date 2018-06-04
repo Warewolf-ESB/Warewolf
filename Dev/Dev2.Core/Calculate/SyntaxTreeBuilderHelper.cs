@@ -36,9 +36,6 @@ namespace Dev2.Calculate
 
 
 
-        public Node[] Build(string inputText, bool expectedPartialTokens, out Token[] tokens)
-        {
-            return Builder.Build(inputText, expectedPartialTokens, out tokens);
-        }
+        public Node[] Build(string inputText, bool expectedPartialTokens, out Token[] tokens) => Builder.Build(inputText, expectedPartialTokens, out tokens);
     }
 }

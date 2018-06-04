@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandCanExecute()
         {
             //arrange
-            _target.TestPassed = true;
+            _target.HostName = "host";
 
 
             //act
@@ -889,7 +889,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSaveTrue()
         {
             //arrange
-            _target.TestPassed = true;
+            _target.HostName = "host";
 
             //act
             var result = _target.CanSave();
@@ -902,7 +902,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSaveFalse()
         {
             //arrange
-            _target.TestPassed = false;
+            _target.HostName = string.Empty;
 
             //act
             var result = _target.CanSave();
@@ -1024,6 +1024,68 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             vm.Dispose();
             ns.Verify(a => a.Dispose());
+        }
+
+        [TestMethod]
+        public void EqualsOperator_WithEqualObjects_AreEqual()
+        {
+            var firstEmailServiceSourceDefinition = new EmailServiceSourceDefinition
+            {
+                ResourceName = "Test Email Source",
+                HostName = "smtp.gmail.com",
+                UserName = "warewolf@dev2.co.za",
+                Password = "Dev_tech*",
+                EnableSsl = false,
+                Port = 25,
+                Timeout = 100,
+                EmailFrom = "warewolf@dev2.co.za",
+                EmailTo = "info@dev2.co.za"
+            };
+
+            var secondEmailServiceSourceDefinition = new EmailServiceSourceDefinition
+            {
+                ResourceName = "Test Email Source",
+                HostName = "smtp.gmail.com",
+                UserName = "warewolf@dev2.co.za",
+                Password = "Dev_tech*",
+                EnableSsl = false,
+                Port = 25,
+                Timeout = 100,
+                EmailFrom = "warewolf@dev2.co.za",
+                EmailTo = "info@dev2.co.za"
+            };
+            Assert.IsTrue(firstEmailServiceSourceDefinition == secondEmailServiceSourceDefinition, "Equals operator doesnt work.");
+        }
+
+        [TestMethod]
+        public void NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
+        {
+            var firstEmailServiceSourceDefinition = new EmailServiceSourceDefinition
+            {
+                ResourceName = "Test Email Source",
+                HostName = "smtp.gmail.com",
+                UserName = "warewolf@dev2.co.za",
+                Password = "Dev_tech*",
+                EnableSsl = false,
+                Port = 25,
+                Timeout = 100,
+                EmailFrom = "warewolf@dev2.co.za",
+                EmailTo = "info@dev2.co.za"
+            };
+
+            var secondEmailServiceSourceDefinition = new EmailServiceSourceDefinition
+            {
+                ResourceName = "Different Test Email Source",
+                HostName = "differentsmtp.gmail.com",
+                UserName = "differentwarewolf@dev2.co.za",
+                Password = "differentDev_tech*",
+                EnableSsl = true,
+                Port = 200,
+                Timeout = 99,
+                EmailFrom = "differentwarewolf@dev2.co.za",
+                EmailTo = "differentinfo@dev2.co.za"
+            };
+            Assert.IsTrue(firstEmailServiceSourceDefinition != secondEmailServiceSourceDefinition, "Not equals operator doesnt work.");
         }
 
         #endregion Test methods

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
@@ -39,43 +41,50 @@ namespace Dev2
                 var props = deserializeObject.Properties().ToList();
                 foreach (var prop in props)
                 {
-                    if (prop.Value != null && prop.Value.Type == JTokenType.Object)
-                    {
-                        var val = prop.Value as JObject;
-                        var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
-                        if (jProperty != null)
-                        {
-                            var propValue = jProperty.Value;
-                            if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection))
-                            {
-                                if (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection)
-                                {
-                                    var objName = prop.Name;
-                                    var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
-                                    if (isJson != null && isJson.Value.ToString() == "True")
-                                    {
-                                        AddObjectsToOutput(environment, objName, outputObj);
-                                    }
-                                    else
-                                    {
-                                        if (prop.Value.Count() > 3)
-                                        {
-                                            AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
-                                        }
-                                        else
-                                        {
-                                            AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    TryAddPropToOutput(requestIODirection, update, environment, outputObj, prop);
                 }
                 var dataListString = outputObj.ToString(Newtonsoft.Json.Formatting.Indented);
                 return dataListString;
             }
             return "{}";
+        }
+
+        private static void TryAddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop)
+        {
+            if (prop.Value != null && prop.Value.Type == JTokenType.Object)
+            {
+                var val = prop.Value as JObject;
+                var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                if (jProperty != null)
+                {
+                    var propValue = jProperty.Value;
+                    if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
+                    {
+                        AddPropToOutput(requestIODirection, update, environment, outputObj, prop, val);
+                    }
+                }
+            }
+        }
+
+        private static void AddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop, JObject val)
+        {
+            var objName = prop.Name;
+            var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
+            if (isJson != null && isJson.Value.ToString() == "True")
+            {
+                AddObjectsToOutput(environment, objName, outputObj);
+            }
+            else
+            {
+                if (prop.Value.Count() > 3)
+                {
+                    AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
+                }
+                else
+                {
+                    AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
+                }
+            }
         }
 
         static void AddObjectsToOutput(IExecutionEnvironment environment, string objName, JObject outputObj)
@@ -94,13 +103,10 @@ namespace Dev2
             if (ioDire != null)
             {
                 var x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
-                if (x == enDev2ColumnArgumentDirection.Both || x == requestIODirection)
+                if ((x == enDev2ColumnArgumentDirection.Both || x == requestIODirection) && (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult))
                 {
-                    if (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult)
-                    {
                         var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
                         outputObj.Add(objName, eval);
-                    }
                 }
             }
         }
@@ -116,45 +122,53 @@ namespace Dev2
                     var data = res.Item.Data;
                     foreach (var dataItem in data)
                     {
-                        var jObjForArray = new JObject();
-                        var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
-                        var io = recCol?.Children().FirstOrDefault() as JObject;
-                        var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
-                        if (p != null)
-                        {
-                            var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
-                            if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
-                            {
-                                var i = 0;
-                                foreach (var warewolfAtom in dataItem.Value)
-                                {
-                                    jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
-                                    if (newArray.Count < i + 1 || newArray.Count == 0)
-                                    {
-                                        newArray.Add(jObjForArray);
-                                    }
-                                    else
-                                    {
-                                        var jToken = newArray[i] as JObject;
-                                        jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
-                                    }
-                                    jObjForArray = new JObject();
-                                    i++;
-                                }
-                            }
-                        }
+                        AddDataItemToOutputs(val, requestedIODirection, newArray, dataItem);
                     }
                 }
                 outputObj.Add(objName, newArray);
             }
         }
 
-        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update)
+        static void AddDataItemToOutputs(JObject val, enDev2ColumnArgumentDirection requestedIODirection, JArray newArray, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> dataItem)
         {
-            return GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
+            var jObjForArray = new JObject();
+            var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
+            var io = recCol?.Children().FirstOrDefault() as JObject;
+            var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
+            if (p != null)
+            {
+                var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
+                if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
+                {
+                    var i = 0;
+                    foreach (var warewolfAtom in dataItem.Value)
+                    {
+                        jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
+                        dataItem = CreateDataItem(newArray, dataItem, jObjForArray, i, warewolfAtom);
+                        jObjForArray = new JObject();
+                        i++;
+                    }
+                }
+            }
         }
 
-    
+        private static KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> CreateDataItem(JArray newArray, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> dataItem, JObject jObjForArray, int i, DataStorage.WarewolfAtom warewolfAtom)
+        {
+            if (newArray.Count < i + 1 || newArray.Count == 0)
+            {
+                newArray.Add(jObjForArray);
+            }
+            else
+            {
+                var jToken = newArray[i] as JObject;
+                jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
+            }
+
+            return dataItem;
+        }
+
+        public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update) => GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
+
         public static void UpdateEnvironmentFromXmlPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList, int update)
         {
 
@@ -178,19 +192,20 @@ namespace Dev2
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             var dataListTO = new DataListTO(dataList);
             var inputs = dataListTO.Inputs;
-            UpdateEnviromentWithMappings(dataObject, rawPayload, inputs);
+            TryUpdateEnviromentWithMappings(dataObject, rawPayload, inputs);
         }
 
-        static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
+        static void TryUpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
         {
             JObject inputObject;
-            var toLoad = rawPayload.ToString().ToCleanXml();
+            var toLoad = rawPayload.ToString();
             if (string.IsNullOrEmpty(toLoad))
             {
                 return;
             }
             if (!toLoad.IsJSON())
-            {
+            {           
+                toLoad = toLoad.ToCleanXml();
                 var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
                 inputObject = JsonConvert.DeserializeObject(sXNode) as JObject;
             }
@@ -200,48 +215,58 @@ namespace Dev2
             }
             if (inputObject != null)
             {
-                var recSets = mappings.Where(DataListUtil.IsValueRecordset).ToList();
-                var processedRecsets = new List<string>();
-                foreach (var input in mappings)
+                UpdateEnviromentWithMappings(dataObject, mappings, inputObject);
+            }
+        }
+
+        static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, List<string> mappings, JObject inputObject)
+        {
+            var recSets = mappings.Where(DataListUtil.IsValueRecordset).ToList();
+            var processedRecsets = new List<string>();
+            foreach (var input in mappings)
+            {
+                var inputName = input;
+                var isValueRecordset = DataListUtil.IsValueRecordset(input);
+                if (isValueRecordset)
                 {
-                    var inputName = input;
-                    var isValueRecordset = DataListUtil.IsValueRecordset(input);
-                    if (isValueRecordset)
+                    inputName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                    if (processedRecsets.Contains(inputName))
                     {
-                        inputName = DataListUtil.ExtractRecordsetNameFromValue(input);
-                        if (processedRecsets.Contains(inputName))
-                        {
-                            continue;
-                        }
-                    }
-                    var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
-                    foreach (var prop in propsMatching)
-                    {
-                        var value = prop.Value;
-                        var tokenType = value.Type;
-                        if (tokenType == JTokenType.Object)
-                        {
-                            if (isValueRecordset)
-                            {
-                                var arr = new JArray(value);
-                                PerformRecordsetUpdate(dataObject, arr, true, input, recSets, inputName, processedRecsets);
-                            }
-                            else
-                            {
-                                var jContainer = value as JContainer;
-                                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
-                            }
-                        }
-                        else if (tokenType == JTokenType.Array)
-                        {
-                            PerformRecordsetUpdate(dataObject, value, isValueRecordset, input, recSets, inputName, processedRecsets);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(), 0);
-                        }
+                        continue;
                     }
                 }
+                var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
+                foreach (var prop in propsMatching)
+                {
+                    var value = prop.Value;
+                    var tokenType = value.Type;
+                    if (tokenType == JTokenType.Object)
+                    {
+                        PerformRecordsetUpdate(dataObject, value, processedRecsets, input, recSets, inputName, isValueRecordset);
+                    }
+                    else if (tokenType == JTokenType.Array)
+                    {
+                        PerformRecordsetUpdate(dataObject, value, isValueRecordset, input, recSets, inputName, processedRecsets);
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(), 0);
+                    }
+                }
+            }
+        }
+
+        private static void PerformRecordsetUpdate(IDSFDataObject dataObject, JToken value, List<string> processedRecsets, string input, List<string> recSets, string inputName, bool isValueRecordset)
+        {
+            if (isValueRecordset)
+            {
+                var arr = new JArray(value);
+                PerformRecordsetUpdate(dataObject, arr, true, input, recSets, inputName, processedRecsets);
+            }
+            else
+            {
+                var jContainer = value as JContainer;
+                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
             }
         }
 
@@ -258,65 +283,77 @@ namespace Dev2
                 {
                     for (int i = 0; i < arrayValue.Count; i++)
                     {
-                        var val = arrayValue[i];
-                        if (val is JObject valObj)
-                        {
-                            var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
-                            foreach (var rec in recs)
-                            {
-                                var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
-                                var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
-                                if (fieldProp != null)
-                                {
-                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
-                                }
-                            }
-                        }
+                        UpdateEnvironmentFromJObject(dataObject, recSets, inputName, i, arrayValue[i]);
                     }
                     processedRecsets.Add(inputName);
                 }
             }
         }
 
+        static void UpdateEnvironmentFromJObject(IDSFDataObject dataObject, List<string> recSets, string inputName, int i, JToken val)
+        {
+            if (val is JObject valObj)
+            {
+                var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
+                foreach (var rec in recs)
+                {
+                    var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
+                    var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
+                    if (fieldProp != null)
+                    {
+                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
+                    }
+                }
+            }
+        }
+
         public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
         {
-
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             var dataListTO = new DataListTO(dataList);
             var outputs = dataListTO.Outputs;
-            UpdateEnviromentWithMappings(dataObject, rawPayload, outputs);
+            TryUpdateEnviromentWithMappings(dataObject, rawPayload, outputs);
         }
 
         static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
         {
             try
             {
-                // spin through each element in the XML
-                foreach (XmlNode c in children)
-                {
-                    if (c.Name != GlobalConstants.NaughtyTextNode)
-                    {
-                        if (level > 0)
-                        {
-                            var c1 = c;
-                            var scalars = inputDefs.Where(definition => definition == c1.Name);
-                            var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
-                            UpdateForRecordset(dataObject, update, recSets, c);
-                            UpdateForScalars(dataObject, update, scalars, c);
-                        }
-                        else
-                        {
-                            if (level == 0)
-                            {
-                                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
-                            }
-                        }
-                    }
-                }
+                Convert(dataObject, children, inputDefs, update, level);
             }
             finally
             {
                 dataObject.Environment.CommitAssign();
+            }
+        }
+
+        static void Convert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level)
+        {
+            foreach (XmlNode c in children)
+            {
+                if (c.Name != GlobalConstants.NaughtyTextNode)
+                {
+                    if (level > 0)
+                    {
+                        var c1 = c;
+                        var scalars = inputDefs.Where(definition => definition == c1.Name);
+                        var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
+                        UpdateForRecordset(dataObject, update, recSets, c);
+                        UpdateForScalars(dataObject, update, scalars, c);
+                    }
+                    else
+                    {
+                       ContinueConverting(dataObject, inputDefs, update, level, c);
+                    }
+                }
+            }
+        }
+
+        static void ContinueConverting(IDSFDataObject dataObject, List<string> inputDefs, int update, int level, XmlNode c)
+        {
+            if (level == 0)
+            {
+                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
             }
         }
 
@@ -343,28 +380,29 @@ namespace Dev2
                 {
                     foreach (var definition in recSetDefs)
                     {
-                        if (DataListUtil.IsValueRecordset(definition))
-                        {
-                            if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
-                            {
-                                var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                var a = subc.InnerXml;
-                                a = RemoveXMLPrefix(a);
-                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
-                            }
-                        }
+                        UpdateForChildNodes(dataObject, update, subc, definition);
                     }
                 }
             }
         }
 
+        private static void UpdateForChildNodes(IDSFDataObject dataObject, int update, XmlNode subc, string definition)
+        {
+            if (DataListUtil.IsValueRecordset(definition) && DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
+            {
+                var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
+                var a = subc.InnerXml;
+                a = RemoveXMLPrefix(a);
+                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
+            }
+        }
 
         static string RemoveXMLPrefix(string a)
         {
             if (a.StartsWith(GlobalConstants.XMLPrefix))
             {
                 a = a.Replace(GlobalConstants.XMLPrefix, "");
-                a = Encoding.UTF8.GetString(Convert.FromBase64String(a));
+                a = Encoding.UTF8.GetString(System.Convert.FromBase64String(a));
             }
             return a;
         }
@@ -532,11 +570,71 @@ namespace Dev2
             return recSetItems;
         }
 
-        
-        static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet)
+
+        static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet) => groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
+
+
+        public static void ProcessOutputMapping(IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
         {
-            return groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
+            var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+            var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+            var rs = serviceOutputMapping.RecordSetName;
+
+            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs,rsType==enRecordsetIndexType.Star))))
+            {
+                if (started)
+                {
+                    rowIdx = environment.GetLength(rs) + 1;
+                    started = false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                }
+            }
+            GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
+            if (!row.Table.Columns.Contains(serviceOutputMapping.MappedFrom))
+            {
+                return;
+            }
+            var value = row[serviceOutputMapping.MappedFrom];
+            var colDataType = row.Table.Columns[serviceOutputMapping.MappedFrom].DataType;
+            if (colDataType.Name == "Byte[]")
+            {                
+                value = Encoding.UTF8.GetString(value as byte[]);
+            }
+            if (update != 0)
+            {
+                rowIdx = update;
+            }
+            var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
+            if (rsType == enRecordsetIndexType.Star)
+            {
+                displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
+            }
+            environment.Assign(displayExpression, value.ToString(), update);
         }
+
+        static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
+        {
+            if (rsType == enRecordsetIndexType.Star && started)
+            {
+                rowIdx = 1;
+                started = false;
+            }
+            if (rsType == enRecordsetIndexType.Numeric)
+            {
+                rowIdx = int.Parse(rowIndex);
+            }
+        }
+
     }
 
     public class Schema

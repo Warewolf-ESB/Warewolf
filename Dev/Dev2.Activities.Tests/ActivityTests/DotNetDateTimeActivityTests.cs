@@ -19,6 +19,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using System.Diagnostics;
 using Dev2.Activities.DateAndTime;
+using Moq;
+using Warewolf.Storage;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -217,6 +220,83 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[dt]]", outputs[0]);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_Execute_Blank_ShouldHaveNoErrorWithDebugOutput()
+        {
+            //------------Setup for test--------------------------
+            const string varName = "[[dt]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 0,
+                Result = varName,
+                TimeModifierAmountDisplay = 0.ToString(CultureInfo.InvariantCulture)
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            //------------Execute Test---------------------------
+            act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+            var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
+            Assert.AreEqual(1,value.Count);
+            Assert.IsTrue(DateTime.TryParse(value[0], out DateTime datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_Execute_InvalidDateTime_ShouldHaveErrorWithDebugOutput()
+        {
+            //------------Setup for test--------------------------
+            const string varName = "[[dt]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "a/p/R",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = varName,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            var timeBefore = DateTime.Now;
+
+            //------------Execute Test---------------------------
+            var activity = act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var timeAfter = DateTime.Now;
+
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+            var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
+            Assert.AreEqual(value.Count, 1);
+            Assert.AreEqual("", value[0]);
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+
+            Assert.AreEqual("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.", executionEnvironment.FetchErrors());
+        }
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -269,9 +349,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                         Assert.IsTrue(hasErrors);
                         if (item.ToUpper().Contains("y".ToUpper()))
+                        {
                             Assert.IsTrue(period.Years >= 9, "this format has failed " + item);
+                        }
                         else
+                        {
                             Assert.AreEqual(a, actual);
+                        }
+
                         passCount++;
                         //using (var stream = File.AppendText(n))
                         //{                            
@@ -322,5 +407,105 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Private Test Methods
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_Equality")]
+        public void DsfDotNetDateTimeActivity_Equal()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid().ToString();
+            var act1 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                UniqueID = id,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var act2 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                UniqueID = id,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(act1.Equals(act2));
+            string tmp_holder;
+
+            tmp_holder = act2.DateTime;
+            act2.DateTime = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.DateTime = tmp_holder;
+
+            tmp_holder = act2.InputFormat;
+            act2.InputFormat = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.InputFormat = tmp_holder;
+
+            tmp_holder = act2.OutputFormat;
+            act2.OutputFormat = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.OutputFormat = tmp_holder;
+
+            tmp_holder = act2.TimeModifierType;
+            act2.TimeModifierType = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierType = tmp_holder;
+
+            var num_tmp_holder = act2.TimeModifierAmount;
+            act2.TimeModifierAmount = 2;
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierAmount = num_tmp_holder;
+
+            tmp_holder = act2.TimeModifierAmountDisplay;
+            act2.TimeModifierAmountDisplay = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierAmountDisplay = tmp_holder;
+
+            Assert.IsTrue(act1.Equals(act2));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_Equality")]
+        public void DsfDotNetDateTimeActivity_NotEqual()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid().ToString();
+            var act1 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                UniqueID = id,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var act2 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "dd/MM/yyyy",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                UniqueID = id,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(act1.Equals(act2));
+        }
     }
 }

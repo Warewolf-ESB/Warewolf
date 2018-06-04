@@ -60,13 +60,11 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new DelegateCommand(() => PerformLoadAll());
 
             _warewolfserverName = updateManager.ServerName;
-            if (Application.Current != null)
+            if (Application.Current != null && Application.Current.Dispatcher != null)
             {
-                if (Application.Current.Dispatcher != null)
-                {
-                    DispatcherAction = Application.Current.Dispatcher.Invoke;
-                }
+                DispatcherAction = Application.Current.Dispatcher.Invoke;
             }
+
         }
 
         public IAsyncWorker AsyncWorker { get; set; }
@@ -224,9 +222,9 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public override void FromModel(IComPluginSource pluginSource)
+        public override void FromModel(IComPluginSource source)
         {
-            var selectedDll = pluginSource.SelectedDll;
+            var selectedDll = source.SelectedDll;
             if (selectedDll != null)
             {
                 var dllListingModel = DllListings?.FirstOrDefault(model => model.Name == selectedDll.Name);
@@ -238,10 +236,10 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
 
-            Name = pluginSource.ResourceName;
-            Path = pluginSource.ResourcePath;
-            Is32Bit = pluginSource.Is32Bit;
-            ClsId = pluginSource.ClsId;
+            Name = source.ResourceName;
+            Path = source.ResourcePath;
+            Is32Bit = source.Is32Bit;
+            ClsId = source.ClsId;
 
         }
 
@@ -316,10 +314,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave()
-        {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && !string.IsNullOrEmpty(ClsId) && HasChanged;
-        }
+        public override bool CanSave() => _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && !string.IsNullOrEmpty(ClsId) && HasChanged;
 
         public override void UpdateHelpDescriptor(string helpText)
         {
@@ -374,20 +369,20 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_pluginSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    ResourceName = GetRequestServiceNameViewModel().ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
-                    src.ResourcePath = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.ResourcePath = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     src.ClsId = SelectedDll.ClsId;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Path = src.ResourcePath;
@@ -458,30 +453,28 @@ namespace Warewolf.Studio.ViewModels
             return _pluginSource;
         }
 
-        public IRequestServiceNameViewModel RequestServiceNameViewModel
+        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {
-            get
+            if (_requestServiceNameViewModel != null)
             {
-                if (_requestServiceNameViewModel != null)
+                _requestServiceNameViewModel.Wait();
+                if (_requestServiceNameViewModel.Exception == null)
                 {
-                    _requestServiceNameViewModel.Wait();
-                    if (_requestServiceNameViewModel.Exception == null)
-                    {
-                        return _requestServiceNameViewModel.Result;
-                    }
-
-                    else
-                    {
-                        throw _requestServiceNameViewModel.Exception;
-                    }
+                    return _requestServiceNameViewModel.Result;
                 }
-                return null;
+
+                else
+                {
+                    throw _requestServiceNameViewModel.Exception;
+                }
             }
-            set
-            {
-                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
-                _requestServiceNameViewModel.Start();
-            }
+            return null;
+        }
+
+        public void SetRequestServiceNameViewModel(IRequestServiceNameViewModel value)
+        {
+            _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+            _requestServiceNameViewModel.Start();
         }
 
         public ICommand OkCommand { get; set; }
@@ -499,7 +492,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            RequestServiceNameViewModel?.Dispose();
+            GetRequestServiceNameViewModel()?.Dispose();
             DisposeManageComPluginSourceViewModel(true);
         }
         

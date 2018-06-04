@@ -40,12 +40,9 @@ namespace Dev2.Runtime.ServiceModel
             _fetchComputers = fetchComputersFn;
             _hubFactory = hubFactory;
         }
-        
-        public List<string> GetNames()
-        {
-            return _fetchComputers.Invoke();
-        }
-        
+
+        public List<string> GetNames() => _fetchComputers.Invoke();
+
         public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             var result = new ValidationResult
@@ -56,19 +53,18 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 // Validate URI, ports, etc...
+#pragma warning disable S1848 // Objects should not be created to be dropped immediately without being used
                 new Uri(connection.Address);
-
+#pragma warning restore S1848 // Objects should not be created to be dropped immediately without being used
 
                 var connectResult = ConnectToServer(connection);
-                if (!string.IsNullOrEmpty(connectResult))
+                if (!string.IsNullOrEmpty(connectResult) && connectResult.Contains("FatalError"))
                 {
-                    if (connectResult.Contains("FatalError"))
-                    {
-                        var error = XElement.Parse(connectResult);
-                        result.IsValid = false;
-                        result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
-                    }
+                    var error = XElement.Parse(connectResult);
+                    result.IsValid = false;
+                    result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
                 }
+
             }
             catch (Exception ex)
             {

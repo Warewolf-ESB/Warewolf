@@ -127,19 +127,7 @@ namespace Dev2.Activities.Debug
                     groupName = rawExpression;
                     if (!rawExpression.StartsWith("[[@"))
                     {
-                        displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameOnlyFromValue(DataListUtil.AddBracketsToValueIfNotExist(_variable)), grpIdx.ToString()));
-
-                        if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Star)
-                        {
-                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
-                            {
-                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
-                            }
-                        }
+                        displayExpression = GetObjectDisplayExpression(grpIdx);
                     }
                     else
                     {
@@ -187,6 +175,24 @@ namespace Dev2.Activities.Debug
                     MockSelected = _mockSelected
                 });
             }
+        }
+
+        private string GetObjectDisplayExpression(int grpIdx)
+        {
+            string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameOnlyFromValue(DataListUtil.AddBracketsToValueIfNotExist(_variable)), grpIdx.ToString()));
+            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Star)
+            {
+                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
+            }
+            else
+            {
+                if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                {
+                    displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                }
+            }
+
+            return displayExpression;
         }
 
         void HasRightLabel(List<IDebugItemResult> results)
@@ -256,31 +262,11 @@ namespace Dev2.Activities.Debug
                     var rawExpression = _assignedToVariableName;
                     if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
                     {
-                        grpIdx++;
-                        groupName = rawExpression;
-                        var dataLanguageParser = new Dev2DataLanguageParser();
-                        var vals = dataLanguageParser.ParseForActivityDataItems(_assignedToVariableName);
-                        if (vals != null)
-                        {
-                            foreach (var val in vals)
-                            {
-                                var repVal = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(val), DataListUtil.ExtractFieldNameFromValue(val), grpIdx.ToString());
-                                displayExpression = _assignedToVariableName.Replace(val, repVal);
-                            }
-                        }
+                        RecordsetGroupName(ref grpIdx, ref displayExpression, rawExpression, ref groupName);
                     }
                     else
                     {
-                        var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                        int.TryParse(indexRegionFromRecordset, out int indexForRecset);
-
-                        if (indexForRecset > 0)
-                        {
-                            var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                            var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
-                            grpIdx++;
-                            groupName = @group;
-                        }
+                        ObjectGroupName(ref grpIdx, displayExpression, ref groupName);
                     }
 
                     var debugOperator = "";
@@ -289,10 +275,7 @@ namespace Dev2.Activities.Debug
                     {
                         debugOperator = "=";
                         debugType = DebugItemResultType.Variable;
-                        if (_isCalculate)
-                        {
-                            displayExpression = groupName ?? displayExpression;
-                        }
+                        displayExpression = _isCalculate ? (groupName ?? displayExpression) : displayExpression;
                     }
                     else
                     {
@@ -314,6 +297,36 @@ namespace Dev2.Activities.Debug
             }
         }
 
+        static void ObjectGroupName(ref int grpIdx, string displayExpression, ref string groupName)
+        {
+            var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+            int.TryParse(indexRegionFromRecordset, out int indexForRecset);
+
+            if (indexForRecset > 0)
+            {
+                var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                grpIdx++;
+                groupName = @group;
+            }
+        }
+
+        private void RecordsetGroupName(ref int grpIdx, ref string displayExpression, string rawExpression, ref string groupName)
+        {
+            grpIdx++;
+            groupName = rawExpression;
+            var dataLanguageParser = new Dev2DataLanguageParser();
+            var vals = dataLanguageParser.ParseForActivityDataItems(_assignedToVariableName);
+            if (vals != null)
+            {
+                foreach (var val in vals)
+                {
+                    var repVal = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(val), DataListUtil.ExtractFieldNameFromValue(val), grpIdx.ToString());
+                    displayExpression = _assignedToVariableName.Replace(val, repVal);
+                }
+            }
+        }
+
         void HasLeftLabel(List<IDebugItemResult> results)
         {
             if (!string.IsNullOrEmpty(_leftLabel))
@@ -322,40 +335,7 @@ namespace Dev2.Activities.Debug
                 var grpIdx = 0;
                 if (_warewolfAtomListresult != null)
                 {
-                    foreach (var atomItem in _warewolfAtomListresult.Item)
-                    {
-                        var displayExpression = _variable;
-                        var rawExpression = _variable;
-                        var item = atomItem.ToString();
-                        displayExpression = GetGroupName(displayExpression, rawExpression, ref grpIdx, ref item, ref groupName);
-
-                        var debugOperator = "";
-                        var debugType = DebugItemResultType.Value;
-                        if (DataListUtil.IsEvaluated(displayExpression))
-                        {
-                            debugOperator = string.IsNullOrEmpty(item) ? "" : "=";
-                            debugType = DebugItemResultType.Variable;
-                            if (_isCalculate)
-                            {
-                                displayExpression = groupName ?? displayExpression;
-                            }
-                        }
-                        else
-                        {
-                            displayExpression = null;
-                        }
-                        results.Add(new DebugItemResult
-                        {
-                            Type = debugType,
-                            Label = _leftLabel,
-                            Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
-                            Operator = debugOperator,
-                            GroupName = groupName,
-                            Value = item,
-                            GroupIndex = grpIdx,
-                            MockSelected = _mockSelected
-                        });
-                    }
+                    AddEachWarewolfAtomListResult(results, ref groupName, ref grpIdx);
                 }
                 else
                 {
@@ -371,6 +351,44 @@ namespace Dev2.Activities.Debug
                         MockSelected = _mockSelected
                     });
                 }
+            }
+        }
+
+        private void AddEachWarewolfAtomListResult(List<IDebugItemResult> results, ref string groupName, ref int grpIdx)
+        {
+            foreach (var atomItem in _warewolfAtomListresult.Item)
+            {
+                var displayExpression = _variable;
+                var rawExpression = _variable;
+                var item = atomItem.ToString();
+                displayExpression = GetGroupName(displayExpression, rawExpression, ref grpIdx, ref item, ref groupName);
+
+                var debugOperator = "";
+                var debugType = DebugItemResultType.Value;
+                if (DataListUtil.IsEvaluated(displayExpression))
+                {
+                    debugOperator = string.IsNullOrEmpty(item) ? "" : "=";
+                    debugType = DebugItemResultType.Variable;
+                    if (_isCalculate)
+                    {
+                        displayExpression = groupName ?? displayExpression;
+                    }
+                }
+                else
+                {
+                    displayExpression = null;
+                }
+                results.Add(new DebugItemResult
+                {
+                    Type = debugType,
+                    Label = _leftLabel,
+                    Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
+                    Operator = debugOperator,
+                    GroupName = groupName,
+                    Value = item,
+                    GroupIndex = grpIdx,
+                    MockSelected = _mockSelected
+                });
             }
         }
 

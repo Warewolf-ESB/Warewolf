@@ -39,30 +39,35 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                     {
                         if (exportedType.AssemblyQualifiedName != null)
                         {
-                            if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowDecisionActivity"))
-                            {
-                                var decisionType = typeof(FlowDecision);
-                                if (decisionType.AssemblyQualifiedName != null)
-                                {
-                                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, decisionType.AssemblyQualifiedName);
-                                }
-                            }
-                            else if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowSwitchActivity"))
-                            {
-                                var switchType = typeof(FlowSwitch<string>);
-                                if (switchType.AssemblyQualifiedName != null)
-                                {
-                                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, switchType.AssemblyQualifiedName);
-                                }
-                            }
-                            else
-                            {
-                                _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, exportedType.AssemblyQualifiedName);
-                            }
+                            UpdateToolActualType(exportedType);
                         }
                         return;
                     }
                 }
+            }
+        }
+
+        private void UpdateToolActualType(Type exportedType)
+        {
+            if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowDecisionActivity"))
+            {
+                var decisionType = typeof(FlowDecision);
+                if (decisionType.AssemblyQualifiedName != null)
+                {
+                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, decisionType.AssemblyQualifiedName);
+                }
+            }
+            else if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowSwitchActivity"))
+            {
+                var switchType = typeof(FlowSwitch<string>);
+                if (switchType.AssemblyQualifiedName != null)
+                {
+                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, switchType.AssemblyQualifiedName);
+                }
+            }
+            else
+            {
+                _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, exportedType.AssemblyQualifiedName);
             }
         }
 
@@ -85,11 +90,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public DrawingImage Icon => _icon ?? (_icon= GetImage(Tool.Icon, Tool.IconUri));
 
-        DrawingImage GetImage(string icon,string iconUri)
-        {
-           return (DrawingImage)((ResourceDictionary)Application.LoadComponent(new Uri(iconUri,
+        DrawingImage GetImage(string icon, string iconUri) => (DrawingImage)((ResourceDictionary)Application.LoadComponent(new Uri(iconUri,
                UriKind.RelativeOrAbsolute)))[icon];
-        }
 
         public IWarewolfType Designer => Tool.Designer;
 

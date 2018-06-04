@@ -77,15 +77,9 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrWhiteSpace(Result);
-        }
+        public bool CanRemove() => string.IsNullOrWhiteSpace(Result);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrWhiteSpace(Result);
-        }
+        public bool CanAdd() => !string.IsNullOrWhiteSpace(Result);
 
         public void ClearRow()
         {

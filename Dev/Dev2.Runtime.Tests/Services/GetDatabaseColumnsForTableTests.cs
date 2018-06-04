@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
@@ -156,6 +157,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("GetDatabaseColumnsForTable_Execute")]
         public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource_WithSchema_OnlyReturnsForThatSchema()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.ResourceSaved = resource => { };
@@ -207,6 +211,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("GetDatabaseColumnsForTable_Execute")]
         public void GetDatabaseColumnsForTable_Execute_NullSchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.ResourceSaved = resource => { };
@@ -253,6 +260,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("GetDatabaseColumnsForTable_Execute")]
         public void GetDatabaseColumnsForTable_Execute_EmptySchema_ValidDatabaseSource_ReturnsFromAllSchemas()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");

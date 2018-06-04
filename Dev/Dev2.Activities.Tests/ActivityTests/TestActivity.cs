@@ -86,6 +86,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             DispatchDebugState(dataObject, stateType,0);
             return DebugState;
         }
+
+        public bool Equals(TestActivity other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 
     

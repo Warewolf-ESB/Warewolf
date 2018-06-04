@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             : base(modelItem)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var server = shellViewModel.ActiveServer;            
+            var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IWebServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             _builder = new ServiceInputBuilder();
@@ -131,12 +131,12 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
             Errors.Clear();
 
-            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
+            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
                 {
-                    DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
+                    DesignValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
 
             }
@@ -273,7 +273,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
         public static readonly DependencyProperty WorstErrorProperty =
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
-        
+
         bool _generateOutputsVisible;
         IServiceInputBuilder _builder;
 
@@ -295,7 +295,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             HasLargeView = true;
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -304,22 +304,19 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
+            var displayName2 = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName2 + displayName;
             }
         }
 
-        public IHeaderRegion GetHeaderRegion()
-        {
-            return InputArea;
-        }
+        public IHeaderRegion GetHeaderRegion() => InputArea;
 
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 
@@ -411,7 +408,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
             }
         }
 

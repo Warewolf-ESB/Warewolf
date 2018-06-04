@@ -13,13 +13,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Diagnostics;
 using Dev2.Network;
-using Dev2.Services;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -31,7 +28,7 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper : Bootstrapper<IShellViewModel>
+    public class Bootstrapper : Bootstrapper<IShellViewModel>, IDisposable
     {
         protected override void PrepareApplication()
         {
@@ -108,10 +105,7 @@ namespace Dev2
 
         #region Overrides of BootstrapperBase
 
-        protected override object GetInstance(Type service, string key)
-        {
-            return CustomContainer.Get(service);
-        }
+        protected override object GetInstance(Type service, string key) => CustomContainer.Get(service);
 
         #endregion
 
@@ -119,7 +113,10 @@ namespace Dev2
 
         #region Private Methods
 
+#pragma warning disable CC0091 // Use static method
+#pragma warning disable CC0038 // You should use expression bodied members whenever possible.
         bool CheckWindowsService()
+#pragma warning restore CC0091 // Use static method
         {
 #if DEBUG
             return true;
@@ -148,6 +145,7 @@ namespace Dev2
             return false;
 #endif
         }
+#pragma warning restore CC0038 // You should use expression bodied members whenever possible.
 
         void CheckPath()
         {
@@ -197,9 +195,11 @@ namespace Dev2
             return true;
         }
 
-        static bool IsUnc(Uri sysUri)
+        static bool IsUnc(Uri sysUri) => sysUri.IsUnc;
+
+        public void Dispose()
         {
-            return sysUri.IsUnc;
+            ((IDisposable)_mainViewModel).Dispose();
         }
 
         #endregion Private Methods

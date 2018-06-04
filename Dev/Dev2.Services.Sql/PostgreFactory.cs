@@ -22,14 +22,11 @@ namespace Dev2.Services.Sql
             return new NpgsqlConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new NpgsqlCommand(commandText, connection as NpgsqlConnection)
         {
-            return new NpgsqlCommand(commandText, connection as NpgsqlConnection)
-            {
-                CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
-            };
-        }
+            CommandType = commandType,
+            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+        };
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
@@ -55,15 +52,37 @@ namespace Dev2.Services.Sql
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "PostgreCommand"));
             }
 
-            using (var dataset = new DataSet())
+            var dataset = new DataSet();
+            using (var adapter = new NpgsqlDataAdapter(command as NpgsqlCommand))
             {
-                using (var adapter = new NpgsqlDataAdapter(command as NpgsqlCommand))
-                {
-                    adapter.Fill(dataset);
-                }
-
-                return dataset;
+                adapter.Fill(dataset);
             }
+
+            return dataset;
         }
-    }
+
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (!(command is NpgsqlCommand SqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
+
+			int retValue = 0;
+			retValue = command.ExecuteNonQuery();
+			return retValue;
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (!(command is NpgsqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
+
+			int retValue = 0;
+			retValue = Convert.ToInt32(command.ExecuteScalar());
+			return retValue;
+		}
+	}
 }

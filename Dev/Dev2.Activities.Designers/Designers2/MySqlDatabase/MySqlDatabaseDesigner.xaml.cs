@@ -20,11 +20,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             InitializeComponent();
         }
 
-        protected override MySqlDatabaseDesignerViewModel CreateViewModel()
-        {
-            return new MySqlDatabaseDesignerViewModel(ModelItem,new AsyncWorker(), new ViewPropertyBuilder());
-        }
-
+        protected override MySqlDatabaseDesignerViewModel CreateViewModel() => new MySqlDatabaseDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
     }
 }
     

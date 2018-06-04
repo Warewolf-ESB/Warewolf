@@ -38,15 +38,9 @@ namespace Warewolf.Studio.ViewModels
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
 
-        public ObservableCollection<IDbSource> RetrieveSources()
-        {
-            return new ObservableCollection<IDbSource>(_queryProxy.FetchDbSources());
-        }
+        public ObservableCollection<IDbSource> RetrieveSources() => new ObservableCollection<IDbSource>(_queryProxy.FetchDbSources());
 
-        public ICollection<IDbAction> GetActions(IDbSource source)
-        {
-            return _queryProxy.FetchDbActions(source);
-        }
+        public ICollection<IDbAction> GetActions(IDbSource source) => _queryProxy.FetchDbActions(source);
 
         public void CreateNewSource(enSourceType type)
         {
@@ -96,10 +90,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public DataTable TestService(IDatabaseService inputValues)
-        {
-            return _updateRepository.TestDbService(inputValues);
-        }
+        public DataTable TestService(IDatabaseService inputValues) => _updateRepository.TestDbService(inputValues);
 
         #endregion
     }

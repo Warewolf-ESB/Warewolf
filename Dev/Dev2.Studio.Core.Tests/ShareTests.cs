@@ -24,7 +24,7 @@ namespace Dev2.Core.Tests
         public void Share_Constructor_Construct_ExpectValid()
         {
             //------------Setup for test--------------------------
-            var share = new Share("a","b",ShareType.Disk);
+            var share = new Share("a","b",ShareType.None);
 
             
             //------------Execute Test---------------------------
@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests
         public void Share_IsFileSystem_ExpectValid()
         {
             //------------Setup for test--------------------------
-            var share = new Share("a", "b", ShareType.Disk);
+            var share = new Share("a", "b", ShareType.None);
 
 
             //------------Execute Test---------------------------

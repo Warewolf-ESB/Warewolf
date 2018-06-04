@@ -6,15 +6,19 @@ namespace Dev2
     {
         public bool Equals(IDev2Activity x, IDev2Activity y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
 
             return x.UniqueID.Equals(y.UniqueID);
         }
 
-        public int GetHashCode(IDev2Activity obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IDev2Activity obj) => obj.GetHashCode();
     }
 }

@@ -216,13 +216,7 @@ namespace Dev2.Scheduler
             }
         }
 
-        public bool IsNewItem
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsNewItem => true;
 
         public string NameForDisplay { get; private set; }
 
@@ -250,10 +244,7 @@ namespace Dev2.Scheduler
 
         #region Implementation of IEquatable<IScheduledResource>
 
-        public bool Equals(IScheduledResource other)
-        {
-            return false;
-        }
+        public bool Equals(IScheduledResource other) => false;
 
         #endregion
     }

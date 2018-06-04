@@ -12,11 +12,11 @@ Scenario: Schedule with history
 	  And "ScheduleWithHistory" has a username of "LocalSchedulerAdmin" and a Password of "987Sched#@!"
 	  And "ScheduleWithHistory" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
-	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |	            |
+	  | On a schedule | Daily    | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |	            |
 	  When the "ScheduleWithHistory" is executed "1" times
 	  Then the Schedule task has "NO" error
 	  Then the schedule status is "Error"
-	  And "ScheduleWithHistory" has "2" row of history	   
+	  And "ScheduleWithHistory" has "2" row of history   
 
 @Scheduler
 Scenario: Creating task with schedule statud disabled

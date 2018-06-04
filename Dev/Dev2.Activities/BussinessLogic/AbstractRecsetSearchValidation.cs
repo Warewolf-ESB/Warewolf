@@ -15,23 +15,13 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.DataList
 {
-    /// <summary>
-    /// Abstract class that check the validity of the input arguments
-    /// </summary>
     public abstract class AbstractRecsetSearchValidation : IFindRecsetOptions
     {
-        public virtual Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from,IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
-            return CreateFunc(values,from,to,all);
-        }
+        public virtual Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => CreateFunc(values, from, to, all);
 
         public abstract int ArgumentCount { get; }
 
-        public virtual Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
-            return null;
-        }
-
+        public virtual Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => null;
         public abstract string HandlesType();
     }
 }

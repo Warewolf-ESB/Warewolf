@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers;
@@ -50,7 +51,7 @@ namespace Dev2.Scheduler
         {
             _dir.CreateIfNotExists(_debugOutputPath);
         }
-
+       
         public ServerSchedulerFactory(Func<IScheduledResource, string> pathResolve)
         {
             _pathResolve = pathResolve;
@@ -64,11 +65,7 @@ namespace Dev2.Scheduler
 
         public ITaskServiceConvertorFactory ConvertorFactory => _factory;
 
-        public IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper)
-        {
-
-            return new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath, securityWrapper,_pathResolve);
-        }
+        public IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper) => new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath, securityWrapper, _pathResolve);
 
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
@@ -106,10 +103,7 @@ namespace Dev2.Scheduler
 
 
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
-                                                 string workflowName,string resourceId)
-        {
-            return new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName,resourceId);
-        }
+                                                 string workflowName, string resourceId) => new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName, resourceId);
 
         public void Dispose()
         {

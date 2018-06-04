@@ -28,9 +28,6 @@ namespace Dev2.AppResources.Converters
             return dateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }

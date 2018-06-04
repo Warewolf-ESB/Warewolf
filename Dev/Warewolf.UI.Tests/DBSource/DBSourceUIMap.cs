@@ -9,6 +9,7 @@ using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITesting;
 
 namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
 {
@@ -81,6 +82,7 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         public void Enter_Text_Into_DatabaseServer_Tab(string databaseServer)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = databaseServer;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox, "{ENTER}");
         }
 
         [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]

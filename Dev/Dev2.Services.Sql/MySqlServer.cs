@@ -42,24 +42,29 @@ namespace Dev2.Services.Sql
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-
-                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
-
-
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string dbName, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+
+                var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
+                procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
+
+
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -126,7 +131,12 @@ namespace Dev2.Services.Sql
 
             return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+        public DataSet FetchDataSet(IDbCommand command)
+        {
+            VerifyArgument.IsNotNull("command", command);
 
+            return _factory.FetchDataSet(command);
+        }
         public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
@@ -137,7 +147,29 @@ namespace Dev2.Services.Sql
             }
             return FetchDataTable(_command);
         }
+        public int ExecuteNonQuery(IDbCommand command)
+        {
+            if (!(command is MySqlCommand SqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
 
+            int retValue = 0;
+            retValue = command.ExecuteNonQuery();
+            return retValue;
+        }
+
+        public int ExecuteScalar(IDbCommand command)
+        {
+            if (!(command is MySqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
+
+            int retValue = 0;
+            retValue = Convert.ToInt32(command.ExecuteScalar());
+            return retValue;
+        }
         #endregion
 
         #region FetchStoredProcedures
@@ -166,28 +198,28 @@ namespace Dev2.Services.Sql
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor(command, parameters, helpText, fullProcedureName);
-
-
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
                 }
             }
         }
 
-
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string dbName, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                procedureProcessor(command, parameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
+                }
+            }
+        }
 
         string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
@@ -221,11 +253,10 @@ namespace Dev2.Services.Sql
 
         #region Connect
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connection = (MySqlConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
-            return true;
         }
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)
@@ -344,49 +375,54 @@ namespace Dev2.Services.Sql
             {
                 if (row?[0] is byte[] bytes)
                 {
-                    var parameterName = Encoding.Default.GetString(bytes);
-                    parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
-                    var parameternames = parameterName.Split(',');
-                    foreach (var parameter in parameternames)
-                    {
-                        var isout = false;
-                        const ParameterDirection direction = ParameterDirection.Input;
-                        if (parameter.Contains("OUT "))
-                        {
-                            isout = true;
-                        }
-
-                        if (parameter.Contains("INOUT"))
-                        {
-                            isout = false;
-                        }
-
-                        var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
-                        if (!String.IsNullOrEmpty(parameterName))
-                        {
-                            var split = parameterx.Split(' ');
-
-                            Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
-
-                            var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
-                            if (!isout)
-                            {
-                                command.Parameters.Add(sqlParameter);
-                                parameters.Add(sqlParameter);
-                            }
-                            else
-                            {
-                                sqlParameter.Direction = ParameterDirection.Output;
-                                outParams.Add(sqlParameter);
-                                sqlParameter.Value = "@a";
-                                command.Parameters.Add(sqlParameter);
-                            }
-                        }
-                    }
+                    GetProcInputs(command, outParams, parameters, bytes);
                 }
             }
             command.CommandText = originalCommandText;
             return parameters;
+        }
+
+        private static void GetProcInputs(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, byte[] bytes)
+        {
+            var parameterName = Encoding.Default.GetString(bytes);
+            parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
+            var parameternames = parameterName.Split(',');
+            foreach (var parameter in parameternames)
+            {
+                var isout = false;
+                const ParameterDirection direction = ParameterDirection.Input;
+                if (parameter.Contains("OUT "))
+                {
+                    isout = true;
+                }
+
+                if (parameter.Contains("INOUT"))
+                {
+                    isout = false;
+                }
+
+                var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
+                if (!String.IsNullOrEmpty(parameterName))
+                {
+                    var split = parameterx.Split(' ');
+
+                    Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
+
+                    var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
+                    if (!isout)
+                    {
+                        command.Parameters.Add(sqlParameter);
+                        parameters.Add(sqlParameter);
+                    }
+                    else
+                    {
+                        sqlParameter.Direction = ParameterDirection.Output;
+                        outParams.Add(sqlParameter);
+                        sqlParameter.Value = "@a";
+                        command.Parameters.Add(sqlParameter);
+                    }
+                }
+            }
         }
 
         #region IDisposable
@@ -445,15 +481,7 @@ namespace Dev2.Services.Sql
                     _transaction?.Dispose();
 
                     _command?.Dispose();
-
-                    if (_connection != null)
-                    {
-                        if (_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up 
@@ -463,6 +491,18 @@ namespace Dev2.Services.Sql
 
                 // Note disposing has been done.
                 _disposed = true;
+            }
+        }
+
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
             }
         }
 

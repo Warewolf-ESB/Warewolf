@@ -18,24 +18,12 @@ using Dev2.Utilities;
 
 namespace Dev2.FindMissingStrategies
 {
-    /// <summary>
-    /// Responsible for the find missing logic that applys to all the activities that only have a static properties on them
-    /// </summary>
- //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class StaticActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
 
-        public Enum HandlesType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
-
-        /// <summary>
-        /// Gets all the fields for a specific activity
-        /// </summary>
-        /// <param name="activity">The activity that the fields will be retrieved from</param>
-        /// <returns>Returns all the fields in a list of strings</returns>
+        public Enum HandlesType() => enFindMissingType.StaticActivity;
+        
         public List<string> GetActivityFields(object activity)
         {
             var results = new List<string>();

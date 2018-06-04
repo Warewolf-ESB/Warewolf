@@ -87,11 +87,11 @@ namespace Dev2.Studio.Core
             return false;
         }
 
-        public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)
+        public IDeletedFileMetadata TryDelete(IExplorerItemViewModel explorerItemViewModel)
         {
 
             var explorerDeleteProvider = new ExplorerDeleteProvider(this);
-            var deletedFileMetadata = explorerDeleteProvider.Delete(explorerItemViewModel);
+            var deletedFileMetadata = explorerDeleteProvider.TryDelete(explorerItemViewModel);
             return deletedFileMetadata;
         }
 
@@ -133,32 +133,20 @@ namespace Dev2.Studio.Core
             };
         }
 
-        IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
+        IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway) => new DeletedFileMetadata
         {
-            return new DeletedFileMetadata
-            {
-                IsDeleted = isDeleted,
-                ResourceId = resourceId,
-                ShowDependencies = showDependecnies,
-                ApplyToAll = applyToAll,
-                DeleteAnyway = deleteAnyway
-            };
-        }
+            IsDeleted = isDeleted,
+            ResourceId = resourceId,
+            ShowDependencies = showDependecnies,
+            ApplyToAll = applyToAll,
+            DeleteAnyway = deleteAnyway
+        };
 
-        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
-        {
-            return VersionManager.GetVersion(versionInfo, resourceId);
-        }
+        public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId) => VersionManager.GetVersion(versionInfo, resourceId);
 
-        public ICollection<IVersionInfo> GetVersions(Guid id)
-        {
-            return new List<IVersionInfo>(VersionManager.GetVersions(id).Select(a => a.VersionInfo));
-        }
+        public ICollection<IVersionInfo> GetVersions(Guid id) => new List<IVersionInfo>(VersionManager.GetVersions(id).Select(a => a.VersionInfo));
 
-        public IRollbackResult Rollback(Guid resourceId, string version)
-        {
-            return VersionManager.RollbackTo(resourceId, version);
-        }
+        public IRollbackResult Rollback(Guid resourceId, string version) => VersionManager.RollbackTo(resourceId, version);
 
         public void CreateFolder(string parentPath, string name, Guid id)
         {

@@ -22,15 +22,11 @@ namespace Dev2.Services.Sql
             return new OdbcConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new OdbcCommand(commandText, connection as OdbcConnection)
         {
-            return new OdbcCommand(commandText, connection as OdbcConnection)
-            {
-                CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
-            };
-        }
-
+            CommandType = commandType,
+            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+        };
         public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOdbcServerSchema(connection);
 
         DataTable GetOdbcServerSchema(IDbConnection connection)
@@ -57,16 +53,36 @@ namespace Dev2.Services.Sql
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
             }
 
-            using (var dataSet = new DataSet())
+            var dataSet = new DataSet();
+            using (var adapter = new OdbcDataAdapter(command as OdbcCommand))
             {
-                using (var adapter = new OdbcDataAdapter(command as OdbcCommand))
-                {
-                    adapter.Fill(dataSet);
-                }
-                return dataSet;
+                adapter.Fill(dataSet);
             }
+            return dataSet;
         }
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (!(command is OdbcCommand SqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
 
-        #endregion
-    }
+			int retValue = 0;
+			retValue = command.ExecuteNonQuery();
+			return retValue;
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (!(command is OdbcCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
+
+			int retValue = 0;
+			retValue = Convert.ToInt32(command.ExecuteScalar());
+			return retValue;
+		}
+		#endregion
+	}
 }

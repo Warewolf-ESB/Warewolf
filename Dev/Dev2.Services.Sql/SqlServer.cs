@@ -28,7 +28,7 @@ namespace Dev2.Services.Sql
         public void Dispose()
         {
             _transaction?.Dispose();
-            _connection?.Dispose();
+            _connection?.Dispose();            
             _connection = null;
         }
 
@@ -44,13 +44,13 @@ namespace Dev2.Services.Sql
         }
 
         public bool IsConnected { get; }
-        public string ConnectionString { get; }
+        public string ConnectionString { get => _connectionString; }
         string _connectionString;
         ISqlConnection _connection;
         IDbTransaction _transaction;
 
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connectionString = connectionString;
             _connection = _connectionBuilder.BuildConnection(_connectionString);
@@ -58,14 +58,17 @@ namespace Dev2.Services.Sql
             try
             {
                 _connection.TryOpen();
-                return true;
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                return false;
+                throw new WarewolfDbException(e.Message);
             }
+        }
 
+        public void Connect()
+        {
+            Connect(_connectionString);            
         }
 
         public void BeginTransaction()
@@ -112,7 +115,7 @@ namespace Dev2.Services.Sql
                 if (_connection?.State != ConnectionState.Open)
                 {
                     _connection = _connectionBuilder.BuildConnection(_connectionString);
-                    _connection.Open();
+                    _connection.EnsureOpen();
                     var dbCommand = _connection.CreateCommand();
                     TrySetTransaction(_transaction, dbCommand);
                     dbCommand.CommandText = command.CommandText;
@@ -173,7 +176,7 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-                _connection.TryOpen();
+                Connect();
                 var sqlCommand = _connection.CreateCommand();
                 TrySetTransaction(_transaction, sqlCommand);
                 sqlCommand.CommandText = fullProcedureName;
@@ -181,41 +184,46 @@ namespace Dev2.Services.Sql
 
                 using (sqlCommand)
                 {
-                    try
-                    {
-                        var parameters = GetProcedureParameters(sqlCommand);
-                        const string helpText = "";
-
-                        if (IsStoredProcedure(row, procedureTypeColumn))
-                        {
-                            procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
-                        }
-                        else if (IsFunction(row, procedureTypeColumn))
-                        {
-                            functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
-                        }
-                        else
-                        {
-                            if (IsTableValueFunction(row, procedureTypeColumn))
-                            {
-                                functionProcessor?.Invoke(sqlCommand, parameters, helpText,
-                                    CreateTVFCommand(fullProcedureName, parameters));
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                        if (!continueOnProcessorException)
-                        {
-                            throw;
-                        }
-                    }
+                    TryFetch(procedureProcessor, functionProcessor, continueOnProcessorException, procedureTypeColumn, row, fullProcedureName, sqlCommand);
                 }
-
             }
         }
 
+        private void TryFetch(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, DataColumn procedureTypeColumn, DataRow row, string fullProcedureName, IDbCommand sqlCommand)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(sqlCommand);
+                const string helpText = "";
+
+                if (IsStoredProcedure(row, procedureTypeColumn))
+                {
+                    procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
+                }
+                else if (IsFunction(row, procedureTypeColumn))
+                {
+                    functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
+                }
+                else
+                {
+                    if (IsTableValueFunction(row, procedureTypeColumn))
+                    {
+                        functionProcessor?.Invoke(sqlCommand, parameters, helpText,
+                            CreateTVFCommand(fullProcedureName, parameters));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                if (!continueOnProcessorException)
+                {
+                    throw;
+                }
+            }
+        }
+
+       
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
@@ -396,8 +404,66 @@ namespace Dev2.Services.Sql
 
             return true;
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				
+				return FetchDataSet(sqlCommand);
+			}
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
 
-        public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
+				retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
+				return retValue;
+			}
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+
+				retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
+				return retValue;
+			}		
+		}
+		public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
         {
 
             if (_connection == null)

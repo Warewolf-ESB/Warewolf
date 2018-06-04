@@ -31,15 +31,7 @@ using Warewolf.Storage;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
-    /// </summary>
-    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
     public class DsfFolderRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderRead>
     {
 
@@ -49,36 +41,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IsNotCertVerifiable = true;
 
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
 
             var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath, update));
+            var inputItr = new WarewolfIterator(context.Environment.Eval(InputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
-            colItr.AddVariableToIterateOn(unameItr);
-
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
+            var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
-            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             colItr.AddVariableToIterateOn(privateKeyItr);
 
-            if(dataObject.IsDebugMode())
+            if(context.IsDebugMode())
             {
-                AddDebugInputItem(InputPath, "Input Path", dataObject.Environment, update);
+                AddDebugInputItem(InputPath, "Input Path", context.Environment, update);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetReadType().GetDescription(), "Read"));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                AddDebugInputItemUserNamePassword(context.Environment, update);
                 if (!string.IsNullOrEmpty(PrivateKeyFile))
                 {
-                    AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
+                    AddDebugInputItem(PrivateKeyFile, "Private Key File", context.Environment, update);
                 }
             }
 
@@ -88,61 +77,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 var ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
-                                                                                colItr.FetchNextValue(unameItr),
+                                                                                Username,
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                 var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
 
                 try
                 {
-                    var listOfDir = broker.ListDirectory(endPoint, GetReadType());
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                    {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                            var indexToUpsertTo = 1;
-                            if (listOfDir != null)
-                            {
-                                foreach (IActivityIOPath pa in listOfDir)
-                                {
-                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
-                                    indexToUpsertTo++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                            {
-                                if (listOfDir != null)
-                                {
-                                    foreach (IActivityIOPath pa in listOfDir)
-                                    {
-                                        outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(listOfDir != null)
-                        {
-                            var xmlList = string.Join(",", listOfDir.Select(c => c.Path));
-                            outputs.Add(DataListFactory.CreateOutputTO(Result));
-                            outputs.Last().OutputStrings.Add(xmlList);
-                        }
-                    }
+                    ExecuteConcreteAction(outputs, broker, endPoint);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(null));
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     break;
                 }
             }
@@ -151,10 +98,64 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+        void ExecuteConcreteAction(IList<OutputTO> outputs, IActivityOperationsBroker broker, IActivityIOOperationsEndPoint endPoint)
+        {
+            var listOfDir = broker.ListDirectory(endPoint, GetReadType());
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    ExecuteForListOfDir(listOfDir, outputs);
+                }
+                else
+                {
+                    AddOutputsForListOfDir(listOfDir, outputs);
+                }
+            }
+            else
+            {
+                if (listOfDir != null)
+                {
+                    var xmlList = string.Join(",", listOfDir.Select(c => c.Path));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result));
+                    outputs.Last().OutputStrings.Add(xmlList);
+                }
+            }
+        }
+
+        void AddOutputsForListOfDir(IList<IActivityIOPath> listOfDir, IList<OutputTO> outputs)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank && listOfDir != null)
+            {
+                foreach (IActivityIOPath pa in listOfDir)
+                {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                }
+            }
+        }
+
+        void ExecuteForListOfDir(IList<IActivityIOPath> listOfDir, IList<OutputTO> outputs)
+        {
+            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+
+            var indexToUpsertTo = 1;
+            if (listOfDir != null)
+            {
+                foreach (IActivityIOPath pa in listOfDir)
+                {
+                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
+                    indexToUpsertTo++;
+                }
+            }
+        }
+
         #region Properties
 
-        
-        
+
+
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>
@@ -202,6 +203,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+        protected override bool AssignEmptyOutputsToRecordSet => true;
+
         #endregion Properties
 
         #region Private Methods
@@ -241,22 +244,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(InputPath);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InputPath);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 
         public bool Equals(DsfFolderRead other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && IsFilesSelected == other.IsFilesSelected
                 && IsFoldersSelected == other.IsFoldersSelected 
@@ -266,9 +271,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfFolderRead) obj);
         }
 

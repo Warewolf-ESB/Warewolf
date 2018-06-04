@@ -28,11 +28,6 @@ namespace Dev2.Common.ExtMethods
         static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
-        public static Regex IsValidCategoryname { get => isValidCategoryname; set => isValidCategoryname = value; }
-        static Regex isValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
-        public static Regex IsValidResourcename { get => isValidResourcename; set => isValidResourcename = value; }
-        static Regex isValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
-
         public static bool ContainsUnicodeCharacter(this string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -54,34 +49,14 @@ namespace Dev2.Common.ExtMethods
 
             return result;
         }
-        
-        public static bool IsWholeNumber(this string payload)
-        {
-            return IsWholeNumber(payload, out int value);
-        }
-        
-        public static bool IsWholeNumber(this string payload, out int value)
-        {
-            if (int.TryParse(payload, out value))
-            {
-                if (value >= 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        public static bool IsRealNumber(this string payload, out int value)
-        {
-            return int.TryParse(payload, out value);
-        }
-        
-        public static bool IsNumeric(this string payload)
-        {
-            return IsNumeric(payload, out decimal value);
-        }
-        
+
+        public static bool IsWholeNumber(this string payload) => IsWholeNumber(payload, out int value);
+
+        public static bool IsWholeNumber(this string payload, out int value) => int.TryParse(payload, out value) && value >= 0;
+        public static bool IsRealNumber(this string payload, out int value) => int.TryParse(payload, out value);
+
+        public static bool IsNumeric(this string payload) => IsNumeric(payload, out decimal value);
+
         public static bool IsNumeric(this string payload, out decimal value)
         {
             if (string.IsNullOrEmpty(payload))
@@ -107,13 +82,10 @@ namespace Dev2.Common.ExtMethods
 
             return decimal.TryParse(payload, out value);
         }
-        
-        public static bool IsAlphaNumeric(this string payload)
-        {
-            return !string.IsNullOrEmpty(payload) &&
+
+        public static bool IsAlphaNumeric(this string payload) => !string.IsNullOrEmpty(payload) &&
                    (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload));
-        }
-        
+
         public static bool IsEmail(this string payload)
         {
             if (string.IsNullOrEmpty(payload))
@@ -125,12 +97,9 @@ namespace Dev2.Common.ExtMethods
 
             return result;
         }
-        
-        public static bool IsBinary(this string payload)
-        {
-            return IsBinaryField.IsMatch(payload);
-        }
-        
+
+        public static bool IsBinary(this string payload) => IsBinaryField.IsMatch(payload);
+
         public static bool IsBase64(this string payload)
         {
             var result = false;

@@ -203,7 +203,7 @@ namespace Dev2.Workspaces
             lock(_readLock)
             {
                 
-                var filesToIgnore = servicesToIgnore.Select(s => s += ".bite").ToList();
+                var filesToIgnore = servicesToIgnore.Select(s => s + ".bite").ToList();
                 
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
@@ -329,17 +329,11 @@ namespace Dev2.Workspaces
 
         #region GetFileName
 
-        string GetFileName(Guid workspaceID)
-        {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
-        }
+        string GetFileName(Guid workspaceID) => Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
 
         #endregion
 
-        static string GetUserMapFileName()
-        {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
-        }
+        static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
         static ConcurrentDictionary<string, Guid> ReadUserMap()
         {
@@ -347,19 +341,17 @@ namespace Dev2.Workspaces
             lock(UserMapLock)
             {
                 var filePath = GetUserMapFileName();
-                var fileExists = File.Exists(filePath);
                 using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
+                    var fileExists = File.Exists(filePath);
                     var formatter = new BinaryFormatter();
                     if(fileExists)
                     {
                         try
                         {
                             return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
-                        }
-                         
-                        catch(Exception ex)
-                        
+                        }                         
+                        catch(Exception ex)                        
                         {
                             Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
@@ -375,19 +367,20 @@ namespace Dev2.Workspaces
 
         static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
         {
-            var filePath = GetUserMapFileName();
-            using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            // force a lock on the file system ;)
+            lock (UserMapLock)
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, userMap);
+                var filePath = GetUserMapFileName();
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, userMap);
+                }
             }
         }
 
         #endregion
 
-        public ICollection<Guid> GetWorkspaceGuids()
-        {
-            return _items.Keys;
-        }
+        public ICollection<Guid> GetWorkspaceGuids() => _items.Keys;
     }
 }

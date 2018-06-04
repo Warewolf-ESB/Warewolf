@@ -13,7 +13,7 @@ namespace Dev2.DataList
     
         public override int ArgumentCount => 1;
 
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if(all)
             {
@@ -21,9 +21,6 @@ namespace Dev2.DataList
             }
             return a => values.Any(x => a.IsNothing);
         }
-        public override string HandlesType()
-        {
-            return "Is NULL";
-        }
+        public override string HandlesType() => "Is NULL";
     }
 }

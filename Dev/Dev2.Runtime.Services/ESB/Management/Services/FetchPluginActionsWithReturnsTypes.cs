@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             ,
                             Dev2ReturnType = x.Dev2ReturnType,
                             
-                            IntellisenseFilter = x.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.All
+                            IntellisenseFilter = x.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.None
 
                         } as IServiceInput).ToList(),
                         Method = a.Name,

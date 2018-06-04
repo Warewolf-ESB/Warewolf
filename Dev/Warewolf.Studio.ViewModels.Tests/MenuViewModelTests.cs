@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<ICommand> _deployCommandMock;
         AuthorizeCommand _saveCommand;
         AuthorizeCommand _openSchedulerCommand;
+        AuthorizeCommand _openSearchCommand;
         AuthorizeCommand _openSettingsCommand;
         AuthorizeCommand _executeServiceCommand;
         Mock<ICommand> _startPageCommandMock;
@@ -40,6 +41,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _deployCommandMock = new Mock<ICommand>();
             _newCommand = new AuthorizeCommand<string>(new AuthorizationContext(), str => { }, str => true);
             _saveCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
+            _openSearchCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _openSchedulerCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _openSettingsCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _executeServiceCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
@@ -49,6 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.NewServiceCommand).Returns(_newCommand);
             _mainViewModelMock.SetupGet(it => it.DeployCommand).Returns(_deployCommandMock.Object);
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
+            _mainViewModelMock.SetupGet(it => it.SearchCommand).Returns(_openSearchCommand);
             _mainViewModelMock.SetupGet(it => it.SchedulerCommand).Returns(_openSchedulerCommand);
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);
@@ -110,6 +113,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveCommand()
         {
             Assert.AreSame(_saveCommand, _target.SaveCommand);
+        }
+
+        [TestMethod]
+        public void TestOpenSearchCommand()
+        {
+            Assert.AreSame(_openSearchCommand, _target.OpenSearchCommand);
         }
 
         [TestMethod]

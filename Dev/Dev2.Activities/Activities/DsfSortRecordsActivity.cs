@@ -69,10 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { SortField };
-        }
+        public override List<string> GetOutputs() => new List<string> { SortField };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -133,13 +130,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    if (data.IsWarewolfAtomResult)
+                    if (data.IsWarewolfAtomResult && data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
                     {
-                        if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
-                        }
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
                     }
+
                 }
             }
         }
@@ -157,14 +152,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                if (data.IsWarewolfAtomResult)
+                if (data.IsWarewolfAtomResult && data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
                 {
-                    if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
-                        AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
-                    }
+                    AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
+                    AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
                 }
+
             }
         }
 
@@ -202,15 +195,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(SortField);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(SortField);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(SortField);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(SortField);
 
         #endregion
 
@@ -219,16 +206,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         #endregion
 
@@ -236,8 +216,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfSortRecordsActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(SortField, other.SortField) 
                 && string.Equals(SelectedSort, other.SelectedSort);
@@ -245,9 +233,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfSortRecordsActivity) obj);
         }
 

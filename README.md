@@ -13,7 +13,6 @@ You could be recognised as a [top contributor](http://warewolf.io/contributors.p
 
 See the list of open issues and bugs [here](https://github.com/Warewolf-ESB/Warewolf-ESB/issues) to get started right away.
 
-You can also help by [voting for Warewolf training](http://support.pluralsight.com/forums/127919-new-course-suggestions/suggestions/8878069-warewolf-esb-getting-started) on Pluralsight.
 
 **Need more info?**
 

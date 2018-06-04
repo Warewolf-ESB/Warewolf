@@ -22,12 +22,7 @@ namespace Dev2.BussinessLogic
     {
         #region Overrides of AbstractRecsetSearchValidation
 
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, bool all)
-        {
-
-            return a => RunBetween(warewolfAtoms, tovals, a);
-         
-        }
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => RunBetween(from, to, a);
 
         static bool RunBetween(IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, DataStorage.WarewolfAtom a)
         {
@@ -47,13 +42,11 @@ namespace Dev2.BussinessLogic
                     {
                         throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
                     }
-                    if (DateTime.TryParse(a.ToString(), out DateTime recDateTime))
+                    if (DateTime.TryParse(a.ToString(), out DateTime recDateTime) && recDateTime > fromDt && recDateTime < toDt)
                     {
-                        if (recDateTime > fromDt && recDateTime < toDt)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
+
                 }
                 if (double.TryParse(fromval, out double fromNum))
                 {
@@ -76,10 +69,7 @@ namespace Dev2.BussinessLogic
 
         #endregion
 
-        public override string HandlesType()
-        {
-            return "Is Between";
-        }
+        public override string HandlesType() => "Is Between";
 
         public override int ArgumentCount => 3;
     }

@@ -24,7 +24,6 @@ using System.Activities.Presentation.View;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
-using System.Collections.Concurrent;
 
 namespace Warewolf.MergeParser
 {
@@ -32,7 +31,6 @@ namespace Warewolf.MergeParser
     {
         readonly IActivityParser _activityParser;
         readonly IResourceDefinationCleaner _definationCleaner;
-        readonly ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);
 
         public ServiceDifferenceParser()
             : this(CustomContainer.Get<IActivityParser>(), new ResourceDefinationCleaner())
@@ -47,53 +45,58 @@ namespace Warewolf.MergeParser
             _definationCleaner = definationCleaner;
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer)
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-            var completeList = currentTree.Concat(diffTree);
-            var groupedItems = completeList.GroupBy(a => a.UniqueId);
-            foreach (var item in groupedItems)
-            {
-                var itemList = item.ToList();
-                var hasConflict = false;
-                if (itemList.Count > 1)
-                {
-                    var item1 = itemList[0];
-                    var item2 = itemList[1];
-                    hasConflict = !item1.Equals(item2);
-                }
-            }
             return (currentTree, diffTree);
         }
 
         List<ConflictTreeNode> BuildTree(IContextualResourceModel resourceModel, bool loadFromServer)
         {
-            var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            if (loadFromServer)
-            {
-                var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
-                if (msg != null && msg.Message.Length != 0)
-                {
-                    xaml = msg.Message;
-                }
-            }
-            else
+            if (resourceModel.IsVersionResource)
             {
                 var se = new Dev2JsonSerializer();
                 var a = _definationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
                 var executeMessage = se.Deserialize<ExecuteMessage>(a);
                 xaml = executeMessage.Message;
             }
+            else
+            {
+                if (loadFromServer)
+                {
+                    var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
+                    if (msg != null && msg.Message.Length != 0)
+                    {
+                        xaml = msg.Message;
+                    }
+                }
+                else
+                {
+                    var se = new Dev2JsonSerializer();
+                    var a = _definationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                    var executeMessage = se.Deserialize<ExecuteMessage>(a);
+                    xaml = executeMessage.Message;
+                }
+            }
 
             if (xaml == null || xaml.Length == 0)
             {
                 throw new Exception($"Could not find resource definition for {resourceModel.ResourceName}");
             }
-            wd.Text = xaml.ToString();
+           
+            return BuildWorkflow(xaml);
+        }
+
+        public List<ConflictTreeNode> BuildWorkflow(System.Text.StringBuilder xaml)
+        {
+            var wd = new WorkflowDesigner
+            {
+                Text = xaml.ToString()
+            };
             wd.Load();
             var modelService = wd.Context.Services.GetService<ModelService>();
             var workflowHelper = new WorkflowHelper();
@@ -102,11 +105,11 @@ namespace Warewolf.MergeParser
             {
                 return new List<ConflictTreeNode>();
             }
-            var nodes = BuildNoteItems(wd, modelService, flowchartDiff);
+            var nodes = BuildNodeItems(wd, modelService, flowchartDiff);
             return nodes;
         }
 
-        List<ConflictTreeNode> BuildNoteItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
+        List<ConflictTreeNode> BuildNodeItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
         {
             var idsLocations = GetIdLocations(wd, modelService);
             var nodes = new List<ConflictTreeNode>();
@@ -117,7 +120,7 @@ namespace Warewolf.MergeParser
                 var shapeLocation = GetShapeLocation(wd, startNode);
                 var startConflictNode = new ConflictTreeNode(start, shapeLocation);
                 nodes.Add(startConflictNode);
-                BuildItems(idsLocations, nodes, start, startConflictNode);
+                BuildItems(idsLocations, nodes, start, startConflictNode, flowchartDiff);
             }
 
             return nodes;
@@ -136,7 +139,7 @@ namespace Warewolf.MergeParser
             return idsLocations;
         }
 
-        static void BuildItems(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, IDev2Activity start, ConflictTreeNode startConflictNode)
+        static void BuildItems(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, IDev2Activity start, ConflictTreeNode startConflictNode, Flowchart flowchartDiff)
         {
             var nextNodes = start.GetNextNodes();
             var children = start.GetChildrenNodes();
@@ -161,13 +164,78 @@ namespace Warewolf.MergeParser
                 }
                 nextNodes = newNextNodes;
             }
+            if (nodes.Count() != flowchartDiff?.Nodes?.Count)
+            {
+                AddMissingConflictNodes(idsLocations, nodes, flowchartDiff);
+            }
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        static void AddMissingConflictNodes(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, Flowchart flowchartDiff)
         {
-            var trees = GetConflictTrees(current, difference, loadworkflowFromServer);
-            return trees;
+            var missingConflictNodes = new List<ConflictTreeNode>();
+            foreach (var node in flowchartDiff.Nodes)
+            {
+                if (node is FlowStep nextNode && nextNode?.Action is IDev2Activity action)
+                {
+                    AddMissingNode(idsLocations, nodes, missingConflictNodes, action);
+                    continue;
+                }
+                if (node is FlowDecision nextDecNode)
+                {
+                    AddMissingFlowDecisionTrueAndFalse(idsLocations, nodes, missingConflictNodes, nextDecNode);
+                    continue;
+                }
+                if (node is FlowSwitch<string> nextSwitchNode)
+                {
+                    AddMissingFlowSwitchCases(idsLocations, nodes, missingConflictNodes, nextSwitchNode);
+                    continue;
+                }
+            }
+
+            foreach (var missingNode in missingConflictNodes)
+            {
+                nodes.Add(missingNode);
+            }
         }
+
+        private static void AddMissingFlowDecisionTrueAndFalse(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowDecision nextDecNode)
+        {
+            if (nextDecNode?.True is IDev2Activity decTrue)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decTrue);
+            }
+            if (nextDecNode?.False is IDev2Activity decFalse)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decFalse);
+            }
+        }
+
+        private static void AddMissingFlowSwitchCases(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowSwitch<string> nextSwitchNode)
+        {
+            if (nextSwitchNode?.Default is IDev2Activity switchDefault)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, switchDefault);
+            }
+            foreach (var switchCase in nextSwitchNode.Cases)
+            {
+                if (switchCase.Value is IDev2Activity switchValue)
+                {
+                    AddMissingNode(idsLocations, nodes, missingConflictNodes, switchValue);
+                }
+            }
+        }
+
+        static void AddMissingNode(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, IDev2Activity action)
+        {
+            if (nodes.FirstOrDefault(t => t.UniqueId == action.UniqueID) == null)
+            {
+                var nextConflictNode = new ConflictTreeNode(action, idsLocations.FirstOrDefault(t => t.uniqueId == action.UniqueID).location);
+                missingConflictNodes.Add(nextConflictNode);
+            }
+        }
+
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference) => GetDifferences(current, difference, true);
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadDiffFromLocalServer) => GetConflictTrees(current, difference, loadDiffFromLocalServer);
 
         static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
         {

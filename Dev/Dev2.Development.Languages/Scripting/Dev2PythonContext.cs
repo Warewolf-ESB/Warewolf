@@ -69,10 +69,6 @@ namespace Dev2.Development.Languages.Scripting
             }
         }
 
-        public enScriptType HandlesType()
-        {
-            return enScriptType.Python;
-        }
-
+        public enScriptType HandlesType() => enScriptType.Python;
     }
 }

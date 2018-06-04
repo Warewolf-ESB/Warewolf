@@ -15,13 +15,13 @@ namespace Dev2.DataList.Contract
 {
     public class DataListVerifyPartDuplicationParser : EqualityComparer<IDataListVerifyPart>, IDataListVerifyPartDuplicationParser
     {
-        public override bool Equals(IDataListVerifyPart ComparePart, IDataListVerifyPart Comparator) => (ComparePart.DisplayValue == Comparator.DisplayValue);
+        public override bool Equals(IDataListVerifyPart x, IDataListVerifyPart y) => (x.DisplayValue == y.DisplayValue);
 
-        public override int GetHashCode(IDataListVerifyPart PartToVerify)
+        public override int GetHashCode(IDataListVerifyPart obj)
         {
-            if(PartToVerify != null)
+            if(obj != null)
             {
-                var hashCode = PartToVerify.DisplayValue.GetHashCode();
+                var hashCode = obj.DisplayValue.GetHashCode();
                 return hashCode;
             }
 

@@ -65,13 +65,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbSource", dbSource);
 
             ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
+            if (!dbSource.ReloadActions && GetCachedResult(dbSource, out cacheResult))
             {
-                if (GetCachedResult(dbSource, out cacheResult))
-                {
-                    return cacheResult;
-                }
+                return cacheResult;
             }
+
 
             var serviceMethods = new ServiceMethodList();
             
@@ -102,17 +100,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         #region Overrides of AbstractDatabaseBroker<MySqlServer>
 
-        protected override MySqlServer CreateDbServer(DbSource dbSource)
+        protected override MySqlServer CreateDbServer(DbSource dbSource) => new MySqlServer();
+
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction) => new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
         {
-            return new MySqlServer();
-        }
-        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
-        {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
-            {
-                OutParameters = outParameters.Select(MethodParameterFromDataParameter).ToList()
-            };
-        }
+            OutParameters = outParameters.Select(MethodParameterFromDataParameter).ToList()
+        };
         #endregion
 
         #endregion

@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
+using System.Security.Principal;
 
 
 
@@ -190,6 +190,7 @@ namespace Dev2.Tests
         [TestCategory("DsfDataObject_Clone")]
         public void DsfDataObject_Clone_NormalClone_FullDuplicationForProperties()
         {
+            var executingUser = new Mock<IPrincipal>().Object;
             //------------Setup for test--------------------------
             var wfInstanceID = Guid.NewGuid();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
@@ -208,6 +209,7 @@ namespace Dev2.Tests
             dataObject.EnvironmentID = Guid.NewGuid();
             dataObject.ExecutionCallbackID = Guid.NewGuid();
             dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+            dataObject.ExecutingUser = executingUser;
             dataObject.ExecutionOriginDescription = "xxx";
             dataObject.ForceDeleteAtNextNativeActivityCleanup = true;
             dataObject.IsDataListScoped = false;
@@ -320,6 +322,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsSubExecution,clonedObject.IsSubExecution);
             Assert.AreEqual(dataObject.WebUrl,clonedObject.WebUrl);
             Assert.AreEqual(dataObject.QueryString,clonedObject.QueryString);
+            Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
         }
 
         #region Debug Mode Test
@@ -664,7 +667,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), mergeIDOut.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Union.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.Never.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), mergeIDIn.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Union.ToString());

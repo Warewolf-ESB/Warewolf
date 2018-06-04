@@ -225,7 +225,7 @@ Version History will also be deleted.</value>
   <data name="CloseHeader" xml:space="preserve">
     <value>Unsaved changes</value>
   </data>
-    <data name="Unsaved_Changes" xml:space="preserve">
+  <data name="Unsaved_Changes" xml:space="preserve">
     <value>Your changes have not been saved.
 Would you like to save? 
 -----------------------------------------------------------------
@@ -404,5 +404,8 @@ You need Administrator permission.</value>
     <value>There are duplicate server permissions, 
     i.e. Server permissions have been setup up with the same group twice. 
     Please clear the duplicates before saving.</value>
+  </data>
+  <data name="SaveSettingsInvalidPermissionEntry" xml:space="preserve">
+    <value>To save a resource persmission, you must have Resource Name and Windows group entered</value>
   </data>
 </root>

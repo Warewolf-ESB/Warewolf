@@ -94,20 +94,14 @@ namespace Dev2.Activities.AttachedProperties
             dp.SetValue(BindPassword, value);
         }
 
-        public static bool GetBindPassword(DependencyObject dp)
-        {
-            return (bool)dp.GetValue(BindPassword);
-        }
+        public static bool GetBindPassword(DependencyObject dp) => (bool)dp.GetValue(BindPassword);
 
         public static void SetBoundPassword(DependencyObject dp, string value)
         {
             dp.SetValue(BoundPassword, value);
         }
 
-        static bool GetUpdatingPassword(DependencyObject dp)
-        {
-            return (bool)dp.GetValue(UpdatingPassword);
-        }
+        static bool GetUpdatingPassword(DependencyObject dp) => (bool)dp.GetValue(UpdatingPassword);
 
         static void SetUpdatingPassword(DependencyObject dp, bool value)
         {

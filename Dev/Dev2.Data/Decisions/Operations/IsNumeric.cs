@@ -18,15 +18,8 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public class IsNumeric : IDecisionOperation
     {
-        public bool Invoke(string[] cols)
-        {
-            return cols[0].IsNumeric();
-        }
+        public bool Invoke(string[] cols) => cols[0].IsNumeric();
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsNumeric;
-        }
-
+        public Enum HandlesType() => enDecisionType.IsNumeric;
     }
 }
