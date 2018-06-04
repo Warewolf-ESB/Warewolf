@@ -16,7 +16,7 @@ Scenario: Schedule with history
 	  When the "ScheduleWithHistory" is executed "1" times
 	  Then the Schedule task has "NO" error
 	  Then the schedule status is "Error"
-	  And "ScheduleWithHistory" has "2" row of history	   
+	  And "ScheduleWithHistory" has "2" row of history   
 
 @Scheduler
 Scenario: Creating task with schedule statud disabled

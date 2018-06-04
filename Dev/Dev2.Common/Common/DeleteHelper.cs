@@ -10,12 +10,16 @@
 
 using System;
 using System.IO;
-
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Common.Common
 {
     public static class DeleteHelper
     {
+        public static IDirectoryHelper DirectoryHelperInstance()
+        {
+            return new DirectoryHelper();
+        }
         public static bool Delete(string path)
         {
             if (path == null)
@@ -28,7 +32,7 @@ namespace Dev2.Common.Common
             // directory
             if (IsDirectory(path))
             {
-                DirectoryHelper.CleanUp(path);
+                DirectoryHelperInstance().CleanUp(path);
                 return true;
             }
 

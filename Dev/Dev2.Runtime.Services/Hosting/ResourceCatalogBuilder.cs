@@ -21,6 +21,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -86,7 +87,7 @@ namespace Dev2.Runtime.Hosting
                 UpdateExtensions(_convertToBiteExtension);
             }
         }
-
+       
         private void BuildCatalogFromWorkspace(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
         {
             foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
@@ -95,8 +96,8 @@ namespace Dev2.Runtime.Hosting
                 {
                     continue;
                 }
-
-                var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
+                var dir = new DirectoryHelper();
+                var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
                 foreach (var file in files)
                 {
 

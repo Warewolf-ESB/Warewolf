@@ -93,6 +93,7 @@ namespace Warewolf.Studio.ViewModels
         
         public IServiceTestModel Clone() => this;
         public void SetItem(IServiceTestModel model) => throw new NotImplementedException();
+        public void ResetOldTestName() => throw new NotImplementedException();
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => throw new NotImplementedException();
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType) => throw new NotImplementedException();
 
