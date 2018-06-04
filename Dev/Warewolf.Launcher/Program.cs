@@ -353,6 +353,7 @@ namespace Warewolf.Launcher
 
             if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
+                build.CleanupServerStudio();
                 build.Startmywarewolfio();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
