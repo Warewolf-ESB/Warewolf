@@ -71,7 +71,7 @@ namespace Dev2.Studio.ViewModels.DataList
      
         private RelayCommand _outputVariableCheckboxCommand;
 
-        private IApplicationTracker _applicationTracker;
+        private readonly IApplicationTracker _applicationTracker;
 
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {

@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IServerRepository _serverRepository;
         bool _canEditServer;
         bool _canCreateServer;
-        private IApplicationTracker _applicationTracker;
+        private readonly IApplicationTracker _applicationTracker;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
             : this(server, aggregator, null, null)

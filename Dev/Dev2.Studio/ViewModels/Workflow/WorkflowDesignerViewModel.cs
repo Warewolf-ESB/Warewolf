@@ -127,10 +127,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
-        IApplicationTracker _applicationTracker;
+        readonly IApplicationTracker _applicationTracker;
         public bool IsStartNodeErrorMessageSet { get; set; }
 
-        public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner = true)
         protected IWorkflowDesignerWrapper _workflowDesignerHelper;
 
         public WorkflowDesignerViewModel(IContextualResourceModel resource)
@@ -147,8 +146,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
         }
-
-        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
 
         WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(eventPublisher, resource, workflowHelper,

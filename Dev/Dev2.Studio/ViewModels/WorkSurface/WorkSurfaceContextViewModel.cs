@@ -68,7 +68,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
 
-        private IApplicationTracker _applicationTracker;
+        private readonly IApplicationTracker _applicationTracker;
 
         #endregion private fields
 

@@ -162,7 +162,7 @@ namespace Dev2.Studio.ViewModels
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
-        private IApplicationTracker _applicationTracker;
+        private readonly IApplicationTracker _applicationTracker;
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
         {
             _createDesigners = createDesigners;
