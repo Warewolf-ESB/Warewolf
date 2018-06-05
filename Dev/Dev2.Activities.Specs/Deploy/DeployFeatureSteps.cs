@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Deploy
         [AfterScenario("Deploy")]
         public void CleanupRemoteDocker()
         {
-            _containerOps.DeleteRemoteContainer();
+            _containerOps.Dispose();
         }
 
         [Given(@"localhost and destination server are connected")]
