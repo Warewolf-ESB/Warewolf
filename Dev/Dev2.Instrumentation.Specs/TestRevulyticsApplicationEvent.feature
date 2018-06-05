@@ -4,7 +4,7 @@
 
 
 @TestApplicationEvent
-Scenario: Test Application event logging in revultytics
+Scenario: Test Application event logging in Revulytics
 	Given I have Application Tracker instance 
 	And I will enable application tracking
 	When I call the track event method with event category and event name

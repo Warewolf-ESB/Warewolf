@@ -64,11 +64,11 @@ namespace Dev2.Instrumentation.Specs
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Test Application event logging in revultytics")]
+        [NUnit.Framework.DescriptionAttribute("Test Application event logging in Revulytics")]
         [NUnit.Framework.CategoryAttribute("TestApplicationEvent")]
-        public virtual void TestApplicationEventLoggingInRevultytics()
+        public virtual void TestApplicationEventLoggingInRevulytics()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Application event logging in revultytics", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Application event logging in Revulytics", new string[] {
                         "TestApplicationEvent"});
 #line 7
 this.ScenarioSetup(scenarioInfo);

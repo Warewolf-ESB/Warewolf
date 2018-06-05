@@ -65,11 +65,11 @@ namespace Dev2.Instrumentation.Specs
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("TestCustomApplicationEvent")]
+        [NUnit.Framework.DescriptionAttribute("Test Revulytics Custom Application Event")]
         [NUnit.Framework.CategoryAttribute("TestCustomEvenTracking")]
-        public virtual void TestCustomApplicationEvent()
+        public virtual void TestRevulyticsCustomApplicationEvent()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TestCustomApplicationEvent", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Revulytics Custom Application Event", new string[] {
                         "TestCustomEvenTracking"});
 #line 6
 this.ScenarioSetup(scenarioInfo);

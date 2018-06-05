@@ -77,7 +77,7 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTracker();
             var configResult = tracker.CreateRevulyticsConfig();
-            Assert.AreEqual(configResult, RUIResult.ok, "Revultyics config created");
+            Assert.AreEqual(configResult, RUIResult.ok, "Revulytics config not created");
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Dev2.Instrumentation.Tests
         }
 
         /// <summary>
-        /// Revultyics config must be created and sdk must be started before logging any event.
+        /// Revulytics config must be created and sdk must be started before logging any event.
         /// This Test will check the status of revultics with correct config provided.
         /// The outcome must be running to validate the test case.
         /// </summary>
@@ -208,7 +208,7 @@ namespace Dev2.Instrumentation.Tests
 
         }
         /// <summary>
-        /// Revultyics config must be created and sdk must be started before logging any event.
+        /// Revulytics config must be created and sdk must be started before logging any event.
         /// This Test will check the status of revultics config creation with 
         /// in correct config provided.
         /// </summary>
@@ -249,7 +249,7 @@ namespace Dev2.Instrumentation.Tests
         }
 
         /// <summary>
-        /// Revultyics logging must be stopped once application closed.
+        /// Revulytics logging must be stopped once application closed.
         /// This Test will check the status of revultics logging to stopped.
         /// </summary>
         [TestMethod()]
@@ -264,7 +264,7 @@ namespace Dev2.Instrumentation.Tests
         }
 
         /// <summary>
-        /// Revultyics logging must be stopped once application closed.
+        /// Revulytics logging must be stopped once application closed.
         /// This Test will ensure exception is handled.
         /// </summary>
         [TestMethod()]
