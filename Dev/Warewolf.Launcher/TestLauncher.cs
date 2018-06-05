@@ -257,7 +257,14 @@ namespace Warewolf.Launcher
             process.Start();
 
             //Delete CI Remote Container
-            ciRemoteContainerLauncher.Dispose();
+            try
+            {
+                ciRemoteContainerLauncher.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
+            }
 
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
@@ -300,11 +307,11 @@ namespace Warewolf.Launcher
         {
             try
             {
-                new WarewolfServerContainerLauncher("TST-CI-REMOTE", "localhost");
+                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("TST-CI-REMOTE", "localhost");
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Failed to start local CI Remote server container.\n" + e.Message);
+                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message);
             }
         }
 

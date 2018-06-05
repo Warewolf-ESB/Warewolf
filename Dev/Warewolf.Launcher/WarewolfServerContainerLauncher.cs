@@ -74,6 +74,7 @@ namespace Warewolf.Launcher
 
         void Pull()
         {
+            Console.Write("Pulling warewolfserver/warewolfserver:latest to " + _remoteDockerApi);
             var url = "http://" + _remoteDockerApi + ":2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag=latest";
             using (var client = new HttpClient())
             {
