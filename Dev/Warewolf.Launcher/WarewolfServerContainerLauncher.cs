@@ -24,7 +24,7 @@ namespace Warewolf.Launcher
         string StartWarewolfServerContainer(string hostname)
         {
             Pull();
-            CreateContainer();
+            CreateContainer(hostname);
             StartContainer();
             if (hostname == "")
             {
@@ -74,7 +74,7 @@ namespace Warewolf.Launcher
 
         void Pull()
         {
-            Console.Write("Pulling warewolfserver/warewolfserver:latest to " + _remoteDockerApi);
+            Console.WriteLine("Pulling warewolfserver/warewolfserver:latest to " + _remoteDockerApi);
             var url = "http://" + _remoteDockerApi + ":2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag=latest";
             using (var client = new HttpClient())
             {
@@ -136,7 +136,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.Write("Started Remote Warewolf Server. " + reader.ReadToEnd());
+                        Console.Write($"Started Warewolf Server Container on {_remoteDockerApi}. " + reader.ReadToEnd());
                     }
                 }
             }
@@ -194,7 +194,14 @@ namespace Warewolf.Launcher
             }
             else
             {
-                throw new HttpRequestException("Error parsing for image ID. " + responseText);
+                if (responseText.Contains("Status: Image is up to date for warewolfserver/warewolfserver:latest"))
+                {
+                    return "warewolfserver/warewolfserver";
+                }
+                else
+                {
+                    throw new HttpRequestException("Error parsing for image ID. " + responseText);
+                }
             }
         }
 
