@@ -281,7 +281,7 @@ namespace Warewolf.Launcher
                     //Re-try Failures
                     for (var count = 0; count < build.RetryCount; count++)
                     {
-                        build.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                        build.RetryTestFailures(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
                     }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
@@ -353,6 +353,7 @@ namespace Warewolf.Launcher
 
             if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
+                build.CleanupServerStudio();
                 build.Startmywarewolfio();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
