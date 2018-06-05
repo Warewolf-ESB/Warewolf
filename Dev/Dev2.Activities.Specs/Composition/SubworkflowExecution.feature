@@ -18,13 +18,13 @@ Scenario: Executing mySql For Xml testing workflow base
 	  |                     |
 	  | [[Result]] = Passed |
 	  
-Scenario: Executing mySql For Xml With multiple Rows
+Scenario: Executing For Xml With multiple Rows
 	  Given I have a workflow "For Xml multiple rows output"
-	  And "For Xml multiple rows output" contains "TestmySqlReturningMultipleOutputXml" from server "localhost" with mapping as
+	  And "For Xml multiple rows output" contains "TestSqlServerReturningMultipleOutputXml" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "For Xml multiple rows output" is executed
 	  Then the workflow execution has "NO" error
-	  And the "TestmySqlReturningMultipleOutputXml" in Workflow "TestmySqlReturningMultipleOutputXml" debug outputs as
+	  And the "TestSqlServerReturningMultipleOutputXml" in Workflow "TestSqlServerReturningMultipleOutputXml" debug outputs as
 	  |                     |
 	  | [[Result]] = Passed |
 

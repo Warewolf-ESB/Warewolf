@@ -132,12 +132,12 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing mySql For Xml With multiple Rows")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing For Xml With multiple Rows")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SubworkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SubworkflowExecution")]
-        public virtual void ExecutingMySqlForXmlWithMultipleRows()
+        public virtual void ExecutingForXmlWithMultipleRows()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing mySql For Xml With multiple Rows", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing For Xml With multiple Rows", ((string[])(null)));
 #line 21
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -151,8 +151,8 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 23
-   testRunner.And("\"For Xml multiple rows output\" contains \"TestmySqlReturningMultipleOutputXml\" fro" +
-                    "m server \"localhost\" with mapping as", ((string)(null)), table3, "And ");
+   testRunner.And("\"For Xml multiple rows output\" contains \"TestSqlServerReturningMultipleOutputXml\"" +
+                    " from server \"localhost\" with mapping as", ((string)(null)), table3, "And ");
 #line 25
    testRunner.When("\"For Xml multiple rows output\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
@@ -163,8 +163,8 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "[[Result]] = Passed"});
 #line 27
-   testRunner.And("the \"TestmySqlReturningMultipleOutputXml\" in Workflow \"TestmySqlReturningMultiple" +
-                    "OutputXml\" debug outputs as", ((string)(null)), table4, "And ");
+   testRunner.And("the \"TestSqlServerReturningMultipleOutputXml\" in Workflow \"TestSqlServerReturning" +
+                    "MultipleOutputXml\" debug outputs as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
