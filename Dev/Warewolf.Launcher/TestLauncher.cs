@@ -768,12 +768,12 @@ namespace Warewolf.Launcher
                     }
                 }
                 originalTrxContent.Save(originalResults);
+                File.Delete(retryResults);
             }
             else
             {
                 Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at " + retryResults);
             }
-            File.Delete(retryResults);
         }
 
         void MoveScreenRecordingsToTestResults()
