@@ -386,7 +386,7 @@ namespace Warewolf.Launcher
                                 {
                                     foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
                                     {
-                                        if (TestDefinition.Name == TestResult.Attributes["TestName"].InnerText)
+                                        if (TestResult.Attributes["TestName"] != null && TestDefinition.Name == TestResult.Attributes["TestName"].InnerText)
                                         {
                                             PlayList += "<Add Test=\"" + TestDefinition.Attributes["ClassName"] + "." + TestDefinition.Name + "\" />";
                                         }
