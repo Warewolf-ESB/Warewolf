@@ -83,12 +83,6 @@
     <Compile Include="TestEnableRevulyticsTrackingSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRevulyticsApplicationEventTestSteps.cs" />
-    <Compile Include="TestRevulyticsConfig.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestRevulyticsConfig.feature</DependentUpon>
-    </Compile>
-    <Compile Include="TestRevulyticsConfigSteps.cs" />
     <Compile Include="TestRevulyticsApplicationEvent.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,10 +105,6 @@
     <None Include="TestEnableRevulyticsTracking.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>TestEnableRevulyticsTracking.feature.cs</LastGenOutput>
-    </None>
-    <None Include="TestRevulyticsConfig.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>TestRevulyticsConfig.feature.cs</LastGenOutput>
     </None>
     <None Include="TestRevulyticsApplicationEvent.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

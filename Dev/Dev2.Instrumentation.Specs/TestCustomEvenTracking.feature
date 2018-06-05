@@ -3,7 +3,7 @@
  of revulytics logging
 
 @TestCustomEvenTracking
-Scenario:TestCustomApplicationEvent
+Scenario: Test Revulytics Custom Application Event
 
 	Given I have application Tracker instance 
 	And I will enable application tracking by calling method
