@@ -686,8 +686,41 @@ namespace Warewolf.Launcher
                                 {
                                     OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
                                 }
-                                XmlElement testChildElement = (XmlElement)OriginalTestResult;
-                                testChildElement.IsEmpty = true;
+                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
+                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
+                                if (newOutputNode != null)
+                                {
+                                    if (originalOutputNode != null)
+                                    {
+                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
+                                        if (originalStdErrNode != null)
+                                        {
+                                            originalOutputNode.RemoveChild(originalStdErrNode);
+                                        }
+                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
+                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
+                                        if (newStdOutNode != null)
+                                        {
+                                            if (originalStdOutNode != null)
+                                            {
+                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
+                                            }
+                                            else
+                                            {
+                                                originalOutputNode.AppendChild(newStdOutNode);
+                                            }
+                                        }
+                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
+                                        if (originalErrorInfoNode != null)
+                                        {
+                                            originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        OriginalTestResult.AppendChild(newOutputNode);
+                                    }
+                                }
                             }
                         }
                         var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters");
