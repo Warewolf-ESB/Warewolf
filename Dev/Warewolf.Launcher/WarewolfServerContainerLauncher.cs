@@ -8,32 +8,37 @@ namespace Warewolf.Launcher
 {
     public class WarewolfServerContainerLauncher : IDisposable
     {
-        public readonly string _remoteDockerApi;
-        public string _remoteContainerID = null;
-        public string _remoteImageID = null;
-        public string _hostname;
-        public string _ip;
+        readonly string _remoteDockerApi;
+        string _remoteContainerID = null;
+        string _remoteImageID = null;
+        public string Hostname;
+        public string IP;
 
         public WarewolfServerContainerLauncher(string hostname = "", string remoteDockerApi = "localhost")
         {
             _remoteDockerApi = remoteDockerApi;
-            _hostname = hostname;            
+            Hostname = hostname;
             CheckDockerRemoteApiVersion();
-            _ip = StartWarewolfServerContainer(hostname);
+            StartWarewolfServerContainer();
         }
 
-        string StartWarewolfServerContainer(string hostname)
+        void StartWarewolfServerContainer()
         {
             Pull();
-            CreateContainer(hostname);
+            CreateContainer();
             StartContainer();
-            if (hostname == "")
+            InspectContainer();
+        }
+
+        void InspectContainer()
+        {
+            if (Hostname == "")
             {
-                return GetContainerHostname();
+                GetContainerHostname();
             }
             else
             {
-                return GetContainerIP();
+                GetContainerIP();
             }
         }
 
@@ -96,7 +101,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        string GetContainerHostname()
+        void GetContainerHostname()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/json";
             using (var client = new HttpClient())
@@ -112,13 +117,13 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        return ParseForHostname(reader.ReadToEnd());
+                        Hostname = ParseForHostname(reader.ReadToEnd());
                     }
                 }
             }
         }
 
-        string GetContainerIP()
+        void GetContainerIP()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/json";
             using (var client = new HttpClient())
@@ -134,7 +139,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        return ParseForIP(reader.ReadToEnd());
+                        IP = ParseForIP(reader.ReadToEnd());
                     }
                 }
             }
@@ -165,11 +170,11 @@ namespace Warewolf.Launcher
             }
         }
 
-        void CreateContainer(string hostname = "")
+        void CreateContainer()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/create";
             HttpContent containerContent;
-            if (hostname == "")
+            if (Hostname == "")
             {
                 containerContent = new StringContent(@"
 {
@@ -181,7 +186,7 @@ namespace Warewolf.Launcher
             {
                 containerContent = new StringContent(@"
 {
-    ""Hostname"": """ + hostname + @""",
+    ""Hostname"": """ + Hostname + @""",
      ""Image"":""" + _remoteImageID + @"""
 }
 ");

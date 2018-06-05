@@ -265,6 +265,10 @@ namespace Warewolf.Launcher
             {
                 Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
             }
+            finally
+            {
+                UndoCIRemoteOverloading();
+            }
 
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
@@ -308,11 +312,42 @@ namespace Warewolf.Launcher
             try
             {
                 ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("TST-CI-REMOTE", "localhost");
+                CIRemoteOverloading(ciRemoteContainerLauncher.IP);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message);
             }
+        }
+
+        void CIRemoteOverloading(string ip)
+        {
+            string tales = $"{ip}    TST-CI-REMOTE";
+            const string hostfile = @"C:\Windows\System32\drivers\etc\hosts";
+            string[] lines = File.ReadAllLines(hostfile);
+
+            if (lines.Any(s => s.Contains("TST-CI-REMOTE")))
+            {
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Contains("TST-CI-REMOTE"))
+                    {
+                        lines[i] = tales;
+                    }
+                }
+                File.WriteAllLines(hostfile, lines);
+            }
+            else if (!lines.Contains(tales))
+            {
+                File.AppendAllLines(hostfile, new String[] { tales });
+            }
+        }
+
+        void UndoCIRemoteOverloading()
+        {
+            const string hostfile = @"C:\Windows\System32\drivers\etc\hosts";
+            string[] lines = File.ReadAllLines(hostfile);
+            File.WriteAllLines(hostfile, lines.Where((line)=> { return !line.Contains("TST-CI-REMOTE"); }));
         }
 
         bool WaitForFileUnlock(string FileSpec)
