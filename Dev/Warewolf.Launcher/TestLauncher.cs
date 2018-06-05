@@ -554,7 +554,7 @@ namespace Warewolf.Launcher
             {
                 foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                 {
-                    if ((TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed") || TestResult.ChildNodes.Count > 0)
+                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
                         build.TestList += "," + TestResult.Attributes["testName"].InnerXml;
                     }
@@ -1431,6 +1431,7 @@ namespace Warewolf.Launcher
 
         public string RunTests(TestLauncher build, string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
+            var trxTestResultsFile = "";
             if (File.Exists(TestRunnerPath))
             {
                 if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
@@ -1452,7 +1453,7 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(build, JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    Process.Start(DotCoverRunnerPath).WaitForExit();
+                    trxTestResultsFile = StartTestRunnerProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.CleanupServerStudio(false);
@@ -1461,24 +1462,18 @@ namespace Warewolf.Launcher
                 else
                 {
                     // Run Test Runner Batch File
-                    StartAndWaitFor(TestRunnerPath);
+                    trxTestResultsFile = StartTestRunnerProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.CleanupServerStudio(!build.ApplyDotCover);
                     }
                 }
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart)), !string.IsNullOrEmpty(build.DoStudioStart));
-                var directory = new DirectoryInfo(build.TestsResultsPath);
-                var testResultFiles = directory.GetFiles().Where((filePath) => { return filePath.Name.EndsWith(".trx"); });
-                if (testResultFiles.Count() > 0)
-                {
-                    return testResultFiles.OrderByDescending(f => f.LastWriteTime).First().FullName;
-                }
             }
-            return "";
+            return trxTestResultsFile;
         }
 
-        void StartAndWaitFor(string TestRunnerPath)
+        string StartTestRunnerProcess(string TestRunnerPath)
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -1488,22 +1483,27 @@ namespace Warewolf.Launcher
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             process.Start();
-
+            var trxFilePath = "";
 
             while (!process.StandardOutput.EndOfStream)
             {
-                Console.WriteLine(process.StandardOutput.ReadLine());
+                string testRunLine = process.StandardOutput.ReadLine();
+                Console.WriteLine(testRunLine);
+                if (testRunLine.StartsWith("Results File: "))
+                {
+                    trxFilePath = ParseTrxFilePath(testRunLine);
+                }
             }
 
             process.WaitForExit();
+            return trxFilePath;
         }
 
         string ParseTrxFilePath(string standardOutput)
         {
             const string parseFrom = "Results File: ";
-            const string parseTo = "Total tests:";
             int StartIndex = standardOutput.IndexOf(parseFrom) + parseFrom.Length;
-            return standardOutput.Substring(StartIndex, standardOutput.IndexOf(parseTo));
+            return standardOutput.Substring(StartIndex, standardOutput.Length-StartIndex);
         }
 
         void RecursiveFolderCopy(string sourceDir, string targetDir)
