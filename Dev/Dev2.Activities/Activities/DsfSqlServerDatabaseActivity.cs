@@ -24,6 +24,8 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
+        public int ConnectionTimeout { get; set; }
+        public int CommandTimeout { get; set; }
 
         public string ExecuteActionString { get; set; }
         public DsfSqlServerDatabaseActivity()
@@ -89,6 +91,8 @@ namespace Dev2.Activities
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
             databaseServiceExecution.ProcedureName = ProcedureName;
+            databaseServiceExecution.ConnectionTimeout = ConnectionTimeout;
+            databaseServiceExecution.CommandTimeout = CommandTimeout;
             if (!string.IsNullOrEmpty(ExecuteActionString))
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
@@ -117,30 +121,22 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other)
-                && string.Equals(SourceId.ToString(), other.SourceId.ToString())
-                && string.Equals(ProcedureName, other.ProcedureName) 
-                && string.Equals(ExecuteActionString, other.ExecuteActionString);
+            var eq = base.Equals(other);
+            eq &= string.Equals(SourceId.ToString(), other.SourceId.ToString());
+            eq &= string.Equals(ProcedureName, other.ProcedureName);
+            eq &= ConnectionTimeout == other.ConnectionTimeout;
+            eq &= CommandTimeout == other.CommandTimeout;
+            eq &= string.Equals(ExecuteActionString, other.ExecuteActionString);
+            return eq;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfSqlServerDatabaseActivity instance)
             {
-                return false;
+                return Equals(instance);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfSqlServerDatabaseActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()
@@ -153,6 +149,8 @@ namespace Dev2.Activities
                 {
                     hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
                 }
+                hashCode = (hashCode * 397) ^ ConnectionTimeout;
+                hashCode = (hashCode * 397) ^ CommandTimeout;
                 if (ExecuteActionString != null)
                 {
                     hashCode = (hashCode * 397) ^ (ExecuteActionString.GetHashCode());

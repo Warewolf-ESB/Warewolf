@@ -49,6 +49,8 @@ namespace Dev2.Services.Execution
 
         public string ProcedureName { private get; set; }
         public string SqlQuery { private get; set; }
+        public int ConnectionTimeout { private get; set; }
+        public int CommandTimeout { private get; set; }
 
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
@@ -101,7 +103,7 @@ namespace Dev2.Services.Execution
                     {
                         try
                         {
-                            MssqlSqlExecution(invokeErrors, update);
+                            MssqlSqlExecution(ConnectionTimeout, CommandTimeout, invokeErrors, update);
                             _errorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
@@ -314,22 +316,22 @@ namespace Dev2.Services.Execution
             return result;
         }
 
-        void MssqlSqlExecution(ErrorResultTO errors, int update)
+        void MssqlSqlExecution(int connectionTimeout, int commandTimeout, ErrorResultTO errors, int update)
         {
 
             var connectionBuilder = new ConnectionBuilder();
-            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(30)));
+            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(connectionTimeout)));
             var startTime = Stopwatch.StartNew();
             try
             {
                 connection.Open();
                 if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
                 {
-                    MssqlReadDataForXml(update, startTime, connection);
+                    MssqlReadDataForXml(update, startTime, connection, commandTimeout);
                 }
                 else
                 {
-                    MssqlReadData(errors, update, startTime, connection);
+                    MssqlReadData(errors, update, startTime, connection, commandTimeout);
                 }
             }
             catch (Exception ex)
@@ -344,13 +346,13 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection)
+        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection, int commandTimeout)
         {
             using (SqlTransaction dbTransaction = connection.BeginTransaction())
             {
                 try
                 {
-                    using (var cmd = MssqlCreateCommand(connection, GetSqlParameters()))
+                    using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
                     {
                         cmd.Transaction = dbTransaction;
                         using (var reader = cmd.ExecuteReader())
@@ -377,13 +379,13 @@ namespace Dev2.Services.Execution
             }
         }
 
-        bool MssqlReadDataForXml(int update, Stopwatch startTime, SqlConnection connection)
+        bool MssqlReadDataForXml(int update, Stopwatch startTime, SqlConnection connection, int commandTimeout)
         {
             var xmlResults = false;
             var dbTransaction = connection.BeginTransaction();
             try
             {
-                using (var cmd = MssqlCreateCommand(connection, GetSqlParameters()))
+                using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
                 {
                     cmd.Transaction = dbTransaction;
                     using (var reader = cmd.ExecuteXmlReader())
@@ -435,7 +437,7 @@ namespace Dev2.Services.Execution
             return xmlResults;
         }
 
-        SqlCommand MssqlCreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        SqlCommand MssqlCreateCommand(SqlConnection connection, int commandTimeout, List<SqlParameter> parameters)
         {
             var cmd = connection.CreateCommand();
             foreach (var item in parameters)
@@ -444,6 +446,17 @@ namespace Dev2.Services.Execution
             }
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = ProcedureName;
+            if (commandTimeout <= 0)
+            {
+                if (commandTimeout == 0)
+                {
+                    Dev2Logger.Warn("mssql command timeout is set to wait indefinitely", GlobalConstants.WarewolfWarn);
+                } else
+                {
+                    Dev2Logger.Warn("mssql command timeout is set below 0", GlobalConstants.WarewolfWarn);
+                }
+            }
+            cmd.CommandTimeout = commandTimeout;
             return cmd;
         }
 
