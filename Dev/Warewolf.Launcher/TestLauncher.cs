@@ -57,6 +57,7 @@ namespace Warewolf.Launcher
 
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
+        WarewolfServerContainerLauncher ciRemoteContainerLauncher;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -255,6 +256,9 @@ namespace Warewolf.Launcher
             process.StartInfo.Arguments = "/im \"IEDriverServer.exe\" /f";
             process.Start();
 
+            //Delete CI Remote Container
+            ciRemoteContainerLauncher.Dispose();
+
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
             {
@@ -296,7 +300,7 @@ namespace Warewolf.Launcher
         {
             try
             {
-                new RemoteContainerLauncher("TST-CI-REMOTE", "localhost");
+                new WarewolfServerContainerLauncher("TST-CI-REMOTE", "localhost");
             }
             catch (HttpRequestException e)
             {
