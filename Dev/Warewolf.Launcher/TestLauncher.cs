@@ -723,7 +723,7 @@ namespace Warewolf.Launcher
                                 }
                             }
                         }
-                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters");
+                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", originalNamespaceManager);
                         if (countersNodes.Count > 0)
                         {
                             var countersNode = countersNodes.Item(0);
@@ -731,7 +731,7 @@ namespace Warewolf.Launcher
                             var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
                             if (--failuresBefore <= 0)
                             {
-                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary");
+                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", originalNamespaceManager);
                                 if (resultsSummaryNodes.Count > 0)
                                 {
                                     var resultsSummaryNode = resultsSummaryNodes.Item(0);
