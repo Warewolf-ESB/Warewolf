@@ -695,7 +695,11 @@ namespace Warewolf.Launcher
                                         XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
                                         if (originalStdErrNode != null)
                                         {
-                                            originalOutputNode.RemoveChild(originalStdErrNode);
+                                            try
+                                            {
+                                                originalOutputNode.RemoveChild(originalStdErrNode);
+                                            }
+                                            catch (ArgumentException) { }
                                         }
                                         XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
                                         XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
@@ -713,7 +717,11 @@ namespace Warewolf.Launcher
                                         XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
                                         if (originalErrorInfoNode != null)
                                         {
-                                            originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                            try
+                                            {
+                                                originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                            }
+                                            catch (ArgumentException) { }
                                         }
                                     }
                                     else
