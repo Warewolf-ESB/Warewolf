@@ -484,7 +484,7 @@ namespace Warewolf.Launcher
             {
                 string serverLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log");
                 WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(serverLogFile, $"{JobName} Server.log");
+                MoveFileToTestResults(serverLogFile, $"{JobName} Server\\Server.log");
 
                 string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
                 WaitForFileUnlock(serverLogFile);
