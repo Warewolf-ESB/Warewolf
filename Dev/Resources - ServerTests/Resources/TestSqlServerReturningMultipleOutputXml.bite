@@ -1,4 +1,3 @@
-
 <Service ID="8a94ec40-bbb1-4933-883b-3bcbe279bd3d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestSqlServerReturningMultipleOutputXml" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6729.27797">
   <DisplayName>TestSqlServerReturningMultipleOutputXml</DisplayName>
   <Category>TestSqlServerReturningMultipleOutputXml</Category>
