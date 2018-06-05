@@ -12,7 +12,7 @@ namespace Dev2.Services.Sql
             return _sqlConnectionWrapper;
         }
 
-        static public string ConnectionString(string connectionString)
+        public string ConnectionString(string connectionString)
         {
             GetSqlConnectionWrapper(connectionString);
             return _sqlConnectionWrapper.ActualConnectionString;
