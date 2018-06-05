@@ -98,7 +98,7 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container Launcher.cs" />
+    <Compile Include="ContainerLauncher.cs" />
     <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
