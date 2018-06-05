@@ -728,6 +728,7 @@ namespace Warewolf.Launcher
                         {
                             var countersNode = countersNodes.Item(0);
                             var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
+                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
                             if (--failuresBefore <= 0)
                             {
                                 var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary");
@@ -738,7 +739,6 @@ namespace Warewolf.Launcher
                                 }
                             }
                             countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
                             countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
                         }
                     }
