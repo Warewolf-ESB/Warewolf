@@ -530,7 +530,7 @@ namespace Warewolf.Launcher
             {
                 foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                 {
-                    if ((TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed") || TestResult.ChildNodes.Count > 0)
+                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
                         build.TestList += "," + TestResult.Attributes["testName"].InnerXml;
                     }
@@ -1453,7 +1453,7 @@ namespace Warewolf.Launcher
             return "";
         }
 
-        void StartAndWaitFor(string TestRunnerPath)
+        string StartAndWaitFor(string TestRunnerPath)
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -1463,22 +1463,28 @@ namespace Warewolf.Launcher
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             process.Start();
-
+            var trxFilePath = "";
 
             while (!process.StandardOutput.EndOfStream)
             {
-                Console.WriteLine(process.StandardOutput.ReadLine());
+                string testRunLine = process.StandardOutput.ReadLine();
+                Console.WriteLine(testRunLine);
+                if (testRunLine.StartsWith("Results File: "))
+                {
+                    trxFilePath = ParseTrxFilePath(testRunLine);
+                }
             }
 
             process.WaitForExit();
+            Console.WriteLine("Launcher got a trx results file for that last run as " + trxFilePath);
+            return trxFilePath;
         }
 
         string ParseTrxFilePath(string standardOutput)
         {
             const string parseFrom = "Results File: ";
-            const string parseTo = "Total tests:";
             int StartIndex = standardOutput.IndexOf(parseFrom) + parseFrom.Length;
-            return standardOutput.Substring(StartIndex, standardOutput.IndexOf(parseTo));
+            return standardOutput.Substring(StartIndex, standardOutput.Length-StartIndex);
         }
 
         void RecursiveFolderCopy(string sourceDir, string targetDir)
