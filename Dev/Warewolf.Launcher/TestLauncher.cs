@@ -658,7 +658,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
-                                                originalErrorInfoNode.AppendChild(newErrorInfoNode);
+                                                originalOutputNode.AppendChild(newErrorInfoNode);
                                             }
                                         }
                                     }
