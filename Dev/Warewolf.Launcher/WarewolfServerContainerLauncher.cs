@@ -12,13 +12,14 @@ namespace Warewolf.Launcher
         public string _remoteContainerID = null;
         public string _remoteImageID = null;
         public string _hostname;
+        public string _ip;
 
         public WarewolfServerContainerLauncher(string hostname = "", string remoteDockerApi = "localhost")
         {
             _remoteDockerApi = remoteDockerApi;
-            _hostname = hostname;
-            GetDockerRemoteApiVersion();
-            StartWarewolfServerContainer(hostname);
+            _hostname = hostname;            
+            CheckDockerRemoteApiVersion();
+            _ip = StartWarewolfServerContainer(hostname);
         }
 
         string StartWarewolfServerContainer(string hostname)
@@ -32,7 +33,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                return hostname;
+                return GetContainerIP();
             }
         }
 
@@ -50,7 +51,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        string GetDockerRemoteApiVersion()
+        string CheckDockerRemoteApiVersion()
         {
             var url = "http://" + _remoteDockerApi + ":2375/version";
             using (var client = new HttpClient())
@@ -112,6 +113,28 @@ namespace Warewolf.Launcher
                     else
                     {
                         return ParseForHostname(reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        string GetContainerIP()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/json";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.GetAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error getting container hostname. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        return ParseForIP(reader.ReadToEnd());
                     }
                 }
             }
@@ -209,7 +232,6 @@ namespace Warewolf.Launcher
         {
             if (responseText.Length > 7 + 64)
             {
-                Console.Write("Create Container: " + responseText);
                 return responseText.Substring(7, 64);
             }
             else
@@ -223,8 +245,26 @@ namespace Warewolf.Launcher
             var parseAround = "\"Hostname\":\"";
             if (responseText.Contains(parseAround))
             {
-                Console.Write("Get Hostname: " + responseText);
-                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+                string containerHostname = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+                Console.Write("Got Container Hostname: " + containerHostname);
+                return containerHostname;
+            }
+            else
+            {
+                throw new HttpRequestException("Error getting container hostname. " + responseText);
+            }
+        }
+
+        string ParseForIP(string responseText)
+        {
+            var parseFrom = "\"IPAddress\":\"";
+            var parseTo = "\",";
+            if (responseText.Contains(parseFrom))
+            {
+                int startIndex = responseText.IndexOf(parseFrom) + parseFrom.Length;
+                string containerIP = responseText.Substring(startIndex, responseText.IndexOf(parseTo) - startIndex);
+                Console.Write("Got Container IP: " + containerIP);
+                return containerIP;
             }
             else
             {
