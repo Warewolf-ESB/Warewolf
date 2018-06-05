@@ -56,6 +56,7 @@ namespace Warewolf.Launcher
         public bool ApplyDotCover;
 
         public Dictionary<string, Tuple<string, string>> JobSpecs;
+        public string WebsPath;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -132,15 +133,61 @@ namespace Warewolf.Launcher
             if (File.Exists(SourceFilePath))
             {
                 CopyOnWrite(DestinationFilePath);
-                Console.WriteLine("Moving \"" + SourceFilePath + "\" to \"" + DestinationFilePath + "\"");
+                Console.WriteLine($"Moving \"{SourceFilePath}\" to \"{DestinationFilePath}\"");
                 File.Move(SourceFilePath, DestinationFilePath);
+            }
+        }
+
+        void MoveFolderToTestResults(string SourceFolderPath, string DestinationFolderName)
+        {
+            var DestinationFolderPath = Path.Combine(TestsResultsPath, DestinationFolderName);
+            if (Directory.Exists(SourceFolderPath))
+            {
+                CopyOnWrite(DestinationFolderPath);
+                Console.WriteLine($"Moving \"{SourceFolderPath}\" to \"{DestinationFolderPath}\"");
+                Directory.Move(SourceFolderPath, DestinationFolderPath);
             }
         }
 
         public void CleanupServerStudio(bool Force = true)
         {
+            //Find Webs
+            WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
+            Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
+            if (!(File.Exists(WebsPath)))
+            {
+                if (string.IsNullOrEmpty(ServerPath) || !File.Exists(ServerPath))
+                {
+                    ServerPath = FindWarewolfServerExe();
+                }
+                WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
+            }
+
+            //Find Studio
+            if (string.IsNullOrEmpty(StudioPath) || !(File.Exists(StudioPath)))
+            {
+                StudioPath = FindFileInParent(StudioPathSpecs);
+                if (StudioPath.EndsWith(".zip"))
+                {
+                    ZipFile.ExtractToDirectory(StudioPath, TestsResultsPath + "\\Studio");
+                    StudioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
+                }
+                if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath)))
+                {
+                    throw new Exception("Studio path not found: " + StudioPath);
+                }
+            }
+            else
+            {
+                if (StudioPath.StartsWith(".."))
+                {
+                    StudioPath = Path.Combine(Environment.CurrentDirectory, StudioPath);
+                }
+            }
+
             int WaitForCloseTimeout = Force ? 10 : 1800;
             int WaitForCloseRetryCount = Force ? 1 : 10;
+
             //Stop Studio
             Process process = StartProcess("taskkill", "/im \"Warewolf Studio.exe\"");
             var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
@@ -211,13 +258,13 @@ namespace Warewolf.Launcher
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
             {
-                "LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
-                "LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
-                "PROGRAMDATA%\\Warewolf\\Workspaces",
-                "PROGRAMDATA%\\Warewolf\\Server Settings",
-                "PROGRAMDATA%\\Warewolf\\VersionControl",
-                Path.GetDirectoryName(ServerPath) + "\\ServerStarted",
-                Path.GetDirectoryName(StudioPath) + "\\StudioStarted"
+                "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
+                "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
+                "%PROGRAMDATA%\\Warewolf\\Workspaces",
+                "%PROGRAMDATA%\\Warewolf\\Server Settings",
+                "%PROGRAMDATA%\\Warewolf\\VersionControl",
+                Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted"),
+                Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted")
             };
 
             foreach (var FileOrFolder in ToClean)
@@ -229,7 +276,7 @@ namespace Warewolf.Launcher
                 }
                 if (Directory.Exists(ActualPath))
                 {
-                    Directory.Delete(ActualPath);
+                    Directory.Delete(ActualPath, true);
                 }
                 if ((File.Exists(FileOrFolder) || Directory.Exists(FileOrFolder)))
                 {
@@ -241,15 +288,15 @@ namespace Warewolf.Launcher
                 JobName = "Test Run";
             }
 
-            MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Resources"), "Server Resources JobName");
-            MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Tests"), "Server Service Tests JobName");
+            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Resources"), $"{JobName} Server\\Resources");
+            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Tests"), $"{JobName} Server\\Tests");
         }
 
         internal void TryStartLocalCIRemoteContainer()
         {
             try
             {
-                new LocalServerContainerLauncher("TST-CI-REMOTE", "localhost");
+                new RemoteContainerLauncher("TST-CI-REMOTE", "localhost");
             }
             catch (HttpRequestException e)
             {
@@ -271,7 +318,7 @@ namespace Warewolf.Launcher
                 }
                 catch
                 {
-                    Console.WriteLine("Still waiting for " + FileSpec + " file to unlock.");
+                    Console.WriteLine($"Still waiting for {FileSpec} file to unlock.");
                     Thread.Sleep(3000);
                 }
             }
@@ -291,7 +338,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    Console.WriteLine("Still waiting for " + FileSpec + " file to exist.");
+                    Console.WriteLine($"Still waiting for {FileSpec} file to exist.");
                     Thread.Sleep(3000);
                 }
             }
@@ -309,22 +356,22 @@ namespace Warewolf.Launcher
                     CopyOnWrite(LogFilePath + ".report.log");
                     CopyOnWrite(DestinationFilePath + ".dcvr");
                     CopyOnWrite(DestinationFilePath + ".html");
-                    Process.Start(DotCoverPath, "merge /Source=\"" + DotCoverSnapshotsString + "\" /Output=\"" + DestinationFilePath + ".dcvr\" /LogFile=\"" + LogFilePath + ".merge.log\"");
+                    Process.Start(DotCoverPath, $"merge /Source=\"{DotCoverSnapshotsString}\" /Output=\"{DestinationFilePath}.dcvr\" /LogFile=\"{LogFilePath}.merge.log\"");
                 }
                 if (DotCoverSnapshots.Count == 1)
                 {
                     var LoneSnapshot = DotCoverSnapshots[0];
                     if (DotCoverSnapshots.Count == 1 && (File.Exists(LoneSnapshot)))
                     {
-                        Process.Start(DotCoverPath, "report /Source=\"" + LoneSnapshot + "\" /Output=\"" + DestinationFilePath + "\\DotCover Report.html\" /ReportType=HTML /LogFile=\"" + LogFilePath + ".report.log\"");
-                        Console.WriteLine("DotCover report written to " + DestinationFilePath + "\\DotCover Report.html");
+                        Process.Start(DotCoverPath, $"report /Source=\"{LoneSnapshot}\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
+                        Console.WriteLine($"DotCover report written to {DestinationFilePath}\\DotCover Report.html");
                     }
                 }
             }
             if (File.Exists(DestinationFilePath + ".dcvr"))
             {
-                Process.Start(DotCoverPath, "report /Source=\"" + DestinationFilePath + ".dcvr\" /Output=\"" + DestinationFilePath + "\\DotCover Report.html\" /ReportType=HTML /LogFile=\"" + LogFilePath + ".report.log\"");
-                Console.WriteLine("DotCover report written to " + DestinationFilePath + "\\DotCover Report.html");
+                Process.Start(DotCoverPath, $"report /Source=\"{DestinationFilePath}.dcvr\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
+                Console.WriteLine($"DotCover report written to{DestinationFilePath}\\DotCover Report.html");
             }
         }
 
@@ -333,26 +380,28 @@ namespace Warewolf.Launcher
             if (Cleanup != null)
             {
                 //Write failing tests playlist.
-                Console.WriteLine("Writing all test failures in \"" + TestsResultsPath + "\" to a playlist file");
+                Console.WriteLine($"Writing all test failures in \"{TestsResultsPath}\" to a playlist file.");
 
                 var PlayList = "<Playlist Version=\"1.0\">";
                 foreach (var FullTRXFilePath in Directory.GetFiles(TestsResultsPath, "*.trx"))
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
-                    if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0)
+                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
                     {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes)
+                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                         {
                             if (TestResult.Attributes["outcome"].InnerText == "Failed")
                             {
-                                if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes.Count > 0)
+                                if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
                                 {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes)
+                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
                                     {
-                                        if (TestDefinition.ChildNodes.Count > 2 && TestDefinition.ChildNodes.Item(2).Name == TestResult.Attributes["TestName"].InnerText)
+                                        if (TestDefinition.Name == TestResult.Attributes["TestName"].InnerText)
                                         {
-                                            PlayList += "<Add Test=\"" + TestDefinition.ChildNodes.Item(2).Attributes["ClassName"] + "." + TestDefinition.ChildNodes.Item(2).Name + "\" />";
+                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["ClassName"] + "." + TestDefinition.Name + "\" />";
                                         }
                                     }
                                 }
@@ -366,13 +415,16 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["outcome"].InnerText == "Failed")
+                        if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
                         {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["className"].InnerText + "." + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Name + "\" />";
+                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
                         }
                         else
                         {
-                            Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
+                            {
+                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                            }
                         }
                     }
                 }
@@ -380,26 +432,26 @@ namespace Warewolf.Launcher
                 var OutPlaylistPath = $"{TestsResultsPath}\\{JobName} Failures.playlist";
                 CopyOnWrite(OutPlaylistPath);
                 File.WriteAllText(OutPlaylistPath, PlayList);
-                Console.WriteLine("Playlist file written to \"" + OutPlaylistPath + "\".");
+                Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
             }
 
             if (Studio)
             {
-                string studioLogFile = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log");
+                string studioLogFile = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log");
                 WaitForFileUnlock(studioLogFile);
-                MoveFileToTestResults(studioLogFile, "JobName Studio.log");
+                MoveFileToTestResults(studioLogFile, $"{JobName} Studio.log");
             }
             if (Studio && DotCover)
             {
-                var StudioSnapshot = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\dotCover.dcvr");
-                Console.WriteLine("Trying to move Studio coverage snapshot file from " + StudioSnapshot + " to " + TestsResultsPath + "\\" + JobName + " Studio DotCover.dcvr");
+                var StudioSnapshot = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr");
+                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                 var exists = WaitForFileExist(StudioSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(StudioSnapshot);
                     if (!(locked))
                     {
-                        Console.WriteLine("Moving Studio coverage snapshot file from StudioSnapshot to " + TestsResultsPath + "\\JobName Studio DotCover.dcvr");
+                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                         CopyOnWrite($"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                         File.Move(StudioSnapshot, $"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                     }
@@ -410,86 +462,88 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    throw new FileNotFoundException("Studio coverage snapshot not found at " + StudioSnapshot);
+                    throw new FileNotFoundException($"Studio coverage snapshot not found at {StudioSnapshot}");
                 }
-                if (File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\dotCover.log")))
+                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\dotCover.log"), "JobName Studio DotCover.log");
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log"), $"{JobName} Studio DotCover.log");
                 }
             }
             if (Server)
             {
-                string serverLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log");
+                string serverLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log");
                 WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(serverLogFile, "JobName Server.log");
+                MoveFileToTestResults(serverLogFile, $"{JobName} Server.log");
 
-                string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.log");
+                string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
                 WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(myWarewolfIoLogFile, "JobName my.warewolf.io Server.log");
+                MoveFileToTestResults(myWarewolfIoLogFile, $"{JobName} my.warewolf.io Server.log");
 
-                string myWarewolfIoErrorsLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.errors.log");
+                string myWarewolfIoErrorsLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log");
                 WaitForFileUnlock(myWarewolfIoErrorsLogFile);
-                MoveFileToTestResults(myWarewolfIoErrorsLogFile, "JobName my.warewolf.io Server Errors.log");
+                MoveFileToTestResults(myWarewolfIoErrorsLogFile, $"{JobName} my.warewolf.io Server Errors.log");
             }
             if (Server && DotCover)
             {
-                var ServerSnapshot = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\dotCover.dcvr");
-                Console.WriteLine("Trying to move Server coverage snapshot file from " + ServerSnapshot + " to " + TestsResultsPath + "\\" + JobName + " Server DotCover.dcvr");
+                var ServerSnapshot = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.dcvr");
+                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
                 var exists = WaitForFileExist(ServerSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(ServerSnapshot);
                     if (!locked)
                     {
-                        Console.WriteLine("Moving Server coverage snapshot file from " + ServerSnapshot + " to " + TestsResultsPath + "\\" + JobName + " Server DotCover.dcvr");
-                        MoveFileToTestResults(ServerSnapshot, "JobName Server DotCover.dcvr");
+                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
+                        MoveFileToTestResults(ServerSnapshot, $"{JobName} Server DotCover.dcvr");
                     }
                     else
                     {
                         Console.WriteLine("Server Coverage Snapshot File still locked after retrying for 2 minutes.");
                     }
                 }
-                if (File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\dotCover.log")))
+                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\dotCover.log"), "JobName Server DotCover.log");
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{JobName} Server DotCover.log");
                 }
-                if (File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.log")))
+                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.log"), "JobName my.warewolf.io.log");
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{JobName} my.warewolf.io.log");
                 }
-                if (File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.errors.log")))
+                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.errors.log"), "JobName my.warewolf.io Errors.log");
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{JobName} my.warewolf.io Errors.log");
                 }
             }
             if (Server && Studio && DotCover)
             {
-                MergeDotCoverSnapshots(new List<string> { TestsResultsPath + "\\JobName Server DotCover.dcvr", TestsResultsPath + "\\JobName Studio DotCover.dcvr" }, TestsResultsPath + "\\JobName Merged Server and Studio DotCover", TestsResultsPath + "\\ServerAndStudioDotCoverSnapshot");
+                MergeDotCoverSnapshots(new List<string> { Path.Combine(TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
             }
             if (RecordScreen != null)
             {
                 MoveScreenRecordingsToTestResults();
             }
-            if (File.Exists(TestsResultsPath + "\\..\\Run *.bat"))
+            foreach (var scriptFile in Directory.GetFiles(Path.GetDirectoryName(TestsResultsPath)))
             {
-                foreach (var testRunner in (Directory.GetFiles(TestsResultsPath + "\\..\\Run *.bat")))
+                if (Path.GetFileName(scriptFile).StartsWith("Run ") && Path.GetExtension(scriptFile) == ".bat")
                 {
-                    MoveFileToTestResults(testRunner, Path.GetFileName(testRunner));
+                    MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile));
                 }
             }
         }
 
-        public void RetryOnTestError(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
+        public void RetryTestFailures(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
         {
             WaitForFileUnlock(FullTRXFilePath);
             build.TestList = "";
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
-            if (trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes.Count > 0)
+            var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+            namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
             {
-                foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                 {
-                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
+                    if ((TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed") || TestResult.ChildNodes.Count > 0)
                     {
                         build.TestList += "," + TestResult.Attributes["testName"].InnerXml;
                     }
@@ -497,7 +551,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at " + FullTRXFilePath);
+                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
             }
             string TestRunnerPath;
             if (build.TestList.StartsWith(","))
@@ -532,29 +586,98 @@ namespace Warewolf.Launcher
 
         void MergeRetryResults(string originalResults, string retryResults)
         {
-            XmlDocument trxContent = new XmlDocument();
+            var trxContent = new XmlDocument();
             trxContent.Load(retryResults);
-            if (trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes.Count > 0)
+            var newNamespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+            newNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager).Count > 0)
             {
-                XmlDocument originalTrxContent = new XmlDocument();
+                var originalTrxContent = new XmlDocument();
                 originalTrxContent.Load(originalResults);
-                foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                var originalNamespaceManager = new XmlNamespaceManager(originalTrxContent.NameTable);
+                originalNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager))
                 {
-                    if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
                         {
-                            if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
+                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
-                                if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Count > 0)
+                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
+                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
+                                if (newOutputNode != null)
                                 {
-                                    if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Count > 0)
+                                    if (originalOutputNode != null)
                                     {
-                                        OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText;
+                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
+                                        XmlNode newStdErrNode = newOutputNode.SelectSingleNode("//a:StdErr", newNamespaceManager);
+                                        if (newStdErrNode != null)
+                                        {
+                                            if (originalStdErrNode != null)
+                                            {
+                                                originalStdErrNode.InnerText += "\n" + newStdErrNode.InnerText;
+                                            }
+                                            else
+                                            {
+                                                originalOutputNode.AppendChild(newStdErrNode);
+                                            }
+                                        }
+                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
+                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
+                                        if (newStdOutNode != null)
+                                        {
+                                            if (originalStdOutNode != null)
+                                            {
+                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
+                                            }
+                                            else
+                                            {
+                                                originalOutputNode.AppendChild(newStdOutNode);
+                                            }
+                                        }
+                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
+                                        XmlNode newErrorInfoNode = newOutputNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
+                                        if (newErrorInfoNode != null)
+                                        {
+                                            if (originalErrorInfoNode != null)
+                                            {
+                                                XmlNode originalMessageNode = originalErrorInfoNode.SelectSingleNode("//a:Message", originalNamespaceManager);
+                                                XmlNode newMessageNode = newErrorInfoNode.SelectSingleNode("//a:Message", newNamespaceManager);
+                                                if (newErrorInfoNode != null)
+                                                {
+                                                    if (originalMessageNode != null)
+                                                    {
+                                                        originalMessageNode.InnerText += "\n" + newErrorInfoNode.InnerText;
+                                                    }
+                                                    else
+                                                    {
+                                                        originalMessageNode.AppendChild(newErrorInfoNode);
+                                                    }
+                                                }
+                                                XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("//a:StackTrace", originalNamespaceManager);
+                                                XmlNode newStackTraceNode = newErrorInfoNode.SelectSingleNode("//a:StackTrace", newNamespaceManager);
+                                                if (newStackTraceNode != null)
+                                                {
+                                                    if (originalStackTraceNode != null)
+                                                    {
+                                                        originalStackTraceNode.InnerText += "\n" + newStackTraceNode.InnerText;
+                                                    }
+                                                    else
+                                                    {
+                                                        originalStackTraceNode.AppendChild(newStackTraceNode);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                originalOutputNode.AppendChild(newErrorInfoNode);
+                                            }
+                                        }
                                     }
-                                    if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Count > 1)
+                                    else
                                     {
-                                        OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText;
+                                        OriginalTestResult.AppendChild(newOutputNode);
                                     }
                                 }
                             }
@@ -562,16 +685,74 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
                         {
-                            if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
+                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
-                                OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
-                                foreach (XmlNode testChild in OriginalTestResult.ChildNodes)
+                                if (OriginalTestResult.Attributes["outcome"] == null)
                                 {
-                                    OriginalTestResult.RemoveChild(testChild);
+                                    var newOutcomeAttribute = originalTrxContent.CreateAttribute("outcome");
+                                    newOutcomeAttribute.Value = "Passed";
+                                    OriginalTestResult.Attributes.Append(newOutcomeAttribute);
+                                }
+                                else
+                                {
+                                    OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
+                                }
+                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
+                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
+                                if (newOutputNode != null)
+                                {
+                                    if (originalOutputNode != null)
+                                    {
+                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
+                                        if (originalStdErrNode != null)
+                                        {
+                                            originalOutputNode.RemoveChild(originalStdErrNode);
+                                        }
+                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
+                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
+                                        if (newStdOutNode != null)
+                                        {
+                                            if (originalStdOutNode != null)
+                                            {
+                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
+                                            }
+                                            else
+                                            {
+                                                originalOutputNode.AppendChild(newStdOutNode);
+                                            }
+                                        }
+                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
+                                        if (originalErrorInfoNode != null)
+                                        {
+                                            originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        OriginalTestResult.AppendChild(newOutputNode);
+                                    }
                                 }
                             }
+                        }
+                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters");
+                        if (countersNodes.Count > 0)
+                        {
+                            var countersNode = countersNodes.Item(0);
+                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
+                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
+                            if (--failuresBefore <= 0)
+                            {
+                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary");
+                                if (resultsSummaryNodes.Count > 0)
+                                {
+                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
+                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
+                                }
+                            }
+                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
+                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
                         }
                     }
                 }
@@ -772,8 +953,8 @@ namespace Warewolf.Launcher
         public void StartServer()
         {
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
-            Console.WriteLine("Deploying New resources from " + ServerFolderPath + "\\Resources - " + ResourcesType + "\\*");
-            RecursiveFolderCopy(ServerFolderPath + "\\Resources - " + ResourcesType, Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"));
+            Console.WriteLine($"Deploying New resources from {ServerFolderPath}\\Resources - {ResourcesType}\\*");
+            RecursiveFolderCopy(Path.Combine(ServerFolderPath, $"Resources - {ResourcesType}"), Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"));
             try
             {
                 ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
@@ -812,25 +993,6 @@ namespace Warewolf.Launcher
 
         public void Startmywarewolfio()
         {
-            var WebsPath = "";
-            if (TestsPath.EndsWith("\\"))
-            {
-                WebsPath = TestsPath + "_PublishedWebsites\\Dev2.Web";
-            }
-            else
-            {
-                WebsPath = TestsPath + "\\_PublishedWebsites\\Dev2.Web";
-            }
-            Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
-            if (!(File.Exists(WebsPath)))
-            {
-                if (string.IsNullOrEmpty(ServerPath) || !File.Exists(ServerPath))
-                {
-                    ServerPath = FindWarewolfServerExe();
-                }
-                WebsPath = Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web";
-            }
-            CleanupServerStudio();
             if (Directory.Exists(WebsPath))
             {
                 var IISExpressPath = "C:\\Program Files (x86)\\IIS Express\\iisexpress.exe";
@@ -853,26 +1015,6 @@ namespace Warewolf.Launcher
 
         public void StartStudio()
         {
-            if (string.IsNullOrEmpty(StudioPath) || !(File.Exists(StudioPath)))
-            {
-                StudioPath = FindFileInParent(StudioPathSpecs);
-                if (StudioPath.EndsWith(".zip"))
-                {
-                    ZipFile.ExtractToDirectory(StudioPath, TestsResultsPath + "\\Studio");
-                    StudioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
-                }
-                if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath)))
-                {
-                    throw new Exception("Studio path not found: " + StudioPath);
-                }
-            }
-            else
-            {
-                if (StudioPath.StartsWith(".."))
-                {
-                    StudioPath = Path.Combine(Environment.CurrentDirectory, StudioPath);
-                }
-            }
             if (string.IsNullOrEmpty(StudioPath))
             {
                 throw new FileNotFoundException("Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath");
@@ -1282,6 +1424,7 @@ namespace Warewolf.Launcher
             {
                 if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
+                    build.CleanupServerStudio();
                     build.Startmywarewolfio();
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart))
                     {

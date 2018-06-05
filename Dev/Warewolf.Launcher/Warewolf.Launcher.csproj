@@ -95,13 +95,11 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container Launcher.cs" />
-    <Compile Include="Registry Container Launcher.cs" />
-    <Compile Include="Local Server Container Launcher.cs" />
-    <Compile Include="Job Definitions.cs" />
+    <Compile Include="WarewolfServerContainerLauncher.cs" />
+    <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Test Launcher.cs" />
+    <Compile Include="TestLauncher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

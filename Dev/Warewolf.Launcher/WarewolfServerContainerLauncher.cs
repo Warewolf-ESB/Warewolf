@@ -1,27 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {
-    public class ContainerLauncher
+    class WarewolfServerContainerLauncher
     {
         public readonly string _remoteDockerApi;
         public string _remoteContainerID = null;
         public string _remoteImageID = null;
         public string _hostname;
 
-        public ContainerLauncher(string hostname = "", string remoteDockerApi = "localhost")
+        public WarewolfServerContainerLauncher(string hostname = "", string remoteDockerApi = "localhost")
         {
             _remoteDockerApi = remoteDockerApi;
+            _hostname = hostname;
             GetDockerRemoteApiVersion();
+            StartLocalRegistryContainer(hostname);
         }
 
-        public string GetDockerRemoteApiVersion()
+        string GetDockerRemoteApiVersion()
         {
             var url = "http://" + _remoteDockerApi + ":2375/version";
             using (var client = new HttpClient())
@@ -38,6 +37,43 @@ namespace Warewolf.Launcher
                     else
                     {
                         return reader.ReadToEnd();
+                    }
+                }
+            }
+        }
+
+        public string StartLocalRegistryContainer(string hostname)
+        {
+            Pull();
+            CreateContainer();
+            StartContainer();
+            if (hostname == "")
+            {
+                return GetContainerHostname();
+            }
+            else
+            {
+                return hostname;
+            }
+        }
+
+        void Pull()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag=latest";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(1, 0, 0);
+                var response = client.PostAsync(url, new StringContent("")).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error pulling image. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        _remoteImageID = ParseForImageID(reader.ReadToEnd());
                     }
                 }
             }

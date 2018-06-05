@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Deploy
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
-        static LocalServerContainerLauncher _containerOps = new LocalServerContainerLauncher("", "test-load");
+        static WarewolfServerContainerLauncher _containerOps = new WarewolfServerContainerLauncher("", "test-load");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
