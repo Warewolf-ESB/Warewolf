@@ -365,6 +365,9 @@ namespace Warewolf.Launcher
                         build.StartStudio();
                     }
                 }
+                Console.WriteLine("Press Enter to Shutdown.");
+                Console.ReadKey();
+                build.CleanupServerStudio();
             }
         }
     }
