@@ -19,7 +19,7 @@ namespace Warewolf.UI.Tests.Scheduler
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
-            UIMap.Click_Scheduler_RibbonButton();
+            UIMap.Click_Scheduler_RibbonButton(); 
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "SchedulerNewTask Tab does not exist.");
             //Assert NewScheduleTask Controls
             SchedulerUIMap.Create_Scheduler_Using_Shortcut();
