@@ -17,6 +17,17 @@ Scenario: Executing mySql For Xml testing workflow base
 	  And the "TestmySqlReturningXml" in Workflow "TestmySqlReturningXml" debug outputs as
 	  |                     |
 	  | [[Result]] = Passed |
+	  
+Scenario: Executing For Xml With multiple Rows
+	  Given I have a workflow "For Xml multiple rows output"
+	  And "For Xml multiple rows output" contains "ForXmlWithMultipleRows" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "For Xml multiple rows output" is executed
+	  Then the workflow execution has "NO" error
+	  And the "ForXmlWithMultipleRows" in Workflow "ForXmlWithMultipleRows" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
+
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
