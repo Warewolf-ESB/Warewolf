@@ -251,7 +251,7 @@ namespace Warewolf.Launcher
             if (responseText.Contains(parseAround))
             {
                 string containerHostname = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
-                Console.Write("Got Container Hostname: " + containerHostname);
+                Console.WriteLine("Got Container Hostname: " + containerHostname);
                 return containerHostname;
             }
             else
@@ -267,8 +267,11 @@ namespace Warewolf.Launcher
             if (responseText.Contains(parseFrom))
             {
                 int startIndex = responseText.IndexOf(parseFrom) + parseFrom.Length;
-                string containerIP = responseText.Substring(startIndex, responseText.IndexOf(parseTo) - startIndex);
-                Console.Write("Got Container IP: " + containerIP);
+                int reverseLength = responseText.Length - startIndex;
+                int firstOccurrenceAfterStartIndex = responseText.Substring(startIndex, reverseLength).IndexOf(parseTo);
+                int length = firstOccurrenceAfterStartIndex - startIndex;
+                string containerIP = responseText.Substring(startIndex, length);
+                Console.WriteLine("Got Container IP: " + containerIP);
                 return containerIP;
             }
             else
