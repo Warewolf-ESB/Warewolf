@@ -4,6 +4,16 @@ Feature: SqlServerConnector
 	As a Warewolf User
 	I want to be shown the database service setup
 
+Scenario: Passing Timeouts to SQL Server
+	Given I have a workflow "Test Sql With Timeouts"
+	And "Test Sql With Timeouts" contains "TestSqlExecutesWithTimeouts" from server "localhost" with mapping as
+	     | Input Data or [[Variable]] | Parameter | Empty is Null |
+	When "Test Sql With Timeouts" is executed
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "TestSqlExecutesWithTimeouts" in Workflow "Test Sql With Timeouts" debug outputs appear as
+	  |  |
+	  |  |
+
 Scenario: Opening Saved workflow with SQL Server tool
    Given I open workflow with database connector
 	And Sql Server Source is Enabled
@@ -154,3 +164,23 @@ Scenario: SqlServer backward Compatiblity
       |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
 	When "DataMigration" is executed
 	Then the workflow execution has "NO" error
+
+Scenario: Execute Sql Server With Timeout 
+   Given I have workflow with database connector
+	And Sql Server Source is Enabled
+	And Sql Server Source is "NewSqlServerSource"	
+	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
+	| Input | Value       | Empty is Null |
+	| Prefix | [[Prefix]] | false         |
+	And Validate Sql Server is Enabled
+	And I click Sql Generate Outputs	
+	And I click Test
+	Then Sql Server Outputs appear as
+	| Mapped From | Mapped To                                   | 
+	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
+	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
+	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	When Sql Server is executed
+
