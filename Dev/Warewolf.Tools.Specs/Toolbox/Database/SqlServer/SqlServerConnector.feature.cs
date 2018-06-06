@@ -620,38 +620,27 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("Sql Server Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 173
  testRunner.And("Sql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input",
-                        "Value",
-                        "Empty is Null"});
-            table25.AddRow(new string[] {
-                        "Prefix",
-                        "[[Prefix]]",
-                        "false"});
 #line 174
- testRunner.And("Sql Server Inputs appear as", ((string)(null)), table25, "And ");
-#line 177
  testRunner.And("Validate Sql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 175
  testRunner.And("I click Sql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 176
  testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table26.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "CountryID",
                         "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
-            table26.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 180
- testRunner.Then("Sql Server Outputs appear as", ((string)(null)), table26, "Then ");
-#line 184
+#line 177
+ testRunner.Then("Sql Server Outputs appear as", ((string)(null)), table25, "Then ");
+#line 181
  testRunner.And("Sql Server Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 182
  testRunner.When("Sql Server is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();

@@ -171,9 +171,6 @@ Scenario: Execute Sql Server With Timeout
 	And Sql Server Source is "NewSqlServerSource"	
 	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
 	And Sql Server Inputs Are Enabled
-	And Sql Server Inputs appear as
-	| Input | Value       | Empty is Null |
-	| Prefix | [[Prefix]] | false         |
 	And Validate Sql Server is Enabled
 	And I click Sql Generate Outputs	
 	And I click Test

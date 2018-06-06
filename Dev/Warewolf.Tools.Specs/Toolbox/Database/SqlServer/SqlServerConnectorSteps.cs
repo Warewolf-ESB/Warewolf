@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,11 +11,15 @@ using ActivityUnitTests;
 using Dev2.Activities.Designers.Tests.SqlServer;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Controller;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
@@ -27,18 +32,30 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Studio.ViewModels;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class SQLServerConnectorSteps : BaseActivityUnitTest
+    public class SQLServerConnectorSteps :   RecordSetBases
+    
     {
 
         DbSourceDefinition sqlsource;
         DbAction _importOrderAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getCountriesAction;
+        readonly ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
 
+        public SQLServerConnectorSteps(ScenarioContext scenarioContext)
+           : base(scenarioContext)
+        {
+            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+            _commonSteps = new CommonSteps(_scenarioContext);
+           
+        }
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
         {
@@ -181,49 +198,90 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowNum++;
             }
         }
+        static List<IServiceInput> GetServiceInputs(Table table)
+        {
+            return table.Rows.Select(a => new ServiceInput(a["ParameterName"], a["ParameterValue"]))
+                .Cast<IServiceInput>()
+                .ToList();
+        }
         [Given(@"I have workflow with database connector")]
         public void GivenIHaveWorkflowWithDatabaseConnector()
-        {         
-            var sourceId = Guid.NewGuid();            
+        {
+            var procedureName = "dbo.Pr_CitiesGetCountries";
+            var sourceId = Guid.NewGuid();
             var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
-            var outputs = new List<IServiceOutputMapping>
+            var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
+            //Load Source based on the name
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , environmentModel);
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Id == resourceId);
+
+            var databaseService = new DatabaseService
             {
-                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
-                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
+                Source = dbSource,
+                Inputs = inputs,
+                Action = new DbAction()
+                {
+                    Name = procedureName,
+                    SourceId = dbSource.Id,
+                    Inputs = inputs,
+                    ExecuteAction = procedureName
+                },
+                Name = procedureName,
+                Id = dbSource.Id
             };
+            var testResults = dbServiceModel.TestService(databaseService);
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
             {
-                SourceId = sourceId,
-                ProcedureName = "dbo.Pr_CitiesGetCountries",
-                Inputs = inputs,
-                Outputs = outputs
+                ProcedureName = procedureName,
+                DisplayName = procedureName,
+                SourceId = dbSource.Id,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = databaseService.Inputs
             };
+
+            var mappings = new List<IServiceOutputMapping>();
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
-            var envModel = ServerRepository.Instance;
-            var envRepo = ResourceCatalog.Instance;
-            var localhost = envModel.Get(Guid.Empty);
-            var mock = new Mock<IServer>();
-            var mockShellVm = new Mock<IShellViewModel>();
-            mockShellVm.SetupGet(models => models.ActiveServer).Returns(mock.Object);
-            CustomContainer.Register(mockShellVm.Object);
-            var source = envRepo.GetResource(new Guid(), Guid.Parse("b9184f70-64ea-4dc5-b23b-02fcd5f91082"));            
 
-            sqlsource = new DbSourceDefinition
-            {
-                Name = source.ResourceName,
-            };
-
-            var dbSources = new ObservableCollection<IDbSource> { sqlsource };
-                        
-            var model = new SqlServerModel();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new ViewPropertyBuilder());            
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel,new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(sqlServerDesignerViewModel, sqlServerDesignerViewModel.Model);
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("serviceInputViewModel", serviceInputViewModel);
-            ScenarioContext.Current.Add("dbServiceModel", sqlServerDesignerViewModel.Model);
-        }
+            sqlServerActivity.Outputs = mappings;
+            sqlServerActivity.ProcedureName = procedureName;
+            _commonSteps.AddActivityToActivityList(procedureName, procedureName, sqlServerActivity);
 
+            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("ServiceInputViewModel", serviceInputViewModel);
+            ScenarioContext.Current.Add("DbServiceModel", databaseService);
+        }
+        static Mock<IServer> SetupEnvironment()
+        {
+            var newSelectedConnection = new Mock<IServer>();
+            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
+            newSelectedConnection.SetupGet(it => it.DisplayName).Returns("Nonlocalhost");
+            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
+            newSelectedConnection.SetupGet(it => it.HasLoaded).Returns(true);
+            newSelectedConnection.SetupGet(it => it.IsConnected).Returns(true);
+            newSelectedConnection.SetupGet(it => it.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
+            newSelectedConnection.SetupGet(it => it.QueryProxy).Returns(new Mock<IQueryManager>().Object);
+
+            var env = new Mock<IServer>();
+            env.Setup(a => a.IsLocalHost).Returns(true);
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.CanStudioExecute).Returns(true);
+            env.Setup(a => a.Name).Returns("TestEnvironment");
+            env.Setup(a => a.DisplayName).Returns("TestEnvironment");
+            return env;
+        }
         [Given(@"I open workflow with database connector")]
         public void GivenIOpenWolf()
         {
@@ -393,7 +451,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Sql Server Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            if(!string.IsNullOrEmpty(recsetName))
+            if (!string.IsNullOrEmpty(recsetName))
             {
                 Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
             }
@@ -409,7 +467,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
-                       
+
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
             {
                 SourceId = sourceId,
@@ -480,7 +538,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string p0)
         {
-            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);            
+            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
             Assert.IsTrue(true);
         }
 
@@ -530,7 +588,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         IDbServiceModel GetRealDbServiceModel()
         {
-            return ScenarioContext.Current.Get<IDbServiceModel>("realDbServiceModel");
+            return ScenarioContext.Current.Get<IDbServiceModel>("DbServiceModel");
         }
 
 
@@ -557,7 +615,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenPrefixIsSetTo(string prefix)
         {
             var webServiceGetViewModel = GetViewModel();
-            
+
             webServiceGetViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
 
@@ -568,16 +626,34 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
         }
 
-        protected void BuildDataList()
+        public override string ToString()
         {
-            var viewModel = ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
-            var activity = viewModel.ModelItem.GetCurrentValue() as DsfSqlServerDatabaseActivity;
+            return base.ToString();
+        }
 
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            ScenarioContext.Current.Add("activity", activity);
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        protected override void BuildDataList()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
+        {
+            return base.GetDebugInputItemResults(activity);
+        }
+
+        protected override List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
+        {
+            return base.GetDebugOutputItemResults(activity);
         }
         #endregion
     }
