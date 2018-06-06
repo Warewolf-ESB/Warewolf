@@ -904,18 +904,23 @@ namespace Warewolf.Launcher
             Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestsResultsPath + ".");
             if (string.IsNullOrEmpty(ResourcesType))
             {
-                var message = "What type of resources would you like to install the server with?";
-                var UITest = new Tuple<string, string>("[u]UITests", "Use these resources for running UI Tests. (This is the default)");
-                var ServerTest = new Tuple<string, string>("[s]ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
-                var Release = new Tuple<string, string>("[r]Release", "Use these resources for Warewolf releases.");
-                var UILoad = new Tuple<string, string>("[l]Load", "Use these resources for Studio UI Load Testing.");
-                var options = new Tuple<string, string>[] { UITest, ServerTest, Release, UILoad };
-                string optionStrings = "";
+                Console.WriteLine("\nWhat type of resources would you like to install the server with?");
+                var options = new[] {
+                    "[u]UITests: Use these resources for running UI Tests. (This is the default)",
+                    "[s]ServerTests: Use these resources for running everything except unit tests and Coded UI tests.",
+                    "[r]Release: Use these resources for Warewolf releases.",
+                    "[l]Load: Use these resources for Studio UI Load Testing."
+                };
                 foreach (var option in options)
                 {
-                    optionStrings += '\n' + option.Item1 + ": " + option.Item2;
+                    Console.WriteLine();
+                    var originalColour = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(option.Substring(0, 3));
+                    Console.ForegroundColor = originalColour;
+                    Console.Write(option.Substring(3, option.Length-3));
                 }
-                Console.WriteLine('\n' + message + '\n' + optionStrings + "\n\nOr Press Enter to use default (UITest)...");
+                Console.WriteLine("\n\nOr Press Enter to use default (UITest)...");
                 string originalTitle = Console.Title;
                 string uniqueTitle = Guid.NewGuid().ToString();
                 Console.Title = uniqueTitle;
