@@ -151,8 +151,8 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 23
-   testRunner.And("\"For Xml multiple rows output\" contains \"TestSqlServerReturningMultipleRowsXml\" f" +
-                    "rom server \"localhost\" with mapping as", ((string)(null)), table3, "And ");
+   testRunner.And("\"For Xml multiple rows output\" contains \"ForXmlWithMultipleRows\" from server \"loc" +
+                    "alhost\" with mapping as", ((string)(null)), table3, "And ");
 #line 25
    testRunner.When("\"For Xml multiple rows output\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
@@ -163,8 +163,8 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "[[Result]] = Passed"});
 #line 27
-   testRunner.And("the \"TestSqlServerReturningMultipleRowsXml\" in Workflow \"TestSqlServerReturningMu" +
-                    "ltipleRowsXml\" debug outputs as", ((string)(null)), table4, "And ");
+   testRunner.And("the \"ForXmlWithMultipleRows\" in Workflow \"ForXmlWithMultipleRows\" debug outputs a" +
+                    "s", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

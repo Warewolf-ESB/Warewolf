@@ -20,11 +20,11 @@ Scenario: Executing mySql For Xml testing workflow base
 	  
 Scenario: Executing For Xml With multiple Rows
 	  Given I have a workflow "For Xml multiple rows output"
-	  And "For Xml multiple rows output" contains "TestSqlServerReturningMultipleRowsXml" from server "localhost" with mapping as
+	  And "For Xml multiple rows output" contains "ForXmlWithMultipleRows" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "For Xml multiple rows output" is executed
 	  Then the workflow execution has "NO" error
-	  And the "TestSqlServerReturningMultipleRowsXml" in Workflow "TestSqlServerReturningMultipleRowsXml" debug outputs as
+	  And the "ForXmlWithMultipleRows" in Workflow "ForXmlWithMultipleRows" debug outputs as
 	  |                     |
 	  | [[Result]] = Passed |
 
