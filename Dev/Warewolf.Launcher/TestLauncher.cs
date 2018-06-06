@@ -764,28 +764,35 @@ namespace Warewolf.Launcher
         {
             Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
             var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder();
-            string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
-            if (Directory.Exists(directoryToRemove))
+            if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
             {
-                foreach (var subDir in Directory.GetDirectories(directoryToRemove))
+                string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
+                if (Directory.Exists(directoryToRemove))
                 {
-                    string subDirName = Path.GetFileName(subDir);
-                    string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
-                    Directory.Move(subDir, newDirFullPath);
+                    foreach (var subDir in Directory.GetDirectories(directoryToRemove))
+                    {
+                        string subDirName = Path.GetFileName(subDir);
+                        string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
+                        Directory.Move(subDir, newDirFullPath);
+                    }
+                    Directory.Delete(directoryToRemove);
                 }
-                Directory.Delete(directoryToRemove);
-            }
-            else
-            {
-                Console.WriteLine(directoryToRemove + " not found.");
+                else
+                {
+                    Console.WriteLine(directoryToRemove + " not found.");
+                }
             }
         }
 
         string GetLatestScreenRecordingsFolder()
         {
             var directory = new DirectoryInfo(TestsResultsPath);
-            var testResultFiles = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
-            return testResultFiles.OrderByDescending(f => f.LastWriteTime).First().FullName;
+            var screenRecordingFolders = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
+            if (screenRecordingFolders.Count() > 0)
+            {
+                return screenRecordingFolders.OrderByDescending(f => f.LastWriteTime).First().FullName;
+            }
+            return "";
         }
 
         string FindWarewolfServerExe()
