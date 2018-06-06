@@ -61,15 +61,24 @@ namespace Warewolf.Launcher
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
             
-            if (build.TestsPath.StartsWith(".."))
+            if (build.TestsPath != null && build.TestsPath.StartsWith(".."))
             {
                 build.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestsPath);
             }
-
-
-            if (build.TestsResultsPath.StartsWith(".."))
+            
+            if (build.TestsResultsPath != null && build.TestsResultsPath.StartsWith(".."))
             {
                 build.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestsResultsPath);
+            }
+
+            if (build.ServerPath != null && build.ServerPath.StartsWith(".."))
+            {
+                build.ServerPath = Path.Combine(Environment.CurrentDirectory, build.ServerPath);
+            }
+
+            if (build.StudioPath != null && build.StudioPath.StartsWith(".."))
+            {
+                build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
 
             if (!File.Exists(build.TestsResultsPath))
@@ -146,12 +155,12 @@ namespace Warewolf.Launcher
                 }
                 if (!File.Exists(build.VSTestPath) && !(File.Exists(build.MSTestPath)))
                 {
-                    throw new Exception("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
+                    throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
                 }
 
                 if (build.ApplyDotCover && build.DotCoverPath != "" && !(File.Exists(build.DotCoverPath)))
                 {
-                    throw new Exception("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+                    throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
                 }
 
                 if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))

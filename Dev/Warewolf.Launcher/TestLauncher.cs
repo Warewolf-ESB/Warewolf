@@ -156,44 +156,67 @@ namespace Warewolf.Launcher
         }
 
         public void CleanupServerStudio(bool Force = true)
-        {
-            //Find Webs
-            WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
-            Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
-            if (!(File.Exists(WebsPath)))
+        {            
+            //Find Server
+            if (string.IsNullOrEmpty(ServerPath))
             {
-                bool foundServer = false;
-                if (string.IsNullOrEmpty(ServerPath) || !File.Exists(ServerPath))
-                {
-                    foundServer = TryFindWarewolfServerExe(out string serverPath);
-                    ServerPath = serverPath;
-                }
+                bool foundServer = TryFindWarewolfServerExe(out string serverPath);
                 if (foundServer)
                 {
-                    WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
-                }
-            }
-
-            //Find Studio
-            if (string.IsNullOrEmpty(StudioPath) || !(File.Exists(StudioPath)))
-            {
-                StudioPath = FindFileInParent(StudioPathSpecs);
-                if (StudioPath.EndsWith(".zip"))
-                {
-                    ZipFile.ExtractToDirectory(StudioPath, TestsResultsPath + "\\Studio");
-                    StudioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
+                    ServerPath = serverPath;
+                    string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
+                    if (File.Exists(serverStartedFile))
+                    {
+                        File.Delete(serverStartedFile);
+                    }
                 }
             }
             else
             {
-                if (StudioPath.StartsWith(".."))
+                if (!File.Exists(StudioPath))
                 {
-                    StudioPath = Path.Combine(Environment.CurrentDirectory, StudioPath);
+                    throw new ArgumentException("No server found at " + ServerPath);
                 }
             }
-            if (!string.IsNullOrEmpty(DoStudioStart) && (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath))))
+
+            //Find Webs
+            if (string.IsNullOrEmpty(WebsPath))
             {
-                throw new Exception("Studio path not found: " + StudioPath);
+                WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
+                Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
+                if (!File.Exists(WebsPath))
+                {
+                    WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
+                }
+            }
+            else
+            {
+                if (!File.Exists(WebsPath))
+                {
+                    throw new ArgumentException("No webs folder found at " + WebsPath);
+                }
+            }
+
+            //Find Studio
+            if (string.IsNullOrEmpty(StudioPath))
+            {
+                bool foundStudio = TryFindWarewolfStudioExe(out string studioPath);
+                if (foundStudio)
+                {
+                    StudioPath = studioPath;
+                    string studioStartedFile = Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted");
+                    if (File.Exists(studioStartedFile))
+                    {
+                        File.Delete(studioStartedFile);
+                    }
+                }
+            }
+            else
+            {
+                if (!File.Exists(StudioPath))
+                {
+                    throw new ArgumentException("No studio found at " + StudioPath);
+                }
             }
 
             int WaitForCloseTimeout = Force ? 10 : 1800;
@@ -294,9 +317,7 @@ namespace Warewolf.Launcher
                 "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
                 "%PROGRAMDATA%\\Warewolf\\Workspaces",
                 "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl",
-                Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted"),
-                Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted")
+                "%PROGRAMDATA%\\Warewolf\\VersionControl"
             };
 
             foreach (var FileOrFolder in ToClean)
@@ -323,6 +344,28 @@ namespace Warewolf.Launcher
 
             MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Resources"), $"{JobName} Server\\Resources");
             MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Tests"), $"{JobName} Server\\Tests");
+        }
+
+        bool TryFindWarewolfServerExe(out string serverPath)
+        {
+            serverPath = FindFileInParent(ServerPathSpecs);
+            if (serverPath.EndsWith(".zip"))
+            {
+                ZipFile.ExtractToDirectory(serverPath, TestsResultsPath + "\\Server");
+                serverPath = TestsResultsPath + "\\Server\\" + ServerExeName;
+            }
+            return (!string.IsNullOrEmpty(serverPath) && File.Exists(serverPath));
+        }
+
+        bool TryFindWarewolfStudioExe(out string studioPath)
+        {
+            studioPath = FindFileInParent(StudioPathSpecs);
+            if (studioPath.EndsWith(".zip"))
+            {
+                ZipFile.ExtractToDirectory(studioPath, TestsResultsPath + "\\Studio");
+                studioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
+            }
+            return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
         internal void TryStartLocalCIRemoteContainer()
@@ -872,17 +915,6 @@ namespace Warewolf.Launcher
             return "";
         }
 
-        bool TryFindWarewolfServerExe(out string ServerPath)
-        {
-            ServerPath = FindFileInParent(ServerPathSpecs);
-            if (ServerPath.EndsWith(".zip"))
-            {
-                ZipFile.ExtractToDirectory(ServerPath, TestsResultsPath + "\\Server");
-                ServerPath = TestsResultsPath + "\\Server\\" + ServerExeName;
-            }
-            return (string.IsNullOrEmpty(ServerPath) || !(File.Exists(ServerPath)));
-        }
-
         public void InstallServer()
         {
             if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(ServerPath)))
@@ -909,7 +941,7 @@ namespace Warewolf.Launcher
                     "[u]UITests: Use these resources for running UI Tests. (This is the default)",
                     "[s]ServerTests: Use these resources for running everything except unit tests and Coded UI tests.",
                     "[r]Release: Use these resources for Warewolf releases.",
-                    "[l]Load: Use these resources for Studio UI Load Testing."
+                    "[l]Load: Use these resources for Desktop UI Load Testing."
                 };
                 foreach (var option in options)
                 {
@@ -1098,7 +1130,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web or at " + ServerPath + "\\_PublishedWebsites\\Dev2.Web");
+                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web or at " + Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web");
             }
         }
 
@@ -1516,10 +1548,10 @@ namespace Warewolf.Launcher
                 {
                     build.CleanupServerStudio();
                     build.Startmywarewolfio();
+                    build.TryStartLocalCIRemoteContainer();
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart))
                     {
                         build.StartServer();
-                        build.TryStartLocalCIRemoteContainer();
                         if (!string.IsNullOrEmpty(build.DoStudioStart))
                         {
                             build.StartStudio();
