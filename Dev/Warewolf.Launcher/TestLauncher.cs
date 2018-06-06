@@ -191,7 +191,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (!File.Exists(WebsPath))
+                if (!Directory.Exists(WebsPath))
                 {
                     throw new ArgumentException("No webs folder found at " + WebsPath);
                 }
@@ -981,6 +981,12 @@ namespace Warewolf.Launcher
                 {
                     ResourcesType = "Load";
                 }
+            }
+            
+            string resourcesPath = Path.Combine(Path.GetDirectoryName(ServerPath), $"Resources - {ResourcesType}");
+            if (!Directory.Exists(resourcesPath))
+            {
+                throw new ArgumentException($"Invalid resource type. Folder not found {resourcesPath}");
             }
 
             var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
