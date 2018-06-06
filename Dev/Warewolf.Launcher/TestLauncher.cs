@@ -754,7 +754,11 @@ namespace Warewolf.Launcher
                                         XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
                                         if (originalStdErrNode != null)
                                         {
-                                            originalOutputNode.RemoveChild(originalStdErrNode);
+                                            try
+                                            {
+                                                originalOutputNode.RemoveChild(originalStdErrNode);
+                                            }
+                                            catch (ArgumentException) { }
                                         }
                                         XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
                                         XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
@@ -772,7 +776,11 @@ namespace Warewolf.Launcher
                                         XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
                                         if (originalErrorInfoNode != null)
                                         {
-                                            originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                            try
+                                            {
+                                                originalOutputNode.RemoveChild(originalErrorInfoNode);
+                                            }
+                                            catch (ArgumentException) { }
                                         }
                                     }
                                     else
@@ -814,22 +822,36 @@ namespace Warewolf.Launcher
         void MoveScreenRecordingsToTestResults()
         {
             Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
-            var ScreenRecordingsFolder = TestsResultsPath + "\\ScreenRecordings";
-            string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
-            if (Directory.Exists(directoryToRemove))
+            var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder();
+            if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
             {
-                foreach (var subDir in Directory.GetDirectories(directoryToRemove))
+                string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
+                if (Directory.Exists(directoryToRemove))
                 {
-                    string subDirName = Path.GetFileName(subDir);
-                    string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
-                    Directory.Move(subDir, newDirFullPath);
+                    foreach (var subDir in Directory.GetDirectories(directoryToRemove))
+                    {
+                        string subDirName = Path.GetFileName(subDir);
+                        string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
+                        Directory.Move(subDir, newDirFullPath);
+                    }
+                    Directory.Delete(directoryToRemove);
                 }
-                Directory.Delete(directoryToRemove);
+                else
+                {
+                    Console.WriteLine(directoryToRemove + " not found.");
+                }
             }
-            else
+        }
+
+        string GetLatestScreenRecordingsFolder()
+        {
+            var directory = new DirectoryInfo(TestsResultsPath);
+            var screenRecordingFolders = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
+            if (screenRecordingFolders.Count() > 0)
             {
-                Console.WriteLine(directoryToRemove + " not found.");
+                return screenRecordingFolders.OrderByDescending(f => f.LastWriteTime).First().FullName;
             }
+            return "";
         }
 
         string FindWarewolfServerExe()
