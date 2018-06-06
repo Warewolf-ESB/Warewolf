@@ -763,7 +763,7 @@ namespace Warewolf.Launcher
         void MoveScreenRecordingsToTestResults()
         {
             Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
-            var ScreenRecordingsFolder = TestsResultsPath + "\\ScreenRecordings";
+            var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder();
             string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
             if (Directory.Exists(directoryToRemove))
             {
@@ -779,6 +779,13 @@ namespace Warewolf.Launcher
             {
                 Console.WriteLine(directoryToRemove + " not found.");
             }
+        }
+
+        string GetLatestScreenRecordingsFolder()
+        {
+            var directory = new DirectoryInfo(TestsResultsPath);
+            var testResultFiles = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
+            return testResultFiles.OrderByDescending(f => f.LastWriteTime).First().FullName;
         }
 
         string FindWarewolfServerExe()
