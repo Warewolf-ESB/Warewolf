@@ -135,6 +135,11 @@ namespace Warewolf.Launcher
             {
                 CopyOnWrite(DestinationFilePath);
                 Console.WriteLine($"Moving \"{SourceFilePath}\" to \"{DestinationFilePath}\"");
+                var DestinationFolderPath = Path.GetDirectoryName(DestinationFilePath);
+                if (!Directory.Exists(DestinationFolderPath))
+                {
+                    Directory.CreateDirectory(DestinationFolderPath);
+                }
                 File.Move(SourceFilePath, DestinationFilePath);
             }
         }
@@ -157,11 +162,16 @@ namespace Warewolf.Launcher
             Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
             if (!(File.Exists(WebsPath)))
             {
+                bool foundServer = false;
                 if (string.IsNullOrEmpty(ServerPath) || !File.Exists(ServerPath))
                 {
-                    ServerPath = FindWarewolfServerExe();
+                    foundServer = TryFindWarewolfServerExe(out string serverPath);
+                    ServerPath = serverPath;
                 }
-                WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
+                if (foundServer)
+                {
+                    WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
+                }
             }
 
             //Find Studio
@@ -173,10 +183,6 @@ namespace Warewolf.Launcher
                     ZipFile.ExtractToDirectory(StudioPath, TestsResultsPath + "\\Studio");
                     StudioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
                 }
-                if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath)))
-                {
-                    throw new Exception("Studio path not found: " + StudioPath);
-                }
             }
             else
             {
@@ -184,6 +190,10 @@ namespace Warewolf.Launcher
                 {
                     StudioPath = Path.Combine(Environment.CurrentDirectory, StudioPath);
                 }
+            }
+            if (!string.IsNullOrEmpty(DoStudioStart) && (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath))))
+            {
+                throw new Exception("Studio path not found: " + StudioPath);
             }
 
             int WaitForCloseTimeout = Force ? 10 : 1800;
@@ -854,29 +864,27 @@ namespace Warewolf.Launcher
             return "";
         }
 
-        string FindWarewolfServerExe()
+        bool TryFindWarewolfServerExe(out string ServerPath)
         {
-            var ServerPath = FindFileInParent(ServerPathSpecs);
+            ServerPath = FindFileInParent(ServerPathSpecs);
             if (ServerPath.EndsWith(".zip"))
             {
                 ZipFile.ExtractToDirectory(ServerPath, TestsResultsPath + "\\Server");
                 ServerPath = TestsResultsPath + "\\Server\\" + ServerExeName;
             }
-            if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(ServerPath)))
-            {
-                throw new FileNotFoundException("Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath");
-            }
-            else
-            {
-                return ServerPath;
-            }
+            return (string.IsNullOrEmpty(ServerPath) || !(File.Exists(ServerPath)));
         }
 
         public void InstallServer()
         {
             if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(ServerPath)))
             {
-                ServerPath = FindWarewolfServerExe();
+                var found = TryFindWarewolfServerExe(out string serverPath);
+                if (!found)
+                {
+                    throw new FileNotFoundException("Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath");
+                }
+                ServerPath = serverPath;
             }
             else
             {
@@ -889,17 +897,17 @@ namespace Warewolf.Launcher
             if (string.IsNullOrEmpty(ResourcesType))
             {
                 var message = "What type of resources would you like to install the server with?";
-                var UITest = new Tuple<string, string>("UITests", "Use these resources for running UI Tests.");
-                var ServerTest = new Tuple<string, string>("ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
-                var Release = new Tuple<string, string>("Release", "Use these resources for Warewolf releases.");
-                var UILoad = new Tuple<string, string>("Load", "Use these resources for Studio UI Load Testing.");
+                var UITest = new Tuple<string, string>("[U]UITests", "Use these resources for running UI Tests. (This is the default)");
+                var ServerTest = new Tuple<string, string>("[S]ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
+                var Release = new Tuple<string, string>("[R]Release", "Use these resources for Warewolf releases.");
+                var UILoad = new Tuple<string, string>("[L]Load", "Use these resources for Studio UI Load Testing.");
                 var options = new Tuple<string, string>[] { UITest, ServerTest, Release, UILoad };
                 string optionStrings = "";
                 foreach (var option in options)
                 {
                     optionStrings += '\n' + option.Item1 + ": " + option.Item2;
                 }
-                Console.WriteLine('\n' + message + '\n' + optionStrings + "\n\nOr Press Enter to continue...");
+                Console.WriteLine('\n' + message + '\n' + optionStrings + "\n\nOr Press Enter to use default (UITest)...");
                 string originalTitle = Console.Title;
                 string uniqueTitle = Guid.NewGuid().ToString();
                 Console.Title = uniqueTitle;
