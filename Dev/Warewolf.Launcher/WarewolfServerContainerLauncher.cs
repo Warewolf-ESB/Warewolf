@@ -160,7 +160,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
+                        throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
                     }
                     else
                     {
