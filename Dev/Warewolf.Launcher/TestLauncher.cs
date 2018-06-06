@@ -267,15 +267,22 @@ namespace Warewolf.Launcher
             process.Start();
 
             //Delete CI Remote Container
-            try
+            if (ciRemoteContainerLauncher != null)
             {
-                ciRemoteContainerLauncher.Dispose();
+                try
+                {
+                    ciRemoteContainerLauncher.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
+                }
+                finally
+                {
+                    UndoCIRemoteOverloading();
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
-            }
-            finally
+            else
             {
                 UndoCIRemoteOverloading();
             }
@@ -308,6 +315,7 @@ namespace Warewolf.Launcher
                     Console.Error.WriteLine("Cannot delete " + FileOrFolder);
                 }
             }
+
             if (String.IsNullOrEmpty(JobName))
             {
                 JobName = "Test Run";
@@ -897,10 +905,10 @@ namespace Warewolf.Launcher
             if (string.IsNullOrEmpty(ResourcesType))
             {
                 var message = "What type of resources would you like to install the server with?";
-                var UITest = new Tuple<string, string>("[U]UITests", "Use these resources for running UI Tests. (This is the default)");
-                var ServerTest = new Tuple<string, string>("[S]ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
-                var Release = new Tuple<string, string>("[R]Release", "Use these resources for Warewolf releases.");
-                var UILoad = new Tuple<string, string>("[L]Load", "Use these resources for Studio UI Load Testing.");
+                var UITest = new Tuple<string, string>("[u]UITests", "Use these resources for running UI Tests. (This is the default)");
+                var ServerTest = new Tuple<string, string>("[s]ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
+                var Release = new Tuple<string, string>("[r]Release", "Use these resources for Warewolf releases.");
+                var UILoad = new Tuple<string, string>("[l]Load", "Use these resources for Studio UI Load Testing.");
                 var options = new Tuple<string, string>[] { UITest, ServerTest, Release, UILoad };
                 string optionStrings = "";
                 foreach (var option in options)
