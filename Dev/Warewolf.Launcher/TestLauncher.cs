@@ -184,7 +184,7 @@ namespace Warewolf.Launcher
             {
                 WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
                 Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
-                if (!File.Exists(WebsPath))
+                if (!File.Exists(WebsPath) && !String.IsNullOrEmpty(ServerPath))
                 {
                     WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
                 }
@@ -1130,7 +1130,11 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web or at " + Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web");
+                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web");
+                if (!string.IsNullOrEmpty(ServerPath))
+                {
+                    Console.Write(" or at " + Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web");
+                }
             }
         }
 
