@@ -35,6 +35,7 @@ namespace Warewolf.Launcher
                 ["File And Folder Delete Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderDelete"),
                 ["File And Folder Move Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderMove"),
                 ["Folder Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "ReadFolder"),
+                ["New Folder Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "NewReadFolder"),
                 ["File Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "ReadFile"),
                 ["File And Folder Rename Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderRename"),
                 ["Unzip Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Unzip"),
@@ -49,6 +50,8 @@ namespace Warewolf.Launcher
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
                 ["Other Activities Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", null),
+                ["Remote Server Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "RemoteServer"),
+                ["Workflow Merging Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowMerging"),
                 ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),
                 ["Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowExecution"),
@@ -143,6 +146,7 @@ namespace Warewolf.Launcher
                 ["Service Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Service Search"),
                 ["Title Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Title Search"),
                 //Load Tests
+                ["Composition Load Tests"] = new Tuple<string, string>("Dev2.Activities.Specs", "CompositionLoadTests"),
                 ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
             };
