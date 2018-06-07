@@ -52,6 +52,7 @@ namespace Warewolf.Launcher
                 ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),
                 ["Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowExecution"),
+                ["Assign Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Spec", "AssignWorkflowExecution"),
                 ["Studio Test Framework Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFramework"),
                 ["Studio Test Framework With Data Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithDataTools"),
                 ["Studio Test Framework With Database Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithDatabaseTools"),
