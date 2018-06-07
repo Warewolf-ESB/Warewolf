@@ -58,6 +58,10 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Warewolf.MergeParser;
+
+using Dev2.Instrumentation.Factory;
+using Dev2.Studio.Utils;
+using System.Security.Claims;
 using Dev2.Studio.Interfaces;
 using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -68,6 +72,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Studio
 {
@@ -104,14 +109,22 @@ namespace Dev2.Studio
 
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(System.Windows.StartupEventArgs e)
-        {
-            Tracker.StartStudio();
+        {      
+            CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
+            //Create configuration for action tracker and start
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            if (applicationTracker != null)
+            {
+                applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+            }            
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
+            
             Task.Factory.StartNew(() =>
             {
+                var dir = new DirectoryHelper();
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
-                DirectoryHelper.CleanUp(path);
-                DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
+                dir.CleanUp(path);
+                dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
             });
 
             var localprocessGuard = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);
@@ -348,8 +361,18 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Tracker.Stop();
+            
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+
+            if (applicationTracker!=null)
+            {
+                //Stop the action tracking
+                applicationTracker.DisableAppplicationTracker();
+            }
+        
+
             SplashView.CloseSplash(true);
+
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());

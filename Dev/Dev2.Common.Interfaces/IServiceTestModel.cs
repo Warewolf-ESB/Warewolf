@@ -44,6 +44,7 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<IServiceTestStep> TestSteps { get; set; }
 
         void SetItem(IServiceTestModel model);
+        void ResetOldTestName();
         IServiceTestModel Clone();
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);
