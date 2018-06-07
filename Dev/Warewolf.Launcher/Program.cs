@@ -277,20 +277,20 @@ namespace Warewolf.Launcher
                     string TestRunnerPath;
                     if (string.IsNullOrEmpty(build.MSTest))
                     {
-                        TestRunnerPath = build.VSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
+                        TestRunnerPath = build.VSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
                     }
                     else
                     {
-                        TestRunnerPath = build.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
+                        TestRunnerPath = build.MSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
 
                     //Run Tests
-                    var TrxFile = build.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    var TrxFile = build.RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
 
                     //Re-try Failures
                     for (var count = 0; count < build.RetryCount; count++)
                     {
-                        build.RetryTestFailures(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                        build.RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count+1);
                     }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
@@ -362,11 +362,11 @@ namespace Warewolf.Launcher
 
             if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
+                build.InstallServer();
                 build.CleanupServerStudio();
                 build.Startmywarewolfio();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
-                    build.InstallServer();
                     build.StartServer();
                     build.TryStartLocalCIRemoteContainer();
                     if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
