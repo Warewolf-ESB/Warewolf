@@ -53,7 +53,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string NeverRunString
         {
-            get { return _neverRunString; }
+            get => _neverRunString;
             set
             {
                 _neverRunString = value;
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool LastRunDateVisibility
         {
-            get { return _lastRunDateVisibility; }
+            get => _lastRunDateVisibility;
             set
             {
                 if (value)
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool NeverRunStringVisibility
         {
-            get { return _neverRunStringVisibility; }
+            get => _neverRunStringVisibility;
             set
             {
                 if (value)
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public IList<IDebugState> DebugForTest
         {
-            get { return _debugForTest; }
+            get => _debugForTest;
             set
             {
                 _debugForTest = value;
@@ -100,7 +100,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string DuplicateTestTooltip
         {
-            get { return _duplicateTestTooltip; }
+            get => _duplicateTestTooltip;
             set
             {
                 _duplicateTestTooltip = value;
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestModel Item
         {
-            private get { return _item; }
+            private get => _item;
             set
             {
                 _item = value;
@@ -139,7 +139,7 @@ namespace Warewolf.Studio.ViewModels
 
         public Guid ParentId
         {
-            get { return _parentId; }
+            get => _parentId;
             set
             {
                 _parentId = value;
@@ -149,19 +149,26 @@ namespace Warewolf.Studio.ViewModels
 
         public string OldTestName
         {
-            get { return _oldTestName; }
+            get => _oldTestName;
             set
             {
                 _oldTestName = value;
+                OriginalTestName = value;
                 OnPropertyChanged(() => OldTestName);
             }
         }
 
+        private string OriginalTestName { get; set; }
+
         public string TestName
         {
-            get { return _testName; }
+            get => _testName;
             set
             {
+                if (OriginalTestName == null)
+                {
+                    OldTestName = _testName;
+                }
                 _testName = value;
                 OnPropertyChanged(() => TestName);
                 OnPropertyChanged(() => IsDirty);
@@ -170,7 +177,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string NameForDisplay
         {
-            get { return _nameForDisplay; }
+            get => _nameForDisplay;
             set
             {
                 _nameForDisplay = value;
@@ -180,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string UserName
         {
-            get { return _userName; }
+            get => _userName;
             set
             {
                 _userName = value;
@@ -191,7 +198,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 _password = value;
@@ -201,7 +208,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public DateTime LastRunDate
         {
-            get { return _lastRunDate; }
+            get => _lastRunDate;
             set
             {
                 _lastRunDate = value;
@@ -215,7 +222,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestInput> Inputs
         {
-            get { return _inputs; }
+            get => _inputs;
             set
             {
                 _inputs = value;
@@ -226,7 +233,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestOutput> Outputs
         {
-            get { return _outputs; }
+            get => _outputs;
             set
             {
                 _outputs = value;
@@ -236,7 +243,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool NoErrorExpected
         {
-            get { return _noErrorExpected; }
+            get => _noErrorExpected;
             set
             {
                 if (value != _noErrorExpected)
@@ -250,7 +257,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool ErrorExpected
         {
-            get { return _errorExpected; }
+            get => _errorExpected;
             set
             {
                 if (value != _errorExpected)
@@ -265,7 +272,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ErrorContainsText
         {
-            get { return _errorContainsText; }
+            get => _errorContainsText;
             set
             {
                 _errorContainsText = value;
@@ -276,7 +283,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsNewTest
         {
-            get { return _isNewTest; }
+            get => _isNewTest;
             set
             {
                 _isNewTest = value;
@@ -285,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsTestSelected
         {
-            get { return _isTestSelected; }
+            get => _isTestSelected;
             set
             {
                 _isTestSelected = value;
@@ -295,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsTestLoading
         {
-            get { return _isTestLoading; }
+            get => _isTestLoading;
             set
             {
                 _isTestLoading = value;
@@ -305,7 +312,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPassed
         {
-            get { return _testPassed; }
+            get => _testPassed;
             set
             {
                 _testPassed = value;
@@ -321,7 +328,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestFailing
         {
-            get { return _testFailing; }
+            get => _testFailing;
             set
             {
                 _testFailing = value;
@@ -337,7 +344,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestInvalid
         {
-            get { return _testInvalid; }
+            get => _testInvalid;
             set
             {
                 _testInvalid = value;
@@ -353,7 +360,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPending
         {
-            get { return _testPending; }
+            get => _testPending;
             set
             {
                 _testPending = value;
@@ -368,7 +375,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Enabled
         {
-            get { return _enabled; }
+            get => _enabled;
             set
             {
                 _enabled = value;
@@ -378,7 +385,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public string RunSelectedTestUrl
         {
-            get { return _runSelectedTestUrl; }
+            get => _runSelectedTestUrl;
             set
             {
                 _runSelectedTestUrl = value;
@@ -387,7 +394,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public AuthenticationType AuthenticationType
         {
-            get { return _authenticationType; }
+            get => _authenticationType;
             set
             {
                 _authenticationType = value;
@@ -395,7 +402,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => UserAuthenticationSelected);
                 OnPropertyChanged(() => IsDirty);
             }
-        }
+        }        
         public bool IsDirty
         {
             get
@@ -434,7 +441,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool NewTest
         {
-            get { return _newTest; }
+            get => _newTest;
             set
             {
                 _newTest = value;
@@ -444,7 +451,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsTestRunning
         {
-            get { return _isTestRunning; }
+            get => _isTestRunning;
             set
             {
                 _isTestRunning = value;
@@ -454,7 +461,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestStep> TestSteps
         {
-            get { return _testSteps ?? (_testSteps = new ObservableCollection<IServiceTestStep>()); }
+            get => _testSteps ?? (_testSteps = new ObservableCollection<IServiceTestStep>());
             set
             {
                 _testSteps = value;
@@ -465,6 +472,11 @@ namespace Warewolf.Studio.ViewModels
         public void SetItem(IServiceTestModel model)
         {
             Item = model as ServiceTestModel;
+        }
+
+        public void ResetOldTestName()
+        {
+            OriginalTestName = null;
         }
 
         public IServiceTestStep AddDebugItemTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs, StepType.Assert);
@@ -586,7 +598,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum, dataList);
                 }
-
             }
         }
 

@@ -979,9 +979,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
             try
-            {
-                var className = GetType().Name;
-                Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
+            {   
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);

@@ -31,7 +31,11 @@ namespace Warewolf.UI.Tests.Workflow
                 Console.WriteLine("Actual Layout file: " + fileName);
                 File.Delete(layOutFile);
             }
+            Playback.Wait(2000);
             ExecuteCommand(fileName);
+            Playback.Wait(2000);
+            UIMap.SetPlaybackSettings();
+            UIMap.AssertStudioIsRunning();
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");

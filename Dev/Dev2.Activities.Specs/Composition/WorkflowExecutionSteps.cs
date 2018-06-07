@@ -722,6 +722,7 @@ namespace Dev2.Activities.Specs.Composition
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
                                                                          || model.Category == remoteWf.Replace('/', '\\'), true);
+                
                 if (remoteResourceModel == null)
                 {
                     remoteEnvironment.LoadResources();

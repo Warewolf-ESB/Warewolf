@@ -8,31 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Activities.Core.Presentation;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Metadata;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Xaml;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
@@ -53,6 +28,7 @@ using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
+using Dev2.Instrumentation;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -82,12 +58,38 @@ using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Activities;
+using System.Activities.Core.Presentation;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using System.Xaml;
+using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
+using Dev2.Common.Interfaces;
 using System.Xml;
 
 namespace Dev2.Studio.ViewModels.Workflow
@@ -124,6 +126,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
+
+        readonly IApplicationTracker _applicationTracker;
+        public bool IsStartNodeErrorMessageSet { get; set; }
 
         protected IWorkflowDesignerWrapper _workflowDesignerHelper;
 
@@ -189,6 +194,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
             _workflowDesignerHelper = new WorkflowDesignerWrapper();
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
         }
 
         public void SetPermission(Permissions permission)
@@ -567,7 +573,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public DebugOutputViewModel DebugOutputViewModel
         {
             get => _debugOutputViewModel;
-            set { _debugOutputViewModel = value; }
+            set => _debugOutputViewModel = value;
         }
 
         public IDataListViewModel DataListViewModel
@@ -588,6 +594,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected virtual bool IsDesignerViewVisible => DesignerView != null && DesignerView.IsVisible;
 
 #pragma warning disable 108,114
+
         public string DisplayName
 #pragma warning restore 108,114
         {
@@ -707,26 +714,36 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }));
 
-        public ICommand OpenWorkflowLinkCommand => _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new DelegateCommand(param =>
+        public ICommand OpenWorkflowLinkCommand
         {
-            if (!string.IsNullOrEmpty(_workflowLink))
+            get
             {
-                SaveToWorkspace();
-                if (_workflowInputDataViewModel.WorkflowInputCount == 0)
+                return _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new DelegateCommand(param =>
                 {
-                    PopUp.ShowNoInputsSelectedWhenClickLink();
-                }
-                try
-                {
-                    OpenLinkInBrowser();
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
-                }
-
+                    if (!string.IsNullOrEmpty(_workflowLink))
+                    {
+                        if (_applicationTracker != null)
+                        {
+                            _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.LinkUrl);
+                        }
+                        SaveToWorkspace();
+                        if (_workflowInputDataViewModel.WorkflowInputCount == 0)
+                        {
+                            PopUp.ShowNoInputsSelectedWhenClickLink();
+                        }
+                        try
+                        {
+                            OpenLinkInBrowser();
+                        }
+                        catch (Exception e)
+                        {
+                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
+                        }
+                    }
+                }));
             }
-        }));
+        }
 
         public ICommand NewServiceCommand => _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
         {
@@ -944,9 +961,21 @@ namespace Dev2.Studio.ViewModels.Workflow
         }));
         
         protected ModelItem PerformAddItems(ModelItem addedItem)
+
+
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
+
+            //Track added items when dragged on design surface
+            if (computedValue != null && computedValue.GetType() != typeof(DsfActivity))
+            {
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                    Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, computedValue.ToString());
+                }
+            }
             if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||
                                           mi.ItemType == typeof(DsfFlowSwitchActivity)))
             {
@@ -972,6 +1001,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             else if (mi.ItemType == typeof(FlowDecision))
             {
                 InitializeFlowDecision(mi);
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                    Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, mi.ItemType.Name);
+                }
             }
             else if (mi.ItemType == typeof(FlowStep))
             {
@@ -1050,7 +1084,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataObject != null)
             {
-
                 if (DataObject is ExplorerItemViewModel viewModel)
                 {
                     var serverRepository = CustomContainer.Get<IServerRepository>();
@@ -1060,12 +1093,38 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     if (theResource != null)
                     {
-                        var d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
+                        TrackAction(theResource);
 
                         UpdateForRemote(d, theResource);
                     }
                 }
                 DataObject = null;
+            }
+        }
+
+        void TrackAction(IContextualResourceModel theResource)
+        {
+            if (_applicationTracker != null)
+            {
+                if (theResource.DisplayName == "Hello World")
+                {
+                    //track hello world dragged
+                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                       Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.HelloWorld, theResource.DisplayName);
+                }
+                else if (theResource.Category != null && theResource.Category.StartsWith("Examples"))
+                {
+                    //track examples actitvity dragged
+                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.Examples, theResource.DisplayName);
+                }
+                else
+                {
+                    // other than above
+                    _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, theResource.DisplayName);
+                }
             }
         }
 
@@ -1090,6 +1149,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, resource.DisplayName);
+            }
         }
 
         void InitializeFlowSwitch(ModelItem mi)
@@ -1667,16 +1730,20 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                                 BringIntoView(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.Add:
                                 AddModelItemToSelection(selectedModelItem);
 
                                 BringIntoView(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.Remove:
                                 RemoveModelItemFromSelection(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.None:
                                 break;
+
                             default:
                                 break;
                         }
@@ -1691,12 +1758,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (_modelService != null)
             {
-
                 var selectedModelItem = (from mi in _modelItems
                                          let instanceID = ModelItemUtils.GetUniqueID(mi)
                                          where instanceID == itemId || instanceID == parentId
                                          select mi).FirstOrDefault();
-
 
                 if (selectedModelItem == null)
                 {
@@ -1734,7 +1799,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
+
         public List<ModelItem> DebugModels => SelectedDebugItems;
+
         void AddModelItemToSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1939,6 +2006,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (validationIcon != null && validationIcon.Name.Equals("validationVisuals", StringComparison.CurrentCultureIgnoreCase))
             {
                 validationIcon.ToolTip = Warewolf.Studio.Resources.Languages.Tooltips.StartNodeNotConnectedToolTip;
+
+                //It should be called once when there is first tool dragged or start node link get deleted
+                if (!IsStartNodeErrorMessageSet)
+                {
+                    IsStartNodeErrorMessageSet = true;
+                    if (_applicationTracker != null)
+                    {
+                        _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                        Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.StartNodeNotConnected);
+                    }
+                }
             }
         }
 
@@ -2017,7 +2095,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             catch (Exception)
             {
-
                 return false;
             }
             return true;
@@ -2366,6 +2443,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
+                    if (e.ModelChangeInfo.OldValue != null)
+                    {
+                        // incase of delete it will have old value then log
+                        IsStartNodeErrorMessageSet = false;
+                    }
                     return;
                 }
 
@@ -2541,8 +2623,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _uniqueWorkflowParts.Clear();
                 _uniqueWorkflowParts = null;
             }
-
-            // remove this value from our helper class's cache ;)
+            
             if (ResourceModel != null)
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
@@ -2571,11 +2652,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
+
         public ModelItem SelectedItem
         {
             get => _selectedItem;
             set => _selectedItem = value;
         }
+
         public bool WorkspaceSave => _workspaceSave;
 
         public void Handle(EditActivityMessage message)
