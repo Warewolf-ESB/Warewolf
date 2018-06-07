@@ -45,8 +45,8 @@ namespace Warewolf.Launcher
                 ["Resource Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Resources"),
                 ["UI Binding Tests"] = new Tuple<string, string>("Warewolf.UIBindingTests.*", null),
                 //Server Tests
-                ["Integration Tests"] = new Tuple<string, string>("Dev2.IntegrationTests", null),
-                ["Load Tests"] = new Tuple<string, string>("Dev2.IntegrationTests", "Load Tests"),
+                ["Integration Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", null),
+                ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
                 ["Other Activities Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", null),
                 ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
