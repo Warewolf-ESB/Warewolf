@@ -166,13 +166,15 @@ Scenario: SqlServer backward Compatiblity
 	Then the workflow execution has "NO" error
 
 Scenario: Execute Sql Server With Timeout 
-   Given I have workflow with database connector
+    Given I have workflow with database connector
 	And Sql Server Source is Enabled
 	And Sql Server Source is "NewSqlServerSource"	
 	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Command Timeout is ""
+	And Sql Connection Timeout is ""
 	And Sql Server Inputs Are Enabled
 	And Validate Sql Server is Enabled
-	And I click Sql Generate Outputs	
+	And I click Sql Generate Outputs
 	And I click Test
 	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                                   | 
@@ -180,4 +182,5 @@ Scenario: Execute Sql Server With Timeout
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Sql Server is executed
+	And the workflow execution has "NO" error
 
