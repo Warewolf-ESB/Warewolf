@@ -59,10 +59,6 @@ namespace Warewolf.Launcher
                 RecoverServerLogFile();
                 DeleteContainer();
             }
-            if (_remoteImageID != null)
-            {
-                Delete();
-            }
         }
 
         string CheckDockerRemoteApiVersion()
@@ -276,7 +272,7 @@ namespace Warewolf.Launcher
             return JSONObj.NetworkSettings.Networks["nat"].IPAddress;
         }
 
-        void Delete()
+        void DeleteImage()
         {
             var url = $"http://{_remoteDockerApi}:2375/images/{_remoteImageID}?force=true";
             using (var client = new HttpClient())
