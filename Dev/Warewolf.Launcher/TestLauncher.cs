@@ -171,7 +171,7 @@ namespace Warewolf.Launcher
                     ZipFile.ExtractToDirectory(StudioPath, TestsResultsPath + "\\Studio");
                     StudioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
                 }
-                if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath)))
+                if (string.IsNullOrEmpty(StudioPath) || !(File.Exists(StudioPath)))
                 {
                     throw new Exception("Studio path not found: " + StudioPath);
                 }
