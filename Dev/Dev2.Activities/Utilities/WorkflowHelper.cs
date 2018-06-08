@@ -259,11 +259,15 @@ namespace Dev2.Utilities
 
         public static bool AreWorkflowsEqual(string left, string right)
         {
-            var xmlDoc_Left = new XmlDocument();
-            xmlDoc_Left.LoadXml(left);
-            var xmlDoc_Right = new XmlDocument();
-            xmlDoc_Right.LoadXml(right);
-            return CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+            if (left != "")
+            {
+                var xmlDoc_Left = new XmlDocument();
+                xmlDoc_Left.LoadXml(left);
+                var xmlDoc_Right = new XmlDocument();
+                xmlDoc_Right.LoadXml(right);
+                return CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+            }
+            return false;
         }
         private static bool CompareWorkflows(XmlNode lnode, XmlNode rnode)
         {
