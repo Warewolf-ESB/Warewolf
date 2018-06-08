@@ -109,5 +109,22 @@ Scenario: Change Recordset Name on Oracle Tool
 	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                   |
 	| CountryID   | [[Pr_Cities().CountryID]]   |
-	| Description | [[Pr_Cities().Description]] |
-	
+	| Description | [[Pr_Cities().Description]] |	
+		
+Scenario: Execute Oracle Server With Timeout
+    Given I have workflow "OracleWorkflowForTimeout" with "OracleActivity" Oracle database connector
+    And Oracle Server Source is Enabled
+    And I Select "NewOracleSource" as Oracle Source for "OracleActivity"
+    And I Select "HR.GET_COUNTRIES" as Oracle Server Action for "OracleActivity"
+    And Oracle Server Inputs Are Enabled	
+	And Validate Oracle Server is Enabled
+    And I click Oracle Generate Outputs
+    And I click Test for Oracle
+    Then Oracle Server Outputs appear as
+	| Mapped From  | Mapped To                           |
+	| COUNTRY_ID   | [[HR_GET_COUNTRIES().COUNTRY_ID]]   |
+	| COUNTRY_NAME | [[HR_GET_COUNTRIES().COUNTRY_NAME]] |
+	| REGION_ID    | [[HR_GET_COUNTRIES().REGION_ID]]    |
+	And Oracle Server Recordset Name equals "HR_GET_COUNTRIES"
+	When Oracle Workflow "OracleWorkflowForTimeout" containing dbTool is executed
+    And the workflow "OracleWorkflowForTimeout" execution has "NO" error

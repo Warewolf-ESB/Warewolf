@@ -47,7 +47,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         const int EnvironmentConnectionTimeout = 15;
 
         public DatabaseToolsSteps(ScenarioContext scenarioContext)
-        {            
+        {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
             _commonSteps = new CommonSteps(_scenarioContext);            
             TryADD("server", ServerRepository.Instance.Source);
@@ -73,7 +73,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             }
             else
             {
-                debugStates.ForEach(p => Assert.IsFalse(p.HasError));
+                debugStates.ForEach(p => Assert.IsFalse(p.HasError, "Error: "+ p.ErrorMessage));
             }
         }
 
@@ -218,6 +218,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         {
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            _scenarioContext.Add("debugWriterSubscriptionService", _debugWriterSubscriptionService);
         }
         void Append(IDebugState debugState)
         {
@@ -253,18 +254,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             var activities = _commonSteps.GetActivityList();
             if (activityName.Contains("MySql"))
             {
-                var mySqlactivity = activities[activityName] as DsfMySqlDatabaseActivity;
-                mySqlactivity.SourceId = dbSource.Id;
+                var activity = activities[activityName] as DsfMySqlDatabaseActivity;
+                activity.SourceId = dbSource.Id;
             }
             if (activityName.Contains("SqlServer"))
             {
-                var sqlactivity = activities[activityName] as DsfSqlServerDatabaseActivity;
-                sqlactivity.SourceId = dbSource.Id;
+                var activity = activities[activityName] as DsfSqlServerDatabaseActivity;
+                activity.SourceId = dbSource.Id;
             }
             if (activityName.Contains("Oracle"))
             {
-                var sqlactivity = activities[activityName] as DsfOracleDatabaseActivity;
-                sqlactivity.SourceId = dbSource.Id;
+                var activity = activities[activityName] as DsfOracleDatabaseActivity;
+                activity.SourceId = dbSource.Id;
+            }
+            if (activityName.Contains("Posgre"))
+            {
+                var activity = activities[activityName] as DsfPostgreSqlActivity;
+                activity.SourceId = dbSource.Id;
             }
         }
 

@@ -59,7 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.ExecuteAction),
                     ResourceName = src.Name,
                     ResourceID = src.Id,
-                    Source = source
+                    Source = source,
+                    CommandTimeout = src.CommandTimeout
                 };
 
                 var services = new ServiceModel.Services();

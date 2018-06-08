@@ -19,6 +19,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     public class DbService : Service
     {
         public Recordset Recordset { get; set; }
+        public int CommandTimeout { get; set; }
 
         #region CTOR
 
