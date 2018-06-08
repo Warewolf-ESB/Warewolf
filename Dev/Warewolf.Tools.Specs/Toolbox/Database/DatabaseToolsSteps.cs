@@ -280,16 +280,25 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             if (activityName.Contains("MySql"))
             {
                 var sqlactivity = activities[activityName] as DsfMySqlDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
                 sqlactivity.ProcedureName = actionName;
             }
             if (activityName.Contains("SqlServer"))
             {
                 var sqlactivity = activities[activityName] as DsfSqlServerDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
                 sqlactivity.ProcedureName = actionName;
             }
             if (activityName.Contains("Oracle"))
             {
                 var sqlactivity = activities[activityName] as DsfOracleDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
+                sqlactivity.ProcedureName = actionName;
+            }
+            if (activityName.Contains("Postgres"))
+            {
+                var sqlactivity = activities[activityName] as DsfPostgreSqlActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
                 sqlactivity.ProcedureName = actionName;
             }
         }
