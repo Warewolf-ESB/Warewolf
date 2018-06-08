@@ -179,14 +179,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 OnPropertyChanged();
             }
         }
-        int commandTimeout;
 
         public int CommandTimeout
         {
-            get => commandTimeout;
+            get => _modelItem.GetProperty<int>("CommandTimeout");
             set
             {
-                commandTimeout = value;
+                _modelItem.SetProperty<int>("CommandTimeout", value);
                 OnPropertyChanged();
             }
         }
