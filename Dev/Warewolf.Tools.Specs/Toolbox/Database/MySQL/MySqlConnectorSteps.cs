@@ -18,16 +18,31 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Tools.Specs.Toolbox.Database;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces.Enums;
+using Warewolf.Studio.ViewModels;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Studio.Core;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 {
     [Binding]
-    public sealed class MySqlConnectorSteps
+    public sealed class MySqlConnectorSteps : DatabaseToolsSteps
     {
         DbSourceDefinition _sqlSource;
         DbSourceDefinition _anotherSqlSource;
         DbAction _someAction;
         Mock<IServiceOutputMapping> _outputMapping;
+        ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
+
+        public MySqlConnectorSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(_scenarioContext);
+        }
 
         [Given(@"I drag in mysql connector tool")]
         public void GivenIDragInMysqlConnectorTool()
@@ -42,7 +57,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var mockEnvironmentModel = new Mock<IServer>();
 
             _outputMapping = new Mock<IServiceOutputMapping>();
-            
+
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
@@ -57,8 +72,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
                 ServerName = "Localhost",
                 UserName = "user",
                 Password = "userPassword",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.User                
-            };  
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.User
+            };
             _anotherSqlSource = new DbSourceDefinition
             {
                 Name = "AnotherSqlSource",
@@ -66,43 +81,43 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
                 ServerName = "Localhost",
                 UserName = "user",
                 Password = "userPassword",
-                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.User                
-            };            
-            
+                AuthenticationType = Dev2.Runtime.ServiceModel.Data.AuthenticationType.User
+            };
+
             var dbSources = new ObservableCollection<IDbSource> { _sqlSource, _anotherSqlSource };
 
-            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);            
-            mockDbServiceModel.Setup(model => model.GetActions(_sqlSource));            
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+            mockDbServiceModel.Setup(model => model.GetActions(_sqlSource));
             mockDatabaseInputViewModel.SetupAllProperties();
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
             var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("mysqlActivity", mysqlActivity);
-            ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("mysqlActivity", mysqlActivity);
+            _scenarioContext.Add("viewModel", mysqlDesignerViewModel);
+            _scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         #region Private Methods
 
         DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
         {
-            return ScenarioContext.Current.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
+            return _scenarioContext.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
         }
         Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
+            return _scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
         MySqlDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<MySqlDatabaseDesignerViewModel>("viewModel");
+            return _scenarioContext.Get<MySqlDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IDbServiceModel> GetServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return _scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         #endregion
@@ -131,7 +146,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsNotNull(viewModel);
             Assert.IsFalse(viewModel.InputArea.IsEnabled);
         }
-        
+
         [Then(@"I select ""(.*)"" Source on mysql connector tool")]
         public void ThenISelectSourceOnMysqlConnectorTool(string p0)
         {
@@ -149,7 +164,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel);
             Assert.IsTrue(viewModel.ActionRegion.IsActionEnabled);
-            Assert.IsNull(viewModel.ActionRegion.SelectedAction);            
+            Assert.IsNull(viewModel.ActionRegion.SelectedAction);
         }
 
         void SetupActions(IDbSource selectedSource)
@@ -176,7 +191,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel);
             Assert.IsFalse(viewModel.InputArea.IsEnabled);
-        }        
+        }
 
         [Then(@"I select ""(.*)"" Action for mysql connector tool")]
         public void ThenISelectActionForMysqlConnectorTool(string p0)
@@ -201,7 +216,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         public void GivenInputIsEnabledForExistingMysqlConnectorTool()
         {
             ThenInputIsEnabledForMysqlConnectorTool();
-        }        
+        }
 
         [Then(@"Inputs are ""(.*)"" for mysql connector tool")]
         public void ThenInputsAreForMysqlConnectorTool(string p0)
@@ -260,7 +275,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 
         [Then(@"I click OK on mysql connector tool")]
         public void ThenIClickOkayOnMysqlConnectorTool()
-        {            
+        {
             Assert.IsTrue(ClickOk());
         }
 
@@ -279,7 +294,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
                 Assert.AreEqual(p0, outputMapping.RecordSetName);
             }
         }
-        
+
         [Given(@"I open an existing mysql connector tool")]
         public void GivenIOpenAnExistingMysqlConnectorTool()
         {
@@ -321,19 +336,19 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             };
             var dbSources = new ObservableCollection<IDbSource> { _sqlSource, _anotherSqlSource };
 
-            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);                        
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(_sqlSource));
             mockDatabaseInputViewModel.SetupAllProperties();
-            
+
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
             var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            var selectedSource = SetupSelectedSource(mysqlDesignerViewModel);            
+            var selectedSource = SetupSelectedSource(mysqlDesignerViewModel);
 
-            ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", mysqlDesignerViewModel);
+            _scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
 
             SetupActions(selectedSource);
         }
@@ -361,7 +376,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsNotNull(viewModel);
             Assert.IsTrue(viewModel.ActionRegion.IsActionEnabled);
             Assert.IsNotNull(viewModel.ActionRegion.SelectedAction);
-            Assert.AreEqual(p0, viewModel.ActionRegion.SelectedAction.Name);            
+            Assert.AreEqual(p0, viewModel.ActionRegion.SelectedAction.Name);
         }
 
         [Given(@"Input is Not enabled for mysql connector tool")]
@@ -410,7 +425,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
             }
         }
-        
+
         [When(@"I select ""(.*)"" Action for mysql connector tool")]
         public void WhenISelectActionForMysqlConnectorTool(string p0)
         {
@@ -430,6 +445,66 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             }
         }
 
+        [Given(@"Mysql server is Enabled")]
+        public void GivenMysqlServerIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
+        }
+
+        [Given(@"Mysql Server Inputs Are Enabled")]
+        public void GivenMysqlServerInputsAreEnabled()
+        {
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
+            Assert.IsTrue(hasInputs);
+        }
+
+        [Given(@"Validate MySql Server is Enabled")]
+        public void GivenValidateMySqlServerIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
+        }
+
+        [Given(@"I click MySql Generate Outputs")]
+        public void GivenIClickMySqlGenerateOutputs()
+        {
+            var viewModel = GetViewModel();
+            viewModel.TestInputCommand.Execute();
+        }
+
+        [Given(@"I click Test on Mysql")]
+        public void GivenIClickTestOnMysql()
+        {
+            var viewModel = GetViewModel();
+            viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            viewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+        }
+
+        [Then(@"Mysql Server Recordset Name equals ""(.*)""")]
+        public void ThenMysqlServerRecordsetNameEquals(string recsetName)
+        {
+            Assert.IsTrue(string.Equals(recsetName, GetViewModel().OutputsRegion.RecordsetName));
+        }
+
+        [Then(@"Mysql Server Outputs appear as")]
+        public void ThenMysqlServerOutputsAppearAs(Table table)
+        {
+            var outputMappings = GetViewModel().OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
+            var rowIdx = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                var mappedFrom = tableRow["Mapped From"];
+                var mappedTo = tableRow["Mapped To"];
+                var outputMapping = outputMappings.ToList()[rowIdx];
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
+            }
+        }
+
         [Then(@"Action on mysql connector tool is null")]
         public void ThenActionOnMysqlConnectorToolIsNull()
         {
@@ -444,6 +519,52 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel);
             Assert.AreEqual(0, viewModel.OutputsRegion.Outputs.Count);
+        }
+        [When(@"MySql Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenMySqlWorkflowContainingDbToolIsExecuted(string workflowName)
+        {
+            WorkflowIsExecuted(workflowName);
+        }
+
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" MySql database connector")]
+        public void GivenIHaveWorkflowWithMySqlDatabaseConnector(string workflowName, string activityName)
+        {
+            var environmentModel = _scenarioContext.Get<IServer>("server");
+            environmentModel.Connect();
+            CreateNewResourceModel(workflowName, environmentModel);
+            CreateDBServiceModel(environmentModel);
+
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");
+            var mySqlActivity = new DsfMySqlDatabaseActivity { DisplayName = activityName };
+            var modelItem = ModelItemUtils.CreateModelItem(mySqlActivity);
+            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(mysqlDesignerViewModel, mysqlDesignerViewModel.Model);
+
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, mySqlActivity);
+            DebugWriterSubscribe(environmentModel);
+            _scenarioContext.Add("viewModel", mysqlDesignerViewModel);
+            _scenarioContext.Add("parentName", workflowName);
+        }
+
+        [Given(@"I Select ""(.*)"" as MySql Server Source for ""(.*)""")]
+        public void GivenISelectAsMySqlServerSourceFor(string sourceName, string activityName)
+        {
+            var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.SourceRegion);
+            var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Name == sourceName);
+            vm.SourceRegion.SelectedSource = dbSource;
+            SetDbSource(activityName, dbSource);
+            Assert.IsNotNull(vm.SourceRegion.SelectedSource);
+        }
+        [Given(@"I Select ""(.*)"" as MySql Server Action for ""(.*)""")]
+        public void GivenISelectAsMySqlServerActionFor(string actionName, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.ActionRegion);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
+            SetDbAction(activityName, actionName);
         }
     }
 }

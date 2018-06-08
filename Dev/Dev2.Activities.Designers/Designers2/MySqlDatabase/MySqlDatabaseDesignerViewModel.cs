@@ -455,8 +455,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 DisplayName = displayName2 + displayName;
             }
         }
-
-        IDbServiceModel Model { get; set; }
+        public IDbServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {
