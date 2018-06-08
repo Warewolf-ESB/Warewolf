@@ -25,12 +25,13 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string CommandText { get; set; }
-
+        public int CommandTimeout { get; set; }
         public DsfODBCDatabaseActivity()
         {
             Type = "ODBC Connector";
             DisplayName = "ODBC Data Source";
             CommandText = "";
+            CommandTimeout = 30;
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -82,10 +83,13 @@ namespace Dev2.Activities
         {
 
             base.BeforeExecutionStart(dataObject, tmpErrors);
-            ServiceExecution = new DatabaseServiceExecution(dataObject);
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            databaseServiceExecution.ProcedureName = databaseServiceExecution.OdbcMethod(CommandText);
 
+            var databaseServiceExecution = new DatabaseServiceExecution(dataObject)
+            {
+                CommandTimeout = CommandTimeout
+            };
+            databaseServiceExecution.ProcedureName = databaseServiceExecution.OdbcMethod(CommandText);
+            ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
         }

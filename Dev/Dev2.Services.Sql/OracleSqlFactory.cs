@@ -22,10 +22,10 @@ namespace Dev2.Services.Sql
             return new OracleConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new OracleCommand(commandText, connection as OracleConnection)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText,int commandTimeout) => new OracleCommand(commandText, connection as OracleConnection)
         {
             CommandType = commandType,
-            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+            CommandTimeout = commandTimeout
         };
 
         public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOracleServerSchema(connection);
