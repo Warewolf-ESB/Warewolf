@@ -38,11 +38,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         public DbSource(XElement xml)
             : base(xml)
         {
-            
+
 
             // Setup type include default port
             var attributeSafe = xml.AttributeSafe("ServerType");
-            switch(attributeSafe.ToLowerInvariant())
+            switch (attributeSafe.ToLowerInvariant())
             {
                 case "sqldatabase":
                     ServerType = enSourceType.SqlDatabase;
@@ -60,10 +60,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                     break;
                 case "postgresql":
                     ServerType = enSourceType.PostgreSQL;
-					break;
-				case "sqlite":
-					ServerType = enSourceType.SQLiteDatabase;
-					break;
+                    break;
+                case "sqlite":
+                    ServerType = enSourceType.SQLiteDatabase;
+                    break;
                 default:
                     ResourceType = "DbSource";
                     ServerType = enSourceType.Unknown;
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string DatabaseName { get; set; }
 
         public int Port { get; set; }
-        public int ConnectionTimeout { get; set; } = 30;
+        public int ConnectionTimeout { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
@@ -150,10 +150,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.ODBC:
                         return string.Format("DSN={0};", DatabaseName);
-					case enSourceType.SQLiteDatabase:
-						return ":memory:";
+                    case enSourceType.SQLiteDatabase:
+                        return ":memory:";
 
-					case enSourceType.PostgreSQL:
+                    case enSourceType.PostgreSQL:
 
                         if (string.IsNullOrEmpty(DatabaseName))
                         {
@@ -198,13 +198,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             set
             {
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     return;
                 }
 
                 AuthenticationType = AuthenticationType.Windows;
-                
+                bool containsTimeout = false;
+                int defaultTimeout = 30;
                 foreach (var prm in value.Split(';').Select(p => p.Split('=')))
                 {
                     int port;
@@ -246,15 +247,24 @@ namespace Dev2.Runtime.ServiceModel.Data
                         case "pwd":
                             Password = prm[1];
                             break;
+                        case "connection timeout":
+                            containsTimeout = true;
+                            ConnectionTimeout = int.TryParse(prm[1], out int timeout) ? timeout : defaultTimeout;
+                            break;
                         default:
                             break;
                     }
+                }
+                if (!containsTimeout)
+                {
+                    ConnectionTimeout = defaultTimeout;
                 }
             }
         }
         public string GetConnectionStringWithTimeout(int timeout)
         {
             var oldTimeout = ConnectionTimeout;
+            ConnectionTimeout = timeout;
             var result = ConnectionString;
             ConnectionTimeout = oldTimeout;
 
