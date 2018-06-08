@@ -43,7 +43,7 @@ namespace Dev2.DynamicServices.Objects
 
             // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
             
-            if (GlobalConstants.runtimeNamespaceClean)
+            if (GlobalConstants.RuntimeNamespaceClean)
                 
             {
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);

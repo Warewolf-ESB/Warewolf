@@ -43,7 +43,16 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(ServerName, other.ServerName) && Type == other.Type && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType && Id == other.Id && string.Equals(DbName, other.DbName);
+            var equals = true;
+            equals &= string.Equals(ServerName, other.ServerName);
+            equals &= Type == other.Type;
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= AuthenticationType == other.AuthenticationType;
+            equals &= Id == other.Id;
+            equals &= string.Equals(DbName, other.DbName);
+            equals &= ConnectionTimeout == other.ConnectionTimeout;            
+            return equals;
         }
 
         public bool Equals(DbSourceDefinition other)
@@ -56,7 +65,17 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(ServerName, other.ServerName) && Type == other.Type && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType && Id == other.Id && string.Equals(DbName, other.DbName);
+            var equals = true;
+            equals &= string.Equals(ServerName, other.ServerName);
+            equals &= Type == other.Type;
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= AuthenticationType == other.AuthenticationType;
+            equals &= Id == other.Id;
+            equals &= string.Equals(DbName, other.DbName);
+            equals &= ConnectionTimeout == other.ConnectionTimeout;
+
+            return equals;
         }
 
         public override bool Equals(object obj)
@@ -85,6 +104,7 @@ namespace Dev2.Common.Interfaces.Core
                 hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
+                hashCode = (hashCode * 397) ^ ConnectionTimeout;
                 hashCode = (hashCode * 397) ^ (DbName?.GetHashCode() ?? 0);
                 return hashCode;
             }
