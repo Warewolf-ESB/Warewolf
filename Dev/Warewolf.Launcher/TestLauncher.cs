@@ -1454,7 +1454,7 @@ namespace Warewolf.Launcher
             {
                 if (!String.IsNullOrEmpty(TestCategories))
                 {
-                    TestCategories = " /category:\"" + TestCategories + "\"";
+                    TestCategories = $" /category:\"{TestCategories}\"";
                 }
                 else
                 {
@@ -1462,7 +1462,7 @@ namespace Warewolf.Launcher
                     if (DefinedCategories.Any())
                     {
                         TestCategories = string.Join("&!", DefinedCategories);
-                        TestCategories = " /category:\"!" + TestCategories + "\"";
+                        TestCategories = $" /category:\"!{TestCategories}\"";
                     }
                 }
             }
@@ -1472,7 +1472,7 @@ namespace Warewolf.Launcher
                 if (!(TestList.StartsWith(" /test:")))
                 {
                     var TestNames = string.Join(" /test:", TestList.Split(','));
-                    TestList = " /test:" + TestNames;
+                    TestList = $" /test:{TestNames}";
                 }
             }
 
@@ -1482,7 +1482,7 @@ namespace Warewolf.Launcher
         public string VSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
         {
             string TestRunnerPath;
-            Environment.CurrentDirectory = TestsResultsPath + "\\..";
+            Environment.CurrentDirectory = $"{TestsResultsPath}\\..";
             string FullArgsList;
             if (string.IsNullOrEmpty(TestList))
             {
@@ -1509,7 +1509,7 @@ namespace Warewolf.Launcher
         public string MSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
         {
             // Resolve test results file name
-            var TestResultsFile = TestsResultsPath + "\"" + JobName + " Results.trx";
+            var TestResultsFile = TestsResultsPath + $"\"{JobName} Results.trx";
             CopyOnWrite(TestResultsFile);
 
             // Create full MSTest argument string.
@@ -1518,29 +1518,29 @@ namespace Warewolf.Launcher
             if (TestList == "")
             {
                 FullArgsList = TestAssembliesList +
-                    " /resultsfile:\"" + TestResultsFile + "\"" +
+                    $" /resultsfile:\"{TestResultsFile}\"" +
                     TestSettingsArgument(TestSettingsFile) +
                     categories;
             }
             else
             {
                 FullArgsList = TestAssembliesList +
-                    " /resultsfile:\"" + TestResultsFile + "\"" +
+                    $" /resultsfile:\"{TestResultsFile}\"" +
                     TestSettingsArgument(TestSettingsFile) +
                     TestList;
             }
 
             // Write full command including full argument string.
-            var TestRunnerPath = TestsResultsPath + "\\..\\Run " + JobName + ".bat";
+            var TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
             CopyOnWrite("TestRunnerPath");
-            File.WriteAllText(TestRunnerPath, "\"" + MSTestPath + "\"" + FullArgsList);
+            File.WriteAllText(TestRunnerPath, $"\"{MSTestPath}\"{FullArgsList}");
             return TestRunnerPath;
         }
 
         public string DotCoverRunner(string JobName, List<string> TestAssembliesDirectories)
         {
             // Write DotCover Runner XML 
-            var DotCoverSnapshotFile = Path.Combine(TestsResultsPath, JobName + " DotCover Output.dcvr");
+            var DotCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} DotCover Output.dcvr");
             CopyOnWrite(DotCoverSnapshotFile);
             var DotCoverArgs = @"<AnalyseParams>
     <TargetExecutable>" + TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
