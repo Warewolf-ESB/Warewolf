@@ -867,6 +867,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers.Tests\Dev2.Activities.Designers.Tests.csproj">
+      <Project>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</Project>
+      <Name>Dev2.Activities.Designers.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
       <Name>Dev2.Activities.Designers</Name>
@@ -927,6 +931,10 @@
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
+      <Name>Dev2.Studio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
@@ -954,6 +962,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

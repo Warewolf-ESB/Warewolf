@@ -6,7 +6,7 @@ Feature: SubworkflowExecution
 	 
 Background: Setup for subworkflow execution
 			Given Debug events are reset
-			And Debug states are cleared
+			And Debug states are cleared			
 
 Scenario: Executing mySql For Xml testing workflow base
 	  Given I have a workflow "Testing - mySql For Xml"
@@ -17,6 +17,7 @@ Scenario: Executing mySql For Xml testing workflow base
 	  And the "TestmySqlReturningXml" in Workflow "TestmySqlReturningXml" debug outputs as
 	  |                     |
 	  | [[Result]] = Passed |
+
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
