@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
 
         string _userName;
         string _password;
+        int _connectionTimeout;
         string _databaseName;
         readonly string _warewolfserverName;
         string _resourceName;
@@ -195,7 +196,17 @@ namespace Warewolf.Studio.ViewModels
                 Reset();
             }
         }
-
+        public int ConnectionTimeout
+        {
+            get { return _connectionTimeout; }
+            set
+            {
+                _connectionTimeout = value;
+                OnPropertyChanged(() => ConnectionTimeout);
+                OnPropertyChanged(() => Header);
+                Reset();
+            }
+        }
         public string DatabaseName
         {
             get { return _databaseName; }

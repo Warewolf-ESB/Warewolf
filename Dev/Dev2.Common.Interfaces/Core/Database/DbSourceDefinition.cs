@@ -24,6 +24,7 @@ namespace Dev2.Common.Interfaces.Core
             Name = db.ResourceName;
             Password = db.Password;
             ServerName = db.Server;
+            ConnectionTimeout = db.ConnectionTimeout;
             Type = db.ServerType;
             UserName = db.UserID;
         }
@@ -99,6 +100,7 @@ namespace Dev2.Common.Interfaces.Core
         public enSourceType Type { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public int ConnectionTimeout { get; set; }
         public AuthenticationType AuthenticationType
         {
             get
