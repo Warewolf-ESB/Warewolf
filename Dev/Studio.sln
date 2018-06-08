@@ -161,6 +161,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.TestingDotnetDllCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation.Tests", "Dev2.InstrumentationTests\Dev2.Instrumentation.Tests.csproj", "{BA95754E-19B2-42BC-9589-2ECC34338F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation.Specs", "Dev2.Instrumentation.Specs\Dev2.Instrumentation.Specs.csproj", "{6EBD904D-C168-40CE-828D-9B987F3CF591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -694,6 +698,22 @@ Global
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.ActiveCfg = Release|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.Build.0 = Release|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA95754E-19B2-42BC-9589-2ECC34338F2D}.Release|x86.Build.0 = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Debug|x86.Build.0 = Debug|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|x86.ActiveCfg = Release|Any CPU
+		{6EBD904D-C168-40CE-828D-9B987F3CF591}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
