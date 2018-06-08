@@ -166,7 +166,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.Write($"Started Warewolf Server Container on {_remoteDockerApi}. " + reader.ReadToEnd());
+                        Console.WriteLine($"Started Warewolf Server Container on {_remoteDockerApi}. " + reader.ReadToEnd());
                     }
                 }
             }
