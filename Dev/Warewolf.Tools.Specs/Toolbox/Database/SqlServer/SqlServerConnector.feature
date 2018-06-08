@@ -184,14 +184,14 @@ Scenario: SqlServer backward Compatiblity
       | [[ProductId]]    | productId     | [[dbo_GetCountries().CountryID]]   | dbo_GetCountries().CountryID   |
       |                  |               | [[dbo_GetCountries().Description]] | dbo_GetCountries().Description |
 	When "DataMigration" is executed
-    Then the workflow execution has "NO" error
-
+    Then the workflow "DataMigration" execution has "NO" error
+	
 Scenario: Execute Sql Server With Timeout
-    Given I have workflow "SqlWorkflowForTimeout" with "SqlServerActivity" database connector
+    Given I have workflow "SqlServerWorkflowForTimeout" with "SqlServerActivity" SqlServer database connector
     And Sql Server Source is Enabled
-    And I Select "NewSqlServerSource" as Server Source
-    And I Select "dbo.Pr_CitiesGetCountries" as Server Action
-    And Sql Server Inputs Are Enabled
+    And I Select "NewSqlServerSource" as SqlServer Source for "SqlServerActivity"
+    And I Select "dbo.Pr_CitiesGetCountries" as Server Action for "SqlServerActivity"
+    And Sql Server Inputs Are Enabled	
 	And Validate Sql Server is Enabled
     And I click Sql Generate Outputs
     And I click Test
@@ -200,6 +200,5 @@ Scenario: Execute Sql Server With Timeout
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
-	When Workflow "SqlWorkflowForTimeout" containing dbTool is executed
-    And the workflow execution has "NO" error
-
+	When Sql Workflow "SqlServerWorkflowForTimeout" containing dbTool is executed
+    And the workflow "SqlServerWorkflowForTimeout" execution has "NO" error

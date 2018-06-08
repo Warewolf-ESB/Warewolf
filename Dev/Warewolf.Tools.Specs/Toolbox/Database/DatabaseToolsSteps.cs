@@ -27,6 +27,12 @@ using Dev2.Studio.Core.Network;
 using Dev2.Threading;
 using System.Activities.Statements;
 using Dev2.Utilities;
+using Dev2.Studio.Interfaces.Enums;
+using Dev2.Controller;
+using Warewolf.Studio.ViewModels;
+using Dev2.Activities;
+using System.Activities;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Warewolf.Tools.Specs.Toolbox.Database
 {
@@ -36,14 +42,41 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         readonly ScenarioContext _scenarioContext;
         SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
+        StudioServerProxy _proxyLayer;
+        readonly CommonSteps _commonSteps;
         const int EnvironmentConnectionTimeout = 15;
 
         public DatabaseToolsSteps(ScenarioContext scenarioContext)
-        {
+        {            
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
-            _commonSteps = new CommonSteps(_scenarioContext);
+            _commonSteps = new CommonSteps(_scenarioContext);            
+            TryADD("server", ServerRepository.Instance.Source);
+            TryADD("debugStates", new List<IDebugState>());
+            TryADD("resourceRepo", ServerRepository.Instance.Source.ResourceRepository);
         }
-        readonly CommonSteps _commonSteps;
+       
+        public void WorkflowIsExecuted(string workflowName)
+        {
+            var resourceModel = SaveAWorkflow(workflowName);
+            ExecuteWorkflow(resourceModel);
+        }
+
+        public void ValidateErrorsAfterExecution(string workflowName, string hasError)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+
+            if (hasError == "AN")
+            {
+                var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(workflowName));
+                Assert.IsNotNull(innerWfHasErrorState);
+            }
+            else
+            {
+                debugStates.ForEach(p => Assert.IsFalse(p.HasError));
+            }
+        }
+
 
         [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool", "@ChangingSqlServerFunctions", "@CreatingOracleToolInstance", "@ChangingOracleActions")]
         public void InitChangingFunction()
@@ -54,6 +87,33 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             {
                 DataListSingleton.SetDataList(mock.Object);
             }
+        }
+
+        public void CreateNewResourceModel(string workflowName, IServer environmentModel)
+        {
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ID = Guid.NewGuid(),
+                ResourceName = workflowName,
+                Category = "Acceptance Tests\\" + workflowName,
+                ResourceType = ResourceType.WorkflowService
+            };
+            environmentModel.ResourceRepository.Add(resourceModel);
+            _scenarioContext.Add("resourceModel", resourceModel);
+        }
+
+        public void CreateDBServiceModel(IServer environmentModel)
+        {
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            var mock = new Mock<IShellViewModel>();
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                    , _proxyLayer.QueryManagerProxy
+                                                                                    , mock.Object
+                                                                                    , environmentModel);
+            _scenarioContext.Add("dbServiceModel", dbServiceModel);
+            _scenarioContext.Add("proxyLayer", _proxyLayer);
         }
 
         public static void AssertAgainstServiceInputs(Table table, ICollection<IServiceInput> inputs)
@@ -70,6 +130,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 rowNum++;
             }
         }
+
         public IContextualResourceModel SaveAWorkflow(string workflowName)
         {
             Get<List<IDebugState>>("debugStates").Clear();
@@ -111,6 +172,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
 
             return resourceModel;
         }
+
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if (resourceModel?.Environment == null)
@@ -184,8 +246,50 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 _resetEvt.Set();
             }
         }
-        void Add(string key, object value) => _scenarioContext.Add(key, value);
 
+
+        public void SetDbSource(string activityName, IDbSource dbSource)
+        {
+            var activities = _commonSteps.GetActivityList();
+            if (activityName.Contains("MySql"))
+            {
+                var mySqlactivity = activities[activityName] as DsfMySqlDatabaseActivity;
+                mySqlactivity.SourceId = dbSource.Id;
+            }
+            if (activityName.Contains("SqlServer"))
+            {
+                var sqlactivity = activities[activityName] as DsfSqlServerDatabaseActivity;
+                sqlactivity.SourceId = dbSource.Id;
+            }
+            if (activityName.Contains("Oracle"))
+            {
+                var sqlactivity = activities[activityName] as DsfOracleDatabaseActivity;
+                sqlactivity.SourceId = dbSource.Id;
+            }
+        }
+
+        public void SetDbAction(string activityName, string actionName)
+        {
+            var activities = _commonSteps.GetActivityList();
+            if (activityName.Contains("MySql"))
+            {
+                var sqlactivity = activities[activityName] as DsfMySqlDatabaseActivity;
+                sqlactivity.ProcedureName = actionName;
+            }
+            if (activityName.Contains("SqlServer"))
+            {
+                var sqlactivity = activities[activityName] as DsfSqlServerDatabaseActivity;
+                sqlactivity.ProcedureName = actionName;
+            }
+            if (activityName.Contains("Oracle"))
+            {
+                var sqlactivity = activities[activityName] as DsfOracleDatabaseActivity;
+                sqlactivity.ProcedureName = actionName;
+            }
+        }
+
+
+        void Add(string key, object value) => _scenarioContext.Add(key, value);
         public T Get<T>(string keyName)
         {
             return _scenarioContext.Get<T>(keyName);
@@ -194,7 +298,15 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         {
             _scenarioContext.TryGetValue(keyName, out value);
         }
-
+        public void TryADD<T>(string keyName, T value)
+        {
+            var val = value;
+            if (!_scenarioContext.TryGetValue(keyName, out value))
+            {                
+                _scenarioContext.Add(keyName, val);
+            }
+        }
+        
         protected void BuildShapeAndTestData()
         {
             var shape = new XElement("root");
