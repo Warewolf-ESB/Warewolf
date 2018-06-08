@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
-                ConnectionTimeout = ConnectionTimeout,
+                  ConnectionTimeout = ConnectionTimeout,
                 Type = enSourceType.SqlDatabase,
                 Name = ResourceName,
                 DbName = DatabaseName,
