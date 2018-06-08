@@ -153,6 +153,7 @@ namespace Dev2.Runtime.ServiceModel
                 case enSourceType.SqlDatabase:
                     {
                         var broker = CreateDatabaseBroker();
+                        broker.CommandTimeout = dbService.CommandTimeout;
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
