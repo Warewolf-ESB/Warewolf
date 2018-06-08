@@ -435,9 +435,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
             var vm = GetViewModel();
-            Assert.IsNotNull(vm.SourceRegion);
+            Assert.IsNotNull(vm.SourceRegion);            
             var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            Assert.IsNotNull(dbSources, "dbSources is null");
             var dbSource = dbSources.Single(source => source.Name == sourceName);
+            Assert.IsNotNull(dbSource, "Source is null");
             vm.SourceRegion.SelectedSource = dbSource;
             SetDbSource(activityName, dbSource);
             Assert.IsNotNull(vm.SourceRegion.SelectedSource);
@@ -450,7 +452,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(vm.ActionRegion);
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
-            Assert.IsNotNull(vm.ActionRegion.SelectedAction);
+            Assert.IsNotNull(vm.ActionRegion.SelectedAction,  "Could not set Action");
         }
 
         [Given(@"Oracle Server Inputs Are Enabled")]

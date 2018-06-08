@@ -547,6 +547,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             _scenarioContext.Add("viewModel", mysqlDesignerViewModel);
             _scenarioContext.Add("parentName", workflowName);
         }
+
         [Given(@"I Select ""(.*)"" as MySql Server Source for ""(.*)""")]
         public void GivenISelectAsMySqlServerSourceFor(string sourceName, string activityName)
         {
@@ -554,7 +555,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var vm = GetViewModel();
             Assert.IsNotNull(vm.SourceRegion);
             var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            Assert.IsNotNull(dbSources, "dbSources is null");
             var dbSource = dbSources.Single(source => source.Name == sourceName);
+            Assert.IsNotNull(dbSource, "Source is null");
             vm.SourceRegion.SelectedSource = dbSource;
             SetDbSource(activityName, dbSource);
             Assert.IsNotNull(vm.SourceRegion.SelectedSource);
