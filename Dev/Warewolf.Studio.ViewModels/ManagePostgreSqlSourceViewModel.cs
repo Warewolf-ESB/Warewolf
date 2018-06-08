@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = source.AuthenticationType;
             UserName = source.UserName;
             Password = source.Password;
+            ConnectionTimeout = source.ConnectionTimeout;
             Path = source.Path;
             TestConnection();
             DatabaseName = source.DbName;
@@ -87,6 +88,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.PostgreSQL,
             Name = ResourceName,
             DbName = DatabaseName,
@@ -99,6 +101,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.PostgreSQL,
             Path = Path,
             Name = ResourceName,
@@ -110,6 +113,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.PostgreSQL,
             Path = Path,
             Name = ResourceName,
@@ -127,6 +131,7 @@ namespace Warewolf.Studio.ViewModels
             Path = DbSource.Path,
             ServerName = DbSource.ServerName,
             UserName = DbSource.UserName,
+            ConnectionTimeout = DbSource.ConnectionTimeout,
             Type = enSourceType.PostgreSQL
         };
 
@@ -144,6 +149,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
+                ConnectionTimeout = ConnectionTimeout,
                 Type = enSourceType.PostgreSQL,
                 Name = ResourceName,
                 DbName = DatabaseName,

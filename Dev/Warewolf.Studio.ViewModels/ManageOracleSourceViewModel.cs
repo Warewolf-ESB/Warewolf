@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = source.AuthenticationType;
             UserName = source.UserName;
             Password = source.Password;
+            ConnectionTimeout = source.ConnectionTimeout;
             Path = source.Path;
             TestConnection();
             DatabaseName = source.DbName;
@@ -87,6 +88,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.Oracle,
             Name = ResourceName,
             DbName = DatabaseName,
@@ -109,6 +111,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
+                ConnectionTimeout = ConnectionTimeout,
                 Type = enSourceType.Oracle,
                 Name = ResourceName,
                 DbName = DatabaseName,
@@ -124,6 +127,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.Oracle,
             Path = Path,
             Name = ResourceName,
@@ -135,6 +139,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.Oracle,
             Path = Path,
             Name = ResourceName,
@@ -149,6 +154,7 @@ namespace Warewolf.Studio.ViewModels
             Id = DbSource.Id,
             Name = DbSource.Name,
             Password = DbSource.Password,
+            ConnectionTimeout = DbSource.ConnectionTimeout,
             Path = DbSource.Path,
             ServerName = DbSource.ServerName,
             UserName = DbSource.UserName,
