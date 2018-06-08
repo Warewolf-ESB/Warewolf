@@ -365,10 +365,10 @@ namespace Warewolf.Launcher
                 build.InstallServer();
                 build.CleanupServerStudio();
                 build.Startmywarewolfio();
+                build.TryStartLocalCIRemoteContainer();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
                     build.StartServer();
-                    build.TryStartLocalCIRemoteContainer();
                     if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.StartStudio();

@@ -356,8 +356,8 @@ namespace Warewolf.Launcher
         {
             try
             {
-                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("TST-CI-REMOTE", "localhost");
-                CIRemoteOverloading(ciRemoteContainerLauncher.IP);
+                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("localhost");
+                CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
             }
             catch (Exception e)
             {
@@ -365,27 +365,20 @@ namespace Warewolf.Launcher
             }
         }
 
-        void CIRemoteOverloading(string ip)
+        void CIRemoteOverloading(string hostname)
         {
-            string tales = $"{ip}    TST-CI-REMOTE";
-            const string hostfile = @"C:\Windows\System32\drivers\etc\hosts";
-            string[] lines = File.ReadAllLines(hostfile);
-
-            if (lines.Any(s => s.Contains("TST-CI-REMOTE")))
-            {
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    if (lines[i].Contains("TST-CI-REMOTE"))
-                    {
-                        lines[i] = tales;
-                    }
-                }
-                File.WriteAllLines(hostfile, lines);
-            }
-            else if (!lines.Contains(tales))
-            {
-                File.AppendAllLines(hostfile, new String[] { tales });
-            }
+            var ServerFolderPath = Path.GetDirectoryName(ServerPath);
+            string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
+            string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
+            Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote}");
+            var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
+            var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
+            ServerTestsCIRemoteContents = ServerTestsCIRemoteContents.Replace("tst-ci-remote", hostname);
+            UITestsCIRemoteContents = UITestsCIRemoteContents.Replace("tst-ci-remote", hostname);
+            ServerTestsCIRemoteContents = ServerTestsCIRemoteContents.Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
+            UITestsCIRemoteContents = UITestsCIRemoteContents.Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
+            File.WriteAllText(ServerTestsCIRemote, ServerTestsCIRemoteContents);
+            File.WriteAllText(UITestsCIRemote, UITestsCIRemoteContents);
         }
 
         void UndoCIRemoteOverloading()
@@ -1605,7 +1598,7 @@ namespace Warewolf.Launcher
                 }
                 if (ApplyDotCover && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
                 {
-                    string DotCoverRunnerPath = DotCoverRunner( JobName, TestAssembliesDirectories);
+                    string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
                     trxTestResultsFile = StartTestRunnerProcess(DotCoverRunnerPath);

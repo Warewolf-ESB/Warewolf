@@ -15,8 +15,10 @@ namespace Warewolf.Launcher
         string _remoteImageID = null;
         public string Hostname;
         public string IP;
+        public const string Username = "WarewolfAdmin";
+        public const string Password = "W@rEw0lf@dm1n";
 
-        public WarewolfServerContainerLauncher(string hostname = "", string remoteDockerApi = "localhost")
+        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "")
         {
             _remoteDockerApi = remoteDockerApi;
             Hostname = hostname;
