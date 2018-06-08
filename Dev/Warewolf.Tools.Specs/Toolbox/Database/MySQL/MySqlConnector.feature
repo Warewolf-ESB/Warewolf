@@ -74,5 +74,6 @@ Scenario: Execute MySql Server With Timeout
 	| CountryID   | [[Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[Pr_CitiesGetCountries().Description]] |
 	And Mysql Server Recordset Name equals "Pr_CitiesGetCountries"
+	And Mysql input variable "[[name]]" is ""
 	When MySql Workflow "MySqlWorkflowForTimeout" containing dbTool is executed
     And the workflow "MySqlWorkflowForTimeout" execution has "NO" error

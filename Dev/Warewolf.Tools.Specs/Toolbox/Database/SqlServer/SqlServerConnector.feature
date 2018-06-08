@@ -200,5 +200,6 @@ Scenario: Execute Sql Server With Timeout
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Sql input variable "[[Prefix]]" is ""
 	When Sql Workflow "SqlServerWorkflowForTimeout" containing dbTool is executed
     And the workflow "SqlServerWorkflowForTimeout" execution has "NO" error

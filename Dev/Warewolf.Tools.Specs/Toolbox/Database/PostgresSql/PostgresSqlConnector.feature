@@ -86,5 +86,6 @@ Scenario: Execute Postgres Server With Timeout
 	| name        | [[get_countries().name]] |
 	| code        | [[get_countries().code]] |
 	And Postgres Server Recordset Name equals "get_countries"
+	And Postgres input variable "[[countrynamecontains]]" is ""
 	When Postgres Workflow "PostgreWorkflowForTimeout" containing dbTool is executed
     And the workflow "PostgreWorkflowForTimeout" execution has "NO" error

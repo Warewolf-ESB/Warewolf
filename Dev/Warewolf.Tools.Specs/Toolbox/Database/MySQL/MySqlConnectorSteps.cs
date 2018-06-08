@@ -570,5 +570,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
         }
+        [Then(@"Mysql input variable ""(.*)"" is ""(.*)""")]
+        public void ThenMysqlInputVariableIs(string variableName, string variableValue)
+        {
+            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                _scenarioContext.Add("variableList", variableList);
+            }
+            variableList.Add(Tuple.Create(variableName, variableValue));
+        }
+
     }
 }
