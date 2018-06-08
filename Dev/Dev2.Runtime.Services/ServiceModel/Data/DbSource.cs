@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string DatabaseName { get; set; }
 
         public int Port { get; set; }
-        public int Timeout { get; set; } = 30;
+        public int ConnectionTimeout { get; set; } = 30;
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             AuthenticationType == AuthenticationType.Windows
                                 ? "Integrated Security=SSPI;"
                                 : string.Format("User ID={0};Password={1};", UserID, Password),
-                            Timeout);
+                            ConnectionTimeout);
 
                     case enSourceType.MySqlDatabase:
                         return string.Format("Server={0};{4}Database={1};Uid={2};Pwd={3};",
@@ -254,9 +254,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
         public string GetConnectionStringWithTimeout(int timeout)
         {
-            var oldTimeout = Timeout;
+            var oldTimeout = ConnectionTimeout;
             var result = ConnectionString;
-            Timeout = oldTimeout;
+            ConnectionTimeout = oldTimeout;
 
             return result;
         }

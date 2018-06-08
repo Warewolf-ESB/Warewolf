@@ -47,7 +47,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-
                 Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("DbSource", out StringBuilder resourceDefinition);
@@ -62,8 +61,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Server = src.ServerName,
                         Password = src.Password,
                         ServerType = src.Type,
+                        ConnectionTimeout = src.ConnectionTimeout,
                         UserID = src.UserName
-
                     });
 
                 });
