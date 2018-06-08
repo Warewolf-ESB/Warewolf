@@ -24,7 +24,6 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
-        public int ConnectionTimeout { get; set; }
         public int CommandTimeout { get; set; }
 
         public string ExecuteActionString { get; set; }
@@ -32,6 +31,7 @@ namespace Dev2.Activities
         {
             Type = "SQL Server Database";
             DisplayName = "SQL Server Database";
+            CommandTimeout = 30;
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -88,21 +88,18 @@ namespace Dev2.Activities
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
             base.BeforeExecutionStart(dataObject, tmpErrors);
-            ServiceExecution = new DatabaseServiceExecution(dataObject);
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            databaseServiceExecution.ProcedureName = ProcedureName;
-            databaseServiceExecution.CommandTimeout = CommandTimeout;
+            var databaseServiceExecution = new DatabaseServiceExecution(dataObject)
+            {
+                ProcedureName = ProcedureName,
+                CommandTimeout = CommandTimeout
+            };
             if (!string.IsNullOrEmpty(ExecuteActionString))
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
             }
-
+            ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
-        }
-
-        protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
-        {
-            base.AfterExecutionCompleted(tmpErrors);
+            ServiceExecution.BeforeExecution(tmpErrors);
         }
 
 
@@ -122,8 +119,7 @@ namespace Dev2.Activities
 
             var eq = base.Equals(other);
             eq &= string.Equals(SourceId.ToString(), other.SourceId.ToString());
-            eq &= string.Equals(ProcedureName, other.ProcedureName);
-            eq &= ConnectionTimeout == other.ConnectionTimeout;
+            eq &= string.Equals(ProcedureName, other.ProcedureName);            
             eq &= CommandTimeout == other.CommandTimeout;
             eq &= string.Equals(ExecuteActionString, other.ExecuteActionString);
             return eq;
@@ -148,7 +144,6 @@ namespace Dev2.Activities
                 {
                     hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
                 }
-                hashCode = (hashCode * 397) ^ ConnectionTimeout;
                 hashCode = (hashCode * 397) ^ CommandTimeout;
                 if (ExecuteActionString != null)
                 {
