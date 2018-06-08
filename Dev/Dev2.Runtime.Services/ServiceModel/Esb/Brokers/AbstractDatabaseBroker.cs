@@ -177,7 +177,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             command.CommandText = serviceMethod.ExecuteAction;
             command.CommandType = serviceMethod.ExecuteAction?.Contains("select") ?? true ? CommandType.Text : CommandType.StoredProcedure;
-            command.CommandTimeout = CommandTimeout;
+            if (CommandTimeout > 0)
+            {
+                command.CommandTimeout = CommandTimeout;
+            }
             if (server.GetType() != typeof(ODBCServer))
             {
                 foreach (var methodParameter in serviceMethod.Parameters)
