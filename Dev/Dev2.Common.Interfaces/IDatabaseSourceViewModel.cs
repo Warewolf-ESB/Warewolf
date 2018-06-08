@@ -14,6 +14,7 @@ namespace Dev2.Common.Interfaces
         string EmptyServerName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
+        int ConnectionTimeout { get; set; }
         ICommand TestCommand { get; set; }
         ICommand CancelTestCommand { get; set; }
         ICommand OkCommand { get; set; }

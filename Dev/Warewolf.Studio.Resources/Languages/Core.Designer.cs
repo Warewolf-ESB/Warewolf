@@ -124,6 +124,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string ConnectionTimeoutLabel {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://warewolf.io/contributors.php.
         /// </summary>
         public static string ContributorsUrl {

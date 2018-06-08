@@ -398,6 +398,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database connection timeout.
+        /// </summary>
+        public static string ConnectionTimeoutHelp {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are copying to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -1983,6 +1992,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ManageDbSourceCancelTestTooltip {
             get {
                 return ResourceManager.GetString("ManageDbSourceCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the connection timeout of the database data source.
+        /// </summary>
+        public static string ManageDbSourceConnectionTimeoutTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceConnectionTimeoutTooltip", resourceCulture);
             }
         }
         
