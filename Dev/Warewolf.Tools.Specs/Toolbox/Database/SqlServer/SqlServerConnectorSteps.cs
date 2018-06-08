@@ -7,10 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using ActivityUnitTests;
-using Dev2.Activities.Designers.Tests.SqlServer;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Specs.BaseTypes;
@@ -23,21 +20,13 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Controller;
-using Dev2.Data.Util;
-using Dev2.Interfaces;
-using Dev2.Messages;
-using Dev2.Runtime.Hosting;
-using Dev2.Services;
 using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,43 +34,26 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
-using Warewolf.Tools.Specs.BaseTypes;
-using WarewolfParserInterop;
+using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class SQLServerConnectorSteps :   RecordSetBases
-    
+    public class SQLServerConnectorSteps : DatabaseToolsSteps
     {
-
         DbSourceDefinition sqlsource;
         DbAction _importOrderAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getCountriesAction;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
-        const int EnvironmentConnectionTimeout = 15;
-
-        SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
-
-        [BeforeScenario]
-        public void Setup()
-        {
-            if (_debugWriterSubscriptionService != null)
-            {
-                _debugWriterSubscriptionService.Unsubscribe();
-                _debugWriterSubscriptionService.Dispose();
-            }
-        }
+        StudioServerProxy _proxyLayer;
 
         public SQLServerConnectorSteps(ScenarioContext scenarioContext)
            : base(scenarioContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
-           
         }
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
@@ -187,7 +159,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
 
-
         [Given(@"Sql Server Inputs Are Enabled")]
         [When(@"Sql Server Inputs Are Enabled")]
         [Then(@"Sql Server Inputs Are Enabled")]
@@ -225,21 +196,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowNum++;
             }
         }
-        static List<IServiceInput> GetServiceInputs(Table table)
+
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" database connector")]
+        public void GivenIHaveWorkflowWithDatabaseConnector(string workflowName, string activityName)
         {
-            return table.Rows.Select(a => new ServiceInput(a["ParameterName"], a["ParameterValue"]))
-                .Cast<IServiceInput>()
-                .ToList();
-        }
-        [Given(@"I have workflow with database connector")]
-        public void GivenIHaveWorkflowWithDatabaseConnector()
-        {
-            var workflowName = "SqlWorkflowForTimeout";
-            var procedureName = "dbo.Pr_CitiesGetCountries";
-            var sourceId = Guid.NewGuid();
-            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "S") };
-            var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
-            //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var resourceModel = new ResourceModel(environmentModel)
@@ -252,64 +212,53 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             environmentModel.ResourceRepository.Add(resourceModel);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
-            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+            _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
             var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
-            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            var dbSource = dbSources.Single(source => source.Id == resourceId);
 
-            var databaseService = new DatabaseService
-            {
-                Source = dbSource,
-                Inputs = inputs,
-                Action = new DbAction()
-                {
-                    Name = procedureName,
-                    SourceId = dbSource.Id,
-                    Inputs = inputs,
-                    ExecuteAction = procedureName
-                },
-                Name = procedureName,
-                Id = dbSource.Id
-            };
-            var testResults = dbServiceModel.TestService(databaseService);
-            var sqlServerActivity = new DsfSqlServerDatabaseActivity
-            {
-                ProcedureName = procedureName,
-                DisplayName = procedureName,
-                SourceId = dbSource.Id,
-                Outputs = new List<IServiceOutputMapping>(),
-                Inputs = databaseService.Inputs
-            };
-
-            var mappings = new List<IServiceOutputMapping>();
+            var sqlServerActivity = new DsfSqlServerDatabaseActivity { DisplayName = activityName };
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
-
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel,new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(sqlServerDesignerViewModel, sqlServerDesignerViewModel.Model);
 
-            sqlServerActivity.Outputs = mappings;
-            sqlServerActivity.ProcedureName = procedureName;
-            _commonSteps.AddActivityToActivityList(procedureName, procedureName, sqlServerActivity);
-
-            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
-
-            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
-
-
-            ScenarioContext.Current.Add("debugStates", new List<IDebugState>());
-            ScenarioContext.Current.Add("resourceModel", resourceModel);
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("ServiceInputViewModel", serviceInputViewModel);
-            ScenarioContext.Current.Add("server", environmentModel);
-            ScenarioContext.Current.Add("resourceRepo", environmentModel.ResourceRepository);
-            ScenarioContext.Current.Add("DbServiceModel", databaseService);
-            ScenarioContext.Current.Add("parentName", workflowName);
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, sqlServerActivity);
+            DebugWriterSubscribe(environmentModel);
+            _scenarioContext.Add("debugStates", new List<IDebugState>());
+            _scenarioContext.Add("resourceModel", resourceModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("server", environmentModel);
+            _scenarioContext.Add("resourceRepo", environmentModel.ResourceRepository);
+            _scenarioContext.Add("parentName", workflowName);
         }
-        
+
+        [Given(@"I Select ""(.*)"" as Server Source")]
+        public void GivenISelectAsServerSource(string sourceName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.SourceRegion);
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Name == sourceName);
+            vm.SourceRegion.SelectedSource = dbSource;
+            var activities = _commonSteps.GetActivityList();
+            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
+            sqlactivity.SourceId = dbSource.Id;
+            Assert.IsNotNull(vm.SourceRegion.SelectedSource);
+        }
+
+        [Given(@"I Select ""(.*)"" as Server Action")]
+        public void GivenISelectAsServerAction(string actionName)
+        {
+            var vm = GetViewModel();
+            var activities = _commonSteps.GetActivityList();
+            Assert.IsNotNull(vm.ActionRegion);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
+            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
+            sqlactivity.ProcedureName = actionName;
+        }
+
         [Given(@"I open workflow with database connector")]
         public void GivenIOpenWolf()
         {
@@ -385,7 +334,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual<string>(actionName, selectedProcedure.Name);
         }
-
 
         [When(@"I Select ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -547,10 +495,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("privateObject", privateObject);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("privateObject", privateObject);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
@@ -596,28 +544,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         SqlServerDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
-        }
-
-        PrivateObject GetSqlServerPrivateObject()
-        {
-            return ScenarioContext.Current.Get<PrivateObject>("privateObject");
-        }
-
-        Mock<IManageDatabaseInputViewModel> GetInputViewModel()
-        {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
+            return _scenarioContext.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return _scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
-        IDbServiceModel GetRealDbServiceModel()
-        {
-            return ScenarioContext.Current.Get<IDbServiceModel>("DbServiceModel");
-        }
         [Given(@"Workflow ""(.*)"" debug outputs as")]
         [When(@"Workflow ""(.*)"" debug outputs as")]
         [Then(@"Workflow ""(.*)"" debug outputs as")]
@@ -677,83 +611,24 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Prefix is set to ""(.*)""")]
         public void GivenPrefixIsSetTo(string prefix)
         {
+            var newInput = new ServiceInput("Prefix", prefix);
             var sqlGetViewModel = GetViewModel();
-            sqlGetViewModel.InputArea.Inputs.Single().Value = prefix;
+            sqlGetViewModel.InputArea.Inputs.Add(newInput);
+            var activities = _commonSteps.GetActivityList();
+            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
+            sqlactivity.Inputs = sqlactivity.Inputs == null ? new List<IServiceInput> { newInput } : sqlGetViewModel.InputArea.Inputs;
         }
 
-        [When(@"Sql Server is executed")]
-        public void WhenSqlServerIsExecuted()
+        [When(@"Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenWorkflowContainingDbToolIsExecuted(string workflowName)
         {
-            var resourceModel = SaveAWorkflow("SqlWorkflowForTimeout");
+            var resourceModel = SaveAWorkflow(workflowName);
             ExecuteWorkflow(resourceModel);
         }
-     
-        private IContextualResourceModel SaveAWorkflow(string parentName)
-        {
-            TryGetValue("parentName", out string parentWorkflowName);
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
 
-            Get<List<IDebugState>>("debugStates").Clear();
-            BuildDataList();
-
-            var activityList = _commonSteps.GetActivityList();
-
-            var flowSteps = new List<FlowStep>();
-
-            TestStartNode = new FlowStep();
-            flowSteps.Add(TestStartNode);
-            if (activityList != null)
-            {
-                foreach (var activity in activityList)
-                {
-                    if (TestStartNode.Action == null)
-                    {
-                        TestStartNode.Action = activity.Value;
-                    }
-                    else
-                    {
-                        var flowStep = new FlowStep { Action = activity.Value };
-                        flowSteps.Last().Next = flowStep;
-                        flowSteps.Add(flowStep);
-                    }
-                }
-            }
-            TryGetValue("resourceModel", out IContextualResourceModel resourceModel);
-            TryGetValue("server", out IServer server);
-            TryGetValue("resourceRepo", out IResourceRepository repository);
-
-            var currentDl = CurrentDl;
-              resourceModel.DataList = currentDl.Replace("root", "DataList");
-            var helper = new WorkflowHelper();
-            var xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
-            resourceModel.WorkflowXaml = xamlDefinition;
-            repository.Save(resourceModel);
-            repository.SaveToServer(resourceModel);
-
-            return resourceModel;
-        }
-
-        public void ExecuteWorkflow(IContextualResourceModel resourceModel)
-        {
-            if (resourceModel?.Environment == null)
-            {
-                return;
-            }
-
-            var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
-            EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
-            var clientContext = resourceModel.Environment.Connection;
-            if (clientContext != null)
-            {
-                var dataList = XElement.Parse(debugTo.XmlData);
-                dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
-                dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.EnvironmentID));
-                WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
-                _resetEvt.WaitOne(3000);                
-            }
-        }
+        [Given(@"the workflow execution has ""(.*)"" error")]
         [When(@"the workflow execution has ""(.*)"" error")]
+        [Then(@"the workflow execution has ""(.*)"" error")]
         public void WhenTheWorkflowExecutionHasError(string hasError)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
@@ -769,205 +644,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 debugStates.ForEach(p => Assert.IsFalse(p.HasError));
             }
         }
-        void EnsureEnvironmentConnected(IServer server, int timeout)
-        {
-            if (timeout <= 0)
-            {
-                _scenarioContext.Add("ConnectTimeoutCountdown", EnvironmentConnectionTimeout);
-                throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
-            }
-
-            if (!server.IsConnected && !server.Connection.IsConnected)
-            {
-                server.Connect();
-            }
-
-            if (!server.IsConnected && !server.Connection.IsConnected)
-            {
-                Thread.Sleep(GlobalConstants.NetworkTimeOut);
-                timeout--;
-                EnsureEnvironmentConnected(server, timeout);
-            }
-        }
-        protected override void BuildDataList()
-        {
-            BuildShapeAndTestData();
-        }
-        protected void BuildShapeAndTestData()
-        {
-            var shape = new XElement("root");
-            var data = new XElement("root");
-            var dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
-            DataListSingleton.SetDataList(dataListViewModel);
-
-            var row = 0;
-            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
-            if (variableList != null)
-            {
-                try
-                {
-                    foreach (dynamic variable in variableList)
-                    {
-                        var variableName = DataListUtil.AddBracketsToValueIfNotExist(variable.Item1);
-                        if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
-                        {
-                            string value = variable.Item2 == "blank" ? "" : variable.Item2;
-                            if (value.ToUpper() == "NULL")
-                            {
-                                DataObject.Environment.AssignDataShape(variable.Item1);
-                            }
-                            else
-                            {
-                                DataObject.Environment.Assign(variableName, value, 0);
-                            }
-                        }
-                        if (DataListUtil.IsValueScalar(variableName))
-                        {
-                            var scalarName = DataListUtil.RemoveLanguageBrackets(variableName);
-                            var scalarItemModel = new ScalarItemModel(scalarName);
-                            if (!scalarItemModel.HasError)
-                            {
-                                DataListSingleton.ActiveDataList.Add(scalarItemModel);
-                            }
-                        }
-                        if (DataListUtil.IsValueRecordsetWithFields(variableName))
-                        {
-                            var rsName = DataListUtil.ExtractRecordsetNameFromValue(variableName);
-                            var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(variableName);
-                            var rs = DataListSingleton.ActiveDataList.RecsetCollection.FirstOrDefault(model => model.Name == rsName);
-                            if (rs == null)
-                            {
-                                var recordSetItemModel = new RecordSetItemModel(rsName);
-                                DataListSingleton.ActiveDataList.Add(recordSetItemModel);
-                                recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName,
-                                    recordSetItemModel));
-                            }
-                            else
-                            {
-                                var recordSetFieldItemModel = rs.Children.FirstOrDefault(model => model.Name == fieldName);
-                                if (recordSetFieldItemModel == null)
-                                {
-                                    rs.Children.Add(new RecordSetFieldItemModel(fieldName, rs));
-                                }
-                            }
-                        }
-                        //Build(variable, shape, data, row);
-                        row++;
-                    }
-                    DataListSingleton.ActiveDataList.WriteToResourceModel();
-                }
-
-                catch
-
-                {
-
-                }
-            }
-
-            var isAdded = _scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
-            if (isAdded)
-            {
-                foreach (Tuple<string, string> emptyRecord in emptyRecordset)
-                {
-                    DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2, 0);
-                }
-            }
-
-            _scenarioContext.TryGetValue("objList", out dynamic objList);
-            if (objList != null)
-            {
-                try
-                {
-                    foreach (dynamic variable in objList)
-                    {
-                        if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
-                        {
-                            string value = variable.Item2 == "blank" ? "" : variable.Item2;
-                            if (value.ToUpper() == "NULL")
-                            {
-                                DataObject.Environment.AssignDataShape(variable.Item1);
-                            }
-                            else
-                            {
-                                DataObject.Environment.AssignJson(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value), 0);
-                            }
-                        }
-                    }
-                }
-
-                catch
-
-                {
-
-                }
-            }
-
-            CurrentDl = shape.ToString();
-            TestData = data.ToString();
-        }
-        T Get<T>(string keyName)
-        {
-            return _scenarioContext.Get<T>(keyName);
-        }
-
-        void TryGetValue<T>(string keyName, out T value)
-        {
-            _scenarioContext.TryGetValue(keyName, out value);
-        }
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        protected override List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
-        {
-            return base.GetDebugInputItemResults(activity);
-        }
-
-        protected override List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
-        {
-            return base.GetDebugOutputItemResults(activity);
-        }
-
-        void Append(IDebugState debugState)
-        {
-            TryGetValue("debugStates", out List<IDebugState> debugStates);
-            TryGetValue("debugStatesDuration", out List<IDebugState> debugStatesDuration);
-            TryGetValue("parentName", out string workflowName);
-            TryGetValue("server", out IServer server);
-            if (debugStatesDuration == null)
-            {
-                debugStatesDuration = new List<IDebugState>();
-                Add("debugStatesDuration", debugStatesDuration);
-            }
-            if (debugState.WorkspaceID == server.Connection.WorkspaceID)
-            {
-                if (debugState.StateType != StateType.Duration)
-                {
-                    debugStates.Add(debugState);
-                }
-                else
-                {
-                    debugStatesDuration.Add(debugState);
-                }
-            }
-            if (debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
-            {
-                _resetEvt.Set();
-            }
-        }
-        void Add(string key, object value) => _scenarioContext.Add(key, value);
 
         [Given(@"Sql Connection Timeout is ""(.*)""")]
         public void GivenSqlConnectionTimeoutIs(string p0)
@@ -979,8 +655,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
-
-
         #endregion
     }
 }
