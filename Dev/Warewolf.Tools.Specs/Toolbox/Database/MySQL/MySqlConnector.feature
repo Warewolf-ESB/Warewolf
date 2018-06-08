@@ -59,3 +59,20 @@ Scenario: Change the recordset on existing mysql server connector tool
 	And Inputs are "SomeInput" for mysql connector tool
 	When I select "AnotherAction" Action for mysql connector tool
 	Then The recordset name changes to "SomeRecordSet" for mysql connector tool
+	
+Scenario: Execute MySql Server With Timeout
+    Given I have workflow "MySqlWorkflowForTimeout" with "MySqlActivity" MySql database connector
+    And Mysql server is Enabled
+    And I Select "NewMySqlSource" as MySql Server Source for "MySqlActivity"
+    And I Select "Pr_CitiesGetCountries" as MySql Server Action for "MySqlActivity"
+    And Mysql Server Inputs Are Enabled	
+	And Validate MySql Server is Enabled
+    And I click MySql Generate Outputs
+    And I click Test on Mysql
+    Then Mysql Server Outputs appear as
+	| Mapped From | Mapped To                               |
+	| CountryID   | [[Pr_CitiesGetCountries().CountryID]]   |
+	| Description | [[Pr_CitiesGetCountries().Description]] |
+	And Mysql Server Recordset Name equals "Pr_CitiesGetCountries"
+	When MySql Workflow "MySqlWorkflowForTimeout" containing dbTool is executed
+    And the workflow "MySqlWorkflowForTimeout" execution has "NO" error
