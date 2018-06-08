@@ -54,7 +54,7 @@ namespace Dev2.Services.Execution
 
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
-            var server = new MySqlServer();
+            var server = new MySqlServer { CommandTimeout = CommandTimeout };
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -519,7 +519,7 @@ namespace Dev2.Services.Execution
 
         OracleServer SetupOracleServer(ErrorResultTO errors)
         {
-            var server = new OracleServer();
+            var server = new OracleServer { CommandTimeout = CommandTimeout };
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -597,7 +597,7 @@ namespace Dev2.Services.Execution
 
         ODBCServer SetupOdbcServer(ErrorResultTO errors)
         {
-            var server = new ODBCServer();
+            var server = new ODBCServer { CommandTimeout = CommandTimeout };
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -678,7 +678,7 @@ namespace Dev2.Services.Execution
 
         PostgreServer SetupPostgreServer(ErrorResultTO errors)
         {
-            var server = new PostgreServer();
+            var server = new PostgreServer { CommandTimeout = CommandTimeout };
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -757,7 +757,7 @@ namespace Dev2.Services.Execution
 
         SqliteServer SetupSqlite(ErrorResultTO errors)
         {
-            var server = new SqliteServer();
+            var server = new SqliteServer { CommandTimeout = CommandTimeout };
             try
             {
                 server.Connect(Source.ConnectionString);

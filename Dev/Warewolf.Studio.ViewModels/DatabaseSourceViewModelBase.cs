@@ -172,6 +172,20 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public int ConnectionTimeout
+        {
+            get { return _connectionTimeout; }
+            set
+            {
+                if (_connectionTimeout != value)
+                {
+                    _connectionTimeout = value;
+                    OnPropertyChanged(() => ConnectionTimeout);
+                    OnPropertyChanged(() => Header);
+                    Reset();
+                }
+            }
+        }
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
         public string UserName
         {
@@ -196,17 +210,7 @@ namespace Warewolf.Studio.ViewModels
                 Reset();
             }
         }
-        public int ConnectionTimeout
-        {
-            get { return _connectionTimeout; }
-            set
-            {
-                _connectionTimeout = value;
-                OnPropertyChanged(() => ConnectionTimeout);
-                OnPropertyChanged(() => Header);
-                Reset();
-            }
-        }
+       
         public string DatabaseName
         {
             get { return _databaseName; }
@@ -346,6 +350,7 @@ namespace Warewolf.Studio.ViewModels
         void InitializeViewModel(string dbSourceImage)
         {
             CanSelectServer = true;
+            ConnectionTimeout = 30;
             CanSelectUser = true;
             CanSelectWindows = true;
             EmptyServerName = "";

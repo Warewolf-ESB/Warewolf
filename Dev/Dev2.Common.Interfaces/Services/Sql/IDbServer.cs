@@ -19,6 +19,7 @@ namespace Dev2.Common.Interfaces.Services.Sql
         bool IsConnected { get; }
         string ConnectionString { get; }
 
+        int CommandTimeout { get; set; }
         void Connect(string connectionString);
 
         void BeginTransaction();
