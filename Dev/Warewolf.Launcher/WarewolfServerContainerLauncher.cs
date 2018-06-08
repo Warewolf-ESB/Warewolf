@@ -45,10 +45,7 @@ namespace Warewolf.Launcher
             {
                 GetContainerHostname();
             }
-            else
-            {
-                GetContainerIP();
-            }
+            GetContainerIP();
         }
 
         public void Dispose()
@@ -252,17 +249,9 @@ namespace Warewolf.Launcher
 
         string ParseForHostname(string responseText)
         {
-            var parseAround = "\"Hostname\":\"";
-            if (responseText.Contains(parseAround))
-            {
-                string containerHostname = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
-                Console.WriteLine("Got Container Hostname: " + containerHostname);
-                return containerHostname;
-            }
-            else
-            {
-                throw new HttpRequestException("Error getting container hostname. " + responseText);
-            }
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<ServerContainer>(responseText);
+            return JSONObj.State.Config.Hostname;
         }
 
         string ParseForIP(string responseText)
@@ -368,6 +357,7 @@ namespace Warewolf.Launcher
         public ServerContainerState State { get; set; }
         public ServerContainerNetworkSettings NetworkSettings { get; set; }
     }
+
     class ServerContainerState
     {
         public string Status { get; set; }
