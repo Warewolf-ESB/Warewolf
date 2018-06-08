@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers;
@@ -50,7 +51,7 @@ namespace Dev2.Scheduler
         {
             _dir.CreateIfNotExists(_debugOutputPath);
         }
-
+       
         public ServerSchedulerFactory(Func<IScheduledResource, string> pathResolve)
         {
             _pathResolve = pathResolve;

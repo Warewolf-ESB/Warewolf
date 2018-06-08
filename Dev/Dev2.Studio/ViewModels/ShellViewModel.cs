@@ -68,6 +68,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -113,6 +114,7 @@ namespace Dev2.Studio.ViewModels
         IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
+        readonly IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
         IServerRepository ServerRepository { get; }
         public bool CloseCurrent { get; private set; }
@@ -427,6 +429,8 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems();
             ShowStartPageAsync();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+
         }
 
         public void Handle(ShowReverseDependencyVisualizer message)
@@ -1252,7 +1256,15 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
-        public void NewService(string resourcePath) => _worksurfaceContextManager.NewService(resourcePath);
+        public void NewService(string resourcePath)
+        {           
+            _worksurfaceContextManager.NewService(resourcePath);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+            }
+        }
 
         public void NewServerSource(string resourcePath)
         {
@@ -1311,7 +1323,15 @@ namespace Dev2.Studio.ViewModels
 
         public void NewSharepointSource(string resourcePath) => _worksurfaceContextManager.NewSharepointSource(resourcePath);
 
-        public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items) => _worksurfaceContextManager.AddDeploySurface(items);
+        public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
+        {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                          Warewolf.Studio.Resources.Languages.TrackEventMenu.Deploy);
+            }
+            _worksurfaceContextManager.AddDeploySurface(items);
+        }
 
         public void OpenVersion(Guid resourceId, IVersionInfo versionInfo) => _worksurfaceContextManager.OpenVersion(resourceId, versionInfo);
 
