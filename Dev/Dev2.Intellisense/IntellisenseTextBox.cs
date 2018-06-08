@@ -25,6 +25,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
+using Dev2.Instrumentation;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Interfaces;
 
@@ -41,9 +42,11 @@ namespace Dev2.UI
     public class IntellisenseTextBox : AutoCompleteBox, INotifyPropertyChanged
     {
         readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
+        readonly IApplicationTracker _applicationTracker;
 
         public IntellisenseTextBox()
         {
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
             _toolTip = new ToolTip();
@@ -414,6 +417,7 @@ namespace Dev2.UI
                 {
                     if (error.Item2 != string.Empty)
                     {
+                        TrackIntellisenseEvent(text);
                         ToolTip = error.Item2;
                         HasError = true;
                     }
@@ -428,6 +432,7 @@ namespace Dev2.UI
             {
                 if (error.Item2 != string.Empty)
                 {
+                    TrackIntellisenseEvent(text);
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -436,9 +441,21 @@ namespace Dev2.UI
                     ToolTip = _originalToolTip;
                     HasError = false;
                 }
-
             }
+        }
 
+        private void TrackIntellisenseEvent(string text)
+        {
+            if (!(text.Contains("(") && text.Contains(")")))
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
+            }
+            if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);
+            }
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
@@ -578,7 +595,10 @@ namespace Dev2.UI
                         HasError = true;
                         ttErrorBuilder.AppendLine("Recordset is not allowed");
                     }
-
+                }
+                if (HasError)
+                {
+                    TrackIntellisenseEvent(text);
                 }
             }
 

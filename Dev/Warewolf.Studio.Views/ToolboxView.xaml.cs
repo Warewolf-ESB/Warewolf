@@ -5,6 +5,7 @@ using System.Windows.Shapes;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Instrumentation;
 using Infragistics.Windows.DockManager;
 using Warewolf.Studio.ViewModels.ToolBox;
 
@@ -51,8 +52,6 @@ namespace Warewolf.Studio.Views
                 e.Handled = true;
                 tb.Focus();
             }
-
-
         }
 
         void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
@@ -62,17 +61,17 @@ namespace Warewolf.Studio.Views
                 var viewModel = grid.DataContext as ToolDescriptorViewModel;
                 grid.ToolTip = viewModel?.Tool.ResourceToolTip;
             }
-            var variablesPane = Application.Current.MainWindow.FindName("Variables") as ContentPane;
-            var explorerPane = Application.Current.MainWindow.FindName("Explorer") as ContentPane;
-            var outputPane = Application.Current.MainWindow.FindName("OutputPane") as ContentPane;
-            var documentHostPane = Application.Current.MainWindow.FindName("DocumentHost") as ContentPane;
 
-            if (variablesPane != null && !variablesPane.IsActivePane &&
-                explorerPane != null && !explorerPane.IsActivePane &&
-                outputPane != null && !outputPane.IsActivePane &&
-                documentHostPane != null && !documentHostPane.IsActivePane)
+            var mainWindow = Application.Current.MainWindow;
+
+            var isValid = mainWindow.FindName("Variables") is ContentPane variablesPane && !variablesPane.IsActivePane;
+            isValid &= mainWindow.FindName("Explorer") is ContentPane explorerPane && !explorerPane.IsActivePane;
+            isValid &= mainWindow.FindName("OutputPane") is ContentPane outputPane && !outputPane.IsActivePane;
+            isValid &= mainWindow.FindName("DocumentHost") is ContentPane documentHostPane && !documentHostPane.IsActivePane;
+
+            if (isValid)
             {
-                var toolboxPane = Application.Current.MainWindow.FindName("Toolbox") as ContentPane;
+                var toolboxPane = mainWindow.FindName("Toolbox") as ContentPane;
                 toolboxPane?.Activate();
             }
         }
@@ -95,11 +94,16 @@ namespace Warewolf.Studio.Views
                 }
                 else
                 {
+                    var _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                    if (_applicationTracker != null)
+                    {
+                        _applicationTracker.TrackEvent(Studio.Resources.Languages.TrackEventToolbox.EventCategory,
+                                                        Studio.Resources.Languages.TrackEventToolbox.DoubleClick);
+                    }
                     var popupController = CustomContainer.Get<IPopupController>();
                     popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
-
         }
     }
 }
