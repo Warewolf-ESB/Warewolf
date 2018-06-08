@@ -91,7 +91,6 @@ namespace Dev2.Activities
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
             databaseServiceExecution.ProcedureName = ProcedureName;
-            databaseServiceExecution.ConnectionTimeout = ConnectionTimeout;
             databaseServiceExecution.CommandTimeout = CommandTimeout;
             if (!string.IsNullOrEmpty(ExecuteActionString))
             {

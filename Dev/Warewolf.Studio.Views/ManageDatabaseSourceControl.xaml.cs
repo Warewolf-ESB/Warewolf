@@ -109,7 +109,14 @@ namespace Warewolf.Studio.Views
             var viewModel = DataContext as DatabaseSourceViewModelBase;
             viewModel?.OkCommand.Execute(null);
         }
-
+        public void EnterTimeout(int connectionTimeout)
+        {
+            if (DataContext is DatabaseSourceViewModelBase viewModel)
+            {
+                viewModel.ConnectionTimeout = connectionTimeout;
+            }
+            ConnectionTimeoutTextBox.Text = connectionTimeout.ToString();
+        }
         public void EnterUserName(string userName)
         {
             if (DataContext is DatabaseSourceViewModelBase viewModel)
@@ -149,6 +156,8 @@ namespace Warewolf.Studio.Views
         public string GetUsername() => UserNameTextBox.Text;
 
         public object GetPassword() => PasswordTextBox.Password;
+
+        public object GetConnectionTimeout() => ConnectionTimeoutTextBox.Text;
 
         public string GetHeader() => ((DatabaseSourceViewModelBase)DataContext).HeaderText;
 

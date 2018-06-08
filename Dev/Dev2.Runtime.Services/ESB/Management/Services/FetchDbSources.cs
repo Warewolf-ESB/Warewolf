@@ -30,6 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Name = res.ResourceName,
                         Path = res.GetSavePath(),
                         Password = res.Password,
+                        ConnectionTimeout = res.ConnectionTimeout,
                         ServerName = res.Server,
                         Type = res.ServerType,
                         UserName = res.UserID

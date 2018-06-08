@@ -165,7 +165,29 @@
                 </i:Interaction.Behaviors>
             </PasswordBox>
         </Grid>
-        <Grid Grid.Row="3" Margin="0,0,0,0"
+		<Grid Grid.Row="3" 
+              x:Name="ConnectionTimeoutContainer"
+              Margin="0,3,0,0"
+			   Visibility="{Binding Path=UserAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="100" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static languages:Core.ConnectionTimeoutLabel}"/>
+			<TextBox x:Name="ConnectionTimeoutTextBox" 
+					 Grid.Row="0"  Grid.Column="1"                                       
+                     ToolTip="{x:Static languages:Tooltips.ManageDbSourceConnectionTimeoutTooltip}"
+                     Text="{Binding ConnectionTimeout,UpdateSourceTrigger=PropertyChanged}">
+				<i:Interaction.Behaviors>
+					<core:HelpSetter Text="{x:Static languages:HelpText.ConnectionTimeoutHelp}" DataContext="{Binding}" />
+				</i:Interaction.Behaviors>
+			</TextBox>
+		</Grid>
+		<Grid Grid.Row="4" Margin="0,0,0,0"
               x:Name="DatabaseComboxContainer" 
               Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
@@ -190,7 +212,7 @@
                 </ig:XamComboEditor>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="4" 
+        <StackPanel Grid.Row="5" 
                     Margin="{StaticResource ControlBorderTop}"
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
