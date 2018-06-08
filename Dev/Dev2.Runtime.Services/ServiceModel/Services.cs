@@ -152,8 +152,10 @@ namespace Dev2.Runtime.ServiceModel
             {
                 case enSourceType.SqlDatabase:
                     {
-                        var broker = CreateDatabaseBroker();
-                        broker.CommandTimeout = dbService.CommandTimeout;
+                        var broker = new SqlDatabaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -177,7 +179,10 @@ namespace Dev2.Runtime.ServiceModel
 
                 case enSourceType.MySqlDatabase:
                     {
-                        var broker = new MySqlDatabaseBroker();
+                        var broker = new MySqlDatabaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -196,7 +201,10 @@ namespace Dev2.Runtime.ServiceModel
                 case enSourceType.SQLiteDatabase:
                     {
 
-                        var broker = new SqliteDatabaseBroker();
+                        var broker = new SqliteDatabaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -215,7 +223,10 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 case enSourceType.PostgreSQL:
                     {
-                        var broker = new PostgreSqlDataBaseBroker();
+                        var broker = new PostgreSqlDataBaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -233,7 +244,10 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 case enSourceType.Oracle:
                     {
-                        var broker = new OracleDatabaseBroker();
+                        var broker = new OracleDatabaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -251,7 +265,10 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 case enSourceType.ODBC:
                     {
-                        var broker = new ODBCDatabaseBroker();
+                        var broker = new ODBCDatabaseBroker
+                        {
+                            CommandTimeout = dbService.CommandTimeout
+                        };
                         var outputDescription = broker.TestService(dbService);
 
                         if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
@@ -470,13 +487,11 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 default:
                     {
-                        var broker = CreateDatabaseBroker();
+                        var broker = new SqlDatabaseBroker();
                         return broker.GetServiceMethods(dbSource);
                     }
             }
         }
-
-        protected virtual SqlDatabaseBroker CreateDatabaseBroker() => new SqlDatabaseBroker();
 
         public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
         {
