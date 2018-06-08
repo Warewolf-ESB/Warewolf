@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DoubleClick" xml:space="preserve">
-    <value>Double clicking without an action</value>
-  </data>
   <data name="EventCategory" xml:space="preserve">
-    <value>Toolbox Events</value>
+    <value>Intellisense Events</value>
   </data>
-  <data name="ToolBoxSearch" xml:space="preserve">
-    <value>Tool Box Search</value>
+  <data name="RecordsetNotAllowed" xml:space="preserve">
+    <value>Recordset is not allowed. User input{0}</value>
+  </data>
+  <data name="ScalarNotAllowed" xml:space="preserve">
+    <value>Scalar is not allowed. User input{0}</value>
   </data>
 </root>
