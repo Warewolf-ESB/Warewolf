@@ -236,6 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(vm.ActionRegion);
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
+            Assert.IsNotNull(vm.ActionRegion.SelectedAction);
         }
 
         [Given(@"I open workflow with database connector")]

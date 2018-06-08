@@ -396,6 +396,57 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Oracle Server With Timeout")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        public virtual void ExecuteOracleServerWithTimeout()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Oracle Server With Timeout", ((string[])(null)));
+#line 114
+this.ScenarioSetup(scenarioInfo);
+#line 115
+    testRunner.Given("I have workflow \"OracleWorkflowForTimeout\" with \"OracleActivity\" Oracle database " +
+                    "connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 116
+    testRunner.And("Oracle Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+    testRunner.And("I Select \"NewOracleSource\" as Oracle Source for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+    testRunner.And("I Select \"HR.GET_COUNTRIES\" as Oracle Server Action for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+    testRunner.And("Oracle Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 120
+ testRunner.And("Validate Oracle Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 121
+    testRunner.And("I click Oracle Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+    testRunner.And("I click Test for Oracle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table14.AddRow(new string[] {
+                        "COUNTRY_ID",
+                        "[[HR_GET_COUNTRIES().COUNTRY_ID]]"});
+            table14.AddRow(new string[] {
+                        "COUNTRY_NAME",
+                        "[[HR_GET_COUNTRIES().COUNTRY_NAME]]"});
+            table14.AddRow(new string[] {
+                        "REGION_ID",
+                        "[[HR_GET_COUNTRIES().REGION_ID]]"});
+#line 123
+    testRunner.Then("Oracle Server Outputs appear as", ((string)(null)), table14, "Then ");
+#line 128
+ testRunner.And("Oracle Server Recordset Name equals \"HR_GET_COUNTRIES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+ testRunner.When("Oracle Workflow \"OracleWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 130
+    testRunner.And("the workflow \"OracleWorkflowForTimeout\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
