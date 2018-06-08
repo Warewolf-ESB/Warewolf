@@ -23,6 +23,8 @@ namespace Dev2.Services.Sql
 
         public string ConnectionString => _connection?.ConnectionString;
 
+        public int CommandTimeout { get; set; }
+
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, string dbName)
@@ -40,7 +42,7 @@ namespace Dev2.Services.Sql
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                            fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
@@ -196,7 +198,7 @@ namespace Dev2.Services.Sql
                 {
                     using (
                         IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                            fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
@@ -269,8 +271,8 @@ namespace Dev2.Services.Sql
                 commandType = CommandType.Text;
             }
 
-            _command = _factory.CreateCommand(_connection, commandType, commandText);
-
+            _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
+            
             _connection.Open();
             return true;
         }
@@ -316,7 +318,7 @@ namespace Dev2.Services.Sql
         DataTable GetSchema(IDbConnection connection)
         {
             var CommandText = GlobalConstants.SchemaQueryMySql;
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText, CommandTimeout))
             {
                 return FetchDataTable(command);
             }
@@ -326,7 +328,7 @@ namespace Dev2.Services.Sql
         {
             using (
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
+                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName), CommandTimeout))
             {
                 return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
@@ -350,7 +352,7 @@ namespace Dev2.Services.Sql
 
         public List<MySqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
-            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName, CommandTimeout))
             {
 
                 GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);

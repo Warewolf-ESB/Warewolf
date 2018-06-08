@@ -22,10 +22,10 @@ namespace Dev2.Services.Sql
             return new OdbcConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new OdbcCommand(commandText, connection as OdbcConnection)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText,int commandTimeout) => new OdbcCommand(commandText, connection as OdbcConnection)
         {
             CommandType = commandType,
-            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+            CommandTimeout = commandTimeout
         };
         public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOdbcServerSchema(connection);
 
