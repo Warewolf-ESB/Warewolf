@@ -218,7 +218,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         {
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
-            _scenarioContext.Add("debugWriterSubscriptionService", _debugWriterSubscriptionService);
         }
         void Append(IDebugState debugState)
         {
@@ -326,10 +325,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
         {
             var shape = new XElement("root");
             var data = new XElement("root");
-            var dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
-            DataListSingleton.SetDataList(dataListViewModel);
-
+            
             var row = 0;
             _scenarioContext.TryGetValue("variableList", out dynamic variableList);
             if (variableList != null)

@@ -408,5 +408,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             WorkflowIsExecuted(workflowName);
         }
+
+        [Then(@"Postgres input variable ""(.*)"" is ""(.*)""")]
+        public void ThenPostgresInputVariableIs(string variableName, string variableValue)
+        {
+            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                _scenarioContext.Add("variableList", variableList);
+            }
+            variableList.Add(Tuple.Create(variableName, variableValue));
+        }
+
     }
 }

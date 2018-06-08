@@ -622,6 +622,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
+        [Then(@"Sql input variable ""(.*)"" is ""(.*)""")]
+        public void ThenSqlInputVariableIs(string variableName, string variableValue)
+        {
+            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                _scenarioContext.Add("variableList", variableList);
+            }
+            variableList.Add(Tuple.Create(variableName, variableValue));
+        }
+
         #endregion
     }
 }

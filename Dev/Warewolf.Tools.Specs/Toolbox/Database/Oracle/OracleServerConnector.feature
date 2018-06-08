@@ -126,5 +126,6 @@ Scenario: Execute Oracle Server With Timeout
 	| COUNTRY_NAME | [[HR_GET_COUNTRIES().COUNTRY_NAME]] |
 	| REGION_ID    | [[HR_GET_COUNTRIES().REGION_ID]]    |
 	And Oracle Server Recordset Name equals "HR_GET_COUNTRIES"
+	And input variable "[[NAMELIKE]]" is ""
 	When Oracle Workflow "OracleWorkflowForTimeout" containing dbTool is executed
     And the workflow "OracleWorkflowForTimeout" execution has "NO" error
