@@ -21,6 +21,8 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
+        public int CommandTimeout { get; set; }
+
         public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
@@ -42,7 +44,7 @@ namespace Dev2.Services.Sql
                 {
                     using (
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                            fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
@@ -192,7 +194,7 @@ namespace Dev2.Services.Sql
                 {
                     using (
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            fullProcedureName))
+                            fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
@@ -266,7 +268,7 @@ namespace Dev2.Services.Sql
                 commandType = CommandType.Text;
             }
 
-            _command = _factory.CreateCommand(_connection, commandType, commandText);
+            _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
 
             _connection.Open();
             return true;
@@ -312,7 +314,7 @@ namespace Dev2.Services.Sql
         DataTable GetSchema(IDbConnection connection)
         {
             var CommandText = GlobalConstants.SchemaQueryPostgreSql;
-            using (var command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            using (var command = _factory.CreateCommand(connection, CommandType.Text, CommandText, CommandTimeout))
             {
                 return FetchDataTable(command);
             }
@@ -323,7 +325,7 @@ namespace Dev2.Services.Sql
             using (
                 var command = _factory.CreateCommand(connection, CommandType.Text,
 
-                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
+                    string.Format("SHOW CREATE PROCEDURE {0} ", objectName), CommandTimeout))
             {
                 return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
@@ -347,7 +349,7 @@ namespace Dev2.Services.Sql
 
         public List<NpgsqlParameter> GetProcedureOutParams(string fullProcedureName)
         {
-            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
+            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
                 GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a => a as NpgsqlParameter).ToList();

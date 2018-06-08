@@ -27,7 +27,7 @@ namespace Dev2.Services.Sql
         IDbTransaction _transaction;
         bool _disposed;
         IDbCommand _command;
-        readonly bool Testing;
+        readonly bool _testing;
 
         public ODBCServer(IDbFactory dbFactory)
         {
@@ -38,10 +38,11 @@ namespace Dev2.Services.Sql
             _factory = new ODBCFactory();
         }
 
+        public int CommandTimeout { get; set; }
         public ODBCServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
         {
             _factory = factory;
-            Testing = true;
+            _testing = true;
             _command = command;
             _transaction = transaction;
         }
@@ -57,8 +58,8 @@ namespace Dev2.Services.Sql
         public bool ReturnConnection(CommandType commandType, string commandText)
         {
             commandType = SetCommandType(commandText, commandType);
-            _command = _factory.CreateCommand(_connection, commandType, commandText);
-            if (!Testing)
+            _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
+            if (!_testing)
             {
                 _connection.Open();
             }
@@ -80,7 +81,7 @@ namespace Dev2.Services.Sql
         {
             get
             {
-                if (Testing)
+                if (_testing)
                 {
                     return true;
                 }
@@ -135,7 +136,7 @@ namespace Dev2.Services.Sql
         }
         public void Connect(string connectionString)
         {
-            if (!Testing)
+            if (!_testing)
             {
                 _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
                 _connection.Open();
@@ -145,7 +146,7 @@ namespace Dev2.Services.Sql
         public IDbCommand CreateCommand()
         {
             VerifyConnection();
-            if (Testing)
+            if (_testing)
             {
                 return null;
             }

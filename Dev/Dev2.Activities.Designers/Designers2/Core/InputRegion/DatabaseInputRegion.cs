@@ -179,6 +179,17 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 OnPropertyChanged();
             }
         }
+        int commandTimeout;
+
+        public int CommandTimeout
+        {
+            get => commandTimeout;
+            set
+            {
+                commandTimeout = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IList<IToolRegion> Dependants { get; set; }
 

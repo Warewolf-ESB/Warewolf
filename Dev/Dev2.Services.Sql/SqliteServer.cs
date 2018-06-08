@@ -43,6 +43,9 @@ namespace Dev2.Services.Sql
 		{
 			_factory = dbFactory;
 		}
+
+        public int CommandTimeout { get; set; }
+
 		public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 		public void Connect(string connectionString)
 		{
@@ -58,7 +61,7 @@ namespace Dev2.Services.Sql
 			{
 				commandT = CommandType.Text;
 			}
-			_command = _factory.CreateCommand(_connection, commandT, commandText);
+			_command = _factory.CreateCommand(_connection, commandT, commandText, CommandTimeout);
 			_connection.Open();
 			return true;
 		}

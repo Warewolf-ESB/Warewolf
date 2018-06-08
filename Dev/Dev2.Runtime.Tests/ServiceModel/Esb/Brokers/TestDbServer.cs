@@ -31,6 +31,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         #region Implementation of IDbServer
 
+        public int CommandTimeout { get; set; }
         public virtual bool IsConnected => true;
         public virtual string ConnectionString { get; private set; }
 
