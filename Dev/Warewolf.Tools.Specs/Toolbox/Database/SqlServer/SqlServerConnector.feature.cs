@@ -596,7 +596,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 186
  testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 187
-    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the workflow \"DataMigration\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -611,14 +611,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 189
 this.ScenarioSetup(scenarioInfo);
 #line 190
-    testRunner.Given("I have workflow \"SqlWorkflowForTimeout\" with \"SqlServerActivity\" database connect" +
-                    "or", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have workflow \"SqlServerWorkflowForTimeout\" with \"SqlServerActivity\" SqlServer " +
+                    "database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 191
     testRunner.And("Sql Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
-    testRunner.And("I Select \"NewSqlServerSource\" as Server Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"NewSqlServerSource\" as SqlServer Source for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 193
-    testRunner.And("I Select \"dbo.Pr_CitiesGetCountries\" as Server Action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"dbo.Pr_CitiesGetCountries\" as Server Action for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
     testRunner.And("Sql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
@@ -642,9 +642,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 202
  testRunner.And("Sql Server Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
- testRunner.When("Workflow \"SqlWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 204
-    testRunner.And("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

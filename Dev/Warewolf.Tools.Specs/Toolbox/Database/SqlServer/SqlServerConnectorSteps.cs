@@ -47,11 +47,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _getCountriesAction;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        StudioServerProxy _proxyLayer;
-
+        
         public SQLServerConnectorSteps(ScenarioContext scenarioContext)
            : base(scenarioContext)
-        {
+        {                        
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
         }
@@ -111,7 +110,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [Given(@"Sql Server Source is Enabled")]
         public void GivenSourceIsEnabled()
-        {
+        {            
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
@@ -197,28 +196,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Given(@"I have workflow ""(.*)"" with ""(.*)"" database connector")]
-        public void GivenIHaveWorkflowWithDatabaseConnector(string workflowName, string activityName)
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" SqlServer database connector")]
+        public void GivenIHaveWorkflowWithSqlServerDatabaseConnector(string workflowName, string activityName)
         {
-            var environmentModel = ServerRepository.Instance.Source;
+            var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel)
-            {
-                ID = Guid.NewGuid(),
-                ResourceName = workflowName,
-                Category = "Acceptance Tests\\" + workflowName,
-                ResourceType = ResourceType.WorkflowService
-            };
-            environmentModel.ResourceRepository.Add(resourceModel);
-            var environmentConnection = environmentModel.Connection;
-            var controllerFactory = new CommunicationControllerFactory();
-            _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
-            var mock = new Mock<IShellViewModel>();
-            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
+            CreateNewResourceModel(workflowName, environmentModel);
+            CreateDBServiceModel(environmentModel);
 
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");            
             var sqlServerActivity = new DsfSqlServerDatabaseActivity { DisplayName = activityName };
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
@@ -226,37 +212,30 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             _commonSteps.AddActivityToActivityList(workflowName, activityName, sqlServerActivity);
             DebugWriterSubscribe(environmentModel);
-            _scenarioContext.Add("debugStates", new List<IDebugState>());
-            _scenarioContext.Add("resourceModel", resourceModel);
             _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
-            _scenarioContext.Add("server", environmentModel);
-            _scenarioContext.Add("resourceRepo", environmentModel.ResourceRepository);
             _scenarioContext.Add("parentName", workflowName);
         }
-
-        [Given(@"I Select ""(.*)"" as Server Source")]
-        public void GivenISelectAsServerSource(string sourceName)
+        [Given(@"I Select ""(.*)"" as SqlServer Source for ""(.*)""")]
+        public void GivenISelectAsSqlServerSourceFor(string sourceName, string activityName)
         {
+            var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
             var vm = GetViewModel();
             Assert.IsNotNull(vm.SourceRegion);
-            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Name == sourceName);
-            vm.SourceRegion.SelectedSource = dbSource;
-            var activities = _commonSteps.GetActivityList();
-            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
-            sqlactivity.SourceId = dbSource.Id;
+            vm.SourceRegion.SelectedSource = dbSource;            
+            SetDbSource(activityName, dbSource);
             Assert.IsNotNull(vm.SourceRegion.SelectedSource);
         }
 
-        [Given(@"I Select ""(.*)"" as Server Action")]
-        public void GivenISelectAsServerAction(string actionName)
+        
+        [Given(@"I Select ""(.*)"" as Server Action for ""(.*)""")]
+        public void GivenISelectAsServerActionFor(string actionName, string activityName)
         {
-            var vm = GetViewModel();
-            var activities = _commonSteps.GetActivityList();
+            var vm = GetViewModel();            
             Assert.IsNotNull(vm.ActionRegion);
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
-            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
-            sqlactivity.ProcedureName = actionName;
+            SetDbAction(activityName, actionName);
         }
 
         [Given(@"I open workflow with database connector")]
@@ -619,32 +598,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             sqlactivity.Inputs = sqlactivity.Inputs == null ? new List<IServiceInput> { newInput } : sqlGetViewModel.InputArea.Inputs;
         }
 
-        [When(@"Workflow ""(.*)"" containing dbTool is executed")]
-        public void WhenWorkflowContainingDbToolIsExecuted(string workflowName)
+        [When(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
+        [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
+        public void WhenTheWorkflowExecutionHasError(string workflowName, string hasError)
         {
-            var resourceModel = SaveAWorkflow(workflowName);
-            ExecuteWorkflow(resourceModel);
+            ValidateErrorsAfterExecution(workflowName, hasError);
         }
 
-        [Given(@"the workflow execution has ""(.*)"" error")]
-        [When(@"the workflow execution has ""(.*)"" error")]
-        [Then(@"the workflow execution has ""(.*)"" error")]
-        public void WhenTheWorkflowExecutionHasError(string hasError)
+        [When(@"Sql Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenSqlWorkflowContainingDbToolIsExecuted(string workflowName)
         {
-            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-
-            if (hasError == "AN")
-            {
-                var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals("SqlWorkflowForTimeout"));
-                Assert.IsNotNull(innerWfHasErrorState);
-            }
-            else
-            {
-                debugStates.ForEach(p => Assert.IsFalse(p.HasError));
-            }
+            WorkflowIsExecuted(workflowName);
         }
-
         [Given(@"Sql Connection Timeout is ""(.*)""")]
         public void GivenSqlConnectionTimeoutIs(string p0)
         {
