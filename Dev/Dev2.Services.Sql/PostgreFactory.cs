@@ -22,10 +22,10 @@ namespace Dev2.Services.Sql
             return new NpgsqlConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new NpgsqlCommand(commandText, connection as NpgsqlConnection)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText, int commandTimeout) => new NpgsqlCommand(commandText, connection as NpgsqlConnection)
         {
             CommandType = commandType,
-            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
+            CommandTimeout = commandTimeout
         };
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)

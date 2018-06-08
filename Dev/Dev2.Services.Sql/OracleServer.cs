@@ -34,6 +34,8 @@ namespace Dev2.Services.Sql
             _transaction = transaction;
         }
 
+        public int CommandTimeout { get; set; }
+
         public bool IsConnected
         {
             get
@@ -70,7 +72,7 @@ namespace Dev2.Services.Sql
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
-                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
+                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
@@ -209,7 +211,7 @@ namespace Dev2.Services.Sql
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
-                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
+                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName, CommandTimeout))
                     {
                         TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
@@ -307,7 +309,7 @@ namespace Dev2.Services.Sql
                     commandType = CommandType.Text;
                 }
 
-                _command = _factory.CreateCommand(_connection, commandType, commandText);
+                _command = _factory.CreateCommand(_connection, commandType, commandText, CommandTimeout);
 
                 _connection.Open();
             }
@@ -421,7 +423,7 @@ namespace Dev2.Services.Sql
                 proceduresDataTable.Rows.Add("Test", "Test");
                 return proceduresDataTable;
             }
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, String.Format(CommandText, _owner)))
+            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, String.Format(CommandText, _owner), CommandTimeout))
             {
                 return FetchDataTable(command);
             }
@@ -430,7 +432,7 @@ namespace Dev2.Services.Sql
         string GetHelpText(IDbConnection connection, string objectName)
         {
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line"))
+                $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line", CommandTimeout))
             {
                 return ExecuteReader(command, GetStringBuilder);
             }
@@ -456,7 +458,7 @@ namespace Dev2.Services.Sql
 
         public List<OracleParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
-            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
+            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName, CommandTimeout))
             {
                 if (!_isTesting)
                 {
