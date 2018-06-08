@@ -448,13 +448,13 @@ namespace Dev2.UI
         {
             if (!(text.Contains("(") && text.Contains(")")))
             {
-                _applicationTracker?.TrackEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    string.Format(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text));
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
             }
             if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
             {
-                _applicationTracker?.TrackEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                string.Format(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text));
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);
             }
         }
 
