@@ -458,7 +458,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             }
         }
 
-        IDbServiceModel Model { get; }
+        public IDbServiceModel Model { get; }
 
         void SetRegionVisibility(bool value)
         {

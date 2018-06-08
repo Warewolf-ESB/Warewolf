@@ -24,6 +24,8 @@ using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Studio.Core;
+using Dev2.Services;
+using Dev2.Messages;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 {
@@ -545,7 +547,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             _scenarioContext.Add("viewModel", mysqlDesignerViewModel);
             _scenarioContext.Add("parentName", workflowName);
         }
-
         [Given(@"I Select ""(.*)"" as MySql Server Source for ""(.*)""")]
         public void GivenISelectAsMySqlServerSourceFor(string sourceName, string activityName)
         {

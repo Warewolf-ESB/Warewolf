@@ -20,16 +20,28 @@ using Dev2.Threading;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Warewolf.Tools.Specs.Toolbox.Database;
+using Warewolf.Studio.ViewModels;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Studio.Core;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class OracleServerConnectorSteps
+    public class OracleServerConnectorSteps : DatabaseToolsSteps
     {
         DbSourceDefinition _greenPointSource;
         DbAction _importOrderAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getCountriesAction;
+        ScenarioContext _scenarioContext;
+        CommonSteps _commonSteps;
+
+        public OracleServerConnectorSteps(ScenarioContext scenarioContext)
+        : base(scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(scenarioContext);
+        }
 
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
@@ -55,22 +67,22 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         OracleDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<OracleDatabaseDesignerViewModel>("viewModel");
+            return _scenarioContext.Get<OracleDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
+            return _scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
         Mock<IManageServiceInputViewModel> GetInputViewModel()
         {
-            return ScenarioContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
+            return _scenarioContext.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return _scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [Given(@"Oracle Action is ""(.*)""")]
@@ -84,7 +96,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Action is dbo\.Pr_CitiesGetCountries")]
         public void GivenActionIsDbo_Pr_CitiesGetCountries()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Given(@"Oracle Action is Disabled")]
@@ -161,14 +173,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"Validate is Enable")]
         public void GivenValidateIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [Then(@"Mapping is Enable")]
         [Given(@"Mapping is Enable")]
         public void GivenMappingIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
 
         [When(@"Oracle Action is changed from to dbo.ImportOrder")]
@@ -180,14 +192,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string p0)
         {
-            ScenarioContext.Current.Pending();
+            _scenarioContext.Pending();
         }
-        
+
         [When(@"Oracle Recordset Name is changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
-        }     
+        }
 
         [When(@"I Selected GreenPoint as Source")]
         public void WhenISelectAsSource()
@@ -245,7 +257,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowNum++;
             }
         }
-        
+
         [Given(@"Oracle Inputs appear as")]
         [Then(@"Oracle Inputs appear as")]
         public void ThenInputsAppearAs(Table table)
@@ -310,9 +322,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDatabaseInputViewModel.SetupAllProperties();
             var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", oracleDatabaseDesignerViewModel);
+            _scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"I open New Workflow containing an Oracle Connector")]
@@ -391,13 +403,123 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             //TODO:Assert.AreEqual(recsetName, oracleDatabaseDesignerViewModel.OutputsRegion.RecordsetName);
         }
 
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" Oracle database connector")]
+        public void GivenIHaveWorkflowWithOracleDatabaseConnector(string workflowName, string activityName)
+        {
+            var environmentModel = _scenarioContext.Get<IServer>("server");
+            environmentModel.Connect();
+            CreateNewResourceModel(workflowName, environmentModel);
+            CreateDBServiceModel(environmentModel);
+
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");
+            var oracleActivity = new DsfOracleDatabaseActivity { DisplayName = activityName };
+            var modelItem = ModelItemUtils.CreateModelItem(oracleActivity);
+            var oracleDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(oracleDesignerViewModel, oracleDesignerViewModel.Model);
+
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, oracleActivity);
+            DebugWriterSubscribe(environmentModel);
+            _scenarioContext.Add("viewModel", oracleDesignerViewModel);
+            _scenarioContext.Add("parentName", workflowName);
+        }
+
+        [Given(@"Oracle Server Source is Enabled")]
+        public void GivenOracleServerSourceIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
+        }
+
+        [Given(@"I Select ""(.*)"" as Oracle Source for ""(.*)""")]
+        public void GivenISelectAsOracleSourceFor(string sourceName, string activityName)
+        {
+            var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.SourceRegion);
+            var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(source => source.Name == sourceName);
+            vm.SourceRegion.SelectedSource = dbSource;
+            SetDbSource(activityName, dbSource);
+            Assert.IsNotNull(vm.SourceRegion.SelectedSource);
+        }
+
+        [Given(@"I Select ""(.*)"" as Oracle Server Action for ""(.*)""")]
+        public void GivenISelectAsOracleServerActionFor(string actionName, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.ActionRegion);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
+            SetDbAction(activityName, actionName);
+            Assert.IsNotNull(vm.ActionRegion.SelectedAction);
+        }
+
+        [Given(@"Oracle Server Inputs Are Enabled")]
+        public void GivenOracleServerInputsAreEnabled()
+        {
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
+            Assert.IsTrue(hasInputs);
+        }
+
+        [Given(@"Validate Oracle Server is Enabled")]
+        public void GivenValidateOracleServerIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+        }
+
+        [Given(@"I click Oracle Generate Outputs")]
+        public void GivenIClickOracleGenerateOutputs()
+        {
+            var viewModel = GetViewModel();
+            viewModel.TestInputCommand.Execute(null);
+        }
+
+        [Given(@"I click Test for Oracle")]
+        public void GivenIClickTestForOracle()
+        {
+            var viewModel = GetViewModel();
+            viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            viewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+        }
+
+        [Then(@"Oracle Server Outputs appear as")]
+        public void ThenOracleServerOutputsAppearAs(Table table)
+        {
+            var outputMappings = GetViewModel().OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
+            var rowIdx = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                var mappedFrom = tableRow["Mapped From"];
+                var mappedTo = tableRow["Mapped To"];
+                var outputMapping = outputMappings.ToList()[rowIdx];
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
+            }
+        }
+
+        [Then(@"Oracle Server Recordset Name equals ""(.*)""")]
+        public void ThenOracleServerRecordsetNameEquals(string recsetName)
+        {
+            Assert.IsTrue(string.Equals(recsetName, GetViewModel().OutputsRegion.RecordsetName));
+        }
+
+        [When(@"Oracle Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenOracleWorkflowContainingDbToolIsExecuted(string workflowName)
+        {
+            WorkflowIsExecuted(workflowName);
+        }
+
+
         #region Private Methods
 
         void AddScenarioContext(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
         {
-            ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", oracleServerDesignerViewModel);
+            _scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         #endregion
