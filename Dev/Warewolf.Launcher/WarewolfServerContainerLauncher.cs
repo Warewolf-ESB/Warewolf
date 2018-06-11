@@ -12,8 +12,8 @@ namespace Warewolf.Launcher
     public class WarewolfServerContainerLauncher : IDisposable
     {
         readonly string _remoteDockerApi;
-        string _remoteContainerID = null;
-        string _remoteImageID = null;
+        string serverContainerID = null;
+        string serverContainerImageID = null;
         public string Hostname;
         public string IP;
         public string Version;
@@ -46,7 +46,7 @@ namespace Warewolf.Launcher
 
         public void Dispose()
         {
-            if (_remoteContainerID != null)
+            if (serverContainerID != null)
             {
                 StopContainer();
                 RecoverServerLogFile();
@@ -93,7 +93,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        _remoteImageID = ParseForImageID(reader.ReadToEnd());
+                        serverContainerImageID = ParseForImageID(reader.ReadToEnd());
                     }
                 }
             }
@@ -104,7 +104,7 @@ namespace Warewolf.Launcher
             int count = 0;
             while (string.IsNullOrEmpty(IP) && count++<5)
             {
-                var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/json";
+                var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/json";
                 using (var client = new HttpClient())
                 {
                     client.Timeout = new TimeSpan(0, 20, 0);
@@ -136,7 +136,7 @@ namespace Warewolf.Launcher
 
         void StartContainer()
         {
-            var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/start";
+            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/start";
             HttpContent containerStartContent = new StringContent("");
             containerStartContent.Headers.Remove("Content-Type");
             containerStartContent.Headers.Add("Content-Type", "application/json");
@@ -153,7 +153,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine($"Started Warewolf Server Container on {_remoteDockerApi}. " + reader.ReadToEnd());
+                        Console.WriteLine($"Started Server Container {serverContainerID} on {_remoteDockerApi}. " + reader.ReadToEnd());
                     }
                 }
             }
@@ -167,7 +167,7 @@ namespace Warewolf.Launcher
             {
                 containerContent = new StringContent(@"
 {
-     ""Image"":""" + _remoteImageID + @"""
+     ""Image"":""" + serverContainerImageID + @"""
 }
 ");
             }
@@ -176,7 +176,7 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + _remoteImageID + @"""
+     ""Image"":""" + serverContainerImageID + @"""
 }
 ");
             }
@@ -195,7 +195,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        _remoteContainerID = ParseForContainerID(reader.ReadToEnd());
+                        serverContainerID = ParseForContainerID(reader.ReadToEnd());
                     }
                 }
             }
@@ -243,7 +243,7 @@ namespace Warewolf.Launcher
 
         void DeleteImage()
         {
-            var url = $"http://{_remoteDockerApi}:2375/images/{_remoteImageID}?force=true";
+            var url = $"http://{_remoteDockerApi}:2375/images/{serverContainerImageID}?force=true";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -261,7 +261,7 @@ namespace Warewolf.Launcher
 
         void DeleteContainer()
         {
-            var url = $"http://{ _remoteDockerApi}:2375/containers/{_remoteContainerID}?v=1";
+            var url = $"http://{ _remoteDockerApi}:2375/containers/{serverContainerID}?v=1";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -279,8 +279,8 @@ namespace Warewolf.Launcher
 
         void StopContainer()
         {
-            Console.WriteLine($"Stopping server container {_remoteContainerID} on {_remoteDockerApi}");
-            var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/stop";
+            Console.WriteLine($"Stopping server container {serverContainerID} on {_remoteDockerApi}");
+            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/stop";
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
@@ -295,7 +295,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine($"Server container {_remoteContainerID} at {_remoteDockerApi} has been stopped.");
+                        Console.WriteLine($"Server container {serverContainerID} at {_remoteDockerApi} has been stopped.");
                     }
                 }
             }
@@ -303,7 +303,7 @@ namespace Warewolf.Launcher
 
         void RecoverServerLogFile()
         {
-            var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/archive?path=C%3A%5CProgramData%5CWarewolf%5CServer+Log%5Cwarewolf-server.log";
+            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/archive?path=C%3A%5CProgramData%5CWarewolf%5CServer+Log%5Cwarewolf-server.log";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
