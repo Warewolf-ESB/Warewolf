@@ -265,22 +265,18 @@ this.ScenarioSetup(scenarioInfo);
 #line 69
  testRunner.And("MySql Command Timeout is \"30\" millisenconds for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-    testRunner.And("Mysql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
  testRunner.And("Validate MySql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 71
     testRunner.And("I click MySql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 72
     testRunner.And("I click Test on Mysql", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
  testRunner.And("Mysql Server Recordset Name equals \"Pr_CitiesGetCountries_Delayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
- testRunner.And("Mysql input variable \"[[name]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 74
  testRunner.And("MySql Command Timeout is \"5\" millisenconds for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 75
  testRunner.When("MySql Workflow \"MySqlWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 78
+#line 76
     testRunner.And("the workflow \"MySqlWorkflowForTimeout\" execution has \"AN\" error \"Timeout expired." +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

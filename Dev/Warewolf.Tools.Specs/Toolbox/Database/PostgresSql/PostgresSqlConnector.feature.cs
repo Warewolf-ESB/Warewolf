@@ -318,12 +318,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 80
  testRunner.And("Postgres Command Timeout is \"30\" milliseconds for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-    testRunner.And("Postgres Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
  testRunner.And("Validate Postgres Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 82
     testRunner.And("I click Postgres Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 83
     testRunner.And("I click Postgres Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -338,17 +336,15 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "code",
                         "[[get_countries_delayed().code]]"});
-#line 85
+#line 84
     testRunner.Then("Postgres Server Outputs appear as", ((string)(null)), table8, "Then ");
-#line 90
+#line 89
  testRunner.And("Postgres Server Recordset Name equals \"get_countries_delayed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
- testRunner.And("Postgres input variable \"[[countrynamecontains]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 90
  testRunner.And("Postgres Command Timeout is \"5\" milliseconds for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 91
  testRunner.When("Postgres Workflow \"PostgreWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 94
+#line 92
     testRunner.And("the workflow \"PostgreWorkflowForTimeout\" execution has \"AN\" error \"statement time" +
                     "out\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

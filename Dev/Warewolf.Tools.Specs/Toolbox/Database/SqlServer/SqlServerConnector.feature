@@ -191,18 +191,11 @@ Scenario: Execute Sql Server With Timeout
     Given I have workflow "SqlServerWorkflowForTimeout" with "SqlServerActivity" SqlServer database connector
     And Sql Server Source is Enabled
     And I Select "NewSqlServerSource" as SqlServer Source for "SqlServerActivity"
-    And I Select "dbo.Delayed_Pr_CitiesGetCountries" as Server Action for "SqlServerActivity"
+    And I Select "dbo.Pr_CitiesGetCountries_Delayed" as Server Action for "SqlServerActivity"
 	And Sql Command Timeout is "60" milliseconds for "SqlServerActivity"
-    And Sql Server Inputs Are Enabled	
 	And Validate Sql Server is Enabled
     And I click Sql Generate Outputs
     And I click Test
-    Then Sql Server Outputs appear as
-	| Mapped From | Mapped To                                   | 
-	| CountryID   | [[dbo_Delayed_Pr_CitiesGetCountries().CountryID]]   |
-	| Description | [[dbo_Delayed_Pr_CitiesGetCountries().Description]] |
-	And Sql Server Recordset Name equals "dbo_Delayed_Pr_CitiesGetCountries"
-	And Sql input variable "[[Prefix]]" is ""
-	And Sql Command Timeout is "1" milliseconds for "SqlServerActivity"
+    And Sql Command Timeout is "1" milliseconds for "SqlServerActivity"
 	When Sql Workflow "SqlServerWorkflowForTimeout" containing dbTool is executed
     And the workflow "SqlServerWorkflowForTimeout" execution has "AN" error "SQL Error: Execution Timeout Expired"

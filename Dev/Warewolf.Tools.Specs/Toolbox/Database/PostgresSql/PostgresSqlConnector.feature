@@ -78,7 +78,6 @@ Scenario: Execute Postgres Server With Timeout
     And I Select "NewPostgresSource" as Postgres Source for "PostgresActivity"
     And I Select "get_countries_delayed" as Postgres Server Action for "PostgresActivity"
 	And Postgres Command Timeout is "30" milliseconds for "PostgresActivity"
-    And Postgres Server Inputs Are Enabled	
 	And Validate Postgres Server is Enabled
     And I click Postgres Generate Outputs
     And I click Postgres Test 
@@ -88,7 +87,6 @@ Scenario: Execute Postgres Server With Timeout
 	| name        | [[get_countries_delayed().name]] |
 	| code        | [[get_countries_delayed().code]] |
 	And Postgres Server Recordset Name equals "get_countries_delayed"
-	And Postgres input variable "[[countrynamecontains]]" is ""
 	And Postgres Command Timeout is "5" milliseconds for "PostgresActivity"
 	When Postgres Workflow "PostgreWorkflowForTimeout" containing dbTool is executed
     And the workflow "PostgreWorkflowForTimeout" execution has "AN" error "statement timeout"
