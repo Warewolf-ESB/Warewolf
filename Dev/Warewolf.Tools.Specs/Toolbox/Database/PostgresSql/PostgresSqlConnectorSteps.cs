@@ -349,6 +349,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             SetDbAction(activityName, actionName);
             Assert.IsNotNull(vm.ActionRegion.SelectedAction);
         }
+        [Given(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [When(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [Then(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        public void GivenPostgresCommandTimeoutIsMillisecondsFor(int timeout, string ActivityName)
+        {         
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm);
+            vm.InputArea.CommandTimeout = timeout;
+            SetCommandTimeout(ActivityName, timeout);
+            Assert.AreEqual(timeout, vm.InputArea.CommandTimeout);
+        }
+
 
         [Given(@"Postgres Server Inputs Are Enabled")]
         public void GivenPostgresServerInputsAreEnabled()
