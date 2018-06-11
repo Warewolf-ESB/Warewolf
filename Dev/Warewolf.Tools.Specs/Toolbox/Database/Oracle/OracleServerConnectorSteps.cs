@@ -528,18 +528,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             WorkflowIsExecuted(workflowName);
         }
 
-        [Then(@"input variable ""(.*)"" is ""(.*)""")]
-        public void ThenInputVariableIs(string variableName, string variableValue)
-        {
-            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                _scenarioContext.Add("variableList", variableList);
-            }
-            variableList.Add(Tuple.Create(variableName, variableValue));
-        }
-
         [AfterScenario("@ExecuteOracleServerWithTimeout")]
         public void CleanUp()
         {

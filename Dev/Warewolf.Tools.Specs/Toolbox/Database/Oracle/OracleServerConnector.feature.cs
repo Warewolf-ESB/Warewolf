@@ -420,12 +420,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 120
  testRunner.And("Oracle Command Timeout is \"30\" milliseconds for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
-    testRunner.And("Oracle Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
  testRunner.And("Validate Oracle Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 122
     testRunner.And("I click Oracle Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 123
     testRunner.And("I click Test for Oracle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -440,17 +438,15 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "REGION_ID",
                         "[[HR_GET_COUNTRIES_DELAYED().REGION_ID]]"});
-#line 125
+#line 124
     testRunner.Then("Oracle Server Outputs appear as", ((string)(null)), table14, "Then ");
-#line 130
+#line 129
  testRunner.And("Oracle Server Recordset Name equals \"HR_GET_COUNTRIES_DELAYED\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
- testRunner.And("input variable \"[[NAMELIKE]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 130
  testRunner.And("Oracle Command Timeout is \"5\" milliseconds for \"OracleActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 131
  testRunner.When("Oracle Workflow \"OracleWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 134
+#line 132
     testRunner.And("the workflow \"OracleWorkflowForTimeout\" execution has \"AN\" error \"ORA-01013\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

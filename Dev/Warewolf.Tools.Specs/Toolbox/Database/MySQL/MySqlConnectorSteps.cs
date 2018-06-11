@@ -585,21 +585,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetCommandTimeout(activityName, timeout);
             Assert.AreEqual(timeout, vm.InputArea.CommandTimeout);
         }
-
-        [Given(@"Mysql input variable ""(.*)"" is ""(.*)""")]
-        [When(@"Mysql input variable ""(.*)"" is ""(.*)""")]
-        [Then(@"Mysql input variable ""(.*)"" is ""(.*)""")]
-        public void ThenMysqlInputVariableIs(string variableName, string variableValue)
-        {
-            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                _scenarioContext.Add("variableList", variableList);
-            }
-            variableList.Add(Tuple.Create(variableName, variableValue));
-        }
-
+        
         [AfterScenario("@ExecuteMySqlServerWithTimeout")]
         public void CleanUp()
         {

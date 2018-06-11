@@ -600,17 +600,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             sqlServerGetViewModel.TestInputCommand.Execute(null);
         }
 
-        [Given(@"Prefix is set to ""(.*)""")]
-        public void GivenPrefixIsSetTo(string prefix)
-        {
-            var newInput = new ServiceInput("Prefix", prefix);
-            var sqlGetViewModel = GetViewModel();
-            sqlGetViewModel.InputArea.Inputs.Add(newInput);
-            var activities = _commonSteps.GetActivityList();
-            var sqlactivity = activities["SqlServerActivity"] as DsfSqlServerDatabaseActivity;
-            sqlactivity.Inputs = sqlactivity.Inputs == null ? new List<IServiceInput> { newInput } : sqlGetViewModel.InputArea.Inputs;
-        }
-
         [Given(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
         [When(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
         [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
@@ -632,19 +621,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             WorkflowIsExecuted(workflowName);
         }
-        
-        [Then(@"Sql input variable ""(.*)"" is ""(.*)""")]
-        public void ThenSqlInputVariableIs(string variableName, string variableValue)
-        {
-            _scenarioContext.TryGetValue("variableList", out dynamic variableList);
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                _scenarioContext.Add("variableList", variableList);
-            }
-            variableList.Add(Tuple.Create(variableName, variableValue));
-        }
-
+                
         [AfterScenario("@ExecuteSqlServerWithTimeout")]
         public void CleanUp()
         {
