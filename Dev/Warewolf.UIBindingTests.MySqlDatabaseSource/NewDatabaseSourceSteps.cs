@@ -491,10 +491,11 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             Assert.AreEqual(timeout, viewModel.ConnectionTimeout);
         }
         [Then(@"the timeout error message is ""(.*)""")]
-        public void ThenTheTimeoutErrorMessageIs(string p0)
+        public void ThenTheTimeoutErrorMessageIs(string errorMessage)
         {
-            ScenarioContext.Current.Pending();
+            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            var contains = viewModel.TestMessage.Contains(errorMessage);
+            Assert.IsTrue(contains, contains + " does not contiain : " + errorMessage);
         }
-
     }
 }
