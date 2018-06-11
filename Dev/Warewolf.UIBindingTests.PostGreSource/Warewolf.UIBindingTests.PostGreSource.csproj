@@ -135,6 +135,10 @@
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>

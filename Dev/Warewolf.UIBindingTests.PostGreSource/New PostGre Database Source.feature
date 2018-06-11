@@ -264,3 +264,31 @@ Scenario: Changing database type after testing connection
    Then "Save" is "Disabled"
    And "Test Connection" is "Enabled"
 
+   
+
+@PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
+Scenario: Connection Expected to Timeout
+   Given I open New Database Source
+   Then "New PostgreSQL Source" tab is opened
+   And title is "New PostgreSQL Source"
+   When I type Server as "RSAKLFSVR"
+   Then the intellisense contains these options
+   | Options         |
+   | RSAKLFSVRDEV    |
+   | RSAKLFSVRPDC    |
+   | RSAKLFSVRTFSBLD |
+   | RSAKLFSVRWRWBLD |
+   And I type Select The Server as "RSAKLFSVRDEV"
+   And Connection Timeout is set to "0"
+   And I Select Authentication Type as "User"
+   When I type Username as "postgres"
+   And I type Password as "test123"	
+   And "Test Connection" is "Enabled"
+   When I click "Test Connection"
+   Then Test Connecton is "Unsuccessful"
+   And the timeout error message is "Dns hostname lookup timeout. Increase Timeout value in ConnectionString."

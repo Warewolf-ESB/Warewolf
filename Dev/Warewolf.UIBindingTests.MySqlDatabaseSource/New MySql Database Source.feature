@@ -309,3 +309,22 @@ Scenario: Creating New MySQL DB Source as Windows Auth
 	When I select "Dev2TestingDB" as Database
 	Then "Save" is "Enabled" 
 	
+
+@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
+Scenario: MySql Connection Expected to Timeout
+	Given I open New Database Source
+	And I type Server as "RSAKLFSVRDEV"
+	And Connection Timeout is set to "0"
+	And I Select Authentication Type as "Windows"
+	Then Username field is "Collapsed"
+	And Password field is "Collapsed"
+	And "Save" is "Disabled"
+	And "Test Connection" is "Enabled"
+	Then Test Connecton is "Successful"
+	And the timeout error message is "Timeout expired.  The timeout period elapsed prior to obtaining a connection from the pool.  This may have occurred because all pooled connections were in use and max pool size was reached."
+	
