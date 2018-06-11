@@ -72,7 +72,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 Assert.IsNotNull(innerWfHasErrorState);
                 if (!string.IsNullOrEmpty(error))
                 {
-                    Assert.IsTrue(debugStates.Any(p => p.ErrorMessage.Contains(error)), error + " : Did not occure.");
+                    var allErrors = string.Empty;
+                    foreach (var item in debugStates)
+                    {
+                        allErrors = item.ErrorMessage + "/n";
+                    }
+                    Assert.IsTrue(debugStates.Any(p => p.ErrorMessage.Contains(error)), error + " : Did not occure. But" + allErrors + "occured");
                 }
             }
             else
