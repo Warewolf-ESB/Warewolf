@@ -502,7 +502,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.EnterTimeout(timeout);
             var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
-            Assert.AreEqual(timeout, viewModel.ConnectionTimeout);
+            Assert.AreEqual(timeout, viewModel.ConnectionTimeout, viewModel.ConnectionTimeout + "is not Equal to " + timeout);
         }
     }
 }
