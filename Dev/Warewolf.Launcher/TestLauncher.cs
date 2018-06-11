@@ -365,16 +365,28 @@ namespace Warewolf.Launcher
             Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote}");
             var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
             var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
+            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, ip);
+            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, ip);
             ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
-                .Replace("tst-ci-remote", ip)
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}")
-                .Replace("AppServerUri=http://:", $"AppServerUri=http://{ip}:");
+                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
             UITestsCIRemoteContents = UITestsCIRemoteContents
-                .Replace("tst-ci-remote", ip)
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}")
-                .Replace("AppServerUri=http://:", $"AppServerUri=http://{ip}:");
+                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
             File.WriteAllText(ServerTestsCIRemote, ServerTestsCIRemoteContents);
             File.WriteAllText(UITestsCIRemote, UITestsCIRemoteContents);
+        }
+
+        string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        {
+            var startFrom = "AppServerUri=http://";
+            var subStringTo = ":3142/dsf;";
+            int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
+            int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
+            string oldAddress = serverSourceXML.Substring(startIndex, length);
+            if (!string.IsNullOrEmpty(oldAddress))
+            {
+                serverSourceXML = serverSourceXML.Replace(oldAddress, "");
+            }
+            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
         bool WaitForFileUnlock(string FileSpec)
