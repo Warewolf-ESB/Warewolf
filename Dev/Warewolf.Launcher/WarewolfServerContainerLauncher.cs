@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Web.Script.Serialization;
 
 namespace Warewolf.Launcher
@@ -100,21 +101,34 @@ namespace Warewolf.Launcher
 
         void GetContainerIP()
         {
-            var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/json";
-            using (var client = new HttpClient())
+            int count = 0;
+            while (string.IsNullOrEmpty(IP) && count++<5)
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.GetAsync(url).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/json";
+                using (var client = new HttpClient())
                 {
-                    if (!response.IsSuccessStatusCode)
+                    client.Timeout = new TimeSpan(0, 20, 0);
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        throw new HttpRequestException("Error getting container hostname. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        IP = ParseForIP(reader.ReadToEnd());
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new HttpRequestException("Error getting container IP. " + reader.ReadToEnd());
+                        }
+                        else
+                        {
+                            string gotIP = ParseForIP(reader.ReadToEnd());
+                            if (!string.IsNullOrEmpty(gotIP))
+                            {
+                                IP = gotIP;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Failed to get IP for container on {_remoteDockerApi}. " + reader.ReadToEnd());
+                                Thread.Sleep(500);
+                            }
+                        }
                     }
                 }
             }
@@ -199,7 +213,7 @@ namespace Warewolf.Launcher
             {
                 if (responseText.Contains($"Status: Image is up to date for warewolfserver/warewolfserver:{Version}"))
                 {
-                    return "warewolfserver/warewolfserver";
+                    return $"warewolfserver/warewolfserver:{Version}";
                 }
                 else
                 {
@@ -265,6 +279,7 @@ namespace Warewolf.Launcher
 
         void StopContainer()
         {
+            Console.WriteLine($"Stopping server container {_remoteContainerID} on {_remoteDockerApi}");
             var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/stop";
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
@@ -276,7 +291,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Error stopping remote server container: " + reader.ReadToEnd());
+                        Console.WriteLine($"Error stopping server container on {_remoteDockerApi}: " + reader.ReadToEnd());
                     }
                     else
                     {
