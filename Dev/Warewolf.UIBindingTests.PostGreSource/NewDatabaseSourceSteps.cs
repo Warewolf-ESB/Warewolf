@@ -493,7 +493,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
         {            
             var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             var contains = viewModel.TestMessage.Contains(errorMessage);
-            Assert.IsTrue(contains, contains + " does not contiain : " + errorMessage);
+            Assert.IsTrue(contains, viewModel.TestMessage + " does not contiain : " + errorMessage);
         }
 
         [Then(@"Connection Timeout is set to ""(.*)""")]

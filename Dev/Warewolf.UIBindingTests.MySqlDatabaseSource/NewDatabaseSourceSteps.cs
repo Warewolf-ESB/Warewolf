@@ -489,6 +489,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             manageDatabaseSourceControl.EnterTimeout(timeout);
             var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
             Assert.AreEqual(timeout, viewModel.ConnectionTimeout);
+
         }
         [Then(@"the timeout error message is ""(.*)""")]
         public void ThenTheTimeoutErrorMessageIs(string errorMessage)
