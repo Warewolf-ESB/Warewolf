@@ -337,6 +337,25 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("SqlServer_MethodName")]
+        public void SQLServer_VerifyCommandTimeout()
+        {
+            //------------Setup for test--------------------------
+            var mod = new SqlServerModel();
+            var act = new DsfSqlServerDatabaseActivity();
+
+            //------------Execute Test---------------------------
+            using (var vm = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            {
+                vm.InputArea.CommandTimeout = 321;
+                //------------Assert Results-------------------------
+                var dbService = vm.ToModel();
+                Assert.AreEqual(321, dbService.CommandTimeout);
+            }
+        }
+
     }
 
     public class SqlServerModel : IDbServiceModel

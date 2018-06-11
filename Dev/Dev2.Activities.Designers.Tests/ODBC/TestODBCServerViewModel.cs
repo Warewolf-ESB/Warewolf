@@ -451,6 +451,25 @@ namespace Dev2.Activities.Designers.Tests.ODBC
             Assert.AreEqual(0, ODBCServer.ManageServiceInputViewModel.Errors.Count);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("ODBCServer_MethodName")]
+        public void ODBCServer_VerifyCommandTimeout()
+        {
+            //------------Setup for test--------------------------
+            var mod = new ODBCServerModel();
+            var act = new DsfODBCDatabaseActivity();
+
+            //------------Execute Test---------------------------
+            using (var vm = new ODBCDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod))
+            {
+                vm.InputArea.CommandTimeout = 321;
+                //------------Assert Results-------------------------
+                var dbService = vm.ToModel();
+                Assert.AreEqual(321, dbService.CommandTimeout);
+            }
+        }
+
     }
 
     public class ODBCServerModel : IDbServiceModel
