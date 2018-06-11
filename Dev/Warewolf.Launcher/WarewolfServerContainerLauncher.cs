@@ -33,21 +33,12 @@ namespace Warewolf.Launcher
                 Pull();
                 CreateContainer();
                 StartContainer();
-                InspectContainer();
+                GetContainerIP();
             }
             catch (Exception)
             {
                 Dispose();
             }
-        }
-
-        void InspectContainer()
-        {
-            if (Hostname == "")
-            {
-                GetContainerHostname();
-            }
-            GetContainerIP();
         }
 
         public void Dispose()
@@ -100,28 +91,6 @@ namespace Warewolf.Launcher
                     else
                     {
                         _remoteImageID = ParseForImageID(reader.ReadToEnd());
-                    }
-                }
-            }
-        }
-
-        void GetContainerHostname()
-        {
-            var url = $"http://{_remoteDockerApi}:2375/containers/{_remoteContainerID}/json";
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.GetAsync(url).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new HttpRequestException("Error getting container hostname. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        Hostname = ParseForHostname(reader.ReadToEnd());
                     }
                 }
             }
@@ -249,13 +218,6 @@ namespace Warewolf.Launcher
             }
         }
 
-        string ParseForHostname(string responseText)
-        {
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            var JSONObj = javaScriptSerializer.Deserialize<ServerContainer>(responseText);
-            return JSONObj.State.Config.Hostname;
-        }
-
         string ParseForIP(string responseText)
         {
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
@@ -312,7 +274,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Starting remote server container: " + reader.ReadToEnd());
+                        Console.WriteLine("Stopping remote server container: " + reader.ReadToEnd());
                     }
                 }
             }
