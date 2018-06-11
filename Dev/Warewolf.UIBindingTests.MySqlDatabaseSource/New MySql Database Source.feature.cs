@@ -714,49 +714,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("MySql Connection Expected to Timeout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
-        public virtual void MySqlConnectionExpectedToTimeout()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MySql Connection Expected to Timeout", new string[] {
-                        "MySqlDbSource",
-                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll",
-                        "MSTest:DeploymentItem:Warewolf_Studio.exe",
-                        "MSTest:DeploymentItem:Newtonsoft.Json.dll",
-                        "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 319
-this.ScenarioSetup(scenarioInfo);
-#line 320
- testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 321
- testRunner.And("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
- testRunner.And("Connection Timeout is set to \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
- testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
- testRunner.Then("Username field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 325
- testRunner.And("Password field is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
- testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
- testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 328
- testRunner.Then("Test Connecton is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 329
- testRunner.And("the timeout error message is \"Timeout expired.  The timeout period elapsed prior " +
-                    "to obtaining a connection from the pool.  This may have occurred because all poo" +
-                    "led connections were in use and max pool size was reached.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
