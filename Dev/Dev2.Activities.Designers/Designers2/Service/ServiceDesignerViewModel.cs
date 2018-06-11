@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers2.Service
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
         readonly IEventAggregator _eventPublisher;
-        
+
         const string DoneText = "Done";
         const string FixText = "Fix";
 
@@ -169,6 +169,10 @@ namespace Dev2.Activities.Designers2.Service
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
             IsLoading = false;
+            if (ResourceModel == null)
+            {
+                ValidationMemoManager.UpdateLastValidationMemoWithSourceNotFoundError();
+            }
         }
 
         public bool IsLoading
@@ -322,7 +326,9 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsDeleted
         {
             get => (bool)GetValue(IsDeletedProperty);
-            set { if (!(bool)GetValue(IsDeletedProperty))
+            set
+            {
+                if (!(bool)GetValue(IsDeletedProperty))
                 {
                     SetValue(IsDeletedProperty, value);
                 }
@@ -535,9 +541,8 @@ namespace Dev2.Activities.Designers2.Service
             if (server.IsConnected && resourceId != Guid.Empty)
             {
                 ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
-
             }
-
+            
             if (!CheckSourceMissing())
             {
                 return false;

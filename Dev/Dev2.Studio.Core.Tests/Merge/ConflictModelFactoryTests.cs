@@ -266,6 +266,38 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void ConflictModelFactory_GivenServiceConflictNode_NullResourceID()
+        {
+            //------------Setup for test--------------------------
+            var adapter = new Mock<IApplicationAdaptor>();
+            var severRepo = new Mock<IServerRepository>();
+            severRepo.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+            CustomContainer.Register(severRepo.Object);
+            adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
+            CustomContainer.Register(adapter.Object);
+            var node = new Mock<IConflictTreeNode>();
+            var contextualResource = new Mock<IContextualResourceModel>();
+            var value = new DsfActivity();
+            var assignStep = new FlowStep
+            {
+                Action = value
+            };
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            node.Setup(p => p.Activity).Returns(value);
+            contextualResource.Setup(r => r.Environment.ResourceRepository.LoadContextualResourceModel(Guid.Empty)).Returns((IContextualResourceModel)null);
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
+            //------------Execute Test---------------------------
+
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(completeConflict);
+            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
+            Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
+            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

@@ -123,7 +123,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.RootModel);
             Assert.IsNull(viewModel.ResourceModel);
             Assert.IsNotNull(viewModel.ImageSource);
-
+            Assert.AreEqual(1, viewModel.ValidationMemoManager.DesignValidationErrors.Count);
+            Assert.AreEqual("Source was not found. This service will not execute.", viewModel.ValidationMemoManager.DesignValidationErrors[0].Message);
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 
@@ -334,6 +335,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
         [TestMethod]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
         public void ServiceDesignerViewModel_Constructor_ModelItemHasProperties_PropertiesPopulated()
         {
             var friendlySourceName = CreateModelProperty("FriendlySourceName", "Hello");
@@ -345,7 +347,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             Assert.IsTrue(vm.Properties.Count == 3);
         }
-
+       
         #endregion
 
         [TestMethod]

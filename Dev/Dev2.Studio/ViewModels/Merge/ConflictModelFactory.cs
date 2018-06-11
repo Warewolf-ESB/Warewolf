@@ -160,7 +160,7 @@ namespace Dev2.ViewModels.Merge
             {
                 return null;
             }
-            ActivityDesignerViewModel instance;
+            ActivityDesignerViewModel instance;           
             if (actualType == typeof(SwitchDesignerViewModel))
             {
                 var dsfSwitch = node.Activity as DsfSwitch;
@@ -173,7 +173,14 @@ namespace Dev2.ViewModels.Merge
             {
                 var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
                 var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                instance = Activator.CreateInstance(actualType, modelItem, childResourceModel) as ActivityDesignerViewModel;
+                if (childResourceModel != null)
+                {
+                    instance = Activator.CreateInstance(actualType, modelItem, childResourceModel) as ActivityDesignerViewModel;
+                }
+                else
+                {
+                    instance = Activator.CreateInstance(actualType, modelItem, _resourceModel) as ActivityDesignerViewModel;
+                }
             }
             else if (node.Activity is IAdapterActivity a)
             {
@@ -219,4 +226,6 @@ namespace Dev2.ViewModels.Merge
 
         public event ConflictModelChanged SomethingConflictModelChanged;
     }
+
+    
 }
