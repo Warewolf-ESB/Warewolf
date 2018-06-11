@@ -325,6 +325,6 @@ Scenario: MySql Connection Expected to Timeout
 	And Password field is "Collapsed"
 	And "Save" is "Disabled"
 	And "Test Connection" is "Enabled"
-	Then Test Connecton is "Successful"
+	Then Test Connecton is "Unsuccessful"
 	And the timeout error message is "Timeout expired.  The timeout period elapsed prior to obtaining a connection from the pool.  This may have occurred because all pooled connections were in use and max pool size was reached."
 	
