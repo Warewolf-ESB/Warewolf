@@ -446,12 +446,17 @@ namespace Dev2.UI
 
         private void TrackIntellisenseEvent(string text)
         {
-            if (!(text.Contains("(") && text.Contains(")")))
+            if (FilterType == enIntellisensePartType.JsonObject)
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.JsonNotAllowed, text);
+            }
+            if (!(text.Contains("(")) && FilterType != enIntellisensePartType.JsonObject)
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
                     Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
             }
-            if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
+            if (text.Contains("(") || text.Contains(")"))
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
                 Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);

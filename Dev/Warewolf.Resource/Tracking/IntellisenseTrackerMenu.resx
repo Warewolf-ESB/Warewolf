@@ -120,10 +120,13 @@
   <data name="EventCategory" xml:space="preserve">
     <value>Intellisense Events</value>
   </data>
+  <data name="JsonNotAllowed" xml:space="preserve">
+    <value>Json is not allowed. User input {0}</value>
+  </data>
   <data name="RecordsetNotAllowed" xml:space="preserve">
-    <value>Recordset is not allowed. User input{0}</value>
+    <value>Recordset is not allowed. User input {0}</value>
   </data>
   <data name="ScalarNotAllowed" xml:space="preserve">
-    <value>Scalar is not allowed. User input{0}</value>
+    <value>Scalar is not allowed. User input {0}</value>
   </data>
 </root>

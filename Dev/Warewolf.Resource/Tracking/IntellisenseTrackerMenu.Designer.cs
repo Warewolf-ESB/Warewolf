@@ -70,7 +70,16 @@ namespace Warewolf.Resource.Tracking {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Recordset is not allowed. User input{0}.
+        ///   Looks up a localized string similar to Json is not allowed. User input {0}.
+        /// </summary>
+        public static string JsonNotAllowed {
+            get {
+                return ResourceManager.GetString("JsonNotAllowed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Recordset is not allowed. User input {0}.
         /// </summary>
         public static string RecordsetNotAllowed {
             get {
@@ -79,7 +88,7 @@ namespace Warewolf.Resource.Tracking {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Scalar is not allowed. User input{0}.
+        ///   Looks up a localized string similar to Scalar is not allowed. User input {0}.
         /// </summary>
         public static string ScalarNotAllowed {
             get {
