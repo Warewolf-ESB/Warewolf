@@ -620,14 +620,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 193
     testRunner.And("I Select \"NewSqlServerSource\" as SqlServer Source for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 194
-    testRunner.And("I Select \"dbo.Pr_CitiesGetCountries\" as Server Action for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"dbo.Delayed_Pr_CitiesGetCountries\" as Server Action for \"SqlServerActiv" +
+                    "ity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
-    testRunner.And("Sql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Sql Command Timeout is \"60\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 196
- testRunner.And("Validate Sql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Sql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 197
-    testRunner.And("I click Sql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate Sql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 198
+    testRunner.And("I click Sql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 199
     testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -635,20 +638,23 @@ this.ScenarioSetup(scenarioInfo);
                         "Mapped To"});
             table25.AddRow(new string[] {
                         "CountryID",
-                        "[[dbo_Pr_CitiesGetCountries().CountryID]]"});
+                        "[[dbo_Delayed_Pr_CitiesGetCountries().CountryID]]"});
             table25.AddRow(new string[] {
                         "Description",
-                        "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 199
+                        "[[dbo_Delayed_Pr_CitiesGetCountries().Description]]"});
+#line 200
     testRunner.Then("Sql Server Outputs appear as", ((string)(null)), table25, "Then ");
-#line 203
- testRunner.And("Sql Server Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 204
- testRunner.And("Sql input variable \"[[Prefix]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Sql Server Recordset Name equals \"dbo_Delayed_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 205
- testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Sql input variable \"[[Prefix]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 206
-    testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Sql Command Timeout is \"1\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 207
+ testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 208
+    testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"AN\" error \"SQL Error: E" +
+                    "xecution Timeout Expired\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

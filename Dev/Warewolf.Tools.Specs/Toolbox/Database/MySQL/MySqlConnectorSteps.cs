@@ -484,6 +484,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             viewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
 
+        [Given(@"Mysql Server Recordset Name equals ""(.*)""")]
+        [When(@"Mysql Server Recordset Name equals ""(.*)""")]
         [Then(@"Mysql Server Recordset Name equals ""(.*)""")]
         public void ThenMysqlServerRecordsetNameEquals(string recsetName)
         {
@@ -562,6 +564,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetDbSource(activityName, dbSource);
             Assert.IsNotNull(vm.SourceRegion.SelectedSource);
         }
+
         [Given(@"I Select ""(.*)"" as MySql Server Action for ""(.*)""")]
         public void GivenISelectAsMySqlServerActionFor(string actionName, string activityName)
         {
@@ -570,6 +573,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
         }
+
+        [Given(@"MySql Command Timeout is ""(.*)"" millisenconds for ""(.*)""")]
+        [When(@"MySql Command Timeout is ""(.*)"" millisenconds for ""(.*)""")]
+        [Then(@"MySql Command Timeout is ""(.*)"" millisenconds for ""(.*)""")]
+        public void GivenMySqlCommandTimeoutIsMillisencondsFor(int timeout, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm);
+            vm.InputArea.CommandTimeout = timeout;
+            SetCommandTimeout(activityName, timeout);
+            Assert.AreEqual(timeout, vm.InputArea.CommandTimeout);
+        }
+
+        [Given(@"Mysql input variable ""(.*)"" is ""(.*)""")]
+        [When(@"Mysql input variable ""(.*)"" is ""(.*)""")]
         [Then(@"Mysql input variable ""(.*)"" is ""(.*)""")]
         public void ThenMysqlInputVariableIs(string variableName, string variableValue)
         {

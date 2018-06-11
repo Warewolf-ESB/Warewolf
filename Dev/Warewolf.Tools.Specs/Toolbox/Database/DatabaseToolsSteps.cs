@@ -61,7 +61,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             ExecuteWorkflow(resourceModel);
         }
 
-        public void ValidateErrorsAfterExecution(string workflowName, string hasError)
+        public void ValidateErrorsAfterExecution(string workflowName, string hasError, string error)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
@@ -70,6 +70,10 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             {
                 var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(workflowName));
                 Assert.IsNotNull(innerWfHasErrorState);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Assert.IsTrue(innerWfHasErrorState.ErrorMessage.Contains(error));
+                }
             }
             else
             {
@@ -312,6 +316,36 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 var sqlactivity = activities[activityName] as DsfPostgreSqlActivity;
                 Assert.IsNotNull(sqlactivity, "Activity is null");
                 sqlactivity.ProcedureName = actionName;
+            }
+        }
+
+
+        public void SetCommandTimeout(string activityName, int timeout)
+        {
+            var activities = _commonSteps.GetActivityList();
+            if (activityName.Contains("MySql"))
+            {
+                var sqlactivity = activities[activityName] as DsfMySqlDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
+                sqlactivity.CommandTimeout = timeout;
+            }
+            if (activityName.Contains("SqlServer"))
+            {
+                var sqlactivity = activities[activityName] as DsfSqlServerDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
+                sqlactivity.CommandTimeout = timeout;
+            }
+            if (activityName.Contains("Oracle"))
+            {
+                var sqlactivity = activities[activityName] as DsfOracleDatabaseActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
+                sqlactivity.CommandTimeout = timeout;
+            }
+            if (activityName.Contains("Postgres"))
+            {
+                var sqlactivity = activities[activityName] as DsfPostgreSqlActivity;
+                Assert.IsNotNull(sqlactivity, "Activity is null");
+                sqlactivity.CommandTimeout = timeout;
             }
         }
 

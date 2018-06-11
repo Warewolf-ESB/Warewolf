@@ -239,6 +239,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             SetDbAction(activityName, actionName);
             Assert.IsNotNull(vm.ActionRegion.SelectedAction);
         }
+        [Given(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [When(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [Then(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        public void GivenSqlCommandTimeoutIsMillisecondsFor(int timeout, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm);
+            SetCommandTimeout(activityName, timeout);
+            vm.InputArea.CommandTimeout = timeout;
+
+        }
 
         [Given(@"I open workflow with database connector")]
         public void GivenIOpenWolf()
@@ -600,11 +611,20 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             sqlactivity.Inputs = sqlactivity.Inputs == null ? new List<IServiceInput> { newInput } : sqlGetViewModel.InputArea.Inputs;
         }
 
+        [Given(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
         [When(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
         [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
         public void WhenTheWorkflowExecutionHasError(string workflowName, string hasError)
         {
-            ValidateErrorsAfterExecution(workflowName, hasError);
+            ValidateErrorsAfterExecution(workflowName, hasError, "");
+        }
+
+        [Given(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        [When(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        public void WhenTheWorkflowExecutionHasError(string workflowName, string hasError, string error)
+        {
+            ValidateErrorsAfterExecution(workflowName, hasError, error);
         }
 
         [When(@"Sql Workflow ""(.*)"" containing dbTool is executed")]
@@ -612,16 +632,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             WorkflowIsExecuted(workflowName);
         }
-        [Given(@"Sql Connection Timeout is ""(.*)""")]
-        public void GivenSqlConnectionTimeoutIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        [Given(@"Sql Command Timeout is ""(.*)""")]
-        public void GivenSqlCommandTimeoutIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+        
         [Then(@"Sql input variable ""(.*)"" is ""(.*)""")]
         public void ThenSqlInputVariableIs(string variableName, string variableValue)
         {

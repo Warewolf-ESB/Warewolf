@@ -65,16 +65,14 @@ Scenario: Execute MySql Server With Timeout
     Given I have workflow "MySqlWorkflowForTimeout" with "MySqlActivity" MySql database connector
     And Mysql server is Enabled
     And I Select "NewMySqlSource" as MySql Server Source for "MySqlActivity"
-    And I Select "Pr_CitiesGetCountries" as MySql Server Action for "MySqlActivity"
+    And I Select "Pr_CitiesGetCountries_Delayed" as MySql Server Action for "MySqlActivity"
+	And MySql Command Timeout is "30" millisenconds for "MySqlActivity"
     And Mysql Server Inputs Are Enabled	
 	And Validate MySql Server is Enabled
     And I click MySql Generate Outputs
     And I click Test on Mysql
-    Then Mysql Server Outputs appear as
-	| Mapped From | Mapped To                               |
-	| CountryID   | [[Pr_CitiesGetCountries().CountryID]]   |
-	| Description | [[Pr_CitiesGetCountries().Description]] |
-	And Mysql Server Recordset Name equals "Pr_CitiesGetCountries"
+	And Mysql Server Recordset Name equals "Pr_CitiesGetCountries_Delayed"
 	And Mysql input variable "[[name]]" is ""
+	And MySql Command Timeout is "5" millisenconds for "MySqlActivity"
 	When MySql Workflow "MySqlWorkflowForTimeout" containing dbTool is executed
-    And the workflow "MySqlWorkflowForTimeout" execution has "NO" error
+    And the workflow "MySqlWorkflowForTimeout" execution has "AN" error "Timeout expired."
