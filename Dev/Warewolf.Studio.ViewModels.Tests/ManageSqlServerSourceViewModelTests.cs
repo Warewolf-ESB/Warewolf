@@ -59,6 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(new List<string>() { "someName1", "someName2" });
 
             _dbSourceMock.SetupGet(it => it.Name).Returns("someDbSourceName");
+            _dbSourceMock.SetupGet(it => it.ConnectionTimeout).Returns(30);
             _asyncWorkerMock.Setup(
                 it =>
                 it.Start(
