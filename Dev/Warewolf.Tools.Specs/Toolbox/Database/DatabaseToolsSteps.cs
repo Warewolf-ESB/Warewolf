@@ -72,7 +72,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 Assert.IsNotNull(innerWfHasErrorState);
                 if (!string.IsNullOrEmpty(error))
                 {
-                    Assert.IsTrue(innerWfHasErrorState.ErrorMessage.Contains(error), "Command dod not timeout as expected");
+                    Assert.IsTrue(debugStates.Any(p => p.ErrorMessage.Contains(error)), error + " : Did not occure.");
                 }
             }
             else
