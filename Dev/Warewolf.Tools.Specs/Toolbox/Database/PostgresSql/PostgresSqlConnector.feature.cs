@@ -298,27 +298,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Postgres Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExecutePostgresServerWithTimeout")]
         public virtual void ExecutePostgresServerWithTimeout()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Postgres Server With Timeout", ((string[])(null)));
-#line 74
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Postgres Server With Timeout", new string[] {
+                        "ExecutePostgresServerWithTimeout"});
 #line 75
+this.ScenarioSetup(scenarioInfo);
+#line 76
     testRunner.Given("I have workflow \"PostgreWorkflowForTimeout\" with \"PostgresActivity\" Postgres data" +
                     "base connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 76
-    testRunner.And("Postgres Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
-    testRunner.And("I Select \"NewPostgresSource\" as Postgres Source for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Postgres Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
-    testRunner.And("I Select \"get_countries\" as Postgres Server Action for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"NewPostgresSource\" as Postgres Source for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 79
-    testRunner.And("Postgres Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"get_countries\" as Postgres Server Action for \"PostgresActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
- testRunner.And("Validate Postgres Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Postgres Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
-    testRunner.And("I click Postgres Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate Postgres Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
+    testRunner.And("I click Postgres Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 83
     testRunner.And("I click Postgres Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -333,15 +335,15 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "code",
                         "[[get_countries().code]]"});
-#line 83
+#line 84
     testRunner.Then("Postgres Server Outputs appear as", ((string)(null)), table8, "Then ");
-#line 88
- testRunner.And("Postgres Server Recordset Name equals \"get_countries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
- testRunner.And("Postgres input variable \"[[countrynamecontains]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Postgres Server Recordset Name equals \"get_countries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.When("Postgres Workflow \"PostgreWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Postgres input variable \"[[countrynamecontains]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
+ testRunner.When("Postgres Workflow \"PostgreWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 92
     testRunner.And("the workflow \"PostgreWorkflowForTimeout\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

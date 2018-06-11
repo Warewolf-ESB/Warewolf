@@ -421,5 +421,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             variableList.Add(Tuple.Create(variableName, variableValue));
         }
 
+        [AfterScenario("@ExecutePostgresServerWithTimeout")]
+        public void CleanUp()
+        {
+            CleanupForTimeOutSpecs();
+        }
     }
 }
