@@ -240,6 +240,25 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[fname]]");
             Assert.IsTrue(model.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("PostgreServer_MethodName")]
+        public void SQLServer_VerifyCommandTimeout()
+        {
+            //------------Setup for test--------------------------
+            var mod = new PostgreSqlModel();
+            var act = new DsfPostgreSqlActivity();
+
+            //------------Execute Test---------------------------
+            using (var vm = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            {
+                vm.InputArea.CommandTimeout = 321;
+                //------------Assert Results-------------------------
+                var dbService = vm.ToModel();
+                Assert.AreEqual(321, dbService.CommandTimeout);
+            }
+        }
     }
 
     public class PostgreSqlModel : IDbServiceModel

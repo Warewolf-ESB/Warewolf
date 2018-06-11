@@ -481,5 +481,23 @@ namespace Dev2.Activities.Designers.Tests.Oracle
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("Oracle_MethodName")]
+        public void Oracle_VerifyCommandTimeout()
+        {
+            //------------Setup for test--------------------------
+            var mod = new OracleModel();
+            var act = new DsfOracleDatabaseActivity();
+
+            //------------Execute Test---------------------------
+            using (var vm = new OracleDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            {
+                vm.InputArea.CommandTimeout = 321;
+                //------------Assert Results-------------------------
+                var dbService = vm.ToModel();
+                Assert.AreEqual(321, dbService.CommandTimeout);
+            }
+        }
     }
 }
