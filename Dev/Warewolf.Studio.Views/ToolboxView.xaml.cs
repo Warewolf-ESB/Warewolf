@@ -95,11 +95,7 @@ namespace Warewolf.Studio.Views
                 else
                 {
                     var _applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    if (_applicationTracker != null)
-                    {
-                        _applicationTracker.TrackEvent(Studio.Resources.Languages.TrackEventToolbox.EventCategory,
-                                                        Studio.Resources.Languages.TrackEventToolbox.DoubleClick);
-                    }
+                    _applicationTracker?.TrackEvent(Studio.Resources.Languages.TrackEventToolbox.EventCategory, Studio.Resources.Languages.TrackEventToolbox.DoubleClick);
                     var popupController = CustomContainer.Get<IPopupController>();
                     popupController?.Show(Studio.Resources.Languages.Core.ToolboxPopupDescription, Studio.Resources.Languages.Core.ToolboxPopupHeader, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
