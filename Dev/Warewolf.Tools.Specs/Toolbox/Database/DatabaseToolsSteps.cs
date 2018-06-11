@@ -80,8 +80,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 debugStates.ForEach(p => Assert.IsFalse(p.HasError, "Error: "+ p.ErrorMessage));
             }
         }
-
-        [AfterScenario]
+        
         public void CleanupForTimeOutSpecs()
         {
             if (_debugWriterSubscriptionService != null)
