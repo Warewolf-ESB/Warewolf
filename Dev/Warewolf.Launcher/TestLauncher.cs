@@ -362,7 +362,7 @@ namespace Warewolf.Launcher
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
             string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - UITests", "Resources", "Acceptance Testing Resources", "Remote Connection Integration.xml");
-            Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote}");
+            Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote} to {ip}");
             var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
             var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
             ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, ip);
@@ -424,7 +424,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     Console.WriteLine($"Still waiting for {FileSpec} file to exist.");
-                    Thread.Sleep(3000);
+                   Thread.Sleep(3000);
                 }
             }
             return exists;
