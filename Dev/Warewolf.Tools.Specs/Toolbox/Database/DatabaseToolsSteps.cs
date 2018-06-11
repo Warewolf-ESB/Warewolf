@@ -77,6 +77,19 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
             }
         }
 
+        [AfterScenario]
+        public void CleanupForTimeOutSpecs()
+        {
+            if (_debugWriterSubscriptionService != null)
+            {
+                _debugWriterSubscriptionService.Unsubscribe();
+                _debugWriterSubscriptionService.Dispose();
+            }
+            _resetEvt?.Close();
+            var environmentModel = _scenarioContext.Get<IServer>("server");
+            var resourceModel = _scenarioContext.Get<ResourceModel>("resourceModel");
+            environmentModel.ResourceRepository.DeleteResource(resourceModel);
+        }
 
         [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool", "@ChangingSqlServerFunctions", "@CreatingOracleToolInstance", "@ChangingOracleActions")]
         public void InitChangingFunction()

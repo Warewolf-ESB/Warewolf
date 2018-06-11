@@ -245,27 +245,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute MySql Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MySqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExecuteMySqlServerWithTimeout")]
         public virtual void ExecuteMySqlServerWithTimeout()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute MySql Server With Timeout", ((string[])(null)));
-#line 63
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute MySql Server With Timeout", new string[] {
+                        "ExecuteMySqlServerWithTimeout"});
 #line 64
+this.ScenarioSetup(scenarioInfo);
+#line 65
     testRunner.Given("I have workflow \"MySqlWorkflowForTimeout\" with \"MySqlActivity\" MySql database con" +
                     "nector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 65
-    testRunner.And("Mysql server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
-    testRunner.And("I Select \"NewMySqlSource\" as MySql Server Source for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Mysql server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
-    testRunner.And("I Select \"Pr_CitiesGetCountries\" as MySql Server Action for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"NewMySqlSource\" as MySql Server Source for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
-    testRunner.And("Mysql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I Select \"Pr_CitiesGetCountries\" as MySql Server Action for \"MySqlActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
- testRunner.And("Validate MySql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Mysql Server Inputs Are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
-    testRunner.And("I click MySql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate MySql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
+    testRunner.And("I click MySql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
     testRunner.And("I click Test on Mysql", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -277,15 +279,15 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "Description",
                         "[[Pr_CitiesGetCountries().Description]]"});
-#line 72
+#line 73
     testRunner.Then("Mysql Server Outputs appear as", ((string)(null)), table1, "Then ");
-#line 76
- testRunner.And("Mysql Server Recordset Name equals \"Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
- testRunner.And("Mysql input variable \"[[name]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Mysql Server Recordset Name equals \"Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
- testRunner.When("MySql Workflow \"MySqlWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Mysql input variable \"[[name]]\" is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 79
+ testRunner.When("MySql Workflow \"MySqlWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 80
     testRunner.And("the workflow \"MySqlWorkflowForTimeout\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
