@@ -59,7 +59,7 @@ namespace Warewolf.Resource.Tracking {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Intellisense Events.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Warewolf.Resource.Tracking {
                 return ResourceManager.GetString("EventCategory", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Json is not allowed. User input {0}.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Warewolf.Resource.Tracking {
                 return ResourceManager.GetString("JsonNotAllowed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Recordset is not allowed. User input {0}.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Warewolf.Resource.Tracking {
                 return ResourceManager.GetString("RecordsetNotAllowed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Scalar is not allowed. User input {0}.
         /// </summary>

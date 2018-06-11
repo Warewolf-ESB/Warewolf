@@ -70,7 +70,7 @@
       <DependentUpon>IntellisenseTrackerMenu.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Tracking\IntellisenseTrackerMenu.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>IntellisenseTrackerMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="..\Run Tests.ps1">
