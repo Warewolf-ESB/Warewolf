@@ -611,67 +611,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Connection Expected to Timeout")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New PostgreSql Source")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("PostgresDbSource")]
-        public virtual void ConnectionExpectedToTimeout()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connection Expected to Timeout", new string[] {
-                        "PostgresDbSource",
-                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll",
-                        "MSTest:DeploymentItem:Warewolf_Studio.exe",
-                        "MSTest:DeploymentItem:Newtonsoft.Json.dll",
-                        "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
-#line 275
-this.ScenarioSetup(scenarioInfo);
-#line 276
-   testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 277
-   testRunner.Then("\"New PostgreSQL Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 278
-   testRunner.And("title is \"New PostgreSQL Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 279
-   testRunner.When("I type Server as \"RSAKLFSVR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Options"});
-            table4.AddRow(new string[] {
-                        "RSAKLFSVRDEV"});
-            table4.AddRow(new string[] {
-                        "RSAKLFSVRPDC"});
-            table4.AddRow(new string[] {
-                        "RSAKLFSVRTFSBLD"});
-            table4.AddRow(new string[] {
-                        "RSAKLFSVRWRWBLD"});
-#line 280
-   testRunner.Then("the intellisense contains these options", ((string)(null)), table4, "Then ");
-#line 286
-   testRunner.And("I type Select The Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 287
-   testRunner.And("Connection Timeout is set to \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
-   testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 289
-   testRunner.When("I type Username as \"postgres\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 290
-   testRunner.And("I type Password as \"test123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
-   testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
-   testRunner.When("I click \"Test Connection\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 293
-   testRunner.Then("Test Connecton is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 294
-   testRunner.And("the timeout error message is \"Dns hostname lookup timeout. Increase Timeout value" +
-                    " in ConnectionString.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore
