@@ -75,9 +75,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                     var allErrors = string.Empty;
                     foreach (var item in debugStates)
                     {
-                        allErrors = item.ErrorMessage + "/n";
+                        allErrors = item.ErrorMessage + Environment.NewLine;
                     }
-                    Assert.IsTrue(debugStates.Any(p => p.ErrorMessage.Contains(error)), error + " : Did not occure. But" + allErrors + "occured");
+                    Assert.IsTrue(debugStates.Any(p => p.ErrorMessage.Contains(error)), error + " : Did not occure. But " + allErrors + "occured");
                 }
             }
             else

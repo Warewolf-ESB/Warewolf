@@ -495,7 +495,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
             var contains = viewModel.TestMessage.Contains(errorMessage);
-            Assert.IsTrue(contains, contains + " does not contiain : " + errorMessage);
+            Assert.IsTrue(contains, viewModel.TestMessage + " does not contiain : " + errorMessage);
         }
     }
 }
