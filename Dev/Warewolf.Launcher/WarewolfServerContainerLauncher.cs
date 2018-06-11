@@ -274,7 +274,11 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Stopping remote server container: " + reader.ReadToEnd());
+                        Console.WriteLine("Error stopping remote server container: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Server container {_remoteContainerID} at {_remoteDockerApi} has been stopped.");
                     }
                 }
             }
