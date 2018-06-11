@@ -495,7 +495,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public void ThenTheTimeoutErrorMessageIs(string errorMessage)
         {
             var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
-            Assert.IsTrue(viewModel.TestMessage.Contains(errorMessage), "Failed!" + viewModel.TestMessage + " does not contiain '" + errorMessage + "'");
+            Assert.IsTrue(viewModel.TestMessage.Contains(errorMessage), viewModel.TestMessage + " does not contiain '" + errorMessage + "'");
         }
     }
 }

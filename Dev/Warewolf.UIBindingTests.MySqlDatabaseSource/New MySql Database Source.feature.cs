@@ -749,7 +749,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 327
  testRunner.And("\"Test Connection\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 328
- testRunner.Then("Test Connecton is \"Successful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Test Connecton is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 329
  testRunner.And("the timeout error message is \"Timeout expired.  The timeout period elapsed prior " +
                     "to obtaining a connection from the pool.  This may have occurred because all poo" +
