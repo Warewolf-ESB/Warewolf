@@ -186,6 +186,7 @@ Scenario: SqlServer backward Compatiblity
 	When "DataMigration" is executed
     Then the workflow "DataMigration" execution has "NO" error
 	
+@ExecuteSqlServerWithTimeout
 Scenario: Execute Sql Server With Timeout
     Given I have workflow "SqlServerWorkflowForTimeout" with "SqlServerActivity" SqlServer database connector
     And Sql Server Source is Enabled

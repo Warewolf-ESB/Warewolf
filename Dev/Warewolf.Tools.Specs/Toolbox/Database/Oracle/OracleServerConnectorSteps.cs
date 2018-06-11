@@ -23,6 +23,7 @@ using Warewolf.Tools.Specs.Toolbox.Database;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -526,6 +527,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             variableList.Add(Tuple.Create(variableName, variableValue));
         }
 
+        [AfterScenario("@ExecuteOracleServerWithTimeout")]
+        public void CleanUp()
+        {
+            CleanupForTimeOutSpecs();
+        }
 
         #region Private Methods
 

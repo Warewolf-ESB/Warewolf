@@ -70,7 +70,8 @@ Scenario: Change the recordset on existing PostgresSql tool
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
 	And Validate PostgresSql Is Enabled
-		
+
+@ExecutePostgresServerWithTimeout		
 Scenario: Execute Postgres Server With Timeout
     Given I have workflow "PostgreWorkflowForTimeout" with "PostgresActivity" Postgres database connector
     And Postgres Server Source is Enabled
