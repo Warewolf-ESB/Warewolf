@@ -582,5 +582,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             variableList.Add(Tuple.Create(variableName, variableValue));
         }
 
+        [AfterScenario("@ExecuteMySqlServerWithTimeout")]
+        public void CleanUp()
+        {
+            CleanupForTimeOutSpecs();
+        }
     }
 }
