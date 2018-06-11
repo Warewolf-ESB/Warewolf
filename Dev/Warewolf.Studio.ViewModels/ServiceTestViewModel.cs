@@ -2201,6 +2201,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var clone = model.Clone();
                 model.SetItem(clone);
+                model.ResetOldTestName();
             }
         }
 

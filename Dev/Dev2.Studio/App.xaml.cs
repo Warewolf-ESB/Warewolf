@@ -68,6 +68,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Studio
 {
@@ -109,9 +110,10 @@ namespace Dev2.Studio
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
             {
+                var dir = new DirectoryHelper();
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
-                DirectoryHelper.CleanUp(path);
-                DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
+                dir.CleanUp(path);
+                dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
             });
 
             var localprocessGuard = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);

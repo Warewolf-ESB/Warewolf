@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
@@ -29,7 +30,7 @@ namespace Dev2.Runtime
         }, LazyThreadSafetyMode.PublicationOnly);
 
         public static ITestCatalog Instance => LazyCat.Value;
-
+       
         public TestCatalog()
         {
             _directoryWrapper = new DirectoryWrapper();
@@ -445,7 +446,7 @@ namespace Dev2.Runtime
                 Tests.TryRemove(resourceId, out List<IServiceTestModelTO> removedTests);
             }
         }
-
+        
         public void DeleteAllTests(List<string> testsToList)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
@@ -455,9 +456,10 @@ namespace Dev2.Runtime
             }
 
             var fileInfos = info.GetDirectories();
+            var dir = new DirectoryHelper();
             foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToList.Contains(fileInfo.Name.ToUpper())))
             {
-                DirectoryHelper.CleanUp(fileInfo.FullName);
+                dir.CleanUp(fileInfo.FullName);
             }
             Load();
         }
