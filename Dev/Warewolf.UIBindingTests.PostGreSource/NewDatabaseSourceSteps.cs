@@ -487,15 +487,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
-
-        [Then(@"the timeout error message is ""(.*)""")]
-        public void ThenTheTimeoutErrorMessageIs(string errorMessage)
-        {            
-            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
-            var contains = viewModel.TestMessage.Contains(errorMessage);
-            Assert.IsTrue(contains, viewModel.TestMessage + " does not contiain : " + errorMessage);
-        }
-
+        
         [Then(@"Connection Timeout is set to ""(.*)""")]
         public void ThenConnectionTimeoutIsSetTo(int timeout)
         {
@@ -503,6 +495,13 @@ namespace Warewolf.UIBindingTests.PostGreSource
             manageDatabaseSourceControl.EnterTimeout(timeout);
             var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
             Assert.AreEqual(timeout, viewModel.ConnectionTimeout, viewModel.ConnectionTimeout + "is not Equal to " + timeout);
+        }
+
+        [Then(@"the timeout error message is ""(.*)""")]
+        public void ThenTheTimeoutErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<ManagePostgreSqlSourceViewModel>("viewModel");
+            Assert.IsTrue(viewModel.TestMessage.Contains(errorMessage), viewModel.TestMessage + " does not contiain '" + errorMessage + "'");
         }
     }
 }
