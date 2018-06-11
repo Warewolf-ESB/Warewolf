@@ -15,13 +15,15 @@ namespace Warewolf.Launcher
         string _remoteImageID = null;
         public string Hostname;
         public string IP;
+        public string Version;
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "")
+        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest")
         {
             _remoteDockerApi = remoteDockerApi;
             Hostname = hostname;
+            Version = version;
             CheckDockerRemoteApiVersion();
             StartWarewolfServerContainer();
         }
@@ -75,8 +77,8 @@ namespace Warewolf.Launcher
 
         void Pull()
         {
-            Console.WriteLine("Pulling warewolfserver/warewolfserver:latest to " + _remoteDockerApi);
-            var url = $"http://{_remoteDockerApi}:2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag=latest";
+            Console.WriteLine($"Pulling warewolfserver/warewolfserver:{Version} to {_remoteDockerApi}");
+            var url = $"http://{_remoteDockerApi}:2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag={Version}";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(1, 0, 0);
@@ -195,7 +197,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (responseText.Contains("Status: Image is up to date for warewolfserver/warewolfserver:latest"))
+                if (responseText.Contains($"Status: Image is up to date for warewolfserver/warewolfserver:{Version}"))
                 {
                     return "warewolfserver/warewolfserver";
                 }

@@ -348,7 +348,7 @@ namespace Warewolf.Launcher
         {
             try
             {
-                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("localhost");
+                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("localhost", "", "DO-362_CI_Remote_Containers");
                 CIRemoteOverloading(ciRemoteContainerLauncher.IP);
             }
             catch (Exception e)
