@@ -157,10 +157,13 @@ namespace Warewolf.Launcher
 
         public void CleanupServerStudio(bool Force = true)
         {
-            string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
-            if (File.Exists(serverStartedFile))
+            if (!string.IsNullOrEmpty(ServerPath) && File.Exists(ServerPath))
             {
-                File.Delete(serverStartedFile);
+                string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
+                if (File.Exists(serverStartedFile))
+                {
+                    File.Delete(serverStartedFile);
+                }
             }
 
             //Find Webs
