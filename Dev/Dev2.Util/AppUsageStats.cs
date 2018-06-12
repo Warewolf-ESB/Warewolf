@@ -20,8 +20,7 @@ namespace Dev2.Util
 
         static string _serviceName;
         public static string ServiceName => _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
-
-#if !DEBUG
+        
         public static bool CollectUsageStats
         {
             get
@@ -30,6 +29,38 @@ namespace Dev2.Util
                 return collectUsageStats;
             }
         }
-#endif
+
+        public static string ProductID
+        {
+
+            get
+            {
+                return ConfigurationManager.AppSettings["ProductID"];
+            }
+        }
+
+        public static string AppName
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AppName"];
+            }
+        }
+
+        public static string ProductUrl
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ProductUrl"];
+            }
+        }
+
+        public static string AesHexKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AesHexKey"];
+            }
+        }
     }
 }

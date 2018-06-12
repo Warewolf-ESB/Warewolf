@@ -34,7 +34,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -52,7 +52,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDebug;
         readonly IPopupController _popupController;
         RelayCommand _cancelCommand;
-
+        readonly IApplicationTracker _applicationTracker;
         #endregion Fields
 
         public event Action DebugExecutionStart;
@@ -66,13 +66,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F6Debug);
+            }
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
 
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
+
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             VerifyArgument.IsNotNull(@"input", input);
             CanDebug = true;
             CanViewInBrowser = true;
@@ -201,6 +206,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public RelayCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel()));
 
+        // Set to true in case of any error popup message.
         public bool IsInError { private get; set; }
         
         public void Save()
@@ -268,9 +274,31 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ViewInBrowser()
         {
+            // Do not log user action in case of error.
             if (!IsInError)
             {
-                Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,
+                                                   TrackEventDebugOutput.ViewInBrowser);
+                }
+                DoSaveActions();
+                string payload = BuildWebPayLoad();
+                SendViewInBrowserRequest(payload);
+                SendFinishedMessage();
+                RequestClose();
+            }
+            else
+            {
+                ShowInvalidDataPopupMessage();
+            }
+        }
+
+
+        public void WithoutActionTrackingViewInBrowser()
+        {
+            if (!IsInError)
+            {              
                 DoSaveActions();
                 var payload = BuildWebPayLoad();
                 SendViewInBrowserRequest(payload);

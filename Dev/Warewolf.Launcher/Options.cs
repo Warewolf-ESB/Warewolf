@@ -1,10 +1,7 @@
 ﻿using CommandLine;
 using System;
-using System.Collections.Generic;
-using Warewolf.Launcher;
-using System.Linq;
 
-namespace Bashley
+namespace Warewolf.Launcher
 {
     internal class Options
     {
@@ -98,8 +95,8 @@ namespace Bashley
         [Option("MSTestPath")]
         public string MSTestPath { get; set; }
 
-        [Option("StartDocker")]
-        public bool StartDocker { get; set; }
+        [Option("RetryCount")]
+        public string RetryCount { get; private set; }
 
         public static TestLauncher PargeArgs(string[] args)
         {
@@ -262,10 +259,17 @@ namespace Bashley
                     Console.WriteLine("MSTestPath: " + options.MSTestPath);
                     testLauncher.MSTestPath = options.MSTestPath;
                 }
-                if (options.StartDocker)
+                if (options.RetryCount != null)
                 {
-                    Console.WriteLine("Starting Docker.");
-                    testLauncher.StartDocker = "true";
+                    Console.WriteLine("RetryCount: Re-trying failures " + options.RetryCount + " number of times.");
+                    if (int.TryParse(options.RetryCount, out int retryCount))
+                    {
+                        testLauncher.RetryCount = retryCount;
+                    }
+                    else
+                    {
+                        Console.WriteLine("RetryCount: Expects a number of times to re-try failing tests. Cannot parse " + options.RetryCount);
+                    }
                 }
             }).WithNotParsed(errs =>
             {
