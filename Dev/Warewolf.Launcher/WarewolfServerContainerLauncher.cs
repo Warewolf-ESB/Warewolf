@@ -13,7 +13,7 @@ namespace Warewolf.Launcher
     {
         readonly string _remoteDockerApi;
         string serverContainerID = null;
-        string serverContainerImageID = null;
+        string FullImageID = null;
         public string Hostname;
         public string IP;
         public string Version;
@@ -102,7 +102,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        serverContainerImageID = ParseForImageID(reader.ReadToEnd());
+                        FullImageID = ParseForImageID(reader.ReadToEnd());
                     }
                 }
             }
@@ -176,7 +176,7 @@ namespace Warewolf.Launcher
             {
                 containerContent = new StringContent(@"
 {
-     ""Image"":""" + serverContainerImageID + @"""
+     ""Image"":""" + FullImageID + @"""
 }
 ");
             }
@@ -185,7 +185,7 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + serverContainerImageID + @"""
+     ""Image"":""" + FullImageID + @"""
 }
 ");
             }
@@ -252,7 +252,7 @@ namespace Warewolf.Launcher
 
         void DeleteImage()
         {
-            var url = $"http://{_remoteDockerApi}:2375/images/{serverContainerImageID}?force=true";
+            var url = $"http://{_remoteDockerApi}:2375/images/{FullImageID}?force=true";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
