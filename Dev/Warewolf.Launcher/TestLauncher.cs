@@ -93,7 +93,9 @@ namespace Warewolf.Launcher
                             CurrentDirectory = TestsPath;
                         }
                     }
-                    if (File.Exists(CurrentDirectory + "\\" + FileSpec) || Directory.Exists($"{CurrentDirectory}\\{FileSpec}"))
+                    string[] files = Directory.GetFiles(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
+                    string[] folders = Directory.GetDirectories(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
+                    if (files.Length > 0 || folders.Length > 0)
                     {
                         FilePath = Path.Combine(CurrentDirectory, FileSpec);
                     }
@@ -1343,7 +1345,7 @@ namespace Warewolf.Launcher
                 {
                     if (TestAssembliesFileSpecsInParent.Contains('*'))
                     {
-                        resolveStarNotation = Directory.GetFiles(TestAssembliesFileSpecsInParent).ToList();
+                        resolveStarNotation = Directory.GetFiles(Path.GetDirectoryName(TestAssembliesFileSpecsInParent), Path.GetFileName(TestAssembliesFileSpecsInParent), SearchOption.TopDirectoryOnly).ToList();
                     }
                     else
                     {
