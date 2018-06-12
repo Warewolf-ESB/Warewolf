@@ -120,8 +120,8 @@
   <data name="EventCategory" xml:space="preserve">
     <value>Variable Events</value>
   </data>
-  <data name="RedBracketsSyntax" xml:space="preserve">
-    <value>Red Brackets Syntax</value>
+  <data name="IncorrectSyntax" xml:space="preserve">
+    <value>Incorrect input in variable textbox</value>
   </data>
   <data name="UnusedVariables" xml:space="preserve">
     <value>Un used Variables</value>

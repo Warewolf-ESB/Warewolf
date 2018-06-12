@@ -475,17 +475,17 @@ namespace Dev2.UI
             if (FilterType == enIntellisensePartType.JsonObject)
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.JsonNotAllowed, text);
+                    string.Format(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect JSON input: " + text), text);
             }
             if (!(text.Contains("(")) && FilterType != enIntellisensePartType.JsonObject)
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
+                    string.Format(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Scalar input: " + text), text);
             }
             if (text.Contains("(") || text.Contains(")"))
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);
+                    string.Format(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Recordset input: " + text), text);
             }
         }
 
