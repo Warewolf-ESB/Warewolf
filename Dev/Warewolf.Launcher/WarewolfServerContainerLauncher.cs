@@ -17,14 +17,23 @@ namespace Warewolf.Launcher
         public string Hostname;
         public string IP;
         public string Version;
+        public string ImageName;
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest")
+        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
         {
             _remoteDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
+            if (!CIRemoteResources)
+            {
+                ImageName = "warewolfserver";
+            }
+            else
+            {
+                ImageName = "ciremote";
+            }
             CheckDockerRemoteApiVersion();
             StartWarewolfServerContainer();
         }
@@ -78,8 +87,8 @@ namespace Warewolf.Launcher
 
         void Pull()
         {
-            Console.WriteLine($"Pulling warewolfserver/warewolfserver:{Version} to {_remoteDockerApi}");
-            var url = $"http://{_remoteDockerApi}:2375/images/create?fromImage=warewolfserver%2Fwarewolfserver&tag={Version}";
+            Console.WriteLine($"Pulling warewolfserver/{ImageName}:{Version} to {_remoteDockerApi}");
+            var url = $"http://{_remoteDockerApi}:2375/images/create?fromImage=warewolfserver%2F{ImageName}&tag={Version}";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(1, 0, 0);
@@ -211,9 +220,9 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (responseText.Contains($"Status: Image is up to date for warewolfserver/warewolfserver:{Version}"))
+                if (responseText.Contains($"Status: Image is up to date for warewolfserver/{ImageName}:{Version}"))
                 {
-                    return $"warewolfserver/warewolfserver:{Version}";
+                    return $"warewolfserver/{ImageName}:{Version}";
                 }
                 else
                 {
