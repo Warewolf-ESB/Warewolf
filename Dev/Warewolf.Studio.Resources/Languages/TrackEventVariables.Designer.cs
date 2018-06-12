@@ -70,11 +70,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Red Brackets Syntax.
+        ///   Looks up a localized string similar to Incorrect input in variable textbox.
         /// </summary>
-        public static string RedBracketsSyntax {
+        public static string IncorrectSyntax {
             get {
-                return ResourceManager.GetString("RedBracketsSyntax", resourceCulture);
+                return ResourceManager.GetString("IncorrectSyntax", resourceCulture);
             }
         }
         

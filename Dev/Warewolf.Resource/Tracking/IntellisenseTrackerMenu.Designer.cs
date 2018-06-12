@@ -61,7 +61,7 @@ namespace Warewolf.Resource.Tracking {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Intellisense Events.
+        ///   Looks up a localized string similar to Variable Events.
         /// </summary>
         public static string EventCategory {
             get {
@@ -70,29 +70,11 @@ namespace Warewolf.Resource.Tracking {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Json is not allowed. User input {0}.
+        ///   Looks up a localized string similar to Red Brackets Syntax. Error on input - {0}.
         /// </summary>
-        public static string JsonNotAllowed {
+        public static string IncorrectSyntax {
             get {
-                return ResourceManager.GetString("JsonNotAllowed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recordset is not allowed. User input {0}.
-        /// </summary>
-        public static string RecordsetNotAllowed {
-            get {
-                return ResourceManager.GetString("RecordsetNotAllowed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scalar is not allowed. User input {0}.
-        /// </summary>
-        public static string ScalarNotAllowed {
-            get {
-                return ResourceManager.GetString("ScalarNotAllowed", resourceCulture);
+                return ResourceManager.GetString("IncorrectSyntax", resourceCulture);
             }
         }
     }
