@@ -82,7 +82,7 @@ namespace Dev2.Studio.Views.DataList
                 if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
                 {
                     var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.IncorrectSyntax, vm.DataListErrorMessage);
+                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.IncorrectSyntax, "Variable Textbox input - " + vm.DataListErrorMessage);
                 }
             }
         }

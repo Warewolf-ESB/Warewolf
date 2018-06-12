@@ -70,7 +70,7 @@ namespace Warewolf.Resource.Tracking {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Red Brackets Syntax. Error on input - {0}.
+        ///   Looks up a localized string similar to Incorrect Syntax.
         /// </summary>
         public static string IncorrectSyntax {
             get {

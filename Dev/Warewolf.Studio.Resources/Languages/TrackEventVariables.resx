@@ -121,7 +121,7 @@
     <value>Variable Events</value>
   </data>
   <data name="IncorrectSyntax" xml:space="preserve">
-    <value>Incorrect input in variable textbox</value>
+    <value>Incorrect Syntax</value>
   </data>
   <data name="UnusedVariables" xml:space="preserve">
     <value>Un used Variables</value>

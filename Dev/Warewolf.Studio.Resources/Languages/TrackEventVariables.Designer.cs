@@ -70,7 +70,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect input in variable textbox.
+        ///   Looks up a localized string similar to Incorrect Syntax.
         /// </summary>
         public static string IncorrectSyntax {
             get {
