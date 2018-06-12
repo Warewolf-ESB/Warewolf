@@ -93,12 +93,13 @@ namespace Warewolf.Studio.ViewModels
         };
 
         protected override IDbSource ToDbSource() => DbSource == null ? new DbSourceDefinition
-        {
+        {            
             AuthenticationType = AuthenticationType,
             ServerName = EmptyServerName,
             Password = Password,
             UserName = UserName,
             Type = enSourceType.ODBC,
+            ConnectionTimeout = ConnectionTimeout,
             Path = Path,
             Name = ResourceName,
             DbName = DatabaseName,
@@ -110,6 +111,7 @@ namespace Warewolf.Studio.ViewModels
             Password = Password,
             UserName = UserName,
             Type = enSourceType.ODBC,
+            ConnectionTimeout = ConnectionTimeout,
             Path = Path,
             Name = ResourceName,
             DbName = DatabaseName,
