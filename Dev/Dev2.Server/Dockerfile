@@ -13,7 +13,8 @@ ADD . Server
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 
-RUN New-Item -Path "programdata\Warewolf\Resources" -ItemType Directory
-ADD NewAzureUser.bite programdata\Warewolf\Resources
+RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
+RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
+ADD NewAzureUser.bite \programdata\Warewolf\Resources
 
 ENTRYPOINT Start-Process -FilePath "$env:SERVER_PATH" -ArgumentList "--interactive" -Verb RunAs -Wait
