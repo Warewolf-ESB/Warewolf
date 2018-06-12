@@ -121,6 +121,6 @@
     <value>Variable Events</value>
   </data>
   <data name="IncorrectSyntax" xml:space="preserve">
-    <value>Red Brackets Syntax. Error on input - {0}</value>
+    <value>Incorrect Syntax</value>
   </data>
 </root>
