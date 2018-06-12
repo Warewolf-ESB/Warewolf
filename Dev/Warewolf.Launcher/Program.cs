@@ -6,7 +6,7 @@ using System.Linq;
 using System.Xml;
 using System.Security.Principal;
 
-namespace Bashley
+namespace Warewolf.Launcher
 {
     public class Program
     {
@@ -20,7 +20,7 @@ namespace Bashley
                     throw new UnauthorizedAccessException("Must run as an administrator.");
                 }
             }
-
+            
             var build = Options.PargeArgs(args);
 
             build.JobSpecs = Job_Definitions.GetJobDefinitions();
@@ -263,211 +263,30 @@ namespace Bashley
                     }
 
                     // Setup for screen recording
-                    var TestSettingsFile = "";
-                    var TestSettings = "";
-                    if (build.RecordScreen != null)
-                    {
-                        var TestSettingsId = Guid.NewGuid();
-
-                        // Create test settings.
-                        TestSettingsFile = build.TestsResultsPath + "\\" + JobName + ".testsettings";
-                        build.CopyOnWrite(TestSettingsFile);
-                        File.WriteAllText(TestSettingsFile, @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<TestSettings id=""" + TestSettingsId + @""" name=""JobName"" xmlns=""http://microsoft.com/schemas/VisualStudio/TeamTest/2010"">
-    <Description>Run " + JobName + @" With Screen Recording.</Description>
-    <NamingScheme baseName=""ScreenRecordings"" appendTimeStamp=""false"" useDefault=""false""/>
-    <Execution>
-    <AgentRule name=""LocalMachineDefaultRole"">
-        <DataCollectors>
-        <DataCollector uri=""datacollector://microsoft/VideoRecorder/1.0"" assemblyQualifiedName=""Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"" friendlyName=""Screen and Voice Recorder"">
-            <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase=""false"" xmlns=""""/>
-            </Configuration>
-        </DataCollector>
-        </DataCollectors>
-    </AgentRule>
-    </Execution>
-</TestSettings>
-");
-                    }
+                    var TestSettingsFile = build.ScreenRecordingTestSettingsFile(build, JobName);
 
                     string TestRunnerPath;
                     if (string.IsNullOrEmpty(build.MSTest))
                     {
-                        // Resolve test results file name
-                        Environment.CurrentDirectory = build.TestsResultsPath + "\\..";
-
-                        // Create full VSTest argument string.
-                        if (string.IsNullOrEmpty(build.TestList))
-                        {
-                            if (!string.IsNullOrEmpty(TestCategories))
-                            {
-                                TestCategories = " /TestCaseFilter:\"(TestCategory=" + TestCategories + ")\"";
-                            }
-                            else
-                            {
-                                var DefinedCategories = build.AllCategoriesDefinedForProject(ProjectSpec);
-                                if (DefinedCategories.Count() > 0)
-                                {
-                                    TestCategories = String.Join(")&(TestCategory!=", DefinedCategories);
-                                    TestCategories = " /TestCaseFilter:\"(TestCategory!=" + TestCategories + ")\"";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            TestCategories = "";
-                            if (!build.TestList.StartsWith(" /Tests:"))
-                            {
-                                build.TestList = " /Tests:" + build.TestList;
-                            }
-                        }
-                        if (build.RecordScreen != null)
-                        {
-                            TestSettings = " /Settings:\"" + TestSettingsFile + "\"";
-                        }
-                        else
-                        {
-                            TestSettings = "";
-                        }
-
-                        var FullArgsList = TestAssembliesList + " /logger:trx" + build.TestList + TestSettings + TestCategories;
-
-                        // Write full command including full argument string.
-                        TestRunnerPath = build.TestsResultsPath + "\\..\\Run " + JobName + ".bat";
-                        build.CopyOnWrite("TestRunnerPath");
-                        File.WriteAllText(TestRunnerPath, "\"" + build.VSTestPath + "\"" + FullArgsList);
+                        TestRunnerPath = build.VSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
                     }
                     else
                     {
-                        // Resolve test results file name
-                        var TestResultsFile = build.TestsResultsPath + "\"" + JobName + " Results.trx";
-                        build.CopyOnWrite(TestResultsFile);
-
-                        if (build.RecordScreen != null)
-                        {
-                            TestSettings = " /Settings:\"" + TestSettingsFile + "\"";
-                        }
-                        else
-                        {
-                            TestSettings = "";
-                        }
-
-                        // Create full build.MSTest argument string.
-                        if (String.IsNullOrEmpty(build.TestList))
-                        {
-                            if (!String.IsNullOrEmpty(TestCategories))
-                            {
-                                TestCategories = " /category:\"" + TestCategories + "\"";
-                            }
-                            else
-                            {
-                                var DefinedCategories = build.AllCategoriesDefinedForProject(ProjectSpec);
-                                if (DefinedCategories.Any())
-                                {
-                                    TestCategories = string.Join("&!", DefinedCategories);
-                                    TestCategories = " /category:\"!" + TestCategories + "\"";
-                                }
-                            }
-                        }
-                        else
-                        {
-                            TestCategories = "";
-                            if (!(build.TestList.StartsWith(" /test:")))
-                            {
-                                var TestNames = string.Join(" /test:", build.TestList.Split(','));
-                                build.TestList = " /test:" + TestNames;
-                            }
-                        }
-                        var FullArgsList = TestAssembliesList + " /resultsfile:\"" + TestResultsFile + "\"" + build.TestList + TestSettings + TestCategories;
-
-                        // Write full command including full argument string.
-                        TestRunnerPath = build.TestsResultsPath + "\\..\\Run " + JobName + ".bat";
-                        build.CopyOnWrite("TestRunnerPath");
-                        File.WriteAllText(TestRunnerPath, "\"" + build.MSTestPath + "\"" + FullArgsList);
+                        TestRunnerPath = build.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
-                    TestRunnerPath = build.TestsResultsPath + "\\..\\Run " + JobName + ".bat";
-                    if (File.Exists(TestRunnerPath))
+
+                    //Run Tests
+                    var TrxFile = build.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+
+                    //Re-try Failures
+                    for (var count = 0; count < build.RetryCount; count++)
                     {
-                        if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
-                        {
-                            build.Startmywarewolfio();
-                            if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart))
-                            {
-                                build.StartServer();
-                                if (!string.IsNullOrEmpty(build.DoStudioStart))
-                                {
-                                    build.StartStudio();
-                                }
-                            }
-                        }
-                        if (build.ApplyDotCover && string.IsNullOrEmpty(build.DoServerStart) && string.IsNullOrEmpty(build.DoStudioStart))
-                        {
-                            // Write DotCover Runner XML 
-                            var DotCoverSnapshotFile = Path.Combine(build.TestsResultsPath, JobName + " DotCover Output.dcvr");
-                            build.CopyOnWrite(DotCoverSnapshotFile);
-                            var DotCoverArgs = @"<AnalyseParams>
-    <TargetExecutable>" + build.TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
-    <Output>" + DotCoverSnapshotFile + @"</Output>
-    <Scope>";
-                            foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
-                            {
-                                DotCoverArgs += @"
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.dll</ScopeEntry>
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.exe</ScopeEntry>";
-                            }
-                            DotCoverArgs += @"
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>";
-                            var DotCoverRunnerXMLPath = Path.Combine(build.TestsResultsPath, JobName + " DotCover Runner.xml");
-                            build.CopyOnWrite(DotCoverRunnerXMLPath);
-                            File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
-
-                            // Create full DotCover argument string.
-                            var DotCoverLogFile = build.TestsResultsPath + "\\DotCover.xml.log";
-                            build.CopyOnWrite(DotCoverLogFile);
-                            var FullArgsList = " cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + DotCoverLogFile + "\"";
-
-                            // Write DotCover Runner Batch File
-                            var DotCoverRunnerPath = build.TestsResultsPath + "\\Run " + JobName + " DotCover.bat";
-                            build.CopyOnWrite(DotCoverRunnerPath);
-                            File.WriteAllText(DotCoverRunnerPath, "\"" + build.DotCoverPath + "\"" + FullArgsList);
-
-                            // Run DotCover Runner Batch File
-                            Process.Start(DotCoverRunnerPath).WaitForExit();
-                            if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
-                            {
-                                build.CleanupServerStudio(false);
-                            }
-                        }
-                        else
-                        {
-                            Process.Start(TestRunnerPath).WaitForExit();
-                            if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
-                            {
-                                build.CleanupServerStudio(!build.ApplyDotCover);
-                            }
-                        }
-                        build.MoveArtifactsToTestResults(build.ApplyDotCover, (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart)), !string.IsNullOrEmpty(build.DoStudioStart));
+                        build.RetryTestFailures(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
                     }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
-                    build.MergeDotCoverSnapshotsInDirectory = "true";
-                    Main(null);
+                    build.MergeDotCoverSnapshots();
                 }
             }
 
@@ -505,14 +324,7 @@ namespace Bashley
 
             if (build.MergeDotCoverSnapshotsInDirectory != null)
             {
-                var DotCoverSnapshots = Directory.GetFiles(build.MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
-                if (string.IsNullOrEmpty(build.JobName))
-                {
-                    build.JobName = "DotCover";
-                }
-                var MergedSnapshotFileName = build.JobName.Split(',')[0];
-                MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-                build.MergeDotCoverSnapshots(DotCoverSnapshots, build.MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, build.MergeDotCoverSnapshotsInDirectory + "\\DotCover");
+                build.MergeDotCoverSnapshots();
             }
 
             if (!string.IsNullOrEmpty(build.Cleanup))
@@ -539,8 +351,9 @@ namespace Bashley
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")));
             }
 
-            if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory) && string.IsNullOrEmpty(build.StartDocker))
+            if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
+                build.CleanupServerStudio();
                 build.Startmywarewolfio();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {

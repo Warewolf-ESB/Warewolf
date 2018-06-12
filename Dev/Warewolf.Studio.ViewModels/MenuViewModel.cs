@@ -19,6 +19,9 @@ using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
+using Dev2;
+using Dev2.Instrumentation;
+
 namespace Warewolf.Studio.ViewModels
 {
     public class MenuViewModel : BindableBase, IMenuViewModel, IMenuView,IUpdatesHelp
@@ -52,6 +55,12 @@ namespace Warewolf.Studio.ViewModels
             CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
             SupportCommand = new DelegateCommand(() =>
             {
+                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                if (applicationTracker != null)
+                {
+                    applicationTracker.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
+                                                        Resources.Languages.TrackEventHelp.Help);
+                }
                 Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 

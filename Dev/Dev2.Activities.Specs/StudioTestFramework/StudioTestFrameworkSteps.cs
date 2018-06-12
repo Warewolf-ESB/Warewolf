@@ -48,11 +48,11 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
+        const int EXPECTED_NUMBER_OF_RESOURCES = 105;
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();
-        }
-        const int EXPECTED_NUMBER_OF_RESOURCES = 104;
+        }        
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));

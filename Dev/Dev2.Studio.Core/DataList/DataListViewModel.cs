@@ -41,7 +41,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-
+using Dev2.Instrumentation;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -65,6 +66,12 @@ namespace Dev2.Studio.ViewModels.DataList
         readonly IPartIsUsed _partIsUsed;
 
         public bool CanSortItems => HasItems();
+
+        private RelayCommand _inputVariableCheckboxCommand;
+     
+        private RelayCommand _outputVariableCheckboxCommand;
+
+        private readonly IApplicationTracker _applicationTracker;
 
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
@@ -92,6 +99,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FilterCollection(string searchText)
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory,
+                                                TrackEventVariables.VariablesSearch, searchText);
+            }
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
                 for (int index = _scalarCollection.Count - 1; index >= 0; index--)
@@ -265,6 +277,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
+          
             Provider = new Dev2TrieSugggestionProvider();
             _missingDataList = new MissingDataList(RecsetCollection, ScalarCollection);
             _partIsUsed = new PartIsUsed(RecsetCollection, ScalarCollection, ComplexObjectCollection);
@@ -272,6 +285,8 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler = new ScalarHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
             _helper = new DataListViewModelHelper(this);
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+
         }
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
@@ -292,7 +307,17 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsComplexObject;
         }
 
-        bool CanDelete(Object itemx)
+        private bool CanLogVariable(Object itemx)
+        {
+            if (itemx == null) 
+            {
+             return true;   
+            }
+            var item = itemx is bool && (bool) itemx;
+            return item ;
+        }
+
+        private bool CanDelete(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
@@ -315,10 +340,47 @@ namespace Dev2.Studio.ViewModels.DataList
                                                                UpdateIntellisenseList();
                                                            }, CanDelete));
 
-        public RelayCommand ViewComplexObjectsCommand => _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
-                                                                       {
-                                                                           ViewJsonObjects(item as IComplexObjectItemModel);
-                                                                       }, CanViewComplexObjects));
+        public RelayCommand ViewComplexObjectsCommand
+        {
+            get
+            {
+                return _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
+                {
+                    ViewJsonObjects(item as IComplexObjectItemModel);
+                }, CanViewComplexObjects));
+            }
+        }
+
+        public RelayCommand InputVariableCheckboxCommand
+        {
+            get
+            {
+                return _inputVariableCheckboxCommand ?? (_inputVariableCheckboxCommand = new RelayCommand(item =>
+                {
+                    LogToRevulytics(TrackEventVariables.EventCategory, TrackEventVariables.VariablesInputClicked);
+                }, CanLogVariable));
+            }
+        }
+
+        public RelayCommand OutputVariableCheckboxCommand
+        {
+            get
+            {
+                return _outputVariableCheckboxCommand ?? (_outputVariableCheckboxCommand = new RelayCommand(item =>
+                {
+                    LogToRevulytics(TrackEventVariables.EventCategory, TrackEventVariables.VariablesOutputClicked);
+                }, CanLogVariable));
+            }
+        }
+
+        public void LogToRevulytics(string eventCategory,string eventName)
+        {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(eventCategory, eventName);
+            }
+
+        }
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -958,7 +1020,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
-        {
+        {          
             if (resourceModel != Resource)
             {
                 return;
@@ -967,6 +1029,11 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUnused != null && listOfUnused.Count != 0)
             {
                 SetIsUsedDataListItems(listOfUnused, false);
+                string[] unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UnusedVariables, string.Join(",", unusedVariables));
+                }
             }
             else
             {
@@ -976,6 +1043,11 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUsed != null && listOfUsed.Count > 0)
             {
                 SetIsUsedDataListItems(listOfUsed, true);
+                string[] usedVariables = listOfUsed.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UsedVariables, string.Join(",", usedVariables));
+                }
             }
         }
 
