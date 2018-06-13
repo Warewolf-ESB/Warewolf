@@ -287,7 +287,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 var activity = activities[activityName] as DsfOracleDatabaseActivity;
                 activity.SourceId = dbSource.Id;
             }
-            if (activityName.Contains("Posgre"))
+            if (activityName.Contains("Postgre"))
             {
                 var activity = activities[activityName] as DsfPostgreSqlActivity;
                 activity.SourceId = dbSource.Id;
@@ -315,7 +315,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                 Assert.IsNotNull(sqlactivity, "Activity is null");
                 sqlactivity.ProcedureName = actionName;
             }
-            if (activityName.Contains("Postgres"))
+            if (activityName.Contains("Postgre"))
             {
                 var sqlactivity = activities[activityName] as DsfPostgreSqlActivity;
                 Assert.IsNotNull(sqlactivity, "Activity is null");
@@ -428,16 +428,14 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                                 }
                             }
                         }
-                        //Build(variable, shape, data, row);
+                        //Build(variable, shape, data, row)
                         row++;
                     }
                     DataListSingleton.ActiveDataList.WriteToResourceModel();
                 }
-
                 catch
-
                 {
-
+                    //Exception
                 }
             }
 
@@ -471,11 +469,9 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
                         }
                     }
                 }
-
                 catch
-
                 {
-
+                    //Exception
                 }
             }
 

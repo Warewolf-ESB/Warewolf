@@ -32,8 +32,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _selectedAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getEmployees;
-        ScenarioContext _scenarioContext;
-        CommonSteps _commonSteps;
+        readonly ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
 
         public PostgresSqlConnectorSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)

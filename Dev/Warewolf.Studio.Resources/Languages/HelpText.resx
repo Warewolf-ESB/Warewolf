@@ -2239,4 +2239,7 @@ The conflicts on the left will show your current workflow changes and the confli
   <data name="ConnectionTimeoutHelp" xml:space="preserve">
     <value>Timeout of the database connection</value>
   </data>
+  <data name="CommandTimeoutHelp" xml:space="preserve">
+    <value>Timeout of the database command. Default command timeout is set to 30 seconds.</value>
+  </data>
 </root>
