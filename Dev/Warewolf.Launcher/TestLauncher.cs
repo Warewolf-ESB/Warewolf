@@ -1489,7 +1489,7 @@ namespace Warewolf.Launcher
 
             // Write full command including full argument string.
             TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite("TestRunnerPath");
+            CopyOnWrite(TestRunnerPath);
             File.WriteAllText(TestRunnerPath, $"\"{VSTestPath}\"{FullArgsList}");
             return TestRunnerPath;
         }
@@ -1519,7 +1519,7 @@ namespace Warewolf.Launcher
 
             // Write full command including full argument string.
             var TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite("TestRunnerPath");
+            CopyOnWrite(TestRunnerPath);
             File.WriteAllText(TestRunnerPath, $"\"{MSTestPath}\"{FullArgsList}");
             return TestRunnerPath;
         }
