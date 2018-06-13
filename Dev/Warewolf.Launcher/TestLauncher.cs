@@ -1485,17 +1485,11 @@ namespace Warewolf.Launcher
             string FullArgsList;
             if (string.IsNullOrEmpty(TestList))
             {
-                FullArgsList = TestAssembliesList +
-                    " /logger:trx " +
-                    TestSettingsArgument(TestSettingsFile) +
-                    VSTestCategories(ProjectSpec, TestCategories);
+                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{VSTestCategories(ProjectSpec, TestCategories)}";
             }
             else
             {
-                FullArgsList = TestAssembliesList +
-                    " /logger:trx " +
-                    TestSettingsArgument(TestSettingsFile) +
-                    TestList;
+                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx /Tests:{TestList}";
             }
 
             // Write full command including full argument string.
