@@ -10,6 +10,7 @@
 
 using System;
 using System.Configuration;
+using Dev2.Common;
 
 namespace Dev2.Util
 {
@@ -25,8 +26,17 @@ namespace Dev2.Util
         {
             get
             {
-                Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out bool collectUsageStats);
-                return collectUsageStats;
+                if (ConfigurationManager.AppSettings["CollectUsageStats"] != null)
+                {
+                    Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out bool collectUsageStats);
+                    return collectUsageStats;
+                }
+                else
+                {
+                    Boolean.TryParse(GlobalConstants.CollectUsageStats, out bool collectUsageStats);
+                    return collectUsageStats;
+                }
+                
             }
         }
 
