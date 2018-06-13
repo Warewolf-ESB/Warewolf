@@ -436,8 +436,8 @@ namespace Dev2.Studio
         void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
-
-            Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
             if (_appExceptionHandler != null)
             {
                 e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
