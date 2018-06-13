@@ -933,8 +933,9 @@ if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(TargetDir)\Trackerbird.x64.dll" copy "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-if not exist "$(TargetDir)\Trackerbird.x86.dll" copy "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
+if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
+if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
