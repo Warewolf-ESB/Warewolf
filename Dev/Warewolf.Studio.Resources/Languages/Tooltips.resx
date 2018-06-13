@@ -2294,4 +2294,13 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="AdvancedRecordsetSqlQueryExecuteCommand" xml:space="preserve">
     <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
   </data>
+  <data name="ManageDbSourceConnectionTimeoutTooltip" xml:space="preserve">
+    <value>Set the connection timeout of the database data source</value>
+  </data>
+  <data name="ConnectionTimeoutHelp" xml:space="preserve">
+    <value>Database connection timeout</value>
+  </data>
+  <data name="CommandTimeoutTooltip" xml:space="preserve">
+    <value>Database command timeout</value>
+  </data>
 </root>

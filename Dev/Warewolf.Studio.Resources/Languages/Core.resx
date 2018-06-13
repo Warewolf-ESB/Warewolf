@@ -585,4 +585,7 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="SearchVersionConflictError" xml:space="preserve">
     <value>The server selected is not up to date with the latest server version.</value>
   </data>
+  <data name="ConnectionTimeoutLabel" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
 </root>

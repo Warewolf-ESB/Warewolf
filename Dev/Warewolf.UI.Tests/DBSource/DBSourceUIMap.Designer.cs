@@ -345,6 +345,22 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             }
         }
         
+        public WpfEdit TimeOutError
+        {
+            get
+            {
+                if ((this.mTimeOutError == null))
+                {
+                    this.mTimeOutError = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTimeOutError.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ErrorTextBlock";
+                    this.mTimeOutError.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTimeOutError;
+            }
+        }
+        
         public ErrorText ErrorText
         {
             get
@@ -476,6 +492,8 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         
         private WpfButton mTestConnectionButton;
         
+        private WpfEdit mTimeOutError;
+        
         private ErrorText mErrorText;
         
         private WpfEdit mPasswordTextBox;
@@ -520,6 +538,22 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             }
         }
         
+        public WpfEdit ConnectionTimeout
+        {
+            get
+            {
+                if ((this.mConnectionTimeout == null))
+                {
+                    this.mConnectionTimeout = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mConnectionTimeout.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ConnectionTimeoutTextBox";
+                    this.mConnectionTimeout.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectionTimeout;
+            }
+        }
+        
         public DatabaseComboxBox DatabaseComboxBox
         {
             get
@@ -551,6 +585,8 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
         
         #region Fields
         private ServerComboBox mServerComboBox;
+        
+        private WpfEdit mConnectionTimeout;
         
         private DatabaseComboxBox mDatabaseComboxBox;
         

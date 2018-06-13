@@ -100,20 +100,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.When("I search for \"SearchWorkflowForSpecs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table888 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table901 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table888.AddRow(new string[] {
+            table901.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "WorkflowName",
                         "SearchWorkflowForSpecs"});
 #line 11
- testRunner.Then("the search result contains", ((string)(null)), table888, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table901, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -134,20 +134,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.When("I search for \"TestForSearchSpecs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table889 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table902 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table889.AddRow(new string[] {
+            table902.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "TestName",
                         "TestForSearchSpecs"});
 #line 19
- testRunner.Then("the search result contains", ((string)(null)), table889, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table902, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -168,20 +168,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.When("I search for \"SearchVar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table890 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table903 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table890.AddRow(new string[] {
+            table903.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "Scalar",
                         "SearchVar"});
 #line 27
- testRunner.Then("the search result contains", ((string)(null)), table890, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table903, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -202,20 +202,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.When("I search for \"SearchObject\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table891 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table904 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table891.AddRow(new string[] {
+            table904.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "Object",
                         "@SearchObject"});
 #line 35
- testRunner.Then("the search result contains", ((string)(null)), table891, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table904, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -236,20 +236,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.When("I search for \"SearchRec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table892 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table905 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table892.AddRow(new string[] {
+            table905.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "RecordSet",
                         "SearchRec"});
 #line 43
- testRunner.Then("the search result contains", ((string)(null)), table892, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table905, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -270,20 +270,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 50
  testRunner.When("I search for \"Search Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table893 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table906 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table893.AddRow(new string[] {
+            table906.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "ToolTitle",
                         "Search Tool"});
 #line 51
- testRunner.Then("the search result contains", ((string)(null)), table893, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table906, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -304,20 +304,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 58
  testRunner.When("I search for \"SearchVar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table894 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table907 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table894.AddRow(new string[] {
+            table907.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "ScalarInput",
                         "SearchVar"});
 #line 59
- testRunner.Then("the search result contains", ((string)(null)), table894, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table907, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -338,20 +338,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 66
  testRunner.When("I search for \"SearchRec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table895 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table908 = new TechTalk.SpecFlow.Table(new string[] {
                         "ResourceId",
                         "Name",
                         "Path",
                         "Type",
                         "Match"});
-            table895.AddRow(new string[] {
+            table908.AddRow(new string[] {
                         "c494711c-c6a4-44d5-abb9-c0339cd88bae",
                         "SearchWorkflowForSpecs",
                         "SearchFolderForSpecs\\SearchWorkflowForSpecs",
                         "RecordSetOutput",
                         "SearchRec"});
 #line 67
- testRunner.Then("the search result contains", ((string)(null)), table895, "Then ");
+ testRunner.Then("the search result contains", ((string)(null)), table908, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

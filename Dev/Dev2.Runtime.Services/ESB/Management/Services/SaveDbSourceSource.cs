@@ -57,6 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Password = src.Password,
                     ServerType = src.Type,
                     UserID = src.UserName,
+                    ConnectionTimeout = src.ConnectionTimeout,
                     ResourceID = src.Id,
                     DatabaseName = src.DbName,
                     ResourceName = src.Name,
@@ -72,8 +73,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Server = src.ServerName,
                         Password = src.Password,
                         ServerType = src.Type,
-                        UserID = src.UserName
-
+                        UserID = src.UserName,
+                        ConnectionTimeout = src.ConnectionTimeout
                     });
 
                 });

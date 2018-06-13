@@ -180,6 +180,16 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
+        public int CommandTimeout
+        {
+            get => _modelItem.GetProperty<int>("CommandTimeout");
+            set
+            {
+                _modelItem.SetProperty<int>("CommandTimeout", value);
+                OnPropertyChanged();
+            }
+        }
+
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()

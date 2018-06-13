@@ -6,7 +6,7 @@ Feature: SubworkflowExecution
 	 
 Background: Setup for subworkflow execution
 			Given Debug events are reset
-			And Debug states are cleared
+			And Debug states are cleared			
 
 Scenario: Executing mySql For Xml testing workflow base
 	  Given I have a workflow "Testing - mySql For Xml"
@@ -15,16 +15,6 @@ Scenario: Executing mySql For Xml testing workflow base
 	  When "Testing - mySql For Xml" is executed
 	  Then the workflow execution has "NO" error
 	  And the "TestmySqlReturningXml" in Workflow "TestmySqlReturningXml" debug outputs as
-	  |                     |
-	  | [[Result]] = Passed |
-	  
-Scenario: Executing For Xml With multiple Rows
-	  Given I have a workflow "For Xml multiple rows output"
-	  And "For Xml multiple rows output" contains "ForXmlWithMultipleRows" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "For Xml multiple rows output" is executed
-	  Then the workflow execution has "NO" error
-	  And the "ForXmlWithMultipleRows" in Workflow "ForXmlWithMultipleRows" debug outputs as
 	  |                     |
 	  | [[Result]] = Passed |
 

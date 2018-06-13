@@ -382,18 +382,36 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid>
+            <Grid Margin="{StaticResource ControlBorderTop}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs" />
+
+                <TextBlock Grid.Column="0" x:Name="CommandTimeoutLabel" Text="Command Timeout" />
+                <TextBox Grid.Column="1" 
+                         x:Name="CommandTimeoutTextBox" 
+                         Text="{Binding InputArea.CommandTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static languages:Tooltips.CommandTimeoutTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.CommandTimeoutHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="InputsLabel" Text="Inputs" />
                 <controls:Dev2DataGrid x:Name="LargeDataGrid"
-                                   Grid.Row="1"
-                                   ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource ActivityMappingDataGridStyle}"
-                                   Height="Auto"
-                                   Margin="{StaticResource ControlBorderTop}">
+                                       Grid.Row="2"
+                                       Grid.Column="0" 
+                                       Grid.ColumnSpan="2"
+                                       ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource ActivityMappingDataGridStyle}"
+                                       Height="Auto"
+                                       Margin="{StaticResource ControlBorderTop}">
 
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                     <DataGrid.Columns>
@@ -483,15 +501,18 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </controls:Dev2DataGrid>
-                <TextBlock Grid.Row="1" Text="None" 
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
-                       Margin="0,0,0,-5"
-                       Style="{StaticResource MenuTextBlockStyle}"
-                       Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <TextBlock Grid.Row="2" 
+                           Text="None" 
+                           Grid.Column="0" 
+                           Grid.ColumnSpan="2"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0,0,0,-5"
+                           Style="{StaticResource MenuTextBlockStyle}"
+                           Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
             </Grid>
             <Button x:Name="TestInputButton"
-                    Grid.Row="1" 
+                    Grid.Row="2" 
                     Content="Generate Outputs" 
                     Width="Auto" 
                     IsEnabled="{Binding InputArea.IsEnabled}"
