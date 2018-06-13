@@ -25,8 +25,7 @@ using Moq;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
@@ -617,6 +616,60 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBoxTest.EnsureErrorStatus();
             Assert.IsFalse(textBoxTest.HasError);
             Assert.AreEqual(textBoxTest.DefaultText, textBoxTest.ToolTip);
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_GivenInvalidVariables_ScalarHasError_LogsTracking()
+        {
+            var _applicationTrackerMock = new Mock<IApplicationTracker>();
+            _applicationTrackerMock.Setup(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            CustomContainer.Register(_applicationTrackerMock.Object);
+
+            const string expectTooltipError = "Variable name \"[[Var!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
+
+            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+            textBoxTest.CreateVisualTree();
+            textBoxTest.Text = "\"[[Var!]]\"";
+            textBoxTest.EnsureErrorStatus();
+            Assert.IsTrue(textBoxTest.HasError);
+            Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+            _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_GivenInvalidVariables_RecordsetHasError_LogsTracking()
+        {
+            var _applicationTrackerMock = new Mock<IApplicationTracker>();
+            _applicationTrackerMock.Setup(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            CustomContainer.Register(_applicationTrackerMock.Object);
+
+            const string expectTooltipError = "Variable name \"[[Var()!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
+
+            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+            textBoxTest.CreateVisualTree();
+            textBoxTest.Text = "\"[[Var()!]]\"";
+            textBoxTest.EnsureErrorStatus();
+            Assert.IsTrue(textBoxTest.HasError);
+            Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+            _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
+        }
+
+        [TestMethod]
+        public void IntellisenseBox_GivenInvalidVariables_JsonObjectHasError_LogsTracking()
+        {
+            var _applicationTrackerMock = new Mock<IApplicationTracker>();
+            _applicationTrackerMock.Setup(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            CustomContainer.Register(_applicationTrackerMock.Object);
+
+            const string expectTooltipError = "Variable name \"[[obj!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
+
+            var textBoxTest = new IntellisenseTextBoxTestHelper { FilterType = enIntellisensePartType.JsonObject };
+            textBoxTest.CreateVisualTree();
+            textBoxTest.Text = "\"[[obj!]]\"";
+            textBoxTest.EnsureErrorStatus();
+            Assert.IsTrue(textBoxTest.HasError);
+            Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
+            _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
         }
 
         [TestMethod]

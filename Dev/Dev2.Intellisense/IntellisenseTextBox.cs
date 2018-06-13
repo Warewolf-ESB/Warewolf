@@ -25,6 +25,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
+using Dev2.Instrumentation;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Interfaces;
 
@@ -41,9 +42,11 @@ namespace Dev2.UI
     public class IntellisenseTextBox : AutoCompleteBox, INotifyPropertyChanged
     {
         readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
+        readonly IApplicationTracker _applicationTracker;
 
         public IntellisenseTextBox()
         {
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             FilterMode = AutoCompleteFilterMode.Custom;
             TextFilter = (search, item) => true;
             _toolTip = new ToolTip();
@@ -87,33 +90,11 @@ namespace Dev2.UI
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
-                const bool isInsert = false;
-                var expand = false;
-
-                object appendText = HandleMultiLine(e, isOpen, ref expand);
-
-                if (isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
-                {
-                    appendText = SetAppendTextBasedOnSelection();
-                }
-
-                if (appendText != null && IsDropDownOpen)
-                {
-                    e.Handled = true;
-                }
-                InsertItem(appendText, isInsert);
-
-                HandleSpecialKeys(e);
+                HandleEnterAndTab(e, isOpen);
             }
             else if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
-                if (!isOpen)
-                {
-                    _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
-                    IsDropDownOpen = true;
-                }
-
-                e.Handled = true;
+                HandleControlSpace(e, isOpen);
             }
             else if (e.Key == Key.Home || e.Key == Key.End)
             {
@@ -128,10 +109,46 @@ namespace Dev2.UI
             }
         }
 
+        private void HandleControlSpace(KeyEventArgs e, bool isOpen)
+        {
+            if (!isOpen)
+            {
+                _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
+                IsDropDownOpen = true;
+            }
+
+            e.Handled = true;
+        }
+
+        private void HandleEnterAndTab(KeyEventArgs e, bool isOpen)
+        {
+            const bool isInsert = false;
+            var expand = false;
+
+            object appendText = HandleMultiLine(e, isOpen, ref expand);
+
+            if (isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            {
+                appendText = SetAppendTextBasedOnSelection();
+            }
+
+            if (appendText != null && IsDropDownOpen)
+            {
+                e.Handled = true;
+            }
+            InsertItem(appendText, isInsert);
+
+            HandleSpecialKeys(e);
+        }
+
         string HandleMultiLine(KeyEventArgs e, bool isOpen, ref bool expand)
         {
             string appendText = null;
-            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None && LineCount < TextBox.MaxLines)
+            var isNotTab = IsNotTab(e);
+            var lineCountLessThanMaxLines = LineCount < TextBox.MaxLines;
+            var isNoneModifier = e.KeyboardDevice.Modifiers == ModifierKeys.None;
+            var isUserAllowed = AllowUserInsertLine && !isOpen;
+            if (isUserAllowed && isNotTab && isNoneModifier && lineCountLessThanMaxLines)
             {
                 appendText = Environment.NewLine;
                 expand = true;
@@ -140,9 +157,14 @@ namespace Dev2.UI
             return appendText;
         }
 
+        private static bool IsNotTab(KeyEventArgs e) => e.Key != Key.Tab;
+
         void HandleSpecialKeys(KeyEventArgs e)
         {
-            if (e.Key != Key.Tab && !((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
+            var isNotTab = IsNotTab(e);
+            var isEnter = (e.Key == Key.Enter || e.Key == Key.Return);
+            var isNotShift = e.KeyboardDevice.Modifiers != ModifierKeys.Shift;
+            if (isNotTab && !(isEnter && isNotShift && AcceptsReturn))
             {
                 e.Handled = true;
             }
@@ -260,9 +282,10 @@ namespace Dev2.UI
 
         IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
         {
+            var provider = currentProvider;
             if (item is IntellisenseProviderResult intellisenseProviderResult)
             {
-                currentProvider = intellisenseProviderResult.Provider;
+                provider = intellisenseProviderResult.Provider;
             }
 
             var selectedItem = item;
@@ -284,7 +307,7 @@ namespace Dev2.UI
                 isInsert = true;
                 CloseDropDown(true, false);
             }
-            return currentProvider;
+            return provider;
         }
 
         void AppendText(string currentText, int index, string appendText)
@@ -296,8 +319,8 @@ namespace Dev2.UI
             }
             else
             {
-                currentText = currentText.Insert(index, appendText);
-                Text = currentText;
+                var updatedText = currentText.Insert(index, appendText);
+                Text = updatedText;
                 TextBox?.Select(index + appendText.Length, 0);
             }
 
@@ -395,39 +418,13 @@ namespace Dev2.UI
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType != enIntellisensePartType.JsonObject)
             {
-                if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
-                {
-                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset";
-                    HasError = true;
-                }
-                else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
-                {
-                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid scalar";
-                    HasError = true;
-                }
-                else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
-                {
-                    ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
-                    HasError = true;
-                }
-                else
-                {
-                    if (error.Item2 != string.Empty)
-                    {
-                        ToolTip = error.Item2;
-                        HasError = true;
-                    }
-                    else
-                    {
-                        ToolTip = _originalToolTip;
-                        HasError = false;
-                    }
-                }
+                HandleNonJsonFilterType(text, error);
             }
             else
             {
                 if (error.Item2 != string.Empty)
                 {
+                    TrackIntellisenseEvent(text);
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -436,9 +433,60 @@ namespace Dev2.UI
                     ToolTip = _originalToolTip;
                     HasError = false;
                 }
-
             }
+        }
 
+        private void HandleNonJsonFilterType(string text, Tuple<LanguageAST.LanguageExpression, string> error)
+        {
+            if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
+            {
+                SetToolTip(error, "Invalid recordset");
+                HasError = true;
+            }
+            else if (FilterType == enIntellisensePartType.ScalarsOnly && !error.Item1.IsScalarExpression)
+            {
+                SetToolTip(error, "Invalid scalar");
+                HasError = true;
+            }
+            else if (FilterType == enIntellisensePartType.RecordsetFields && !error.Item1.IsRecordSetExpression)
+            {
+                SetToolTip(error, "Invalid recordset name");
+                HasError = true;
+            }
+            else
+            {
+                if (error.Item2 != string.Empty)
+                {
+                    TrackIntellisenseEvent(text);
+                    ToolTip = error.Item2;
+                    HasError = true;
+                }
+                else
+                {
+                    ToolTip = _originalToolTip;
+                    HasError = false;
+                }
+            }
+        }
+
+        private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error,string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
+        private void TrackIntellisenseEvent(string text)
+        {
+            if (FilterType == enIntellisensePartType.JsonObject)
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.JsonNotAllowed, text);
+            }
+            if (!(text.Contains("(")) && FilterType != enIntellisensePartType.JsonObject)
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
+            }
+            if (text.Contains("(") || text.Contains(")"))
+            {
+                _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
+                Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);
+            }
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
@@ -467,37 +515,28 @@ namespace Dev2.UI
 
         public void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
-            if (text == null)
+            var currentText = text;
+            if (currentText == null)
             {
-                text = string.Empty;
+                currentText = string.Empty;
             }
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 var calculateMode = false;
 
-                if (AllowUserCalculateMode)
-                {
-                    if (text.Length > 0 && text[0] == '=')
-                    {
-                        calculateMode = true;
-                        text = text.Substring(1);
-                    }
-
-                    IsInCalculateMode = calculateMode;
-                }
-                else
-                {
-                    if (IsInCalculateMode)
-                    {
-                        calculateMode = true;
-                    }
-                }
+                HandleCalculateMode(ref currentText, ref calculateMode);
 
                 if (forceUpdate)
                 {
                     var provider = IntellisenseProvider;
-                    var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
-                    context.IsInCalculateMode = calculateMode;
+                    var context = new IntellisenseProviderContext
+                    {
+                        FilterType = FilterType,
+                        DesiredResultSet = desiredResultSet,
+                        InputText = text,
+                        CaretPosition = CaretIndex,
+                        IsInCalculateMode = calculateMode
+                    };
                     if ((context.IsInCalculateMode) && AllowUserCalculateMode && CaretIndex > 0)
                     {
                         context.CaretPosition = CaretIndex - 1;
@@ -519,8 +558,28 @@ namespace Dev2.UI
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
                         //box should simbly ignore that provider.
                     }
-                    ProcessResults(text, results);
+                    ProcessResults(currentText, results);
+                }
+            }
+        }
 
+        private void HandleCalculateMode(ref string text, ref bool calculateMode)
+        {
+            if (AllowUserCalculateMode)
+            {
+                if (text.Length > 0 && text[0] == '=')
+                {
+                    calculateMode = true;
+                    text = text.Substring(1);
+                }
+
+                IsInCalculateMode = calculateMode;
+            }
+            else
+            {
+                if (IsInCalculateMode)
+                {
+                    calculateMode = true;
                 }
             }
         }
@@ -563,27 +622,35 @@ namespace Dev2.UI
             var ttErrorBuilder = new StringBuilder();
             if (text.Contains("[[") && text.Contains("]]"))
             {
-                if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
-                {
-                    if (!(text.Contains("(") && text.Contains(")")))
-                    {
-                        HasError = true;
-                        ttErrorBuilder.AppendLine("Scalar is not allowed");
-                    }
-                }
-                else
-                {
-                    if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
-                    {
-                        HasError = true;
-                        ttErrorBuilder.AppendLine("Recordset is not allowed");
-                    }
-
-                }
+                HandleRecordset(text, ttErrorBuilder);
             }
 
             var errorText = ttErrorBuilder.ToString();
             _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
+        }
+
+        private void HandleRecordset(string text, StringBuilder ttErrorBuilder)
+        {
+            if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+            {
+                if (!(text.Contains("(") && text.Contains(")")))
+                {
+                    HasError = true;
+                    ttErrorBuilder.AppendLine("Scalar is not allowed");
+                }
+            }
+            else
+            {
+                if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
+                {
+                    HasError = true;
+                    ttErrorBuilder.AppendLine("Recordset is not allowed");
+                }
+            }
+            if (HasError)
+            {
+                TrackIntellisenseEvent(text);
+            }
         }
 
         public int CaretIndex
