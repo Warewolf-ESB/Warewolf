@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ServiceModel
                     result.DatabaseList = broker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.MySqlDatabase:
-                    var mybroker = CreateMySqlDatabaseBroker();
+                    var mybroker = CreateMySqlDatabaseBroker();                    
                     result.DatabaseList = mybroker.GetDatabases(dbSourceDetails);
                     break;
                 case enSourceType.Oracle:

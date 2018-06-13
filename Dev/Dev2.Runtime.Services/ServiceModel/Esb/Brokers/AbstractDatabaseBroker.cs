@@ -25,6 +25,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     public abstract class AbstractDatabaseBroker<TDbServer>
         where TDbServer : class, IDbServer, new()
     {
+        public int CommandTimeout { get; set; }
+
         #region TheCache
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
@@ -169,12 +171,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             Name = parameter.ParameterName.Replace("@", "")
         };
 
-        protected static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
+        protected IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
         {
             var command = server.CreateCommand();
 
             command.CommandText = serviceMethod.ExecuteAction;
             command.CommandType = serviceMethod.ExecuteAction?.Contains("select") ?? true ? CommandType.Text : CommandType.StoredProcedure;
+            if (CommandTimeout > 0)
+            {
+                command.CommandTimeout = CommandTimeout;
+            }
             if (server.GetType() != typeof(ODBCServer))
             {
                 foreach (var methodParameter in serviceMethod.Parameters)

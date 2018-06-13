@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ViewModels
         };
 
         protected override IDbSource ToDbSource() => DbSource == null ? new DbSourceDefinition
-        {
+        {            
             AuthenticationType = AuthenticationType,
             ServerName = EmptyServerName,
             Password = Password,

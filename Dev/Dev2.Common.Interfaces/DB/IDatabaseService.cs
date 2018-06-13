@@ -23,5 +23,6 @@ namespace Dev2.Common.Interfaces.DB
         IList<IServiceInput> Inputs { get; set; }
         IList<IServiceOutputMapping> OutputMappings { get; set; }
         Guid Id { get; set; }
+        int CommandTimeout { get; set; }
     }
 }

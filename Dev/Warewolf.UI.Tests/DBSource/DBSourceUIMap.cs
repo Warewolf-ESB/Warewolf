@@ -10,6 +10,7 @@ using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using System;
 
 namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
 {
@@ -111,6 +112,10 @@ namespace Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsmysqlDB);
             Assert.AreEqual("mysql", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIMysqlText.DisplayText);
+        }
+        public void Enter_Text_Into_DatabaseConnectionTimeout(string timeout)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ConnectionTimeout.Text = timeout;
         }
 
         [When(@"I Select postgres From DB Source Wizard Database Combobox")]

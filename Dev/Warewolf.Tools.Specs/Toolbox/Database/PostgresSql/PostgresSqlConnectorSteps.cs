@@ -6,11 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -18,17 +20,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class PostgresSqlConnectorSteps
+    public class PostgresSqlConnectorSteps : DatabaseToolsSteps
     {
         DbSourceDefinition _postgresSqlSource;
         DbAction _selectedAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getEmployees;
+        readonly ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
+
+        public PostgresSqlConnectorSteps(ScenarioContext scenarioContext)
+            : base(scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+            _commonSteps = new CommonSteps(scenarioContext);
+        }
 
         [Given(@"I drag a PostgresSql Server database connector")]
         public void GivenIDragAPostgresSqlServerDatabaseConnector()
@@ -66,9 +78,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", postgresDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", postgresDesignerViewModel);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"I select DemoPostgres as the source")]
@@ -210,9 +222,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", postgresDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", postgresDesignerViewModel);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"PostgresSql Source Is Enabled")]
@@ -280,12 +292,139 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         PostgreSqlDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<PostgreSqlDatabaseDesignerViewModel>("viewModel");
+            return _scenarioContext.Get<PostgreSqlDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return _scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+        }
+
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" Postgres database connector")]
+        public void GivenIHaveWorkflowWithPostgresDatabaseConnector(string workflowName, string activityName)
+        {
+            var environmentModel = _scenarioContext.Get<IServer>("server");
+            environmentModel.Connect();
+            CreateNewResourceModel(workflowName, environmentModel);
+            CreateDBServiceModel(environmentModel);
+
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");
+            var posgreActivity = new DsfPostgreSqlActivity { DisplayName = activityName };
+            var modelItem = ModelItemUtils.CreateModelItem(posgreActivity);
+            var posgreDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(posgreDesignerViewModel, posgreDesignerViewModel.Model);
+
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, posgreActivity);
+            DebugWriterSubscribe(environmentModel);
+            _scenarioContext.Add("viewModel", posgreDesignerViewModel);
+            _scenarioContext.Add("parentName", workflowName);
+        }
+        [Given(@"Postgres Server Source is Enabled")]
+        public void GivenPostgresServerSourceIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
+        }
+        [Given(@"I Select ""(.*)"" as Postgres Source for ""(.*)""")]
+        public void GivenISelectAsPostgresSourceFor(string sourceName, string activityName)
+        {
+            var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.SourceRegion);
+            var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            Assert.IsNotNull(dbSources, "dbSources is null");
+            var dbSource = dbSources.Single(source => source.Name == sourceName);
+            Assert.IsNotNull(dbSource, "Source is null");
+            vm.SourceRegion.SelectedSource = dbSource;
+            SetDbSource(activityName, dbSource);
+            Assert.IsNotNull(vm.SourceRegion.SelectedSource);
+        }
+
+        [Given(@"I Select ""(.*)"" as Postgres Server Action for ""(.*)""")]
+        public void GivenISelectAsPostgresServerActionFor(string actionName, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.ActionRegion);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
+            SetDbAction(activityName, actionName);
+            Assert.IsNotNull(vm.ActionRegion.SelectedAction);
+        }
+        [Given(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [When(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [Then(@"Postgres Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        public void GivenPostgresCommandTimeoutIsMillisecondsFor(int timeout, string ActivityName)
+        {         
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm);
+            vm.InputArea.CommandTimeout = timeout;
+            SetCommandTimeout(ActivityName, timeout);
+            Assert.AreEqual(timeout, vm.InputArea.CommandTimeout);
+        }
+
+
+        [Given(@"Postgres Server Inputs Are Enabled")]
+        public void GivenPostgresServerInputsAreEnabled()
+        {
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
+            Assert.IsTrue(hasInputs);
+        }
+
+        [Given(@"Validate Postgres Server is Enabled")]
+        public void GivenValidatePostgresServerIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
+        }
+
+        [Given(@"I click Postgres Generate Outputs")]
+        public void GivenIClickPostgresGenerateOutputs()
+        {
+            var viewModel = GetViewModel();
+            viewModel.TestInputCommand.Execute();
+        }
+
+        [Given(@"I click Postgres Test")]
+        public void GivenIClickPostgresTest()
+        {
+            var viewModel = GetViewModel();
+            viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            viewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+        }
+
+        [Then(@"Postgres Server Outputs appear as")]
+        public void ThenPostgresServerOutputsAppearAs(Table table)
+        {
+            var outputMappings = GetViewModel().OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
+            var rowIdx = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                var mappedFrom = tableRow["Mapped From"];
+                var mappedTo = tableRow["Mapped To"];
+                var outputMapping = outputMappings.ToList()[rowIdx];
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
+            }
+        }
+
+        [Then(@"Postgres Server Recordset Name equals ""(.*)""")]
+        public void ThenPostgresServerRecordsetNameEquals(string recsetName)
+        {
+            Assert.IsTrue(string.Equals(recsetName, GetViewModel().OutputsRegion.RecordsetName));
+        }
+
+        [When(@"Postgres Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenPostgresWorkflowContainingDbToolIsExecuted(string workflowName)
+        {
+            WorkflowIsExecuted(workflowName);
+        }
+
+        [AfterScenario("@ExecutePostgresServerWithTimeout")]
+        public void CleanUp()
+        {
+            CleanupForTimeOutSpecs();
         }
     }
 }
