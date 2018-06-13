@@ -195,8 +195,6 @@ namespace Dev2
 
         void Run(bool interactiveMode)
         {
-            Tracker.StartServer();
-
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
             try
@@ -317,8 +315,6 @@ namespace Dev2
 
         void Stop(bool didBreak, int result)
         {
-            Tracker.Stop();
-
             if (!didBreak)
             {
                 Dispose();
