@@ -1438,10 +1438,6 @@ namespace Warewolf.Launcher
             else
             {
                 TestCategories = "";
-                if (!TestList.StartsWith(" /Tests:"))
-                {
-                    TestList = $" /Tests:{TestList}";
-                }
             }
 
             return TestCategories;
@@ -1468,11 +1464,6 @@ namespace Warewolf.Launcher
             else
             {
                 TestCategories = "";
-                if (!(TestList.StartsWith(" /test:")))
-                {
-                    var TestNames = string.Join(" /test:", TestList.Split(','));
-                    TestList = $" /test:{TestNames}";
-                }
             }
 
             return TestCategories;
@@ -1480,6 +1471,10 @@ namespace Warewolf.Launcher
 
         public string VSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
         {
+            if (!TestList.StartsWith(" /Tests:"))
+            {
+                TestList = $" /Tests:{TestList}";
+            }
             string TestRunnerPath;
             Environment.CurrentDirectory = $"{TestsResultsPath}\\..";
             string FullArgsList;
@@ -1489,7 +1484,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx /Tests:{TestList}";
+                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{TestList}";
             }
 
             // Write full command including full argument string.
@@ -1501,6 +1496,11 @@ namespace Warewolf.Launcher
 
         public string MSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
         {
+            if (!(TestList.StartsWith(" /test:")))
+            {
+                var TestNames = string.Join(" /test:", TestList.Split(','));
+                TestList = $" /test:{TestNames}";
+            }
             // Resolve test results file name
             var TestResultsFile = TestsResultsPath + $"\"{JobName} Results.trx";
             CopyOnWrite(TestResultsFile);
@@ -1510,17 +1510,11 @@ namespace Warewolf.Launcher
             string FullArgsList;
             if (TestList == "")
             {
-                FullArgsList = TestAssembliesList +
-                    $" /resultsfile:\"{TestResultsFile}\"" +
-                    TestSettingsArgument(TestSettingsFile) +
-                    categories;
+                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{categories}";
             }
             else
             {
-                FullArgsList = TestAssembliesList +
-                    $" /resultsfile:\"{TestResultsFile}\"" +
-                    TestSettingsArgument(TestSettingsFile) +
-                    TestList;
+                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{TestList}";
             }
 
             // Write full command including full argument string.
