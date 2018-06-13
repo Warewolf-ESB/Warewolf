@@ -1471,7 +1471,7 @@ namespace Warewolf.Launcher
 
         public string VSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
         {
-            if (!TestList.StartsWith(" /Tests:"))
+            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /Tests:"))
             {
                 TestList = $" /Tests:{TestList}";
             }
@@ -1496,7 +1496,7 @@ namespace Warewolf.Launcher
 
         public string MSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
         {
-            if (!(TestList.StartsWith(" /test:")))
+            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /test:"))
             {
                 var TestNames = string.Join(" /test:", TestList.Split(','));
                 TestList = $" /test:{TestNames}";
