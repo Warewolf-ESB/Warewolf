@@ -34,8 +34,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _importOrderAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getCountriesAction;
-        ScenarioContext _scenarioContext;
-        CommonSteps _commonSteps;
+        readonly ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
 
         public OracleServerConnectorSteps(ScenarioContext scenarioContext)
         : base(scenarioContext)
@@ -69,16 +69,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         OracleDatabaseDesignerViewModel GetViewModel()
         {
             return _scenarioContext.Get<OracleDatabaseDesignerViewModel>("viewModel");
-        }
-
-        Mock<IManageDatabaseInputViewModel> GetOutputViewModel()
-        {
-            return _scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
-        }
-
-        Mock<IManageServiceInputViewModel> GetInputViewModel()
-        {
-            return _scenarioContext.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
@@ -380,7 +370,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var vm = GetViewModel();
             var outputMappings = vm.OutputsRegion.Outputs;
             Assert.IsNotNull(outputMappings);
-            //TODO:Assert.AreEqual(table.Rows.Count, vm.OutputsRegion.Outputs.Count, "Wrong number of outputs in Oracle view model.");
+            //TODO:Assert.AreEqual(table.Rows.Count, vm.OutputsRegion.Outputs.Count, "Wrong number of outputs in Oracle view model.")
             if (table.Rows.Count == 0)
             {
                 Assert.IsNotNull(vm.OutputsRegion.Outputs != null);
@@ -401,7 +391,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             var oracleDatabaseDesignerViewModel = GetViewModel();
-            //TODO:Assert.AreEqual(recsetName, oracleDatabaseDesignerViewModel.OutputsRegion.RecordsetName);
+            //TODO:Assert.AreEqual(recsetName, oracleDatabaseDesignerViewModel.OutputsRegion.RecordsetName)
         }
 
         [Given(@"I have workflow ""(.*)"" with ""(.*)"" Oracle database connector")]
