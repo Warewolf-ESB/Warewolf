@@ -121,6 +121,7 @@ namespace Dev2
         bool _isDisposed;
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
+
         Dev2Endpoint[] _endpoints;
         Timer _timer;
         IDisposable _owinServer;
@@ -359,12 +360,11 @@ namespace Dev2
             {
                 string webServerSslPort;
                 string webServerPort;
-
+                GlobalConstants.CollectUsageStats = ConfigurationManager.AppSettings["CollectUsageStats"];
                 GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
 
                 _isWebServerEnabled = false;
-
                 bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
