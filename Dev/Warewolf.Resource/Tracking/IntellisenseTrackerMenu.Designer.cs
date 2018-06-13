@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Warewolf.Studio.Resources.Languages {
+namespace Warewolf.Resource.Tracking {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Warewolf.Studio.Resources.Languages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TrackEventToolbox {
+    public class IntellisenseTrackerMenu {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TrackEventToolbox() {
+        internal IntellisenseTrackerMenu() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Warewolf.Studio.Resources.Languages {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventToolbox", typeof(TrackEventToolbox).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Resource.Tracking.IntellisenseTrackerMenu", typeof(IntellisenseTrackerMenu).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,16 +61,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Double clicking without an action.
-        /// </summary>
-        public static string DoubleClick {
-            get {
-                return ResourceManager.GetString("DoubleClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Toolbox Events.
+        ///   Looks up a localized string similar to Intellisense Events.
         /// </summary>
         public static string EventCategory {
             get {
@@ -79,11 +70,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool Box Search.
+        ///   Looks up a localized string similar to Json is not allowed. User input {0}.
         /// </summary>
-        public static string ToolBoxSearch {
+        public static string JsonNotAllowed {
             get {
-                return ResourceManager.GetString("ToolBoxSearch", resourceCulture);
+                return ResourceManager.GetString("JsonNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recordset is not allowed. User input {0}.
+        /// </summary>
+        public static string RecordsetNotAllowed {
+            get {
+                return ResourceManager.GetString("RecordsetNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scalar is not allowed. User input {0}.
+        /// </summary>
+        public static string ScalarNotAllowed {
+            get {
+                return ResourceManager.GetString("ScalarNotAllowed", resourceCulture);
             }
         }
     }
