@@ -9,7 +9,7 @@ namespace Warewolf.Launcher
         {
             return new Dictionary<string, Tuple<string, string>>
             {
-                ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests, Warewolf.*.Tests", null),
+                ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests,Warewolf.*.Tests", null),
                 ["Server Proxy Layer Tests"] = new Tuple<string, string>("Warewolf.Studio.ServerProxyLayer.Tests", null),
                 ["Infrastructure Unit Tests"] = new Tuple<string, string>("Dev2.Infrastructure.Tests", null),
                 ["Runtime Unit Tests"] = new Tuple<string, string>("Dev2.Runtime.Tests", null),
