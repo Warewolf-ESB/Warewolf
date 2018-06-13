@@ -662,7 +662,26 @@ namespace Dev2
                     Console.ReadLine();
                 }
             }
+
+#if DEBUG
             SetAsStarted();
+        }
+
+        static void SetAsStarted()
+        {
+            try
+            {
+                if (File.Exists(".\\ServerStarted"))
+                {
+                    File.Delete(".\\ServerStarted");
+                }
+                File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+            }
+#endif
         }
 
         void LogEndpoints()
@@ -701,22 +720,6 @@ namespace Dev2
             else
             {
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
-            }
-        }
-
-        static void SetAsStarted()
-        {
-            try
-            {
-                if (File.Exists(".\\ServerStarted"))
-                {
-                    File.Delete(".\\ServerStarted");
-                }
-                File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
 
