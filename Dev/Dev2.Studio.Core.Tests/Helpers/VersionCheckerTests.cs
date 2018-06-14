@@ -16,6 +16,7 @@ using Moq;
 using Warewolf.Core;
 using Dev2.Studio.Core;
 using System.ComponentModel;
+using Dev2.Util;
 
 namespace Dev2.Core.Tests.Helpers
 {
@@ -23,6 +24,17 @@ namespace Dev2.Core.Tests.Helpers
     [TestClass]
     public class VersionCheckerTests
     {
+
+        /// <summary>
+        /// This test checks that CollectUsageStats is set to False on develop
+        /// </summary>
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("RevulyticsCollectUsageStats")]
+        public void RevulyticsCollectUsageStatsForStudioIsFalseTest()
+        {
+            Assert.AreEqual(false, AppUsageStats.CollectUsageStats);
+        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
