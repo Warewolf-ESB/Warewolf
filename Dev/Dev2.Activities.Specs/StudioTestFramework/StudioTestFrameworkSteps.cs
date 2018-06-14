@@ -123,7 +123,14 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             _environmentModel = ServerRepository.Instance.Source;
             _environmentModel.Connect();
-            _environmentModel.ResourceRepository.Load(true);
+            if (_environmentModel.IsConnected)
+            {
+                _environmentModel.ResourceRepository.Load(true);
+            }
+            else
+            {
+                throw new Exception("Failed to connect to localhost Warewolf server.");
+            }
         }
 
         [Given(@"test folder is cleaned")]
