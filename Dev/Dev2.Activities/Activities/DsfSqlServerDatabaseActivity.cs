@@ -24,12 +24,14 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
+        public int CommandTimeout { get; set; }
 
         public string ExecuteActionString { get; set; }
         public DsfSqlServerDatabaseActivity()
         {
             Type = "SQL Server Database";
             DisplayName = "SQL Server Database";
+            CommandTimeout = 30;
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -52,7 +54,8 @@ namespace Dev2.Activities
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
             }
-
+            //ServiceExecution.SetTimeout()
+            //ServiceExecution.SetCommandTimeout()
             ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
             foreach (var error in fetchErrors)
@@ -85,20 +88,18 @@ namespace Dev2.Activities
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
             base.BeforeExecutionStart(dataObject, tmpErrors);
-            ServiceExecution = new DatabaseServiceExecution(dataObject);
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            databaseServiceExecution.ProcedureName = ProcedureName;
+            var databaseServiceExecution = new DatabaseServiceExecution(dataObject)
+            {
+                ProcedureName = ProcedureName,
+                CommandTimeout = CommandTimeout
+            };
             if (!string.IsNullOrEmpty(ExecuteActionString))
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
             }
-
+            ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
-        }
-
-        protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
-        {
-            base.AfterExecutionCompleted(tmpErrors);
+            ServiceExecution.BeforeExecution(tmpErrors);
         }
 
 
@@ -116,30 +117,21 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other)
-                && string.Equals(SourceId.ToString(), other.SourceId.ToString())
-                && string.Equals(ProcedureName, other.ProcedureName) 
-                && string.Equals(ExecuteActionString, other.ExecuteActionString);
+            var eq = base.Equals(other);
+            eq &= string.Equals(SourceId.ToString(), other.SourceId.ToString());
+            eq &= string.Equals(ProcedureName, other.ProcedureName);            
+            eq &= CommandTimeout == other.CommandTimeout;
+            eq &= string.Equals(ExecuteActionString, other.ExecuteActionString);
+            return eq;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfSqlServerDatabaseActivity instance)
             {
-                return false;
+                return Equals(instance);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfSqlServerDatabaseActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()
@@ -152,6 +144,7 @@ namespace Dev2.Activities
                 {
                     hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
                 }
+                hashCode = (hashCode * 397) ^ CommandTimeout;
                 if (ExecuteActionString != null)
                 {
                     hashCode = (hashCode * 397) ^ (ExecuteActionString.GetHashCode());

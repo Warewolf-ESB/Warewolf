@@ -418,13 +418,12 @@ namespace Dev2.UI
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType != enIntellisensePartType.JsonObject)
             {
-                HandleNonJsonFilterType(text, error);
+                HandleNonJsonFilterType(error);
             }
             else
             {
                 if (error.Item2 != string.Empty)
-                {
-                    TrackIntellisenseEvent(text);
+                {                    
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -436,7 +435,7 @@ namespace Dev2.UI
             }
         }
 
-        private void HandleNonJsonFilterType(string text, Tuple<LanguageAST.LanguageExpression, string> error)
+        private void HandleNonJsonFilterType(Tuple<LanguageAST.LanguageExpression, string> error)
         {
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
@@ -456,8 +455,7 @@ namespace Dev2.UI
             else
             {
                 if (error.Item2 != string.Empty)
-                {
-                    TrackIntellisenseEvent(text);
+                {                    
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -475,17 +473,17 @@ namespace Dev2.UI
             if (FilterType == enIntellisensePartType.JsonObject)
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.JsonNotAllowed, text);
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect JSON input: " + text);
             }
             if (!(text.Contains("(")) && FilterType != enIntellisensePartType.JsonObject)
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.ScalarNotAllowed, text);
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Scalar input: " + text);
             }
             if (text.Contains("(") || text.Contains(")"))
             {
                 _applicationTracker?.TrackCustomEvent(Warewolf.Resource.Tracking.IntellisenseTrackerMenu.EventCategory,
-                Warewolf.Resource.Tracking.IntellisenseTrackerMenu.RecordsetNotAllowed, text);
+                    Warewolf.Resource.Tracking.IntellisenseTrackerMenu.IncorrectSyntax, "Incorrect Recordset input: " + text);
             }
         }
 
@@ -646,10 +644,6 @@ namespace Dev2.UI
                     HasError = true;
                     ttErrorBuilder.AppendLine("Recordset is not allowed");
                 }
-            }
-            if (HasError)
-            {
-                TrackIntellisenseEvent(text);
             }
         }
 
@@ -925,6 +919,11 @@ namespace Dev2.UI
             ExecWrapBrackets();
             var be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
+
+            if (HasError)
+            {
+                TrackIntellisenseEvent(Text);
+            }
         }
 
         void ExecWrapBrackets()

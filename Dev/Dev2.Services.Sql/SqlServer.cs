@@ -43,6 +43,7 @@ namespace Dev2.Services.Sql
 
         }
 
+        public int CommandTimeout { get; set; }
         public bool IsConnected { get; }
         public string ConnectionString { get => _connectionString; }
         string _connectionString;
@@ -352,8 +353,8 @@ namespace Dev2.Services.Sql
                 throw new Exception(ErrorResource.PleaseConnectFirst);
             }
             var sqlCommand = _connection.CreateCommand();
+            sqlCommand.CommandTimeout = CommandTimeout;
             TrySetTransaction(_transaction, sqlCommand);
-            sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
             return sqlCommand;
         }
 
@@ -417,7 +418,7 @@ namespace Dev2.Services.Sql
 				TrySetTransaction(_transaction, sqlCommand);
 				sqlCommand.CommandText = _commantText;
 				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				sqlCommand.CommandTimeout = CommandTimeout;
 				
 				return FetchDataSet(sqlCommand);
 			}
@@ -436,7 +437,7 @@ namespace Dev2.Services.Sql
 				TrySetTransaction(_transaction, sqlCommand);
 				sqlCommand.CommandText = _commantText;
 				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				sqlCommand.CommandTimeout = CommandTimeout;
 
 				retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
 				return retValue;
@@ -457,42 +458,12 @@ namespace Dev2.Services.Sql
 				TrySetTransaction(_transaction, sqlCommand);
 				sqlCommand.CommandText = _commantText;
 				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				sqlCommand.CommandTimeout = CommandTimeout;
 
 				retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
 				return retValue;
 			}		
-		}
-		public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
-        {
-
-            if (_connection == null)
-            {
-                throw new Exception(ErrorResource.PleaseConnectFirst);
-            }
-            _connection.TryOpen();
-
-            using (_connection)
-            {
-                if (_connection.State != ConnectionState.Open)
-                {
-                    _connection = _connectionBuilder.BuildConnection(_connectionString);
-                }
-                using (var sqlCommand = _connection.CreateCommand())
-                {
-                    TrySetTransaction(_transaction, sqlCommand);
-                    sqlCommand.CommandText = _commantText;
-                    sqlCommand.CommandType = _commandType;
-                    sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
-                    foreach (var dbDataParameter in dbDataParameters)
-                    {
-                        sqlCommand.Parameters.Add(dbDataParameter);
-                    }
-                    return FetchDataTable(sqlCommand);
-                }
-            }
-
-        }
+		}		
     }
 
     public class WarewolfDbException : DbException

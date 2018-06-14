@@ -12,6 +12,7 @@ namespace Dev2.Common.Interfaces
         AuthenticationType AuthenticationType { get; set; }
         string UserID { get; set; }
         string Password { get; set; }
+        int ConnectionTimeout { get; set; }
     }
 	public interface ISqliteDB : IResource
 	{

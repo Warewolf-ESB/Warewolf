@@ -307,5 +307,4 @@ Scenario: Creating New MySQL DB Source as Windows Auth
 	And "Save" is "Disabled"
 	And Database dropdown is "Visible"
 	When I select "Dev2TestingDB" as Database
-	Then "Save" is "Enabled" 
-	
+	Then "Save" is "Enabled" 	

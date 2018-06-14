@@ -351,6 +351,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database command timeout.
+        /// </summary>
+        public static string CommandTimeoutTooltip {
+            get {
+                return ResourceManager.GetString("CommandTimeoutTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
         ///You can connect comments into the process flow and they will simply be skipped during execution. 
         ///However, they will appear in the debug output..
@@ -394,6 +403,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ConnectControlToggleConnectionToolTip {
             get {
                 return ResourceManager.GetString("ConnectControlToggleConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database connection timeout.
+        /// </summary>
+        public static string ConnectionTimeoutHelp {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutHelp", resourceCulture);
             }
         }
         
@@ -1983,6 +2001,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ManageDbSourceCancelTestTooltip {
             get {
                 return ResourceManager.GetString("ManageDbSourceCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the connection timeout of the database data source.
+        /// </summary>
+        public static string ManageDbSourceConnectionTimeoutTooltip {
+            get {
+                return ResourceManager.GetString("ManageDbSourceConnectionTimeoutTooltip", resourceCulture);
             }
         }
         

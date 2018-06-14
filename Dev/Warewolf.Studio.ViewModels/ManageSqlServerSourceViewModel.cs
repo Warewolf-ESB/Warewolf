@@ -57,6 +57,7 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = source.AuthenticationType;
             UserName = source.UserName;
             Password = source.Password;
+            ConnectionTimeout = source.ConnectionTimeout;
             Path = source.Path;
             TestConnection();
             DatabaseName = source.DbName;
@@ -78,6 +79,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.SqlDatabase,
             Name = ResourceName,
             DbName = DatabaseName,
@@ -90,6 +92,7 @@ namespace Warewolf.Studio.ViewModels
             ServerName = GetServerName(),
             Password = Password,
             UserName = UserName,
+            ConnectionTimeout = ConnectionTimeout,
             Type = enSourceType.SqlDatabase,
             Path = Path,
             Name = ResourceName,
@@ -100,6 +103,7 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = AuthenticationType,
             ServerName = GetServerName(),
             Password = Password,
+            ConnectionTimeout = ConnectionTimeout,
             UserName = UserName,
             Type = enSourceType.SqlDatabase,
             Path = Path,
@@ -115,6 +119,7 @@ namespace Warewolf.Studio.ViewModels
             Id = DbSource.Id,
             Name = DbSource.Name,
             Password = DbSource.Password,
+            ConnectionTimeout = ConnectionTimeout,
             Path = DbSource.Path,
             ServerName = DbSource.ServerName,
             UserName = DbSource.UserName,
@@ -135,6 +140,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
+                  ConnectionTimeout = ConnectionTimeout,
                 Type = enSourceType.SqlDatabase,
                 Name = ResourceName,
                 DbName = DatabaseName,

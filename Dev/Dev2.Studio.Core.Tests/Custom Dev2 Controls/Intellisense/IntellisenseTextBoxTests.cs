@@ -627,10 +627,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             const string expectTooltipError = "Variable name \"[[Var!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
-            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+            var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
             textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[Var!]]\"";
-            textBoxTest.EnsureErrorStatus();
+
+            var privateObj = new PrivateObject(textBoxTest);
+            var results = privateObj.Invoke("LostFocusImpl");
+
             Assert.IsTrue(textBoxTest.HasError);
             Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
             _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
@@ -645,10 +648,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             const string expectTooltipError = "Variable name \"[[Var()!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
-            var textBoxTest = new IntellisenseTextBoxTestHelper { AllowMultipleVariables = true };
+            var textBoxTest = new IntellisenseTextBox { AllowMultipleVariables = true };
             textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[Var()!]]\"";
-            textBoxTest.EnsureErrorStatus();
+
+            var privateObj = new PrivateObject(textBoxTest);
+            var results = privateObj.Invoke("LostFocusImpl");
+
             Assert.IsTrue(textBoxTest.HasError);
             Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
             _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
@@ -663,10 +669,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
             const string expectTooltipError = "Variable name \"[[obj!]]\" contains invalid character(s). Only use alphanumeric _ and - ";
 
-            var textBoxTest = new IntellisenseTextBoxTestHelper { FilterType = enIntellisensePartType.JsonObject };
+            var textBoxTest = new IntellisenseTextBox { FilterType = enIntellisensePartType.JsonObject };
             textBoxTest.CreateVisualTree();
             textBoxTest.Text = "\"[[obj!]]\"";
-            textBoxTest.EnsureErrorStatus();
+
+            var privateObj = new PrivateObject(textBoxTest);
+            var results = privateObj.Invoke("LostFocusImpl");
+
             Assert.IsTrue(textBoxTest.HasError);
             Assert.AreEqual(expectTooltipError, textBoxTest.ToolTip);
             _applicationTrackerMock.Verify(controller => controller.TrackCustomEvent(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());

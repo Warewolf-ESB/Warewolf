@@ -17,6 +17,18 @@ namespace Warewolf.UI.Tests.DebugOutputTests
 
         [TestMethod]
         [TestCategory("Debug Input")]
+        public void Change_Value_On_HelloWorld_Assign_Marks_Workflow_As_Dirty_UITest()
+        {
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.Click_Assign_Row_1_Value_TextBox();
+            DataToolsUIMap.Add_Space_At_The_End_Of_Row1_Value();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+        }
+
+        
+        [TestMethod]
+        [TestCategory("Debug Input")]
         public void HelloWorld_Is_Highlighted_After_Execution_UITest()
         {
             UIMap.InitializeABlankWorkflow();

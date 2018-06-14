@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         AuthenticationType AuthenticationType { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
+        int ConnectionTimeout { get; set; }
         string Name { get; set; }
         string Path { get; set; }
         Guid Id { get; set; }

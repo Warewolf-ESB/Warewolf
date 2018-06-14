@@ -38,11 +38,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         public DbSource(XElement xml)
             : base(xml)
         {
-            
+
 
             // Setup type include default port
             var attributeSafe = xml.AttributeSafe("ServerType");
-            switch(attributeSafe.ToLowerInvariant())
+            switch (attributeSafe.ToLowerInvariant())
             {
                 case "sqldatabase":
                     ServerType = enSourceType.SqlDatabase;
@@ -60,10 +60,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                     break;
                 case "postgresql":
                     ServerType = enSourceType.PostgreSQL;
-					break;
-				case "sqlite":
-					ServerType = enSourceType.SQLiteDatabase;
-					break;
+                    break;
+                case "sqlite":
+                    ServerType = enSourceType.SQLiteDatabase;
+                    break;
                 default:
                     ResourceType = "DbSource";
                     ServerType = enSourceType.Unknown;
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string DatabaseName { get; set; }
 
         public int Port { get; set; }
-
+        public int ConnectionTimeout { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
@@ -121,8 +121,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             //
             get
             {
+                var portString = string.Empty;
                 switch (ServerType)
-                {
+                {                    
                     case enSourceType.SqlDatabase:
                         var isNamedInstance = Server != null && Server.Contains('\\');
                         if (isNamedInstance && Port == 1433)
@@ -130,37 +131,34 @@ namespace Dev2.Runtime.ServiceModel.Data
                             Port = 0;
                         }
 
-                        return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
-                            Port > 0 ? "," + Port : string.Empty,
-                            AuthenticationType == AuthenticationType.Windows
+                        portString = Port > 0 ? "," + Port : string.Empty;
+                        var authString = AuthenticationType == AuthenticationType.Windows
                                 ? "Integrated Security=SSPI;"
-                                : string.Format("User ID={0};Password={1};", UserID, Password));
+                                : $"User ID={UserID};Password={Password};";
+                        return $"Data Source={Server}{portString};Initial Catalog={DatabaseName};{authString};Connection Timeout={ConnectionTimeout}";
 
                     case enSourceType.MySqlDatabase:
-                        return string.Format("Server={0};{4}Database={1};Uid={2};Pwd={3};",
-                            Server, DatabaseName, UserID, Password,
-                            Port > 0 ? string.Format("Port={0};", Port) : string.Empty);
+                        portString = Port > 0 ? $"Port={Port};" : string.Empty;
+                        return $"Server={Server};{portString}Database={DatabaseName};Uid={UserID};Pwd={Password};Connect Timeout={ConnectionTimeout}";
 
                     case enSourceType.Oracle:
-                        //database refers to owner/schema in oracle
-                        return string.Format("User Id={2};Password={3};Data Source={0};{1}",
-                          Server, (DatabaseName != null ? string.Format("Database={0};", DatabaseName) : string.Empty), UserID, Password,
-                         Port > 0 ? string.Format(":{0}", Port) : string.Empty);
+                        portString = Port > 0 ? $":{Port}" : string.Empty;
+                        var dbString = DatabaseName != null ? $"Database={DatabaseName};":string.Empty;
+                        return $"User Id={UserID};Password={Password};Data Source={Server}{portString};{dbString};Connection Timeout={ConnectionTimeout};";
 
                     case enSourceType.ODBC:
-                        return string.Format("DSN={0};", DatabaseName);
-					case enSourceType.SQLiteDatabase:
-						return ":memory:";
+                        return $"DSN={DatabaseName};";
+                    case enSourceType.SQLiteDatabase:
+                        return ":memory:";
 
-					case enSourceType.PostgreSQL:
+                    case enSourceType.PostgreSQL:
 
                         if (string.IsNullOrEmpty(DatabaseName))
                         {
                             DatabaseName = string.Empty;
                         }
-
-                        return string.Format(@"Host={0};Username={1};Password={2};Database={3}", Server, UserID, Password,
-                            DatabaseName);
+                        portString = Port > 0 ? $"Port={Port};" : string.Empty;
+                        return $"Host={Server};{portString}Username={UserID};Password={Password};Database={DatabaseName};Timeout={ConnectionTimeout}";
                     case enSourceType.WebService:
                         break;
                     case enSourceType.DynamicService:
@@ -197,13 +195,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             set
             {
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     return;
                 }
 
                 AuthenticationType = AuthenticationType.Windows;
-                
+                bool containsTimeout = false;
+                int defaultTimeout = 30;
                 foreach (var prm in value.Split(';').Select(p => p.Split('=')))
                 {
                     int port;
@@ -245,11 +244,30 @@ namespace Dev2.Runtime.ServiceModel.Data
                         case "pwd":
                             Password = prm[1];
                             break;
+                        case "timeout":
+                        case "connect timeout":
+                        case "connection timeout":
+                            containsTimeout = true;
+                            ConnectionTimeout = int.TryParse(prm[1], out int timeout) ? timeout : defaultTimeout;
+                            break;
                         default:
                             break;
                     }
                 }
+                if (!containsTimeout)
+                {
+                    ConnectionTimeout = defaultTimeout;
+                }
             }
+        }
+        public string GetConnectionStringWithTimeout(int timeout)
+        {
+            var oldTimeout = ConnectionTimeout;
+            ConnectionTimeout = timeout;
+            var result = ConnectionString;
+            ConnectionTimeout = oldTimeout;
+
+            return result;
         }
 
         #endregion

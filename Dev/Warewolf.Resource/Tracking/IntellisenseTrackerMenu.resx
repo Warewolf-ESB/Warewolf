@@ -118,15 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EventCategory" xml:space="preserve">
-    <value>Intellisense Events</value>
+    <value>Variable Events</value>
   </data>
-  <data name="JsonNotAllowed" xml:space="preserve">
-    <value>Json is not allowed. User input {0}</value>
-  </data>
-  <data name="RecordsetNotAllowed" xml:space="preserve">
-    <value>Recordset is not allowed. User input {0}</value>
-  </data>
-  <data name="ScalarNotAllowed" xml:space="preserve">
-    <value>Scalar is not allowed. User input {0}</value>
+  <data name="IncorrectSyntax" xml:space="preserve">
+    <value>Incorrect Syntax</value>
   </data>
 </root>

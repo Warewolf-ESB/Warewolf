@@ -17,6 +17,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
     [Binding]
     public partial class DataToolsUIMap
     {
+        public void Add_Space_At_The_End_Of_Row1_Value()
+        {
+            Keyboard.SendKeys(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign2.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox, " ", ModifierKeys.None);
+        }
+        public void Click_Assign_Row_1_Value_TextBox()
+        {
+            Mouse.Click(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign2.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox, new Point(63, 13));
+        }
+
         [When(@"I RightClick FindIndex OnDesignSurface")]
         public void RightClick_FindIndex_OnDesignSurface()
         {
