@@ -57,7 +57,7 @@ namespace Warewolf.Launcher
 
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
-        WarewolfServerContainerLauncher ciRemoteContainerLauncher;
+        ContainerLauncher ciRemoteContainerLauncher;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -353,7 +353,7 @@ namespace Warewolf.Launcher
         {
             try
             {
-                ciRemoteContainerLauncher = new WarewolfServerContainerLauncher("localhost", "", "latest", true);
+                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
                 CIRemoteOverloading(ciRemoteContainerLauncher.IP);
             }
             catch (Exception e)
@@ -373,9 +373,9 @@ namespace Warewolf.Launcher
             ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, ip);
             UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, ip);
             ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
+                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
             UITestsCIRemoteContents = UITestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={WarewolfServerContainerLauncher.Username};Password={WarewolfServerContainerLauncher.Password}");
+                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
             File.WriteAllText(ServerTestsCIRemote, ServerTestsCIRemoteContents);
             File.WriteAllText(UITestsCIRemote, UITestsCIRemoteContents);
         }
@@ -1635,9 +1635,9 @@ namespace Warewolf.Launcher
                 {
                     trxFilePath = ParseTrxFilePath(testRunLine);
                 }
-                testRunLine = process.StandardError.ReadLine();
-                Console.WriteLine(testRunLine);
             }
+            string allErrors = process.StandardError.ReadToEnd();
+            Console.WriteLine(allErrors);
 
             process.WaitForExit();
             return trxFilePath;
