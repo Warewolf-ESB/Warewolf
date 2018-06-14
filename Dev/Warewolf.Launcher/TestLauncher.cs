@@ -354,7 +354,14 @@ namespace Warewolf.Launcher
             try
             {
                 ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
-                CIRemoteOverloading(ciRemoteContainerLauncher.IP);
+                if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.IP))
+                {
+                    CIRemoteOverloading(ciRemoteContainerLauncher.IP);
+                }
+                else
+                {
+                    throw new Exception("Cannot get container IP address.");
+                }
             }
             catch (Exception e)
             {

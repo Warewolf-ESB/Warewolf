@@ -47,8 +47,9 @@ namespace Warewolf.Launcher
                 StartContainer();
                 GetContainerIP();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine($"Error starting Warewolf server container: {e.Message}.");
                 Dispose();
             }
         }
@@ -113,6 +114,7 @@ namespace Warewolf.Launcher
             int count = 0;
             while (string.IsNullOrEmpty(IP) && count++<5)
             {
+                Console.WriteLine($"Attempting to get IP address for {serverContainerID} on {_remoteDockerApi}.");
                 var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/json";
                 using (var client = new HttpClient())
                 {
@@ -145,6 +147,7 @@ namespace Warewolf.Launcher
 
         void StartContainer()
         {
+            Console.WriteLine($"Starting container {serverContainerID} on {_remoteDockerApi}.");
             var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/start";
             HttpContent containerStartContent = new StringContent("");
             containerStartContent.Headers.Remove("Content-Type");
@@ -174,6 +177,7 @@ namespace Warewolf.Launcher
             HttpContent containerContent;
             if (Hostname == "")
             {
+                Console.WriteLine($"Creating {FullImageID} on {_remoteDockerApi}");
                 containerContent = new StringContent(@"
 {
      ""Image"":""" + FullImageID + @"""
@@ -182,6 +186,7 @@ namespace Warewolf.Launcher
             }
             else
             {
+                Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {_remoteDockerApi}");
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
@@ -322,7 +327,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Error Creating Stop Warewolf Server Command: " + reader.ReadToEnd());
+                        Console.WriteLine("Error recoving server log file: " + reader.ReadToEnd());
                     }
                     else
                     {
