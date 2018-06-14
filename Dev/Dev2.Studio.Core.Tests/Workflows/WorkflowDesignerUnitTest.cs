@@ -2246,6 +2246,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithoutServiceName_FlowStepHandled()
 
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2319,6 +2321,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_PerformAddItems_ApplyForDrop_DropNotHandled()
 
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
             var properties = new Dictionary<string, Mock<ModelProperty>>();
