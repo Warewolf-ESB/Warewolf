@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebServices;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Util;
 
 namespace Dev2.Core.Tests
 {

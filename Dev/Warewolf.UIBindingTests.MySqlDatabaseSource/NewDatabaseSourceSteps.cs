@@ -482,5 +482,20 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var databaseDropDownVisibility = manageDatabaseSourceControl.GetDatabaseDropDownVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
+        [Given(@"Connection Timeout is set to ""(.*)""")]
+        public void GivenConnectionTimeoutIsSetTo(int timeout)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            manageDatabaseSourceControl.EnterTimeout(timeout);
+            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            Assert.AreEqual(timeout, viewModel.ConnectionTimeout);
+
+        }
+        [Then(@"the timeout error message is ""(.*)""")]
+        public void ThenTheTimeoutErrorMessageIs(string errorMessage)
+        {
+            var viewModel = ScenarioContext.Current.Get<ManageMySqlSourceViewModel>("viewModel");
+            Assert.IsTrue(viewModel.TestMessage.Contains(errorMessage), viewModel.TestMessage + " does not contiain '" + errorMessage + "'");
+        }
     }
 }

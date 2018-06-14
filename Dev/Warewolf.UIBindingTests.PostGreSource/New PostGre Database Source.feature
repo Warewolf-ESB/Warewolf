@@ -262,5 +262,4 @@ Scenario: Changing database type after testing connection
    And "Save" is "Enabled"   
    And I type Select The Server as "RSAKLFSVRPDC"
    Then "Save" is "Disabled"
-   And "Test Connection" is "Enabled"
-
+   And "Test Connection" is "Enabled"   

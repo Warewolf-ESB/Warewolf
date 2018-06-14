@@ -1,34 +1,59 @@
 ﻿using System;
+using System.Activities;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Xml.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Controller;
+using Dev2.Session;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Threading;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Studio.ViewModels;
+using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class SQLServerConnectorSteps
+    public class SQLServerConnectorSteps : DatabaseToolsSteps
     {
-        DbSourceDefinition _greenPointSource;
+        DbSourceDefinition sqlsource;
         DbAction _importOrderAction;
         DbSourceDefinition _testingDbSource;
         DbAction _getCountriesAction;
-
+        readonly ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
+        
+        public SQLServerConnectorSteps(ScenarioContext scenarioContext)
+           : base(scenarioContext)
+        {                        
+            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+            _commonSteps = new CommonSteps(_scenarioContext);
+        }
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
         {
@@ -46,13 +71,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            _greenPointSource = new DbSourceDefinition
+            sqlsource = new DbSourceDefinition
             {
                 Name = "GreenPoint",
                 Type = enSourceType.SqlDatabase
             };
 
-            var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
+            var dbSources = new ObservableCollection<IDbSource> { sqlsource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
@@ -65,10 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"Source is changed from to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
-            if (sourceName == "GreenPoint")
-            {
-                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
-            }
+            GetViewModel().SourceRegion.SelectedSource = GetViewModel().SourceRegion.Sources.FirstOrDefault(p => p.Name == sourceName);
         }
 
         [When(@"Action is changed from to ""(.*)""")]
@@ -88,7 +110,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [Given(@"Sql Server Source is Enabled")]
         public void GivenSourceIsEnabled()
-        {
+        {            
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
@@ -136,7 +158,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
 
-
         [Given(@"Sql Server Inputs Are Enabled")]
         [When(@"Sql Server Inputs Are Enabled")]
         [Then(@"Sql Server Inputs Are Enabled")]
@@ -175,6 +196,61 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
+        [Given(@"I have workflow ""(.*)"" with ""(.*)"" SqlServer database connector")]
+        public void GivenIHaveWorkflowWithSqlServerDatabaseConnector(string workflowName, string activityName)
+        {
+            var environmentModel = _scenarioContext.Get<IServer>("server");
+            environmentModel.Connect();
+            CreateNewResourceModel(workflowName, environmentModel);
+            CreateDBServiceModel(environmentModel);
+
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");            
+            var sqlServerActivity = new DsfSqlServerDatabaseActivity { DisplayName = activityName };
+            var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var serviceInputViewModel = new ManageDatabaseServiceInputViewModel(sqlServerDesignerViewModel, sqlServerDesignerViewModel.Model);
+
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, sqlServerActivity);
+            DebugWriterSubscribe(environmentModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("parentName", workflowName);
+        }
+        [Given(@"I Select ""(.*)"" as SqlServer Source for ""(.*)""")]
+        public void GivenISelectAsSqlServerSourceFor(string sourceName, string activityName)
+        {
+            var proxyLayer = _scenarioContext.Get<StudioServerProxy>("proxyLayer");
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm.SourceRegion);
+            var dbSources = proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            Assert.IsNotNull(dbSources, "dbSources is null");
+            var dbSource = dbSources.Single(source => source.Name == sourceName);
+            Assert.IsNotNull(dbSource, "Source is null");
+            vm.SourceRegion.SelectedSource = dbSource;            
+            SetDbSource(activityName, dbSource);
+            Assert.IsNotNull(vm.SourceRegion.SelectedSource);
+        }
+        
+        [Given(@"I Select ""(.*)"" as Server Action for ""(.*)""")]
+        public void GivenISelectAsServerActionFor(string actionName, string activityName)
+        {
+            var vm = GetViewModel();            
+            Assert.IsNotNull(vm.ActionRegion);
+            vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
+            SetDbAction(activityName, actionName);
+            Assert.IsNotNull(vm.ActionRegion.SelectedAction);
+        }
+        [Given(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [When(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        [Then(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
+        public void GivenSqlCommandTimeoutIsMillisecondsFor(int timeout, string activityName)
+        {
+            var vm = GetViewModel();
+            Assert.IsNotNull(vm);
+            SetCommandTimeout(activityName, timeout);
+            vm.InputArea.CommandTimeout = timeout;
+
+        }
+
         [Given(@"I open workflow with database connector")]
         public void GivenIOpenWolf()
         {
@@ -204,7 +280,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            _greenPointSource = new DbSourceDefinition
+            sqlsource = new DbSourceDefinition
             {
                 Name = "GreenPoint",
                 Type = enSourceType.SqlDatabase
@@ -224,7 +300,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
             _getCountriesAction.Inputs = inputs;
-            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, sqlsource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
@@ -251,7 +327,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual<string>(actionName, selectedProcedure.Name);
         }
 
-
         [When(@"I Select ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
         {
@@ -261,7 +336,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 _importOrderAction.Name = "dbo.ImportOrder";
                 _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") };
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
+                GetViewModel().SourceRegion.SelectedSource = sqlsource;
             }
         }
 
@@ -344,7 +419,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Sql Server Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            if(!string.IsNullOrEmpty(recsetName))
+            if (!string.IsNullOrEmpty(recsetName))
             {
                 Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
             }
@@ -360,7 +435,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
-                       
+
             var sqlServerActivity = new DsfSqlServerDatabaseActivity
             {
                 SourceId = sourceId,
@@ -368,7 +443,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Inputs = inputs,
                 Outputs = outputs
             };
-            //sqlServerActivity.Execute(new Mock<IDSFDataObject>().Object, 0);
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
             var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
@@ -381,7 +455,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            _greenPointSource = new DbSourceDefinition
+            sqlsource = new DbSourceDefinition
             {
                 Name = "GreenPoint",
                 Type = enSourceType.SqlDatabase
@@ -402,7 +476,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
             _getCountriesAction.Inputs = inputs;
-            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, sqlsource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
 
             var privateObject = new PrivateObject(sqlServerActivity);
@@ -412,10 +486,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
-            ScenarioContext.Current.Add("privateObject", privateObject);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
+            _scenarioContext.Add("privateObject", privateObject);
+            _scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            _scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
@@ -431,7 +505,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string p0)
         {
-            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);            
+            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
             Assert.IsTrue(true);
         }
 
@@ -461,30 +535,97 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         SqlServerDatabaseDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
-        }
-
-        PrivateObject GetSqlServerPrivateObject()
-        {
-            return ScenarioContext.Current.Get<PrivateObject>("privateObject");
-        }
-
-        Mock<IManageDatabaseInputViewModel> GetInputViewModel()
-        {
-            return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
+            return _scenarioContext.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return _scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
-        [Then(@"the workflow execution has ""(.*)"" error")]
-        public void ThenTheWorkflowExecutionHasError(string p0)
+        [Given(@"Workflow ""(.*)"" debug outputs as")]
+        [When(@"Workflow ""(.*)"" debug outputs as")]
+        [Then(@"Workflow ""(.*)"" debug outputs as")]
+        public void ThenWorkflowDebugOutputsAs(string workflowName, Table table)
         {
-            Assert.AreEqual(0, GetViewModel().ErrorRegion.Errors.Count);
+            var toolName = "Pr_CitiesGetCountries";
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = Guid.Empty;
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            IDebugState outputState;
+            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
+            {
+                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+            }
+            else
+            {
+                outputState = toolSpecificDebug.FirstOrDefault();
+            }
+
+            if (outputState != null && outputState.Outputs != null)
+            {
+                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                if (SelectResults != null && SelectResults.ToList() != null)
+                {
+                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+                    return;
+                }
+                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+            }
+            Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
+        [Given(@"I click Test")]
+        public void GivenIClickTest()
+        {
+            var sqlServiceGetViewModel = GetViewModel();
+            sqlServiceGetViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+            sqlServiceGetViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
+        }
+
+        [Given(@"I click Sql Generate Outputs")]
+        public void GivenIClickSqlGenerateOutputs()
+        {
+            var sqlServerGetViewModel = GetViewModel();
+            sqlServerGetViewModel.TestInputCommand.Execute(null);
+        }
+
+        [Given(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
+        [When(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
+        [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error")]
+        public void WhenTheWorkflowExecutionHasError(string workflowName, string hasError)
+        {
+            ValidateErrorsAfterExecution(workflowName, hasError, "");
+        }
+
+        [Given(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        [When(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        [Then(@"the workflow ""(.*)"" execution has ""(.*)"" error ""(.*)""")]
+        public void WhenTheWorkflowExecutionHasError(string workflowName, string hasError, string error)
+        {
+            ValidateErrorsAfterExecution(workflowName, hasError, error);
+        }
+
+        [When(@"Sql Workflow ""(.*)"" containing dbTool is executed")]
+        public void WhenSqlWorkflowContainingDbToolIsExecuted(string workflowName)
+        {
+            WorkflowIsExecuted(workflowName);
+        }
+                
+        [AfterScenario("@ExecuteSqlServerWithTimeout")]
+        public void CleanUp()
+        {
+            CleanupForTimeOutSpecs();
+        }
 
         #endregion
     }

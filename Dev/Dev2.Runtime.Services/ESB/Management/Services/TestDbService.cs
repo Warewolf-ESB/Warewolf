@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
 
-                var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
+                var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id) ?? new DbSource
                              {
@@ -59,7 +59,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.ExecuteAction),
                     ResourceName = src.Name,
                     ResourceID = src.Id,
-                    Source = source
+                    Source = source,
+                    CommandTimeout = src.CommandTimeout
                 };
 
                 var services = new ServiceModel.Services();

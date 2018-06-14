@@ -418,7 +418,8 @@ namespace Dev2.Activities.Designers2.Oracle
             {
                 Source = SourceRegion.SelectedSource,
                 Action = ActionRegion.SelectedAction,
-                Inputs = new List<IServiceInput>()
+                Inputs = new List<IServiceInput>(),
+                CommandTimeout = InputArea.CommandTimeout
             };
             foreach (var serviceInput in InputArea.Inputs)
             {
@@ -457,7 +458,7 @@ namespace Dev2.Activities.Designers2.Oracle
             }
         }
 
-        IDbServiceModel Model { get; }
+        public IDbServiceModel Model { get; }
 
         void SetRegionVisibility(bool value)
         {

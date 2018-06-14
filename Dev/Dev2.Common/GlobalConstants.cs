@@ -316,7 +316,7 @@ namespace Dev2.Common
         
         public static readonly string NoLongerSupportedMsg = "This activity is no longer supported";
         
-        public static readonly bool runtimeNamespaceClean = true;
+        public static readonly bool RuntimeNamespaceClean = true;
 
         public static readonly string WarewolfGroup = "Warewolf Administrators";
         public static readonly string SchedulerFolderId = "Warewolf";
@@ -384,8 +384,6 @@ where pn.nspname = 'public';
         public static readonly string PreviousShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string PreviousDev2DotNetDefaultDateTimeFormat = PreviousShortTimePattern + " " + PreviousLongTimePattern;
         public const string PreviousGlobalDefaultNowFormat = "yyyy/MM/dd hh:mm:ss.fff tt";
-
-        static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
 
         public static readonly string AnythingToXmlPathSeperator = ",";
         public static readonly string AnytingToXmlCommaToken = "__COMMA__";
@@ -468,6 +466,7 @@ where pn.nspname = 'public';
         public static readonly int WorkflowWaitTime = 60;
         public static readonly string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
+        public static string CollectUsageStats { get; set; }
         public static string WebServerSslPort { get; set; }
         public static readonly ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 
@@ -532,7 +531,6 @@ where pn.nspname = 'public';
         public static string ApplicationTextHeader { get; } = "text/plain";
         public static string ContentType { get;}= "Content-Type";
         public static string SaveReasonForDeploy { get; } = "Deploy";
-        public static TimeSpan TransactionTimeout { get => transactionTimeout; set => transactionTimeout = value; }
 
         public static readonly string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static readonly string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";

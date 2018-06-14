@@ -262,6 +262,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Timeout of the database command. Default command timeout is set to 30 seconds..
+        /// </summary>
+        public static string CommandTimeoutHelp {
+            get {
+                return ResourceManager.GetString("CommandTimeoutHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.	You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.	Allowed:	Notes and comments will not be executed at run time but will show up in the debug output..
         /// </summary>
         public static string CommentHelpComment {
@@ -358,6 +367,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ConnectControlViewToggleConnectionHelp {
             get {
                 return ResourceManager.GetString("ConnectControlViewToggleConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout of the database connection.
+        /// </summary>
+        public static string ConnectionTimeoutHelp {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutHelp", resourceCulture);
             }
         }
         
