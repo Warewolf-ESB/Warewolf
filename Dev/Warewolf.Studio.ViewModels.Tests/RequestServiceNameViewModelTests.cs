@@ -584,48 +584,48 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Verify(communicationController => communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod,Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
-        public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
-        {
-            //---------------Set up test pack-------------------
+        //[TestMethod,Timeout(60000)]
+        //[Owner("Nkosinathi Sangweni")]
+        //public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
+        //{
+        //    //---------------Set up test pack-------------------
 
-            var envMock = new Mock<IEnvironmentConnection>();
-            var controller = new Mock<ICommunicationController>();
-            var envModel = new Mock<IEnvironmentViewModel>();
-            var selectedItemMock = new Mock<IExplorerViewModel>();
-            var item = new Mock<IExplorerTreeItem>();
-            item.Setup(model => model.ResourceName).Returns("name");
-            item.Setup(model => model.ResourceType).Returns("type");
-            item.Setup(model => model.ResourceName).Returns("name");
-            selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
-            var serverRepo = new Mock<IServerRepository>();
-            var connectionObject = new Mock<IEnvironmentConnection>();
-            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
-            CustomContainer.Register(serverRepo.Object);
-            var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "").Result;
+        //    var envMock = new Mock<IEnvironmentConnection>();
+        //    var controller = new Mock<ICommunicationController>();
+        //    var envModel = new Mock<IEnvironmentViewModel>();
+        //    var selectedItemMock = new Mock<IExplorerViewModel>();
+        //    var item = new Mock<IExplorerTreeItem>();
+        //    item.Setup(model => model.ResourceName).Returns("name");
+        //    item.Setup(model => model.ResourceType).Returns("type");
+        //    item.Setup(model => model.ResourceName).Returns("name");
+        //    selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+        //    var serverRepo = new Mock<IServerRepository>();
+        //    var connectionObject = new Mock<IEnvironmentConnection>();
+        //    serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+        //    CustomContainer.Register(serverRepo.Object);
+        //    var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "").Result;
 
-            controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
-            controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
-            controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
-            controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
-            var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+        //    controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
+        //    controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
+        //    controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
+        //    controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+        //    var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
             
-            lazyCon.SetValue(viewModel, envMock.Object);
-            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+        //    lazyCon.SetValue(viewModel, envMock.Object);
+        //    var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
             
-            lazyComs.SetValue(viewModel, controller.Object);
-            var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+        //    lazyComs.SetValue(viewModel, controller.Object);
+        //    var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
             
-            selectedItem.SetValue(viewModel, selectedItemMock.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(viewModel);
-            //---------------Execute Test ----------------------
+        //    selectedItem.SetValue(viewModel, selectedItemMock.Object);
+        //    //---------------Assert Precondition----------------
+        //    Assert.IsNotNull(viewModel);
+        //    //---------------Execute Test ----------------------
 
-            var canExecute = viewModel.DuplicateCommand.CanExecute(null);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(canExecute);
-        }
+        //    var canExecute = viewModel.DuplicateCommand.CanExecute(null);
+        //    //---------------Test Result -----------------------
+        //    Assert.IsFalse(canExecute);
+        //}
 
 
         [TestMethod,Timeout(60000)]
