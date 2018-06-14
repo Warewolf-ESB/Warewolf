@@ -175,7 +175,6 @@ namespace Warewolf.Launcher
             if (string.IsNullOrEmpty(WebsPath))
             {
                 WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
-                Console.WriteLine("Starting my.warewolf.io from " + WebsPath);
                 if (!File.Exists(WebsPath) && !String.IsNullOrEmpty(ServerPath))
                 {
                     WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
