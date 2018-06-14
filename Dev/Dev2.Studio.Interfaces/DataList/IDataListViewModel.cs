@@ -83,5 +83,6 @@ namespace Dev2.Studio.Interfaces.DataList
         void UpdateHelpDescriptor(string helpText);
 
         void GenerateComplexObjectFromJson(string parentObjectName, string json);
+        void LogCustomTrackerEvent(string eventCategory, string eventName, string text);
     }
 }
