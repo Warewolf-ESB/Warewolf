@@ -93,11 +93,14 @@ namespace Warewolf.Launcher
                             CurrentDirectory = TestsPath;
                         }
                     }
-                    string[] files = Directory.GetFiles(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
-                    string[] folders = Directory.GetDirectories(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
-                    if (files.Length > 0 || folders.Length > 0)
+                    if (Directory.Exists(Path.GetDirectoryName(Path.Combine(CurrentDirectory, FileSpec))))
                     {
-                        FilePath = Path.Combine(CurrentDirectory, FileSpec);
+                        string[] files = Directory.GetFiles(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
+                        string[] folders = Directory.GetDirectories(CurrentDirectory, FileSpec, SearchOption.TopDirectoryOnly);
+                        if (files.Length > 0 || folders.Length > 0)
+                        {
+                            FilePath = Path.Combine(CurrentDirectory, FileSpec);
+                        }
                     }
                 }
                 if (CurrentDirectory != null && CurrentDirectory != "" && (Path.GetFileNameWithoutExtension(CurrentDirectory)) != "\\")
@@ -267,7 +270,11 @@ namespace Warewolf.Launcher
             if (ServiceOutput != "[SC] ControlService FAILED 1062:\r\n\r\nThe service has not been started.\r\n\r\n")
             {
                 Console.WriteLine(ServiceOutput.TrimStart('\n'));
-                Process.GetProcessesByName("Warewolf Server")[0].WaitForExit(WaitForCloseTimeout);
+                var allServerProcesses = Process.GetProcessesByName("Warewolf Server");
+                if (allServerProcesses.Length > 0)
+                {
+                    allServerProcesses[0].WaitForExit(WaitForCloseTimeout);
+                }
             }
             process.StartInfo.Arguments = "/im \"Warewolf Server.exe\" /f";
             process.Start();
