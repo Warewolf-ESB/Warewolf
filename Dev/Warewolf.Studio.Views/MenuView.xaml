@@ -78,6 +78,7 @@
                     Margin="12,0,0,0"
                     HorizontalAlignment="Left"
                     Command="{Binding StartPageCommand}"
+					ToolTip="{x:Static languages:Tooltips.StartPageToolTip}"
                     Style="{StaticResource ButtonTransparentStyle}">
                 <Button.Content>
                     <Image x:Name="LogoImage"
