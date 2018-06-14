@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.TestFramework
         static void SetupFeature()
         {
             ConnectAndLoadServer();
-            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count > EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
+            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count > EXPECTED_NUMBER_OF_RESOURCES, "Not all resources were loaded from local Warewolf server.");
         }
 
         [AfterFeature("StudioTestFramework")]
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [BeforeScenario("StudioTestFramework")]
         public static void SetupScenario()
         {
-            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count > EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
+            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
         }
 
         [AfterScenario("StudioTestFrameworkWithDropboxTools")]
