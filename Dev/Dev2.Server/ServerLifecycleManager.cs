@@ -662,7 +662,6 @@ namespace Dev2
                     Console.ReadLine();
                 }
             }
-
 #if DEBUG
             SetAsStarted();
         }
