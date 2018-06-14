@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.TestFramework
         static void SetupFeature()
         {
             ConnectAndLoadServer();
-            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count > EXPECTED_NUMBER_OF_RESOURCES, "Not all resources were loaded from local Warewolf server.");
+            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
         }
 
         [AfterFeature("StudioTestFramework")]
@@ -101,6 +101,18 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario("StudioTestFramework")]
         public void CleanupTestFramework()
         {
+            if (_environmentModel == null)
+            {
+                ConnectAndLoadServer();
+            }
+            var allValues = MyContext.Values;
+            foreach(var value in allValues)
+            {
+                if (value is ResourceModel resource)
+                {
+                    ((ResourceRepository)_environmentModel.ResourceRepository).DeleteResource(resource);
+                }
+            }
             if (MyContext.TryGetValue("testFramework", out ServiceTestViewModel serviceTest))
             {
                 serviceTest?.Dispose();
