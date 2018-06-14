@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestMinSupportedVersion()
         {
             //arrange
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Version.Parse(version), actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestServerVersion()
         {
             //arrange
@@ -100,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Version.Parse(version), actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsLoading()
         {
             //arrange
@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsLoadingChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void DeployTests_GivenIsSet_ShouldFireOnPropertyChanged()
         {

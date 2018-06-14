@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
 
         #endregion Test initialize
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void SearchViewModel_Constructor_ExpectedValues()
         {
