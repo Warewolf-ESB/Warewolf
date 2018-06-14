@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace Warewolf.Launcher
 {
-    public class WarewolfServerContainerLauncher : IDisposable
+    public class ContainerLauncher : IDisposable
     {
         readonly string _remoteDockerApi;
         string serverContainerID = null;
@@ -21,7 +21,7 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public WarewolfServerContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
+        public ContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
         {
             _remoteDockerApi = remoteDockerApi;
             Hostname = hostname;
