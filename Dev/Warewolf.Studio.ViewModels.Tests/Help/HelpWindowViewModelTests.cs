@@ -40,14 +40,14 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpWindowViewModelNullDefaultViewModel()
         {
             new HelpWindowViewModel(null, _modelMock.Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpWindowViewModelNullModel()
         {
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestHelpText()
         {
             //arrange
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestHelpName()
         {
             //arrange
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestHelpImage()
         {
             //arrange
@@ -100,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreSame(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestHelpModel()
         {
             //act
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreSame(_modelMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCurrentHelpText()
         {
             //arrange
@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreSame(expectedValueMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestWebPageVisible()
         {
             //arrange
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestUpdateHelpTextEmpty()
         {
             //act
@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.IsFalse(string.IsNullOrWhiteSpace(_target.HelpText));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestUpdateHelpTextNonEmpty()
         {
             //act
@@ -169,7 +169,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.IsTrue(_target.HelpText.Contains("someText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOnHelpTextReceived()
         {
             //arrange
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreEqual(expectedName, _target.CurrentHelpText.Name);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestOnHelpTextReceivedException()
         {
@@ -196,7 +196,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreSame(_defaultViewModelMock.Object, _target.CurrentHelpText);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDispose()
         {
             //arrange

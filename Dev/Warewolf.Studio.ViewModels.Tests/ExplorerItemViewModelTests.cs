@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRollbackCommand()
         {
             _target.ResourceId = Guid.NewGuid();
@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerTreeItemMock.VerifySet(it => it.ResourceName = outputDisplayName);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeployCommand()
         {
             //arrange
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             x => x.All(xitem => (_target.AsList().Union(new[] { _target })).Contains(xitem)))));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestLostFocusCommand()
         {
             //arrange
@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsRenaming);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewServerCommand()
         {
             //arrange
@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewServerSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewSqlServerSourceCommand()
         {
             //arrange
@@ -149,7 +149,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewSqlServerSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewMySqlSourceCommand()
         {
             //arrange
@@ -166,14 +166,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewMySqlSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsMergeVisibleFalse()
         {
             //assert
             Assert.IsFalse(_target.IsMergeVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsMergeVisibleTrue()
         {
             _target.IsSaveDialog = false;
@@ -200,7 +200,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsMergeVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewPostgreSqlSourceCommand()
         {
             //arrange
@@ -217,7 +217,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewPostgreSqlSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewOracleSourceCommand()
         {
             //arrange
@@ -234,7 +234,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewOracleSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewOdbcSourceCommand()
         {
             //arrange
@@ -251,7 +251,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewOdbcSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewPluginSourceCommand()
         {
             //arrange
@@ -268,7 +268,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewPluginSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewWebSourceCommand()
         {
             //arrange
@@ -285,7 +285,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewWebSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewEmailSourceCommand()
         {
             //arrange
@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewEmailSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewExchangeSourceCommand()
         {
             //arrange
@@ -319,7 +319,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewExchangeSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewRabbitMqSourceCommand()
         {
             //arrange
@@ -336,7 +336,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewRabbitMQSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateNewTestCommand()
         {
             //arrange
@@ -354,7 +354,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.CreateTest(_target.ResourceId));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewSharepointSourceCommand()
         {
             //arrange
@@ -371,7 +371,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewSharepointSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewDropboxSourceCommand()
         {
             //arrange
@@ -388,7 +388,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewDropboxSource(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNewServiceCommand()
         {
             //arrange
@@ -405,7 +405,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewService(_target.ResourcePath));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestContextMenuDebugCommand()
         {
             //arrange
@@ -420,7 +420,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.Debug());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDebugStudioCommand()
         {
             //arrange
@@ -436,7 +436,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.StudioDebug(_target.ResourceId, _target.Server));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void DebugBrowserCommand()
         {
             //arrange
@@ -452,7 +452,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.BrowserDebug(_target.ResourceId, _target.Server));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void ScheduleCommand()
         {
             //arrange
@@ -468,7 +468,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.NewSchedule(_target.ResourceId));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void RunAllTestsCommand()
         {
             //arrange
@@ -484,7 +484,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.RunAllTests(null, _target.ResourceId));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestViewSwaggerCommand()
         {
             //arrange
@@ -501,7 +501,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.ViewSwagger(_target.ResourceId, _target.Server));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestApisJsonCommand()
         {
             //arrange
@@ -523,7 +523,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.ViewApisJson(_target.ResourcePath, new Uri("http://localhost:3142")));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOpenCommand()
         {
             //arrange
@@ -540,7 +540,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server.EnvironmentID, _target.Server));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDebugCommand()
         {
             //arrange
@@ -555,7 +555,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.Debug());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRenameCommand()
         {
             //arrange
@@ -569,7 +569,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsRenaming);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestShowDependenciesCommand()
         {
             //arrange
@@ -583,7 +583,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.ShowDependencies(_target.ResourceId, _target.Server, _target.IsSource));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestShowVersionHistory()
         {
             //arrange
@@ -602,7 +602,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.AreVersionsVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ExplorerItemViewModel_ShowVersionHistory")]
         public void ExplorerItemViewModel_ShowVersionHistory_HasChildren_SetPermissions()
@@ -649,7 +649,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canViewresource3);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteCommandResourceTypeVersion()
         {
             //arrange
@@ -670,7 +670,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteCommandResourceTypeVersionUserDeclined()
         {
             //arrange
@@ -689,7 +689,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteCommandResourceTypeServerSourceDeleteSuccess()
         {
             //arrange
@@ -714,7 +714,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>(), It.IsAny<bool>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteCommandResourceTypeServerDeleteSuccess()
         {
             //arrange
@@ -740,7 +740,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>(), It.IsAny<bool>()));
         }
 
-        //[TestMethod]
+        //[TestMethod,Timeout(60000)]
         //public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
         //{
         //    //arrange
@@ -766,7 +766,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         //}
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOpenVersionCommandResourceTypeVersion()
         {
             //arrange
@@ -786,7 +786,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpandCommandResourceTypeFolderSingleClick()
         {
             //arrange
@@ -801,7 +801,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsExpanded);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpandCommandResourceTypeFolderDoubleClick()
         {
             //arrange
@@ -816,7 +816,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsExpanded);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpandCommandResourceTypeWorkflowServiceSingleClick()
         {
             //arrange
@@ -831,7 +831,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsExpanded);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpandCommandResourceTypeWorkflowServiceDoubleClick()
         {
             //arrange
@@ -846,7 +846,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsExpanded);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateFolderCommandResourceTypeFolder()
         {
             _serverMock.Setup(server => server.UserPermissions)
@@ -904,7 +904,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerTooltips.Verify(it => it.SetSourceTooltips(_target.CanCreateSource));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanShowServerVersion()
         {
             //arrange
@@ -917,7 +917,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanShowServerVersion);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateFolderCommandResourceTypeDbService()
         {
             //arrange
@@ -934,7 +934,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.Children.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteVersionCommand()
         {
             //arrange
@@ -954,7 +954,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteFolderCommandExpectException()
         {
             //arrange
@@ -989,7 +989,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test equality
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEquals()
         {
             var otherSameId = new ExplorerItemViewModel(_serverMock.Object, _explorerTreeItemMock.Object, a => { },
@@ -1030,7 +1030,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 #pragma warning restore 252,253
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestHashcode()
         {
             _target.ResourceId = Guid.NewGuid();
@@ -1043,21 +1043,21 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExecuteToolTipGet()
         {
             //assert
             Assert.IsNotNull(_target.ExecuteToolTip);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEditToolTipGet()
         {
             //assert
             Assert.IsNotNull(_target.EditToolTip);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDropGetFolder()
         {
             //arrange
@@ -1070,7 +1070,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDropGetOther()
         {
             //arrange
@@ -1082,7 +1082,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDropSet()
         {
             //arrange
@@ -1099,7 +1099,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isCanDropChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDragGetFolder()
         {
             //arrange
@@ -1112,7 +1112,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCommands()
         {
             //arrange
@@ -1154,7 +1154,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canViewApisJsonCommand);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDragGetOther()
         {
             //arrange
@@ -1166,7 +1166,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanDragSet()
         {
             //arrange
@@ -1183,7 +1183,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isCanDragChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsExpanderVisibleNoChildren()
         {
             //arrange
@@ -1194,7 +1194,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(isExpanderVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsExpanderVisibleChildrenAreVersionsVisible()
         {
             //arrange
@@ -1210,7 +1210,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(isExpanderVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsExpanderVisibleChildrenAreVersionsInvisible()
         {
             //arrange
@@ -1225,7 +1225,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isExpanderVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAreVersionsVisibleTrue()
         {
             //arrange
@@ -1270,7 +1270,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isChildrenChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeployIsResourceCheckedDisabled()
         {
             //arrange
@@ -1291,7 +1291,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.CanDeploy, _target.IsResourceCheckedEnabled);
             Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckboxViewPermissionError);
         }
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeployIsResourceCheckedEnabled_GivenView_ThenChangedToAdministrator()
         {
             //arrange
@@ -1313,7 +1313,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeployIsResourceCheckedEnabled_GivenAdministrator_ThenChangedToView()
         {
             //arrange
@@ -1335,7 +1335,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAreVersionsVisibleFalse()
         {
             //arrange
@@ -1357,7 +1357,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isChildrenChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetIsExpanderVisible()
         {
             //arrange
@@ -1370,7 +1370,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isExpanderVisibleChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestChecked()
         {
             //arrange
@@ -1380,7 +1380,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Checked);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsRenaming()
         {
             //arrange
@@ -1396,7 +1396,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsRenaming);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestResourceNameWithoutSlashes()
         {
             //arrange
@@ -1423,7 +1423,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Rename(_target, newName));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestResourceNameWithSlashes()
         {
             //arrange
@@ -1450,7 +1450,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Rename(It.IsAny<ExplorerItemViewModel>(), It.IsAny<string>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestResourceNameDuplicate()
         {
             //arrange
@@ -1480,7 +1480,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.ShowPopup(It.IsAny<IPopupMessage>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivityName()
         {
             //assert
@@ -1488,7 +1488,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ActivityName.StartsWith("Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestChildrenCount()
         {
             //arrange
@@ -1529,7 +1529,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDeleteClosesWindow()
         {
             //arrange
@@ -1549,7 +1549,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(a => a.CloseResource(It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDispose()
         {
             //arrange
@@ -1564,7 +1564,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.Verify(a => a.Dispose());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilter()
         {
             //arrange
@@ -1587,7 +1587,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMock.Verify(it => it.Filter("someFilter"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterNoText()
         {
             //arrange
@@ -1610,7 +1610,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterVersion()
         {
             //arrange
@@ -1640,7 +1640,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMock.Verify(it => it.Filter("someFilter"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterInvisible()
         {
             //arrange
@@ -1663,7 +1663,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMock.Verify(it => it.Filter("1"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterInvisibleNoChildren()
         {
             //arrange
@@ -1686,7 +1686,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMock.Verify(it => it.Filter("1"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRemoveChild()
         {
             //arrange
@@ -1707,7 +1707,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAddChild()
         {
             //arrange
@@ -1733,7 +1733,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectItem()
         {
             //arrange
@@ -1758,7 +1758,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childDifferentId.Verify(it => it.SelectItem(id, foundAction));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateNewFolderResourceTypeDbService()
         {
             //arrange
@@ -1775,7 +1775,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.Children.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateNewFolderResourceTypeFolder()
         {
             //arrange
@@ -1826,7 +1826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(createdFolder.IsRenaming);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateNewFolderResourceTypeFolderNewFolder1()
         {
             //arrange
@@ -1848,7 +1848,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //_explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder 1", It.IsAny<Guid>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestApply()
         {
             //arrange
@@ -1864,7 +1864,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.Verify(it => it.Apply(It.IsAny<Action<IExplorerItemViewModel>>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterChildrenFound()
         {
             //arrange
@@ -1883,7 +1883,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterChildrenEmpty()
         {
             //arrange
@@ -1901,7 +1901,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsVisible);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAsList()
         {
             //arrange
@@ -1919,7 +1919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result.Contains(child2.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAsListChildrenNull()
         {
             //arrange
@@ -1931,7 +1931,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetPermissionsSameResource()
         {
             //arrange
@@ -1955,7 +1955,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanCreateSource);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestNonrPermissionsSameResource()
         {
             //arrange
@@ -1979,7 +1979,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.CanCreateSource);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetPermissions_ContributePermission_AllowsMove()
         {
             //arrange
@@ -2002,7 +2002,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanCreateSource);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetPermissionsServerPermission()
         {
             //arrange
@@ -2027,7 +2027,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanCreateSource);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanViewSwaggerIsVisible()
         {
             //arrange
@@ -2044,7 +2044,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanViewApisJson);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanViewSwaggerIsNotVisible()
         {
             //arrange
@@ -2060,7 +2060,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanViewApisJson);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanViewMergeIsVisible()
         {
             //arrange
@@ -2085,7 +2085,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanMerge);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanViewMergeIsNotVisible()
         {
             //arrange
@@ -2100,7 +2100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.CanMerge);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCanViewApisJsonIsVisible()
         {
             //arrange
@@ -2116,7 +2116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.CanViewApisJson);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetPermissionsServerPermissionFolder()
         {
             //arrange
@@ -2130,7 +2130,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.CanExecute);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSetPermissionsIsDeploy()
         {
             //arrange
@@ -2144,7 +2144,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.CanExecute);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAddSibling()
         {
             //arrange
@@ -2155,7 +2155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerTreeItemMock.Verify(it => it.AddChild(siblingMock.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async System.Threading.Tasks.Task TestMoveAlreadyExist()
         {
             //arrange
@@ -2175,7 +2175,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.Verify(it => it.ShowPopup(It.IsAny<IPopupMessage>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async System.Threading.Tasks.Task TestMoveToFolderExists()
         {
             //arrange
@@ -2206,7 +2206,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
         }
         //
-        //        [TestMethod]
+        //        [TestMethod,Timeout(60000)]
         //        public async System.Threading.Tasks.Task TestMoveToFolderNotExists()
         //        {
         //            //arrange
@@ -2237,7 +2237,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         //            _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
         //        }
         //
-        //        [TestMethod]
+        //        [TestMethod,Timeout(60000)]
         //        public async System.Threading.Tasks.Task TestMoveToLtFolder()
         //        {
         //            //arrange
@@ -2265,7 +2265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         //            Assert.IsTrue(result);
         //        }
         ////
-        //        [TestMethod]
+        //        [TestMethod,Timeout(60000)]
         //        public async System.Threading.Tasks.Task TestMoveParentNull()
         //        {
         //            //arrange
@@ -2294,7 +2294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         //            Assert.IsTrue(result);
         //        }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async System.Threading.Tasks.Task TestMoveException()
         {
             //arrange

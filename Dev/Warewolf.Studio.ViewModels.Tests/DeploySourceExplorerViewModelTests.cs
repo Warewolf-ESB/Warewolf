@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEnvironments()
         {
             //arrange
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(env);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestPreselected()
         {
             //arrange
@@ -116,7 +116,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             secondPreselectedItemMock.VerifySet(it => it.IsResourceChecked = true);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedItemsEmpty()
         {
             //arrange
@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!actual.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedItemsNotEmpty()
         {
             //arrange
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(actual.Contains(child.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedItemsSet()
         {
             //arrange
@@ -181,7 +181,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child3.VerifySet(it => it.IsSelected = true, Times.Never);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedItemsSetEnvironmentNull()
         {
             //arrange
@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child3.VerifySet(it => it.IsSelected = true, Times.Never);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestServerVersion()
         {
             //arrange
@@ -224,7 +224,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test properties
 
         #region Test methods
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedEnvironmentChanged()
         {
             //arrange
@@ -268,7 +268,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.VerifySet(it => it.CanDrag = false);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async Task TestOtherServerСonnect()
         {
             //arrange
@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, _target.Environments.Count);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEnvironmentSelectAll()
         {
             //arrange
@@ -311,7 +311,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _deployStatsViewerViewModel.Verify(it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(list => list.Count == 1 && list.Contains(explorerItemViewModelResourceCheckedMock.Object))));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCalculateOnNullExplorerItems()
         {
             //arrange
@@ -334,7 +334,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(0, deployStatsViewerViewModel.Unknown);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectActionFolder()
         {
             //arrange
@@ -354,7 +354,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectActionParentFolder()
         {
             //arrange
@@ -376,7 +376,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectActionParentServerSource()
         {
             //arrange

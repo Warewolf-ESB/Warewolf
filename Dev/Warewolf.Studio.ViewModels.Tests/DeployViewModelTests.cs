@@ -22,7 +22,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class DeployViewModelTests
     {
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsFirst_ExprecErrors()
@@ -33,7 +33,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsSecond_ExprecErrors()
@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsThird_ExprecErrors()
@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeployViewModel_Ctor_NullParamsFourth_ExprecErrors()
@@ -71,7 +71,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         Mock<IDeployDestinationExplorerViewModel> _deployDestinationExplorerViewModel;
         Mock<IDeploySourceExplorerViewModel> _deploySourceExplorerViewModel;
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
         public void DeploySourceExplorerViewModel_Ctor_Nulls_ExpectErrors()
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void DeploySourceExplorerViewModel_Ctor_Nulls_ExpectSuccess()
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void DeploySourceExplorerViewModel_Updates_AllItemsToHaveNoContextMenuFunctions()
@@ -138,7 +138,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void DeployViewModel_Version_Mistmatch()
         {
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             deployViewModel.Verify(model => model.DeployCommand.Execute(null), Times.AtLeast(1));
         }
         
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Given_SameItem_OnSourceAndDestination_DeployStatsViewerViewModel_CheckDestinationPersmisions_ShouldBeFalse()
         {
@@ -207,7 +207,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(items.First().CanDeploy);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Given_NewItem_OnSourceAndDestination_DeployStatsViewerViewModel_CheckDestinationPersmisions_ShouldBeTrue()
         {
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(stat.NewResources, 1);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {

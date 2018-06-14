@@ -51,14 +51,14 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullLocalModel()
         {
             new ToolboxViewModel(null, _remoteModelMock.Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullRemoteModel()
         {
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestClearFilterCommand()
         {
             //act
@@ -84,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledIsDesignerFocusedfalse()
         {
             //arrange
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledLocalRemoteDisabled()
         {
             //arrange
@@ -112,7 +112,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledLocalEnabledRemoteDisabled()
         {
             //arrange
@@ -127,7 +127,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledLocalRemoteEnabled()
         {
             //arrange
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsDesignerFocused()
         {
             //arrange
@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("IsEnabled"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedTool()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("SelectedTool"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchTerm()
         {
             //arrange
@@ -192,7 +192,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterEmptySearchString()
         {
             //arrange
@@ -206,7 +206,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchTerm));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilter()
         {
             //arrange
@@ -256,7 +256,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterCategory()
         {
             //arrange
@@ -307,7 +307,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilterTag()
         {
             //arrange
@@ -358,7 +358,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_changedProperties.Contains("Tools"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestClearFilter()
         {
             //arrange
@@ -406,7 +406,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsTrue(_target.BackedUpTools.Any(it => it.Tool == toolDescriptorMockNotContainingInLocal2.Object && !it.IsEnabled));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void Test_remoteModel_OnserverDisconnected()
         {
             //arrange
@@ -420,7 +420,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Contains("IsVisible");
         }
         
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void Test_localModel_OnserverDisconnected()
         {
             //arrange
@@ -437,7 +437,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _changedProperties.Contains("IsVisible");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDispose()
         {
             //arrange
@@ -452,7 +452,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(_changedProperties.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestUpdateHelpDescriptor()
         {
             //arrange
