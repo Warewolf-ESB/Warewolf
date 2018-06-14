@@ -331,7 +331,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine(ExtractTar(reader.BaseStream));
+                        Console.WriteLine("Recovered server container log file: " + ExtractTar(reader.BaseStream));
                     }
                 }
             }
