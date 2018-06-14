@@ -20,17 +20,6 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class UpdateProxyTest
     {
-        /// <summary>
-        /// This test checks that CollectUsageStats is set to False on develop
-        /// </summary>
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("RevulyticsCollectUsageStats")]
-        public void RevulyticsCollectUsageStatsForStudioIsFalseTest()
-        {
-            Assert.AreEqual(false, AppUsageStats.CollectUsageStats);
-        }
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpdateProxyTest_Save")]
