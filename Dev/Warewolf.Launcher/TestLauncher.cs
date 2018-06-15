@@ -48,6 +48,7 @@ namespace Warewolf.Launcher
         public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
         public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
         public int RetryCount { get; internal set; } = 0;
+        public bool StartServerAsConsole { get; internal set; } = false;
 
         public string ServerExeName;
         public string StudioExeName;
@@ -58,6 +59,7 @@ namespace Warewolf.Launcher
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
         ContainerLauncher ciRemoteContainerLauncher;
+        private string RunServerWithDotcoverScript;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -256,23 +258,26 @@ namespace Warewolf.Launcher
                 Console.WriteLine(Output);
             }
 
-            //Stop Server
-            var stopServerService = new Process();
-            stopServerService.StartInfo.UseShellExecute = false;
-            stopServerService.StartInfo.RedirectStandardOutput = true;
-            stopServerService.StartInfo.RedirectStandardError = true;
-            stopServerService.StartInfo.FileName = "sc.exe";
-            stopServerService.StartInfo.Arguments = "stop \"Warewolf Server\"";
-            stopServerService.Start();
-            stopServerService.WaitForExit();
-            var ServiceOutput = stopServerService.StandardOutput.ReadToEnd() + stopServerService.StandardError.ReadToEnd();
-            if (ServiceOutput != "[SC] ControlService FAILED 1062:\r\n\r\nThe service has not been started.\r\n\r\n")
+            if (!StartServerAsConsole)
             {
-                Console.WriteLine(ServiceOutput.TrimStart('\n'));
-                var allServerProcesses = Process.GetProcessesByName("Warewolf Server");
-                if (allServerProcesses.Length > 0)
+                //Stop Server
+                var stopServerService = new Process();
+                stopServerService.StartInfo.UseShellExecute = false;
+                stopServerService.StartInfo.RedirectStandardOutput = true;
+                stopServerService.StartInfo.RedirectStandardError = true;
+                stopServerService.StartInfo.FileName = "sc.exe";
+                stopServerService.StartInfo.Arguments = "stop \"Warewolf Server\"";
+                stopServerService.Start();
+                stopServerService.WaitForExit();
+                var ServiceOutput = stopServerService.StandardOutput.ReadToEnd() + stopServerService.StandardError.ReadToEnd();
+                if (ServiceOutput != "[SC] ControlService FAILED 1062:\r\n\r\nThe service has not been started.\r\n\r\n")
                 {
-                    allServerProcesses[0].WaitForExit(WaitForCloseTimeout);
+                    Console.WriteLine(ServiceOutput.TrimStart('\n'));
+                    var allServerProcesses = Process.GetProcessesByName("Warewolf Server");
+                    if (allServerProcesses.Length > 0)
+                    {
+                        allServerProcesses[0].WaitForExit(WaitForCloseTimeout);
+                    }
                 }
             }
             process.StartInfo.Arguments = "/im \"Warewolf Server.exe\" /f";
@@ -1037,23 +1042,25 @@ namespace Warewolf.Launcher
                 throw new ArgumentException($"Invalid resource type. Folder not found {resourcesPath}");
             }
 
-            var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
-            if (!ApplyDotCover)
+            if (!StartServerAsConsole)
             {
-                if (!ServerService)
+                var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
+                if (!ApplyDotCover)
                 {
-                    Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    if (!ServerService)
+                    {
+                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Configuring service to " + ServerPath);
+                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Configuring service to " + ServerPath);
-                    Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
-                }
-            }
-            else
-            {
-                var ServerBinDir = Path.GetDirectoryName(ServerPath);
-                var RunnerXML = @"<AnalyseParams>
+                    var ServerBinDir = Path.GetDirectoryName(ServerPath);
+                    var RunnerXML = @"<AnalyseParams>
     <TargetExecutable>" + ServerPath + @"</TargetExecutable>
     <Output>" + Environment.ExpandEnvironmentVariables("%ProgramData%") + @"\Warewolf\Server Log\dotCover.dcvr</Output>
     <Scope>
@@ -1075,29 +1082,30 @@ namespace Warewolf.Launcher
     </Filters>
 </AnalyseParams>";
 
-                if (string.IsNullOrEmpty(JobName))
-                {
-                    if (ProjectName != "")
+                    if (string.IsNullOrEmpty(JobName))
                     {
-                        JobName = ProjectName;
+                        if (ProjectName != "")
+                        {
+                            JobName = ProjectName;
+                        }
+                        else
+                        {
+                            JobName = "Manual Tests";
+                        }
+                    }
+                    var DotCoverRunnerXMLPath = TestsResultsPath + "\\Server DotCover Runner.xml";
+                    CopyOnWrite(DotCoverRunnerXMLPath);
+                    File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
+                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestsResultsPath + "\\ServerDotCover.log\\\"";
+                    if (!ServerService)
+                    {
+                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
                     }
                     else
                     {
-                        JobName = "Manual Tests";
+                        Console.WriteLine("Configuring service to " + RunServerWithDotcoverScript);
+                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\"");
                     }
-                }
-                var DotCoverRunnerXMLPath = TestsResultsPath + "\\Server DotCover Runner.xml";
-                CopyOnWrite(DotCoverRunnerXMLPath);
-                File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                var BinPathWithDotCover = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestsResultsPath + "\\ServerDotCover.log\\\"";
-                if (!ServerService)
-                {
-                    Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + BinPathWithDotCover + "\" start= demand");
-                }
-                else
-                {
-                    Console.WriteLine("Configuring service to " + BinPathWithDotCover);
-                    Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + BinPathWithDotCover + "\"");
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
@@ -1130,23 +1138,38 @@ namespace Warewolf.Launcher
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             Console.WriteLine($"Deploying New resources from {ServerFolderPath}\\Resources - {ResourcesType}\\*");
             RecursiveFolderCopy(Path.Combine(ServerFolderPath, $"Resources - {ResourcesType}"), Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"));
-            try
-            {
-                ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine(e.Message);
-            }
 
-            var process = StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
-            var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-            if (!(Output.EndsWith("RUNNING ")))
+            if (!StartServerAsConsole)
             {
-                Console.WriteLine(Output);
-                process.StartInfo.Arguments = "start \"Warewolf Server\"";
-                process.Start();
-                process.WaitForExit();
+                try
+                {
+                    ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                var process = StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
+                var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+                if (!(Output.EndsWith("RUNNING ")))
+                {
+                    Console.WriteLine(Output);
+                    process.StartInfo.Arguments = "start \"Warewolf Server\"";
+                    process.Start();
+                    process.WaitForExit();
+                }
+            }
+            else
+            {
+                if (!ApplyDotCover)
+                {
+                    Process.Start(ServerPath);
+                }
+                else
+                {
+                    Process.Start(RunServerWithDotcoverScript);
+                }
             }
 
             WaitForServerStart(ServerFolderPath);
