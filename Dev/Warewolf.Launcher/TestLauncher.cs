@@ -1414,16 +1414,16 @@ namespace Warewolf.Launcher
             throw new Exception($"Cannot find test assemblies at {TestAssemblyFileSpecs}. Make sure your test assemblies are compiled and try again.");
         }
 
-        public string ScreenRecordingTestSettingsFile(TestLauncher build, string JobName)
+        public string ScreenRecordingTestSettingsFile(string JobName)
         {
             var TestSettingsFile = "";
-            if (build.RecordScreen != null)
+            if (RecordScreen != null)
             {
                 var TestSettingsId = Guid.NewGuid();
 
                 // Create test settings.
-                TestSettingsFile = build.TestsResultsPath + "\\" + JobName + ".testsettings";
-                build.CopyOnWrite(TestSettingsFile);
+                TestSettingsFile = TestsResultsPath + "\\" + JobName + ".testsettings";
+                CopyOnWrite(TestSettingsFile);
                 File.WriteAllText(TestSettingsFile, @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestSettings id=""" + TestSettingsId + @""" name=""JobName"" xmlns=""http://microsoft.com/schemas/VisualStudio/TeamTest/2010"">
     <Description>Run " + JobName + @" With Screen Recording.</Description>
@@ -1728,6 +1728,281 @@ namespace Warewolf.Launcher
             var MergedSnapshotFileName = JobName.Split(',')[0];
             MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
             MergeDotCoverSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover");
+        }
+
+        public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfUnitTestJobs));
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllServerTestJobs(int startIndex, int NumberOfServerTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfServerTestJobs));
+            ResourcesType = "ServerTests";
+            DoServerStart = "true";
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllReleaseResourcesTestJobs(int startIndex, int NumberOfReleaseResourcesTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfReleaseResourcesTestJobs));
+            ResourcesType = "Release";
+            DoServerStart = "true";
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllDesktopUITestJobs(int startIndex, int NumberOfDesktopUITestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfDesktopUITestJobs));
+            ResourcesType = "UITests";
+            DoStudioStart = "true";
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllWebUITestJobs(int startIndex, int NumberOfWebUITestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfWebUITestJobs));
+            DomywarewolfioStart = "true";
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllLoadTestJobs(int startIndex, int NumberOfLoadTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfLoadTestJobs));
+            ResourcesType = "Load";
+            DoStudioStart = "true";
+            RunTestJobs();
+            CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunTestJobs()
+        {
+            CleanupServerStudio(true);
+
+            // Unpack jobs
+            var JobNames = new List<string>();
+            var JobAssemblySpecs = new List<string>();
+            var JobCategories = new List<string>();
+            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory) && string.IsNullOrEmpty(Cleanup))
+            {
+                foreach (var Job in JobName.Split(','))
+                {
+                    var TrimJobName = Job.TrimEnd('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ');
+                    if (JobSpecs.ContainsKey(TrimJobName))
+                    {
+                        JobNames.Add(TrimJobName);
+                        if (JobSpecs[TrimJobName].Item2 == null)
+                        {
+                            JobAssemblySpecs.Add(JobSpecs[TrimJobName].Item1);
+                            JobCategories.Add("");
+                        }
+                        else
+                        {
+                            JobAssemblySpecs.Add(JobSpecs[Job].Item1);
+                            JobCategories.Add(JobSpecs[Job].Item2);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unrecognized Job " + Job + " was ignored from the run");
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(ProjectName))
+            {
+                JobNames.Add(ProjectName);
+                JobAssemblySpecs.Add(ProjectName);
+                if (!string.IsNullOrEmpty(Category))
+                {
+                    JobCategories.Add(Category);
+                }
+                else
+                {
+                    JobCategories.Add("");
+                }
+            }
+            if (!string.IsNullOrEmpty(VSTestPath) && !File.Exists(VSTestPath))
+            {
+                if (File.Exists(VSTestPath.Replace("Enterprise", "Professional")))
+                {
+                    VSTestPath = VSTestPath.Replace("Enterprise", "Professional");
+                }
+                if (File.Exists(VSTestPath.Replace("Enterprise", "Community")))
+                {
+                    VSTestPath = VSTestPath.Replace("Enterprise", "Community");
+                }
+            }
+            if (!string.IsNullOrEmpty(MSTestPath) && !(File.Exists(MSTestPath)))
+            {
+                if (File.Exists(MSTestPath.Replace("Enterprise", "Professional")))
+                {
+                    MSTestPath = MSTestPath.Replace("Enterprise", "Professional");
+                }
+                if (File.Exists(MSTestPath.Replace("Enterprise", "Community")))
+                {
+                    MSTestPath = MSTestPath.Replace("Enterprise", "Community");
+                }
+            }
+            if (!File.Exists(VSTestPath) && !(File.Exists(MSTestPath)))
+            {
+                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
+            }
+
+            if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
+            {
+                throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+            }
+
+            if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))
+            {
+                File.Move(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"), TestsResultsPath);
+                Console.WriteLine("Removed loose TRX files from VS install directory.");
+            }
+
+            if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
+            {
+                InstallServer();
+            }
+
+            if (!string.IsNullOrEmpty(MSTest))
+            {
+                MSTestReadPlaylist();
+            }
+            else
+            {
+                VSTestReadPlaylist();
+            }
+
+            for (var i = 0; i < JobName.Split(',').Count(); i++)
+            {
+                var JobName = JobNames[i].ToString();
+                var ProjectSpec = JobAssemblySpecs[i].ToString();
+                var TestCategories = JobCategories[i].ToString();
+                var TestAssembliesList = "";
+                var TestAssembliesDirectories = new List<string>();
+                if (!TestsPath.EndsWith("\\"))
+                {
+                    TestsPath += "\\";
+                }
+                foreach (var Project in ProjectSpec.Split(','))
+                {
+                    Tuple<string, List<string>> UnPackTestAssembliesListAndDirectories = ResolveTestAssemblyFileSpecs(TestsPath + Project + ".dll");
+                    TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
+                    if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
+                    {
+                        TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
+                    }
+                    if (TestAssembliesList == "")
+                    {
+                        UnPackTestAssembliesListAndDirectories = ResolveProjectFolderSpecs(TestsPath + Project);
+                        TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
+                        if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
+                        {
+                            TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(TestAssembliesList) || string.IsNullOrEmpty(TestAssembliesList))
+                {
+                    throw new Exception("Cannot find any " + ProjectSpec + " project folders or assemblies at " + TestsPath + ".");
+                }
+
+                // Setup for screen recording
+                var TestSettingsFile = ScreenRecordingTestSettingsFile(JobName);
+
+                string TestRunnerPath;
+                if (string.IsNullOrEmpty(MSTest))
+                {
+                    TestRunnerPath = VSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
+                }
+                else
+                {
+                    TestRunnerPath = MSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestsResultsPath);
+                }
+
+                //Run Tests
+                var TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+
+                //Re-try Failures
+                for (var count = 0; count < RetryCount; count++)
+                {
+                    RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                }
+            }
+            if (ApplyDotCover && JobName.Split(',').Count() > 1)
+            {
+                MergeDotCoverSnapshots();
+            }
+        }
+
+        void MSTestReadPlaylist()
+        {
+            if (string.IsNullOrEmpty(TestList))
+            {
+                foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
+                {
+                    XmlDocument playlistContent = new XmlDocument();
+                    playlistContent.Load(playlistFile);
+                    if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
+                    {
+                        foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
+                        {
+                            TestList += "," + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                        }
+                    }
+                    else
+                    {
+                        if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
+                        {
+                            TestList = " /Tests:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
+                        }
+                    }
+                }
+                if (TestList.StartsWith(","))
+                {
+                    TestList = TestList.Replace("^.", " /Tests:");
+                }
+            }
+        }
+
+        void VSTestReadPlaylist()
+        {
+            if (string.IsNullOrEmpty(TestList))
+            {
+                foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
+                {
+                    XmlDocument playlistContent = new XmlDocument();
+                    playlistContent.Load(playlistFile);
+                    if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
+                    {
+                        foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
+                        {
+                            TestList += " /test:" + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                        }
+                    }
+                    else
+                    {
+                        if (playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
+                        {
+                            TestList = " /test:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
+                        }
+                    }
+                }
+            }
         }
     }
 }
