@@ -262,12 +262,7 @@ namespace Dev2.Services.Sql
 
         public void Connect(string connectionString)
         {
-            if (!connectionString.Contains("SslMode"))
-            {
-                connectionString += ";SslMode=none";
-            }
-            _connection = (MySqlConnection)_factory.CreateConnection(connectionString);
-            
+            _connection = (MySqlConnection)_factory.CreateConnection(connectionString);            
             _connection.Open();
         }
 
