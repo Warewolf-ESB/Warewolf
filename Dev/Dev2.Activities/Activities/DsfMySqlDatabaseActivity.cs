@@ -21,12 +21,11 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
         public DsfMySqlDatabaseActivity()
         {
             Type = "MySQL Database";
             DisplayName = "MySQL Database";
-            CommandTimeout = 30;
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -81,8 +80,12 @@ namespace Dev2.Activities
             var databaseServiceExecution = new DatabaseServiceExecution(dataObject)
             {
                 ProcedureName = ProcedureName,
-                CommandTimeout = CommandTimeout
+                
             };
+            if (CommandTimeout != null)
+            {
+                databaseServiceExecution.CommandTimeout = CommandTimeout.Value;
+            }            
             ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);

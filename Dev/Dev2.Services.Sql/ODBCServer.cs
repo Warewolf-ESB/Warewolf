@@ -38,7 +38,7 @@ namespace Dev2.Services.Sql
             _factory = new ODBCFactory();
         }
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
         public ODBCServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
         {
             _factory = factory;

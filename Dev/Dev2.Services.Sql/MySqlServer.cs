@@ -23,7 +23,7 @@ namespace Dev2.Services.Sql
 
         public string ConnectionString => _connection?.ConnectionString;
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 

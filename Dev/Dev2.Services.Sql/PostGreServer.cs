@@ -21,7 +21,7 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
         public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
