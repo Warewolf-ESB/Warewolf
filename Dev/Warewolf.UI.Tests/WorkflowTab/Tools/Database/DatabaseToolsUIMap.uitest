@@ -304,6 +304,19 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
+                                                                    <UIObject ControlType="Edit" Id="CommandTimeoutTextBoEdit" FriendlyName="CommandTimeoutTextBox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">CommandTimeoutTextBox</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
                                                                     <UIObject ControlType="Button" Id="NewSourceButton" FriendlyName="New" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
