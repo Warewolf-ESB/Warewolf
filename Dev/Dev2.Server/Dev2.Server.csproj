@@ -523,8 +523,9 @@ if not exist "$(TargetDir)Warewolf.COMIPC.exe" xcopy /Y "$(SolutionDir)Warewolf.
 if "$(ConfigurationName)"=="Debug" if not exist "$(TargetDir)Warewolf.COMIPC.pdb" xcopy /Y "$(SolutionDir)Warewolf.COMIPC\bin\x86\Debug\Warewolf.COMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PreBuildEvent>
+    <PreBuildEvent>if not exist "$(TargetDir)Trackerbird.x64.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
+if not exist "$(TargetDir)Trackerbird.x86.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
+if not exist "$(TargetDir)Trackerbird.Tracker.dll" copy /Y "$(SolutionDir)Binaries\Trackerbird.Tracker.dll" "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />

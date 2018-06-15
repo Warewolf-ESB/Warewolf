@@ -36,7 +36,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         DbSourceDefinition _anotherSqlSource;
         DbAction _someAction;
         Mock<IServiceOutputMapping> _outputMapping;
-        ScenarioContext _scenarioContext;
+        readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
 
         public MySqlConnectorSteps(ScenarioContext scenarioContext)
@@ -102,15 +102,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         }
 
         #region Private Methods
-
-        DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
-        {
-            return _scenarioContext.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
-        }
-        Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
-        {
-            return _scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
-        }
 
         MySqlDatabaseDesignerViewModel GetViewModel()
         {
@@ -439,7 +430,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var viewModel = GetViewModel();
             Assert.IsNotNull(viewModel.OutputsRegion);
-            //SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
             {

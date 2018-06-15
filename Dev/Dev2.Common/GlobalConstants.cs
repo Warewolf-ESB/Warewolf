@@ -466,6 +466,7 @@ where pn.nspname = 'public';
         public static readonly int WorkflowWaitTime = 60;
         public static readonly string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
+        public static string CollectUsageStats { get; set; }
         public static string WebServerSslPort { get; set; }
         public static readonly ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 

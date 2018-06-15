@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Warewolf.Resource.Tracking {
+namespace Warewolf.Studio.Resources.Languages {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Warewolf.Resource.Tracking {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class IntellisenseTrackerMenu {
+    public class TrackEventExceptions {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal IntellisenseTrackerMenu() {
+        internal TrackEventExceptions() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Warewolf.Resource.Tracking {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Resource.Tracking.IntellisenseTrackerMenu", typeof(IntellisenseTrackerMenu).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.TrackEventExceptions", typeof(TrackEventExceptions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Warewolf.Resource.Tracking {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable Events.
+        ///   Looks up a localized string similar to Exception Events.
         /// </summary>
         public static string EventCategory {
             get {
@@ -70,11 +70,11 @@ namespace Warewolf.Resource.Tracking {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incorrect Syntax.
+        ///   Looks up a localized string similar to Unhandled Exception.
         /// </summary>
-        public static string IncorrectSyntax {
+        public static string UnhandledException {
             get {
-                return ResourceManager.GetString("IncorrectSyntax", resourceCulture);
+                return ResourceManager.GetString("UnhandledException", resourceCulture);
             }
         }
     }

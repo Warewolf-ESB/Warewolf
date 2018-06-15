@@ -394,7 +394,14 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Column="0" x:Name="CommandTimeoutLabel" Text="Command Timeout" />
-				<TextBox Grid.Column="1" x:Name="CommandTimeoutTextBox" Text="{Binding InputArea.CommandTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Column="1" 
+                         x:Name="CommandTimeoutTextBox" 
+                         Text="{Binding InputArea.CommandTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static languages:Tooltips.CommandTimeoutTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.CommandTimeoutHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
 
                 <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="InputsLabel" Text="Inputs" />
                 <controls:Dev2DataGrid x:Name="LargeDataGrid"
