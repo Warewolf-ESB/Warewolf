@@ -99,7 +99,10 @@ namespace Warewolf.Launcher
         public string RetryCount { get; private set; }
 
         [Option("ConsoleServer")]
-        public string ConsoleServer { get; private set; }
+        public bool ConsoleServer { get; private set; }
+
+        [Option("AdminMode")]
+        public bool AdminMode { get; private set; }
 
         public static TestLauncher PargeArgs(string[] args)
         {
@@ -274,17 +277,15 @@ namespace Warewolf.Launcher
                         Console.WriteLine("RetryCount: Expects a number of times to re-try failing tests. Cannot parse " + options.RetryCount);
                     }
                 }
-                if (options.ConsoleServer != null)
+                if (options.ConsoleServer)
                 {
                     Console.WriteLine("ConsoleServer: Starting the server in a console window.");
-                    if (bool.TryParse(options.ConsoleServer, out bool consoleServer))
-                    {
-                        testLauncher.StartServerAsConsole = consoleServer;
-                    }
-                    else
-                    {
-                        Console.WriteLine("ConsoleServer: Expects a boolean of whether or not to start the server in a console window. Cannot parse " + options.ConsoleServer + " expects 1 or 0 or true or false.");
-                    }
+                    testLauncher.StartServerAsConsole = true;
+                }
+                if (options.AdminMode)
+                {
+                    Console.WriteLine("AdminMode: Running launcher in admin mode.");
+                    testLauncher.AdminMode = true;
                 }
             }).WithNotParsed(errs =>
             {
