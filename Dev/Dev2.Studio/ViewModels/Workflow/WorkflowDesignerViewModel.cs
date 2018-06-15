@@ -2547,10 +2547,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             
             if (!Handle(e))
             {
-                new Task(() =>
-                {
-                    BuildWorkflowFields();
-                }).Start();
+                BuildWorkflowFields();
             }
         }
 
