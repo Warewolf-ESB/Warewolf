@@ -49,6 +49,7 @@ namespace Warewolf.Launcher
         public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
+        public bool AdminMode { get; internal set; } = false;
 
         public string ServerExeName;
         public string StudioExeName;

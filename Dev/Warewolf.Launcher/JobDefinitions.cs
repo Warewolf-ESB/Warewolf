@@ -9,8 +9,8 @@ namespace Warewolf.Launcher
         {
             return new Dictionary<string, Tuple<string, string>>
             {
+                //Unit Tests
                 ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests,Warewolf.*.Tests", null),
-                ["Server Proxy Layer Tests"] = new Tuple<string, string>("Warewolf.Studio.ServerProxyLayer.Tests", null),
                 ["Infrastructure Unit Tests"] = new Tuple<string, string>("Dev2.Infrastructure.Tests", null),
                 ["Runtime Unit Tests"] = new Tuple<string, string>("Dev2.Runtime.Tests", null),
                 ["Core Unit Tests"] = new Tuple<string, string>("Dev2.Core.Tests", null),
@@ -28,7 +28,6 @@ namespace Warewolf.Launcher
                 ["Utility Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Utility"),
                 ["Control Flow Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "ControlFlow"),
                 ["Data Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Data"),
-                ["Database Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Database"),
                 ["Email Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Email"),
                 ["File And Folder Copy Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderCopy"),
                 ["File And Folder Create Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderCreate"),
@@ -46,13 +45,13 @@ namespace Warewolf.Launcher
                 ["Resource Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Resources"),
                 ["UI Binding Tests"] = new Tuple<string, string>("Warewolf.UIBindingTests.*", null),
                 //Server Tests
+                ["Database Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Database"),
                 ["Integration Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
                 ["Other Activities Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", null),
                 ["Remote Server Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "RemoteServer"),
                 ["Workflow Merging Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowMerging"),
-                ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),
                 ["Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowExecution"),
                 ["Assign Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "AssignWorkflowExecution"),
@@ -76,10 +75,8 @@ namespace Warewolf.Launcher
                 ["Overlapping User Groups Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"),
                 ["Resource Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ResourcePermissionsSecurity"),
                 ["Server Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ServerPermissionsSecurity"),
-                //Web UI Tests
-                ["Other Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", null),
-                ["Execution Logging Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "ExecutionLogging"),
-                ["No Warewolf Server Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "NoWarewolfServer"),
+                //Release Resource Tests
+                ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 //Desktop UI Tests
                 ["Other UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", null),
                 ["Other UI Specs"] = new Tuple<string, string>("Warewolf.UI.Specs", null),
@@ -145,6 +142,10 @@ namespace Warewolf.Launcher
                 ["Object Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Object Search"),
                 ["Service Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Service Search"),
                 ["Title Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Title Search"),
+                //Web UI Tests
+                ["Other Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", null),
+                ["Execution Logging Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "ExecutionLogging"),
+                ["No Warewolf Server Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "NoWarewolfServer"),
                 //Load Tests
                 ["Composition Load Tests"] = new Tuple<string, string>("Dev2.Activities.Specs", "CompositionLoadTests"),
                 ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
