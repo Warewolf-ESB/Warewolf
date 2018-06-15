@@ -60,6 +60,7 @@ using Moq;
 using Dev2.ViewModels;
 using Warewolf.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Instrumentation;
 
 namespace Dev2.Core.Tests
 {
@@ -1140,6 +1141,8 @@ namespace Dev2.Core.Tests
 
         // PBI 9512 - 2013.06.07 - TWR: added
         [TestMethod]
+       
+        [TestCategory("ShowStartPage")]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
         {
             CreateFullExportsAndVm();
@@ -1148,7 +1151,23 @@ namespace Dev2.Core.Tests
             ShellViewModel.ShowStartPageAsync();
             versionChecker.Verify(v => v.CommunityPageUri);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("ShowStartPage")]
+        public void MainViewModelShowStartPageExpectedTracking()
+        {
+            var _applicationTrackerMock = new Mock<IApplicationTracker>();
+            _applicationTrackerMock.Setup(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()));
+            CustomContainer.Register(_applicationTrackerMock.Object);
+            CreateFullExportsAndVm();
+            var versionChecker = Mock.Get(ShellViewModel.Version);
+            versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
 
+
+            ShellViewModel.ShowStartPageAsync();
+            versionChecker.Verify(v => v.CommunityPageUri);
+            _applicationTrackerMock.Verify(controller => controller.TrackEvent(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
+        }
         #endregion
 
         #region ShowDependencies
@@ -1158,7 +1177,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-        
+
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
