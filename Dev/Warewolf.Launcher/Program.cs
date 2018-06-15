@@ -157,15 +157,10 @@ namespace Warewolf.Launcher
             {
                 if (build.AdminMode)
                 {
-                    Console.WriteLine("\nAdmin, What type of tests do you want to run?");
+                    Console.WriteLine("\nAdmin, What would you like to do?");
                     var options = new[] {
-                    "[1]All: Run All Tests. (This is the default)",
-                    "[2]Unit Tests: Run All Unit Tests.",
-                    "[3]Server Tests: Run everything except unit tests, release resource tests, load tests and Coded UI tests.",
-                    "[4]Release: Run release resource tests.",
-                    "[5]Desktop UI: Run All UI Tests. (This is the default)",
-                    "[6]Web UI: Run Web UI Tests.",
-                    "[7]UI Load: Run Load Testing."
+                    "[1]Single Job: Run One Test Job. (This is the default)",
+                    "[2]Builds: Run Whole Builds."
                     };
                     foreach (var option in options)
                     {
@@ -176,7 +171,7 @@ namespace Warewolf.Launcher
                         Console.ForegroundColor = originalColour;
                         Console.Write(option.Substring(3, option.Length - 3));
                     }
-                    Console.WriteLine("\n\nOr Press Enter to use default (UITest)...");
+                    Console.WriteLine("\n\nOr Press Enter to use default (Single Job)...");
                     string originalTitle = Console.Title;
                     string uniqueTitle = Guid.NewGuid().ToString();
                     Console.Title = uniqueTitle;
@@ -189,46 +184,170 @@ namespace Warewolf.Launcher
                         SetForegroundWindow(handle);
                     }
 
-                    var testType = Console.ReadLine();
+                    var runType = Console.ReadLine();
+                    if (runType == "" || runType == "1")
+                    {
+                        Console.WriteLine("\nWhich test job would you like to run?");
+                        int count = 0;
+                        foreach (var option in build.JobSpecs.Keys.ToList())
+                        {
+                            Console.WriteLine();
+                            var originalColour = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("[" + (++count).ToString() + "]");
+                            Console.ForegroundColor = originalColour;
+                            Console.Write(option);
+                        }
+                        Console.WriteLine("\n\nType the name or number of the job or press Enter to use default (Other Unit Tests)...");
+                        originalTitle = Console.Title;
+                        uniqueTitle = Guid.NewGuid().ToString();
+                        Console.Title = uniqueTitle;
+                        Thread.Sleep(50);
+                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                    const int NumberOfUnitTestJobs = 34;
-                    const int NumberOfServerTestJobs = 30;
-                    const int NumberOfReleaseResourcesTestJobs = 1;
-                    const int NumberOfDesktopUITestJobs = 64;
-                    const int NumberOfWebUITestJobs = 3;
-                    const int NumberOfLoadTestJobs = 3;
-                    if (testType == "" || testType == "1")
-                    {
-                        build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
-                        build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
-                        build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
-                        build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
-                        build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
-                        build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        if (handle != IntPtr.Zero)
+                        {
+                            Console.Title = originalTitle;
+                            SetForegroundWindow(handle);
+                        }
+
+                        string selectedOption = Console.ReadLine();
+                        if (string.IsNullOrEmpty(selectedOption))
+                        {
+                            selectedOption = "1";
+                        }
+                        var canParse = int.TryParse(selectedOption, out int jobNumber);
+                        if (canParse)
+                        {
+                            build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
+                        }
+                        else
+                        {
+                            if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                            {
+                                build.JobName = selectedOption;
+                            }
+                            else
+                            {
+                                throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                            }
+                        }
+                        Console.WriteLine("\nStart the Studio?[y|N]");
+                        originalTitle = Console.Title;
+                        uniqueTitle = Guid.NewGuid().ToString();
+                        Console.Title = uniqueTitle;
+                        Thread.Sleep(50);
+                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
+
+                        if (handle != IntPtr.Zero)
+                        {
+                            Console.Title = originalTitle;
+                            SetForegroundWindow(handle);
+                        }
+
+                        if (Console.ReadLine().ToLower() == "y")
+                        {
+                            build.DoServerStart = "true";
+                            build.DoStudioStart = "true";
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nStart the Server?[y|N]");
+                            originalTitle = Console.Title;
+                            uniqueTitle = Guid.NewGuid().ToString();
+                            Console.Title = uniqueTitle;
+                            Thread.Sleep(50);
+                            handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
+
+                            if (handle != IntPtr.Zero)
+                            {
+                                Console.Title = originalTitle;
+                                SetForegroundWindow(handle);
+                            }
+
+                            if (Console.ReadLine().ToLower() == "y")
+                            {
+                                build.DoServerStart = "true";
+                            }
+                        }
+
+                        build.RunTestJobs();
                     }
-                    if (testType == "2")
+                    else if (runType == "2")
                     {
-                        build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
-                    }
-                    if (testType == "3")
-                    {
-                        build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
-                    }
-                    if (testType == "4")
-                    {
-                        build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
-                    }
-                    if (testType == "5")
-                    {
-                        build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
-                    }
-                    if (testType == "6")
-                    {
-                        build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
-                    }
-                    if (testType == "7")
-                    {
-                        build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        Console.WriteLine("\nWhat type of build do you want to run?");
+                        options = new[] {
+                        "[1]All: Run All Test Builds. (This is the default)",
+                        "[2]Unit Tests: Run All Unit Test Jobs.",
+                        "[3]Server Tests: Run All ServerTests Resource Test Jobs",
+                        "[4]Release: Run All Release Resource Test Jobs.",
+                        "[5]Desktop UI: Run All UI Test Jobs. (This is the default)",
+                        "[6]Web UI: Run All Web UI Test Jobs.",
+                        "[7]UI Load: Run All Load Test Jobs."
+                        };
+                        foreach (var option in options)
+                        {
+                            Console.WriteLine();
+                            var originalColour = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(option.Substring(0, 3));
+                            Console.ForegroundColor = originalColour;
+                            Console.Write(option.Substring(3, option.Length - 3));
+                        }
+                        Console.WriteLine("\n\nOr Press Enter to use default (All)...");
+                        originalTitle = Console.Title;
+                        uniqueTitle = Guid.NewGuid().ToString();
+                        Console.Title = uniqueTitle;
+                        Thread.Sleep(50);
+                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
+
+                        if (handle != IntPtr.Zero)
+                        {
+                            Console.Title = originalTitle;
+                            SetForegroundWindow(handle);
+                        }
+
+                        var testType = Console.ReadLine();
+
+                        const int NumberOfUnitTestJobs = 34;
+                        const int NumberOfServerTestJobs = 30;
+                        const int NumberOfReleaseResourcesTestJobs = 1;
+                        const int NumberOfDesktopUITestJobs = 64;
+                        const int NumberOfWebUITestJobs = 3;
+                        const int NumberOfLoadTestJobs = 3;
+                        if (testType == "" || testType == "1")
+                        {
+                            build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
+                            build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
+                            build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
+                            build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
+                            build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
+                            build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        }
+                        else if (testType == "2")
+                        {
+                            build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
+                        }
+                        else if (testType == "3")
+                        {
+                            build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
+                        }
+                        else if (testType == "4")
+                        {
+                            build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
+                        }
+                        else if (testType == "5")
+                        {
+                            build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
+                        }
+                        else if (testType == "6")
+                        {
+                            build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
+                        }
+                        else if (testType == "7")
+                        {
+                            build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        }
                     }
                 }
                 else
