@@ -133,18 +133,11 @@ namespace Dev2.Services.Sql
                 }
                 using (command)
                 {
-                    try
+                    using (var executeReader = command.ExecuteReader())
                     {
-                        using (var executeReader = command.ExecuteReader())
-                        {
-                            var dataTable = new DataTable();
-                            dataTable.Load(executeReader);
-                            return dataTable;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return new DataTable(e.Message);
+                        var dataTable = new DataTable();
+                        dataTable.Load(executeReader);
+                        return dataTable;
                     }
                 }
             }
