@@ -207,10 +207,13 @@ namespace Warewolf.Launcher
                     throw new ArgumentException("No studio found at " + StudioPath);
                 }
             }
-            string studioStartedFile = Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted");
-            if (File.Exists(studioStartedFile))
+            if (!string.IsNullOrEmpty(StudioPath))
             {
-                File.Delete(studioStartedFile);
+                string studioStartedFile = Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted");
+                if (File.Exists(studioStartedFile))
+                {
+                    File.Delete(studioStartedFile);
+                }
             }
 
             int WaitForCloseTimeout = Force ? 10 : 1800;
@@ -1781,8 +1784,12 @@ namespace Warewolf.Launcher
             CleanupServerStudio(ApplyDotCover);
         }
 
-        public void RunTestJobs()
+        public void RunTestJobs(string jobName = "")
         {
+            if (jobName != "")
+            {
+                JobName = jobName;
+            }
             CleanupServerStudio(true);
 
             // Unpack jobs
