@@ -141,13 +141,18 @@ namespace Dev2.Services.Sql
         }
         public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
         {
+            var command = _connection.CreateCommand();
+            command.CommandText = _command.CommandText;
+            command.CommandType = _command.CommandType;
+            command.CommandTimeout = _command.CommandTimeout;
+
             VerifyConnection();
-            AddParameters(_command, parameters);
+            AddParameters(command, parameters);
             foreach(var par in outparameters)
             {
-                _command.Parameters.Add(par);
+                command.Parameters.Add(par);
             }
-            return FetchDataTable(_command);
+            return FetchDataTable(command);
         }
         public int ExecuteNonQuery(IDbCommand command)
         {
@@ -257,7 +262,12 @@ namespace Dev2.Services.Sql
 
         public void Connect(string connectionString)
         {
+            if (!connectionString.Contains("SslMode"))
+            {
+                connectionString += ";SslMode=none";
+            }
             _connection = (MySqlConnection)_factory.CreateConnection(connectionString);
+            
             _connection.Open();
         }
 
