@@ -443,7 +443,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Inputs = inputs,
                 Outputs = outputs
             };
-            //sqlServerActivity.Execute(new Mock<IDSFDataObject>().Object, 0);
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
             var mockServiceInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();

@@ -351,6 +351,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database command timeout.
+        /// </summary>
+        public static string CommandTimeoutTooltip {
+            get {
+                return ResourceManager.GetString("CommandTimeoutTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
         ///You can connect comments into the process flow and they will simply be skipped during execution. 
         ///However, they will appear in the debug output..

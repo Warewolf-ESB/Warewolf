@@ -138,6 +138,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TrackEventDebugOutput.resx</DependentUpon>
     </Compile>
+    <Compile Include="Languages\TrackEventExceptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackEventExceptions.resx</DependentUpon>
+    </Compile>
     <Compile Include="Languages\TrackEventExplorer.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,6 +222,10 @@
     <EmbeddedResource Include="Languages\TrackEventDebugOutput.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TrackEventDebugOutput.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\TrackEventExceptions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrackEventExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\TrackEventExplorer.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
