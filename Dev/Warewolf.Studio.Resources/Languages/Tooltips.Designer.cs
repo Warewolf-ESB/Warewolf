@@ -4953,6 +4953,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Start Page.
+        /// </summary>
+        public static string StartPageToolTip {
+            get {
+                return ResourceManager.GetString("StartPageToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns the type of system information selected..
         /// </summary>
