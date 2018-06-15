@@ -2181,9 +2181,8 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
+
         {
-            var explorerTooltips = new Mock<IExplorerTooltips>();
-            CustomContainer.Register(explorerTooltips.Object);
             #region Setup view model constructor parameters
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
