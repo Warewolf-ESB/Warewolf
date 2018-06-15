@@ -22,17 +22,24 @@ namespace Dev2.Services.Sql
             return new NpgsqlConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText, int commandTimeout) => new NpgsqlCommand(commandText, connection as NpgsqlConnection)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText, int? commandTimeout)
         {
-            CommandType = commandType,
-            CommandTimeout = commandTimeout
-        };
+            var command = new NpgsqlCommand(commandText, connection as NpgsqlConnection)
+            {
+                CommandType = commandType,
+            };
+            if (commandTimeout != null)
+            {
+                command.CommandTimeout = commandTimeout.Value;
+            }
+            return command;
+        }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName)
         {
             if (!(connection is NpgsqlConnection))
             {
-                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection , "Postgre"));
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Postgre"));
             }
 
             return ((NpgsqlConnection)connection).GetSchema(collectionName);
@@ -61,28 +68,28 @@ namespace Dev2.Services.Sql
             return dataset;
         }
 
-		public int ExecuteNonQuery(IDbCommand command)
-		{
-			if (!(command is NpgsqlCommand SqlCommand))
-			{
-				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
-			}
+        public int ExecuteNonQuery(IDbCommand command)
+        {
+            if (!(command is NpgsqlCommand SqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
 
-			int retValue = 0;
-			retValue = command.ExecuteNonQuery();
-			return retValue;
-		}
+            int retValue = 0;
+            retValue = command.ExecuteNonQuery();
+            return retValue;
+        }
 
-		public int ExecuteScalar(IDbCommand command)
-		{
-			if (!(command is NpgsqlCommand))
-			{
-				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
-			}
+        public int ExecuteScalar(IDbCommand command)
+        {
+            if (!(command is NpgsqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
 
-			int retValue = 0;
-			retValue = Convert.ToInt32(command.ExecuteScalar());
-			return retValue;
-		}
-	}
+            int retValue = 0;
+            retValue = Convert.ToInt32(command.ExecuteScalar());
+            return retValue;
+        }
+    }
 }

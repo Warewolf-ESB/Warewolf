@@ -262,7 +262,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout of the database command. Default command timeout is set to 30 seconds..
+        ///   Looks up a localized string similar to Timeout of the database command. Note: Sq; Server with a Command Timeout set to 0, will wait indefinately .
         /// </summary>
         public static string CommandTimeoutHelp {
             get {

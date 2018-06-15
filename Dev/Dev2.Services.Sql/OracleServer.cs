@@ -34,7 +34,7 @@ namespace Dev2.Services.Sql
             _transaction = transaction;
         }
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
         public bool IsConnected
         {
