@@ -2194,6 +2194,7 @@ namespace Dev2.Core.Tests.Workflows
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(r => r.DisplayName).Returns("Test");
             crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
             var workflowHelper = new Mock<IWorkflowHelper>();
