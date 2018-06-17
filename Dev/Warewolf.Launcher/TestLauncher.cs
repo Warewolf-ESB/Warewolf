@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
+using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
 {
@@ -20,8 +21,6 @@ namespace Warewolf.Launcher
         public string ServerPath { get; set; }
         public string StudioPath { get; set; }
         public string ResourcesType { get; set; }
-        public string VSTest { get; set; }
-        public string MSTest { get; set; }
         public string DotCoverPath { get; set; }
         public string ServerUsername { get; set; }
         public string ServerPassword { get; set; }
@@ -39,17 +38,13 @@ namespace Warewolf.Launcher
         public string RunAllWebUITests { get; set; }
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
-        public string TestsPath { get; set; } = Environment.CurrentDirectory;
         public string JobName { get; set; }
-        public string TestList { get; set; }
         public string MergeDotCoverSnapshotsInDirectory { get; set; }
         public string StartDocker { get; set; }
-        public string TestsResultsPath { get; set; } = Environment.CurrentDirectory + "\\TestResults";
-        public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
-        public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
+        public ITestRunner TestRunner { get; internal set; }
 
         public string ServerExeName;
         public string StudioExeName;
@@ -73,7 +68,7 @@ namespace Warewolf.Launcher
         {
             var NumberOfParentsSearched = -1;
             var FilePath = "";
-            var CurrentDirectory = TestsPath;
+            var CurrentDirectory = TestRunner.TestsPath;
             while (FilePath == "" && NumberOfParentsSearched++ < NumberOfParentsToSearch && CurrentDirectory != "")
             {
                 var NumberOfFileSpecsSearched = -1;
@@ -93,7 +88,7 @@ namespace Warewolf.Launcher
                     {
                         if (string.IsNullOrEmpty(CurrentDirectory))
                         {
-                            CurrentDirectory = TestsPath;
+                            CurrentDirectory = TestRunner.TestsPath;
                         }
                     }
                     if (Directory.Exists(Path.GetDirectoryName(Path.Combine(CurrentDirectory, FileSpec))))
@@ -121,7 +116,7 @@ namespace Warewolf.Launcher
             return FilePath;
         }
 
-        public void CopyOnWrite(string FileSpec)
+        public static void CopyOnWrite(string FileSpec)
         {
             if (File.Exists(FileSpec))
             {
@@ -138,7 +133,7 @@ namespace Warewolf.Launcher
 
         void MoveFileToTestResults(string SourceFilePath, string DestinationFileName)
         {
-            var DestinationFilePath = Path.Combine(TestsResultsPath, DestinationFileName);
+            var DestinationFilePath = Path.Combine(TestRunner.TestsResultsPath, DestinationFileName);
             if (File.Exists(SourceFilePath))
             {
                 CopyOnWrite(DestinationFilePath);
@@ -154,7 +149,7 @@ namespace Warewolf.Launcher
 
         void MoveFolderToTestResults(string SourceFolderPath, string DestinationFolderName)
         {
-            var DestinationFolderPath = Path.Combine(TestsResultsPath, DestinationFolderName);
+            var DestinationFolderPath = Path.Combine(TestRunner.TestsResultsPath, DestinationFolderName);
             if (Directory.Exists(SourceFolderPath))
             {
                 CopyOnWrite(DestinationFolderPath);
@@ -177,7 +172,7 @@ namespace Warewolf.Launcher
             //Find Webs
             if (string.IsNullOrEmpty(WebsPath))
             {
-                WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
+                WebsPath = Path.Combine(TestRunner.TestsPath, "_PublishedWebsites", "Dev2.Web");
                 if (!File.Exists(WebsPath) && !String.IsNullOrEmpty(ServerPath))
                 {
                     WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
@@ -348,8 +343,8 @@ namespace Warewolf.Launcher
             serverPath = FindFileInParent(ServerPathSpecs);
             if (serverPath.EndsWith(".zip"))
             {
-                ZipFile.ExtractToDirectory(serverPath, TestsResultsPath + "\\Server");
-                serverPath = TestsResultsPath + "\\Server\\" + ServerExeName;
+                ZipFile.ExtractToDirectory(serverPath, TestRunner.TestsResultsPath + "\\Server");
+                serverPath = TestRunner.TestsResultsPath + "\\Server\\" + ServerExeName;
             }
             return (!string.IsNullOrEmpty(serverPath) && File.Exists(serverPath));
         }
@@ -359,8 +354,8 @@ namespace Warewolf.Launcher
             studioPath = FindFileInParent(StudioPathSpecs);
             if (studioPath.EndsWith(".zip"))
             {
-                ZipFile.ExtractToDirectory(studioPath, TestsResultsPath + "\\Studio");
-                studioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
+                ZipFile.ExtractToDirectory(studioPath, TestRunner.TestsResultsPath + "\\Studio");
+                studioPath = $"{TestRunner.TestsResultsPath}\\Studio\\{StudioExeName}";
             }
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
@@ -493,10 +488,10 @@ namespace Warewolf.Launcher
             if (Cleanup != null)
             {
                 //Write failing tests playlist.
-                Console.WriteLine($"Writing all test failures in \"{TestsResultsPath}\" to a playlist file.");
+                Console.WriteLine($"Writing all test failures in \"{TestRunner.TestsResultsPath}\" to a playlist file.");
 
                 var PlayList = "<Playlist Version=\"1.0\">";
-                foreach (var FullTRXFilePath in Directory.GetFiles(TestsResultsPath, "*.trx"))
+                foreach (var FullTRXFilePath in Directory.GetFiles(TestRunner.TestsResultsPath, "*.trx"))
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
@@ -542,7 +537,7 @@ namespace Warewolf.Launcher
                     }
                 }
                 PlayList += "</Playlist>";
-                var OutPlaylistPath = $"{TestsResultsPath}\\{JobName} Failures.playlist";
+                var OutPlaylistPath = $"{TestRunner.TestsResultsPath}\\{JobName} Failures.playlist";
                 CopyOnWrite(OutPlaylistPath);
                 File.WriteAllText(OutPlaylistPath, PlayList);
                 Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
@@ -557,16 +552,16 @@ namespace Warewolf.Launcher
             if (Studio && DotCover)
             {
                 var StudioSnapshot = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                 var exists = WaitForFileExist(StudioSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(StudioSnapshot);
                     if (!(locked))
                     {
-                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                        CopyOnWrite($"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                        File.Move(StudioSnapshot, $"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                        CopyOnWrite($"{TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                        File.Move(StudioSnapshot, $"{TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                     }
                     else
                     {
@@ -599,14 +594,14 @@ namespace Warewolf.Launcher
             if (Server && DotCover)
             {
                 var ServerSnapshot = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
+                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {TestRunner.TestsResultsPath}\\{JobName} Server DotCover.dcvr");
                 var exists = WaitForFileExist(ServerSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(ServerSnapshot);
                     if (!locked)
                     {
-                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
+                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {TestRunner.TestsResultsPath}\\{JobName} Server DotCover.dcvr");
                         MoveFileToTestResults(ServerSnapshot, $"{JobName} Server DotCover.dcvr");
                     }
                     else
@@ -629,13 +624,13 @@ namespace Warewolf.Launcher
             }
             if (Server && Studio && DotCover)
             {
-                MergeDotCoverSnapshots(new List<string> { Path.Combine(TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
+                MergeDotCoverSnapshots(new List<string> { Path.Combine(TestRunner.TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(TestRunner.TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
             }
             if (RecordScreen != null)
             {
                 MoveScreenRecordingsToTestResults();
             }
-            foreach (var scriptFile in Directory.GetFiles(Path.GetDirectoryName(TestsResultsPath)))
+            foreach (var scriptFile in Directory.GetFiles(Path.GetDirectoryName(TestRunner.TestsResultsPath)))
             {
                 if (Path.GetFileName(scriptFile).StartsWith("Run ") && Path.GetExtension(scriptFile) == ".bat")
                 {
@@ -646,10 +641,10 @@ namespace Warewolf.Launcher
 
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
-            TestsResultsPath = Path.Combine(TestsResultsPath, NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, NumberToWords(currentRetryCount) + "RetryTestResults");
 
             WaitForFileUnlock(FullTRXFilePath);
-            TestList = "";
+            TestRunner.TestList = "";
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
             var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
@@ -660,7 +655,7 @@ namespace Warewolf.Launcher
                 {
                     if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
-                        TestList += "," + TestResult.Attributes["testName"].InnerXml;
+                        TestRunner.TestList += "," + TestResult.Attributes["testName"].InnerXml;
                     }
                 }
             }
@@ -669,18 +664,9 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Error parsing /TestRun/Results/UnitTestResult from trx file at {FullTRXFilePath}");
             }
             string TestRunnerPath;
-            if (TestList.StartsWith(","))
+            if (TestRunner.TestList.StartsWith(","))
             {
-                if (string.IsNullOrEmpty(MSTest))
-                {
-                    TestList = " /Tests:" + TestList.Substring(1, TestList.Length-1);
-                    TestRunnerPath = VSTestRunner(jobName, "", "", testAssembliesList, testSettingsFile);
-                }
-                else
-                {
-                    TestList = TestList.Replace(",", " /test:");
-                    TestRunnerPath = MSTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestsResultsPath, "RetryResults"));
-                }
+                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
             }
             else
             {
@@ -695,7 +681,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestsResultsPath}");
+                Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestRunner.TestsResultsPath}");
             }
         }
 
@@ -939,7 +925,7 @@ namespace Warewolf.Launcher
 
         void MoveScreenRecordingsToTestResults()
         {
-            Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
+            Console.WriteLine("Getting UI test screen recordings from \"" + TestRunner.TestsResultsPath + "\"");
             var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder();
             if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
             {
@@ -963,7 +949,7 @@ namespace Warewolf.Launcher
 
         string GetLatestScreenRecordingsFolder()
         {
-            var directory = new DirectoryInfo(TestsResultsPath);
+            var directory = new DirectoryInfo(TestRunner.TestsResultsPath);
             var screenRecordingFolders = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
             if (screenRecordingFolders.Count() > 0)
             {
@@ -990,7 +976,7 @@ namespace Warewolf.Launcher
                     throw new ArgumentException($"No server found at {ServerPath}. Make sure your server is compiled and try again.");
                 }
             }
-            Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestsResultsPath + ".");
+            Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestRunner.TestsResultsPath + ".");
             if (string.IsNullOrEmpty(ResourcesType))
             {
                 Console.WriteLine("\nWhat type of resources would you like to install the server with?");
@@ -1097,10 +1083,10 @@ namespace Warewolf.Launcher
                             JobName = "Manual Tests";
                         }
                     }
-                    var DotCoverRunnerXMLPath = TestsResultsPath + "\\Server DotCover Runner.xml";
+                    var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Server DotCover Runner.xml";
                     CopyOnWrite(DotCoverRunnerXMLPath);
                     File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestsResultsPath + "\\ServerDotCover.log\\\"";
+                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestRunner.TestsResultsPath + "\\ServerDotCover.log\\\"";
                     if (!ServerService)
                     {
                         Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
@@ -1211,7 +1197,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web");
+                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestRunner.TestsPath + "\\_PublishedWebsites\\Dev2.Web");
                 if (!string.IsNullOrEmpty(ServerPath))
                 {
                     Console.Write(" or at " + Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web");
@@ -1257,10 +1243,10 @@ namespace Warewolf.Launcher
     </Filters>
 </AnalyseParams>
 ";
-                var DotCoverRunnerXMLPath = TestsResultsPath + "\\Studio DotCover Runner.xml";
+                var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml";
                 CopyOnWrite(DotCoverRunnerXMLPath);
                 File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
+                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
             }
             try
             {
@@ -1274,7 +1260,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    Process.Start(DotCoverPath, "cover \"" + TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
+                    Process.Start(DotCoverPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
                 }
                 WaitForStudioStart(Path.GetDirectoryName(StudioPath));
             }
@@ -1308,19 +1294,6 @@ namespace Warewolf.Launcher
             return !JobAssemblySpecs.Contains(AssemblyNameToCheck);
         }
 
-        public List<string> AllCategoriesDefinedForProject(string AssemblyNameToCheck)
-        {
-            var JobCategorySpecs = new List<string>();
-            foreach (var Job in JobSpecs.Values)
-            {
-                if (!string.IsNullOrEmpty(Job.Item2) && AssemblyNameToCheck == Job.Item1)
-                {
-                    JobCategorySpecs.Add(Job.Item2);
-                }
-            }
-            return JobCategorySpecs;
-        }
-
         public Tuple<string, List<string>> ResolveProjectFolderSpecs(string ProjectFolderSpec)
         {
             var TestAssembliesList = "";
@@ -1332,14 +1305,7 @@ namespace Warewolf.Launcher
                 {
                     foreach (var projectFolder in Directory.GetDirectories(ProjectFolderSpecInParent))
                     {
-                        if (File.Exists(VSTestPath) && string.IsNullOrEmpty(MSTest))
-                        {
-                            TestAssembliesList += " \"" + projectFolder + "\\bin\\Debug\\" + Path.GetFileName(projectFolder) + ".dll\"";
-                        }
-                        else
-                        {
-                            TestAssembliesList += " /testcontainer:\"" + projectFolder + "\\bin\\Debug\\" + Path.GetFileName(projectFolder) + ".dll\"";
-                        }
+                        TestAssembliesList += TestRunner.AppendProjectFolder(projectFolder);
                         if (!TestAssembliesDirectories.Contains(projectFolder + "\\bin\\Debug"))
                         {
                             TestAssembliesDirectories.Add(projectFolder + "\\bin\\Debug");
@@ -1348,14 +1314,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    if (File.Exists(VSTestPath) && string.IsNullOrEmpty(MSTest))
-                    {
-                        TestAssembliesList += " \"" + ProjectFolderSpecInParent + "\\bin\\Debug\\" + Path.GetFileName(ProjectFolderSpecInParent) + ".dll\"";
-                    }
-                    else
-                    {
-                        TestAssembliesList += " /testcontainer:\"" + ProjectFolderSpecInParent + "\\bin\\Debug\\" + Path.GetFileName(ProjectFolderSpecInParent) + ".dll\"";
-                    }
+                    TestAssembliesList += TestRunner.AppendProjectFolder(ProjectFolderSpecInParent);
                     if (!TestAssembliesDirectories.Contains(ProjectFolderSpecInParent + "\\bin\\Debug"))
                     {
                         TestAssembliesDirectories.Add(ProjectFolderSpecInParent + "\\bin\\Debug");
@@ -1399,14 +1358,7 @@ namespace Warewolf.Launcher
                     var AssemblyNameToCheck = Path.GetFileNameWithoutExtension(file);
                     if (!TestAssembliesFileSpecsInParent.Contains("*") || (AssemblyIsNotAlreadyDefinedWithoutWildcards(AssemblyNameToCheck)))
                     {
-                        if (string.IsNullOrEmpty(MSTest))
-                        {
-                            TestAssembliesList = TestAssembliesList + " \"" + file + "\"";
-                        }
-                        else
-                        {
-                            TestAssembliesList += " /testcontainer:\"" + file + "\"";
-                        }
+                        TestAssembliesList = TestRunner.AppendTestAssembly(TestAssembliesList, file);
                         if (!TestAssembliesDirectories.Contains(Path.GetDirectoryName(file)))
                         {
                             TestAssembliesDirectories.Add(Path.GetDirectoryName(file));
@@ -1426,7 +1378,7 @@ namespace Warewolf.Launcher
                 var TestSettingsId = Guid.NewGuid();
 
                 // Create test settings.
-                TestSettingsFile = TestsResultsPath + "\\" + JobName + ".testsettings";
+                TestSettingsFile = TestRunner.TestsResultsPath + "\\" + JobName + ".testsettings";
                 CopyOnWrite(TestSettingsFile);
                 File.WriteAllText(TestSettingsFile, @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestSettings id=""" + TestSettingsId + @""" name=""JobName"" xmlns=""http://microsoft.com/schemas/VisualStudio/TeamTest/2010"">
@@ -1449,130 +1401,13 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string TestSettingsArgument(string TestSettingsFile)
-        {
-            string TestSettings = "";
-            if (RecordScreen != null)
-            {
-                TestSettings = $" /Settings:\"{TestSettingsFile}\"";
-            }
-            return TestSettings;
-        }
-
-        public string VSTestCategories(string ProjectSpec, string TestCategories)
-        {
-            if (string.IsNullOrEmpty(TestList))
-            {
-                if (!string.IsNullOrEmpty(TestCategories))
-                {
-                    TestCategories = $" /TestCaseFilter:\"(TestCategory={TestCategories})\"";
-                }
-                else
-                {
-                    var DefinedCategories = AllCategoriesDefinedForProject(ProjectSpec);
-                    if (DefinedCategories.Count() > 0)
-                    {
-                        TestCategories = String.Join(")&(TestCategory!=", DefinedCategories);
-                        TestCategories = $" /TestCaseFilter:\"(TestCategory!={TestCategories})\"";
-                    }
-                }
-            }
-            else
-            {
-                TestCategories = "";
-            }
-
-            return TestCategories;
-        }
-
-        public string MSTestCategories(string ProjectSpec, string TestCategories)
-        {
-            if (String.IsNullOrEmpty(TestList))
-            {
-                if (!String.IsNullOrEmpty(TestCategories))
-                {
-                    TestCategories = $" /category:\"{TestCategories}\"";
-                }
-                else
-                {
-                    var DefinedCategories = AllCategoriesDefinedForProject(ProjectSpec);
-                    if (DefinedCategories.Any())
-                    {
-                        TestCategories = string.Join("&!", DefinedCategories);
-                        TestCategories = $" /category:\"!{TestCategories}\"";
-                    }
-                }
-            }
-            else
-            {
-                TestCategories = "";
-            }
-
-            return TestCategories;
-        }
-
-        public string VSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
-        {
-            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /Tests:"))
-            {
-                TestList = $" /Tests:{TestList}";
-            }
-            string TestRunnerPath;
-            Environment.CurrentDirectory = $"{TestsResultsPath}\\..";
-            string FullArgsList;
-            if (string.IsNullOrEmpty(TestList))
-            {
-                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{VSTestCategories(ProjectSpec, TestCategories)}";
-            }
-            else
-            {
-                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{TestList}";
-            }
-
-            // Write full command including full argument string.
-            TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite(TestRunnerPath);
-            File.WriteAllText(TestRunnerPath, $"\"{VSTestPath}\"{FullArgsList}");
-            return TestRunnerPath;
-        }
-
-        public string MSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
-        {
-            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /test:"))
-            {
-                var TestNames = string.Join(" /test:", TestList.Split(','));
-                TestList = $" /test:{TestNames}";
-            }
-            // Resolve test results file name
-            var TestResultsFile = TestsResultsPath + $"\"{JobName} Results.trx";
-            CopyOnWrite(TestResultsFile);
-
-            // Create full MSTest argument string.
-            string categories = MSTestCategories(ProjectSpec, TestCategories);
-            string FullArgsList;
-            if (TestList == "")
-            {
-                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{categories}";
-            }
-            else
-            {
-                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{TestList}";
-            }
-
-            // Write full command including full argument string.
-            var TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite(TestRunnerPath);
-            File.WriteAllText(TestRunnerPath, $"\"{MSTestPath}\"{FullArgsList}");
-            return TestRunnerPath;
-        }
-
         public string DotCoverRunner(string JobName, List<string> TestAssembliesDirectories)
         {
             // Write DotCover Runner XML 
-            var DotCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} DotCover Output.dcvr");
+            var DotCoverSnapshotFile = Path.Combine(TestRunner.TestsResultsPath, $"{JobName} DotCover Output.dcvr");
             CopyOnWrite(DotCoverSnapshotFile);
             var DotCoverArgs = @"<AnalyseParams>
-    <TargetExecutable>" + TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
+    <TargetExecutable>" + TestRunner.TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
     <Output>" + DotCoverSnapshotFile + @"</Output>
     <Scope>";
             foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
@@ -1597,17 +1432,17 @@ namespace Warewolf.Launcher
         </AttributeFilters>
     </Filters>
 </AnalyseParams>";
-            var DotCoverRunnerXMLPath = Path.Combine(TestsResultsPath, JobName + " DotCover Runner.xml");
+            var DotCoverRunnerXMLPath = Path.Combine(TestRunner.TestsResultsPath, JobName + " DotCover Runner.xml");
             CopyOnWrite(DotCoverRunnerXMLPath);
             File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
 
             // Create full DotCover argument string.
-            var DotCoverLogFile = TestsResultsPath + "\\DotCover.xml.log";
+            var DotCoverLogFile = TestRunner.TestsResultsPath + "\\DotCover.xml.log";
             CopyOnWrite(DotCoverLogFile);
             var FullArgsList = $" cover \"{DotCoverRunnerXMLPath}\" /LogFile=\"{DotCoverLogFile}\"";
 
             // Write DotCover Runner Batch File
-            var DotCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} DotCover.bat";
+            var DotCoverRunnerPath = $"{TestRunner.TestsResultsPath}\\Run {JobName} DotCover.bat";
             CopyOnWrite(DotCoverRunnerPath);
             File.WriteAllText(DotCoverRunnerPath, $"\"{DotCoverPath}\"{FullArgsList}");
             return DotCoverRunnerPath;
@@ -1834,31 +1669,20 @@ namespace Warewolf.Launcher
                     JobCategories.Add("");
                 }
             }
-            if (!string.IsNullOrEmpty(VSTestPath) && !File.Exists(VSTestPath))
+            if (!string.IsNullOrEmpty(TestRunner.Path) && !File.Exists(TestRunner.Path))
             {
-                if (File.Exists(VSTestPath.Replace("Enterprise", "Professional")))
+                if (File.Exists(TestRunner.Path.Replace("Enterprise", "Professional")))
                 {
-                    VSTestPath = VSTestPath.Replace("Enterprise", "Professional");
+                    TestRunner.Path = TestRunner.Path.Replace("Enterprise", "Professional");
                 }
-                if (File.Exists(VSTestPath.Replace("Enterprise", "Community")))
+                if (File.Exists(TestRunner.Path.Replace("Enterprise", "Community")))
                 {
-                    VSTestPath = VSTestPath.Replace("Enterprise", "Community");
+                    TestRunner.Path = TestRunner.Path.Replace("Enterprise", "Community");
                 }
             }
-            if (!string.IsNullOrEmpty(MSTestPath) && !(File.Exists(MSTestPath)))
+            if (!File.Exists(TestRunner.Path))
             {
-                if (File.Exists(MSTestPath.Replace("Enterprise", "Professional")))
-                {
-                    MSTestPath = MSTestPath.Replace("Enterprise", "Professional");
-                }
-                if (File.Exists(MSTestPath.Replace("Enterprise", "Community")))
-                {
-                    MSTestPath = MSTestPath.Replace("Enterprise", "Community");
-                }
-            }
-            if (!File.Exists(VSTestPath) && !(File.Exists(MSTestPath)))
-            {
-                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
+                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
             }
 
             if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
@@ -1868,7 +1692,7 @@ namespace Warewolf.Launcher
 
             if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))
             {
-                File.Move(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"), TestsResultsPath);
+                File.Move(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"), TestRunner.TestsResultsPath);
                 Console.WriteLine("Removed loose TRX files from VS install directory.");
             }
 
@@ -1877,14 +1701,7 @@ namespace Warewolf.Launcher
                 InstallServer();
             }
 
-            if (!string.IsNullOrEmpty(MSTest))
-            {
-                MSTestReadPlaylist();
-            }
-            else
-            {
-                VSTestReadPlaylist();
-            }
+            TestRunner.ReadPlaylist();
 
             for (var i = 0; i < JobName.Split(',').Count(); i++)
             {
@@ -1893,13 +1710,13 @@ namespace Warewolf.Launcher
                 var TestCategories = JobCategories[i].ToString();
                 var TestAssembliesList = "";
                 var TestAssembliesDirectories = new List<string>();
-                if (!TestsPath.EndsWith("\\"))
+                if (!TestRunner.TestsPath.EndsWith("\\"))
                 {
-                    TestsPath += "\\";
+                    TestRunner.TestsPath += "\\";
                 }
                 foreach (var Project in ProjectSpec.Split(','))
                 {
-                    Tuple<string, List<string>> UnPackTestAssembliesListAndDirectories = ResolveTestAssemblyFileSpecs(TestsPath + Project + ".dll");
+                    Tuple<string, List<string>> UnPackTestAssembliesListAndDirectories = ResolveTestAssemblyFileSpecs(TestRunner.TestsPath + Project + ".dll");
                     TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
                     if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
                     {
@@ -1907,7 +1724,7 @@ namespace Warewolf.Launcher
                     }
                     if (TestAssembliesList == "")
                     {
-                        UnPackTestAssembliesListAndDirectories = ResolveProjectFolderSpecs(TestsPath + Project);
+                        UnPackTestAssembliesListAndDirectories = ResolveProjectFolderSpecs(TestRunner.TestsPath + Project);
                         TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
                         if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
                         {
@@ -1917,21 +1734,13 @@ namespace Warewolf.Launcher
                 }
                 if (string.IsNullOrEmpty(TestAssembliesList) || string.IsNullOrEmpty(TestAssembliesList))
                 {
-                    throw new Exception("Cannot find any " + ProjectSpec + " project folders or assemblies at " + TestsPath + ".");
+                    throw new Exception("Cannot find any " + ProjectSpec + " project folders or assemblies at " + TestRunner.TestsPath + ".");
                 }
 
                 // Setup for screen recording
                 var TestSettingsFile = ScreenRecordingTestSettingsFile(JobName);
 
-                string TestRunnerPath;
-                if (string.IsNullOrEmpty(MSTest))
-                {
-                    TestRunnerPath = VSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
-                }
-                else
-                {
-                    TestRunnerPath = MSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestsResultsPath);
-                }
+                string TestRunnerPath = TestRunner.WriteTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
 
                 //Run Tests
                 var TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
@@ -1945,70 +1754,6 @@ namespace Warewolf.Launcher
             if (ApplyDotCover && JobName.Split(',').Count() > 1)
             {
                 MergeDotCoverSnapshots();
-            }
-        }
-
-        void MSTestReadPlaylist()
-        {
-            if (string.IsNullOrEmpty(TestList))
-            {
-                foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
-                {
-                    XmlDocument playlistContent = new XmlDocument();
-                    playlistContent.Load(playlistFile);
-                    if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
-                    {
-                        foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
-                        {
-                            TestList += "," + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                        }
-                    }
-                    else
-                    {
-                        if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
-                        {
-                            TestList = " /Tests:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
-                        }
-                    }
-                }
-                if (TestList.StartsWith(","))
-                {
-                    TestList = TestList.Replace("^.", " /Tests:");
-                }
-            }
-        }
-
-        void VSTestReadPlaylist()
-        {
-            if (string.IsNullOrEmpty(TestList))
-            {
-                foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
-                {
-                    XmlDocument playlistContent = new XmlDocument();
-                    playlistContent.Load(playlistFile);
-                    if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
-                    {
-                        foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
-                        {
-                            TestList += " /test:" + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                        }
-                    }
-                    else
-                    {
-                        if (playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
-                        {
-                            TestList = " /test:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
-                        }
-                    }
-                }
             }
         }
     }

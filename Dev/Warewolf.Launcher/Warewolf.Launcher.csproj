@@ -101,6 +101,9 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="TestLauncher.cs" />
+    <Compile Include="TestRunners\ITestRunner.cs" />
+    <Compile Include="TestRunners\MSTestRunner.cs" />
+    <Compile Include="TestRunners\VSTestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -70,14 +70,14 @@ namespace Warewolf.Launcher
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
             
-            if (build.TestsPath != null && build.TestsPath.StartsWith(".."))
+            if (build.TestRunner.TestsPath != null && build.TestRunner.TestsPath.StartsWith(".."))
             {
-                build.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestsPath);
+                build.TestRunner.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsPath);
             }
             
-            if (build.TestsResultsPath != null && build.TestsResultsPath.StartsWith(".."))
+            if (build.TestRunner.TestsResultsPath != null && build.TestRunner.TestsResultsPath.StartsWith(".."))
             {
-                build.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestsResultsPath);
+                build.TestRunner.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsResultsPath);
             }
 
             if (build.ServerPath != null && build.ServerPath.StartsWith(".."))
@@ -90,10 +90,11 @@ namespace Warewolf.Launcher
                 build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
 
-            if (!File.Exists(build.TestsResultsPath))
+            if (!File.Exists(build.TestRunner.TestsResultsPath))
             {
-                Directory.CreateDirectory(build.TestsResultsPath);
+                Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
             }
+
             if (!string.IsNullOrEmpty(build.JobName) && build.JobName.Split(',').Count() > 0)
             {
                 build.RunTestJobs();
@@ -104,7 +105,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine("Testing Warewolf assembly file versions...");
                 var HighestReadVersion = "0.0.0.0";
                 var LastReadVersion = "0.0.0.0";
-                foreach (var file in Directory.GetFiles(build.TestsPath, "*", SearchOption.AllDirectories))
+                foreach (var file in Directory.GetFiles(build.TestRunner.TestsPath, "*", SearchOption.AllDirectories))
                 {
                     if ((file.EndsWith(".dll") || (file.EndsWith(".exe") && !file.EndsWith(".vshost.exe"))) && (file.StartsWith("Dev2.") || file.StartsWith("Warewolf.") || file.StartsWith("WareWolf")))
                     {
@@ -123,7 +124,7 @@ namespace Warewolf.Launcher
                         // Check for invalid.
                         if (ReadVersion.StartsWith("0.0.") || (LastReadVersion != ReadVersion && LastReadVersion != "0.0.0.0"))
                         {
-                            throw new Exception("ERROR! \"" + file + " " + ReadVersion + "\" is either an invalid version or not equal to \"" + LastReadVersion + "\". All Warewolf assembly versions in \"" + build.TestsPath + "\" must conform and cannot start with 0.0. or end with .0");
+                            throw new Exception("ERROR! \"" + file + " " + ReadVersion + "\" is either an invalid version or not equal to \"" + LastReadVersion + "\". All Warewolf assembly versions in \"" + build.TestRunner.TestsPath + "\" must conform and cannot start with 0.0. or end with .0");
                         }
                         LastReadVersion = ReadVersion;
                     }
