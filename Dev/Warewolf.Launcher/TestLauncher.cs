@@ -1282,7 +1282,7 @@ namespace Warewolf.Launcher
 
         void WaitForStudioStart(string StudioFolderPath)
         {
-            var StudioStartedFilePath = StudioFolderPath + "\\StudioStarted";
+            var StudioStartedFilePath = Path.Combine(StudioFolderPath, "StudioStarted");
             WaitForFileExist(StudioStartedFilePath);
             if (!(File.Exists(StudioStartedFilePath)))
             {
@@ -1290,6 +1290,7 @@ namespace Warewolf.Launcher
             }
             else
             {
+                Thread.Sleep(30000);
                 Console.WriteLine("Studio has started.");
             }
         }
