@@ -1790,7 +1790,6 @@ namespace Warewolf.Launcher
             {
                 JobName = jobName;
             }
-            CleanupServerStudio(true);
 
             // Unpack jobs
             var JobNames = new List<string>();
