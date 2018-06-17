@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
 {
@@ -140,15 +141,15 @@ namespace Warewolf.Launcher
                     Console.WriteLine("ResourcesType: " + options.ResourcesType);
                     testLauncher.ResourcesType = options.ResourcesType;
                 }
-                if (options.VSTest)
+                if (options.VSTest || (!options.MSTest && !options.VSTest))
                 {
-                    Console.WriteLine("VSTest");
-                    testLauncher.VSTest = "true";
+                    Console.WriteLine("Test Runner: VSTest");
+                    testLauncher.TestRunner = new VSTestRunner();
                 }
                 if (options.MSTest)
                 {
-                    Console.WriteLine("MSTest");
-                    testLauncher.MSTest = "true";
+                    Console.WriteLine("Test Runner: MSTest");
+                    testLauncher.TestRunner = new MSTestRunner();
                 }
                 if (options.DotCoverPath != null)
                 {
@@ -232,8 +233,8 @@ namespace Warewolf.Launcher
                 if (options.TestsPath != null)
                 {
                     Console.WriteLine("TestsPath: " + options.TestsPath);
-                    testLauncher.TestsPath = options.TestsPath;
-                    testLauncher.TestsResultsPath = testLauncher.TestsPath + "\\TestResults";
+                    testLauncher.TestRunner.TestsPath = options.TestsPath;
+                    testLauncher.TestRunner.TestsResultsPath = testLauncher.TestRunner.TestsPath + "\\TestResults";
                 }
                 if (options.JobName != null)
                 {
@@ -243,7 +244,7 @@ namespace Warewolf.Launcher
                 if (options.TestList != null)
                 {
                     Console.WriteLine("TestList: " + options.TestList);
-                    testLauncher.TestList = options.TestList;
+                    testLauncher.TestRunner.TestList = options.TestList;
                 }
                 if (options.MergeDotCoverSnapshotsInDirectory != null)
                 {
@@ -253,17 +254,17 @@ namespace Warewolf.Launcher
                 if (options.TestsResultsPath != null)
                 {
                     Console.WriteLine("TestsResultsPath: " + options.TestsResultsPath);
-                    testLauncher.TestsResultsPath = options.TestsResultsPath;
+                    testLauncher.TestRunner.TestsResultsPath = options.TestsResultsPath;
                 }
                 if (options.VSTestPath != null)
                 {
                     Console.WriteLine("VSTestPath: " + options.VSTestPath);
-                    testLauncher.VSTestPath = options.VSTestPath;
+                    testLauncher.TestRunner.Path = options.VSTestPath;
                 }
                 if (options.MSTestPath != null)
                 {
                     Console.WriteLine("MSTestPath: " + options.MSTestPath);
-                    testLauncher.MSTestPath = options.MSTestPath;
+                    testLauncher.TestRunner.Path = options.MSTestPath;
                 }
                 if (options.RetryCount != null)
                 {
