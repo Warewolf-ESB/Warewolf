@@ -296,44 +296,52 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
-            Dev2Logger.Info($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name}", GlobalConstants.WarewolfInfo);
-            var res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
+            try
+            {
+                Dev2Logger.Info($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name}", GlobalConstants.WarewolfInfo);
+                var res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
-            if (res == null)
-            {
-                var msg = new ExecuteMessage { HasError = true };
-                msg.SetMessage("Failure");
-                return msg;
-            }
+                if (res == null)
+                {
+                    var msg = new ExecuteMessage { HasError = true };
+                    msg.SetMessage("Failure");
+                    return msg;
+                }
 
-            var index = _resourceModels.IndexOf(res);
-            if (index != -1)
-            {
-                _resourceModels.RemoveAt(index);
-            }
-            else
-            {
-                throw new KeyNotFoundException();
-            }
-            var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
+                var index = _resourceModels.IndexOf(res);
+                if (index != -1)
+                {
+                    _resourceModels.RemoveAt(index);
+                }
+                else
+                {
+                    throw new KeyNotFoundException();
+                }
+                var comsController = new CommunicationController { ServiceName = "DeleteResourceService" };
 
-            if (resource.ResourceName.Contains("Unsaved"))
-            {
+                if (resource.ResourceName.Contains("Unsaved"))
+                {
+                    comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
+                    comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());
+                    return comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, _server.Connection.WorkspaceID);
+                }
+
                 comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
                 comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());
-                return comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, _server.Connection.WorkspaceID);
+
+                var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                if (result.HasError)
+                {
+                    HandleDeleteResourceError(result, resource);
+                    return null;
+                }
+                return result;
             }
-
-            comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
-            comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());
-
-            var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            if (result.HasError)
+            catch (Exception ex)
             {
-                HandleDeleteResourceError(result, resource);
+                Dev2Logger.Error($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name} " + ex.Message, GlobalConstants.WarewolfInfo);
                 return null;
             }
-            return result;
         }
 
         public async Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel)
