@@ -2240,6 +2240,6 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>Timeout of the database connection</value>
   </data>
   <data name="CommandTimeoutHelp" xml:space="preserve">
-    <value>Timeout of the database command. Note: Sql Server with a Command Timeout set to 0, will wait indefinately </value>
+    <value>Timeout of the database command. To use the databases default timeout, leave the field blank. Note: Sql Server with a Command Timeout set to 0, will wait indefinitely.</value>
   </data>
 </root>
