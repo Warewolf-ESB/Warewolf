@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        bool CanExecuteMethod() => SelectedConnection.EnvironmentID != Guid.Empty;
+        bool CanExecuteMethod() => SelectedConnection?.EnvironmentID != Guid.Empty;
 
         void UpdateRepositoryOnServerSaved(Guid savedServerID, bool isDeleted = false)
         {

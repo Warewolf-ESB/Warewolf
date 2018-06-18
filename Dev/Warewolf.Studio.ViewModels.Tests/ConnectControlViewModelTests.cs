@@ -183,12 +183,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             var value = _target.SelectedConnection;
 
             //assert
-            Assert.AreSame(value, newSelectedConnection.Object);
-            mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnectionEnvironmentId));       
-            Assert.IsTrue(_target.SelectedConnection.IsConnected);
-            Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
-            Assert.IsFalse(isSelectedEnvironmentChangedRaised);
-            Assert.IsTrue(isCanExecuteChangedRaised);
+            Assert.AreSame(value, newSelectedConnection.Object, "The SelectedConnection does not match with the expected.");
+            mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnectionEnvironmentId));
+            Assert.IsTrue(_target.SelectedConnection.IsConnected, "The SelectedConnection is not connected as expected.");
+            Assert.IsTrue(_changedProperties.Contains("SelectedConnection"), "Changed properties does not conatin SelectedConnection.");
+            Assert.IsFalse(isSelectedEnvironmentChangedRaised, "ConnectControlViewModel SelectedEnvironmentChanged event did not execute as expected.");
+            Assert.IsTrue(isCanExecuteChangedRaised, "ConnectControlViewModel EditConnectionCommand CanExecuteChanged event did not execute as expected.");
         }
 
         [TestMethod]
