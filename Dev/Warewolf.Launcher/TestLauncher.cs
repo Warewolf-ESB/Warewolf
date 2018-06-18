@@ -982,6 +982,10 @@ namespace Warewolf.Launcher
                 {
                     ServerPath = serverPath;
                 }
+                else
+                {
+                    throw new ArgumentException($"No server found. Make sure your server is compiled and try again.");
+                }
             }
             else
             {
