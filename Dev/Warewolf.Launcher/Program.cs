@@ -232,6 +232,20 @@ namespace Warewolf.Launcher
                                 throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
                             }
                         }
+                        Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
+                        originalTitle = Console.Title;
+                        uniqueTitle = Guid.NewGuid().ToString();
+                        Console.Title = uniqueTitle;
+                        Thread.Sleep(50);
+                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
+
+                        if (handle != IntPtr.Zero)
+                        {
+                            Console.Title = originalTitle;
+                            SetForegroundWindow(handle);
+                        }
+
+                        build.TestList = Console.ReadLine();
                         Console.WriteLine("\nStart the Studio?[y|N]");
                         originalTitle = Console.Title;
                         uniqueTitle = Guid.NewGuid().ToString();
@@ -349,6 +363,8 @@ namespace Warewolf.Launcher
                             build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
                         }
                     }
+                    Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestsResultsPath}. You can now close this window.");
+                    Console.ReadKey();
                 }
                 else
                 {
