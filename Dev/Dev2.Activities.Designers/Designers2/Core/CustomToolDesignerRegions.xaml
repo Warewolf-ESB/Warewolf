@@ -398,7 +398,7 @@
                          x:Name="CommandTimeoutTextBox" 
                          Text="{Binding InputArea.CommandTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
                          ToolTip="{x:Static languages:Tooltips.CommandTimeoutTooltip}"
-                         customControls:WatermarkTextBox.Watermark="Default">
+                         customControls:WatermarkTextBox.Watermark="Blank is database default">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.CommandTimeoutHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
