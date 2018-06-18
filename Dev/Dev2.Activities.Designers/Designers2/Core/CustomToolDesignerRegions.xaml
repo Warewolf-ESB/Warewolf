@@ -397,7 +397,8 @@
                 <TextBox Grid.Column="1" 
                          x:Name="CommandTimeoutTextBox" 
                          Text="{Binding InputArea.CommandTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                         ToolTip="{x:Static languages:Tooltips.CommandTimeoutTooltip}">
+                         ToolTip="{x:Static languages:Tooltips.CommandTimeoutTooltip}"
+                         customControls:WatermarkTextBox.Watermark="Default">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.CommandTimeoutHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
