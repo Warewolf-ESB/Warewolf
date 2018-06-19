@@ -376,7 +376,7 @@ namespace Warewolf.Launcher
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message);
+                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message.Replace(".",": ") + e.InnerException??e.InnerException.Message);
             }
         }
 
