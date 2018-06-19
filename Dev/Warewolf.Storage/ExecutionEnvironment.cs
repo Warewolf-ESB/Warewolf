@@ -751,9 +751,9 @@ namespace Warewolf.Storage
             var json = PublicFunctions.EvalEnv(_env);
 
             var sb = new StringBuilder(4096);
-            foreach (var scalar in json)
+            foreach (var item in json)
             {
-                sb.Append(scalar);
+                sb.Append(item);
             }
 
             return sb.ToString();
