@@ -721,31 +721,6 @@ namespace Warewolf.Storage
             }
         }
 
-        private JContainer FindJContainerFromJArray(JContainer container, string objectName, ref JArray arr)
-        {
-            JContainer obj;
-            if (container == null)
-            {
-                obj = _env.JsonObjects[objectName];
-                arr = obj as JArray;
-            }
-            else
-            {
-                var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                if (props != null)
-                {
-                    obj = props.First as JContainer;
-                    arr = obj as JArray;
-                }
-                else
-                {
-                    obj = container;
-                }
-            }
-
-            return obj;
-        }
-
         public string ToJson()
         {
             var json = PublicFunctions.EvalEnv(_env);

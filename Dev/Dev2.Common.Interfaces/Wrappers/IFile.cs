@@ -30,6 +30,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         FileAttributes GetAttributes(string path);
 
         void SetAttributes(string path, FileAttributes fileAttributes);
-        Stream OpenRead(string path);
+        Stream OpenRead(string path);        
+        StreamWriter AppendText(string filePath);
     }
 }

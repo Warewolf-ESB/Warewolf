@@ -174,8 +174,8 @@ namespace Dev2.Runtime.ESB.Execution
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
-        {
-            var stateLogger = new Dev2StateLogger(dsfDataObject, File.CreateText(EnvironmentVariables.DetailLogPath + "\\" + Guid.NewGuid() + ".txt"));
+        {            
+            var stateLogger = new Dev2StateLogger(dsfDataObject);
             using ((IDisposable)stateLogger)
             {
                 try

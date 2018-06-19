@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-
 using Dev2.Interfaces;
+using Dev2.Common;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -10,14 +12,21 @@ namespace Dev2.Runtime.ESB.Execution
     {
         readonly StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
-
         readonly IDSFDataObject dsfDataObject;
-        public Dev2StateLogger(IDSFDataObject dsfDataObject, StreamWriter output)
+
+        public Dev2StateLogger(IDSFDataObject dsfDataObject)
+            : this(dsfDataObject, new FileWrapper())
         {
-            this.dsfDataObject = dsfDataObject;
-            writer = output;
-            jsonTextWriter = new JsonTextWriter(writer);
         }
+
+        public Dev2StateLogger(IDSFDataObject dsfDataObject, IFile fileWrapper)
+        {
+            writer = fileWrapper.AppendText(GetDetailLogFilePath(dsfDataObject));
+            jsonTextWriter = new JsonTextWriter(writer);
+            this.dsfDataObject = dsfDataObject;
+        }
+        public static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
+            Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName), "Detail.log");
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
