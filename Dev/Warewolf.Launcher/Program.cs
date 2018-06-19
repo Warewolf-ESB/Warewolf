@@ -246,7 +246,7 @@ namespace Warewolf.Launcher
                             SetForegroundWindow(handle);
                         }
 
-                        build.TestList = Console.ReadLine();
+                        build.TestRunner.TestList = Console.ReadLine();
                         Console.WriteLine("\nStart the Studio?[y|N]");
                         originalTitle = Console.Title;
                         uniqueTitle = Guid.NewGuid().ToString();
@@ -364,7 +364,7 @@ namespace Warewolf.Launcher
                             build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
                         }
                     }
-                    Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestsResultsPath}. You can now close this window.");
+                    Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestRunner.TestsResultsPath}. You can now close this window.");
                     Console.ReadKey();
                 }
                 else
