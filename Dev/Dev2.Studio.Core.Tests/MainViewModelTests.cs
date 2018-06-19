@@ -74,6 +74,8 @@ namespace Dev2.Core.Tests
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             svr.Setup(a => a.Name).Returns("Localhost");
+            var mockEnvironmentConnection = SetupMockConnection();
+            svr.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
@@ -170,7 +172,7 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
             envConn.Setup(conn => conn.ServerID).Returns(serverID);
@@ -227,7 +229,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
             envConn.Setup(conn => conn.ServerID).Returns(serverID);
             var env = new Mock<IServer>();
@@ -279,7 +281,7 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
             envConn.Setup(conn => conn.ServerID).Returns(serverID);
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -1194,7 +1196,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1255,7 +1257,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1317,7 +1319,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             var envRepo = new Mock<IServerRepository>();
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1380,8 +1382,9 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             var envRepo = new Mock<IServerRepository>();
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -1442,7 +1445,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             var envRepo = new Mock<IServerRepository>();
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var env = new Mock<IServer>();
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1536,7 +1539,7 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1584,7 +1587,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
-            var envConn = new Mock<IEnvironmentConnection>();
+            var envConn = SetupMockConnection();
             var env = new Mock<IServer>();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -1638,7 +1641,13 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
-            envRepo.Setup(e => e.Source).Returns(new Mock<IServer>().Object);
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            env.Setup(serv => serv.Connection).Returns(mockEnvironmentConnection.Object);
+
+            envRepo.Setup(e => e.Source).Returns(env.Object);
+
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             CustomContainer.DeRegister<IServerRepository>();
@@ -1657,7 +1666,12 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IServerRepository>();
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
-            envRepo.Setup(e => e.Source).Returns(new Mock<IServer>().Object);
+
+            var env = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            env.Setup(serv => serv.Connection).Returns(mockEnvironmentConnection.Object);
+
+            envRepo.Setup(e => e.Source).Returns(env.Object);
 
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
@@ -1715,6 +1729,8 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             env.Setup(e => e.AuthorizationService).Returns(authService.Object);
             env.Setup(e => e.IsConnected).Returns(true);
+            var mockEnvironmentConnection = SetupMockConnection();
+            env.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             //------------Execute Test---------------------------
             ShellViewModel.ActiveServer = env.Object;
@@ -1722,6 +1738,17 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreSame(authService.Object, ShellViewModel.NewServiceCommand.AuthorizationService);
             Assert.AreSame(authService.Object, ShellViewModel.SettingsCommand.AuthorizationService);
+        }
+
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
         }
 
         [TestMethod]
@@ -2832,8 +2859,12 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
             CustomContainer.Register(environmentRepository.Object);
-            var environmentModel = new Mock<IServer>().Object;
-            environmentRepository.Setup(repo => repo.Source).Returns(environmentModel);
+            var environmentModel = new Mock<IServer>();
+
+            var mockEnvironmentConnection = SetupMockConnection();
+            environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
+            environmentRepository.Setup(repo => repo.Source).Returns(environmentModel.Object);
 
             var viewModel = new Mock<IShellViewModel>();
             var server = (IServer)CustomContainer.Get(typeof(IServer));
@@ -2864,7 +2895,7 @@ namespace Dev2.Core.Tests
 
             var mvm = new ShellViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, null, popup.Object);
 
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => environmentModel.Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
@@ -2881,24 +2912,31 @@ namespace Dev2.Core.Tests
         {
             var viewModel = new Mock<IShellViewModel>();
             var server = (IServer)CustomContainer.Get(typeof(IServer));
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.Connection = mockEnvironmentConnection.Object;
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
             CustomContainer.Register(viewModel.Object);
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
             CustomContainer.Register(environmentRepository.Object);
             var connected1 = new Mock<IServer>();
             var connected2 = new Mock<IServer>();
             var notConnected = new Mock<IServer>();
+            notConnected.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
 
-            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IServer>().Object);
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             environmentRepository.Setup(a => a.Get(It.IsAny<Guid>())).Returns(connected1.Object);
             var versionChecker = new Mock<IVersionChecker>();
@@ -2992,12 +3030,16 @@ namespace Dev2.Core.Tests
         {
             var viewModel = new Mock<IShellViewModel>();
             var server = (IServer)CustomContainer.Get(typeof(IServer));
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.Connection = mockEnvironmentConnection.Object;
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
             CustomContainer.Register(viewModel.Object);
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
-            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IServer>().Object);
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
             CustomContainer.Register(environmentRepository.Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
@@ -3005,10 +3047,13 @@ namespace Dev2.Core.Tests
             var connected1 = new Mock<IServer>();
             var connected2 = new Mock<IServer>();
             var notConnected = new Mock<IServer>();
+            notConnected.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3038,13 +3083,17 @@ namespace Dev2.Core.Tests
         {
             var viewModel = new Mock<IShellViewModel>();
             var server = (IServer)CustomContainer.Get(typeof(IServer));
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.Connection = mockEnvironmentConnection.Object;
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
             CustomContainer.Register(viewModel.Object);
 
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IServerRepository>();
-            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IServer>().Object);
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            environmentRepository.Setup(repo => repo.Source).Returns(serverMock.Object);
             CustomContainer.Register(environmentRepository.Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
@@ -3052,10 +3101,13 @@ namespace Dev2.Core.Tests
             var connected1 = new Mock<IServer>();
             var connected2 = new Mock<IServer>();
             var notConnected = new Mock<IServer>();
+            notConnected.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected1.Setup(a => a.Disconnect()).Verifiable();
+            connected1.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
             connected2.Setup(a => a.Disconnect()).Verifiable();
+            connected2.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             IList<IServer> lst = new List<IServer> { connected1.Object, connected2.Object, notConnected.Object };
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var vieFactory = new Mock<IViewFactory>();
@@ -3571,14 +3623,15 @@ namespace Dev2.Core.Tests
         static void Verify_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoad(bool showDebugWindowOnLoad)
         {
             //------------Setup for test--------------------------
+            var mockEnvironmentConnection = SetupMockConnection();
             var eventAggregator = new Mock<IEventAggregator>();
 
             var envRepo = new Mock<IServerRepository>();
+            var serverMock = new Mock<IServer>();
+            serverMock.Setup(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
-            var environmentModel = new Mock<IServer>().Object;
-            envRepo.Setup(e => e.Source).Returns(environmentModel);
-            envRepo.Setup(e => e.Source.IsConnected).Returns(false);
-            envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
+            envRepo.Setup(e => e.Source).Returns(serverMock.Object);
+
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
@@ -3680,6 +3733,10 @@ namespace Dev2.Core.Tests
             var localhost = new Mock<IServer>();
             localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
+
+            var mockEnvironmentConnection = SetupMockConnection();
+            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
             var environmentRepository = new Mock<IServerRepository>();
             CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(environmentRepository.Object);
@@ -3709,6 +3766,10 @@ namespace Dev2.Core.Tests
             var localhost = new Mock<IServer>();
             localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
+
+            var mockEnvironmentConnection = SetupMockConnection();
+            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
             environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
@@ -4051,7 +4112,11 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IServer>());
-            envRepo.Setup(e => e.Source).Returns(new Mock<IServer>().Object);
+            var environmentModel = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            environmentModel.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
+            envRepo.Setup(e => e.Source).Returns(environmentModel.Object);
+
             var mockVersionChecker = new Mock<IVersionChecker>();
             CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(envRepo.Object);
