@@ -333,9 +333,9 @@ namespace Warewolf.Launcher
                 JobName = "Test Run";
             }
 
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Resources"), $"{JobName} Server Resources Folder");
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Tests"), $"{JobName} Server Tests Folder");
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\VersionControl"), $"{JobName} Server VersionControl Folder");
+            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Resources"), $"{JobName} Server Resources Folder");
+            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Tests"), $"{JobName} Server Tests Folder");
+            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\VersionControl"), $"{JobName} Server VersionControl Folder");
         }
 
         bool TryFindWarewolfServerExe(out string serverPath)
