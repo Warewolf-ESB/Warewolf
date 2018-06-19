@@ -42,12 +42,26 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.SetupAllProperties();
             _shellVm = new Mock<IShellViewModel>();
             _serverMock = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             _differentServerMock = new Mock<IServer>();
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _sourceView.Setup(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>());
             _explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(_explorerTooltips.Object);
+        }
+
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
         }
 
         [TestMethod]
@@ -591,6 +605,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             connectControl.SetupAllProperties();
             differentConnectControl.SetupAllProperties();
             _differentServerMock = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             differentConnectControl.Setup(model => model.SelectedConnection).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.ConnectControlViewModel).Returns(differentConnectControl.Object);
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
