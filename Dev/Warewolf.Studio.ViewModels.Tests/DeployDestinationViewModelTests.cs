@@ -52,12 +52,23 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
-            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
-            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            var mockEnvironmentConnection = SetupMockConnection();
+            _serverMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             _serverMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _target = new DeployDestinationViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
+        }
+
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
         }
 
         #endregion Test initialize

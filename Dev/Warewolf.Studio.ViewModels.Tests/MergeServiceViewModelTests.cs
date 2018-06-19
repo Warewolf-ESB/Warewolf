@@ -48,6 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
+            _serverMock.Setup(server => server.Connection).Returns(CreateConnection(true).Object);
 
             _selectedEnvironment = new Mock<IEnvironmentViewModel>();
             _selectedEnvironment.Setup(p => p.DisplayName).Returns("someResName");
@@ -136,6 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serverId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
             serverMock.SetupGet(it => it.DisplayName).Returns("newServerName");
+            serverMock.Setup(server => server.Connection).Returns(CreateConnection(true).Object);
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             environmentViewModelMock.SetupGet(it => it.Server.EnvironmentID).Returns(serverId);
