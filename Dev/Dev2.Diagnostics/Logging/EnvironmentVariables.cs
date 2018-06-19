@@ -51,7 +51,7 @@ namespace Dev2.Common
         {
             get
             {
-                var resourcePath = Path.Combine(AppDataPath, "Resources");                
+                var resourcePath = Path.Combine(AppDataPath, "Resources");
                 return resourcePath;
             }
         }
@@ -89,11 +89,20 @@ namespace Dev2.Common
             }
         }
 
+        public static string WorkflowDetailLogPath(Guid Id, string name)
+        {
+            var wfDetailedLogPath = Path.Combine($"{DetailLogPath}", string.Format("{0} - {1}", Id, name));
+            if (!Directory.Exists(wfDetailedLogPath))
+            {
+                Directory.CreateDirectory(wfDetailedLogPath);
+            }
+            return wfDetailedLogPath;
+        }
         public static string AppDataPath
         {
             get
             {
-                if(!Directory.Exists(DataPath))
+                if (!Directory.Exists(DataPath))
                 {
                     Directory.CreateDirectory(DataPath);
                 }
@@ -150,7 +159,7 @@ namespace Dev2.Common
         }
 
         public static string ServerLogFile => Path.Combine(AppDataPath, "Server Log", "warewolf-Server.log");
-        
+
         public static string WorkspacePath
         {
             get
@@ -173,7 +182,7 @@ namespace Dev2.Common
         static string _rootPath;
 
         public static string RootPersistencePath => _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
-        
+
         public struct CharacterMap
         {
             public static readonly Encoding DefaultEncoding = Encoding.ASCII;
@@ -191,7 +200,7 @@ namespace Dev2.Common
         public static Guid RemoteInvokeID => RemoteID;
 
         public static string WebServerUri { get; set; }
-        public static string PublicWebServerUri => DnsName + ":" + Port+"/";
+        public static string PublicWebServerUri => DnsName + ":" + Port + "/";
         public static string DnsName { get; set; }
         public static int Port { get; set; }
     }

@@ -59,5 +59,10 @@ namespace Dev2.Common.Wrappers
         }
 
         public Stream OpenRead(string path) => File.OpenRead(path);
+
+        public StreamWriter AppendText(string filePath)
+        {
+            return File.AppendText(filePath);
+        }
     }
 }
