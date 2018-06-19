@@ -85,6 +85,7 @@ using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 using Dev2.Common;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Activities.Designers2.AdvancedRecordset;
+using Dev2.Data.Decisions.Operations;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4317,6 +4318,141 @@ namespace Dev2.Activities.Specs.Composition
                 AddPermissionsForResource(resourceName, environmentModel, resourceRepository, settings);
             }
         }
+
+        [Given(@"""(.*)"" contains a Decision ""(.*)"" as")]
+        public void GivenContainsADecisionAs(string workflowName, string decisionName, Table decisionConfig)
+        {
+            var activity = new DsfDecision { DisplayName = decisionName };
+            foreach (var tableRow in decisionConfig.Rows)
+            {
+                activity.Conditions.AddModelItem(new Data.SystemTemplates.Models.Dev2Decision
+                {
+                    Col1 = tableRow["ItemToCheck"],
+                    EvaluationFn = DecisionDisplayHelper.GetValue(tableRow["Condition"]),
+                    Col3=tableRow["ValueToCompareTo"]
+                });
+                Add(decisionName, (TrueArm:tableRow["TrueArmToolName"], FalseArm:tableRow["FalseArmToolName"]));
+            }
+
+            _commonSteps.AddActivityToActivityList(workflowName, decisionName, activity);
+        }
+
+        [Then(@"the ""(.*)"" number '(.*)' in WorkFlow ""(.*)"" debug inputs as")]
+        public void ThenTheNumberInWorkFlowDebugInputsAs(string workflowName, int toolNum, string toolName, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = Guid.Empty;
+
+            if (parentWorkflowName != workflowName)
+            {
+                if (toolName != null && workflowName != null)
+                {
+                    workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+                }
+                else
+                {
+                    throw new InvalidOperationException("SpecFlow broke.");
+                }
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).Skip(toolNum-1).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            IDebugState outputState;
+            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
+            {
+                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+            }
+            else
+            {
+                outputState = toolSpecificDebug.FirstOrDefault();
+            }
+
+            if (outputState != null && outputState.Outputs != null)
+            {
+                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                if (SelectResults != null && SelectResults.ToList() != null)
+                {
+                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+                    return;
+                }
+                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+            }
+            Assert.Fail("No debug output found for " + workflowName + ".");
+        }
+
+        [Then(@"the ""(.*)"" number '(.*)' in WorkFlow ""(.*)"" has ""(.*)"" nested children")]
+        public void ThenTheNumberInWorkFlowHasNestedChildren(string toolName, int itemNumber, string workflowName, int count)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+
+            var id =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
+            var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
+            Assert.AreEqual(count, children);
+        }
+
+        [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" number '(.*)' debug inputs as")]
+        public void ThenTheInStepForNumberDebugInputsAs(string toolName, int stepNumber, string forEachName, int p3, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if (parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+
+            Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
+            var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
+
+            _commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
+                                                    .SelectMany(item => item.ResultsList).ToList());
+        }
+
+        [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" number '(.*)' debug outputs as")]
+        public void ThenTheInStepForNumberDebugOutputsAs(string toolName, int stepNumber, string forEachName, int p3, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if (parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
+            var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
+
+
+            var outputDebugItems = debugToUse.Outputs
+                .SelectMany(s => s.ResultsList).ToList();
+            _commonSteps.ThenTheDebugOutputAs(table, outputDebugItems);
+        }
+
+
 
         private static void AddPermissionsForResource(string resourceName, IServer environmentModel, IResourceRepository resourceRepository, Data.Settings.Settings settings)
         {
