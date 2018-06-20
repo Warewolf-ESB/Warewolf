@@ -28,7 +28,7 @@ namespace Dev2.Services.Sql
         public void Dispose()
         {
             _transaction?.Dispose();
-            _connection?.Dispose();            
+            _connection?.Dispose();
             _connection = null;
         }
 
@@ -43,7 +43,7 @@ namespace Dev2.Services.Sql
 
         }
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
         public bool IsConnected { get; }
         public string ConnectionString { get => _connectionString; }
         string _connectionString;
@@ -69,7 +69,7 @@ namespace Dev2.Services.Sql
 
         public void Connect()
         {
-            Connect(_connectionString);            
+            Connect(_connectionString);
         }
 
         public void BeginTransaction()
@@ -133,18 +133,11 @@ namespace Dev2.Services.Sql
                 }
                 using (command)
                 {
-                    try
+                    using (var executeReader = command.ExecuteReader())
                     {
-                        using (var executeReader = command.ExecuteReader())
-                        {
-                            var dataTable = new DataTable();
-                            dataTable.Load(executeReader);
-                            return dataTable;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return new DataTable(e.Message);
+                        var dataTable = new DataTable();
+                        dataTable.Load(executeReader);
+                        return dataTable;
                     }
                 }
             }
@@ -224,15 +217,15 @@ namespace Dev2.Services.Sql
             }
         }
 
-       
+
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
 
         public void FetchStoredProcedures(
-            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, 
-            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, 
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor,
             bool continueOnProcessorException, string dbName)
         {
         }
@@ -353,7 +346,10 @@ namespace Dev2.Services.Sql
                 throw new Exception(ErrorResource.PleaseConnectFirst);
             }
             var sqlCommand = _connection.CreateCommand();
-            sqlCommand.CommandTimeout = CommandTimeout;
+            if (CommandTimeout != null)
+            {
+                sqlCommand.CommandTimeout = CommandTimeout.Value;
+            }
             TrySetTransaction(_transaction, sqlCommand);
             return sqlCommand;
         }
@@ -405,65 +401,71 @@ namespace Dev2.Services.Sql
 
             return true;
         }
-		public DataSet FetchDataSet(IDbCommand command)
-		{
-			if (_connection == null)
-			{
-				throw new Exception(ErrorResource.PleaseConnectFirst);
-			}
-			_connection.TryOpen();
-			_connection.TryOpen();
-			using (var sqlCommand = _connection.CreateCommand())
-			{
-				TrySetTransaction(_transaction, sqlCommand);
-				sqlCommand.CommandText = _commantText;
-				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = CommandTimeout;
-				
-				return FetchDataSet(sqlCommand);
-			}
-		}
-		public int ExecuteNonQuery(IDbCommand command)
-		{
-			if (_connection == null)
-			{
-				throw new Exception(ErrorResource.PleaseConnectFirst);
-			}
-			_connection.TryOpen();
-			_connection.TryOpen();
-			int retValue = 0;
-			using (var sqlCommand = _connection.CreateCommand())
-			{
-				TrySetTransaction(_transaction, sqlCommand);
-				sqlCommand.CommandText = _commantText;
-				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = CommandTimeout;
+        public DataSet FetchDataSet(IDbCommand command)
+        {
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
+            _connection.TryOpen();
+            _connection.TryOpen();
+            using (var sqlCommand = _connection.CreateCommand())
+            {
+                TrySetTransaction(_transaction, sqlCommand);
+                sqlCommand.CommandText = _commantText;
+                sqlCommand.CommandType = _commandType;
+                if (CommandTimeout != null)
+                {
+                    sqlCommand.CommandTimeout = CommandTimeout.Value;
+                }
+                return FetchDataSet(sqlCommand);
+            }
+        }
+        public int ExecuteNonQuery(IDbCommand command)
+        {
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
+            _connection.TryOpen();
+            _connection.TryOpen();
+            int retValue = 0;
+            using (var sqlCommand = _connection.CreateCommand())
+            {
+                TrySetTransaction(_transaction, sqlCommand);
+                sqlCommand.CommandText = _commantText;
+                sqlCommand.CommandType = _commandType;
+                if (CommandTimeout != null)
+                {
+                    sqlCommand.CommandTimeout = CommandTimeout.Value;
+                }
+                retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
+                return retValue;
+            }
+        }
 
-				retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
-				return retValue;
-			}
-		}
-
-		public int ExecuteScalar(IDbCommand command)
-		{
-			if (_connection == null)
-			{
-				throw new Exception(ErrorResource.PleaseConnectFirst);
-			}
-			_connection.TryOpen();
-			_connection.TryOpen();
-			int retValue = 0;
-			using (var sqlCommand = _connection.CreateCommand())
-			{
-				TrySetTransaction(_transaction, sqlCommand);
-				sqlCommand.CommandText = _commantText;
-				sqlCommand.CommandType = _commandType;
-				sqlCommand.CommandTimeout = CommandTimeout;
-
-				retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
-				return retValue;
-			}		
-		}		
+        public int ExecuteScalar(IDbCommand command)
+        {
+            if (_connection == null)
+            {
+                throw new Exception(ErrorResource.PleaseConnectFirst);
+            }
+            _connection.TryOpen();
+            _connection.TryOpen();
+            int retValue = 0;
+            using (var sqlCommand = _connection.CreateCommand())
+            {
+                TrySetTransaction(_transaction, sqlCommand);
+                sqlCommand.CommandText = _commantText;
+                sqlCommand.CommandType = _commandType;
+                if (CommandTimeout != null)
+                {
+                    sqlCommand.CommandTimeout = CommandTimeout.Value;
+                }
+                retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                return retValue;
+            }
+        }
     }
 
     public class WarewolfDbException : DbException
