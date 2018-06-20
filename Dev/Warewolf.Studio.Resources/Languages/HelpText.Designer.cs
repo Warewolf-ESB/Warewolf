@@ -262,7 +262,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout of the database command. Note: Sql Server with a Command Timeout set to 0, will wait indefinately .
+        ///   Looks up a localized string similar to Timeout of the database command. To use the databases default timeout, leave the field blank. Note: SQL Server with a Command Timeout set to 0, will wait indefinitely..
         /// </summary>
         public static string CommandTimeoutHelp {
             get {
