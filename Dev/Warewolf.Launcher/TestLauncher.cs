@@ -129,14 +129,14 @@ namespace Warewolf.Launcher
                 }
                 File.Move(FileSpec, $"{FileSpecWithoutExtention}{num}{FileExtention}");
             }
-            if (Directory.Exists(FileSpec))
+            else if (Directory.Exists(FileSpec))
             {
                 var num = 1;
-                while (File.Exists($"{FileSpec}{num}"))
+                while (Directory.Exists($"{FileSpec}{num}"))
                 {
                     num++;
                 }
-                File.Move(FileSpec, $"{FileSpec}{num}");
+                Directory.Move(FileSpec, $"{FileSpec}{num}");
             }
         }
 
