@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -9,7 +10,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
-
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDbSources : DefaultEsbManagementEndpoint
@@ -17,10 +17,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            
-            var list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+            try
             {
-                if (a is DbSource res)
+                var list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(res =>
                 {
                     return new DbSourceDefinition
                     {
@@ -35,12 +34,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Type = res.ServerType,
                         UserName = res.UserID
                     };
-                }
-                return null;
-            }).ToList();
+                });
 
-            return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            
+                return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error when trying to retrieve database sources " + e.Message, GlobalConstants.WarewolfError);
+                return serializer.SerializeToBuilder(new ExecuteMessage
+                {
+                    HasError = true,
+                    Message = new StringBuilder(e.Message)
+                });
+            }
         }
 
         public ResourceCatalog Resources => ResourceCatalog.Instance;

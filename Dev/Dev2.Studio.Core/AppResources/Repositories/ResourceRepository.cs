@@ -339,7 +339,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name} " + ex.Message, GlobalConstants.WarewolfInfo);
+                Dev2Logger.Error($"DeleteResource Resource: {resource.DisplayName}  Environment:{_server.Name} " + ex.Message, GlobalConstants.WarewolfError);
                 return null;
             }
         }
