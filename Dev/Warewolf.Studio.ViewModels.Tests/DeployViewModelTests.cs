@@ -92,6 +92,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
@@ -110,6 +112,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
+        }
+
         [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
@@ -120,6 +133,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             server.Setup(a => a.DisplayName).Returns("LocalHost");
+            var mockEnvironmentConnection = SetupMockConnection();
+            server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
@@ -178,6 +193,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.Permissions).Returns(destPermissions);
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
+            var mockEnvironmentConnection = SetupMockConnection();
+            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
             shellViewModel.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
             var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
@@ -223,16 +240,19 @@ namespace Warewolf.Studio.ViewModels.Tests
                 envMock.Object
             });
             var eventAggregator = new Mock<IEventAggregator>();
-                        
+            var mockEnvironmentConnection = SetupMockConnection();
+
             var localhost = new Mock<IServer>();
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.IsConnected).Returns(true);
+            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             var otherServer = new Mock<IServer>();
             otherServer.Setup(server => server.IsConnected).Returns(true);
             otherServer.Setup(a => a.DisplayName).Returns("OtherServer");
             otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
+            otherServer.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
 
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
 
@@ -292,7 +312,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
-          
+            var mockEnvironmentConnection = SetupMockConnection();
+            localhost.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
 
             var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);

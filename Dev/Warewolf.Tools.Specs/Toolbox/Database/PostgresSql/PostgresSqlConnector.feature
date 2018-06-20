@@ -90,3 +90,4 @@ Scenario: Execute Postgres Server With Timeout
 	And Postgres Command Timeout is "5" milliseconds for "PostgresActivity"
 	When Postgres Workflow "PostgreWorkflowForTimeout" containing dbTool is executed
     And the workflow "PostgreWorkflowForTimeout" execution has "AN" error "statement timeout"
+	And the workflow "PostgreWorkflowForTimeout" error does not contain "NewLine"
