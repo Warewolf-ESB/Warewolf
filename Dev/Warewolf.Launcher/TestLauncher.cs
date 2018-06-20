@@ -163,6 +163,10 @@ namespace Warewolf.Launcher
             {
                 CopyOnWrite(DestinationFolderPath);
                 Console.WriteLine($"Moving \"{SourceFolderPath}\" to \"{DestinationFolderPath}\"");
+                if (!Directory.Exists(Path.GetDirectoryName(DestinationFolderPath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(DestinationFolderPath));
+                }
                 Directory.Move(SourceFolderPath, DestinationFolderPath);
             }
         }
