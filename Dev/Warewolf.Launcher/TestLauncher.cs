@@ -1242,7 +1242,6 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Thread.Sleep(30000);
                 Console.WriteLine("Studio has started.");
             }
         }
