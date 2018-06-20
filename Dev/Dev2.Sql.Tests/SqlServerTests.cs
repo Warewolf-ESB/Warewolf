@@ -648,6 +648,7 @@ namespace Dev2.Sql.Tests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [ExpectedException(typeof(DbEx))]
         [TestCategory("SqlServer_FetchDataTable")]
         public void SqlServer_FetchDataTable_OnException()
 

@@ -25,6 +25,6 @@ namespace Dev2.Common.Interfaces.ToolBase.Database
     {
         ICollection<IServiceInput> Inputs { get; set; }
         void ResetInputs(ICollection<IServiceInput> inputs);
-        int CommandTimeout { get; set; }
+        int? CommandTimeout { get; set; }
     }
 }

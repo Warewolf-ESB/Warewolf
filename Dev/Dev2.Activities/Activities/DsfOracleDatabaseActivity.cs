@@ -21,13 +21,12 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
         public DsfOracleDatabaseActivity()
         {
             Type = "Oracle Connector";
             DisplayName = "Oracle Database";
-            CommandTimeout = 30;
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -80,9 +79,12 @@ namespace Dev2.Activities
             base.BeforeExecutionStart(dataObject, tmpErrors);
             var databaseServiceExecution = new DatabaseServiceExecution(dataObject)
             {
-                ProcedureName = ProcedureName,
-                CommandTimeout = CommandTimeout
-            };            
+                ProcedureName = ProcedureName,                
+            };
+            if (CommandTimeout != null)
+            {
+                databaseServiceExecution.CommandTimeout = CommandTimeout.Value;
+            }            
             ServiceExecution = databaseServiceExecution;
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);

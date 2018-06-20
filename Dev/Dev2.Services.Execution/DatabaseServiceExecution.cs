@@ -50,11 +50,15 @@ namespace Dev2.Services.Execution
         public string ProcedureName { private get; set; }
         public string SqlQuery { private get; set; }
         public int ConnectionTimeout { private get; set; }
-        public int CommandTimeout { private get; set; }
+        public int? CommandTimeout { private get; set; }
 
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
-            var server = new MySqlServer { CommandTimeout = CommandTimeout };
+            var server = new MySqlServer();
+            if (CommandTimeout != null)
+            {
+                server.CommandTimeout = CommandTimeout.Value;
+            }
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -304,7 +308,7 @@ namespace Dev2.Services.Execution
                 }
 
                 var i = 0;
-                for (; i< tokens.Count; i++)
+                for (; i < tokens.Count; i++)
                 {
                     if (tokens[i].Type == TSQL.Tokens.TSQLTokenType.Keyword && tokens[i].Text.ToUpper() == "FOR")
                     {
@@ -316,7 +320,7 @@ namespace Dev2.Services.Execution
             return result;
         }
 
-        void MssqlSqlExecution(int connectionTimeout, int commandTimeout, ErrorResultTO errors, int update)
+        void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
         {
 
             var connectionBuilder = new ConnectionBuilder();
@@ -346,7 +350,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection, int commandTimeout)
+        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection, int? commandTimeout)
         {
             using (SqlTransaction dbTransaction = connection.BeginTransaction())
             {
@@ -379,7 +383,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        bool MssqlReadDataForXml(int update, Stopwatch startTime, SqlConnection connection, int commandTimeout)
+        bool MssqlReadDataForXml(int update, Stopwatch startTime, SqlConnection connection, int? commandTimeout)
         {
             var xmlResults = false;
             var dbTransaction = connection.BeginTransaction();
@@ -437,7 +441,7 @@ namespace Dev2.Services.Execution
             return xmlResults;
         }
 
-        SqlCommand MssqlCreateCommand(SqlConnection connection, int commandTimeout, List<SqlParameter> parameters)
+        SqlCommand MssqlCreateCommand(SqlConnection connection, int? commandTimeout, List<SqlParameter> parameters)
         {
             var cmd = connection.CreateCommand();
             foreach (var item in parameters)
@@ -446,17 +450,21 @@ namespace Dev2.Services.Execution
             }
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = ProcedureName;
-            if (commandTimeout <= 0)
+            if (commandTimeout != null)
             {
-                if (commandTimeout == 0)
+                if (commandTimeout <= 0)
                 {
-                    Dev2Logger.Warn("mssql command timeout is set to wait indefinitely", GlobalConstants.WarewolfWarn);
-                } else
-                {
-                    Dev2Logger.Warn("mssql command timeout is set below 0", GlobalConstants.WarewolfWarn);
+                    if (commandTimeout == 0)
+                    {
+                        Dev2Logger.Warn("mssql command timeout is set to wait indefinitely", GlobalConstants.WarewolfWarn);
+                    }
+                    else
+                    {
+                        Dev2Logger.Warn("mssql command timeout is set below 0", GlobalConstants.WarewolfWarn);
+                    }
                 }
+                cmd.CommandTimeout = commandTimeout.Value;
             }
-            cmd.CommandTimeout = commandTimeout;
             return cmd;
         }
 
@@ -519,7 +527,11 @@ namespace Dev2.Services.Execution
 
         OracleServer SetupOracleServer(ErrorResultTO errors)
         {
-            var server = new OracleServer { CommandTimeout = CommandTimeout };
+            var server = new OracleServer();
+            if (CommandTimeout != null)
+            {
+                server.CommandTimeout = CommandTimeout.Value;
+            }
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -597,7 +609,11 @@ namespace Dev2.Services.Execution
 
         ODBCServer SetupOdbcServer(ErrorResultTO errors)
         {
-            var server = new ODBCServer { CommandTimeout = CommandTimeout };
+            var server = new ODBCServer();
+            if (CommandTimeout != null)
+            {
+                server.CommandTimeout = CommandTimeout.Value;
+            }
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -678,7 +694,11 @@ namespace Dev2.Services.Execution
 
         PostgreServer SetupPostgreServer(ErrorResultTO errors)
         {
-            var server = new PostgreServer { CommandTimeout = CommandTimeout };
+            var server = new PostgreServer();
+            if (CommandTimeout != null)
+            {
+                server.CommandTimeout = CommandTimeout.Value;
+            }
             try
             {
                 var connected = server.Connect(Source.ConnectionString, CommandType.StoredProcedure, ProcedureName);
@@ -757,7 +777,11 @@ namespace Dev2.Services.Execution
 
         SqliteServer SetupSqlite(ErrorResultTO errors)
         {
-            var server = new SqliteServer { CommandTimeout = CommandTimeout };
+            var server = new SqliteServer();
+            if (CommandTimeout != null)
+            {
+                server.CommandTimeout = CommandTimeout.Value;
+            }
             try
             {
                 server.Connect(Source.ConnectionString);
