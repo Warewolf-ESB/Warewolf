@@ -189,11 +189,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return results.OfType<TServiceType>().ToList();
         }
 
-        public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new()
+        public IList<T> GetResourceList<T>(Guid workspaceId) where T : Resource, new()
         {
             var workspaceResources = GetResources(workspaceId);
             var resourcesMatchingType = workspaceResources.Where(resource => typeof(T) == resource.GetType());
-            return resourcesMatchingType.ToList();
+            return resourcesMatchingType.OfType<T>().ToList();
         }
 
 

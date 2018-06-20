@@ -120,7 +120,7 @@ namespace Dev2.Runtime.Hosting
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId) => _catalogPluginContainer.LoadProvider.GetDependants(workspaceID, resourceId);
         public List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetDependentsAsResourceForTrees(workspaceID, resourceId);
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
-        public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
+        public IList<T> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
         public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _catalogPluginContainer.LoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
