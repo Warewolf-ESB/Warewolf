@@ -4953,42 +4953,42 @@ this.FeatureBackground();
                         "=[[counter]]+1"});
 #line 1325
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table235, "And ");
+#line 1328
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
+                    "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table236 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
             table236.AddRow(new string[] {
-                        "[[result]]",
-                        "DONE"});
-#line 1328
- testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table236, "And ");
-#line 1331
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
-                    "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
-            table237.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-#line 1332
-   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table237, "And ");
+#line 1329
+   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table236, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table238 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
                         "ItemToCheck",
                         "Condition",
                         "ValueToCompareTo",
                         "TrueArmToolName",
                         "FalseArmToolName"});
-            table238.AddRow(new string[] {
+            table237.AddRow(new string[] {
                         "[[counter]]",
                         "=",
                         "3",
                         "End Result",
                         "Increment Counter"});
+#line 1332
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table237, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table238 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table238.AddRow(new string[] {
+                        "[[result]]",
+                        "DONE"});
 #line 1335
-   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table238, "And ");
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table238, "And ");
 #line 1338
       testRunner.When("\"WFWithForEachWithManualLoop\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1339
