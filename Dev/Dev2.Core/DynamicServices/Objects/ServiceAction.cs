@@ -24,14 +24,13 @@ using Newtonsoft.Json.Converters;
 namespace Dev2.DynamicServices.Objects
 {
     #region Service Action Class - Represents a single action within a service
-    
+
     public class ServiceAction : DynamicServiceObjectBase, IDisposable
     {
         #region Private Fields
 
         const int _generation = 0;
         readonly object _poolGuard = new object();
-        int _commandTimeout = 30;
         bool _disposing;
         bool _resultsToClient = true;
         bool _terminateServiceOnFault = true;
@@ -44,23 +43,19 @@ namespace Dev2.DynamicServices.Objects
 
         #region Public Properties
 
-        public int CommandTimeout
-        {
-            get => _commandTimeout;
-            set => _commandTimeout = value;
-        }
+        public int? CommandTimeout { get; set; }
 
         public Stream XamlStream => _xamlStream;
-        
-        [JsonConverter(typeof (StringEnumConverter))]
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public enActionType ActionType { get; set; }
-        
+
         public string SourceName { get; set; }
-        
+
         public string SourceMethod { get; set; }
-        
+
         public Source Source { get; set; }
-        
+
         public StringBuilder XamlDefinition
         {
             get => _xamlDefinition;
@@ -84,33 +79,33 @@ namespace Dev2.DynamicServices.Objects
                 }
             }
         }
-        
+
         public Activity WorkflowActivity => _workflowActivity;
-        
+
         public List<ServiceActionInput> ServiceActionInputs { get; set; }
-        
+
         public string ServiceName { get; set; }
-        
+
         public Guid ServiceID { get; set; }
-        
+
         public DynamicService Service { get; set; }
-        
+
         public bool ResultsToClient
         {
             get => _resultsToClient;
             set => _resultsToClient = value;
         }
-        
+
         public bool TerminateServiceOnFault
         {
             get => _terminateServiceOnFault;
             set => _terminateServiceOnFault = value;
         }
-        
+
         public dynamic Parent { get; set; }
-        
+
         public IList<IDev2Definition> ServiceActionOutputs { get; set; }
-        
+
         public string OutputDescription { get; set; }
 
         public AppDomain PluginDomain { get; set; }
@@ -118,7 +113,7 @@ namespace Dev2.DynamicServices.Objects
         #endregion
 
         #region Constructors
-        
+
         public ServiceAction()
             : base(enDynamicServiceObjectType.ServiceAction)
         {
@@ -133,7 +128,7 @@ namespace Dev2.DynamicServices.Objects
         {
             Dispose(true);
         }
-        
+
         public PooledServiceActivity PopActivity()
         {
             PooledServiceActivity result;
@@ -185,7 +180,7 @@ namespace Dev2.DynamicServices.Objects
         {
             _workflowActivity = activity;
         }
-        
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposing && disposing && _xamlStream != null)

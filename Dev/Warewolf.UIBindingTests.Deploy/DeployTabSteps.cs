@@ -135,6 +135,7 @@ namespace Warewolf.UIBindingTests.Deploy
             }
             else
             {
+                var mockEnvironmentConnection = SetupMockConnection();
                 var server = ScenarioContext.Current.Get<Mock<IServer>>(localhostString);
                 var mock = new Mock<IServer>();
                 mock.SetupGet(p => p.DisplayName).Returns(name);
@@ -145,6 +146,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 mock.SetupGet(p => p.CanDeployFrom).Returns(true);
                 mock.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
                 mock.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
+                mock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
                 shell.Setup(a => a.LocalhostServer).Returns(server.Object);
                 shell.Setup(a => a.ActiveServer).Returns(mock.Object);
                 if (!ScenarioContext.Current.ContainsKey(destinationServerString))
@@ -165,8 +167,20 @@ namespace Warewolf.UIBindingTests.Deploy
             return shell.Object;
         }
 
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
+        }
+
         static IServer GetMockServer(string name)
         {
+            var mockEnvironmentConnection = SetupMockConnection();
             var server = new Mock<IServer>();
             var qp = new Mock<IQueryManager>();
             qp.Setup(a => a.FetchDependenciesOnList(It.IsAny<IEnumerable<Guid>>())).Returns(new List<Guid> { Guid.Parse("5C8B5660-CE6E-4D22-84D8-5B77DC749F70") });
@@ -189,6 +203,7 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
+            server.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             if (!name.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
                 server.Setup(a => a.DisplayName).Returns(name);

@@ -155,6 +155,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var cmd = command.Connection.CreateCommand();
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = databaseName +"."+ fullProcedureName;
+                    cmd.CommandTimeout = command.CommandTimeout;
                     var parameters = dbService.Method.Parameters;
                     foreach (var dbDataParameter in dbDataParameters)
                     {

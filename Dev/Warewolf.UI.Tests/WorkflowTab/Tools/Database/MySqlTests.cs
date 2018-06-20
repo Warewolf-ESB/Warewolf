@@ -78,6 +78,13 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.SmallView.Exists, "MySql database connector tool small view does not exist after entering valid data, testing it and clicking done.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void MySQLDatabaseConnectorTool_Test_Command_Timeout_Empty_UITest()
+        {
+            Assert.AreEqual("", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.CommandTimeoutTextBoEdit.Text);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
