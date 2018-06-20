@@ -1321,20 +1321,20 @@ Scenario: Workflow with ForEach and Manual Loop
       Given I have a workflow "WFWithForEachWithManualLoop"
 	  And "WFWithForEachWithManualLoop" contains an Assign "Setup Counter" as
 	    | variable    | value |
-	    | [[counter]] | 0     |
+	    | [[counter]] | 0     |	
 	  And "WFWithForEachWithManualLoop" contains an Assign "Increment Counter" as
 	    | variable    | value          |
 	    | [[counter]] | =[[counter]]+1 |
-	And "WFWithForEachWithManualLoop" contains an Assign "End Result" as
-	    | variable   | value |
-	    | [[result]] | DONE  |
 	  And "WFWithForEachWithManualLoop" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
 	  And "ForEachTest" contains an Assign "MyAssign" as
 	    | variable    | value |
 	    | [[rec().a]] | Test  |
 	  And "WFWithForEachWithManualLoop" contains a Decision "Check Counter" as
 		| ItemToCheck | Condition | ValueToCompareTo | TrueArmToolName | FalseArmToolName  |
-		| [[counter]] | =         | 3                | End Result      | Increment Counter |	  
+		| [[counter]] | =         | 3                | End Result      | Increment Counter |	  	 	  
+	  And "WFWithForEachWithManualLoop" contains an Assign "End Result" as
+	    | variable   | value |
+	    | [[result]] | DONE  |	 
       When "WFWithForEachWithManualLoop" is executed
 	  Then the workflow execution has "NO" error
 	  And the "ForEachTest" number '1' in WorkFlow "WFWithForEachWithManualLoop" debug inputs as 

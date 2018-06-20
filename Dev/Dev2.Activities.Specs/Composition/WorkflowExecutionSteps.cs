@@ -86,6 +86,7 @@ using Dev2.Common;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -1051,6 +1052,14 @@ namespace Dev2.Activities.Specs.Composition
             {
                 foreach (var activity in activityList)
                 {
+                    if(activity.Value is DsfDecision dec)
+                    {
+                        var decConfig = Get<(string TrueArm, string FalseArm)>(dec.DisplayName);
+                        var trueArmToolName = decConfig.TrueArm;
+                        var falseArmToolName = decConfig.FalseArm;
+                        dec.TrueArm = new List<IDev2Activity> { activityList.FirstOrDefault(act => act.Key == trueArmToolName).Value as IDev2Activity };
+                        dec.FalseArm = new List<IDev2Activity> { activityList.FirstOrDefault(act => act.Key == falseArmToolName).Value as IDev2Activity };
+                    }
                     if (TestStartNode.Action == null)
                     {
                         TestStartNode.Action = activity.Value;
@@ -4322,14 +4331,21 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Decision ""(.*)"" as")]
         public void GivenContainsADecisionAs(string workflowName, string decisionName, Table decisionConfig)
         {
-            var activity = new DsfDecision { DisplayName = decisionName };
+            var activity = new DsfDecision
+            {
+                DisplayName = decisionName,
+                Conditions = new Dev2DecisionStack
+                {
+                    TheStack = new List<Dev2Decision>()
+                }
+            };
             foreach (var tableRow in decisionConfig.Rows)
             {
                 activity.Conditions.AddModelItem(new Data.SystemTemplates.Models.Dev2Decision
                 {
                     Col1 = tableRow["ItemToCheck"],
                     EvaluationFn = DecisionDisplayHelper.GetValue(tableRow["Condition"]),
-                    Col3=tableRow["ValueToCompareTo"]
+                    Col2=tableRow["ValueToCompareTo"]
                 });
                 Add(decisionName, (TrueArm:tableRow["TrueArmToolName"], FalseArm:tableRow["FalseArmToolName"]));
             }
