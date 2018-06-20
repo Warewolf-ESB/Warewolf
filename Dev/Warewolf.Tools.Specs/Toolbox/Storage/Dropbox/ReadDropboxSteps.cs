@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mockCatalog = new Mock<IResourceCatalog>();
-            mockCatalog.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            mockCatalog.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<Resource>());
             var viewModel = new DropBoxFileListDesignerViewModel(modelItem, dropBoxSourceManager.Object);
             scenarioContext.Add("viewModel", viewModel);
             scenarioContext.Add("mockEnvironmentModel", mockEnvironmentModel);
@@ -76,11 +76,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         DropBoxFileListDesignerViewModel GetViewModel()
         {
             return scenarioContext.Get<DropBoxFileListDesignerViewModel>("viewModel");
-        }
-
-        Mock<IServer> GeEnvrionmentModel()
-        {
-            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
         }
 
         Mock<IEventAggregator> GetEventAggregator()
