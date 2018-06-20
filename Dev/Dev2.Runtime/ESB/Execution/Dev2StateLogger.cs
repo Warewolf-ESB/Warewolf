@@ -25,8 +25,6 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter = new JsonTextWriter(writer);
             this.dsfDataObject = dsfDataObject;
         }
-        public static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
-            Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName), "Detail.log");
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
@@ -52,7 +50,6 @@ namespace Dev2.Runtime.ESB.Execution
         {
             writer.WriteLine("header:LogExecuteException");
             WriteHeader(activity, e);
-
             dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
@@ -64,7 +61,7 @@ namespace Dev2.Runtime.ESB.Execution
             writer.WriteLine("header:LogExecuteCompleteState");
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
-            jsonTextWriter.WriteValue(System.DateTime.Now);
+            jsonTextWriter.WriteValue(DateTime.Now);
             jsonTextWriter.WriteEndObject();
             writer.WriteLine();
             writer.Flush();
@@ -78,7 +75,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
-            jsonTextWriter.WriteValue(System.DateTime.Now);
+            jsonTextWriter.WriteValue(DateTime.Now);
             if (!(previousActivity is null))
             {
                 jsonTextWriter.WritePropertyName("PreviousActivity");
@@ -94,20 +91,25 @@ namespace Dev2.Runtime.ESB.Execution
             writer.WriteLine();
             writer.Flush();
         }
+
         private void WriteHeader(IDev2Activity activity, Exception exception)
         {
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
-            jsonTextWriter.WriteValue(System.DateTime.Now);
+            jsonTextWriter.WriteValue(DateTime.Now);
             jsonTextWriter.WritePropertyName("PreviousActivity");
             jsonTextWriter.WriteValue(activity.UniqueID);
             jsonTextWriter.WritePropertyName("Exception");
-            jsonTextWriter.WriteValue(exception);
+            jsonTextWriter.WriteValue(exception.Message);
             jsonTextWriter.WriteEndObject();
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
         }
+
+        public static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
+            Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName), "Detail.log");
+
         public void Close()
         {
             jsonTextWriter.Close();
