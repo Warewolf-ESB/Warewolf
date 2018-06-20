@@ -129,6 +129,10 @@ namespace Warewolf.Launcher
                 }
                 File.Move(FileSpec, FileSpecWithoutExtention + num + FileExtention);
             }
+            if (File.Exists(FileSpec))
+            {
+                throw new Exception("Unable to move " + FileSpec);
+            }
         }
 
         void MoveFileToTestResults(string SourceFilePath, string DestinationFileName)
