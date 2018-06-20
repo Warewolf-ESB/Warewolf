@@ -123,15 +123,20 @@ namespace Warewolf.Launcher
                 var num = 1;
                 var FileExtention = Path.GetExtension(FileSpec);
                 var FileSpecWithoutExtention = FileSpec.Substring(0, FileSpec.LastIndexOf('.') + 1);
-                while (File.Exists(FileSpecWithoutExtention + num + FileExtention))
+                while (File.Exists($"{FileSpecWithoutExtention}{num}{FileExtention}"))
                 {
                     num++;
                 }
-                File.Move(FileSpec, FileSpecWithoutExtention + num + FileExtention);
+                File.Move(FileSpec, $"{FileSpecWithoutExtention}{num}{FileExtention}");
             }
-            if (File.Exists(FileSpec))
+            if (Directory.Exists(FileSpec))
             {
-                throw new Exception("Unable to move " + FileSpec);
+                var num = 1;
+                while (File.Exists($"{FileSpec}{num}"))
+                {
+                    num++;
+                }
+                File.Move(FileSpec, $"{FileSpec}{num}");
             }
         }
 
