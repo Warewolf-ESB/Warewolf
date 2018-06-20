@@ -173,7 +173,7 @@ namespace Warewolf.Launcher
                 if (options.Cleanup)
                 {
                     Console.WriteLine("Cleaning Up.");
-                    testLauncher.Cleanup = "true";
+                    testLauncher.Cleanup = true;
                 }
                 if (options.AssemblyFileVersionsTest != null)
                 {

@@ -25,7 +25,7 @@ namespace Warewolf.Launcher
         public string ServerUsername { get; set; }
         public string ServerPassword { get; set; }
         public string RunAllJobs { get; set; }
-        public string Cleanup { get; set; }
+        public bool Cleanup { get; set; }
         public string AssemblyFileVersionsTest { get; set; }
         public string RecordScreen { get; set; }
         string Parallelize { get; set; }
@@ -494,7 +494,7 @@ namespace Warewolf.Launcher
 
         public void MoveArtifactsToTestResults(bool DotCover, bool Server, bool Studio)
         {
-            if (Cleanup != null)
+            if (Cleanup)
             {
                 //Write failing tests playlist.
                 Console.WriteLine($"Writing all test failures in \"{TestRunner.TestsResultsPath}\" to a playlist file.");
@@ -1597,7 +1597,7 @@ namespace Warewolf.Launcher
             var JobNames = new List<string>();
             var JobAssemblySpecs = new List<string>();
             var JobCategories = new List<string>();
-            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory) && string.IsNullOrEmpty(Cleanup))
+            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory))
             {
                 foreach (var Job in JobName.Split(','))
                 {
