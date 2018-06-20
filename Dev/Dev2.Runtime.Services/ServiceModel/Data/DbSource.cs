@@ -139,7 +139,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.MySqlDatabase:
                         portString = Port > 0 ? $"Port={Port};" : string.Empty;
-                        return $"Server={Server};{portString}Database={DatabaseName};Uid={UserID};Pwd={Password};Connect Timeout={ConnectionTimeout}";
+                        return $"Server={Server};{portString}Database={DatabaseName};Uid={UserID};Pwd={Password};Connect Timeout={ConnectionTimeout};SslMode=none;";
 
                     case enSourceType.Oracle:
                         portString = Port > 0 ? $":{Port}" : string.Empty;
