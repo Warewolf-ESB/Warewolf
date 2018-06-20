@@ -243,7 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
         
-        public void DsfForEach_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
+        public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelNotChanged()
 
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
-            Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
             Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
