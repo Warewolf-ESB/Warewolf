@@ -64,7 +64,7 @@ namespace Warewolf.Launcher.TestRunners
 
             // Write full command including full argument string.
             TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            TestLauncher.CopyOnWrite(TestRunnerPath);
+            TestCleanupUtils.CopyOnWrite(TestRunnerPath);
             File.WriteAllText(TestRunnerPath, $"\"{Path}\"{FullArgsList}");
             return TestRunnerPath;
         }
