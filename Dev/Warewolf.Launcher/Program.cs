@@ -189,10 +189,6 @@ namespace Warewolf.Launcher
                             }
                         }
                     }
-                    else
-                    {
-                        throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
-                    }
                     Console.WriteLine("\nAdmin, What would you like to do?");
                     var options = new[] {
                     "[1]Single Job: Run One Test Job. (This is the default)",
