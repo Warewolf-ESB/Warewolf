@@ -10,9 +10,11 @@
 
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Warewolf.Resource.Errors;
@@ -723,15 +725,79 @@ namespace Warewolf.Storage
 
         public string ToJson()
         {
-            var json = PublicFunctions.EvalEnv(_env);
+            return EnvironmentToJsonHelper.EnvironmentToJson(this);
+        }
 
-            var sb = new StringBuilder(4096);
-            foreach (var item in json)
-            {
-                sb.Append(item);
+        class EnvironmentToJsonHelper : IDisposable
+        {
+            readonly MemoryStream stream = new MemoryStream();
+            readonly JsonTextWriter jsonWriter;
+            readonly ExecutionEnvironment env;
+
+            public EnvironmentToJsonHelper(ExecutionEnvironment env) {
+                this.env = env;
+                jsonWriter = new JsonTextWriter(new StreamWriter(stream));
+                OpenJson();
             }
 
-            return sb.ToString();
+
+            protected void OpenJson() {
+                jsonWriter.WriteStartObject();
+            }
+            public void WriteVariables()
+            {
+                jsonWriter.WritePropertyName("Environment");
+                jsonWriter.WriteRawValue(VariablesToJson());
+            }
+            protected string VariablesToJson()
+            {
+                var json = PublicFunctions.EvalEnv(env._env);
+                var sb = new StringBuilder(4096);
+                foreach (var item in json)
+                {
+                    sb.Append(item);
+                }
+                return sb.ToString();
+            }
+            public void WriteErrors()
+            {
+                var serializer = new JsonSerializer();
+                jsonWriter.WritePropertyName("Errors");
+                serializer.Serialize(jsonWriter, env.Errors);
+
+                jsonWriter.WritePropertyName("AllErrors");
+                serializer.Serialize(jsonWriter, env.AllErrors);
+            }
+
+            protected void CloseJson() {
+                jsonWriter.WriteEndObject();
+                jsonWriter.Flush();
+            }
+            public string GetJson()
+            {
+                CloseJson();
+                stream.Seek(0, SeekOrigin.Begin);
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
+
+            internal static string EnvironmentToJson(ExecutionEnvironment env)
+            {
+                string result;
+                using (var helper = new EnvironmentToJsonHelper(env))
+                {
+                    helper.WriteVariables();
+                    helper.WriteErrors();
+                    result = helper.GetJson();
+                }
+                return result;
+            }
+
+            public void Dispose()
+            {
+                ((IDisposable)jsonWriter).Dispose();
+                stream.Dispose();
+            }
         }
     }
 }
