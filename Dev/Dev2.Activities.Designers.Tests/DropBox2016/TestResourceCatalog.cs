@@ -18,7 +18,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016
             () =>
             {
                 var mock = new Mock<IResourceCatalog>();
-                mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<Resource>());
+                mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
                 return mock.Object;
             });
 
