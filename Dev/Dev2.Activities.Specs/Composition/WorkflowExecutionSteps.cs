@@ -4353,9 +4353,8 @@ namespace Dev2.Activities.Specs.Composition
                 server.Connect();
             }
         }
-
-        [Then(@"The detailed log file is cerated for ""(.*)""")]
-        public void ThenTheDetailedLogFileIsCeratedFor(string workflowName)
+        [Then(@"The detailed log file is created for ""(.*)""")]
+        public void ThenTheDetailedLogFileIsCreatedFor(string workflowName)
         {
             _dirHelper = new DirectoryWrapper();
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);

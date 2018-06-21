@@ -4940,7 +4940,7 @@ this.FeatureBackground();
 #line 1323
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1324
- testRunner.And("The detailed log file is cerated for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4965,7 +4965,7 @@ this.FeatureBackground();
 #line 1329
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1330
- testRunner.And("The detailed log file is cerated for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1331
  testRunner.And("The Log file contains Logging for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1332
