@@ -100,6 +100,7 @@
     <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TestCleanupUtils.cs" />
     <Compile Include="TestLauncher.cs" />
     <Compile Include="TestRunners\ITestRunner.cs" />
     <Compile Include="TestRunners\MSTestRunner.cs" />

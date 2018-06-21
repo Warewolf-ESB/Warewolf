@@ -47,7 +47,7 @@ namespace Warewolf.Launcher.TestRunners
             }
             // Resolve test results file name
             var TestResultsFile = TestsResultsPath + $"\"{JobName} Results.trx";
-            TestLauncher.CopyOnWrite(TestResultsFile);
+            TestCleanupUtils.CopyOnWrite(TestResultsFile);
 
             // Create full MSTest argument string.
             string categories = this.TestCategories(ProjectSpec, TestCategories, JobSpecs);
@@ -68,7 +68,7 @@ namespace Warewolf.Launcher.TestRunners
 
             // Write full command including full argument string.
             var TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            TestLauncher.CopyOnWrite(TestRunnerPath);
+            TestCleanupUtils.CopyOnWrite(TestRunnerPath);
             File.WriteAllText(TestRunnerPath, $"\"{Path}\"{FullArgsList}");
             return TestRunnerPath;
         }
