@@ -10,7 +10,32 @@ namespace Warewolf.Launcher.TestRunners
 {
     class VSTestRunner : ITestRunner
     {
-        public string Path { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
+        private string _path = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe";
+
+        public string Path
+        {
+            get
+            {
+                if (!File.Exists(_path) && File.Exists(_path.Replace("Enterprise", "Professional")))
+                {
+                    _path = _path.Replace("Enterprise", "Professional");
+                }
+                if (!File.Exists(_path) && File.Exists(_path.Replace("Enterprise", "Community")))
+                {
+                    _path = _path.Replace("Enterprise", "Community");
+                }
+                if (!File.Exists(_path) && File.Exists(_path.Replace("Enterprise", "TestAgent")))
+                {
+                    _path = _path.Replace("Enterprise", "TestAgent");
+                }
+                if (!File.Exists(_path) && File.Exists(Environment.GetEnvironmentVariable("VSTESTEXE")))
+                {
+                    _path = Environment.GetEnvironmentVariable("VSTESTEXE", EnvironmentVariableTarget.Machine);
+                }
+                return _path;
+            }
+            set => _path = value;
+        }
         public string TestList { get; set; }
         public string TestsPath { get; set; } = Environment.CurrentDirectory;
         public string TestsResultsPath { get; set; } = System.IO.Path.Combine(Environment.CurrentDirectory, "TestResults");

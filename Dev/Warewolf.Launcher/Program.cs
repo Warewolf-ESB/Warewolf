@@ -160,6 +160,39 @@ namespace Warewolf.Launcher
             {
                 if (build.AdminMode)
                 {
+                    if (!File.Exists(build.TestRunner.Path))
+                    {
+                        if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                        {
+                            Console.WriteLine("\nvstest.console.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = Console.ReadLine();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a MSTest test runner in order to use mstest.exe. Use --MSTest commandline parameter to specify that a MSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("VSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
+                        else if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                        {
+                            Console.WriteLine("\nmstest.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = Console.ReadLine();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a VSTest test runner in order to use vstest.console.exe. Use --VSTest commandline parameter to specify that a VSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("MSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
+                    }
                     Console.WriteLine("\nAdmin, What would you like to do?");
                     var options = new[] {
                     "[1]Single Job: Run One Test Job. (This is the default)",
