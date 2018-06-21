@@ -714,6 +714,22 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             }
         }
         
+        public WpfEdit CommandTimeoutTextBoEdit
+        {
+            get
+            {
+                if ((this.mCommandTimeoutTextBoEdit == null))
+                {
+                    this.mCommandTimeoutTextBoEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mCommandTimeoutTextBoEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "CommandTimeoutTextBox";
+                    this.mCommandTimeoutTextBoEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCommandTimeoutTextBoEdit;
+            }
+        }
+        
         public WpfButton NewSourceButton
         {
             get
@@ -890,6 +906,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         
         #region Fields
         private SourcesComboBox mSourcesComboBox;
+        
+        private WpfEdit mCommandTimeoutTextBoEdit;
         
         private WpfButton mNewSourceButton;
         

@@ -31,11 +31,18 @@ namespace Dev2.Services.Sql
             return new SQLiteConnection(connectionStr);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText,int commandTimeout) => new SQLiteCommand(commandText, connection as SQLiteConnection)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText, int? commandTimeout)
         {
-            CommandType = commandType,
-            CommandTimeout = commandTimeout
-        };
+            var command = new SQLiteCommand(commandText, connection as SQLiteConnection)
+            {
+                CommandType = commandType,
+            };
+            if (commandTimeout != null)
+            {
+                command.CommandTimeout = commandTimeout.Value;
+            }
+            return command;
+        }
 
         public DataTable GetSchema(IDbConnection connection, string collectionName) => GetSqliteServerSchema(connection);
 
