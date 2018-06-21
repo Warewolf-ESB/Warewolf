@@ -248,21 +248,48 @@ namespace Warewolf.Launcher
                         {
                             selectedOption = "1";
                         }
-                        var canParse = int.TryParse(selectedOption, out int jobNumber);
-                        if (canParse)
+                        if (!selectedOption.Contains(","))
                         {
-                            build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
-                        }
-                        else
-                        {
-                            if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                            var canParse = int.TryParse(selectedOption, out int jobNumber);
+                            if (canParse)
                             {
-                                build.JobName = selectedOption;
+                                build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
                             }
                             else
                             {
-                                throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                                {
+                                    build.JobName = selectedOption;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                }
                             }
+                        }
+                        else
+                        {
+                            var resolvedSelectedOptions = new List<string>();
+                            foreach (var option in selectedOption.Split(','))
+                            {
+                                var canParse = int.TryParse(option, out int jobNumber);
+                                if (canParse)
+                                {
+                                    resolvedSelectedOptions.Add(build.JobSpecs.Keys.ToList()[jobNumber - 1]);
+                                }
+                                else
+                                {
+                                    if (build.JobSpecs.Keys.ToList().Contains(option))
+                                    {
+                                        resolvedSelectedOptions.Add(option);
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentException($"{option} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                    }
+                                }
+                            }
+                            build.JobName = string.Join(",", resolvedSelectedOptions);
                         }
                         Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
                         originalTitle = Console.Title;
