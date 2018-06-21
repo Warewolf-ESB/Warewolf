@@ -167,7 +167,21 @@ namespace Warewolf.Launcher
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(DestinationFolderPath));
                 }
-                Directory.Move(SourceFolderPath, DestinationFolderPath);
+                RecursivelyCopyFolder(SourceFolderPath, DestinationFolderPath);
+                Directory.Delete(SourceFolderPath, true);
+            }
+        }
+
+        void RecursivelyCopyFolder(string SourcePath, string DestinationPath)
+        {
+            foreach (string dirPath in Directory.GetDirectories(SourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+            }
+            
+            foreach (string newPath in Directory.GetFiles(SourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
             }
         }
 
