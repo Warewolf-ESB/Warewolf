@@ -1652,17 +1652,6 @@ namespace Warewolf.Launcher
                     JobCategories.Add("");
                 }
             }
-            if (!string.IsNullOrEmpty(TestRunner.Path) && !File.Exists(TestRunner.Path))
-            {
-                if (File.Exists(TestRunner.Path.Replace("Enterprise", "Professional")))
-                {
-                    TestRunner.Path = TestRunner.Path.Replace("Enterprise", "Professional");
-                }
-                if (File.Exists(TestRunner.Path.Replace("Enterprise", "Community")))
-                {
-                    TestRunner.Path = TestRunner.Path.Replace("Enterprise", "Community");
-                }
-            }
             if (!File.Exists(TestRunner.Path))
             {
                 throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
