@@ -83,8 +83,8 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 using Dev2.Common;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Activities.Designers2.AdvancedRecordset;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -92,6 +92,7 @@ namespace Dev2.Activities.Specs.Composition
     public class WorkflowExecutionSteps : RecordSetBases
     {
         readonly ScenarioContext _scenarioContext;
+        IDirectory _dirHelper;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -99,6 +100,7 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
             AppUsageStats.LocalHost = "http://localhost:3142";
+            _dirHelper = new DirectoryWrapper();
         }
 
         const int EnvironmentConnectionTimeout = 15;
@@ -139,7 +141,15 @@ namespace Dev2.Activities.Specs.Composition
                 _debugWriterSubscriptionService.Unsubscribe();
                 _debugWriterSubscriptionService.Dispose();
             }
+            CleanUp_DetailedLogFile();
             _resetEvt?.Close();
+        }
+        public void CleanUp_DetailedLogFile()
+        {
+            if (_dirHelper.Exists(EnvironmentVariables.DetailLogPath))
+            {
+                _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
+            }
         }
 
         [Given(@"Debug states are cleared")]
@@ -722,7 +732,7 @@ namespace Dev2.Activities.Specs.Composition
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
                                                                          || model.Category == remoteWf.Replace('/', '\\'), true);
-                
+
                 if (remoteResourceModel == null)
                 {
                     remoteEnvironment.LoadResources();
@@ -2741,7 +2751,7 @@ namespace Dev2.Activities.Specs.Composition
             };
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
-        
+
         [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
@@ -2875,7 +2885,7 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, downloadActivity);
         }
-        
+
         [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
         public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
         {
@@ -2982,7 +2992,7 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
-        
+
         [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
         public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
         {
@@ -2998,7 +3008,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
         }
-        
+
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
@@ -3027,7 +3037,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
-        
+
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
         public void WhenIRollbackToVersion(string workflowName, string version)
         {
@@ -3045,7 +3055,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
-            
+
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             debugStates.Clear();
 
@@ -4342,6 +4352,44 @@ namespace Dev2.Activities.Specs.Composition
             {
                 server.Connect();
             }
+        }
+
+        [Then(@"The detailed log file is cerated for ""(.*)""")]
+        public void ThenTheDetailedLogFileIsCeratedFor(string workflowName)
+        {
+            _dirHelper = new DirectoryWrapper();
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            var detailedLogFolderPath = EnvironmentVariables.DetailLogPath;
+            var workflowDetailedLogFilePath = Path.Combine($"{detailedLogFolderPath}", string.Format("{0} - {1}", resourceModel.ID, resourceModel.ResourceName));
+            Assert.IsTrue(_dirHelper.Exists(workflowDetailedLogFilePath), "Detailed Log path was not created after Executing " + workflowName);
+        }
+        
+        [Then(@"The Log file contains Logging for ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingFor(string workflowName)
+        {
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            FileWrapper fileWrapper = new FileWrapper();
+            Add("fileWrapper", fileWrapper);
+            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+            Add("logFilePath", logFilePath);            
+            var logContent = fileWrapper.ReadAllText(logFilePath);
+            Add("logFileSize", logContent.Length);
+            Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogExecuteCompleteState"));
+        }
+
+        [Then(@"The Log file contains additional Logging for ""(.*)""")]
+        public void ThenTheLogFileContainsAdditionalLoggingFor(string p0)
+        {
+            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
+            TryGetValue("logFilePath", out string logFilePath);
+            TryGetValue("logFileSize", out int logFileSize);
+            var logContent = fileWrapper.ReadAllText(logFilePath);
+            Assert.IsTrue(logContent.Length > logFileSize);
+            var sizeDifference = logContent.Length / (double)logFileSize;
+            Assert.IsTrue(sizeDifference > 1.9);
+            Assert.IsTrue(sizeDifference < 2.1);
         }
     }
 }
