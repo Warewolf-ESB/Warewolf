@@ -199,3 +199,4 @@ Scenario: Execute Sql Server With Timeout
     And Sql Command Timeout is "1" milliseconds for "SqlServerActivity"
 	When Sql Workflow "SqlServerWorkflowForTimeout" containing dbTool is executed
     And the workflow "SqlServerWorkflowForTimeout" execution has "AN" error "SQL Error: Execution Timeout Expired"
+	And the workflow "SqlServerWorkflowForTimeout" error does not contain "NewLine"
