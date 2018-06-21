@@ -39,16 +39,33 @@ namespace Warewolf.Studio.ViewModels.Tests
             _localhostServerEnvironmentId = Guid.NewGuid();
             _localhostServerMock = new Mock<IServer>();
             _localhostServerMock.Setup(it => it.EnvironmentID).Returns(_localhostServerEnvironmentId);
+            var mockEnvironmentConnection = SetupMockConnection();
+            _localhostServerMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             _windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
             _localhostServerMock.Setup(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
             {
                 _windowsGroupPermissionMock.Object
             });
-            //_localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
             _localhostServerMock.SetupGet(it => it.DisplayName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
             _eventAggregatorMock = new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>();
+
+            var connectControlSingleton = new Mock<Dev2.ConnectionHelpers.IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
             _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object,true);
+        }
+
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
         }
 
         #endregion Test initialize
@@ -654,6 +671,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             var serverMock = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            serverMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);

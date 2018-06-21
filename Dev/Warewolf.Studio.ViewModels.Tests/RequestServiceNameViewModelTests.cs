@@ -532,6 +532,60 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
+        public void CallDuplicateService_GivenValidComsController_ShouldExecuteCorrectly()
+        {
+            //---------------Set up test pack-------------------
+
+            var envMock = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            var envModel = new Mock<IEnvironmentViewModel>();
+            envModel.Setup(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            var itemObj = new Mock<IExplorerItemViewModel>();
+            var selectedItemMock = new Mock<IExplorerViewModel>();
+            var item = new Mock<IExplorerTreeItem>();
+            item.Setup(model => model.ResourceName).Returns("name");
+            item.Setup(model => model.ResourceType).Returns("type");
+            item.Setup(model => model.ResourceName).Returns("name");
+            selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
+            var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
+
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+            var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            
+            lazyCon.SetValue(viewModel, envMock.Object);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            
+            lazyComs.SetValue(viewModel, controller.Object);
+            var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+            
+            selectedItem.SetValue(viewModel, selectedItemMock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(viewModel);
+            //---------------Execute Test ----------------------
+
+            try
+            {
+                viewModel.DuplicateCommand.Execute(null);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+            //---------------Test Result -----------------------
+            controller.Verify(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
+            controller.Verify(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
+            controller.Verify(communicationController => communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+        }
+
+        [TestMethod,Timeout(60000)]
+        [Owner("Nkosinathi Sangweni")]
         public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
@@ -571,6 +625,71 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canExecute = viewModel.DuplicateCommand.CanExecute(null);
             //---------------Test Result -----------------------
             Assert.IsFalse(canExecute);
+        }
+
+
+        [TestMethod,Timeout(60000)]
+        [Owner("Nkosinathi Sangweni")]
+        public void CallDuplicateCommand_GivenIsFolder_ShouldAddValidPayloads()
+        {
+            //---------------Set up test pack-------------------
+
+            var envMock = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            var envModel = new Mock<IEnvironmentViewModel>();
+            envModel.Setup(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            var selectedItemMock = new Mock<IExplorerViewModel>();
+            var itemObj = new Mock<IExplorerItemViewModel>();
+            itemObj.Setup(model => model.IsFolder).Returns(true);
+            var item = new Mock<IExplorerTreeItem>();
+            item.Setup(model => model.ResourceName).Returns("name");
+            item.Setup(model => model.ResourceType).Returns("type");
+            item.Setup(model => model.ResourceName).Returns("name");
+            item.Setup(model => model.IsFolder).Returns(true);
+            selectedItemMock.Setup(sitem => sitem.SelectedItem).Returns(item.Object);
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
+            var viewModel = RequestServiceNameViewModel.CreateAsync(envModel.Object, "", "", itemObj.Object).Result;
+
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("NewResourceName", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
+            controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
+            var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            
+            lazyCon.SetValue(viewModel, envMock.Object);
+            var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+            
+            lazyComs.SetValue(viewModel, controller.Object);
+            var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+            
+            selectedItem.SetValue(viewModel, selectedItemMock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(viewModel);
+
+
+            //---------------Execute Test ----------------------
+            var canExecute = viewModel.DuplicateCommand.CanExecute(null);
+            try
+            {
+                viewModel.DuplicateCommand.Execute(null);
+
+            }
+            catch (Exception f) when (f is NullReferenceException)
+            {
+                 Console.WriteLine(f);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            //---------------Test Result -----------------------
+            var value = lazyComs.GetValue(viewModel) as ICommunicationController;
+            Assert.IsNotNull(value);
+            Assert.AreEqual("DuplicateFolderService", value.ServiceName);
+
         }
     }
 }

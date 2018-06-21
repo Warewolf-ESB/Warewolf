@@ -303,13 +303,10 @@ namespace Warewolf.Studio.ViewModels
                         var isConnected = CheckVersionConflictAsync();
                     }
                     // revulytics log if ware wolf store selected
-                    if (!value.IsLocalHost)
+                    if (!value.IsLocalHost && value.Connection.AppServerUri.ToString().Contains("store.warewolf.io"))
                     {
-                        if (_applicationTracker != null)
-                        {
-                            _applicationTracker.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.WarewolfStore);
-                        }
-                        }
+                        _applicationTracker?.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.WarewolfStore);
+                    }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
