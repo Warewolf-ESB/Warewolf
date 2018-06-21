@@ -4354,7 +4354,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [Then(@"the ""(.*)"" number '(.*)' in WorkFlow ""(.*)"" debug inputs as")]
-        public void ThenTheNumberInWorkFlowDebugInputsAs(string workflowName, int toolNum, string toolName, Table table)
+        public void ThenTheNumberInWorkFlowDebugInputsAs(string toolName, int toolNum, string workflowName, Table table)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
@@ -4383,27 +4383,27 @@ namespace Dev2.Activities.Specs.Composition
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
-            IDebugState outputState;
+            IDebugState inputState;
             if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
             {
-                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+                inputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
             }
             else
             {
-                outputState = toolSpecificDebug.FirstOrDefault();
+                inputState = toolSpecificDebug.Skip(toolNum-1).FirstOrDefault();
             }
 
-            if (outputState != null && outputState.Outputs != null)
+            if (inputState != null && inputState.Inputs != null)
             {
-                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                var SelectResults = inputState.Inputs.SelectMany(s => s.ResultsList);
                 if (SelectResults != null && SelectResults.ToList() != null)
                 {
-                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+                    _commonSteps.ThenTheDebugInputsAs(table, SelectResults.ToList());
                     return;
                 }
-                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+                Assert.Fail(inputState.Inputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
             }
-            Assert.Fail("No debug output found for " + workflowName + ".");
+            Assert.Fail("No debug input found for " + workflowName + ".");
         }
 
         [Then(@"the ""(.*)"" number '(.*)' in WorkFlow ""(.*)"" has ""(.*)"" nested children")]
@@ -4414,19 +4414,19 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).Skip(itemNumber-1).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
             Assert.AreEqual(count, children);
         }
 
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" number '(.*)' debug inputs as")]
-        public void ThenTheInStepForNumberDebugInputsAs(string toolName, int stepNumber, string forEachName, int p3, Table table)
+        public void ThenTheInStepForNumberDebugInputsAs(string toolName, int stepNumber, string forEachName, int itemNumber, Table table)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+            var workflowId = debugStates.Where(wf => wf.DisplayName.Equals(forEachName)).Skip(itemNumber - 1).First().ID;
 
             if (parentWorkflowName == forEachName)
             {
@@ -4444,13 +4444,13 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" number '(.*)' debug outputs as")]
-        public void ThenTheInStepForNumberDebugOutputsAs(string toolName, int stepNumber, string forEachName, int p3, Table table)
+        public void ThenTheInStepForNumberDebugOutputsAs(string toolName, int stepNumber, string forEachName, int itemNumber, Table table)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+            var workflowId = debugStates.Where(wf => wf.DisplayName.Equals(forEachName)).Skip(itemNumber - 1).First().ID;
 
             if (parentWorkflowName == forEachName)
             {
