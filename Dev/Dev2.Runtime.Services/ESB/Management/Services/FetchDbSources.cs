@@ -17,9 +17,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            try
+
+            var list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(res =>
+                if (a is DbSource res)
                 {
                     return new DbSourceDefinition
                     {
@@ -34,19 +35,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Type = res.ServerType,
                         UserName = res.UserID
                     };
-                });
+                }
+                return null;
+            }).ToList();
 
-                return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error when trying to retrieve database sources " + e.Message, GlobalConstants.WarewolfError);
-                return serializer.SerializeToBuilder(new ExecuteMessage
-                {
-                    HasError = true,
-                    Message = new StringBuilder(e.Message)
-                });
-            }
+            return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
+
         }
 
         public ResourceCatalog Resources => ResourceCatalog.Instance;

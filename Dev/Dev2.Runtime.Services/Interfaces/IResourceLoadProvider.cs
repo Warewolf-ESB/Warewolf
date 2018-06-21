@@ -28,7 +28,7 @@ namespace Dev2.Runtime.Interfaces
         T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new();
         T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new();
         string GetResourcePath(Guid workspaceID,Guid id);
-        IList<T> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
+        IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
         IList<Resource> GetResourceList(Guid workspaceId, Dictionary<string, string> filterParams);
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName) where TServiceType : DynamicServiceObjectBase;
         List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains) where TServiceType : DynamicServiceObjectBase;
