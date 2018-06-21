@@ -28,7 +28,7 @@ namespace Warewolf.Launcher.TestRunners
                 {
                     _path = _path.Replace("Enterprise", "TestAgent");
                 }
-                if (!File.Exists(_path) && File.Exists(Environment.GetEnvironmentVariable("MSTESTEXE")))
+                if (!File.Exists(_path) && File.Exists(Environment.GetEnvironmentVariable("MSTESTEXE", EnvironmentVariableTarget.Machine)))
                 {
                     _path = Environment.GetEnvironmentVariable("MSTESTEXE", EnvironmentVariableTarget.Machine);
                 }
