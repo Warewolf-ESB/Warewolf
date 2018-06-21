@@ -1321,13 +1321,13 @@ Scenario: Executing Hello World Creates Detailed Log
 	Given I have a server at "localhost" with workflow "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The detailed log file is cerated for "Hello World"
+	And The detailed log file is created for "Hello World"
 	
 Scenario: Executing Hello World Creates Detailed Log And Appends Logging For Each Execution
 	Given I have a server at "localhost" with workflow "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The detailed log file is cerated for "Hello World"
+	And The detailed log file is created for "Hello World"
 	And The Log file contains Logging for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
