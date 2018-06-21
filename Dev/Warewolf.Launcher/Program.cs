@@ -395,10 +395,10 @@ namespace Warewolf.Launcher
                             build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
                         }
                     }
-                    var originalColour = Console.ForegroundColor;
+                    var originalConsoleColour = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestRunner.TestsResultsPath}. You can now close this window.");
-                    Console.ForegroundColor = originalColour;
+                    Console.ForegroundColor = originalConsoleColour;
                     Console.ReadKey();
                 }
                 else
