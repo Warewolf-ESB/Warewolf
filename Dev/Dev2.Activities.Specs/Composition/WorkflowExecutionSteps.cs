@@ -236,6 +236,10 @@ namespace Dev2.Activities.Specs.Composition
                     LoadResourcesAndSubscribeToDebugOutput(workflow, environmentModel);
                 }
             }
+            else
+            {
+                Assert.Fail($"Server \"{serverName}\" not found");
+            }
         }
 
         void LoadResourcesAndSubscribeToDebugOutput(string workflow, IServer newEnvironment)
