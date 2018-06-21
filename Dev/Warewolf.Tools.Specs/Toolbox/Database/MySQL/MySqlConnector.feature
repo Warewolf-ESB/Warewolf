@@ -74,3 +74,4 @@ Scenario: Execute MySql Server With Timeout
 	And MySql Command Timeout is "5" millisenconds for "MySqlActivity"
 	When MySql Workflow "MySqlWorkflowForTimeout" containing dbTool is executed
     And the workflow "MySqlWorkflowForTimeout" execution has "AN" error "Timeout expired."
+	And the workflow "MySqlWorkflowForTimeout" error does not contain "NewLine"

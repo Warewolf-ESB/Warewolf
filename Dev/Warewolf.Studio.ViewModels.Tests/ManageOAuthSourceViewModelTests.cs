@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, _asyncWorkerMock.Object) { Name = "Testing OAuth" };
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIManageOAuthSourceModel()
         {
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ManageOAuthSourceViewModel(nullParam, requestServiceNameViewModelTask);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIRequestServiceNameViewModel()
         {
@@ -62,7 +62,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ManageOAuthSourceViewModel(_updateManager.Object, nullParam);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructor2NullIManageOAuthSourceModel()
         {
@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ManageOAuthSourceViewModel(nullParam, _oAuthSource.Object,new SynchronousAsyncWorker());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestManageOAuthSourceViewModelConstructorNullIOAuthSource()
         {
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ManageOAuthSourceViewModel(_updateManager.Object, nullParam, new SynchronousAsyncWorker());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestManageOAuthSourceViewModelConstructor2()
         {
             var requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
@@ -87,13 +87,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             new ManageOAuthSourceViewModel(_updateManager.Object, requestServiceNameViewModelTask);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestManageOAuthSourceViewModelProperties()
         {
             Assert.AreEqual(_manageOAuthSourceViewModel.Name, "Testing OAuth");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOkCommandCanExecuteTrue()
         {
             //arrange
@@ -107,7 +107,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOkCommandCanExecuteFalse()
         {
             //arrange
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestOkCommandExecuteNullSource()
         {
             //arrange
@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(_manageOAuthSourceViewModel.Item);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetAuthTokens()
         {
             //arrange
@@ -147,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.TestMessage, "Waiting for user details...");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetAuthTokensWithDropBoxUri()
         {
             //arrange
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_manageOAuthSourceViewModel.Testing);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetAuthTokensWithDropBoxUriWithFakeToken()
         {
             //arrange
@@ -181,7 +181,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.AccessToken, "");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetAuthTokensWithDropBoxUriWithInvalidToken()
         {
             //arrange
@@ -204,7 +204,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.TestMessage, "Authentication failed");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestTestCommandCanExecuteTrue()
         {
             //arrange
@@ -218,7 +218,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestTestCommandCanExecuteFalse()
         {
             //arrange
@@ -232,7 +232,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestTestCommandExecuteWebBrowserAuthUriNull()
         {
             //arrange
@@ -251,7 +251,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestTestCommandExecuteWebBrowserAuthUriNotNull()
         {
             //arrange
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestToModelNullItem()
         {
             //arrange
@@ -284,7 +284,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(_manageOAuthSourceViewModel.Item);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestToModelNullItemNullOAuthSource()
         {
             //arrange
@@ -305,7 +305,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(result.AppKey, "123");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestToModelDropBoxSourceItem()
         {
             //arrange
@@ -323,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(result.AccessToken, "token");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestToModelOtherItem()
         {
             //arrange
@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestUpdateHelpDescriptor()
         {
             //arrange
@@ -353,7 +353,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpViewModelMock.Verify(it => it.UpdateHelpText("helpText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFromModel()
         {
             //arrange
@@ -371,7 +371,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.SelectedOAuthProvider, "test provider");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveExceptionMessage()
         {
             //arrange
@@ -386,7 +386,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.TestMessage, "Test save exception");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveConnection()
         {
             //arrange
@@ -400,7 +400,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveConnection_GiveN_AuthSource()
         {
             //arrange_updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));

@@ -9,7 +9,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ManageRabbitMqSourceModelTests
     {
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Ctor")]
         public void ManageRabbitMQSourceModel_Ctor_Valid_ExpectPropertiesSet()
@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Retrieve")]
         public void ManageRabbitMQSourceModel_Retrieve_ExpectPassThrough()
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Edit")]
         public void ManageRabbitMQSourceModel_Edit_ExpectPassThrough()
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_New")]
         public void ManageRabbitMQSourceModel_New_ExpectPassThrough()
@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Test")]
         public void ManageRabbitMQSourceModel_Test_ExpectPassThrough()
@@ -114,7 +114,7 @@ namespace Warewolf.Studio.ViewModels.Tests
            
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageRabbitMQSourceModel_Save")]
         public void ManageRabbitMQSourceModel_Save_ExpectPassThrough()

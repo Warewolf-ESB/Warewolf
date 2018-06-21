@@ -9,7 +9,7 @@ namespace Warewolf.Launcher
         {
             return new Dictionary<string, Tuple<string, string>>
             {
-                ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests, Warewolf.*.Tests", null),
+                ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests,Warewolf.*.Tests", null),
                 ["Server Proxy Layer Tests"] = new Tuple<string, string>("Warewolf.Studio.ServerProxyLayer.Tests", null),
                 ["Infrastructure Unit Tests"] = new Tuple<string, string>("Dev2.Infrastructure.Tests", null),
                 ["Runtime Unit Tests"] = new Tuple<string, string>("Dev2.Runtime.Tests", null),
@@ -35,6 +35,7 @@ namespace Warewolf.Launcher
                 ["File And Folder Delete Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderDelete"),
                 ["File And Folder Move Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderMove"),
                 ["Folder Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "ReadFolder"),
+                ["New Folder Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "NewReadFolder"),
                 ["File Read Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "ReadFile"),
                 ["File And Folder Rename Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "FileAndFolderRename"),
                 ["Unzip Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Unzip"),
@@ -45,13 +46,16 @@ namespace Warewolf.Launcher
                 ["Resource Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Resources"),
                 ["UI Binding Tests"] = new Tuple<string, string>("Warewolf.UIBindingTests.*", null),
                 //Server Tests
-                ["Integration Tests"] = new Tuple<string, string>("Dev2.IntegrationTests", null),
-                ["Load Tests"] = new Tuple<string, string>("Dev2.IntegrationTests", "Load Tests"),
+                ["Integration Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", null),
+                ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
                 ["Other Activities Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", null),
+                ["Remote Server Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "RemoteServer"),
+                ["Workflow Merging Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowMerging"),
                 ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),
                 ["Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowExecution"),
+                ["Assign Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "AssignWorkflowExecution"),
                 ["Studio Test Framework Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFramework"),
                 ["Studio Test Framework With Data Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithDataTools"),
                 ["Studio Test Framework With Database Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithDatabaseTools"),
@@ -142,6 +146,7 @@ namespace Warewolf.Launcher
                 ["Service Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Service Search"),
                 ["Title Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Title Search"),
                 //Load Tests
+                ["Composition Load Tests"] = new Tuple<string, string>("Dev2.Activities.Specs", "CompositionLoadTests"),
                 ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
             };
