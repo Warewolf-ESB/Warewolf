@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InstantiateNewModel_Returns_Success()
@@ -62,7 +62,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InstantiateNewTestModel_Returns_Success()
@@ -71,7 +71,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeProperties_Returns_Success()
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(model.HeaderText);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestProperties_Returns_Success()
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(model.Testing);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestNullEndpointUrl_Returns_Success()
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.TestFailed);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestCanTestTrue_Returns_Success()
@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.TestFailed);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_CancelTest_Returns_Success()
@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
        
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_CancelTestCommand_Returns_Success()
@@ -170,7 +170,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.CanCancelTest());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToNewSource_Returns_Success()
@@ -180,7 +180,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.CanCancelTest());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToModel_Returns_Success()
@@ -190,7 +190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.CanCancelTest());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToModelItemNotNull_Returns_Success()
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.CanCancelTest());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_SaveConnection_Returns_Success()
@@ -217,7 +217,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(model.CanCancelTest());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToSourceNullResource_Returns_Success()
@@ -231,7 +231,7 @@ namespace Warewolf.Studio.ViewModels.Tests
           
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         [ExpectedException(typeof(NullReferenceException))]
@@ -243,7 +243,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var requestModel = model.GetRequestServiceNameViewModel();
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Ashley Lewis")]
         [TestCategory(Category)]
         public void WcfSource_FetchSource_Returns_IWcfServerSource()
