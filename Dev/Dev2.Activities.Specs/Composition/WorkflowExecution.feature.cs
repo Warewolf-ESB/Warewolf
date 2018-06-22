@@ -4921,6 +4921,187 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with ForEach and Manual Loop")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowWithForEachAndManualLoop()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach and Manual Loop", ((string[])(null)));
+#line 1320
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1321
+      testRunner.Given("I have a workflow \"WFWithForEachWithManualLoop\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table234 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table234.AddRow(new string[] {
+                        "[[counter]]",
+                        "0"});
+#line 1322
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table234, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table235 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table235.AddRow(new string[] {
+                        "[[counter]]",
+                        "=[[counter]]+1"});
+#line 1325
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table235, "And ");
+#line 1328
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
+                    "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table236 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table236.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "Test"});
+#line 1329
+   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table236, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ItemToCheck",
+                        "Condition",
+                        "ValueToCompareTo",
+                        "TrueArmToolName",
+                        "FalseArmToolName"});
+            table237.AddRow(new string[] {
+                        "[[counter]]",
+                        "=",
+                        "3",
+                        "End Result",
+                        "Increment Counter"});
+#line 1332
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table237, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table238 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table238.AddRow(new string[] {
+                        "[[result]]",
+                        "DONE"});
+#line 1335
+   testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table238, "And ");
+#line 1338
+      testRunner.When("\"WFWithForEachWithManualLoop\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1339
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table239 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Number"});
+            table239.AddRow(new string[] {
+                        "No. of Executes",
+                        "2"});
+#line 1340
+   testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
+                    "ts as", ((string)(null)), table239, "And ");
+#line 1343
+      testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
+                    "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table240 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table240.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "Test"});
+#line 1344
+   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table240, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table241 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table241.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = Test"});
+#line 1347
+   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table241, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table242 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table242.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "Test"});
+#line 1350
+   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table242, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table243 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table243.AddRow(new string[] {
+                        "1",
+                        "[[rec(2).a]] = Test"});
+#line 1353
+   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table243, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table244 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Number"});
+            table244.AddRow(new string[] {
+                        "No. of Executes",
+                        "2"});
+#line 1356
+   testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
+                    "ts as", ((string)(null)), table244, "And ");
+#line 1359
+      testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
+                    "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table245 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table245.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "Test"});
+#line 1360
+   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table245, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table246 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table246.AddRow(new string[] {
+                        "1",
+                        "[[rec(3).a]] = Test"});
+#line 1363
+   testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table246, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table247 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table247.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "Test"});
+#line 1366
+   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table247, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table248 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table248.AddRow(new string[] {
+                        "1",
+                        "[[rec(4).a]] = Test"});
+#line 1369
+   testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table248, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
