@@ -2185,6 +2185,7 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.DeRegister<IApplicationTracker>();
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
+
             #region Setup view model constructor parameters
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();

@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpDescriptorViewModel()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestName()
         {
             //arrange
@@ -62,7 +62,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreEqual(nameText, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDescription()
         {
             //arrange
@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreEqual(descriptionText, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIcon()
         {
             //arrange
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
             Assert.AreSame(expectedIcon, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabled()
         {
             //arrange

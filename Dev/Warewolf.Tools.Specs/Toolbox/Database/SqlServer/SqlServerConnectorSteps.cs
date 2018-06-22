@@ -47,10 +47,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _getCountriesAction;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        
+
         public SQLServerConnectorSteps(ScenarioContext scenarioContext)
            : base(scenarioContext)
-        {                        
+        {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
         }
@@ -110,7 +110,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [Given(@"Sql Server Source is Enabled")]
         public void GivenSourceIsEnabled()
-        {            
+        {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
@@ -204,7 +204,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
 
-            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");            
+            var dbServiceModel = _scenarioContext.Get<ManageDbServiceModel>("dbServiceModel");
             var sqlServerActivity = new DsfSqlServerDatabaseActivity { DisplayName = activityName };
             var modelItem = ModelItemUtils.CreateModelItem(sqlServerActivity);
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, dbServiceModel, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
@@ -225,15 +225,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(dbSources, "dbSources is null");
             var dbSource = dbSources.Single(source => source.Name == sourceName);
             Assert.IsNotNull(dbSource, "Source is null");
-            vm.SourceRegion.SelectedSource = dbSource;            
+            vm.SourceRegion.SelectedSource = dbSource;
             SetDbSource(activityName, dbSource);
             Assert.IsNotNull(vm.SourceRegion.SelectedSource);
         }
-        
+
         [Given(@"I Select ""(.*)"" as Server Action for ""(.*)""")]
         public void GivenISelectAsServerActionFor(string actionName, string activityName)
         {
-            var vm = GetViewModel();            
+            var vm = GetViewModel();
             Assert.IsNotNull(vm.ActionRegion);
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
@@ -615,12 +615,38 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ValidateErrorsAfterExecution(workflowName, hasError, error);
         }
 
+        [Given(@"the workflow ""(.*)"" error does not contain ""(.*)""")]
+        [When(@"the workflow ""(.*)"" error does not contain ""(.*)""")]
+        [Then(@"the workflow ""(.*)"" error does not contain ""(.*)""")]
+        public void WhenTheWorkflowErrorDoesNotContain(string workflowName, string nonContainedText)
+        {
+            var textToValidate = nonContainedText;
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            if (nonContainedText == "NewLine")
+            {
+                textToValidate = Environment.NewLine;
+            }
+            var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(workflowName));
+            Assert.IsNotNull(innerWfHasErrorState);
+            if (!string.IsNullOrEmpty(nonContainedText))
+            {
+                var allErrors = string.Empty;
+                foreach (var item in debugStates)
+                {
+                    allErrors = item.ErrorMessage + Environment.NewLine;
+                }
+                Assert.IsTrue(debugStates.Any(p => !p.ErrorMessage.Contains(textToValidate)));
+            }
+        }
+
+
         [When(@"Sql Workflow ""(.*)"" containing dbTool is executed")]
         public void WhenSqlWorkflowContainingDbToolIsExecuted(string workflowName)
         {
             WorkflowIsExecuted(workflowName);
         }
-                
+
         [AfterScenario("@ExecuteSqlServerWithTimeout")]
         public void CleanUp()
         {

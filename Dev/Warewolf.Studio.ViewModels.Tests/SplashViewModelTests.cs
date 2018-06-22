@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestSplashViewModelServerNull()
         {
@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             new SplashViewModel(null, _externalProcessExecutorMock.Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestSplashViewModelExternalProcessExecutorNull()
         {
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestContributorsCommandCanExecute()
         {
             //act
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestContributorsCommandExecute()
         {
             //act
@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _externalProcessExecutorMock.Verify(it=>it.OpenInBrowser(_target.ContributorsUrl));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCommunityCommandCanExecute()
         {
             //act
@@ -89,7 +89,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCommunityCommandExecute()
         {
             //act
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _externalProcessExecutorMock.Verify(it => it.OpenInBrowser(_target.CommunityUrl));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpertHelpCommandCanExecute()
         {
             //act
@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpertHelpCommandExecute()
         {
             //act
@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _externalProcessExecutorMock.Verify(it => it.OpenInBrowser(_target.ExpertHelpUrl));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestWarewolfUrlCommandCanExecute()
         {
             //act
@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestWarewolfUrlCommandExecute()
         {
             //act
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestWarewolfUrl()
         {
             //arrange
@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("SplashViewModel_Copyright")]
         public void SplashViewModel_Copyright_Valid_ShouldContainCurrentYear()
@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             StringAssert.Contains(copyRightText,currentYear);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestContributorsUrl()
         {
             //arrange
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCommunityUrl()
         {
             //arrange
@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpertHelpUrl()
         {
             //arrange
@@ -213,7 +213,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestServer()
         {
             //arrange
@@ -227,7 +227,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValueMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExternalProcessExecutor()
         {
             //arrange
@@ -241,7 +241,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValueMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestServerVersion()
         {
             //arrange
@@ -257,7 +257,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("ServerVersion"));
         }
 
-//        [TestMethod]
+//        [TestMethod,Timeout(60000)]
 //        public void TestServerInformationalVersion()
 //        {
 //            //arrange
@@ -273,7 +273,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 //            Assert.IsTrue(_changedProperties.Contains("ServerInformationalVersion"));
 //        }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestStudioVersion()
         {
             //arrange

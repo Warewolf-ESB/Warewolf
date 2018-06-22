@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #endregion Test initialize
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRetrieveSources()
         {
             var expectedResult = new ObservableCollection<IWcfServerSource>();
@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.FetchWcfSources());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetActions()
         {
             var expectedResult = new ObservableCollection<IWcfAction>();
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mockQueryManager.Verify(it => it.WcfActions(mockWcfServerSource.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateNewSource()
         {
             try
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEditSqlSource()
         {
             var mockWcfServiceSource = new Mock<IWcfServerSource>();
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditSource(mockWcfServiceSource.Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestService()
         {
             var mockWcfServiceValues = new Mock<IWcfService>();
