@@ -725,17 +725,22 @@ namespace Warewolf.Storage
 
         public string ToJson()
         {
-            return EnvironmentToJsonHelper.EnvironmentToJson(this);
+            using (var helper = new EnvironmentToJsonHelper())
+            {
+                helper.WriteVariables(this._env);
+                helper.WriteErrors(this.Errors, this.AllErrors);
+                return helper.GetJson();
+            }
         }
 
-        class EnvironmentToJsonHelper : IDisposable
+
+
+        private class EnvironmentToJsonHelper : IDisposable
         {
             readonly MemoryStream stream = new MemoryStream();
             readonly JsonTextWriter jsonWriter;
-            readonly ExecutionEnvironment env;
 
-            public EnvironmentToJsonHelper(ExecutionEnvironment env) {
-                this.env = env;
+            public EnvironmentToJsonHelper() {
                 jsonWriter = new JsonTextWriter(new StreamWriter(stream));
                 OpenJson();
             }
@@ -744,29 +749,30 @@ namespace Warewolf.Storage
             protected void OpenJson() {
                 jsonWriter.WriteStartObject();
             }
-            public void WriteVariables()
+            public void WriteVariables(DataStorage.WarewolfEnvironment _env)
             {
                 jsonWriter.WritePropertyName("Environment");
-                jsonWriter.WriteRawValue(VariablesToJson());
+                jsonWriter.WriteRawValue(VariablesToJson(_env));
             }
-            protected string VariablesToJson()
+            protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
             {
-                var json = PublicFunctions.EvalEnv(env._env);
+                var stringList = PublicFunctions.EvalEnv(_env);
                 var sb = new StringBuilder(4096);
-                foreach (var item in json)
+                foreach (var @string in stringList)
                 {
-                    sb.Append(item);
+                    sb.Append(@string);
                 }
                 return sb.ToString();
             }
-            public void WriteErrors()
+
+            internal void WriteErrors(HashSet<string> errors, HashSet<string> allErrors)
             {
                 var serializer = new JsonSerializer();
                 jsonWriter.WritePropertyName("Errors");
-                serializer.Serialize(jsonWriter, env.Errors);
+                serializer.Serialize(jsonWriter, errors);
 
                 jsonWriter.WritePropertyName("AllErrors");
-                serializer.Serialize(jsonWriter, env.AllErrors);
+                serializer.Serialize(jsonWriter, allErrors);
             }
 
             protected void CloseJson() {
@@ -779,18 +785,6 @@ namespace Warewolf.Storage
                 stream.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
-            }
-
-            internal static string EnvironmentToJson(ExecutionEnvironment env)
-            {
-                string result;
-                using (var helper = new EnvironmentToJsonHelper(env))
-                {
-                    helper.WriteVariables();
-                    helper.WriteErrors();
-                    result = helper.GetJson();
-                }
-                return result;
             }
 
             public void Dispose()
