@@ -140,5 +140,33 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("LogExecuteCompleteState"));
             Assert.IsTrue(text.Contains("timestamp"));
         }
+
+        [TestMethod]
+        public void Dev2StateLogger_LogStopExecutionState_Tests()
+        {
+            var fileName = "C:\\ProgramData\\Warewolf\\DetailedLogs\\00000000-0000-0000-0000-000000000000 - Some Workflow\\Detail.log";
+            // mocks
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+
+            // setup
+            var fileWrapper = new FileWrapper();
+            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var nextActivity = new Mock<IDev2Activity>();
+            var exception = new NullReferenceException();
+            // test
+            dev2StateLogger.LogStopExecutionState();
+            dev2StateLogger.Dispose();
+            // verify
+            var text = fileWrapper.ReadAllText(fileName);
+            //Expect something like: "header:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:50:55.1624974+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:02.3074228+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:31.2454735+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\n"
+            Assert.IsTrue(text.Contains("LogStopExecutionState"));
+            Assert.IsTrue(text.Contains("timestamp"));
+        }
     }
 }    
