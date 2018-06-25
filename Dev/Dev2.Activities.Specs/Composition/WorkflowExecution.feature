@@ -1317,6 +1317,14 @@ Scenario: COM DLL service execute
 	|                                |
 	| [[PrimitiveReturnValue]] = 0   |
 
+Scenario: Execute Workflow with error Creates Detailed Log
+	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
+	When "localhost" is the active environment used to execute "StopExecutionOnMySQLTimeoutError"
+    Then the workflow execution has "AN" error
+	And The detailed log file is created for "StopExecutionOnMySQLTimeoutError"
+	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
+	And The Log file contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
+
 Scenario: Executing Hello World Creates Detailed Log
 	Given I have a server at "localhost" with workflow "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"

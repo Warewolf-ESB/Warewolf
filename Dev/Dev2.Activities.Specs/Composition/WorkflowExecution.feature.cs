@@ -4923,23 +4923,51 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Workflow with error Creates Detailed Log")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ExecuteWorkflowWithErrorCreatesDetailedLog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Workflow with error Creates Detailed Log", ((string[])(null)));
+#line 1320
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1321
+ testRunner.Given("I have a server at \"localhost\" with workflow \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1322
+ testRunner.When("\"localhost\" is the active environment used to execute \"StopExecutionOnMySQLTimeou" +
+                    "tError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1323
+    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1324
+ testRunner.And("The detailed log file is created for \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1325
+ testRunner.And("The Log file contains Logging for stopped \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1326
+ testRunner.And("The Log file contains Logging matching \"Dev2.Services.Sql\\\\MySqlServer.cs:line \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Hello World Creates Detailed Log")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         public virtual void ExecutingHelloWorldCreatesDetailedLog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello World Creates Detailed Log", ((string[])(null)));
-#line 1320
+#line 1328
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1321
+#line 1329
  testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1322
+#line 1330
  testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1323
+#line 1331
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1324
+#line 1332
  testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4954,25 +4982,25 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello World Creates Detailed Log And Appends Logging For Each Execution" +
                     "", ((string[])(null)));
-#line 1326
+#line 1334
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1327
+#line 1335
  testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1328
+#line 1336
  testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1329
+#line 1337
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1330
+#line 1338
  testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1331
+#line 1339
  testRunner.And("The Log file contains Logging for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1332
+#line 1340
  testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1333
+#line 1341
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1334
+#line 1342
  testRunner.And("The Log file contains additional Logging for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
