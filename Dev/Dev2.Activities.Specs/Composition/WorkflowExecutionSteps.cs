@@ -4392,6 +4392,7 @@ namespace Dev2.Activities.Specs.Composition
             var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
             Add("logFilePath", logFilePath);
             var logContent = fileWrapper.ReadAllText(logFilePath);
+            Add("logFileContent", logContent);
             Add("logFileSize", logContent.Length);
             Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
@@ -4406,10 +4407,20 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("logFilePath", out string logFilePath);
             TryGetValue("logFileSize", out int logFileSize);
             var logContent = fileWrapper.ReadAllText(logFilePath);
+            Add("logFileContent", logContent);
             Assert.IsTrue(logContent.Length > logFileSize);
             var sizeDifference = logContent.Length / (double)logFileSize;
             Assert.IsTrue(sizeDifference > 1.9);
             Assert.IsTrue(sizeDifference < 2.1);
+        }
+
+        [Then(@"The Log file contains Logging matching ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingMatchingDev_Services_SqlMySqlServer_CsLine(string searchString)
+        {
+            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
+            TryGetValue("logFileContent", out string logFileContent);
+
+            Assert.IsTrue(logFileContent.Contains(searchString));
         }
     }
 }
