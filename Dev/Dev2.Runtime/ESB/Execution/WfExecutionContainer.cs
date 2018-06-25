@@ -178,6 +178,7 @@ namespace Dev2.Runtime.ESB.Execution
             var stateLogger = new Dev2StateLogger(dsfDataObject);
             using ((IDisposable)stateLogger)
             {
+                bool stoppedExecution = false;
                 try
                 {
                     dsfDataObject.StateLogger = stateLogger;
@@ -230,6 +231,7 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         if (dsfDataObject.StopExecution)
                         {
+                            stoppedExecution = true;
                             break;
                         }
 
@@ -250,7 +252,13 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 finally
                 {
-                    dsfDataObject.StateLogger.LogExecuteCompleteState();
+                    if (!stoppedExecution)
+                    {
+                        dsfDataObject.StateLogger.LogExecuteCompleteState();
+                    } else
+                    {
+                        dsfDataObject.StateLogger.LogStopExecutionState();
+                    }
                     var exe = CustomContainer.Get<IExecutionManager>();
                     exe?.CompleteExecution();
 

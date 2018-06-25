@@ -4380,6 +4380,23 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogExecuteCompleteState"));
+            Assert.IsFalse(logContent.Contains("header:LogStopExecutionState"));
+        }
+
+        [Then(@"The Log file contains Logging for stopped ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingForStopped(string workflowName)
+        {
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            FileWrapper fileWrapper = new FileWrapper();
+            Add("fileWrapper", fileWrapper);
+            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+            Add("logFilePath", logFilePath);
+            var logContent = fileWrapper.ReadAllText(logFilePath);
+            Add("logFileSize", logContent.Length);
+            Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
+            Assert.IsFalse(logContent.Contains("header:LogExecuteCompleteState"));
+            Assert.IsTrue(logContent.Contains("header:LogStopExecutionState"));
         }
 
         [Then(@"The Log file contains additional Logging for ""(.*)""")]

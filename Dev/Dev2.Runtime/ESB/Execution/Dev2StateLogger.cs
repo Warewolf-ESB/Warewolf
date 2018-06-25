@@ -5,6 +5,9 @@ using Dev2.Interfaces;
 using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using System.Security.Principal;
+using Dev2.Communication;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -71,6 +74,21 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
+        public void LogStopExecutionState()
+        {
+            writer.WriteLine("header:LogStopExecutionState");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WriteEndObject();
+            writer.WriteLine();
+            writer.Flush();
+            dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
+        }
+
         private void WriteHeader(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
             jsonTextWriter.WriteStartObject();
@@ -120,49 +138,68 @@ namespace Dev2.Runtime.ESB.Execution
             ((IDisposable)jsonTextWriter).Dispose();
         }
     }
-}
 
-static class DsfDataObjectMethods
-{
-    public static void LogState(this IDSFDataObject dsfDataObject, JsonTextWriter jsonTextWriter)
+
+    static class DsfDataObjectMethods
     {
-        jsonTextWriter.WriteRaw("{\"DsfDataObject\":");
-        jsonTextWriter.WriteStartObject();
+        public static void LogState(this IDSFDataObject dsfDataObject, JsonTextWriter jsonTextWriter)
+        {
+            jsonTextWriter.WriteRaw("{\"DsfDataObject\":");
+            jsonTextWriter.WriteStartObject();
 
-        jsonTextWriter.WritePropertyName("ServerID");
-        jsonTextWriter.WriteValue(dsfDataObject.ServerID);
+            jsonTextWriter.WritePropertyName("ServerID");
+            jsonTextWriter.WriteValue(dsfDataObject.ServerID);
 
-        jsonTextWriter.WritePropertyName("ParentID");
-        jsonTextWriter.WriteValue(dsfDataObject.ParentID);
+            jsonTextWriter.WritePropertyName("ParentID");
+            jsonTextWriter.WriteValue(dsfDataObject.ParentID);
 
-        jsonTextWriter.WritePropertyName("ClientID");
-        jsonTextWriter.WriteValue(dsfDataObject.ClientID);
+            jsonTextWriter.WritePropertyName("ClientID");
+            jsonTextWriter.WriteValue(dsfDataObject.ClientID);
 
-        jsonTextWriter.WritePropertyName("ExecutingUser");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToString());
+            jsonTextWriter.WritePropertyName("ExecutingUser");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToJson());
 
-        jsonTextWriter.WritePropertyName("ExecutionID");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
+            jsonTextWriter.WritePropertyName("ExecutionID");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
 
-        jsonTextWriter.WritePropertyName("ExecutionOrigin");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionOrigin);
+            jsonTextWriter.WritePropertyName("ExecutionOrigin");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionOrigin);
 
-        jsonTextWriter.WritePropertyName("ExecutionOriginDescription");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionOriginDescription);
+            jsonTextWriter.WritePropertyName("ExecutionOriginDescription");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionOriginDescription);
 
-        jsonTextWriter.WritePropertyName("ExecutionToken");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToString());
+            jsonTextWriter.WritePropertyName("ExecutionToken");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToJson());
 
-        jsonTextWriter.WritePropertyName("IsSubExecution");
-        jsonTextWriter.WriteValue(dsfDataObject.IsSubExecution);
+            jsonTextWriter.WritePropertyName("IsSubExecution");
+            jsonTextWriter.WriteValue(dsfDataObject.IsSubExecution);
 
-        jsonTextWriter.WritePropertyName("IsRemoteWorkflow");
-        jsonTextWriter.WriteValue(dsfDataObject.IsRemoteWorkflow());
+            jsonTextWriter.WritePropertyName("IsRemoteWorkflow");
+            jsonTextWriter.WriteValue(dsfDataObject.IsRemoteWorkflow());
 
-        jsonTextWriter.WritePropertyName("Environment");
-        jsonTextWriter.WriteRawValue(dsfDataObject.Environment.ToJson());
+            jsonTextWriter.WritePropertyName("Environment");
+            jsonTextWriter.WriteRawValue(dsfDataObject.Environment.ToJson());
 
-        jsonTextWriter.WriteEndObject();
-        jsonTextWriter.WriteRaw("}");
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.WriteRaw("}");
+        }
+    }
+
+    static class IIdentityExtensionMethods
+    {
+        public static string ToJson(this IIdentity identity)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(identity, Formatting.None);
+        }
+    }
+
+    static class ExecutionTokenExtensionMethods
+    {
+        public static string ToJson(this IExecutionToken executionToken)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(executionToken, Formatting.None);
+        }
     }
 }
