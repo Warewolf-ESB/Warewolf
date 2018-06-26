@@ -9,6 +9,7 @@ using System.Security.Principal;
 using Dev2.Communication;
 using Dev2.Common.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Runtime.CompilerServices;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -35,6 +36,19 @@ namespace Dev2.Runtime.ESB.Execution
             writer.WriteLine("header:LogPreExecuteState");
             WriteHeader(null, nextActivity);
             dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
+        }
+
+        public void LogAdditionalDetail(object detail, [CallerMemberName] string callerName = null)
+        {
+            writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("Detail");
+            var serializer = new Dev2JsonSerializer();
+            jsonTextWriter.WriteRawValue(serializer.Serialize(detail, Formatting.None));
+            jsonTextWriter.WriteEndObject();
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();

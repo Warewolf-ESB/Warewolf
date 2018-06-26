@@ -1331,6 +1331,8 @@ Scenario: Execute Workflow with error Creates Detailed Log
 	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
 	And The Log file contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
 	And The Log file contains Logging matching ""Inputs":[],"Outputs":[]"
+	And The Log file contains Logging matching "LogAdditionalDetail"
+	And The Log file contains Logging matching ""$type":"System.Net.Sockets.SocketException, System","NativeErrorCode":10060"
 
 Scenario: Executing Hello World Creates Detailed Log
 	Given I have a server at "localhost" with workflow "Hello World"
