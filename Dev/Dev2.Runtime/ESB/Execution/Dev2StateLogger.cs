@@ -7,6 +7,9 @@ using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces;
 using System.IO.Compression;
+using Dev2.Communication;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Security.Principal;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -137,7 +140,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteEndObject();
             writer.WriteLine();
             writer.Flush();
-            dsfDataObject.LogState(jsonTextWriter);
+            _dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
@@ -327,5 +330,14 @@ namespace Dev2.Runtime.ESB.Execution
             var json = new Dev2JsonSerializer();
             return json.Serialize(executionToken, Formatting.None);
         }
+    }
+
+    static class Dev2WorkflowSettingsExtensionMethods
+    {
+        public static bool ShouldDeleteFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
+            => detailedLogFile.LogFileAge > 30;
+
+        public static bool ShouldCompressFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
+            => detailedLogFile.LogFileAge > 2;
     }
 }

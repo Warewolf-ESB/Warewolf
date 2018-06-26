@@ -63,6 +63,11 @@ namespace Dev2.Runtime.ESB.Execution
             {
             }
 
+            public void LogAdditionalDetail(object detail, string callerName)
+            {
+                throw new NotImplementedException();
+            }
+
             public void LogExecuteCompleteState()
             {
             }
@@ -77,6 +82,11 @@ namespace Dev2.Runtime.ESB.Execution
 
             public void LogPreExecuteState(IDev2Activity nextActivity)
             {
+            }
+
+            public void LogStopExecutionState()
+            {
+                throw new NotImplementedException();
             }
         }
     }
