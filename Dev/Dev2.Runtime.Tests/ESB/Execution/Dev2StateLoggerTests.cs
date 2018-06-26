@@ -158,7 +158,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
