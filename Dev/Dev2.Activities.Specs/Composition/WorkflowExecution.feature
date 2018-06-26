@@ -1135,6 +1135,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
+	  And The detailed log file does not exist for "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | name                | <nameVariable>  |
@@ -1145,6 +1146,10 @@ Scenario Outline: Database MySqlDB Database service last  indexes
 	  |                                       |
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
+      And The detailed log file is created for "<WorkflowName>"
+	  And The Log file contains Logging matching ""MappedFrom":"email""
+	  And The Log file contains Logging matching ""MappedTo":"[[rec().email]]""
+	  And The Log file contains Logging matching ""RecordSetName":"rec""
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
@@ -1317,18 +1322,32 @@ Scenario: COM DLL service execute
 	|                                |
 	| [[PrimitiveReturnValue]] = 0   |
 
+Scenario: Execute Workflow with error Creates Detailed Log
+	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
+	And The detailed log file does not exist for "StopExecutionOnMySQLTimeoutError"
+	When "localhost" is the active environment used to execute "StopExecutionOnMySQLTimeoutError"
+    Then the workflow execution has "AN" error
+	And The detailed log file is created for "StopExecutionOnMySQLTimeoutError"
+	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
+	And The Log file contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
+	And The Log file contains Logging matching ""Inputs":[],"Outputs":[]"
+	And The Log file contains Logging matching "LogAdditionalDetail"
+	And The Log file contains Logging matching ""$type":"System.Net.Sockets.SocketException, System","NativeErrorCode":10060"
+
 Scenario: Executing Hello World Creates Detailed Log
 	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
 	
 Scenario: Executing Hello World Creates Detailed Log And Appends Logging For Each Execution
 	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
 	And The Log file contains Logging for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The Log file contains additional Logging for "Hello World"
+	And The Log file contains additional Logging

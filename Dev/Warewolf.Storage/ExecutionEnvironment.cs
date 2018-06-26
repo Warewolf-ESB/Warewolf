@@ -10,9 +10,11 @@
 
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Warewolf.Resource.Errors;
@@ -723,15 +725,73 @@ namespace Warewolf.Storage
 
         public string ToJson()
         {
-            var json = PublicFunctions.EvalEnv(_env);
-
-            var sb = new StringBuilder(4096);
-            foreach (var item in json)
+            using (var helper = new EnvironmentToJsonHelper())
             {
-                sb.Append(item);
+                helper.WriteVariables(this._env);
+                helper.WriteErrors(this.Errors, this.AllErrors);
+                return helper.GetJson();
+            }
+        }
+
+
+
+        private class EnvironmentToJsonHelper : IDisposable
+        {
+            readonly MemoryStream stream = new MemoryStream();
+            readonly JsonTextWriter jsonWriter;
+
+            public EnvironmentToJsonHelper() {
+                jsonWriter = new JsonTextWriter(new StreamWriter(stream));
+                OpenJson();
             }
 
-            return sb.ToString();
+
+            protected void OpenJson() {
+                jsonWriter.WriteStartObject();
+            }
+            public void WriteVariables(DataStorage.WarewolfEnvironment _env)
+            {
+                jsonWriter.WritePropertyName("Environment");
+                jsonWriter.WriteRawValue(VariablesToJson(_env));
+            }
+            protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
+            {
+                var stringList = PublicFunctions.EvalEnv(_env);
+                var sb = new StringBuilder(4096);
+                foreach (var @string in stringList)
+                {
+                    sb.Append(@string);
+                }
+                return sb.ToString();
+            }
+
+            internal void WriteErrors(HashSet<string> errors, HashSet<string> allErrors)
+            {
+                var serializer = new JsonSerializer();
+                jsonWriter.WritePropertyName("Errors");
+                serializer.Serialize(jsonWriter, errors);
+
+                jsonWriter.WritePropertyName("AllErrors");
+                serializer.Serialize(jsonWriter, allErrors);
+            }
+
+            protected void CloseJson() {
+                jsonWriter.WriteEndObject();
+                jsonWriter.Flush();
+            }
+            public string GetJson()
+            {
+                CloseJson();
+                stream.Seek(0, SeekOrigin.Begin);
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
+
+            public void Dispose()
+            {
+                ((IDisposable)jsonWriter).Dispose();
+                stream.Dispose();
+            }
         }
     }
 }

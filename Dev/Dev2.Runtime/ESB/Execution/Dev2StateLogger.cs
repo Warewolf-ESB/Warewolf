@@ -80,6 +80,19 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
+        public void LogAdditionalDetail(object detail, string callerName)
+        {
+            writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("Detail");
+            var serializer = new Dev2JsonSerializer();
+            jsonTextWriter.WriteRawValue(serializer.Serialize(detail, Formatting.None));
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
+        }
+
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
             writer.WriteLine("header:LogPostExecuteState");
@@ -115,6 +128,21 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
+        public void LogStopExecutionState()
+        {
+            writer.WriteLine("header:LogStopExecutionState");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WriteEndObject();
+            writer.WriteLine();
+            writer.Flush();
+            dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
+        }
+
         private void WriteHeader(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
             jsonTextWriter.WriteStartObject();
@@ -128,7 +156,23 @@ namespace Dev2.Runtime.ESB.Execution
             if (!(nextActivity is null))
             {
                 jsonTextWriter.WritePropertyName("NextActivity");
+
+                jsonTextWriter.WriteStartObject();
+                jsonTextWriter.WritePropertyName("Id");
                 jsonTextWriter.WriteValue(nextActivity.UniqueID);
+                jsonTextWriter.WritePropertyName("Type");
+                jsonTextWriter.WriteValue(nextActivity.GetType().ToString());
+                jsonTextWriter.WritePropertyName("DisplayName");
+                jsonTextWriter.WriteValue(nextActivity.GetDisplayName());
+                if (nextActivity is DsfActivity dsfActivity)
+                {
+                    jsonTextWriter.WritePropertyName("Inputs");
+                    var jsonSerializer = new Dev2JsonSerializer();
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Inputs, Formatting.None));
+                    jsonTextWriter.WritePropertyName("Outputs");
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Outputs, Formatting.None));
+                }
+                jsonTextWriter.WriteEndObject();
             }
             jsonTextWriter.WriteEndObject();
             jsonTextWriter.Flush();
@@ -239,7 +283,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteValue(dsfDataObject.ClientID);
 
             jsonTextWriter.WritePropertyName("ExecutingUser");
-            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToString());
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToJson());
 
             jsonTextWriter.WritePropertyName("ExecutionID");
             jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
@@ -251,7 +295,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteValue(dsfDataObject.ExecutionOriginDescription);
 
             jsonTextWriter.WritePropertyName("ExecutionToken");
-            jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToString());
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToJson());
 
             jsonTextWriter.WritePropertyName("IsSubExecution");
             jsonTextWriter.WriteValue(dsfDataObject.IsSubExecution);
@@ -266,12 +310,22 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteRaw("}");
         }
     }
-    static class Dev2WorkflowSettingsExtensionMethods
-    {
-        public static bool ShouldDeleteFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
-            => detailedLogFile.LogFileAge > 30;
 
-        public static bool ShouldCompressFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
-            => detailedLogFile.LogFileAge > 2;
+    static class IIdentityExtensionMethods
+    {
+        public static string ToJson(this IIdentity identity)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(identity, Formatting.None);
+        }
+    }
+
+    static class ExecutionTokenExtensionMethods
+    {
+        public static string ToJson(this IExecutionToken executionToken)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(executionToken, Formatting.None);
+        }
     }
 }

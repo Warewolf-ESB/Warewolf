@@ -899,6 +899,8 @@ namespace Warewolf.Storage.Tests
             Assert.IsTrue(envWithErrors.HasErrors());
             var expected = $"AnotherError{Environment.NewLine}SomeError";
             Assert.AreEqual(expected, envWithErrors.FetchErrors());
+            expected = "{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[\"SomeError\"],\"AllErrors\":[\"AnotherError\"]}";
+            Assert.AreEqual(expected, envWithErrors.ToJson());
         }
 
         #region Private Methods
