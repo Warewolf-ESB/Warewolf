@@ -328,7 +328,8 @@ namespace Dev2.Services.Execution
                 this.SqlQuery,
                 this.ConnectionTimeout,
                 this.CommandTimeout,
-            });
+            },
+            nameof(MssqlSqlExecution));
 
             var connectionBuilder = new ConnectionBuilder();
             var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(connectionTimeout)));
@@ -498,7 +499,8 @@ namespace Dev2.Services.Execution
                 DataObj.StateLogger.LogAdditionalDetail(new
                 {
                     Exception = ex,
-                });
+                },
+                nameof(MySqlExecution));
             }
             return false;
         }
