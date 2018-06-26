@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public void LogAdditionalDetail(object detail, [CallerMemberName] string callerName = null)
+        public void LogAdditionalDetail(object detail, string callerName)
         {
             writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
             jsonTextWriter.WriteStartObject();
