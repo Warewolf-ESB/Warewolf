@@ -5,32 +5,76 @@ using Dev2.Interfaces;
 using Dev2.Common;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces;
+using System.IO.Compression;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    class Dev2StateLogger : IDev2StateLogger
+    class Dev2JsonStateLogger : IDev2StateLogger
     {
         readonly StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
-        readonly IDSFDataObject dsfDataObject;
+        readonly IDSFDataObject _dsfDataObject;
+        readonly IFile _fileWrapper;
+        readonly DetailedLogFile _detailedLogFile;
 
-        public Dev2StateLogger(IDSFDataObject dsfDataObject)
+        public Dev2JsonStateLogger(IDSFDataObject dsfDataObject)
             : this(dsfDataObject, new FileWrapper())
         {
         }
 
-        public Dev2StateLogger(IDSFDataObject dsfDataObject, IFile fileWrapper)
+        public Dev2JsonStateLogger(IDSFDataObject dsfDataObject, IFile fileWrapper)
         {
-            writer = fileWrapper.AppendText(GetDetailLogFilePath(dsfDataObject));
+            _dsfDataObject = dsfDataObject;
+            _fileWrapper = fileWrapper;
+            _detailedLogFile = new DetailedLogFile(_dsfDataObject, _fileWrapper);
+            writer = GetDetailedLogWriter();
             jsonTextWriter = new JsonTextWriter(writer);
-            this.dsfDataObject = dsfDataObject;
+
+        }
+
+        private StreamWriter GetDetailedLogWriter()
+        {
+            if (_detailedLogFile.IsOlderThanToday)
+            {
+                MoveLogFileIfOld();
+                RunBackgroundLogTasks();
+            }
+            return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
+        }
+
+        private void MoveLogFileIfOld()
+        {
+            if (_fileWrapper.Exists(_detailedLogFile.LogFilePath))
+            {
+                var newFilePath = _detailedLogFile.GetNewFileName();
+                _fileWrapper.Copy(_detailedLogFile.LogFilePath, Path.Combine(_detailedLogFile.LogFilePath, newFilePath));
+                CleanLogFile();
+            }
+        }
+
+        private void CleanLogFile() => _fileWrapper.WriteAllText(_detailedLogFile.LogFilePath, string.Empty);
+
+        private void RunBackgroundLogTasks()
+        {
+            if (_dsfDataObject.Settings.ShouldDeleteFile(_detailedLogFile))
+            {
+                _fileWrapper.Delete(_detailedLogFile.LogFilePath);
+            }
+            else
+            {
+                if (_dsfDataObject.Settings.ShouldCompressFile(_detailedLogFile))
+                {
+                    FileCompressor.Compress(_detailedLogFile);
+                }
+            }
         }
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
             writer.WriteLine("header:LogPreExecuteState");
             WriteHeader(null, nextActivity);
-            dsfDataObject.LogState(jsonTextWriter);
+            _dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
@@ -40,7 +84,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             writer.WriteLine("header:LogPostExecuteState");
             WriteHeader(previousActivity, nextActivity);
-            dsfDataObject.LogState(jsonTextWriter);
+            _dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
@@ -50,7 +94,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             writer.WriteLine("header:LogExecuteException");
             WriteHeader(activity, e);
-            dsfDataObject.LogState(jsonTextWriter);
+            _dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
@@ -65,7 +109,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteEndObject();
             writer.WriteLine();
             writer.Flush();
-            dsfDataObject.LogState(jsonTextWriter);
+            _dsfDataObject.LogState(jsonTextWriter);
             jsonTextWriter.Flush();
             writer.WriteLine();
             writer.Flush();
@@ -107,9 +151,6 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
-            Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName), "Detail.log");
-
         public void Close()
         {
             jsonTextWriter.Close();
@@ -120,49 +161,117 @@ namespace Dev2.Runtime.ESB.Execution
             ((IDisposable)jsonTextWriter).Dispose();
         }
     }
-}
 
-static class DsfDataObjectMethods
-{
-    public static void LogState(this IDSFDataObject dsfDataObject, JsonTextWriter jsonTextWriter)
+    class DetailedLogFile
     {
-        jsonTextWriter.WriteRaw("{\"DsfDataObject\":");
-        jsonTextWriter.WriteStartObject();
+        readonly IFile _fileWrapper;
+        readonly IDirectory _directoryWrapper;
+        readonly IDSFDataObject _dsfDataObject;
+        public DetailedLogFile(IDSFDataObject dsfDataObject, IFile fileWrapper)
+        {
+            _dsfDataObject = dsfDataObject;
+            LogFilePath = GetDetailLogFilePath(_dsfDataObject);
+            _fileWrapper = fileWrapper;
+            _directoryWrapper = new DirectoryWrapper();
+        }
 
-        jsonTextWriter.WritePropertyName("ServerID");
-        jsonTextWriter.WriteValue(dsfDataObject.ServerID);
+        public string LogFilePath { get; set; }
+        public string LogFileDirectory => Path.GetDirectoryName(LogFilePath);
+        public DateTime LogFileLastModifiedDate => _fileWrapper.GetLastWriteTime(LogFilePath);
+        public int LogFileAge => (DateTime.Today - LogFileLastModifiedDate).Days;
+        public bool IsOlderThanToday => LogFileLastModifiedDate.Date < DateTime.Today.Date;
+        public string ArchiveFolder =>
+            EnvironmentVariables.WorkflowDetailLogArchivePath(_dsfDataObject.ResourceID, _dsfDataObject.ServiceName);
+        public bool ArchiveFolderExist => _directoryWrapper.Exists(ArchiveFolder);
 
-        jsonTextWriter.WritePropertyName("ParentID");
-        jsonTextWriter.WriteValue(dsfDataObject.ParentID);
+        public string LogFileParentFolder => _directoryWrapper.GetParent(LogFilePath).Name;
 
-        jsonTextWriter.WritePropertyName("ClientID");
-        jsonTextWriter.WriteValue(dsfDataObject.ClientID);
+        internal string GetNewFileName()
+        {
+            const string dateFormat = "yyyyMMdd";
+            var fileInfo = new FileInfo(LogFilePath);
+            var newName = fileInfo.Name.Replace(".log", " ") + DateTime.Today.AddDays(-1).ToString(dateFormat) + ".log";
+            return Path.Combine(fileInfo.DirectoryName, newName);
+        }
 
-        jsonTextWriter.WritePropertyName("ExecutingUser");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToString());
+        internal static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
+            Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName)
+                         , dsfDataObject.ServiceName + " Detail.log");
+    }
+    static class FileCompressor
+    {
+        public static void Compress(DetailedLogFile logFile)
+        {
+            if (logFile.ArchiveFolderExist)
+            {
+                AddEntry(logFile);
+            }
+            else
+            {
+                ZipFile.CreateFromDirectory(logFile.LogFileDirectory, logFile.ArchiveFolder);
+            }
+        }
+        public static void AddEntry(DetailedLogFile logFile)
+        {
+            using (FileStream zipToOpen = new FileStream(logFile.ArchiveFolder, FileMode.Open))
+            {
+                using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                {
+                    archive.CreateEntry(logFile.LogFilePath);
+                }
+            }
+        }
+    }
+    static class DsfDataObjectMethods
+    {
+        public static void LogState(this IDSFDataObject dsfDataObject, JsonTextWriter jsonTextWriter)
+        {
+            jsonTextWriter.WriteRaw("{\"DsfDataObject\":");
+            jsonTextWriter.WriteStartObject();
 
-        jsonTextWriter.WritePropertyName("ExecutionID");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
+            jsonTextWriter.WritePropertyName("ServerID");
+            jsonTextWriter.WriteValue(dsfDataObject.ServerID);
 
-        jsonTextWriter.WritePropertyName("ExecutionOrigin");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionOrigin);
+            jsonTextWriter.WritePropertyName("ParentID");
+            jsonTextWriter.WriteValue(dsfDataObject.ParentID);
 
-        jsonTextWriter.WritePropertyName("ExecutionOriginDescription");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionOriginDescription);
+            jsonTextWriter.WritePropertyName("ClientID");
+            jsonTextWriter.WriteValue(dsfDataObject.ClientID);
 
-        jsonTextWriter.WritePropertyName("ExecutionToken");
-        jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToString());
+            jsonTextWriter.WritePropertyName("ExecutingUser");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToString());
 
-        jsonTextWriter.WritePropertyName("IsSubExecution");
-        jsonTextWriter.WriteValue(dsfDataObject.IsSubExecution);
+            jsonTextWriter.WritePropertyName("ExecutionID");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
 
-        jsonTextWriter.WritePropertyName("IsRemoteWorkflow");
-        jsonTextWriter.WriteValue(dsfDataObject.IsRemoteWorkflow());
+            jsonTextWriter.WritePropertyName("ExecutionOrigin");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionOrigin);
 
-        jsonTextWriter.WritePropertyName("Environment");
-        jsonTextWriter.WriteRawValue(dsfDataObject.Environment.ToJson());
+            jsonTextWriter.WritePropertyName("ExecutionOriginDescription");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionOriginDescription);
 
-        jsonTextWriter.WriteEndObject();
-        jsonTextWriter.WriteRaw("}");
+            jsonTextWriter.WritePropertyName("ExecutionToken");
+            jsonTextWriter.WriteValue(dsfDataObject.ExecutionToken.ToString());
+
+            jsonTextWriter.WritePropertyName("IsSubExecution");
+            jsonTextWriter.WriteValue(dsfDataObject.IsSubExecution);
+
+            jsonTextWriter.WritePropertyName("IsRemoteWorkflow");
+            jsonTextWriter.WriteValue(dsfDataObject.IsRemoteWorkflow());
+
+            jsonTextWriter.WritePropertyName("Environment");
+            jsonTextWriter.WriteRawValue(dsfDataObject.Environment.ToJson());
+
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.WriteRaw("}");
+        }
+    }
+    static class Dev2WorkflowSettingsExtensionMethods
+    {
+        public static bool ShouldDeleteFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
+            => detailedLogFile.LogFileAge > 30;
+
+        public static bool ShouldCompressFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
+            => detailedLogFile.LogFileAge > 2;
     }
 }

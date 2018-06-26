@@ -84,5 +84,10 @@ namespace Dev2.Common.Wrappers
             => Directory.EnumerateDirectories(path, pattern);
         public IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern)
             => Directory.EnumerateFileSystemEntries(path, pattern);
+
+        public DirectoryInfo GetParent(string path)
+        {
+            return Directory.GetParent(path);
+        }
     }
 }

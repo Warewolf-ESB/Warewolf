@@ -111,6 +111,7 @@ namespace Dev2.Interfaces
         bool IsSubExecution { get; set; }
         string QueryString { get; set; }
 
+        IDev2WorkflowSettings Settings { get; set; }
         IDev2StateLogger StateLogger { get; set; }
     }
 }

@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.IO;
 
 namespace Dev2.Common.Interfaces.Wrappers
@@ -32,5 +33,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         void SetAttributes(string path, FileAttributes fileAttributes);
         Stream OpenRead(string path);        
         StreamWriter AppendText(string filePath);
+
+        DateTime GetLastWriteTime(string filePath);
     }
 }

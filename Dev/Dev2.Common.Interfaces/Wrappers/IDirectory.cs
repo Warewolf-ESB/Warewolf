@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces.Wrappers
 {
     public interface IDirectory
     {
+        DirectoryInfo GetParent(string path);
         string[] GetFiles(string path);
         string CreateIfNotExists(string path);
         string[] GetLogicalDrives();

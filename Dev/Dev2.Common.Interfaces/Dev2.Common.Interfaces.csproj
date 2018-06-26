@@ -180,9 +180,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
-	</AdditionalFiles>
+    </AdditionalFiles>
     <Compile Include="Attribute\ReasonAttribute.cs" />
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />
@@ -257,6 +257,7 @@
     <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\AuthorizationContext.cs" />
     <Compile Include="Enums\enRandomType.cs" />
+    <Compile Include="Enums\LoggerType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="Exchange\IExchangeService.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="IDependencyGraphGenerator.cs" />
     <Compile Include="IDependencyVisualizationNode.cs" />
     <Compile Include="IDev2MethodInfo.cs" />
+    <Compile Include="IDev2WorkflowSettings.cs" />
     <Compile Include="IDLLChooser.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />

@@ -76,8 +76,8 @@ namespace Dev2.DynamicServices
                     {
                         xe = XElement.Parse(xmldata);
                     }
-                }                
-                catch (Exception)                
+                }
+                catch (Exception)
                 {
                     // try parse ;)
                 }
@@ -102,7 +102,7 @@ namespace Dev2.DynamicServices
 
         void ExtractXmlValues(XElement xe)
         {
-            bool isDebug;
+            bool isDebug;           
             var debugString = ExtractValue(xe, "IsDebug");
             if (!string.IsNullOrEmpty(debugString))
             {
@@ -317,6 +317,7 @@ namespace Dev2.DynamicServices
         public Guid? ExecutionID { get; set; }
         public string WebUrl { get; set; }
         public IDev2StateLogger StateLogger { get; set; }
+        public IDev2WorkflowSettings Settings { get; set; }
 
         #endregion Properties
 
@@ -396,6 +397,12 @@ namespace Dev2.DynamicServices
                 var serializer = new Dev2JsonSerializer();
                 var testString = serializer.Serialize(ServiceTest);
                 result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
+            }            
+            if (Settings != null)
+            {
+                var serializer = new Dev2JsonSerializer();
+                var testString = serializer.Serialize(Settings);
+                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(testString);
             }
             return result;
         }
