@@ -4357,6 +4357,34 @@ namespace Dev2.Activities.Specs.Composition
                 server.Connect();
             }
         }
+
+
+
+        [Given(@"The detailed log file does not exist for ""(.*)""")]
+        public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
+        {
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            FileWrapper fileWrapper = GetFileWrapper();
+            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+            Add("logFilePath", logFilePath);
+
+            if (fileWrapper.Exists(logFilePath))
+            {
+                fileWrapper.Delete(logFilePath);
+            }
+        }
+
+        private FileWrapper GetFileWrapper()
+        {
+            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
+            if (fileWrapper is null)
+            {
+                fileWrapper = new FileWrapper();
+                Add("fileWrapper", fileWrapper);
+            }
+            return fileWrapper;
+        }
+
         [Then(@"The detailed log file is created for ""(.*)""")]
         public void ThenTheDetailedLogFileIsCreatedFor(string workflowName)
         {
@@ -4370,11 +4398,8 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The Log file contains Logging for ""(.*)""")]
         public void ThenTheLogFileContainsLoggingFor(string workflowName)
         {
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            FileWrapper fileWrapper = new FileWrapper();
-            Add("fileWrapper", fileWrapper);
-            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
-            Add("logFilePath", logFilePath);            
+            TryGetValue("logFilePath", out string logFilePath);
+            var fileWrapper = GetFileWrapper();
             var logContent = fileWrapper.ReadAllText(logFilePath);
             Add("logFileSize", logContent.Length);
             Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
@@ -4387,10 +4412,8 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenTheLogFileContainsLoggingForStopped(string workflowName)
         {
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            FileWrapper fileWrapper = new FileWrapper();
-            Add("fileWrapper", fileWrapper);
-            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
-            Add("logFilePath", logFilePath);
+            var fileWrapper = GetFileWrapper();
+            TryGetValue("logFilePath", out string logFilePath);
             var logContent = fileWrapper.ReadAllText(logFilePath);
             Add("logFileContent", logContent);
             Add("logFileSize", logContent.Length);
@@ -4400,8 +4423,8 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(logContent.Contains("header:LogStopExecutionState"));
         }
 
-        [Then(@"The Log file contains additional Logging for ""(.*)""")]
-        public void ThenTheLogFileContainsAdditionalLoggingFor(string p0)
+        [Then(@"The Log file contains additional Logging")]
+        public void ThenTheLogFileContainsAdditionalLogging()
         {
             TryGetValue("fileWrapper", out FileWrapper fileWrapper);
             TryGetValue("logFilePath", out string logFilePath);
@@ -4419,6 +4442,11 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue("fileWrapper", out FileWrapper fileWrapper);
             TryGetValue("logFileContent", out string logFileContent);
+            if (logFileContent is null)
+            {
+                TryGetValue("logFilePath", out string logFilePath);
+                logFileContent = fileWrapper.ReadAllText(logFilePath);
+            }
 
             Assert.IsTrue(logFileContent.Contains(searchString));
         }
