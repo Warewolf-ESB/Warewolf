@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Security.Principal;
 using Dev2.Communication;
 using Dev2.Common.Interfaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -102,7 +103,23 @@ namespace Dev2.Runtime.ESB.Execution
             if (!(nextActivity is null))
             {
                 jsonTextWriter.WritePropertyName("NextActivity");
+
+                jsonTextWriter.WriteStartObject();
+                jsonTextWriter.WritePropertyName("Id");
                 jsonTextWriter.WriteValue(nextActivity.UniqueID);
+                jsonTextWriter.WritePropertyName("Type");
+                jsonTextWriter.WriteValue(nextActivity.GetType().ToString());
+                jsonTextWriter.WritePropertyName("DisplayName");
+                jsonTextWriter.WriteValue(nextActivity.GetDisplayName());
+                if (nextActivity is DsfActivity dsfActivity)
+                {
+                    jsonTextWriter.WritePropertyName("Inputs");
+                    var jsonSerializer = new Dev2JsonSerializer();
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Inputs, Formatting.None));
+                    jsonTextWriter.WritePropertyName("Outputs");
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Outputs, Formatting.None));
+                }
+                jsonTextWriter.WriteEndObject();
             }
             jsonTextWriter.WriteEndObject();
             jsonTextWriter.Flush();

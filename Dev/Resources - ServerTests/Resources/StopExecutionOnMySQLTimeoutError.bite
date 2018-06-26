@@ -1,5 +1,5 @@
 
-<Service ID="53c5be36-1cf5-497d-abbf-34d0287a144f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="StopExecutionOnMySQLTimeoutError" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6750.25870">
+<Service ID="53c5be36-1cf5-497d-abbf-34d0287a144f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="StopExecutionOnMySQLTimeoutError" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6751.15214">
   <DisplayName>StopExecutionOnMySQLTimeoutError</DisplayName>
   <Category>
   </Category>
