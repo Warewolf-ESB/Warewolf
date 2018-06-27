@@ -142,7 +142,7 @@ namespace Warewolf.Launcher
         {
             try
             {
-                ciRemoteContainerLauncher = new ContainerLauncher("", "latest", true);
+                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
                 if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
                 {
                     CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
