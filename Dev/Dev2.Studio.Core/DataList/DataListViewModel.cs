@@ -99,11 +99,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FilterCollection(string searchText)
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory,
-                                                TrackEventVariables.VariablesSearch, searchText);
-            }
+          
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
                 for (int index = _scalarCollection.Count - 1; index >= 0; index--)
@@ -373,13 +369,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public void LogToRevulytics(string eventCategory,string eventName)
+        public void LogToRevulytics(string eventCategory, string eventName)
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(eventCategory, eventName);
-            }
-
+            _applicationTracker?.TrackEvent(eventCategory, eventName);
         }
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
@@ -1029,11 +1021,8 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUnused != null && listOfUnused.Count != 0)
             {
                 SetIsUsedDataListItems(listOfUnused, false);
-                string[] unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
-                if (_applicationTracker != null)
-                {
-                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UnusedVariables, string.Join(",", unusedVariables));
-                }
+                var unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+                LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.UnusedVariables, string.Join(",", unusedVariables));
             }
             else
             {
@@ -1043,12 +1032,14 @@ namespace Dev2.Studio.ViewModels.DataList
             if (listOfUsed != null && listOfUsed.Count > 0)
             {
                 SetIsUsedDataListItems(listOfUsed, true);
-                string[] usedVariables = listOfUsed.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
-                if (_applicationTracker != null)
-                {
-                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UsedVariables, string.Join(",", usedVariables));
-                }
+                var usedVariables = listOfUsed.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
+                LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.UsedVariables, string.Join(",", usedVariables));
             }
+        }
+
+        public void LogCustomTrackerEvent(string eventCategory, string eventName, string text)
+        {
+            _applicationTracker?.TrackCustomEvent(eventCategory, eventName, text);
         }
 
         void UpdateDataListItemsAsUsed()

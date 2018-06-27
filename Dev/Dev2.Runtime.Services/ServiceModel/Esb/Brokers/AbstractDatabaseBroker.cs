@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     public abstract class AbstractDatabaseBroker<TDbServer>
         where TDbServer : class, IDbServer, new()
     {
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
         #region TheCache
 
@@ -177,9 +177,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             command.CommandText = serviceMethod.ExecuteAction;
             command.CommandType = serviceMethod.ExecuteAction?.Contains("select") ?? true ? CommandType.Text : CommandType.StoredProcedure;
-            if (CommandTimeout > 0)
+            if (CommandTimeout != null)
             {
-                command.CommandTimeout = CommandTimeout;
+                command.CommandTimeout = CommandTimeout.Value;
             }
             if (server.GetType() != typeof(ODBCServer))
             {

@@ -180,12 +180,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        public int CommandTimeout
+        public int? CommandTimeout
         {
-            get => _modelItem.GetProperty<int>("CommandTimeout");
+            get => _modelItem.GetProperty<int?>("CommandTimeout");
             set
             {
-                _modelItem.SetProperty<int>("CommandTimeout", value);
+                _modelItem.SetProperty<int?>("CommandTimeout", value);
                 OnPropertyChanged();
             }
         }

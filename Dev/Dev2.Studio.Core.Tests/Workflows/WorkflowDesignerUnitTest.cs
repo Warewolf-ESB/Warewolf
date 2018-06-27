@@ -52,7 +52,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -2181,8 +2181,11 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
-
         {
+            CustomContainer.DeRegister<IApplicationTracker>();
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+
             #region Setup view model constructor parameters
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2193,6 +2196,7 @@ namespace Dev2.Core.Tests.Workflows
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(r => r.DisplayName).Returns("Test");
             crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -2246,6 +2250,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithoutServiceName_FlowStepHandled()
 
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2319,6 +2325,8 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_PerformAddItems_ApplyForDrop_DropNotHandled()
 
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             #region Setup view model constructor parameters
             var resourceId = Guid.NewGuid();
             var properties = new Dictionary<string, Mock<ModelProperty>>();

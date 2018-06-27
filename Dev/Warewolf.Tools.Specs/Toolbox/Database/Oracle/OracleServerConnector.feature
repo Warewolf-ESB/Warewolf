@@ -130,3 +130,4 @@ Scenario: Execute Oracle Server With Timeout
 	And Oracle Command Timeout is "5" milliseconds for "OracleActivity"
 	When Oracle Workflow "OracleWorkflowForTimeout" containing dbTool is executed
     And the workflow "OracleWorkflowForTimeout" execution has "AN" error "ORA-01013"
+	And the workflow "OracleWorkflowForTimeout" error does not contain "NewLine"

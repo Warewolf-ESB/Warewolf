@@ -44,7 +44,7 @@ namespace Dev2.Services.Sql
 			_factory = dbFactory;
 		}
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
 		public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 		public void Connect(string connectionString)

@@ -9,7 +9,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class RequestNameServiceViewModelTests
     {
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void TestDispose()
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class ManageDatabaseSourceModellTests
     {
 
-      /*  [TestMethod]
+      /*  [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void TestDispose()

@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchTextUnchanged()
         {
             //arrange
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(isSearchTextChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchText()
         {
             //arrange
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshCommand()
         {
             //arrange
@@ -98,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshCommandFilterByTypeFalse()
         {
             //arrange
@@ -114,7 +114,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshCommandEmptySearch()
         {
             //arrange
