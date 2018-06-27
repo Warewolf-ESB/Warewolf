@@ -10,6 +10,7 @@ using System.IO.Compression;
 using Dev2.Communication;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Security.Principal;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -36,7 +37,7 @@ namespace Dev2.Runtime.ESB.Execution
             writer = GetDetailedLogWriter();
             jsonTextWriter = new JsonTextWriter(writer);
         }
-        
+
         private StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
@@ -50,6 +51,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
+            Notify(nameof(LogPreExecuteState), nextActivity);
             writer.WriteLine("header:LogPreExecuteState");
             WriteHeader(null, nextActivity);
             _dsfDataObject.LogState(jsonTextWriter);
@@ -60,6 +62,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogAdditionalDetail(object detail, string callerName)
         {
+            Notify(nameof(LogAdditionalDetail), new
+            {
+                CallerName = callerName,
+                Detail = detail,
+            });
             writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("Detail");
@@ -73,6 +80,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
+            Notify(nameof(LogPostExecuteState), nextActivity);
             writer.WriteLine("header:LogPostExecuteState");
             WriteHeader(previousActivity, nextActivity);
             _dsfDataObject.LogState(jsonTextWriter);
@@ -83,6 +91,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogExecuteException(Exception e, IDev2Activity activity)
         {
+            Notify(nameof(LogExecuteException), new
+            {
+                Activity = activity,
+                Exception = e,
+            });
             writer.WriteLine("header:LogExecuteException");
             WriteHeader(activity, e);
             _dsfDataObject.LogState(jsonTextWriter);
@@ -93,6 +106,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogExecuteCompleteState()
         {
+            Notify(nameof(LogExecuteCompleteState), null);
             writer.WriteLine("header:LogExecuteCompleteState");
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
@@ -108,6 +122,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogStopExecutionState()
         {
+            Notify(nameof(LogStopExecutionState), null);
             writer.WriteLine("header:LogStopExecutionState");
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
@@ -206,6 +221,24 @@ namespace Dev2.Runtime.ESB.Execution
         {
             ((IDisposable)jsonTextWriter).Dispose();
         }
+
+        readonly IList<IStateLoggerListener> stateListeners = new List<IStateLoggerListener>();
+        public void Subscribe(IStateLoggerListener listener)
+        {
+            stateListeners.Add(listener);
+        }
+        private void Notify(string callerName, object payload)
+        {
+            foreach (var stateListener in stateListeners)
+            {
+                var result = stateListener.Notify(callerName, payload);
+                if (!result)
+                {
+                    throw new StateLoggerStoppedException();
+                }
+            }
+        }
+        class StateLoggerStoppedException : Exception {}
     }
 
     class DetailedLogFile
