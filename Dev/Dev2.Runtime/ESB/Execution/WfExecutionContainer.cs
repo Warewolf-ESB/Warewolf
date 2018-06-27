@@ -174,95 +174,97 @@ namespace Dev2.Runtime.ESB.Execution
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
-        {            
-            var stateLogger = new Dev2StateLogger(dsfDataObject);
-            using ((IDisposable)stateLogger)
+        {
+            bool stoppedExecution = false;
+            var outerStateLogger = dsfDataObject.StateLogger;
+            try
             {
-                bool stoppedExecution = false;
+                dsfDataObject.StateLogger = new Dev2StateLogger(dsfDataObject);
+
+                var exe = CustomContainer.Get<IExecutionManager>();
+                Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
+                if (exe != null)
+                {
+                    if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+                    {
+                        Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                        exe.AddExecution();
+                        Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
+                    }
+                    else
+                    {
+                        Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
+                        exe.Wait();
+                        Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
+
+                    }
+                }
+                if (resource == null)
+                {
+                    throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
+                }
+
+                WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+
+                // TODO: if we wanted to skip to a particular part of the execution we need to
+                //       arrange for "resource" to be set to the correct activity and load the
+                //       old environment
+                Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
+                dsfDataObject.StateLogger.LogPreExecuteState(resource);
+
+                IDev2Activity next;
                 try
                 {
-                    dsfDataObject.StateLogger = stateLogger;
+                    next = resource.Execute(dsfDataObject, update);
+                    dsfDataObject.StateLogger.LogPostExecuteState(resource, next);
+                }
+                catch (Exception e)
+                {
+                    dsfDataObject.StateLogger.LogExecuteException(e, resource);
+                    throw;
+                }
 
-                    var exe = CustomContainer.Get<IExecutionManager>();
-                    Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
-                    if (exe != null)
+                Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
+                while (next != null)
+                {
+                    if (dsfDataObject.StopExecution)
                     {
-                        if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
-                        {
-                            Dev2Logger.Debug("Adding Execution to Execution Manager", GlobalConstants.WarewolfDebug);
-                            exe.AddExecution();
-                            Dev2Logger.Debug("Added Execution to Execution Manager", GlobalConstants.WarewolfDebug);
-                        }
-                        else
-                        {
-                            Dev2Logger.Debug("Waiting", GlobalConstants.WarewolfDebug);
-                            exe.Wait();
-                            Dev2Logger.Debug("Continued Execution", GlobalConstants.WarewolfDebug);
-
-                        }
-                    }
-                    if (resource == null)
-                    {
-                        throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
+                        stoppedExecution = true;
+                        break;
                     }
 
-                    WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-
-                    // TODO: if we wanted to skip to a particular part of the execution we need to
-                    //       arrange for "resource" to be set to the correct activity and load the
-                    //       old environment
-                    Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                    dsfDataObject.StateLogger.LogPreExecuteState(resource);
-
-                    IDev2Activity next;
+                    dsfDataObject.StateLogger.LogPreExecuteState(next);
+                    var current = next;
                     try
                     {
-                        next = resource.Execute(dsfDataObject, update);
-                        dsfDataObject.StateLogger.LogPostExecuteState(resource, next);
+                        next = current.Execute(dsfDataObject, update);
+                        dsfDataObject.StateLogger.LogPostExecuteState(current, next);
                     }
                     catch (Exception e)
                     {
-                        dsfDataObject.StateLogger.LogExecuteException(e, resource);
+                        dsfDataObject.StateLogger.LogExecuteException(e, current);
                         throw;
                     }
-
-                    Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
-                    while (next != null)
-                    {
-                        if (dsfDataObject.StopExecution)
-                        {
-                            stoppedExecution = true;
-                            break;
-                        }
-
-                        dsfDataObject.StateLogger.LogPreExecuteState(next);
-                        var current = next;
-                        try
-                        {
-                            next = current.Execute(dsfDataObject, update);
-                            dsfDataObject.StateLogger.LogPostExecuteState(current, next);
-                        }
-                        catch (Exception e)
-                        {
-                            dsfDataObject.StateLogger.LogExecuteException(e, current);
-                            throw;
-                        }
-                        dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
-                    }
+                    dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
                 }
-                finally
+            }
+            finally
+            {
+                if (!stoppedExecution)
                 {
-                    if (!stoppedExecution)
-                    {
-                        dsfDataObject.StateLogger.LogExecuteCompleteState();
-                    } else
-                    {
-                        dsfDataObject.StateLogger.LogStopExecutionState();
-                    }
-                    var exe = CustomContainer.Get<IExecutionManager>();
-                    exe?.CompleteExecution();
+                    dsfDataObject.StateLogger.LogExecuteCompleteState();
+                } else
+                {
+                    dsfDataObject.StateLogger.LogStopExecutionState();
+                }
+                var exe = CustomContainer.Get<IExecutionManager>();
+                exe?.CompleteExecution();
 
-                    dsfDataObject.StateLogger = null;
+                dsfDataObject.StateLogger.Dispose();
+                dsfDataObject.StateLogger = null;
+                if (outerStateLogger != null)
+                {
+                    dsfDataObject.StateLogger = outerStateLogger;
                 }
             }
         }
