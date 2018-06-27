@@ -242,8 +242,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         internal static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
             Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName)
-                         , dsfDataObject.ServiceName + " Detail.log");
-
+                         , "Detail.log");
     }
     static class FileCompressor
     {        
