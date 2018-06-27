@@ -15,16 +15,15 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
-using Dev2.Instrumentation;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.Views.DataList
 {
     /// <summary>
     /// Interaction logic for DataListView.xaml
     /// </summary>
-    public partial class DataListView : IView,ICheckControlEnabledView
+    public partial class DataListView : IView, ICheckControlEnabledView
     {
-
         public DataListView()
         {
             InitializeComponent();
@@ -81,8 +80,7 @@ namespace Dev2.Studio.Views.DataList
 
                 if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
                 {
-                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.IncorrectSyntax, "Variable Textbox input - " + vm.DataListErrorMessage);
+                    vm.LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.IncorrectSyntax, "Variable Textbox input - " + vm.DataListErrorMessage);
                 }
             }
         }
@@ -133,5 +131,14 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion
+
+        private void SearchTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (sender is TextBox textBoxSearch)
+            {
+                var vm = DataContext as IDataListViewModel;
+                vm.LogCustomTrackerEvent(TrackEventVariables.EventCategory, TrackEventVariables.VariablesSearch, textBoxSearch.Text);
+            }
+        }
     }
 }

@@ -39,23 +39,40 @@ namespace Warewolf.Studio.ViewModels.Tests
             _localhostServerEnvironmentId = Guid.NewGuid();
             _localhostServerMock = new Mock<IServer>();
             _localhostServerMock.Setup(it => it.EnvironmentID).Returns(_localhostServerEnvironmentId);
+            var mockEnvironmentConnection = SetupMockConnection();
+            _localhostServerMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             _windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
             _localhostServerMock.Setup(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
             {
                 _windowsGroupPermissionMock.Object
             });
-            //_localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
             _localhostServerMock.SetupGet(it => it.DisplayName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
             _eventAggregatorMock = new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>();
+
+            var connectControlSingleton = new Mock<Dev2.ConnectionHelpers.IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
             _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object,true);
+        }
+
+        private static Mock<IEnvironmentConnection> SetupMockConnection()
+        {
+            var uri = new Uri("http://bravo.com/");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(a => a.AppServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.AuthenticationType).Returns(Dev2.Runtime.ServiceModel.Data.AuthenticationType.Public);
+            mockEnvironmentConnection.Setup(a => a.WebServerUri).Returns(uri);
+            mockEnvironmentConnection.Setup(a => a.ID).Returns(Guid.Empty);
+            return mockEnvironmentConnection;
         }
 
         #endregion Test initialize
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshCommand()
         {
             //arrange
@@ -88,7 +105,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void ValidateEnvironmentContainsDoesNotAdd()
         {
             //arrange
@@ -114,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, _target.Environments.Count);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestClearSearchTextCommand()
         {
             //arrange
@@ -132,7 +149,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(string.IsNullOrEmpty(_target.SearchText));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCreateFolderCommand()
         {
             //arrange
@@ -155,7 +172,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsFromActivityDrop()
         {
             //arrange
@@ -173,7 +190,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsFromActivityDropChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsRefreshing()
         {
             //arrange
@@ -191,7 +208,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isIsRefreshingChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAllowDrag()
         {
             //arrange
@@ -210,7 +227,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isAllowDragChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedItem()
         {
             //arrange
@@ -237,7 +254,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isSelectedItem);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestShowConnectControl()
         {
             //arrange
@@ -250,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ShowConnectControl);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedDataItems()
         {
             //arrange
@@ -274,7 +291,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ShowConnectControl);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestEnvironments()
         {
             //arrange
@@ -293,7 +310,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isEnvironmentsChanged);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedEnvironment()
         {
             //arrange
@@ -306,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(environmentViewModelMock.Object, _target.SelectedEnvironment);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedServer()
         {
             //arrange
@@ -322,7 +339,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(serverMock.Object, actual);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchTextNotChanged()
         {
             //arrange
@@ -339,7 +356,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(isSearchText);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchTextChanged()
         {
             //arrange
@@ -361,7 +378,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isEnvironments);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchToolTip()
         {
             //arrange
@@ -373,7 +390,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExplorerClearSearchTooltip()
         {
             //arrange
@@ -385,7 +402,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshToolTip()
         {
             //arrange
@@ -397,7 +414,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsDeploy()
         {
             //arrange
@@ -414,14 +431,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConstructorArgumentNull()
         {
             new ExplorerViewModel(null, _eventAggregatorMock.Object,true);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async Task TestServerConnected()
         {
             //arrange
@@ -445,7 +462,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Environments.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async Task TestServerDisconnected()
         {
             //arrange
@@ -487,7 +504,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Environments.Any());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestServerReConnected()
         {
             //arrange
@@ -518,7 +535,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.IsLoading);
         }
       
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshEnvironment()
         {
             //arrange
@@ -546,7 +563,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestRefreshEnvironmentSetsPermissions()
         {
             //arrange
@@ -575,7 +592,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.SetPropertiesForDialogFromPermissions(It.IsAny<IWindowsGroupPermission>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public async Task TestRefreshSelectedEnvironment()
         {
             //arrange
@@ -602,7 +619,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFilter()
         {
             //arrange
@@ -622,7 +639,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void RemoveItemChildRemoveItem()
         {
             //arrange
@@ -648,12 +665,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.RemoveItem(explorerItemViewModelMock.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void RemoveItemChildRemoveChild()
         {
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             var serverMock = new Mock<IServer>();
+            var mockEnvironmentConnection = SetupMockConnection();
+            serverMock.SetupGet(it => it.Connection).Returns(mockEnvironmentConnection.Object);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             explorerItemViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
@@ -674,7 +693,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.RemoveChild(explorerItemViewModelMock.Object));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestUpdateHelpDescriptor()
         {
             //arrange
@@ -690,7 +709,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             helpWindowViewModelMock.Verify(it => it.UpdateHelpText("someHelpText"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectItemGuid()
         {
             //arrange
@@ -718,7 +737,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectItemString()
         {
             //arrange
@@ -746,7 +765,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDispose()
         {
             //arrange
@@ -760,7 +779,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModelMock.Verify(it => it.Dispose());
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFindItems()
         {
             //act
@@ -770,7 +789,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectAction()
         {
             //act

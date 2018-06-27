@@ -24,6 +24,6 @@ namespace Warewolf.Core
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string Name { get; set; }
         public Guid Id { get; set; }
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
     }
 }

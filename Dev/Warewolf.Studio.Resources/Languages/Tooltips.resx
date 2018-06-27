@@ -2303,4 +2303,7 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="CommandTimeoutTooltip" xml:space="preserve">
     <value>Database command timeout</value>
   </data>
+  <data name="StartPageToolTip" xml:space="preserve">
+    <value>Open Start Page</value>
+  </data>
 </root>

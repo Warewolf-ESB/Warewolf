@@ -1337,6 +1337,12 @@ namespace Dev2.Studio.ViewModels
 
         public async void ShowStartPageAsync()
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.StartPage);
+            }
+
             var workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if (workSurfaceContextViewModel == null)
             {
