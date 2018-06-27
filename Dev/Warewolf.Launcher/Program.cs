@@ -26,7 +26,12 @@ namespace Warewolf.Launcher
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
-                    throw new UnauthorizedAccessException("Must run as an administrator.");
+                    var exeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(exeName);
+                    startInfo.Verb = "runas";
+                    System.Diagnostics.Process.Start(startInfo);
+                    Application.Current.Shutdown();
+                    return;
                 }
             }
             
