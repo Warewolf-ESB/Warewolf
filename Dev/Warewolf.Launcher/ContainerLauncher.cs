@@ -11,7 +11,7 @@ namespace Warewolf.Launcher
 {
     public class ContainerLauncher : IDisposable
     {
-        const string remoteSwarmDockerApi = "TEST-LOAD";
+        string remoteSwarmDockerApi;
         string serverContainerID = null;
         string serviceID = null;
         string FullImageID = null;
@@ -22,8 +22,9 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public ContainerLauncher(string hostname = "", string version = "latest", bool CIRemoteResources = false)
+        public ContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
         {
+            remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
             if (!CIRemoteResources)
@@ -122,15 +123,6 @@ namespace Warewolf.Launcher
         {
             ""Replicas"": 1
         }
-    },
-    ""EndpointSpec"": 
-    {
-        ""Ports"": 
-        [{
-            ""Protocol"": ""tcp"", 
-            ""PublishedPort"": 3142, 
-            ""TargetPort"": 3142
-        }]
     }
 }
 ");
