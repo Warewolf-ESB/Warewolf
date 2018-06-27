@@ -89,6 +89,18 @@ namespace Dev2.Common
             }
         }
 
+        public static string DetailedLogsArchives
+        {
+            get
+            {
+                var resourcePath = Path.Combine(AppDataPath, DetailLogPath, "Archives");
+                if (!Directory.Exists(resourcePath))
+                {
+                    Directory.CreateDirectory(resourcePath);
+                }
+                return resourcePath;
+            }
+        }
         public static string WorkflowDetailLogPath(Guid Id, string name)
         {
             var wfDetailedLogPath = Path.Combine($"{DetailLogPath}", string.Format("{0} - {1}", Id, name));
@@ -97,6 +109,10 @@ namespace Dev2.Common
                 Directory.CreateDirectory(wfDetailedLogPath);
             }
             return wfDetailedLogPath;
+        }
+        public static string WorkflowDetailLogArchivePath(Guid Id, string name)
+        {
+            return Path.Combine($"{DetailedLogsArchives}", string.Format("{0} - {1}.zip", Id, name));
         }
         public static string AppDataPath
         {

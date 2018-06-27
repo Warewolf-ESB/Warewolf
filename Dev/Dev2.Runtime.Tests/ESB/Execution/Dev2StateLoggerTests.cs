@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Security.Principal;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
@@ -30,7 +28,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var directoryWrapper = new DirectoryWrapper();
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
             var activity = new Mock<IDev2Activity>();
 
             // test
@@ -62,7 +61,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var directoryWrapper = new DirectoryWrapper();
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
             var previousActivity = new Mock<IDev2Activity>();
             var nextActivity = new Mock<IDev2Activity>();
 
@@ -95,7 +95,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var directoryWrapper = new DirectoryWrapper();
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
@@ -128,7 +129,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var directoryWrapper = new DirectoryWrapper();
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);            
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
@@ -156,7 +158,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             // setup
             var fileWrapper = new FileWrapper();
-            var dev2StateLogger = new Dev2StateLogger(mockedDataObject.Object, fileWrapper);
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
@@ -167,6 +169,24 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //Expect something like: "header:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:50:55.1624974+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:02.3074228+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:31.2454735+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\n"
             Assert.IsTrue(text.Contains("LogStopExecutionState"));
             Assert.IsTrue(text.Contains("timestamp"));
+        }
+
+
+        [TestMethod]
+        public void Dev2StateLogger_Given_Compress_True()
+        {
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+
+            var fileWrapper = new FileWrapper();
+            var directoryWrapper = new DirectoryWrapper();
+            var dev2StateLogger = new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper);
+
         }
     }
 }    
