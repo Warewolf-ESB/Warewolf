@@ -19,23 +19,24 @@ namespace Dev2.Runtime.ESB.Execution
         readonly JsonTextWriter jsonTextWriter;
         readonly IDSFDataObject _dsfDataObject;
         readonly IFile _fileWrapper;
+        readonly IZipFile _zipWrapper;
         readonly DetailedLogFile _detailedLogFile;
 
         public Dev2JsonStateLogger(IDSFDataObject dsfDataObject)
-            : this(dsfDataObject, new FileWrapper())
+            : this(dsfDataObject, new FileWrapper(), new ZipFileWrapper())
         {
         }
 
-        public Dev2JsonStateLogger(IDSFDataObject dsfDataObject, IFile fileWrapper)
+        public Dev2JsonStateLogger(IDSFDataObject dsfDataObject, IFile fileWrapper, IZipFile zipWrapper)
         {
             _dsfDataObject = dsfDataObject;
             _fileWrapper = fileWrapper;
+            _zipWrapper = zipWrapper;
             _detailedLogFile = new DetailedLogFile(_dsfDataObject, _fileWrapper);
             writer = GetDetailedLogWriter();
             jsonTextWriter = new JsonTextWriter(writer);
-
         }
-
+        
         private StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
@@ -46,32 +47,6 @@ namespace Dev2.Runtime.ESB.Execution
             return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
         }
 
-        private void MoveLogFileIfOld()
-        {
-            if (_fileWrapper.Exists(_detailedLogFile.LogFilePath))
-            {
-                var newFilePath = _detailedLogFile.GetNewFileName();
-                _fileWrapper.Copy(_detailedLogFile.LogFilePath, Path.Combine(_detailedLogFile.LogFilePath, newFilePath));
-                CleanLogFile();
-            }
-        }
-
-        private void CleanLogFile() => _fileWrapper.WriteAllText(_detailedLogFile.LogFilePath, string.Empty);
-
-        private void RunBackgroundLogTasks()
-        {
-            if (_dsfDataObject.Settings.ShouldDeleteFile(_detailedLogFile))
-            {
-                _fileWrapper.Delete(_detailedLogFile.LogFilePath);
-            }
-            else
-            {
-                if (_dsfDataObject.Settings.ShouldCompressFile(_detailedLogFile))
-                {
-                    FileCompressor.Compress(_detailedLogFile);
-                }
-            }
-        }
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
@@ -198,6 +173,30 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
+        private void MoveLogFileIfOld()
+        {
+            var newFilePath = _detailedLogFile.GetNewFileName();
+            _fileWrapper.Copy(_detailedLogFile.LogFilePath, Path.Combine(_detailedLogFile.LogFilePath, newFilePath));
+            CleanLogFile();
+        }
+
+        private void CleanLogFile() => _fileWrapper.WriteAllText(_detailedLogFile.LogFilePath, string.Empty);
+
+        private void RunBackgroundLogTasks()
+        {
+            if (_dsfDataObject.Settings.ShouldDeleteFile(_detailedLogFile))
+            {
+                _fileWrapper.Delete(_detailedLogFile.LogFilePath);
+            }
+            else
+            {
+                if (_dsfDataObject.Settings.ShouldCompressFile(_detailedLogFile))
+                {                    
+                    FileCompressor.Compress(_detailedLogFile, _zipWrapper);
+                }
+            }
+        }
+
         public void Close()
         {
             jsonTextWriter.Close();
@@ -226,7 +225,7 @@ namespace Dev2.Runtime.ESB.Execution
         public string LogFileDirectory => Path.GetDirectoryName(LogFilePath);
         public DateTime LogFileLastModifiedDate => _fileWrapper.GetLastWriteTime(LogFilePath);
         public int LogFileAge => (DateTime.Today - LogFileLastModifiedDate).Days;
-        public bool IsOlderThanToday => LogFileLastModifiedDate.Date < DateTime.Today.Date;
+        public bool IsOlderThanToday => _fileWrapper.Exists(LogFilePath) && LogFileLastModifiedDate.Date < DateTime.Today.Date;
         public string ArchiveFolder =>
             EnvironmentVariables.WorkflowDetailLogArchivePath(_dsfDataObject.ResourceID, _dsfDataObject.ServiceName);
         public bool ArchiveFolderExist => _directoryWrapper.Exists(ArchiveFolder);
@@ -244,10 +243,11 @@ namespace Dev2.Runtime.ESB.Execution
         internal static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
             Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName)
                          , dsfDataObject.ServiceName + " Detail.log");
+
     }
     static class FileCompressor
-    {
-        public static void Compress(DetailedLogFile logFile)
+    {        
+        public static void Compress(DetailedLogFile logFile, IZipFile zipWrapper)
         {
             if (logFile.ArchiveFolderExist)
             {
@@ -255,7 +255,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             else
             {
-                ZipFile.CreateFromDirectory(logFile.LogFileDirectory, logFile.ArchiveFolder);
+                zipWrapper.CreateFromDirectory(logFile.LogFileDirectory, logFile.ArchiveFolder);
             }
         }
         public static void AddEntry(DetailedLogFile logFile)
