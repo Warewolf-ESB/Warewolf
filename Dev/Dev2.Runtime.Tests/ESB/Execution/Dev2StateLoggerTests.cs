@@ -31,7 +31,36 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             }
             directoryWrapper.Delete(EnvironmentVariables.DetailLogPath, true);
         }
+        [TestMethod]
+        public void Dev2StateLogger_SubscribeToEventNotifications_Tests()
+        {
+            TestSetup(out fileWrapper, out directoryWrapper, out dev2StateLogger, out activity, out detailedLog);
+            using (dev2StateLogger)
+            {
+                var listenerMock = new Mock<IStateLoggerListener>();
+                listenerMock.Setup(o => o.Notify("LogPreExecuteState", It.IsAny<object>())).Returns(true).Verifiable();
+                listenerMock.Setup(o => o.Notify("LogPostExecuteState", It.IsAny<object>())).Returns(true).Verifiable();
+                listenerMock.Setup(o => o.Notify("LogExecuteException", It.IsAny<object>())).Returns(true).Verifiable();
+                listenerMock.Setup(o => o.Notify("LogAdditionalDetail", It.IsAny<object>())).Returns(true).Verifiable();
+                listenerMock.Setup(o => o.Notify("LogExecuteCompleteState", It.IsAny<object>())).Returns(true).Verifiable();
+                listenerMock.Setup(o => o.Notify("LogStopExecutionState", It.IsAny<object>())).Returns(true).Verifiable();
+                var listener = listenerMock.Object;
+                // test
+                dev2StateLogger.Subscribe(listener);
 
+                dev2StateLogger.LogPreExecuteState(activity.Object);
+                var nextActivityMock = new Mock<IDev2Activity>();
+                var nextActivity = nextActivityMock.Object;
+                dev2StateLogger.LogPostExecuteState(activity.Object, nextActivity);
+                dev2StateLogger.LogExecuteException(new Exception("some exception"), nextActivity);
+                dev2StateLogger.LogAdditionalDetail(new { Message = "Some Message" }, nameof(Dev2StateLogger_SubscribeToEventNotifications_Tests));
+                dev2StateLogger.LogExecuteCompleteState();
+                dev2StateLogger.LogStopExecutionState();
+
+                // verify
+                listenerMock.Verify();
+            }
+        }
         [TestMethod]
         public void Dev2StateLogger_LogPreExecuteState_Tests()
         {

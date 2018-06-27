@@ -55,6 +55,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         class DummyStateLogger : IDev2StateLogger
         {
+            public void Subscribe(IStateLoggerListener listener)
+            {
+            }
             public void Close()
             {
             }
@@ -65,7 +68,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             public void LogAdditionalDetail(object detail, string callerName)
             {
-                throw new NotImplementedException();
             }
 
             public void LogExecuteCompleteState()
@@ -86,7 +88,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             public void LogStopExecutionState()
             {
-                throw new NotImplementedException();
             }
         }
     }
