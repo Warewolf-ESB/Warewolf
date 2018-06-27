@@ -24,11 +24,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Text;
+using Dev2.Data;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -104,6 +100,13 @@ namespace Dev2.Runtime.ESB.Execution
         Guid ExecuteWf()
         {
             var result = new Guid();
+            var wfSetting = new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = true,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
@@ -111,7 +114,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
-
+                DataObject.Settings = wfSetting;
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
@@ -179,7 +182,7 @@ namespace Dev2.Runtime.ESB.Execution
             var outerStateLogger = dsfDataObject.StateLogger;
             try
             {
-                dsfDataObject.StateLogger = new Dev2StateLogger(dsfDataObject);
+                dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);

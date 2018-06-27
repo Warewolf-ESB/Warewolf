@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces.Wrappers;
+using System;
 using System.IO;
 
 namespace Dev2.Common.Wrappers
@@ -63,6 +64,11 @@ namespace Dev2.Common.Wrappers
         public StreamWriter AppendText(string filePath)
         {
             return File.AppendText(filePath);
+        }
+
+        public DateTime GetLastWriteTime(string filePath)
+        {
+            return File.GetLastWriteTime(filePath).Date;
         }
     }
 }
