@@ -4363,45 +4363,32 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
         {
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            FileWrapper fileWrapper = GetFileWrapper();
-            var logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
-            Add("logFilePath", logFilePath);
-
-            if (fileWrapper.Exists(logFilePath))
-            {
-                fileWrapper.Delete(logFilePath);
-            }
+            var detailLogInfo = new DetailLogInfo(workflowName, this);
+            detailLogInfo.DeleteIfExists();
+            Add($"DetailLogInfo {workflowName}", detailLogInfo);
         }
 
-        private FileWrapper GetFileWrapper()
+        [Given(@"The detailed log file does not exist for id ""(.*)"" - ""(.*)""")]
+        public void GivenTheDetailedLogFileDoesNotExistForId(string id, string workflowName)
         {
-            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
-            if (fileWrapper is null)
-            {
-                fileWrapper = new FileWrapper();
-                Add("fileWrapper", fileWrapper);
-            }
-            return fileWrapper;
+            var detailLogInfo = new DetailLogInfo(workflowName, id);
+            detailLogInfo.DeleteIfExists();
+            Add($"DetailLogInfo {workflowName}", detailLogInfo);
         }
 
         [Then(@"The detailed log file is created for ""(.*)""")]
         public void ThenTheDetailedLogFileIsCreatedFor(string workflowName)
         {
-            _dirHelper = new DirectoryWrapper();
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            var detailedLogFolderPath = EnvironmentVariables.DetailLogPath;
-            var workflowDetailedLogFilePath = Path.Combine($"{detailedLogFolderPath}", string.Format("{0} - {1}", resourceModel.ID, resourceModel.ResourceName));
-            Assert.IsTrue(_dirHelper.Exists(workflowDetailedLogFilePath), "Detailed Log path was not created after Executing " + workflowName);
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logFileContent = detailLogInfo.ReadAllText();
+            Assert.IsTrue(logFileContent.Length > 0);
         }
         
         [Then(@"The Log file contains Logging for ""(.*)""")]
         public void ThenTheLogFileContainsLoggingFor(string workflowName)
         {
-            TryGetValue("logFilePath", out string logFilePath);
-            var fileWrapper = GetFileWrapper();
-            var logContent = fileWrapper.ReadAllText(logFilePath);
-            Add("logFileSize", logContent.Length);
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logContent = detailLogInfo.ReadAllText();
             Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogExecuteCompleteState"));
@@ -4411,44 +4398,78 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The Log file contains Logging for stopped ""(.*)""")]
         public void ThenTheLogFileContainsLoggingForStopped(string workflowName)
         {
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            var fileWrapper = GetFileWrapper();
-            TryGetValue("logFilePath", out string logFilePath);
-            var logContent = fileWrapper.ReadAllText(logFilePath);
-            Add("logFileContent", logContent);
-            Add("logFileSize", logContent.Length);
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logContent = detailLogInfo.ReadAllText();
             Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
             Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
             Assert.IsFalse(logContent.Contains("header:LogExecuteCompleteState"));
             Assert.IsTrue(logContent.Contains("header:LogStopExecutionState"));
         }
 
-        [Then(@"The Log file contains additional Logging")]
-        public void ThenTheLogFileContainsAdditionalLogging()
+        [Then(@"The Log file for ""(.*)"" contains additional Logging")]
+        public void ThenTheLogFileContainsAdditionalLogging(string workflowName)
         {
-            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
-            TryGetValue("logFilePath", out string logFilePath);
-            TryGetValue("logFileSize", out int logFileSize);
-            var logContent = fileWrapper.ReadAllText(logFilePath);
-            Add("logFileContent", logContent);
-            Assert.IsTrue(logContent.Length > logFileSize);
-            var sizeDifference = logContent.Length / (double)logFileSize;
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var previousLogFileSize = detailLogInfo.PreviousLength;
+            var logContent = detailLogInfo.ReadAllText();
+            Assert.IsTrue(logContent.Length > previousLogFileSize);
+            var sizeDifference = logContent.Length / (double)previousLogFileSize;
             Assert.IsTrue(sizeDifference > 1.9);
             Assert.IsTrue(sizeDifference < 2.1);
         }
 
-        [Then(@"The Log file contains Logging matching ""(.*)""")]
-        public void ThenTheLogFileContainsLoggingMatchingDev_Services_SqlMySqlServer_CsLine(string searchString)
+        [Then(@"The Log file for ""(.*)"" contains Logging matching ""(.*)""")]
+        public void ThenTheLogFileForContainsLoggingMatching(string workflowName, string searchString)
         {
-            TryGetValue("fileWrapper", out FileWrapper fileWrapper);
-            TryGetValue("logFileContent", out string logFileContent);
-            if (logFileContent is null)
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logFileContent = detailLogInfo.ReadAllText();
+            Add("LogFileContent", logFileContent);
+            Assert.IsTrue(logFileContent.Contains(searchString));
+        }
+
+        [Then(@"The Log file contains Logging matching ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingMatching(string searchString)
+        {
+            TryGetValue("LogFileContent", out string logFileContent);
+            Assert.IsTrue(logFileContent.Contains(searchString));
+        }
+
+        class DetailLogInfo
+        {
+            readonly IContextualResourceModel resourceModel;
+            readonly string LogFilePath;
+            readonly FileWrapper fileWrapper;
+            public int PreviousLength { get; private set; }
+            private DetailLogInfo()
             {
-                TryGetValue("logFilePath", out string logFilePath);
-                logFileContent = fileWrapper.ReadAllText(logFilePath);
+                fileWrapper = new FileWrapper();
+            }
+            public DetailLogInfo(string workflowName, WorkflowExecutionSteps workflowExecutionSteps)
+                : this()
+            {
+                workflowExecutionSteps.TryGetValue(workflowName, out resourceModel);
+                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+            }
+            public DetailLogInfo(string workflowName, string resourceModelId)
+                : this()
+            {
+                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
             }
 
-            Assert.IsTrue(logFileContent.Contains(searchString));
+            internal void DeleteIfExists()
+            {
+                if (fileWrapper.Exists(LogFilePath))
+                {
+                    fileWrapper.Delete(LogFilePath);
+                }
+            }
+
+            internal string ReadAllText()
+            {
+                var result = fileWrapper.ReadAllText(LogFilePath);
+                PreviousLength = result.Length;
+                return result;
+            }
         }
     }
 }
