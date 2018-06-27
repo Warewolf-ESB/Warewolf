@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Principal;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -24,10 +25,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestCleanup]
         public void Cleanup()
         {
-            if (detailedLog != null)
+            if (directoryWrapper == null)
             {
-                directoryWrapper.Delete(detailedLog.LogFileDirectory, true);
+                directoryWrapper = new DirectoryWrapper();
             }
+            directoryWrapper.Delete(EnvironmentVariables.DetailLogPath, true);
         }
 
         [TestMethod]
