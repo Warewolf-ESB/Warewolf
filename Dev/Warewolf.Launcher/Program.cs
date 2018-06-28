@@ -26,11 +26,13 @@ namespace Warewolf.Launcher
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
-                    var exeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-                    ProcessStartInfo startInfo = new ProcessStartInfo(exeName);
-                    startInfo.Verb = "runas";
-                    System.Diagnostics.Process.Start(startInfo);
-                    Application.Current.Shutdown();
+                    var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(exeName)
+                    {
+                        Verb = "runas",
+                        Arguments = string.Join(" ", args)
+                    };
+                    Process.Start(startInfo);
                     return;
                 }
             }
