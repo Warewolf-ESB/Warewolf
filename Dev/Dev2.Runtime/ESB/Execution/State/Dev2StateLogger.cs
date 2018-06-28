@@ -10,11 +10,10 @@ using System.IO.Compression;
 using Dev2.Communication;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Security.Principal;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    class Dev2JsonStateLogger : IDev2StateLogger, IStateListener
+    class Dev2JsonStateLogger : IStateListener
     {
         readonly StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
@@ -191,19 +190,10 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public void Close()
-        {
-            jsonTextWriter.Close();
-        }
-
         public void Dispose()
         {
+            jsonTextWriter.Close();
             ((IDisposable)jsonTextWriter).Dispose();
-        }
-
-        public bool Notify(string type, object payload)
-        {
-            throw new NotImplementedException();
         }
     }
 
