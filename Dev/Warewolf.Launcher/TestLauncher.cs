@@ -1231,11 +1231,13 @@ namespace Warewolf.Launcher
 
                 //Run Tests
                 var TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-
-                //Re-try Failures
-                for (var count = 0; count < RetryCount; count++)
+                if (!string.IsNullOrEmpty(TrxFile))
                 {
-                    RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                    //Re-try Failures
+                    for (var count = 0; count < RetryCount; count++)
+                    {
+                        RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                    }
                 }
             }
             if (ApplyDotCover && JobName.Split(',').Count() > 1)
