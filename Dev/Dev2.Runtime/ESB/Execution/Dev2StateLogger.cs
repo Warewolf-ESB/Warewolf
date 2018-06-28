@@ -36,13 +36,14 @@ namespace Dev2.Runtime.ESB.Execution
             writer = GetDetailedLogWriter();
             jsonTextWriter = new JsonTextWriter(writer);
         }
-        
+
         private StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
             {
+                var compress = _dsfDataObject.Settings.ShouldCompressFile(_detailedLogFile);
                 MoveLogFileIfOld();
-                RunBackgroundLogTasks();
+                RunBackgroundLogTasks(compress);
             }
             return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
         }
@@ -177,23 +178,15 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var newFilePath = _detailedLogFile.GetNewFileName();
             _fileWrapper.Copy(_detailedLogFile.LogFilePath, Path.Combine(_detailedLogFile.LogFilePath, newFilePath));
-            CleanLogFile();
+            _fileWrapper.Delete(_detailedLogFile.LogFilePath);
         }
 
-        private void CleanLogFile() => _fileWrapper.WriteAllText(_detailedLogFile.LogFilePath, string.Empty);
-
-        private void RunBackgroundLogTasks()
+        private void RunBackgroundLogTasks(bool compress)
         {
-            if (_dsfDataObject.Settings.ShouldDeleteFile(_detailedLogFile))
+            if (compress)
             {
                 _fileWrapper.Delete(_detailedLogFile.LogFilePath);
-            }
-            else
-            {
-                if (_dsfDataObject.Settings.ShouldCompressFile(_detailedLogFile))
-                {                    
-                    FileCompressor.Compress(_detailedLogFile, _zipWrapper);
-                }
+                FileCompressor.Compress(_detailedLogFile, _zipWrapper);
             }
         }
 
@@ -245,7 +238,7 @@ namespace Dev2.Runtime.ESB.Execution
                          , "Detail.log");
     }
     static class FileCompressor
-    {        
+    {
         public static void Compress(DetailedLogFile logFile, IZipFile zipWrapper)
         {
             if (logFile.ArchiveFolderExist)
@@ -333,9 +326,6 @@ namespace Dev2.Runtime.ESB.Execution
 
     static class Dev2WorkflowSettingsExtensionMethods
     {
-        public static bool ShouldDeleteFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
-            => detailedLogFile.LogFileAge > 30;
-
         public static bool ShouldCompressFile(this IDev2WorkflowSettings settings, DetailedLogFile detailedLogFile)
             => detailedLogFile.LogFileAge > 2;
     }
