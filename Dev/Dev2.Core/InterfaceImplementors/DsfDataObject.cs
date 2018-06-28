@@ -316,7 +316,7 @@ namespace Dev2.DynamicServices
 
         public Guid? ExecutionID { get; set; }
         public string WebUrl { get; set; }
-        public IDev2StateLogger StateLogger { get; set; }
+        public IStateNotifier StateNotifier { get; set; }
         public IDev2WorkflowSettings Settings { get; set; }
 
         #endregion Properties
