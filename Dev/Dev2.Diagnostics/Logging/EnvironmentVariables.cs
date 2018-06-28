@@ -103,7 +103,7 @@ namespace Dev2.Common
         }
         public static string WorkflowDetailLogPath(Guid Id, string name)
         {
-            var wfDetailedLogPath = Path.Combine($"{DetailLogPath}", string.Format("{0} - {1}", Id, name));
+            var wfDetailedLogPath = Path.Combine($"{DetailLogPath}", string.Format("{0}_{1}", Id, name));
             if (!Directory.Exists(wfDetailedLogPath))
             {
                 Directory.CreateDirectory(wfDetailedLogPath);
@@ -112,7 +112,7 @@ namespace Dev2.Common
         }
         public static string WorkflowDetailLogArchivePath(Guid Id, string name)
         {
-            return Path.Combine($"{DetailedLogsArchives}", string.Format("{0} - {1}.zip", Id, name));
+            return Path.Combine($"{DetailedLogsArchives}", string.Format("{0}_{1}.zip", Id, string.IsNullOrEmpty(name) ? "" : name));
         }
         public static string AppDataPath
         {

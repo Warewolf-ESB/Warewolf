@@ -392,6 +392,7 @@ namespace Dev2.DynamicServices
             result.IsSubExecution = IsSubExecution;
             result.QueryString = QueryString;
             result.ExecutingUser = ExecutingUser;
+            result.StateLogger = StateLogger;
             if (ServiceTest != null)
             {
                 var serializer = new Dev2JsonSerializer();
