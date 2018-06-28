@@ -70,5 +70,10 @@ namespace Dev2.Runtime.ESB.Execution.State
         {
             stateListeners.Add(listener);
         }
+
+        public void Subscribe(IStateLoggerListener listener)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
