@@ -46,7 +46,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                IDev2StateLogger logger;
                 if (dsfDataObject.Settings.LoggerType == LoggerType.JSON)
                 {
                     stateNotifier.Subscribe(new Dev2JsonStateLogger(dsfDataObject));

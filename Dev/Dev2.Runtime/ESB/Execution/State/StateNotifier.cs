@@ -19,44 +19,50 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogAdditionalDetail(object detail, string callerName)
         {
-            Notify(nameof(LogAdditionalDetail), new
+            foreach (var stateListener in stateListeners)
             {
-                CallerName = callerName,
-                Detail = detail,
-            });
+                stateListener.LogAdditionalDetail(detail, callerName);
+            }
         }
 
         public void LogExecuteCompleteState()
         {
-            Notify(nameof(LogExecuteCompleteState), null);
+            foreach (var stateListener in stateListeners)
+            {
+                stateListener.LogExecuteCompleteState();
+            }
         }
 
         public void LogExecuteException(Exception e, IDev2Activity activity)
         {
-            Notify(nameof(LogExecuteException), new
+            foreach (var stateListener in stateListeners)
             {
-                Activity = activity,
-                Exception = e,
-            });
+                stateListener.LogExecuteException(e, activity);
+            }
         }
 
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
-            Notify(nameof(LogPostExecuteState), new
+            foreach (var stateListener in stateListeners)
             {
-                previousActivity,
-                nextActivity,
-            });
+                stateListener.LogPostExecuteState(previousActivity, nextActivity);
+            }
         }
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
-            Notify(nameof(LogPreExecuteState), nextActivity);
+            foreach (var stateListener in stateListeners)
+            {
+                stateListener.LogPreExecuteState(nextActivity);
+            }
         }
 
         public void LogStopExecutionState()
         {
-            Notify(nameof(LogStopExecutionState), null);
+            foreach (var stateListener in stateListeners)
+            {
+                stateListener.LogStopExecutionState();
+            }
         }
 
         readonly IList<IStateListener> stateListeners = new List<IStateListener>();
@@ -64,18 +70,5 @@ namespace Dev2.Runtime.ESB.Execution.State
         {
             stateListeners.Add(listener);
         }
-
-        private void Notify(string callerName, object payload)
-        {
-            foreach (var stateListener in stateListeners)
-            {
-                var result = stateListener.Notify(callerName, payload);
-                if (!result)
-                {
-                    throw new StateLoggerStoppedException();
-                }
-            }
-        }
-        class StateLoggerStoppedException : Exception { }
     }
 }

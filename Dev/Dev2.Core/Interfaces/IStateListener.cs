@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Dev2.Interfaces
 {
-    public interface IDev2StateLogger : IDisposable
+    public interface IStateListener : IDisposable
     {
         void LogPreExecuteState(IDev2Activity nextActivity);
         void LogAdditionalDetail(object detail, string callerName);
@@ -12,12 +12,8 @@ namespace Dev2.Interfaces
         void LogExecuteCompleteState();
         void LogStopExecutionState();
     }
-    public interface IStateNotifier : IDev2StateLogger
+    public interface IStateNotifier : IStateListener
     {
         void Subscribe(IStateListener listener);
-    }
-    public interface IStateListener
-    {
-        bool Notify(string type, object payload);
     }
 }
