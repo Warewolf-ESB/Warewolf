@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Execution.State;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -29,66 +30,33 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        internal static IDev2StateLogger CreateDetailedLoggerForWorkflow(IDSFDataObject dsfDataObject)
+        internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
-            return Instance.CreateLogger(dsfDataObject);
+            return Instance.GetStateNotifier(dsfDataObject);
         }
 
-        private IDev2StateLogger CreateLogger(IDSFDataObject dsfDataObject)
+        private IStateNotifier GetStateNotifier(IDSFDataObject dsfDataObject)
         {
-            if (!dsfDataObject.Settings.EnableDetailedLogging)
-            {
-                return new DummyStateLogger();
-            }
+            // TODO: check if there is already a state notifier for this workflow
+            //       in this server instance. Re-use either the notifier or its loggers.
+            var stateNotifier = new StateNotifier();
 
-            IDev2StateLogger logger;
-            if (dsfDataObject.Settings.LoggerType == LoggerType.JSON)
-            {
-                logger = new Dev2JsonStateLogger(dsfDataObject);
-                return logger;
-            }
-            else
-            {
-                throw new Exception("logger not implemented");
-            }
-        }
+            // TODO: add audit logger as a listener
+            // stateNotifier.Subscribe(AuditLogger.GetStateNotificationListener())
 
-        class DummyStateLogger : IDev2StateLogger
-        {
-            public void Subscribe(IStateLoggerListener listener)
+            if (dsfDataObject.Settings.EnableDetailedLogging)
             {
+                IDev2StateLogger logger;
+                if (dsfDataObject.Settings.LoggerType == LoggerType.JSON)
+                {
+                    stateNotifier.Subscribe(new Dev2JsonStateLogger(dsfDataObject));
+                }
+                else
+                {
+                    throw new Exception("logger not implemented");
+                }
             }
-            public void Close()
-            {
-            }
-
-            public void Dispose()
-            {
-            }
-
-            public void LogAdditionalDetail(object detail, string callerName)
-            {
-            }
-
-            public void LogExecuteCompleteState()
-            {
-            }
-
-            public void LogExecuteException(Exception e, IDev2Activity activity)
-            {
-            }
-
-            public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
-            {
-            }
-
-            public void LogPreExecuteState(IDev2Activity nextActivity)
-            {
-            }
-
-            public void LogStopExecutionState()
-            {
-            }
+            return stateNotifier;
         }
     }
 }

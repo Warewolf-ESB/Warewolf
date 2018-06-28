@@ -179,10 +179,10 @@ namespace Dev2.Runtime.ESB.Execution
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             bool stoppedExecution = false;
-            var outerStateLogger = dsfDataObject.StateLogger;
+            var outerStateLogger = dsfDataObject.StateNotifier;
             try
             {
-                dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
+                dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
@@ -213,17 +213,17 @@ namespace Dev2.Runtime.ESB.Execution
                 //       arrange for "resource" to be set to the correct activity and load the
                 //       old environment
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                dsfDataObject.StateLogger.LogPreExecuteState(resource);
+                dsfDataObject.StateNotifier.LogPreExecuteState(resource);
 
                 IDev2Activity next;
                 try
                 {
                     next = resource.Execute(dsfDataObject, update);
-                    dsfDataObject.StateLogger.LogPostExecuteState(resource, next);
+                    dsfDataObject.StateNotifier.LogPostExecuteState(resource, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateLogger.LogExecuteException(e, resource);
+                    dsfDataObject.StateNotifier.LogExecuteException(e, resource);
                     throw;
                 }
 
@@ -236,38 +236,44 @@ namespace Dev2.Runtime.ESB.Execution
                         break;
                     }
 
-                    dsfDataObject.StateLogger.LogPreExecuteState(next);
+                    dsfDataObject.StateNotifier.LogPreExecuteState(next);
                     var current = next;
                     try
                     {
                         next = current.Execute(dsfDataObject, update);
-                        dsfDataObject.StateLogger.LogPostExecuteState(current, next);
+                        dsfDataObject.StateNotifier.LogPostExecuteState(current, next);
                     }
                     catch (Exception e)
                     {
-                        dsfDataObject.StateLogger.LogExecuteException(e, current);
+                        dsfDataObject.StateNotifier.LogExecuteException(e, current);
                         throw;
                     }
                     dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
                 }
+
+                if (!stoppedExecution)
+                {
+                    dsfDataObject.StateNotifier.LogExecuteCompleteState();
+                }
+                else
+                {
+                    dsfDataObject.StateNotifier.LogStopExecutionState();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Fatal error while running workflow:\n{e.Message}", e);
             }
             finally
             {
-                if (!stoppedExecution)
-                {
-                    dsfDataObject.StateLogger.LogExecuteCompleteState();
-                } else
-                {
-                    dsfDataObject.StateLogger.LogStopExecutionState();
-                }
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
-                dsfDataObject.StateLogger.Dispose();
-                dsfDataObject.StateLogger = null;
+                dsfDataObject.StateNotifier.Dispose();
+                dsfDataObject.StateNotifier = null;
                 if (outerStateLogger != null)
                 {
-                    dsfDataObject.StateLogger = outerStateLogger;
+                    dsfDataObject.StateNotifier = outerStateLogger;
                 }
             }
         }
