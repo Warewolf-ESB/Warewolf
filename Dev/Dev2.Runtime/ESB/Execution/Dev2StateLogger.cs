@@ -278,7 +278,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteValue(dsfDataObject.ClientID);
 
             jsonTextWriter.WritePropertyName("ExecutingUser");
-            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToJson());
+            jsonTextWriter.WriteValue(dsfDataObject?.ExecutingUser?.Identity?.ToJson());
 
             jsonTextWriter.WritePropertyName("ExecutionID");
             jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);

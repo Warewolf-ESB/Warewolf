@@ -100,13 +100,6 @@ namespace Dev2.Runtime.ESB.Execution
         Guid ExecuteWf()
         {
             var result = new Guid();
-            var wfSetting = new Dev2WorkflowSettingsTO
-            {
-                EnableDetailedLogging = true,
-                LoggerType = LoggerType.JSON,
-                KeepLogsForDays = 2,
-                CompressOldLogFiles = true
-            };
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
@@ -114,7 +107,6 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
-                DataObject.Settings = wfSetting;
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
@@ -182,6 +174,13 @@ namespace Dev2.Runtime.ESB.Execution
             var outerStateLogger = dsfDataObject.StateLogger;
             try
             {
+                dsfDataObject.Settings = new Dev2WorkflowSettingsTO
+                {
+                    EnableDetailedLogging = true,
+                    LoggerType = LoggerType.JSON,
+                    KeepLogsForDays = 2,
+                    CompressOldLogFiles = true
+                };
                 dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
 
                 var exe = CustomContainer.Get<IExecutionManager>();
@@ -256,7 +255,8 @@ namespace Dev2.Runtime.ESB.Execution
                 if (!stoppedExecution)
                 {
                     dsfDataObject.StateLogger.LogExecuteCompleteState();
-                } else
+                }
+                else
                 {
                     dsfDataObject.StateLogger.LogStopExecutionState();
                 }
