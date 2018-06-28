@@ -407,7 +407,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine($"Created service on swarm {reader.ReadToEnd()}");
+                        serverContainerID = ParseForContainerID(reader.ReadToEnd());
                     }
                 }
             }
