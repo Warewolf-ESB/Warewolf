@@ -10,7 +10,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     public class StateNotifierTests
     {
         [TestMethod]
-        public void Dev2StateLogger_SubscribeToEventNotifications_Tests()
+        public void StateNotifier_SubscribeToEventNotifications_Test()
         {
             var activityMock = new Mock<IDev2Activity>();
             var activity = activityMock.Object;
@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var exception = new Exception("some exception");
 
             var additionalDetailObject = new { Message = "Some Message" };
-            var additionalDetailMethodName = nameof(Dev2StateLogger_SubscribeToEventNotifications_Tests);
+            var additionalDetailMethodName = nameof(StateNotifier_SubscribeToEventNotifications_Test);
 
             using (var notifier = new StateNotifier())
             {
