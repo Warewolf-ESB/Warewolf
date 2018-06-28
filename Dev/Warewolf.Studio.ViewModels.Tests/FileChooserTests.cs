@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCancelCommandCanExecute()
         {
             //act
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCancelCommandExecute()
         {
             //act
@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_closeActionExecuted);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveCommandCanExecute()
         {
             //act
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveCommandExecute()
         {
             //act
@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAttachments()
         {
             //arrange
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestAllowMultipleSelection()
         {
             //act
@@ -118,7 +118,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.AllowMultipleSelection);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedDriveName()
         {
             //act
@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_fileListingItemName, _target.SelectedDriveName);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDrives()
         {
             //arrange
@@ -142,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(expectedValue, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDriveName()
         {
             //arrange
@@ -175,7 +175,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("DriveName"));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDrivesChanged()
         {
             //arrange
@@ -192,14 +192,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestExpand()
         {
             //assert
             Assert.IsTrue(_target.Drives.First().IsChecked);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestGetAttachments()
         {
             //arrange
@@ -230,7 +230,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result.Contains(fileListingItemFullName2));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectAttachment()
         {
             //arrange
@@ -259,7 +259,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             fileGrandChildListingMock.VerifySet(it => it.IsChecked = true);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCancel()
         {
             //act
@@ -270,7 +270,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_closeActionExecuted);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSave()
         {
             //act

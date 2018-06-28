@@ -195,9 +195,10 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
+#if DEBUG
             SetAsStarted();
         }
-
+        
         static void SetAsStarted()
         {
             try
@@ -214,7 +215,8 @@ namespace Dev2.Studio
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
-        }
+#endif
+        } 
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
         {

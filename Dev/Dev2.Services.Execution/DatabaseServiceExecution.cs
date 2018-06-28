@@ -343,7 +343,7 @@ namespace Dev2.Services.Execution
                 }
                 else
                 {
-                    MssqlReadData(errors, update, startTime, connection, commandTimeout);
+                    MssqlReadData(update, startTime, connection, commandTimeout);
                 }
             }
             catch (Exception ex)
@@ -358,35 +358,24 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection, int? commandTimeout)
+        private void MssqlReadData(int update, Stopwatch startTime, SqlConnection connection, int? commandTimeout)
         {
             using (SqlTransaction dbTransaction = connection.BeginTransaction())
             {
-                try
+                using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
                 {
-                    using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
+                    cmd.Transaction = dbTransaction;
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        cmd.Transaction = dbTransaction;
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            var table = new DataTable();
-                            table.Load(reader);
-                            reader.Close();
-                            dbTransaction.Commit();
-                            Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                            var startTime1 = Stopwatch.StartNew();
-                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                            Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-
-                        }
+                        var table = new DataTable();
+                        table.Load(reader);
+                        reader.Close();
+                        dbTransaction.Commit();
+                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        var startTime1 = Stopwatch.StartNew();
+                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
                     }
-                }
-                catch (Exception ex)
-                {
-                    dbTransaction.Rollback();
-                    Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                    Dev2Logger.Error("SQL Error:", ex.StackTrace);
-                    errors.AddError($"SQL Error: {ex.Message}");
                 }
             }
         }
@@ -593,7 +582,9 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                Dev2Logger.Error("Oracle Error:", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("Oracle Error:", ex.StackTrace);
+                errors.AddError($"Oracle Error: {ex.Message}");
             }
             return false;
         }
@@ -683,7 +674,9 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                Dev2Logger.Error("ODBC Error:", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("ODBC Error:", ex.StackTrace);
+                errors.AddError($"ODBC Error: {ex.Message}");
             }
             return false;
         }
@@ -759,7 +752,9 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                Dev2Logger.Error("PostgreSql Error:", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("PostgreSql Error:", ex.StackTrace);
+                errors.AddError($"PostgreSql Error: {ex.Message}");
             }
             return false;
         }
