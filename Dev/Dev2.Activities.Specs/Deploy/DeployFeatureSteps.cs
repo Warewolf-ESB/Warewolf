@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Deploy
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
-        static ContainerLauncher _containerOps = new ContainerLauncher();
+        static ContainerLauncher _containerOps = new ContainerLauncher("test-load");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Deploy
         [AfterScenario("Deploy")]
         public void CleanupRemoteDocker()
         {
-            _containerOps.DeleteRemoteContainer();
+            _containerOps.Dispose();
         }
 
         [Given(@"localhost and destination server are connected")]
@@ -48,10 +48,10 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServerHostname = _containerOps.hostname;
+            string destinationServerHostname = _containerOps.Hostname;
 
             var formattableString = $"http://{destinationServerHostname}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
+            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, ContainerLauncher.Username, ContainerLauncher.Password))
             {
                 Name = destinationServerHostname
             };

@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(new Mock<IWarewolfWebClient>().Object);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		[ExpectedException(typeof(ArgumentNullException))]
@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//------------Assert Results-------------------------
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		[ExpectedException(typeof(NullReferenceException))]
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void TestFrameworkViewModel_MsgConstructor_MessageResourceModel_ShouldCreateNewtest()
 		{
@@ -104,7 +104,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void TestFrameworkViewModel_MsgConstructor_MsgWithInputValues_ShouldAddInputvalues()
 		{
@@ -123,7 +123,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsNotNull(testViewModel.SelectedServiceTest);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void ShoDuplicatePopup_GivenIsInvoked_ShouldShowCorrectMessage()
 		{
@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetResourceModel()
@@ -155,7 +155,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsNotNull(testVM.ResourceModel);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		public void TestFrameworkViewModel_Constructor_NotNullResourceModel_ShouldSetDisplayNameIncludingResourceDisplayName()
@@ -169,7 +169,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("My WF - Tests", testVM.DisplayName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsUrl()
 		{
@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("http://rsaklf/secure/My WF.tests", vm.RunAllTestsUrl);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveDuplicateTestCommand()
 		{
@@ -197,7 +197,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveStopTestCommand()
 		{
@@ -212,7 +212,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveCreateTestCommand()
 		{
@@ -250,7 +250,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return moqModel.Object;
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveModel()
 		{
@@ -264,7 +264,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(vm.CreateTestCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveRunAllTestsCommand()
 		{
@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(vm.RunAllTestsCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsCommandExecuteFalse()
 		{
@@ -293,7 +293,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.RunAllTestsCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestCommand()
 		{
@@ -307,7 +307,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(vm.RunSelectedTestCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNewNotConnected_ShouldSetRunSelectedTestCommandCanExecuteFalse()
 		{
@@ -324,7 +324,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNewNotConnected_ShouldSetRunAllTestsInBrowserCommandCanExecuteFalse()
 		{
@@ -339,7 +339,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.RunAllTestsInBrowserCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveRunSelectedTestInBrowserCommand()
 		{
@@ -353,7 +353,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
 		}
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void AllNamesValid_GivenEmptyItemIn_ListOfTestName_ShouldReturnTrue()
         {
@@ -369,7 +369,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(false, results);
         }
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void AllNamesValid_GivenListOfTestName_ShouldReturnTrue()
         {
@@ -386,7 +386,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, results);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Sanele Mthembu")]
         public void Save_GivenEmptyTestName_SetErrorMessage()
         {
@@ -404,7 +404,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(vm.ErrorMessage, "Cannot be null");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void Save_GivenThrowsNoException_ShouldMarkAllTestsAsNotDirty()
 		{
@@ -419,7 +419,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(vm.Tests.All(model => !model.IsDirty));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_SelectedServiceTest")]
 		public void TestFrameworkViewModel_SelectedServiceTest_CheckIsNull()
@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsNull(testFrameworkViewModel.SelectedServiceTest);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTest()
@@ -449,7 +449,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldIncrementTestNumber()
@@ -465,7 +465,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Test 1", testFrameworkViewModel.Tests[0].TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldDisableDuplicateCommand()
@@ -481,7 +481,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(testFrameworkViewModel.DuplicateTestCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldShowError()
@@ -499,7 +499,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddANewTestWithDefaultName()
@@ -516,7 +516,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Test 1", test.TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Executed_ShouldSetSelectedTestToNewlyCreatedTest()
@@ -540,7 +540,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("http://rsaklf/secure/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_SaveAsPublic_ShouldSetSelectedTestToPublic()
@@ -578,7 +578,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("http://rsaklf/public/My WF.tests/Test 1", testFrameworkViewModel.SelectedServiceTest.RunSelectedTestUrl);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Tests")]
 		public void TestFrameworkViewModel_Tests_SetProperty_ShouldFireOnPropertyChanged()
@@ -599,7 +599,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(_wasCalled);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Tests")]
 		public void TestFrameworkViewModel_SelectedTest_SetProperty_ShouldFireOnPropertyChanged()
@@ -621,7 +621,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 		
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Tests")]
 		public void TestFrameworkViewModel_ErrorMessage_SetProperty_ShouldFireOnPropertyChanged()
@@ -642,7 +642,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(_wasCalled);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddInputsFromResourceModel()
@@ -661,7 +661,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("", test.Inputs[0].Value);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldAddOutputsFromResourceModel()
@@ -680,7 +680,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("", test.Outputs[0].Value);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveDeleteTestCommand()
 		{
@@ -695,7 +695,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteTestCommand_GivenResourceModelIsConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
 		{
@@ -716,7 +716,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(canExecute);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteTestCommand_GivenResourceModelIsNotConnectedAndTestIsDisabled_ShouldsetCanExecuteTrue()
 		{
@@ -737,7 +737,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canExecute);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void OnCreation_GivenIsDisabled_DeleteTestCommandShouldBeEnabled()
 		{
@@ -752,7 +752,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.DeleteTestCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void OnCreation_GivenIsEnabled_DeleteTestCommandShouldBeDisabled()
 		{
@@ -769,7 +769,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Save")]
 		public void ServiceTestViewModel_Save_WithTests_ShouldCallSaveTestOnResourceModel()
@@ -801,7 +801,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Save")]
 		public void ServiceTestViewModel_Save_WithTestSteps_ShouldCallSaveTestOnResourceModel()
@@ -855,7 +855,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			mockResourceRepo.Verify(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()), Times.Once);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("ServiceTestViewModel_Save")]
 		public void ServiceTestViewModel_Save_DuplicateName_ShouldShowPopupError()
@@ -884,7 +884,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			popupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), MessageBoxImage.Error, null, false, true, false, false, false, false), Times.Once);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("ServiceTestViewModel_Save")]
 		public void ServiceTestViewModel_Save_Rename_ShouldRename()
@@ -906,7 +906,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(2, serviceTestViewModel.Tests.Count);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		public void TestFrameworkViewModel_Constructor_IsDirty_IsFalse()
@@ -919,7 +919,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(testFrameworkViewModel.IsDirty);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_CreateTestCommand")]
 		public void TestFrameworkViewModel_CreateTestCommand_Execute_ShouldSetHasChangedTrue()
@@ -936,7 +936,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(testFrameworkViewModel.IsDirty);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void TestUpdateHelpDescriptor()
 		{
@@ -956,7 +956,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_IsDirty")]
 		public void ServiceTestViewModel_IsDirty_WhenSetTrue_ShouldUpdateDisplayNameWithStar()
@@ -971,7 +971,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_IsDirty")]
 		public void ServiceTestViewModel_IsDirty_WhenSetTrueTwice_ShouldUpdateDisplayNameWithOneStarOnly()
@@ -986,7 +986,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("My WF - Tests *", testFrameworkViewModel.DisplayName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Tests")]
 		public void ServiceTestViewModel_Tests_GetWhenNullTests_ShouldHaveDummyTest()
@@ -1007,7 +1007,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Create a new test.", tests[0].TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Tests")]
 		public void ServiceTestViewModel_Tests_GetWhenEmptyTests_ShouldHaveDummyTest()
@@ -1028,7 +1028,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Create a new test.", tests[0].TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Tests")]
 		public void ServiceTestViewModel_Tests_GetWhenTests_ShouldHaveTestsAndDummyAtBottom()
@@ -1061,7 +1061,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Create a new test.", tests[1].TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Tests")]
 		public void ServiceTestViewModel_Tests_GetWhenTestsWithSteps_ShouldHaveTestsAndDummyAtBottom()
@@ -1100,7 +1100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("Create a new test.", tests[1].TestName);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("ServiceTestViewModel_Tests")]
 		public void ServiceTestViewModel_ResourceUpdateMessage_GetWhenTestsWithSteps_ShouldHaveTestsAndDummyAtBottom()
@@ -1146,7 +1146,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DuplicateCommand_GivenIsDirty_ShouldSetCanExecuteFalse()
 		{
@@ -1162,7 +1162,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canDuplicate);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DuplicateCommand_GivenIsDirtyFalseAndSelectedIsNotNull_ShouldSetCanExecuteTrue()
 		{
@@ -1178,7 +1178,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(canDuplicate);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void CanSave_GivenIsDirty_ShouldSetCanSaveFalse()
 		{
@@ -1193,7 +1193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canSave);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void CanSave_GivenIsDirtyAndValidName_ShouldSetCanSavetrue()
 		{
@@ -1210,7 +1210,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(canSave);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void CanSave_GivenIsDirtyAndInvalidValidName_ShouldSetCanSaveFalse()
 		{
@@ -1228,7 +1228,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canSave);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void CanSave_GivenIsDirtyAndEmptyName_ShouldSetCanSaveFalse()
 		{
@@ -1246,7 +1246,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canSave);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void RunSelectedTestCommand_GivenSelectedTestIsNotDirty_ShouldRunTheTest()
 		{
@@ -1285,7 +1285,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(testFrameworkViewModel.TestPassingResult);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void RunSelectedTestCommand_GivenSelectedTestIsDirty_ShouldSaveAndRunTheTest()
 		{
@@ -1304,7 +1304,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Test Result -----------------------
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void RunSelectedTestCommand_GivenTestNameExists_ShouldShowDuplicateError()
 		{
@@ -1327,7 +1327,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			popupController.Verify(controller => controller.Show(Resources.Languages.Core.ServiceTestDuplicateTestNameMessage, Resources.Languages.Core.ServiceTestDuplicateTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void DeleteSelectedTestCommand_GivenTestNameExists_ShouldDeleteSelectedTest()
 		{
@@ -1352,7 +1352,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(2, testFrameworkViewModel.Tests.Count);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void CanSave_GivenIsDirtynameHastrailingSpaces_ShouldSetCanSaveFalse()
 		{
@@ -1374,7 +1374,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             return viewModel.Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
         }
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldAddNewTestToTestCollection()
 		{
@@ -1396,7 +1396,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(2, GetTests(testFrameworkViewModel).Count);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DuplicateTestCommand_GivenSelectedTesIsNotNull_ShouldSetSelectedTestToNewlyDuplicatedTest()
 		{
@@ -1418,7 +1418,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(!testFrameworkViewModel.SelectedServiceTest.TestName.Contains("_dup"));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteCommand_GivenSelectedTestIsDisabled_ShouldSetCanDeleteTrue()
 		{
@@ -1436,7 +1436,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteTestCommand_GivenNullTest_Execute_ShouldReturnNull()
 		{
@@ -1455,7 +1455,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Never);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteTestCommand_GivenTests_ShouldShowConfirmation()
 		{
@@ -1490,7 +1490,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			popupController.Verify(controller => controller.ShowDeleteConfirmation(It.IsAny<string>()), Times.Once);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DeleteTestCommand_GivenTests_ShouldUpdateTestsCollection()
 		{
@@ -1539,7 +1539,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void IsValid_GivenNameOne_ShouldBeValid()
 		{
@@ -1564,7 +1564,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(true, bool.Parse(invoke.ToString()));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void IsValid_GivenNameOnePErcenta_ShouldBeInValid()
 		{
@@ -1589,7 +1589,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(false, bool.Parse(invoke.ToString()));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void IsValid_GivenEmpty_ShouldBeInValid()
 		{
@@ -1614,7 +1614,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(false, bool.Parse(invoke.ToString()));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void IsValid_GivenNull_ShouldBeInValid()
 		{
@@ -1639,7 +1639,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(false, bool.Parse(invoke.ToString()));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void IsValid_GivennameWithtrailingSpaces_ShouldBeInValid()
 		{
@@ -1664,7 +1664,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(false, bool.Parse(invoke.ToString()));
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void LastDateVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityCollapsed()
 		{
@@ -1685,7 +1685,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.LastRunDateVisibility);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void NeverRunStringVisibility_GivenSelectedTestIsNew_ShouldHaveDateVisibilityVisible()
 		{
@@ -1706,7 +1706,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NeverRunStringVisibility);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
 		{
@@ -1750,7 +1750,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenDebugStateDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
 		{
@@ -1796,7 +1796,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemFlowDecision_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
 		{
@@ -1838,7 +1838,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemSwitch_NoDefault_ShouldHaveAddServiceTestStepShouldHaveCaseOptions()
 		{
@@ -1878,7 +1878,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
 		{
@@ -1920,7 +1920,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemFlowSwitch_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
 		{
@@ -1965,7 +1965,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(GlobalConstants.ArmResultText, serviceTestOutput.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void ItemSelected_GivenSelectedItemSelectAndApply_Default_ShouldHaveAddServiceTestStepShouldHaveCaseOptionsWithDefaultAtTop()
 		{
@@ -1999,7 +1999,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		   
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemMultiAssign_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2044,7 +2044,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Pieter Terblanche")]
 		public void ItemSelected_GivenSelectedItemEnhancedDotNetDll_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2081,7 +2081,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual(0, testFrameworkViewModel.SelectedServiceTest.TestSteps[0].StepOutputs.Count);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2142,7 +2142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemForEachWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2215,7 +2215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemSequenceWithForEach_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2287,7 +2287,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_DeleteTestStep_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2341,7 +2341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2400,7 +2400,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.AreEqual("[[name]]", serviceTestOutput3.Variable);
 		}
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Hagashen Naidu")]
 		public void ItemSelected_GivenSelectedItemSequenceWithSequence_ShouldHaveAddServiceTestStepShouldHaveOutputs()
 		{
@@ -2470,7 +2470,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		}
 
 
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DisplayName_GivenServerIsNotLocalHost_ShouldAppendServerIntoDisplayName()
 		{
@@ -2500,7 +2500,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Test Result -----------------------
 			Assert.AreEqual("My WF - Tests - GenDev", testFrameworkViewModel.DisplayName);
 		}
-		[TestMethod]
+		[TestMethod,Timeout(60000)]
 		[Owner("Nkosinathi Sangweni")]
 		public void DisplayName_GivenServerIsLocalHost_ShouldAppendNotServerIntoDisplayName()
 		{
@@ -2530,7 +2530,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Test Result -----------------------
 			Assert.AreEqual("My WF - Tests", testFrameworkViewModel.DisplayName);
 		}
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void IsValid_GivenNoSelectecTest_ShouldBeValid()
         {
@@ -2555,7 +2555,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, bool.Parse(invoke.ToString()));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_NullOutputs_ShouldSet_StepOutputs()
         {
@@ -2586,7 +2586,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, serviceTestStep.StepOutputs.Count);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_ShouldReturn()
         {
@@ -2629,7 +2629,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_MoreLink_ShouldSetValue()
         {
@@ -2702,7 +2702,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Bob", outputs[0].Value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_SetOutputs_DsfEnhancedDotNetDllActivity_ShouldSetValue()
         {
@@ -2780,7 +2780,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("SomeAddress", outputs[0].Value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddSequence_ShouldReturn()
         {
@@ -2816,7 +2816,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddSequence_ShouldCall_AddMissingChild()
         {
@@ -2858,7 +2858,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddEnhancedDotNetDll_ShouldReturn()
         {
@@ -2894,7 +2894,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_AddEnhancedDotNetDll_ShouldCall_AddEnhancedDotNetDllMethod()
         {
@@ -2949,7 +2949,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_ProcessActivity_ShouldAddTestSteps()
         {
@@ -2993,7 +2993,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testSteps[0].StepOutputs.Count);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Pieter Terblanche")]
         public void AddOutputs_ProcessActivity_ParentNotNull_ShouldAddTestSteps()
         {
