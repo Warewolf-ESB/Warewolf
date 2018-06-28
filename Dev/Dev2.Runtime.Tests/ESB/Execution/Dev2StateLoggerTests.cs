@@ -168,7 +168,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dev2StateLogger.Dispose();
             // verify
             mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
         }
 
@@ -189,7 +188,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dev2StateLogger.Dispose();
             // verify
             mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
             zipWrapper.Verify(p=>p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
 
@@ -211,7 +209,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dev2StateLogger.Dispose();
             // verify
             mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.Delete(It.IsAny<string>()), Times.AtLeastOnce());
         }

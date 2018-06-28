@@ -241,6 +241,7 @@
     <Compile Include="ESB\Execution\Dev2StateLoggerTests.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\ServiceTestExecutionContainerTests.cs" />
+    <Compile Include="ESB\Execution\StateNotifierTests.cs" />
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
