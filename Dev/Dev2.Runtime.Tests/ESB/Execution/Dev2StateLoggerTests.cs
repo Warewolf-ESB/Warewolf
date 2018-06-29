@@ -11,6 +11,7 @@ using Dev2.Runtime.ESB.Execution.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
+using System.Linq;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -195,11 +196,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
             // test
             _dev2StateAuditLogger.LogExecuteCompleteState();
+
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogExecuteCompleteState", expectedWorkflowId.ToString(), "", "", "", "");
+            var str = expectedWorkflowId.ToString();
+            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogExecuteCompleteState")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
         [TestMethod]
@@ -213,11 +219,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var activity = new Mock<IDev2Activity>();
             var exception = new Mock<Exception>();
             _dev2StateAuditLogger.LogExecuteException(exception.Object, activity.Object);
+
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogExecuteException", expectedWorkflowId.ToString(), "", "", "", "");
+            var str = expectedWorkflowId.ToString();
+            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogExecuteException")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
         [TestMethod]
@@ -231,11 +242,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var previousActivity = new Mock<IDev2Activity>();
             var nextActivity = new Mock<IDev2Activity>();
             _dev2StateAuditLogger.LogPostExecuteState(previousActivity.Object, nextActivity.Object);
+
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPostExecuteState", expectedWorkflowId.ToString(), "", "", "", "");
+            var str = expectedWorkflowId.ToString();
+            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogPostExecuteState")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
         [TestMethod]
@@ -248,11 +264,17 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             // test
             var additionalDetailObject = new { Message = "Some Message" };
             _dev2StateAuditLogger.LogAdditionalDetail(additionalDetailObject, "");
+
+
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogAdditionalDetail", expectedWorkflowId.ToString(), "", "", "", "");
+            var str = expectedWorkflowId.ToString();
+            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogAdditionalDetail")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
         [TestMethod]
@@ -265,10 +287,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             // test
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPreExecuteState", expectedWorkflowId.ToString(), "", "", "", "");
+            var str = expectedWorkflowId.ToString();
+            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
+                || a.WorkflowName.Equals("LogPreExecuteState")
+                || a.ExecutionID.Equals("")
+                || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
 
             ////Expect something like: "header:LogPreExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
         }

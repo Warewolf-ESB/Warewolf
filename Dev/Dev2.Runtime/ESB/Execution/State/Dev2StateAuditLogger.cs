@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -19,20 +20,13 @@ namespace Dev2.Runtime.ESB.Execution
         {
             _dsfDataObject = dsfDataObject;
         }
-        public List<AuditLog> FilterLogAuditState(string auditType,string workflowID,string workflowName,string startDateTime,string endDateTime,string executionID)
+        public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog,bool>> queryExpression)
         {
             var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
             var database = new SQLiteConnection(filePath);
-            var query = database.Table<AuditLog>()
-                .Where(a => (a.WorkflowID.Equals(workflowID)
-                || a.WorkflowName.Equals(workflowName)
-                || a.ExecutionID.Equals(executionID)
-                || a.AuditType.Equals(auditType))
-              );
-            var result = query.ToList();
-            database.Close();
-            return result;
+            return database.Table<AuditLog>().Where(queryExpression).AsEnumerable();
         }
+
         public void LogAdditionalDetail(object detail, string callerName)
         {
             var serializer = new Dev2JsonSerializer();
