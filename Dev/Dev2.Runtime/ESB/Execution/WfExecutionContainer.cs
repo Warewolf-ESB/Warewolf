@@ -258,10 +258,6 @@ namespace Dev2.Runtime.ESB.Execution
                     dsfDataObject.StateLogger.LogStopExecutionState();
                 }
             }
-            catch (Exception e)
-            {
-                // nope
-            }
             finally
             {
                 var exe = CustomContainer.Get<IExecutionManager>();
