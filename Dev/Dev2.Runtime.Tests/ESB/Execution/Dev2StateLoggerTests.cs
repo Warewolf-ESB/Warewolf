@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             // verify
             mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
-            zipWrapper.Verify(p=>p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
+            zipWrapper.Verify(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
 
         }
 
@@ -188,36 +188,21 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateAuditLogger_LogPreExecuteState_Tests()
         {
-            TestAuditSetup( out _dev2StateAuditLogger, out _activity);
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var expectedWorkflowName = "LogPreExecuteState_Workflow";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
             // test
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPreExecuteState","","","","","");
+            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPreExecuteState", expectedWorkflowId.ToString(), "", "", "", "");
             _dev2StateAuditLogger.Dispose();
 
+            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+
             ////Expect something like: "header:LogPreExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
-            //Assert.IsTrue(text.Contains("LogPreExecuteState"));
-            //Assert.IsTrue(text.Contains("timestamp"));
-            //Assert.IsTrue(text.Contains("NextActivity"));
-            //Assert.IsTrue(text.Contains("scalars"));
-            //Assert.IsTrue(text.Contains("record_sets"));
-            //Assert.IsTrue(text.Contains("json_objects"));
         }
-        [TestMethod]
-        public void Dev2StateAuditLogger_FilterLogAuditState_Tests()
-        {
-            TestAuditSetup(out _dev2StateAuditLogger, out _activity);
-            // verify
-            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPreExecuteState", "", "", "", "", "");
-            _dev2StateAuditLogger.Dispose();
-            ////Expect something like: "header:LogPreExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
-            //Assert.IsTrue(text.Contains("LogPreExecuteState"));
-            //Assert.IsTrue(text.Contains("timestamp"));
-            //Assert.IsTrue(text.Contains("NextActivity"));
-            //Assert.IsTrue(text.Contains("scalars"));
-            //Assert.IsTrue(text.Contains("record_sets"));
-            //Assert.IsTrue(text.Contains("json_objects"));
-        }
+        
         private static void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Dev2JsonStateLogger dev2StateLogger, out Mock<IDev2Activity> activity, out DetailedLogFile detailedLog)
         {
             // setup
@@ -228,14 +213,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dev2StateLogger = GetDev2JsonStateLogger(fileWrapper, mockedDataObject);
             detailedLog = SetupDetailedLog(dev2StateLogger);
         }
-        private static void TestAuditSetup( out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
-        {
-            // setup
-            Mock<IDSFDataObject> mockedDataObject = SetupDataObject();
-          
-            activity = new Mock<IDev2Activity>();
-            dev2AuditStateLogger = GetDev2AuditStateLogger( mockedDataObject);
-        }
+        
         private static Dev2JsonStateLogger GetDev2JsonStateLogger(IFile fileWrapper, Mock<IDSFDataObject> mockedDataObject, IZipFile zipWrapper = null)
         {
             return new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper, zipWrapper);
@@ -244,6 +222,33 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         {
             return new Dev2StateAuditLogger(mockedDataObject.Object);
         }
+
+        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        {
+            // setup
+            Mock<IDSFDataObject> mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
+
+            activity = new Mock<IDev2Activity>();
+            dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
+        }
+
+        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+        {
+            // mocks
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
+            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+            return mockedDataObject;
+        }
+
+
+
         private static Mock<IDSFDataObject> SetupDataObject()
         {
             // mocks

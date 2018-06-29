@@ -33,13 +33,12 @@ namespace Dev2.Runtime.ESB.Execution
             var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
             var database = new SQLiteConnection(filePath);
             var query = database.Table<AuditLog>()
-                .Where(a => (a.WorflowID.Equals(workflowID)
+                .Where(a => (a.WorkflowID.Equals(workflowID)
                 || a.WorkflowName.Equals(workflowName)
                 || a.ExecutionID.Equals(executionID)
                 || a.AuditType.Equals(auditType))
               );
-            //|| DateTime.Parse(a.AuditDate) <= DateTime.Parse(startDateTime) && DateTime.Parse(a.AuditDate) >= DateTime.Parse(endDateTime)
-            var result = database.Table<AuditLog>().ToList();
+            var result = query.ToList();
             database.Close();
             return result;
         }
@@ -114,7 +113,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
                 var conn = new SQLiteConnection(filePath);
-                var query = conn.Table<AuditLog>().Where(v => v.WorflowID.Equals(auditLog.WorflowID));
+                var query = conn.Table<AuditLog>().Where(v => v.WorkflowID.Equals(auditLog.WorkflowID));
                 var result = query.ToList();
                 return result;
             }
@@ -137,8 +136,8 @@ namespace Dev2.Runtime.ESB.Execution
         [AutoIncrement, PrimaryKey, Ignore]
         public int Id { get; set; }
 
-        [Column("WorflowID")]
-        public string WorflowID { get; set; }
+        [Column("WorkflowID")]
+        public string WorkflowID { get; set; }
 
         [Column("ExecutionID")]
         public string ExecutionID { get; set; }
@@ -190,7 +189,7 @@ namespace Dev2.Runtime.ESB.Execution
         public AuditLog() { }
         public AuditLog(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
-            WorflowID = dsfDataObject.ResourceID.ToString();
+            WorkflowID = dsfDataObject.ResourceID.ToString();
             ExecutionID = dsfDataObject.ExecutionID.ToString();
             ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
             IsSubExecution = Convert.ToInt64(dsfDataObject.IsSubExecution);
