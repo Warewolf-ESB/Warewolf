@@ -85,12 +85,14 @@ namespace Warewolf.Launcher
             if (serviceID != null)
             {
                 DeleteService();
+                serviceID = null;
             }
             if (serverContainerID != null)
             {
                 StopContainer();
                 RecoverServerLogFile();
                 DeleteContainer();
+                serverContainerID = null;
             }
         }
 
