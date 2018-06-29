@@ -143,6 +143,7 @@ namespace Warewolf.Launcher
             try
             {
                 ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
+                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
                 if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
                 {
                     CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
@@ -219,6 +220,7 @@ namespace Warewolf.Launcher
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, NumberToWords(currentRetryCount) + "RetryTestResults");
+            ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
 
             TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
             TestRunner.TestList = "";

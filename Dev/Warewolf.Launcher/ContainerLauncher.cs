@@ -19,6 +19,7 @@ namespace Warewolf.Launcher
         public string IP;
         public string Version;
         public string ImageName;
+        public string LogOutputDirectory = Environment.ExpandEnvironmentVariables("%TEMP%");
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
@@ -537,19 +538,21 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine("Recovered server container log file: " + ExtractTar(reader.BaseStream));
+                        ExtractTar(reader.BaseStream);
+                        string destFileName = Path.Combine(LogOutputDirectory, "Container {serverContainerID} Warewolf Server.log");
+                        File.Move(Path.Combine(LogOutputDirectory, "warewolf-server.log"), destFileName);
+                        Console.WriteLine($"Recovered server container log file to {destFileName}");
                     }
                 }
             }
         }
 
-        string ExtractTar(Stream tarSteam)
+        void ExtractTar(Stream tarSteam)
         {
             using (TarArchive tarArchive = TarArchive.CreateInputTarArchive(tarSteam, TarBuffer.DefaultBlockFactor))
             {
-                tarArchive.ExtractContents(Environment.ExpandEnvironmentVariables("%TEMP%"));
+                tarArchive.ExtractContents(LogOutputDirectory);
             }
-            return File.ReadAllText(Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), "warewolf-server.log"));
         }
     }
 
