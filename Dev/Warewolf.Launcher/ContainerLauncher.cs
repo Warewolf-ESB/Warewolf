@@ -541,7 +541,7 @@ namespace Warewolf.Launcher
                         ExtractTar(reader.BaseStream);
                         string destFileName = Path.Combine(LogOutputDirectory, "Container {serverContainerID} Warewolf Server.log");
                         File.Move(Path.Combine(LogOutputDirectory, "warewolf-server.log"), destFileName);
-                        Console.WriteLine($"Recovered server container log file to {destFileName}");
+                        Console.WriteLine($"Recovered server container log file to \"{destFileName}\"");
                     }
                 }
             }
