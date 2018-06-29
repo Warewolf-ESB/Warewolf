@@ -185,6 +185,76 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
             mockedFileWrapper.Verify(p => p.Delete(It.IsAny<string>()), Times.AtLeastOnce());
         }
+
+        [TestMethod]
+        public void Dev2StateAuditLogger_LogExecuteCompleteState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            // test
+            _dev2StateAuditLogger.LogExecuteCompleteState();
+            // verify
+            var text = _dev2StateAuditLogger.FilterLogAuditState("LogExecuteCompleteState", expectedWorkflowId.ToString(), "", "", "", "");
+            _dev2StateAuditLogger.Dispose();
+
+            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+        }
+
+        [TestMethod]
+        public void Dev2StateAuditLogger_LogExecuteException_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var expectedWorkflowName = "LogExecuteException_Workflow";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            // test
+            var activity = new Mock<IDev2Activity>();
+            var exception = new Mock<Exception>();
+            _dev2StateAuditLogger.LogExecuteException(exception.Object, activity.Object);
+            // verify
+            var text = _dev2StateAuditLogger.FilterLogAuditState("LogExecuteException", expectedWorkflowId.ToString(), "", "", "", "");
+            _dev2StateAuditLogger.Dispose();
+
+            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+        }
+
+        [TestMethod]
+        public void Dev2StateAuditLogger_LogPostExecuteState_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var expectedWorkflowName = "LogPostExecuteState_Workflow";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            // test
+            var previousActivity = new Mock<IDev2Activity>();
+            var nextActivity = new Mock<IDev2Activity>();
+            _dev2StateAuditLogger.LogPostExecuteState(previousActivity.Object, nextActivity.Object);
+            // verify
+            var text = _dev2StateAuditLogger.FilterLogAuditState("LogPostExecuteState", expectedWorkflowId.ToString(), "", "", "", "");
+            _dev2StateAuditLogger.Dispose();
+
+            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+        }
+
+        [TestMethod]
+        public void Dev2StateAuditLogger_LogAdditionalDetail_Tests()
+        {
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var expectedWorkflowName = "LogAdditionalDetail_Workflow";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            // test
+            var additionalDetailObject = new { Message = "Some Message" };
+            _dev2StateAuditLogger.LogAdditionalDetail(additionalDetailObject, "");
+            // verify
+            var text = _dev2StateAuditLogger.FilterLogAuditState("LogAdditionalDetail", expectedWorkflowId.ToString(), "", "", "", "");
+            _dev2StateAuditLogger.Dispose();
+
+            Assert.IsTrue(text.Exists(a => a.WorkflowID == expectedWorkflowId.ToString()));
+        }
+
         [TestMethod]
         public void Dev2StateAuditLogger_LogPreExecuteState_Tests()
         {
