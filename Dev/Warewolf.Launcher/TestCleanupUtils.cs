@@ -78,7 +78,14 @@ namespace Warewolf.Launcher
 
             foreach (string newPath in Directory.GetFiles(SourcePath, "*.*", SearchOption.AllDirectories))
             {
-                File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
+                try
+                {
+                    File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
+                }
+                catch (DirectoryNotFoundException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
 
