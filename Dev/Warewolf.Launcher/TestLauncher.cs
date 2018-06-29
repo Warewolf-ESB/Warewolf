@@ -155,16 +155,16 @@ namespace Warewolf.Launcher
             }
         }
 
-        void CIRemoteOverloading(string ip)
+        void CIRemoteOverloading(string address)
         {
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
             string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - UITests", "Resources", "Acceptance Testing Resources", "Remote Connection Integration.xml");
-            Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote} to {ip}");
+            Console.WriteLine($"Redirecting to containerized CI remote server in \"{ServerTestsCIRemote}\" and \"{UITestsCIRemote}\" to {address}");
             var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
             var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
-            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, ip);
-            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, ip);
+            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, address);
+            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, address);
             ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
                 .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
             UITestsCIRemoteContents = UITestsCIRemoteContents
@@ -224,6 +224,7 @@ namespace Warewolf.Launcher
 
             TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
             TestRunner.TestList = "";
+            var TestFailures = new List<string>();
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
             var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
@@ -234,7 +235,7 @@ namespace Warewolf.Launcher
                 {
                     if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
-                        TestRunner.TestList += "," + TestResult.Attributes["testName"].InnerXml;
+                        TestFailures.Add(TestResult.Attributes["testName"].InnerXml);
                     }
                 }
             }
@@ -243,8 +244,9 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Error parsing /TestRun/Results/UnitTestResult from trx file at {FullTRXFilePath}");
             }
             string TestRunnerPath;
-            if (TestRunner.TestList.StartsWith(","))
+            if (TestFailures.Count > 0)
             {
+                TestRunner.TestList = string.Join(",", TestFailures);
                 TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
             }
             else
