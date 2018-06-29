@@ -194,14 +194,9 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public void Close()
-        {
-            jsonTextWriter.Close();
-        }
-
         public void Dispose()
         {
-            ((IDisposable)jsonTextWriter).Dispose();
+            jsonTextWriter.Close();
             writer.Dispose();
         }
     }
