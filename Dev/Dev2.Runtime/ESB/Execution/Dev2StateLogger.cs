@@ -10,12 +10,13 @@ using System.IO.Compression;
 using Dev2.Communication;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Security.Principal;
+using System.Collections.Concurrent;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     class Dev2JsonStateLogger : IDev2StateLogger
     {
-        readonly StreamWriter writer;
+        readonly IDev2StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
         readonly IDSFDataObject _dsfDataObject;
         readonly IFile _fileWrapper;
@@ -34,10 +35,13 @@ namespace Dev2.Runtime.ESB.Execution
             _zipWrapper = zipWrapper;
             _detailedLogFile = new DetailedLogFile(_dsfDataObject, _fileWrapper);
             writer = GetDetailedLogWriter();
-            jsonTextWriter = new JsonTextWriter(writer);
+            jsonTextWriter = new JsonTextWriter(writer.StreamWriter)
+            {
+                CloseOutput = false,
+            };
         }
 
-        private StreamWriter GetDetailedLogWriter()
+        private IDev2StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
             {
@@ -45,9 +49,9 @@ namespace Dev2.Runtime.ESB.Execution
                 MoveLogFileIfOld();
                 RunBackgroundLogTasks(compress);
             }
+
             return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
         }
-
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
@@ -198,6 +202,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void Dispose()
         {
             ((IDisposable)jsonTextWriter).Dispose();
+            writer.Dispose();
         }
     }
 

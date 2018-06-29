@@ -31,9 +31,18 @@ namespace Dev2.Common.Interfaces.Wrappers
         FileAttributes GetAttributes(string path);
 
         void SetAttributes(string path, FileAttributes fileAttributes);
-        Stream OpenRead(string path);        
-        StreamWriter AppendText(string filePath);
+        Stream OpenRead(string path);
+        IDev2StreamWriter AppendText(string filePath);
 
         DateTime GetLastWriteTime(string filePath);
+    }
+
+    public interface IDev2StreamWriter : IDisposable
+    {
+        StreamWriter StreamWriter { get; }
+
+        void WriteLine(string v);
+        void WriteLine();
+        void Flush();
     }
 }

@@ -249,9 +249,6 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
                 }
-            }
-            finally
-            {
                 if (!stoppedExecution)
                 {
                     dsfDataObject.StateLogger.LogExecuteCompleteState();
@@ -260,6 +257,13 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     dsfDataObject.StateLogger.LogStopExecutionState();
                 }
+            }
+            catch (Exception e)
+            {
+                // nope
+            }
+            finally
+            {
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
