@@ -11,6 +11,5 @@ namespace Dev2.Interfaces
         void LogExecuteException(Exception e, IDev2Activity activity);
         void LogExecuteCompleteState();
         void LogStopExecutionState();
-        void Close();
     }
 }

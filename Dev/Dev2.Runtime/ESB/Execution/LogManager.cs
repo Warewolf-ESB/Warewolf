@@ -55,10 +55,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         class DummyStateLogger : IDev2StateLogger
         {
-            public void Close()
-            {
-            }
-
             public void Dispose()
             {
             }
