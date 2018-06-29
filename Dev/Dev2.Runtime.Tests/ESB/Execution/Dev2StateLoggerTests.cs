@@ -127,10 +127,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists()
         {
-            var stream = new MemoryStream();
+            var streamWriter = new StreamWriter(new MemoryStream());
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-1));
             dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject);
@@ -145,12 +147,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_2_Days_Old()
         {
-            var stream = new MemoryStream();
+            var streamWriter = new StreamWriter(new MemoryStream());
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();
             zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-5));
             dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);
@@ -166,13 +170,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_30_Days_Old()
-        {
-            var stream = new MemoryStream();
+        {            
+            var streamWriter = new StreamWriter(new MemoryStream());
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();
             zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-45));
             dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);

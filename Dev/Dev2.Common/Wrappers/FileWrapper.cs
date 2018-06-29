@@ -10,7 +10,9 @@
 
 using Dev2.Common.Interfaces.Wrappers;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
+using System.Threading;
 
 namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
@@ -61,14 +63,63 @@ namespace Dev2.Common.Wrappers
 
         public Stream OpenRead(string path) => File.OpenRead(path);
 
-        public StreamWriter AppendText(string filePath)
+        readonly static ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>> cache = new ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>>();
+        public IDev2StreamWriter AppendText(string filePath)
         {
-            return File.AppendText(filePath);
+            var result = cache.GetOrAdd(filePath, new Lazy<RefCountedStreamWriter>(() =>
+            {
+                var res = new RefCountedStreamWriter(File.AppendText(filePath));
+                return res;
+            })).Value;
+            lock (result)
+            {
+                Interlocked.Increment(ref result.count);
+            }
+
+            return result;
         }
 
         public DateTime GetLastWriteTime(string filePath)
         {
             return File.GetLastWriteTime(filePath).Date;
+        }
+    }
+
+    class RefCountedStreamWriter : IDev2StreamWriter
+    {
+        public int count;
+        public StreamWriter StreamWriter { get; private set; }
+
+        public RefCountedStreamWriter(StreamWriter writer)
+        {
+            this.StreamWriter = writer;
+        }
+
+        void IDev2StreamWriter.WriteLine(string v)
+        {
+            this.StreamWriter.WriteLine(v);
+        }
+
+        void IDev2StreamWriter.WriteLine()
+        {
+            this.StreamWriter.WriteLine();
+        }
+
+        void IDev2StreamWriter.Flush()
+        {
+            this.StreamWriter.Flush();
+        }
+
+        public void Dispose()
+        {
+            lock (this.StreamWriter)
+            {
+                Interlocked.Decrement(ref count);
+            }
+            if (count <= 0)
+            {
+                this.StreamWriter.Dispose();
+            }
         }
     }
 }
