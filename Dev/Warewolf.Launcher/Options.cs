@@ -141,9 +141,12 @@ namespace Warewolf.Launcher
                     Console.WriteLine("ResourcesType: " + options.ResourcesType);
                     testLauncher.ResourcesType = options.ResourcesType;
                 }
-                if (options.VSTest || (!options.MSTest && !options.VSTest))
+                if (options.VSTest)
                 {
                     Console.WriteLine("Test Runner: VSTest");
+                }
+                if (options.VSTest || (!options.MSTest && !options.VSTest))
+                {
                     testLauncher.TestRunner = new VSTestRunner();
                 }
                 if (options.MSTest)
@@ -285,7 +288,6 @@ namespace Warewolf.Launcher
                 }
                 if (options.AdminMode)
                 {
-                    Console.WriteLine("AdminMode: Running launcher in admin mode.");
                     testLauncher.AdminMode = true;
                 }
             }).WithNotParsed(errs =>

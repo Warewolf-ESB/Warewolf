@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Warewolf.Launcher.TestRunners
+namespace Warewolf.Launcher
 {
     interface ITestRunner
     {
