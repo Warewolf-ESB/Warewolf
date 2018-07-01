@@ -146,6 +146,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.TestingDotnetDllCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Launcher", "Warewolf.Launcher\Warewolf.Launcher.csproj", "{9B669D51-14CE-44A3-9407-8251BA3BAD19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -592,6 +594,13 @@ Global
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.ActiveCfg = Release|Any CPU
 		{54724E72-4953-4CED-B4EA-532F9596A88D}.Release|x86.Build.0 = Release|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Release|x86.ActiveCfg = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

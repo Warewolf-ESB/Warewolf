@@ -26,7 +26,14 @@ namespace Warewolf.Launcher
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
-                    throw new UnauthorizedAccessException("Must run as an administrator.");
+                    var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(exeName)
+                    {
+                        Verb = "runas",
+                        Arguments = string.Join(" ", args)
+                    };
+                    Process.Start(startInfo);
+                    return;
                 }
             }
             
@@ -160,6 +167,35 @@ namespace Warewolf.Launcher
             {
                 if (build.AdminMode)
                 {
+                    if (!File.Exists(build.TestRunner.Path))
+                    {
+                        if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                        {
+                            Console.WriteLine("\nvstest.console.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = Console.ReadLine();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a MSTest test runner in order to use mstest.exe. Use --MSTest commandline parameter to specify that a MSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("VSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
+                        else if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                        {
+                            Console.WriteLine("\nmstest.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = Console.ReadLine();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a VSTest test runner in order to use vstest.console.exe. Use --VSTest commandline parameter to specify that a VSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("MSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
+                    }
                     Console.WriteLine("\nAdmin, What would you like to do?");
                     var options = new[] {
                     "[1]Single Job: Run One Test Job. (This is the default)",
@@ -219,21 +255,48 @@ namespace Warewolf.Launcher
                         {
                             selectedOption = "1";
                         }
-                        var canParse = int.TryParse(selectedOption, out int jobNumber);
-                        if (canParse)
+                        if (!selectedOption.Contains(","))
                         {
-                            build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
-                        }
-                        else
-                        {
-                            if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                            var canParse = int.TryParse(selectedOption, out int jobNumber);
+                            if (canParse)
                             {
-                                build.JobName = selectedOption;
+                                build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
                             }
                             else
                             {
-                                throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                                {
+                                    build.JobName = selectedOption;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                }
                             }
+                        }
+                        else
+                        {
+                            var resolvedSelectedOptions = new List<string>();
+                            foreach (var option in selectedOption.Split(','))
+                            {
+                                var canParse = int.TryParse(option, out int jobNumber);
+                                if (canParse)
+                                {
+                                    resolvedSelectedOptions.Add(build.JobSpecs.Keys.ToList()[jobNumber - 1]);
+                                }
+                                else
+                                {
+                                    if (build.JobSpecs.Keys.ToList().Contains(option))
+                                    {
+                                        resolvedSelectedOptions.Add(option);
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentException($"{option} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                    }
+                                }
+                            }
+                            build.JobName = string.Join(",", resolvedSelectedOptions);
                         }
                         Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
                         originalTitle = Console.Title;
@@ -366,7 +429,10 @@ namespace Warewolf.Launcher
                             build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
                         }
                     }
+                    var originalConsoleColour = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestRunner.TestsResultsPath}. You can now close this window.");
+                    Console.ForegroundColor = originalConsoleColour;
                     Console.ReadKey();
                 }
                 else
