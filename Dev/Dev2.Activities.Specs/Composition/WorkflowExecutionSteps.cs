@@ -135,19 +135,19 @@ namespace Dev2.Activities.Specs.Composition
 
         [AfterScenario]
         public void CleanUp()
-        {
-            if (_debugWriterSubscriptionService != null)
-            {
-                _debugWriterSubscriptionService.Unsubscribe();
-                _debugWriterSubscriptionService.Dispose();
-            }
-            CleanUp_DetailedLogFile();
+        {         
             _resetEvt?.Close();
         }
         public void CleanUp_DetailedLogFile()
         {
             if (_dirHelper.Exists(EnvironmentVariables.DetailLogPath))
             {
+                var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
+                
+                foreach (var item in files)
+                {
+                    File.Delete(item);
+                }
                 _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
             }
         }
