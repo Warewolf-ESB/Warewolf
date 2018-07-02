@@ -4381,6 +4381,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
             var logFileContent = detailLogInfo.ReadAllText();
+            AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Length > 0);
         }
         
@@ -4423,8 +4424,22 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
             var logFileContent = detailLogInfo.ReadAllText();
-            Add("LogFileContent", logFileContent);
+            AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString));
+        }
+
+        private void AddLogFileContentToContext(string logFileContent)
+        {
+            TryGetValue("LogFileContent", out string fileContent);
+            if (fileContent == null)
+            {
+                Add("LogFileContent", logFileContent);
+            }
+            else
+            {
+                _scenarioContext.Remove("LogFileContent");
+                Add("LogFileContent", logFileContent);
+            }
         }
 
         [Then(@"The Log file contains Logging matching ""(.*)""")]

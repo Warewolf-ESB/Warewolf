@@ -78,7 +78,7 @@ Scenario: Test WF with Sql Server
 		And I Add "dbo.Pr_CitiesGetCountries" as TestStep
 		And I add StepOutputs as 
 		| Variable Name                                | Condition | Value    |
-		| [[dbo_Pr_CitiesGetCountries(2).CountryID]]   | =         | 40  |
+		| [[dbo_Pr_CitiesGetCountries(2).CountryID]]   | =         | 40       |
 		| [[dbo_Pr_CitiesGetCountries(2).Description]] | =         | Djibouti |
 		When I save
 		And I run the test
