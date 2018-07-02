@@ -63,19 +63,11 @@ namespace Dev2.Common.Wrappers
 
         public Stream OpenRead(string path) => File.OpenRead(path);
 
-        readonly static ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>> cache = new ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>>();
+        //readonly static ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>> cache = new ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>>()
         public IDev2StreamWriter AppendText(string filePath)
         {
-            var result = cache.GetOrAdd(filePath, new Lazy<RefCountedStreamWriter>(() =>
-            {
-                var res = new RefCountedStreamWriter(File.AppendText(filePath));
-                return res;
-            })).Value;
-            lock (result)
-            {
-                Interlocked.Increment(ref result.count);
-            }
 
+            var result = new RefCountedStreamWriter(File.AppendText(filePath));
             return result;
         }
 

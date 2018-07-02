@@ -116,25 +116,25 @@ Scenario: Executing a Forward Sort Recordset workflow
 			| 2015   |
 
 Scenario: Executing Hello world in browser 
-Given I Debug "http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-4f87-869f-7c03d86f330b" in Browser
-Then Browser content is "Hello World."
+	Given I Debug "http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-4f87-869f-7c03d86f330b" in Browser
+	Then Browser content is "Hello World."
 
 Scenario: Executing Workflow with empty Json Assign in browser 
-Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.json" in Browser
-Then Browser content is "{}"
+	Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.json" in Browser
+	Then Browser content is "{}"
 
 Scenario: Executing Workflow with empty Xml Assign in browser 
-Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.xml" in Browser
-Then Browser content is "<DataList />"
+	Given I Debug "http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutput.xml" in Browser
+	Then Browser content is "<DataList />"
 
 Scenario: Executing Workflow with Execute Permissions and Nested Workflow With No Execute Permissions
-		Given I have a workflow "OuterWorkflow"
-		And Public "Has" Permissions to Execute "OuterWorkflow"
-		And I Debug "http://localhost:3142/public/OuterWorkflow.json?" in Browser
-		Then Browser content is "requires View and Execute permissions to Execute resource OuterWorkflow."
+	Given I have a workflow "OuterWorkflow"
+	And Public "Has" Permissions to Execute "OuterWorkflow"
+	And I Debug "http://localhost:3142/public/OuterWorkflow.json?" in Browser
+	Then Browser content is "requires View and Execute permissions to Execute resource OuterWorkflow."
 
-		Scenario: Executing Workflow with No Execute Permissions
-		Given I have a workflow "Nested"
-		And Public "" Permissions to Execute "Nested"
-		And I Debug "http://localhost:3142/public/Nested.json?" in Browser
-		Then Browser content is "requires View and Execute permissions to Execute resource Nested."
+Scenario: Executing Workflow with No Execute Permissions
+	Given I have a workflow "Nested"
+	And Public "" Permissions to Execute "Nested"
+	And I Debug "http://localhost:3142/public/Nested.json?" in Browser
+	Then Browser content is "requires View and Execute permissions to Execute resource Nested."
