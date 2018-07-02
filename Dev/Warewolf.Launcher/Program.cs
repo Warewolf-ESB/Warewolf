@@ -3,22 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Security.Principal;
-using System.Threading;
-using System.Runtime.InteropServices;
 
 namespace Warewolf.Launcher
 {
     public class Program
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
-
         public static void Main(string[] args)
         {
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
@@ -36,7 +26,7 @@ namespace Warewolf.Launcher
                     return;
                 }
             }
-            
+
             var build = Options.PargeArgs(args);
 
             build.JobSpecs = Job_Definitions.GetJobDefinitions();
@@ -172,7 +162,7 @@ namespace Warewolf.Launcher
                         if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
                         {
                             Console.WriteLine("\nvstest.console.exe not found. Please enter the path to that file now.");
-                            build.TestRunner.Path = Console.ReadLine();
+                            build.TestRunner.Path = WindowUtils.PromptForUserInput();
                             if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
                             {
                                 throw new ArgumentException("Launcher must be run with a MSTest test runner in order to use mstest.exe. Use --MSTest commandline parameter to specify that a MSTest test runner is to be used.");
@@ -185,7 +175,7 @@ namespace Warewolf.Launcher
                         else if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
                         {
                             Console.WriteLine("\nmstest.exe not found. Please enter the path to that file now.");
-                            build.TestRunner.Path = Console.ReadLine();
+                            build.TestRunner.Path = WindowUtils.PromptForUserInput();
                             if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
                             {
                                 throw new ArgumentException("Launcher must be run with a VSTest test runner in order to use vstest.console.exe. Use --VSTest commandline parameter to specify that a VSTest test runner is to be used.");
@@ -211,19 +201,8 @@ namespace Warewolf.Launcher
                         Console.Write(option.Substring(3, option.Length - 3));
                     }
                     Console.WriteLine("\n\nOr Press Enter to use default (Single Job)...");
-                    string originalTitle = Console.Title;
-                    string uniqueTitle = Guid.NewGuid().ToString();
-                    Console.Title = uniqueTitle;
-                    Thread.Sleep(50);
-                    IntPtr handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                    if (handle != IntPtr.Zero)
-                    {
-                        Console.Title = originalTitle;
-                        SetForegroundWindow(handle);
-                    }
-
-                    var runType = Console.ReadLine();
+                    var runType = WindowUtils.PromptForUserInput();
                     if (runType == "" || runType == "1")
                     {
                         Console.WriteLine("\nWhich test job would you like to run?");
@@ -238,19 +217,8 @@ namespace Warewolf.Launcher
                             Console.Write(option);
                         }
                         Console.WriteLine("\n\nType the name or number of the job or press Enter to use default (Other Unit Tests)...");
-                        originalTitle = Console.Title;
-                        uniqueTitle = Guid.NewGuid().ToString();
-                        Console.Title = uniqueTitle;
-                        Thread.Sleep(50);
-                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                        if (handle != IntPtr.Zero)
-                        {
-                            Console.Title = originalTitle;
-                            SetForegroundWindow(handle);
-                        }
-
-                        string selectedOption = Console.ReadLine();
+                        string selectedOption = WindowUtils.PromptForUserInput();
                         if (string.IsNullOrEmpty(selectedOption))
                         {
                             selectedOption = "1";
@@ -299,33 +267,11 @@ namespace Warewolf.Launcher
                             build.JobName = string.Join(",", resolvedSelectedOptions);
                         }
                         Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
-                        originalTitle = Console.Title;
-                        uniqueTitle = Guid.NewGuid().ToString();
-                        Console.Title = uniqueTitle;
-                        Thread.Sleep(50);
-                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                        if (handle != IntPtr.Zero)
-                        {
-                            Console.Title = originalTitle;
-                            SetForegroundWindow(handle);
-                        }
-
-                        build.TestRunner.TestList = Console.ReadLine();
+                        build.TestRunner.TestList = WindowUtils.PromptForUserInput();
                         Console.WriteLine("\nStart the Studio?[y|N]");
-                        originalTitle = Console.Title;
-                        uniqueTitle = Guid.NewGuid().ToString();
-                        Console.Title = uniqueTitle;
-                        Thread.Sleep(50);
-                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                        if (handle != IntPtr.Zero)
-                        {
-                            Console.Title = originalTitle;
-                            SetForegroundWindow(handle);
-                        }
-
-                        if (Console.ReadLine().ToLower() == "y")
+                        if (WindowUtils.PromptForUserInput().ToLower() == "y")
                         {
                             build.DoServerStart = "true";
                             build.DoStudioStart = "true";
@@ -333,19 +279,8 @@ namespace Warewolf.Launcher
                         else
                         {
                             Console.WriteLine("\nStart the Server?[y|N]");
-                            originalTitle = Console.Title;
-                            uniqueTitle = Guid.NewGuid().ToString();
-                            Console.Title = uniqueTitle;
-                            Thread.Sleep(50);
-                            handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                            if (handle != IntPtr.Zero)
-                            {
-                                Console.Title = originalTitle;
-                                SetForegroundWindow(handle);
-                            }
-
-                            if (Console.ReadLine().ToLower() == "y")
+                            if (WindowUtils.PromptForUserInput().ToLower() == "y")
                             {
                                 build.DoServerStart = "true";
                             }
@@ -375,19 +310,8 @@ namespace Warewolf.Launcher
                             Console.Write(option.Substring(3, option.Length - 3));
                         }
                         Console.WriteLine("\n\nOr Press Enter to use default (All)...");
-                        originalTitle = Console.Title;
-                        uniqueTitle = Guid.NewGuid().ToString();
-                        Console.Title = uniqueTitle;
-                        Thread.Sleep(50);
-                        handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                        if (handle != IntPtr.Zero)
-                        {
-                            Console.Title = originalTitle;
-                            SetForegroundWindow(handle);
-                        }
-
-                        var testType = Console.ReadLine();
+                        var testType = WindowUtils.PromptForUserInput();
 
                         const int NumberOfUnitTestJobs = 34;
                         const int NumberOfServerTestJobs = 30;
@@ -429,6 +353,7 @@ namespace Warewolf.Launcher
                             build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
                         }
                     }
+                    WindowUtils.BringToFront();
                     var originalConsoleColour = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestRunner.TestsResultsPath}. You can now close this window.");

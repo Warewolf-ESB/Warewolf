@@ -1,16 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.ServiceProcess;
-using System.Threading;
 using System.Xml;
-using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
 {
@@ -56,13 +51,6 @@ namespace Warewolf.Launcher
         public string WebsPath;
         public ContainerLauncher ciRemoteContainerLauncher;
         private string RunServerWithDotcoverScript;
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
@@ -502,18 +490,8 @@ namespace Warewolf.Launcher
                     Console.Write(option.Substring(3, option.Length-3));
                 }
                 Console.WriteLine("\n\nOr Press Enter to use default (UITest)...");
-                string originalTitle = Console.Title;
-                string uniqueTitle = Guid.NewGuid().ToString();
-                Console.Title = uniqueTitle;
-                Thread.Sleep(50);
-                IntPtr handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                if (handle != IntPtr.Zero)
-                {
-                    Console.Title = originalTitle;
-                    SetForegroundWindow(handle);
-                }
-                ResourcesType = Console.ReadLine();
+                ResourcesType = WindowUtils.PromptForUserInput();
                 if (ResourcesType == "" || ResourcesType.ToLower() == "u")
                 {
                     ResourcesType = "UITests";

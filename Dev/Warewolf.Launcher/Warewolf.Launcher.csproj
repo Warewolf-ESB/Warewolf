@@ -97,6 +97,7 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="TestRunners\MSTestRunner.cs" />
     <Compile Include="TestRunners\VSTestRunner.cs" />
+    <Compile Include="WindowUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
