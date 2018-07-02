@@ -295,6 +295,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
+                                                originalOutputNode.OwnerDocument.ImportNode(newStdErrNode, true);
                                                 originalOutputNode.AppendChild(newStdErrNode);
                                             }
                                         }
@@ -308,6 +309,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
+                                                originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true);
                                                 originalOutputNode.AppendChild(newStdOutNode);
                                             }
                                         }
@@ -327,6 +329,7 @@ namespace Warewolf.Launcher
                                                     }
                                                     else
                                                     {
+                                                        originalMessageNode.OwnerDocument.ImportNode(newErrorInfoNode, true);
                                                         originalMessageNode.AppendChild(newErrorInfoNode);
                                                     }
                                                 }
@@ -340,18 +343,21 @@ namespace Warewolf.Launcher
                                                     }
                                                     else
                                                     {
+                                                        originalStackTraceNode.OwnerDocument.ImportNode(newStackTraceNode, true);
                                                         originalStackTraceNode.AppendChild(newStackTraceNode);
                                                     }
                                                 }
                                             }
                                             else
                                             {
+                                                originalOutputNode.OwnerDocument.ImportNode(newErrorInfoNode, true);
                                                 originalOutputNode.AppendChild(newErrorInfoNode);
                                             }
                                         }
                                     }
                                     else
                                     {
+                                        OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true);
                                         OriginalTestResult.AppendChild(newOutputNode);
                                     }
                                 }
@@ -399,6 +405,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
+                                                originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true);
                                                 originalOutputNode.AppendChild(newStdOutNode);
                                             }
                                         }
@@ -414,6 +421,7 @@ namespace Warewolf.Launcher
                                     }
                                     else
                                     {
+                                        OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true);
                                         OriginalTestResult.AppendChild(newOutputNode);
                                     }
                                 }
