@@ -245,6 +245,7 @@ namespace Warewolf.Launcher
                 var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
                 if (File.Exists(ActualPath))
                 {
+                    WaitForFileUnlock(ActualPath);
                     File.Delete(ActualPath);
                 }
                 if (Directory.Exists(ActualPath))
