@@ -295,8 +295,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
-                                                originalOutputNode.OwnerDocument.ImportNode(newStdErrNode, true);
-                                                originalOutputNode.AppendChild(newStdErrNode);
+                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdErrNode, true));
                                             }
                                         }
                                         XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
@@ -309,8 +308,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
-                                                originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true);
-                                                originalOutputNode.AppendChild(newStdOutNode);
+                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true));
                                             }
                                         }
                                         XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
@@ -329,8 +327,7 @@ namespace Warewolf.Launcher
                                                     }
                                                     else
                                                     {
-                                                        originalMessageNode.OwnerDocument.ImportNode(newErrorInfoNode, true);
-                                                        originalMessageNode.AppendChild(newErrorInfoNode);
+                                                        originalMessageNode.AppendChild(originalMessageNode.OwnerDocument.ImportNode(newErrorInfoNode, true));
                                                     }
                                                 }
                                                 XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("//a:StackTrace", originalNamespaceManager);
@@ -343,8 +340,7 @@ namespace Warewolf.Launcher
                                                     }
                                                     else
                                                     {
-                                                        originalStackTraceNode.OwnerDocument.ImportNode(newStackTraceNode, true);
-                                                        originalStackTraceNode.AppendChild(newStackTraceNode);
+                                                        originalStackTraceNode.AppendChild(originalStackTraceNode.OwnerDocument.ImportNode(newStackTraceNode, true));
                                                     }
                                                 }
                                             }
@@ -405,8 +401,7 @@ namespace Warewolf.Launcher
                                             }
                                             else
                                             {
-                                                originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true);
-                                                originalOutputNode.AppendChild(newStdOutNode);
+                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true));
                                             }
                                         }
                                         XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
@@ -421,8 +416,7 @@ namespace Warewolf.Launcher
                                     }
                                     else
                                     {
-                                        OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true);
-                                        OriginalTestResult.AppendChild(newOutputNode);
+                                        OriginalTestResult.AppendChild(OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true));
                                     }
                                 }
                             }
