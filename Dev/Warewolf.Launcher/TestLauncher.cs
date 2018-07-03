@@ -563,18 +563,7 @@ namespace Warewolf.Launcher
         </AttributeFilters>
     </Filters>
 </AnalyseParams>";
-
-                    if (string.IsNullOrEmpty(JobName))
-                    {
-                        if (ProjectName != "")
-                        {
-                            JobName = ProjectName;
-                        }
-                        else
-                        {
-                            JobName = "Manual Tests";
-                        }
-                    }
+                    
                     var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Server DotCover Runner.xml";
                     TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
                     File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
