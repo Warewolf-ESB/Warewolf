@@ -516,7 +516,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine($"Server container {serverContainerID} at {remoteSwarmDockerApi} has been stopped.");
+                        Console.WriteLine($"Server container {serverContainerID.Substring(0, 12)} at {remoteSwarmDockerApi} has been stopped.");
                     }
                 }
             }
