@@ -71,8 +71,9 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;Examples&lt;/b&gt;
-        ///&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recorsets.
-        ///	&lt;br /&gt;&lt;br /&gt;	
+        ///&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recordsets.&lt;br/&gt;
+        ///&lt;i&gt;The Table Name you are selecting From is Case sensitive. It should match the Casing of the Recordset Name.&lt;/i&gt;
+        ///	&lt;br /&gt;&lt;br /&gt;
         ///	&lt;b&gt;SELECT &lt;/b&gt; &lt;i&gt;*&lt;/i&gt;&lt;br /&gt;
         ///	&lt;b&gt;FROM&lt;/b&gt; &lt;i&gt;person&lt;/i&gt;&lt;br /&gt;
         ///	&lt;b&gt;JOIN&lt;/b&gt; &lt;i&gt;address&lt;/i&gt;&lt;b&gt; ON&lt;/b&gt; &lt;i&gt;person.addressID == address.ID&lt;/i&gt;&lt;br /&gt;
@@ -80,9 +81,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///	&lt;b&gt;ORDER BY&lt;/b&gt; &lt;i&gt;person.name&lt;/i&gt;&lt;br /&gt;
         ///	&lt;b&gt;LIMIT &lt;/b&gt;&lt;i&gt;10&lt;/i&gt;
         ///	&lt;br /&gt;&lt;br /&gt;
-        ///	&lt;b&gt;SELECT DISTINCT&lt;/b&gt; &lt;i&gt;city, country, postalcode, &lt;b&gt;COUNT&lt;/b&gt;(person.name)&lt;/i&gt;&lt;br /&gt;
-        ///	&lt;b&gt;FROM&lt;/b&gt; &lt;i&gt;person&lt;/i&gt;&lt;br /&gt;
-        ///	&lt;b [rest of string was truncated]&quot;;.
+        ///	&lt;b&gt;SELE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AdvancedRecordsetSqlQuery {
             get {

@@ -4268,7 +4268,7 @@ Scenario: Handle Nulls set to Nothing
     | [[TableCopy(3).city]] =                  |
     | [[TableCopy(3).province]] = Western Cape |
 
-Scenario:  Select all Given Recordset name and Table name are different casing
+Scenario:  Given RecordsetName starts with capital letter but TableName starts with small letter
     Given I have a recordset with this shape
     | [[person]]    |        |
     | Person().name | Bob    |
@@ -4276,6 +4276,26 @@ Scenario:  Select all Given Recordset name and Table name are different casing
     | Person().name | Hatter |
     And I drag on an Advanced Recordset tool
     And I have the following sql statement "SELECT * from person"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    When Advanced Recordset tool is executed	
+	And the advancerecodset execution has "AN" error
+
+	
+Scenario:  Given RecordsetName and  TableName starts with capital letter
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | Person().name | Bob    |
+    | Person().name | Alice  |
+    | Person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from Person"
     When I click Generate Outputs
     Then Outputs are as follows
     | Mapped From | Mapped To            |
