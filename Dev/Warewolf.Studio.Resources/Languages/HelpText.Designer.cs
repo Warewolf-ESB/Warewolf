@@ -71,7 +71,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;b&gt;Examples&lt;/b&gt;
-        ///&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recordsets.&lt;br/&gt;
+        ///&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Warewolf recordsets.&lt;br/&gt;
         ///&lt;i&gt;The Table Name you are selecting From is Case sensitive. It should match the Casing of the Recordset Name.&lt;/i&gt;
         ///	&lt;br /&gt;&lt;br /&gt;
         ///	&lt;b&gt;SELECT &lt;/b&gt; &lt;i&gt;*&lt;/i&gt;&lt;br /&gt;
