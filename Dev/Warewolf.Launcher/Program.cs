@@ -102,7 +102,7 @@ namespace Warewolf.Launcher
             else
             {
                 build.CleanupServerStudio(!build.ApplyDotCover);
-                if (!string.IsNullOrEmpty(build.JobName))
+                if (string.IsNullOrEmpty(build.JobName))
                 {
                     if (!string.IsNullOrEmpty(build.ProjectName))
                     {
