@@ -2232,7 +2232,7 @@ The conflicts on the left will show your current workflow changes and the confli
 	Warewolf Recordsets and Warewolf Scalars used in the SQL Statement are loaded.
 	This will allow you to write simple or complex SQL to manipulate your data. &lt;br /&gt;&lt;br /&gt;
 	Once executed the result can be written to a new Warewolf Recordset which can then be used further in your workflow.&lt;br /&gt;&lt;br/&gt;
-	&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recorsets.</value>
+	&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Warewolf recordsets.</value>
   </data>
   <data name="AdvancedRecordsetSqlQueryExecuteCommand" xml:space="preserve">
     <value>Generate the Outputs of the SQL Query.</value>
