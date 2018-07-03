@@ -12538,11 +12538,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select all Given Recordset name and Table name are different casing")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Given RecordsetName starts with capital letter but TableName starts with small le" +
+            "tter")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void SelectAllGivenRecordsetNameAndTableNameAreDifferentCasing()
+        public virtual void GivenRecordsetNameStartsWithCapitalLetterButTableNameStartsWithSmallLetter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Select all Given Recordset name and Table name are different casing", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Given RecordsetName starts with capital letter but TableName starts with small le" +
+                    "tter", ((string[])(null)));
 #line 4271
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -12588,30 +12590,87 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.And("Outputs are as follows", ((string)(null)), table687, "And ");
 #line 4287
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4288
+ testRunner.And("the advancerecodset execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Given RecordsetName and  TableName starts with capital letter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void GivenRecordsetNameAndTableNameStartsWithCapitalLetter()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Given RecordsetName and  TableName starts with capital letter", ((string[])(null)));
+#line 4291
+this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table688 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
+                        "[[person]]",
+                        ""});
             table688.AddRow(new string[] {
-                        "TableCopy().name",
+                        "Person().name",
                         "Bob"});
             table688.AddRow(new string[] {
-                        "TableCopy().name",
+                        "Person().name",
                         "Alice"});
             table688.AddRow(new string[] {
-                        "TableCopy().name",
+                        "Person().name",
                         "Hatter"});
-#line 4288
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table688, "Then ");
-#line 4293
-    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 4292
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table688, "Given ");
+#line 4297
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 4298
+    testRunner.And("I have the following sql statement \"SELECT * from Person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 4299
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table689 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "Mapped From",
+                        "Mapped To"});
             table689.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 4300
+    testRunner.Then("Outputs are as follows", ((string)(null)), table689, "Then ");
+#line 4303
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table690 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table690.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 4304
+    testRunner.And("Outputs are as follows", ((string)(null)), table690, "And ");
+#line 4307
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table691 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table691.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Bob"});
+            table691.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Alice"});
+            table691.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Hatter"});
+#line 4308
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table691, "Then ");
+#line 4313
+    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table692 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table692.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 4294
-    testRunner.And("the debug output as", ((string)(null)), table689, "And ");
+#line 4314
+    testRunner.And("the debug output as", ((string)(null)), table692, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

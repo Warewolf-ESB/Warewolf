@@ -2180,8 +2180,9 @@ The conflicts on the left will show your current workflow changes and the confli
   </data>
   <data name="AdvancedRecordsetSqlQuery" xml:space="preserve">
     <value>&lt;b&gt;Examples&lt;/b&gt;
-&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recorsets.
-	&lt;br /&gt;&lt;br /&gt;	
+&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recordsets.&lt;br/&gt;
+&lt;i&gt;The Table Name you are selecting From is Case sensitive. It should match the Casing of the Recordset Name.&lt;/i&gt;
+	&lt;br /&gt;&lt;br /&gt;
 	&lt;b&gt;SELECT &lt;/b&gt; &lt;i&gt;*&lt;/i&gt;&lt;br /&gt;
 	&lt;b&gt;FROM&lt;/b&gt; &lt;i&gt;person&lt;/i&gt;&lt;br /&gt;
 	&lt;b&gt;JOIN&lt;/b&gt; &lt;i&gt;address&lt;/i&gt;&lt;b&gt; ON&lt;/b&gt; &lt;i&gt;person.addressID == address.ID&lt;/i&gt;&lt;br /&gt;
