@@ -35,7 +35,7 @@ namespace Warewolf.Launcher
         public static string PromptForUserInput()
         {
             BringToFront();
-            return PromptForUserInput();
+            return Console.ReadLine();
         }
     }
 }
