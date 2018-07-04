@@ -87,7 +87,10 @@ namespace Dev2.UI
         {
             base.OnPreviewKeyDown(e);
             var isOpen = IsDropDownOpen;
-
+            if (e.Key == Key.F6)
+            {
+                LostFocusImpl();
+            }
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 HandleEnterAndTab(e, isOpen);
@@ -423,7 +426,7 @@ namespace Dev2.UI
             else
             {
                 if (error.Item2 != string.Empty)
-                {                    
+                {
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -455,7 +458,7 @@ namespace Dev2.UI
             else
             {
                 if (error.Item2 != string.Empty)
-                {                    
+                {
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -467,7 +470,7 @@ namespace Dev2.UI
             }
         }
 
-        private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error,string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
+        private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error, string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
         private void TrackIntellisenseEvent(string text)
         {
             if (FilterType == enIntellisensePartType.JsonObject)
