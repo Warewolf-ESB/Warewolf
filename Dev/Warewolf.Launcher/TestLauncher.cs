@@ -247,7 +247,7 @@ namespace Warewolf.Launcher
             }
             Console.WriteLine($"Re-running all test failures in \"{FullTRXFilePath}\".");
             var retryResults = RunTests(jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
-            if (retryResults != FullTRXFilePath)
+            if (!string.IsNullOrEmpty(retryResults) && retryResults != FullTRXFilePath)
             {
                 MergeRetryResults(FullTRXFilePath, retryResults);
             }
