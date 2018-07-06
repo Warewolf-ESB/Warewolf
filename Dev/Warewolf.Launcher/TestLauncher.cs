@@ -40,6 +40,7 @@ namespace Warewolf.Launcher
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
         public ITestRunner TestRunner { get; internal set; }
+        public string RetryFile { get; internal set; }
 
         public string ServerExeName;
         public string StudioExeName;
@@ -1153,12 +1154,6 @@ namespace Warewolf.Launcher
                 throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
             }
 
-            if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))
-            {
-                File.Move(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"), TestRunner.TestsResultsPath);
-                Console.WriteLine("Removed loose TRX files from VS install directory.");
-            }
-
             if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
             {
                 InstallServer();
@@ -1205,8 +1200,16 @@ namespace Warewolf.Launcher
 
                 string TestRunnerPath = TestRunner.WriteTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
 
-                //Run Tests
-                var TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                string TrxFile;
+                if (string.IsNullOrEmpty(RetryFile))
+                {
+                    //Run Tests
+                    TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                }
+                else
+                {
+                    TrxFile = RetryFile;
+                }
                 if (!string.IsNullOrEmpty(TrxFile))
                 {
                     //Re-try Failures
