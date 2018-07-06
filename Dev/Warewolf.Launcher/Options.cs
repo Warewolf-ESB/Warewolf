@@ -99,6 +99,9 @@ namespace Warewolf.Launcher
         [Option("RetryCount")]
         public string RetryCount { get; private set; }
 
+        [Option("RetryFile")]
+        public string RetryFile { get; private set; }
+
         [Option("ConsoleServer")]
         public bool ConsoleServer { get; private set; }
 
@@ -280,6 +283,11 @@ namespace Warewolf.Launcher
                     {
                         Console.WriteLine("RetryCount: Expects a number of times to re-try failing tests. Cannot parse " + options.RetryCount);
                     }
+                }
+                if (options.RetryFile != null)
+                {
+                    Console.WriteLine("Retrying all failures in file: " + options.RetryFile);
+                    testLauncher.RetryFile = options.RetryFile;
                 }
                 if (options.ConsoleServer)
                 {
