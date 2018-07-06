@@ -55,8 +55,8 @@ namespace Warewolf.Launcher
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 Dispose();
+                throw e;
             }
         }
 
@@ -69,8 +69,8 @@ namespace Warewolf.Launcher
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 Dispose();
+                throw e;
             }
         }
 
@@ -391,7 +391,7 @@ namespace Warewolf.Launcher
             containerContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
+                client.Timeout = new TimeSpan(0, 0, 20);
                 var response = client.PostAsync(url, containerContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
