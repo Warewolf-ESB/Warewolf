@@ -117,7 +117,7 @@ Scenario: Execute Oracle Server With Timeout
     And Oracle Server Source is Enabled
     And I Select "NewOracleSource" as Oracle Source for "OracleActivity"
     And I Select "HR.GET_COUNTRIES_DELAYED" as Oracle Server Action for "OracleActivity"
-	And Oracle Command Timeout is "30" milliseconds for "OracleActivity"
+	And Oracle Command Timeout is "30" seconds for "OracleActivity"
 	And Validate Oracle Server is Enabled
     And I click Oracle Generate Outputs
     And I click Test for Oracle
@@ -127,7 +127,7 @@ Scenario: Execute Oracle Server With Timeout
 	| COUNTRY_NAME | [[HR_GET_COUNTRIES_DELAYED().COUNTRY_NAME]] |
 	| REGION_ID    | [[HR_GET_COUNTRIES_DELAYED().REGION_ID]]    |
 	And Oracle Server Recordset Name equals "HR_GET_COUNTRIES_DELAYED"
-	And Oracle Command Timeout is "5" milliseconds for "OracleActivity"
+	And Oracle Command Timeout is "5" seconds for "OracleActivity"
 	When Oracle Workflow "OracleWorkflowForTimeout" containing dbTool is executed
     And the workflow "OracleWorkflowForTimeout" execution has "AN" error "ORA-01013"
 	And the workflow "OracleWorkflowForTimeout" error does not contain "NewLine"

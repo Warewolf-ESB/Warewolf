@@ -595,7 +595,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var sequenceDebugState = debugStates.Where(state => state.DisplayName == sequence.DisplayName);
                 var debugStateOfSequence = sequenceDebugState as IDebugState[] ?? sequenceDebugState.ToArray();
                 Assert.IsTrue(debugStateOfSequence.Any());
-                Assert.IsTrue(debugStateOfSequence.All(state => state.ParentID.GetValueOrDefault().ToString() == forEachActivity.UniqueID));
+                var forEachDebug = debugStates.Where(state => state.DisplayName == activityName).ToArray();
+                for (var j = 0; j < forEachDebug.Length; j++)
+                {
+                    for (var i = 0; i < debugStateOfSequence.Length; i++)
+                    {
+                        Assert.AreEqual(debugStateOfSequence[i].ParentID, forEachDebug[j].ID);
+                    }
+                }
             }
 
             scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
