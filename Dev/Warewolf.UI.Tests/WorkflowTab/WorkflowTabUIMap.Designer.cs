@@ -91,18 +91,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
-        
-        public UIWarewolfDEV2CANDICEDWindow UIWarewolfDEV2CANDICEDWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2CANDICEDWindow == null))
-                {
-                    this.mUIWarewolfDEV2CANDICEDWindow = new UIWarewolfDEV2CANDICEDWindow();
-                }
-                return this.mUIWarewolfDEV2CANDICEDWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -111,8 +99,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
-        
-        private UIWarewolfDEV2CANDICEDWindow mUIWarewolfDEV2CANDICEDWindow;
         #endregion
     }
     
@@ -6842,6 +6828,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
+        public UIF6ExecuteOnFocusLostTreeItem UIF6ExecuteOnFocusLostTreeItem
+        {
+            get
+            {
+                if ((this.mUIF6ExecuteOnFocusLostTreeItem == null))
+                {
+                    this.mUIF6ExecuteOnFocusLostTreeItem = new UIF6ExecuteOnFocusLostTreeItem(this);
+                }
+                return this.mUIF6ExecuteOnFocusLostTreeItem;
+            }
+        }
+        
         public Step1 Step1
         {
             get
@@ -6953,6 +6951,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
+        private UIF6ExecuteOnFocusLostTreeItem mUIF6ExecuteOnFocusLostTreeItem;
+        
         private Step1 mStep1;
         
         private SubWorkflow mSubWorkflow;
@@ -6968,6 +6968,116 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private FindRecordIndexTreeItem mFindRecordIndexTreeItem;
         
         private UISQLServerDatabaseTreeItem mUISQLServerDatabaseTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIF6ExecuteOnFocusLostTreeItem : WpfTreeItem
+    {
+        
+        public UIF6ExecuteOnFocusLostTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Service";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIPersonnameExpander UIPersonnameExpander
+        {
+            get
+            {
+                if ((this.mUIPersonnameExpander == null))
+                {
+                    this.mUIPersonnameExpander = new UIPersonnameExpander(this);
+                }
+                return this.mUIPersonnameExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIPersonnameExpander mUIPersonnameExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIPersonnameExpander : WpfExpander
+    {
+        
+        public UIPersonnameExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText FirstRowOfRecordset
+        {
+            get
+            {
+                if ((this.mFirstRowOfRecordset == null))
+                {
+                    this.mFirstRowOfRecordset = new WpfText(this);
+                    #region Search Criteria
+                    this.mFirstRowOfRecordset.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mFirstRowOfRecordset.SearchProperties[WpfText.PropertyNames.Instance] = "1";
+                    this.mFirstRowOfRecordset.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstRowOfRecordset.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFirstRowOfRecordset;
+            }
+        }
+        
+        public WpfText ThirdRowOfRecordset
+        {
+            get
+            {
+                if ((this.mThirdRowOfRecordset == null))
+                {
+                    this.mThirdRowOfRecordset = new WpfText(this);
+                    #region Search Criteria
+                    this.mThirdRowOfRecordset.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_DebugOutputVariableTextBlock_AutoID";
+                    this.mThirdRowOfRecordset.SearchProperties[WpfText.PropertyNames.Instance] = "3";
+                    this.mThirdRowOfRecordset.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdRowOfRecordset.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdRowOfRecordset;
+            }
+        }
+        
+        public WpfButton PersonOutputButton
+        {
+            get
+            {
+                if ((this.mPersonOutputButton == null))
+                {
+                    this.mPersonOutputButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPersonOutputButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+                    this.mPersonOutputButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mPersonOutputButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mPersonOutputButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mFirstRowOfRecordset;
+        
+        private WpfText mThirdRowOfRecordset;
+        
+        private WpfButton mPersonOutputButton;
         #endregion
     }
     
@@ -8324,75 +8434,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         #region Fields
         private WpfEdit mOutputsAutoCompleteTextBoxText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2CANDICEDWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2CANDICEDWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\CANDICE.DANIEL)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
-                    #region Search Criteria
-                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-                    #endregion
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
 }
