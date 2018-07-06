@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.ServiceProcess;
 using System.Xml;
+using Warewolf.Launcher.TestResultsMergers;
 
 namespace Warewolf.Launcher
 {
@@ -40,6 +41,8 @@ namespace Warewolf.Launcher
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
         public ITestRunner TestRunner { get; internal set; }
+        public ITestResultsMerger TestResultsMerger { get; internal set; }
+        public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
 
         public string ServerExeName;
@@ -47,11 +50,16 @@ namespace Warewolf.Launcher
         public List<string> ServerPathSpecs;
         public List<string> StudioPathSpecs;
         public bool ApplyDotCover;
-
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
         public ContainerLauncher ciRemoteContainerLauncher;
-        private string RunServerWithDotcoverScript;
+
+        string RunServerWithDotcoverScript;
+
+        public TestLauncher()
+        {
+            TestResultsMerger = new TRXMerger();
+        }
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
@@ -176,36 +184,6 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        public void MergeDotCoverSnapshots(List<string> DotCoverSnapshots, string DestinationFilePath, string LogFilePath)
-        {
-            if (DotCoverSnapshots != null)
-            {
-                if (DotCoverSnapshots.Count > 1)
-                {
-                    var DotCoverSnapshotsString = String.Join("\";\"", DotCoverSnapshots);
-                    TestCleanupUtils.CopyOnWrite(LogFilePath + ".merge.log");
-                    TestCleanupUtils.CopyOnWrite(LogFilePath + ".report.log");
-                    TestCleanupUtils.CopyOnWrite(DestinationFilePath + ".dcvr");
-                    TestCleanupUtils.CopyOnWrite(DestinationFilePath + ".html");
-                    Process.Start(DotCoverPath, $"merge /Source=\"{DotCoverSnapshotsString}\" /Output=\"{DestinationFilePath}.dcvr\" /LogFile=\"{LogFilePath}.merge.log\"");
-                }
-                if (DotCoverSnapshots.Count == 1)
-                {
-                    var LoneSnapshot = DotCoverSnapshots[0];
-                    if (DotCoverSnapshots.Count == 1 && (File.Exists(LoneSnapshot)))
-                    {
-                        Process.Start(DotCoverPath, $"report /Source=\"{LoneSnapshot}\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
-                        Console.WriteLine($"DotCover report written to {DestinationFilePath}\\DotCover Report.html");
-                    }
-                }
-            }
-            if (File.Exists(DestinationFilePath + ".dcvr"))
-            {
-                Process.Start(DotCoverPath, $"report /Source=\"{DestinationFilePath}.dcvr\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
-                Console.WriteLine($"DotCover report written to{DestinationFilePath}\\DotCover Report.html");
-            }
-        }
-
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, NumberToWords(currentRetryCount) + "RetryTestResults");
@@ -250,7 +228,7 @@ namespace Warewolf.Launcher
             var retryResults = RunTests(jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
             if (!string.IsNullOrEmpty(retryResults) && retryResults != FullTRXFilePath)
             {
-                MergeRetryResults(FullTRXFilePath, retryResults);
+                TestResultsMerger.MergeRetryResults(FullTRXFilePath, retryResults);
             }
             else
             {
@@ -259,197 +237,6 @@ namespace Warewolf.Launcher
         }
 
         public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
-
-        void MergeRetryResults(string originalResults, string retryResults)
-        {
-            var trxContent = new XmlDocument();
-            trxContent.Load(retryResults);
-            var newNamespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-            newNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager).Count > 0)
-            {
-                var originalTrxContent = new XmlDocument();
-                originalTrxContent.Load(originalResults);
-                var originalNamespaceManager = new XmlNamespaceManager(originalTrxContent.NameTable);
-                originalNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager))
-                {
-                    if (TestResult.Attributes["outcome"] == null || TestResult.Attributes["outcome"].InnerText == "Failed")
-                    {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
-                        {
-                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
-                            {
-                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
-                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
-                                if (newOutputNode != null)
-                                {
-                                    if (originalOutputNode != null)
-                                    {
-                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
-                                        XmlNode newStdErrNode = newOutputNode.SelectSingleNode("//a:StdErr", newNamespaceManager);
-                                        if (newStdErrNode != null)
-                                        {
-                                            if (originalStdErrNode != null)
-                                            {
-                                                originalStdErrNode.InnerText += "\n" + newStdErrNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdErrNode, true));
-                                            }
-                                        }
-                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
-                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
-                                        if (newStdOutNode != null)
-                                        {
-                                            if (originalStdOutNode != null)
-                                            {
-                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true));
-                                            }
-                                        }
-                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
-                                        XmlNode newErrorInfoNode = newOutputNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
-                                        if (newErrorInfoNode != null)
-                                        {
-                                            if (originalErrorInfoNode != null)
-                                            {
-                                                XmlNode originalMessageNode = originalErrorInfoNode.SelectSingleNode("//a:Message", originalNamespaceManager);
-                                                XmlNode newMessageNode = newErrorInfoNode.SelectSingleNode("//a:Message", newNamespaceManager);
-                                                if (newErrorInfoNode != null)
-                                                {
-                                                    if (originalMessageNode != null)
-                                                    {
-                                                        originalMessageNode.InnerText += "\n" + newErrorInfoNode.InnerText;
-                                                    }
-                                                    else
-                                                    {
-                                                        originalMessageNode.AppendChild(originalMessageNode.OwnerDocument.ImportNode(newErrorInfoNode, true));
-                                                    }
-                                                }
-                                                XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("//a:StackTrace", originalNamespaceManager);
-                                                XmlNode newStackTraceNode = newErrorInfoNode.SelectSingleNode("//a:StackTrace", newNamespaceManager);
-                                                if (newStackTraceNode != null)
-                                                {
-                                                    if (originalStackTraceNode != null)
-                                                    {
-                                                        originalStackTraceNode.InnerText += "\n" + newStackTraceNode.InnerText;
-                                                    }
-                                                    else
-                                                    {
-                                                        originalStackTraceNode.AppendChild(originalStackTraceNode.OwnerDocument.ImportNode(newStackTraceNode, true));
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.OwnerDocument.ImportNode(newErrorInfoNode, true);
-                                                originalOutputNode.AppendChild(newErrorInfoNode);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true);
-                                        OriginalTestResult.AppendChild(newOutputNode);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
-                        {
-                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
-                            {
-                                if (OriginalTestResult.Attributes["outcome"] == null)
-                                {
-                                    var newOutcomeAttribute = originalTrxContent.CreateAttribute("outcome");
-                                    newOutcomeAttribute.Value = "Passed";
-                                    OriginalTestResult.Attributes.Append(newOutcomeAttribute);
-                                }
-                                else
-                                {
-                                    OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
-                                }
-                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
-                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
-                                if (newOutputNode != null)
-                                {
-                                    if (originalOutputNode != null)
-                                    {
-                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
-                                        if (originalStdErrNode != null)
-                                        {
-                                            try
-                                            {
-                                                originalOutputNode.RemoveChild(originalStdErrNode);
-                                            }
-                                            catch (ArgumentException) { }
-                                        }
-                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
-                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
-                                        if (newStdOutNode != null)
-                                        {
-                                            if (originalStdOutNode != null)
-                                            {
-                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(originalOutputNode.OwnerDocument.ImportNode(newStdOutNode, true));
-                                            }
-                                        }
-                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
-                                        if (originalErrorInfoNode != null)
-                                        {
-                                            try
-                                            {
-                                                originalOutputNode.RemoveChild(originalErrorInfoNode);
-                                            }
-                                            catch (ArgumentException) { }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        OriginalTestResult.AppendChild(OriginalTestResult.OwnerDocument.ImportNode(newOutputNode, true));
-                                    }
-                                }
-                            }
-                        }
-                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", originalNamespaceManager);
-                        if (countersNodes.Count > 0)
-                        {
-                            var countersNode = countersNodes.Item(0);
-                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
-                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
-                            if (--failuresBefore <= 0)
-                            {
-                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", originalNamespaceManager);
-                                if (resultsSummaryNodes.Count > 0)
-                                {
-                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
-                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
-                                }
-                            }
-                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
-                        }
-                    }
-                }
-                originalTrxContent.Save(originalResults);
-                File.Delete(retryResults);
-            }
-            else
-            {
-                Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at " + retryResults);
-            }
-        }
 
         public void InstallServer()
         {
@@ -1041,7 +828,7 @@ namespace Warewolf.Launcher
             }
             var MergedSnapshotFileName = JobName.Split(',')[0];
             MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-            MergeDotCoverSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover");
+            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
