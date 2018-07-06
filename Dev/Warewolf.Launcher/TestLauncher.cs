@@ -1126,7 +1126,7 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine("Unrecognized Job " + Job + " was ignored from the run");
+                        Console.WriteLine($"Unrecognized Job {Job} was ignored from the run");
                     }
                 }
             }
@@ -1166,9 +1166,9 @@ namespace Warewolf.Launcher
 
             TestRunner.ReadPlaylist();
 
-            for (var i = 0; i < JobName.Split(',').Count(); i++)
+            for (var i = 0; i < JobNames.Count; i++)
             {
-                var JobName = JobNames[i].ToString();
+                var ThisJobName = JobNames[i].ToString();
                 var ProjectSpec = JobAssemblySpecs[i].ToString();
                 var TestCategories = JobCategories[i].ToString();
                 var TestAssembliesList = "";
@@ -1195,24 +1195,24 @@ namespace Warewolf.Launcher
                         }
                     }
                 }
-                if (string.IsNullOrEmpty(TestAssembliesList) || string.IsNullOrEmpty(TestAssembliesList))
+                if (string.IsNullOrEmpty(TestAssembliesList))
                 {
-                    throw new Exception("Cannot find any " + ProjectSpec + " project folders or assemblies at " + TestRunner.TestsPath + ".");
+                    throw new Exception($"Cannot find any {ProjectSpec} project folders or assemblies at {TestRunner.TestsPath}.");
                 }
 
                 // Setup for screen recording
-                var TestSettingsFile = ScreenRecordingTestSettingsFile(JobName);
+                var TestSettingsFile = ScreenRecordingTestSettingsFile(ThisJobName);
 
-                string TestRunnerPath = TestRunner.WriteTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
+                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
 
                 //Run Tests
-                var TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                var TrxFile = RunTests(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
                 if (!string.IsNullOrEmpty(TrxFile))
                 {
                     //Re-try Failures
                     for (var count = 0; count < RetryCount; count++)
                     {
-                        RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                        RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
                     }
                 }
             }

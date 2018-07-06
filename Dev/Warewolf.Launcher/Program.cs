@@ -87,6 +87,7 @@ namespace Warewolf.Launcher
                 build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
 
+            Console.WriteLine($"Creating {build.TestRunner.TestsResultsPath}");
             if (!File.Exists(build.TestRunner.TestsResultsPath))
             {
                 Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
