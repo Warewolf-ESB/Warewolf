@@ -76,11 +76,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             return scenarioContext.Get<DropBoxUploadViewModel>("uploadViewModel");
         }
 
-        Mock<IServer> GeEnvrionmentModel()
-        {
-            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
-        }
-
         [Given(@"New is Enabled")]
         [When(@"New is Enabled")]
         [Then(@"New is Enabled")]
