@@ -67,22 +67,22 @@ namespace Warewolf.Launcher
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
             
-            if (build.TestRunner.TestsPath != null && build.TestRunner.TestsPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.TestRunner.TestsPath) && build.TestRunner.TestsPath.StartsWith(".."))
             {
                 build.TestRunner.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsPath);
             }
             
-            if (build.TestRunner.TestsResultsPath != null && build.TestRunner.TestsResultsPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.TestRunner.TestsResultsPath) && build.TestRunner.TestsResultsPath.StartsWith(".."))
             {
                 build.TestRunner.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsResultsPath);
             }
 
-            if (build.ServerPath != null && build.ServerPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.ServerPath) && build.ServerPath.StartsWith(".."))
             {
                 build.ServerPath = Path.Combine(Environment.CurrentDirectory, build.ServerPath);
             }
 
-            if (build.StudioPath != null && build.StudioPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.StudioPath) && build.StudioPath.StartsWith(".."))
             {
                 build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
