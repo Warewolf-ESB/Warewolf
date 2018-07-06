@@ -144,7 +144,7 @@ namespace Warewolf.Launcher
             int WaitForCloseRetryCount = Force ? 1 : 10;
 
             //Stop Studio
-            Process process = build.StartProcess("taskkill", "/im \"Warewolf Studio.exe\"");
+            Process process = ProcessUtils.StartProcess("taskkill", "/im \"Warewolf Studio.exe\"");
             var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
 
             //Soft Kill
