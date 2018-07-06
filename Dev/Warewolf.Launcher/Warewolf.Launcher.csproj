@@ -93,6 +93,7 @@
     <Compile Include="ITestResultsMerger.cs" />
     <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="ProcessUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="TestCleanupUtils.cs" />
     <Compile Include="TestCoverageMergers\DotCoverSnapshotMerger.cs" />

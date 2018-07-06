@@ -403,7 +403,7 @@ namespace Warewolf.Launcher
                     Console.WriteLine(e.Message);
                 }
 
-                var process = StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
+                var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
                 var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
                 if (!(Output.EndsWith("RUNNING ")))
                 {
@@ -734,7 +734,7 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    trxTestResultsFile = StartTestRunnerProcess(DotCoverRunnerPath);
+                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -743,7 +743,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     // Run Test Runner Batch File
-                    trxTestResultsFile = StartTestRunnerProcess(TestRunnerPath);
+                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(!ApplyDotCover);
@@ -752,40 +752,6 @@ namespace Warewolf.Launcher
                 this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart));
             }
             return trxTestResultsFile;
-        }
-
-        string StartTestRunnerProcess(string TestRunnerPath)
-        {
-            ProcessStartInfo startinfo = new ProcessStartInfo();
-            startinfo.FileName = TestRunnerPath;
-            Process process = new Process();
-            process.StartInfo = startinfo;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.Start();
-            var trxFilePath = "";
-
-            while (!process.StandardOutput.EndOfStream)
-            {
-                string testRunLine = process.StandardOutput.ReadLine();
-                Console.WriteLine(testRunLine);
-                if (testRunLine.StartsWith("Results File: "))
-                {
-                    trxFilePath = ParseTrxFilePath(testRunLine);
-                }
-            }
-            process.WaitForExit();
-            string allErrors = process.StandardError.ReadToEnd();
-            Console.WriteLine(allErrors);
-            return trxFilePath;
-        }
-
-        string ParseTrxFilePath(string standardOutput)
-        {
-            const string parseFrom = "Results File: ";
-            int StartIndex = standardOutput.IndexOf(parseFrom) + parseFrom.Length;
-            return standardOutput.Substring(StartIndex, standardOutput.Length-StartIndex);
         }
 
         void RecursiveFolderCopy(string sourceDir, string targetDir)
@@ -804,19 +770,6 @@ namespace Warewolf.Launcher
             {
                 RecursiveFolderCopy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
             }
-        }
-
-        public Process StartProcess(string exeName, string args)
-        {
-            var process = new Process();
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.FileName = exeName;
-            process.StartInfo.Arguments = args;
-            process.Start();
-            process.WaitForExit();
-            return process;
         }
 
         public void MergeDotCoverSnapshots()
