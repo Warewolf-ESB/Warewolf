@@ -373,11 +373,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Creating {FullImageID} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
-     ""Image"":""" + FullImageID + @""",
-     ""HostConfig"":
-     {
-          ""NetworkMode"":""Default Switch""
-     }
+     ""Image"":""" + FullImageID + @"""
 }
 ");
             }
@@ -387,11 +383,7 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + FullImageID + @""",
-     ""HostConfig"":
-     {
-          ""NetworkMode"":""Default Switch""
-     }
+     ""Image"":""" + FullImageID + @"""
 }
 ");
             }
