@@ -391,7 +391,7 @@ namespace Warewolf.Launcher
             containerContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 0, 20);
+                client.Timeout = new TimeSpan(0, 3, 0);
                 var response = client.PostAsync(url, containerContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
