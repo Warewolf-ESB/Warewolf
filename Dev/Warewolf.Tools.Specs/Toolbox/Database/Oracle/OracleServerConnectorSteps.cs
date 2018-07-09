@@ -446,10 +446,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(vm.ActionRegion.SelectedAction,  "Could not set Action");
         }
 
-        [Given(@"Oracle Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
-        [When(@"Oracle Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
-        [Then(@"Oracle Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
-        public void GivenOracleCommandTimeoutIsMillisecondsFor(int timeout, string activityName)
+        [Given(@"Oracle Command Timeout is ""(.*)"" seconds for ""(.*)""")]
+        [When(@"Oracle Command Timeout is ""(.*)"" seconds for ""(.*)""")]
+        [Then(@"Oracle Command Timeout is ""(.*)"" seconds for ""(.*)""")]
+        public void GivenOracleCommandTimeoutIsSecondsFor(int timeout, string activityName)
         {
             var vm = GetViewModel();
             Assert.IsNotNull(vm);

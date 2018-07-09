@@ -5,25 +5,28 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Warewolf.Launcher
 {
     public class ContainerLauncher : IDisposable
     {
-        readonly string _remoteDockerApi;
+        string remoteSwarmDockerApi;
         string serverContainerID = null;
+        string serviceID = null;
         string FullImageID = null;
         public string Hostname;
         public string IP;
         public string Version;
         public string ImageName;
+        public string LogOutputDirectory = Environment.ExpandEnvironmentVariables("%TEMP%");
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
         public ContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
         {
-            _remoteDockerApi = remoteDockerApi;
+            remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
             if (!CIRemoteResources)
@@ -34,39 +37,149 @@ namespace Warewolf.Launcher
             {
                 ImageName = "ciremote";
             }
-            CheckDockerRemoteApiVersion();
-            StartWarewolfServerContainer();
+            if (CheckForSwarm())
+            {
+                StartWarewolfServerServiceOnSwarm();
+            }
+            else
+            {
+                StartWarewolfServerContainer();
+            }
+        }
+
+        void StartWarewolfServerServiceOnSwarm()
+        {
+            try
+            {
+                RunAsServiceOnSwarm();
+                InspectSwarmService();
+            }
+            catch (Exception e)
+            {
+                Dispose();
+                throw e;
+            }
         }
 
         void StartWarewolfServerContainer()
         {
             try
             {
-                Pull();
-                CreateContainer();
-                StartContainer();
-                GetContainerIP();
+                RunAsContainer();
+                InspectContainer();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error starting Warewolf server container: {e.Message}.");
                 Dispose();
+                throw e;
             }
+        }
+
+        void RunAsContainer()
+        {
+            Pull();
+            CreateContainer();
+            StartContainer();
         }
 
         public void Dispose()
         {
+            if (serviceID != null)
+            {
+                DeleteService();
+                serviceID = null;
+            }
             if (serverContainerID != null)
             {
                 StopContainer();
                 RecoverServerLogFile();
                 DeleteContainer();
+                serverContainerID = null;
             }
         }
 
-        string CheckDockerRemoteApiVersion()
+        void RunAsServiceOnSwarm()
         {
-            var url = $"http://{_remoteDockerApi}:2375/version";
+            var url = $"http://{remoteSwarmDockerApi}:2375/services/create";
+            HttpContent containerContent = new StringContent(@"
+{
+    ""TaskTemplate"":
+    {
+        ""ContainerSpec"":
+        {
+             ""Image"":""warewolfserver/" + $"{ImageName}:{Version}" + @"""
+        },
+        ""Resources"": 
+        {
+            ""Limits"": 
+            {
+                ""MemoryBytes"": 1500000000
+            }
+        },
+        ""RestartPolicy"": 
+        {
+            ""Condition"": ""none""
+        }
+    },
+    ""Mode"": 
+    {
+        ""Replicated"": 
+        {
+            ""Replicas"": 1
+        }
+    }
+}
+");
+            containerContent.Headers.Remove("Content-Type");
+            containerContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error creating service on swarm. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        serviceID = ParseForServiceID(reader.ReadToEnd());
+                        Console.WriteLine($"Created warewolfserver/{ImageName}:{Version} service on swarm managed by {remoteSwarmDockerApi} as {serviceID}");
+                    }
+                }
+            }
+        }
+
+        string ParseForServiceID(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<CreateService>(responseText);
+            return JSONObj.ID;
+        }
+
+        void DeleteService()
+        {
+            var url = $"http://{remoteSwarmDockerApi}:2375/services/{serviceID}";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.DeleteAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Error deleting service on swarm: " + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        bool CheckForSwarm()
+        {
+            var url = $"http://{remoteSwarmDockerApi}:2375/nodes";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -74,22 +187,15 @@ namespace Warewolf.Launcher
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new HttpRequestException("Error getting Docker Remote Api version. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        return reader.ReadToEnd();
-                    }
+                    return response.IsSuccessStatusCode;
                 }
             }
         }
 
         void Pull()
         {
-            Console.WriteLine($"Pulling warewolfserver/{ImageName}:{Version} to {_remoteDockerApi}");
-            var url = $"http://{_remoteDockerApi}:2375/images/create?fromImage=warewolfserver%2F{ImageName}&tag={Version}";
+            Console.WriteLine($"Pulling warewolfserver/{ImageName}:{Version} to {remoteSwarmDockerApi}");
+            var url = $"http://{remoteSwarmDockerApi}:2375/images/create?fromImage=warewolfserver%2F{ImageName}&tag={Version}";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(1, 0, 0);
@@ -109,13 +215,13 @@ namespace Warewolf.Launcher
             }
         }
 
-        void GetContainerIP()
+        void InspectContainer()
         {
             int count = 0;
-            while (string.IsNullOrEmpty(IP) && count++<5)
+            while (string.IsNullOrEmpty(IP) && count++ < 7)
             {
-                Console.WriteLine($"Attempting to get IP address for {serverContainerID} on {_remoteDockerApi}.");
-                var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/json";
+                Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
+                var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/json";
                 using (var client = new HttpClient())
                 {
                     client.Timeout = new TimeSpan(0, 20, 0);
@@ -123,23 +229,115 @@ namespace Warewolf.Launcher
                     var streamingResult = response.Content.ReadAsStreamAsync().Result;
                     using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        if (!response.IsSuccessStatusCode)
+                        if (response.IsSuccessStatusCode)
                         {
-                            throw new HttpRequestException("Error getting container IP. " + reader.ReadToEnd());
+                            ParseForNetworkID(reader.ReadToEnd());
+                            break;
                         }
                         else
                         {
-                            string gotIP = ParseForIP(reader.ReadToEnd());
-                            if (!string.IsNullOrEmpty(gotIP))
+                            Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                            Thread.Sleep(1000);
+                        }
+                    }
+                }
+            }
+        }
+
+        void InspectSwarmService()
+        {
+            var state = "pending";
+            int count = 0;
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            Thread.Sleep(1000);
+            while (state != "running" && count++ < 100)
+            {
+                var url = $"http://{remoteSwarmDockerApi}:2375/tasks?filters=" + "{\"service\":{\"" + serviceID + "\":true}}";
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = new TimeSpan(0, 20, 0);
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var readInspectResponse = reader.ReadToEnd();
+                            state = GetServiceStatus(readInspectResponse);
+                            if (state == "running")
                             {
-                                IP = gotIP;
+                                GetServiceMachineName(readInspectResponse);
+                                break;
                             }
                             else
                             {
-                                Console.WriteLine($"Failed to get IP for container on {_remoteDockerApi}. " + reader.ReadToEnd());
-                                Thread.Sleep(500);
+                                Console.WriteLine($"Still waiting for {serviceID}. It is currently {state}.");
+                                Thread.Sleep(3000);
                             }
                         }
+                        else 
+                        {
+                            throw new HttpRequestException(reader.ReadToEnd());
+                        }
+                    }
+                }
+            }
+            if (count >= 100)
+            {
+                throw new TimeoutException("Timed out waiting for CI Remote server container to start.");
+            }
+        }
+
+        string GetServiceStatus(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<List<SwarmService>>(responseText);
+            return JSONObj[0].Status.State;
+        }
+
+        void GetServiceMachineName(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<List<SwarmService>>(responseText);
+            var nodeID = JSONObj[0].NodeID;
+            string nodeHostname;
+            serverContainerID = JSONObj[0].Status.ContainerStatus.ContainerID;
+            Console.WriteLine($"Inspecting Node {nodeID} on {remoteSwarmDockerApi}.");
+            var url = $"http://{remoteSwarmDockerApi}:2375/nodes/{nodeID}";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.GetAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        nodeHostname = ParseForNodeHostname(reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(reader.ReadToEnd());
+                    }
+                }
+            }
+            Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {nodeHostname}.");
+            url = $"http://{nodeHostname}:2375/containers/{serverContainerID}/json";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.GetAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ParseForNetworkID(reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                        Thread.Sleep(1000);
                     }
                 }
             }
@@ -147,8 +345,8 @@ namespace Warewolf.Launcher
 
         void StartContainer()
         {
-            Console.WriteLine($"Starting container {serverContainerID} on {_remoteDockerApi}.");
-            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/start";
+            Console.WriteLine($"Starting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/start";
             HttpContent containerStartContent = new StringContent("");
             containerStartContent.Headers.Remove("Content-Type");
             containerStartContent.Headers.Add("Content-Type", "application/json");
@@ -163,21 +361,17 @@ namespace Warewolf.Launcher
                     {
                         throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
                     }
-                    else
-                    {
-                        Console.WriteLine($"Started Server Container {serverContainerID} on {_remoteDockerApi}. " + reader.ReadToEnd());
-                    }
                 }
             }
         }
 
         void CreateContainer()
         {
-            var url = $"http://{_remoteDockerApi}:2375/containers/create";
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/create";
             HttpContent containerContent;
             if (Hostname == "")
             {
-                Console.WriteLine($"Creating {FullImageID} on {_remoteDockerApi}");
+                Console.WriteLine($"Creating {FullImageID} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
      ""Image"":""" + FullImageID + @"""
@@ -186,7 +380,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {_remoteDockerApi}");
+                Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
@@ -198,21 +392,64 @@ namespace Warewolf.Launcher
             containerContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                client.Timeout = new TimeSpan(0, 0, 30);
+                try
                 {
-                    if (!response.IsSuccessStatusCode)
+                    var response = client.PostAsync(url, containerContent).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        throw new HttpRequestException("Error creating remote server container. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        serverContainerID = ParseForContainerID(reader.ReadToEnd());
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new HttpRequestException("Error creating remote server container. " + reader.ReadToEnd());
+                        }
+                        else
+                        {
+                            serverContainerID = ParseForContainerID(reader.ReadToEnd());
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to get container ID.");
+                }
             }
+            if (string.IsNullOrEmpty(serverContainerID))
+            {
+                serverContainerID = GetNewContainerID();
+            }
+        }
+
+        string GetNewContainerID()
+        {
+            Console.WriteLine($"Getting Container ID from {remoteSwarmDockerApi}.");
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/json?all=true";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 3, 0);
+                int retryCount = 0;
+                while (++retryCount < 10) 
+                {
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    var result = string.Empty;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            result = ParseForNewContainerID(reader.ReadToEnd());
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        client.Dispose();
+                        return result;
+                    }
+                    Console.WriteLine($"Still Getting Container ID from {remoteSwarmDockerApi}.");
+                    Thread.Sleep(1000);
+                }
+            }
+            throw new TimeoutException($"Timed out waiting for container ID after creating a new container on {remoteSwarmDockerApi}.");
         }
 
         string ParseForImageID(string responseText)
@@ -238,26 +475,45 @@ namespace Warewolf.Launcher
 
         string ParseForContainerID(string responseText)
         {
-            if (responseText.Length > 7 + 64)
-            {
-                return responseText.Substring(7, 64);
-            }
-            else
-            {
-                throw new HttpRequestException("Error parsing for container ID. " + responseText);
-            }
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<CreateContainer>(responseText);
+            return JSONObj.ID;
         }
 
-        string ParseForIP(string responseText)
+        string ParseForNewContainerID(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<List<CreateContainer>>(responseText);
+            if (JSONObj.Count > 0)
+            {
+                var UnixEpochTimeNow = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+                Console.WriteLine($"Found container {JSONObj[0].ID}. Created {(UnixEpochTimeNow - int.Parse(JSONObj[0].Created))/10}ms ago.");
+                return JSONObj[0].ID;
+            }
+            return null;
+        }
+
+        void ParseForNetworkID(string responseText)
         {
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<ServerContainer>(responseText);
-            return JSONObj.NetworkSettings.Networks["nat"].IPAddress;
+            if (JSONObj.NetworkSettings.Networks.ContainsKey("nat"))
+            {
+                IP = JSONObj.NetworkSettings.Networks["nat"].IPAddress;
+            }
+            Hostname = JSONObj.Config.Hostname;
+        }
+
+        string ParseForNodeHostname(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<Node>(responseText);
+            return JSONObj.Description.Hostname;
         }
 
         void DeleteImage()
         {
-            var url = $"http://{_remoteDockerApi}:2375/images/{FullImageID}?force=true";
+            var url = $"http://{remoteSwarmDockerApi}:2375/images/{FullImageID}?force=true";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -275,7 +531,7 @@ namespace Warewolf.Launcher
 
         void DeleteContainer()
         {
-            var url = $"http://{ _remoteDockerApi}:2375/containers/{serverContainerID}?v=1";
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}?v=1";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -293,8 +549,8 @@ namespace Warewolf.Launcher
 
         void StopContainer()
         {
-            Console.WriteLine($"Stopping server container {serverContainerID} on {_remoteDockerApi}");
-            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/stop";
+            Console.WriteLine($"Stopping {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}");
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/stop";
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
@@ -305,11 +561,11 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"Error stopping server container on {_remoteDockerApi}: " + reader.ReadToEnd());
+                        Console.WriteLine($"Error stopping server container on {remoteSwarmDockerApi}: " + reader.ReadToEnd());
                     }
                     else
                     {
-                        Console.WriteLine($"Server container {serverContainerID} at {_remoteDockerApi} has been stopped.");
+                        Console.WriteLine($"Server container {serverContainerID.Substring(0, 12)} at {remoteSwarmDockerApi} has been stopped.");
                     }
                 }
             }
@@ -317,7 +573,7 @@ namespace Warewolf.Launcher
 
         void RecoverServerLogFile()
         {
-            var url = $"http://{_remoteDockerApi}:2375/containers/{serverContainerID}/archive?path=C%3A%5CProgramData%5CWarewolf%5CServer+Log%5Cwarewolf-server.log";
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/archive?path=C%3A%5CProgramData%5CWarewolf%5CServer+Log%5Cwarewolf-server.log";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -331,196 +587,80 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        Console.WriteLine("Recovered server container log file: " + ExtractTar(reader.BaseStream));
+                        ExtractTar(reader.BaseStream);
+                        string destFileName = Path.Combine(LogOutputDirectory, $"Container {serverContainerID} Warewolf Server.log");
+                        File.Move(Path.Combine(LogOutputDirectory, "warewolf-server.log"), destFileName);
+                        Console.WriteLine($"Recovered server container log file to \"{destFileName}\"");
                     }
                 }
             }
         }
 
-        string ExtractTar(Stream tarSteam)
+        void ExtractTar(Stream tarSteam)
         {
             using (TarArchive tarArchive = TarArchive.CreateInputTarArchive(tarSteam, TarBuffer.DefaultBlockFactor))
             {
-                tarArchive.ExtractContents(Environment.ExpandEnvironmentVariables("%TEMP%"));
+                tarArchive.ExtractContents(LogOutputDirectory);
             }
-            return File.ReadAllText(Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), "warewolf-server.log"));
         }
     }
 
     class ServerContainer
     {
-        public string Id { get; set; }
-        public string Created { get; set; }
-        public string Path { get; set; }
-        public List<string> Args { get; set; }
-        public ServerContainerState State { get; set; }
         public ServerContainerNetworkSettings NetworkSettings { get; set; }
-    }
-
-    class ServerContainerState
-    {
-        public string Status { get; set; }
-        public bool Running { get; set; }
-        public bool Paused { get; set; }
-        public bool Restarting { get; set; }
-        public bool OOMKilled { get; set; }
-        public bool Dead { get; set; }
-        public int Pid { get; set; }
-        public int ExitCode { get; set; }
-        public string Error { get; set; }
-        public string StartedAt { get; set; }
-        public string FinishedAt { get; set; }
-        public string Image { get; set; }
-        public string ResolvConfPath { get; set; }
-        public string HostnamePath { get; set; }
-        public string HostsPath { get; set; }
-        public string LogPath { get; set; }
-        public string Name { get; set; }
-        public int RestartCount { get; set; }
-        public string Driver { get; set; }
-        public string MountLabel { get; set; }
-        public string ProcessLabel { get; set; }
-        public string AppArmorProfile { get; set; }
-        public string ExecIDs { get; set; }
-        public ServerContainerHostConfig HostConfig { get; set; }
-        public string NetworkMode { get; set; }
-        public string PortBindings { get; set; }
-        public Dictionary<string, string> RestartPolicy { get; set; }
-        public bool AutoRemove { get; set; }
-        public string VolumeDriver { get; set; }
-        public string VolumesFrom { get; set; }
-        public string CapAdd { get; set; }
-        public string CapDrop { get; set; }
-        public string Dns { get; set; }
-        public string DnsOptions { get; set; }
-        public string DnsSearch { get; set; }
-        public string ExtraHosts { get; set; }
-        public string GroupAdd { get; set; }
-        public string IpcMode { get; set; }
-        public string Cgroup { get; set; }
-        public string Links { get; set; }
-        public int OomScoreAdj { get; set; }
-        public string PidMode { get; set; }
-        public bool Privileged { get; set; }
-        public bool PublishAllPorts { get; set; }
-        public bool ReadonlyRootfs { get; set; }
-        public bool SecurityOpt { get; set; }
-        public string UTSMode { get; set; }
-        public string UsernsMode { get; set; }
-        public string ShmSize { get; set; }
-        public string ConsoleSize { get; set; }
-        public string Isolation { get; set; }
-        public int CpuShares { get; set; }
-        public string Memory { get; set; }
-        public string NanoCpus { get; set; }
-        public string CgroupParent { get; set; }
-        public string BlkioWeight { get; set; }
-        public string BlkioWeightDevice { get; set; }
-        public string BlkioDeviceReadBps { get; set; }
-        public string BlkioDeviceWriteBps { get; set; }
-        public string BlkioDeviceReadIOps { get; set; }
-        public string BlkioDeviceWriteIOps { get; set; }
-        public string CpuPeriod { get; set; }
-        public string CpuQuota { get; set; }
-        public string CpuRealtimePeriod { get; set; }
-        public string CpuRealtimeRuntime { get; set; }
-        public string CpusetCpus { get; set; }
-        public string CpusetMems { get; set; }
-        public string Devices { get; set; }
-        public string DeviceCgroupRules { get; set; }
-        public string DiskQuota { get; set; }
-        public string KernelMemory { get; set; }
-        public string MemoryReservation { get; set; }
-        public string MemorySwap { get; set; }
-        public string MemorySwappiness { get; set; }
-        public string OomKillDisable { get; set; }
-        public string PidsLimit { get; set; }
-        public string Ulimits { get; set; }
-        public string CpuCount { get; set; }
-        public string CpuPercent { get; set; }
-        public string IOMaximumIOps { get; set; }
-        public int IOMaximumBandwidth { get; set; }
-        public ServerContainerGraphDriver GraphDriver { get; set; }
-        public List<string> Mounts { get; set; }
         public ServerContainerConfig Config { get; set; }
-        public string User { get; set; }
-        public bool AttachStdin { get; set; }
-        public bool AttachStdout { get; set; }
-        public bool AttachStderr { get; set; }
-        public Dictionary<string, string> ExposedPorts { get; set; }
-        public bool Tty { get; set; }
-        public bool OpenStdin { get; set; }
-        public bool StdinOnce { get; set; }
-        public List<string> Env { get; set; }
-        public bool ArgsEscaped { get; set; }
-        public List<string> Volumes { get; set; }
-        public string WorkingDir { get; set; }
-        public List<string> Entrypoint { get; set; }
-        public string OnBuild { get; set; }
-        public string Labels { get; set; }
-    }
-
-    class ServerContainerHostConfig
-    {
-        public string Binds { get; set; }
-        public string ContainerIDFile { get; set; }
-        public Dictionary<string, string> LogConfig { get; set; }
-    }
-
-    class ServerContainerGraphDriverData
-    {
-        public string dir { get; set; }
-    }
-
-    class ServerContainerGraphDriver
-    {
-        public ServerContainerGraphDriverData Data { get; set; }
-        public string Name { get; set; }
     }
 
     class ServerContainerConfig
     {
         public string Hostname { get; set; }
-        public string Domainname { get; set; }
     }
 
     class ServerContainerNetwork
     {
-        public string IPAMConfig { get; set; }
-        public string Links { get; set; }
-        public string Aliases { get; set; }
-        public string NetworkID { get; set; }
-        public string EndpointID { get; set; }
-        public string Gateway { get; set; }
         public string IPAddress { get; set; }
-        public string IPPrefixLen { get; set; }
-        public string IPv6Gateway { get; set; }
-        public string GlobalIPv6Address { get; set; }
-        public string GlobalIPv6PrefixLen { get; set; }
-        public string MacAddress { get; set; }
-        public string DriverOpts { get; set; }
     }
 
     class ServerContainerNetworkSettings
     {
-        public string Bridge { get; set; }
-        public string SandboxID { get; set; }
-        public bool HairpinMode { get; set; }
-        public string LinkLocalIPv6Address { get; set; }
-        public string LinkLocalIPv6PrefixLen { get; set; }
-        public Dictionary<string, string> Ports { get; set; }
-        public string SandboxKey { get; set; }
-        public string SecondaryIPAddresses { get; set; }
-        public string SecondaryIPv6Addresses { get; set; }
-        public string EndpointID { get; set; }
-        public string Gateway { get; set; }
-        public string GlobalIPv6Address { get; set; }
-        public string GlobalIPv6PrefixLen { get; set; }
-        public string IPAddress { get; set; }
-        public string IPPrefixLen { get; set; }
-        public string IPv6Gateway { get; set; }
-        public string MacAddress { get; set; }
         public Dictionary<string, ServerContainerNetwork> Networks { get; set; }
     }
 
+    class CreateContainer
+    {
+        public string ID { get; set; }
+        public string Created { get; set; }
+    }
+
+    class CreateService
+    {
+        public string ID { get; set; }
+    }
+
+    class SwarmService
+    {
+        public string NodeID { get; set; }
+        public ServiceStatus Status;
+    }
+
+    class ServiceStatus
+    {
+        public ServiceContainer ContainerStatus;
+        public string State { get; set; }
+    }
+
+    class ServiceContainer
+    {
+        public string ContainerID;
+    }
+
+    class Node
+    {
+        public NodeDescription Description;
+    }
+
+    public class NodeDescription
+    {
+        public string Hostname { get; set; }
+    }
 }
