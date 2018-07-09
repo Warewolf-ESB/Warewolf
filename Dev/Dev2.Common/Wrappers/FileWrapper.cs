@@ -63,55 +63,15 @@ namespace Dev2.Common.Wrappers
 
         public Stream OpenRead(string path) => File.OpenRead(path);
 
-        //readonly static ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>> cache = new ConcurrentDictionary<string, Lazy<RefCountedStreamWriter>>()
-        public IDev2StreamWriter AppendText(string filePath)
+        public StreamWriter AppendText(string filePath)
         {
-
-            var result = new RefCountedStreamWriter(File.AppendText(filePath));
+            var result = File.AppendText(filePath);
             return result;
         }
 
         public DateTime GetLastWriteTime(string filePath)
         {
             return File.GetLastWriteTime(filePath).Date;
-        }
-    }
-
-    class RefCountedStreamWriter : IDev2StreamWriter
-    {
-        public int count;
-        public StreamWriter StreamWriter { get; private set; }
-
-        public RefCountedStreamWriter(StreamWriter writer)
-        {
-            this.StreamWriter = writer;
-        }
-
-        void IDev2StreamWriter.WriteLine(string v)
-        {
-            this.StreamWriter.WriteLine(v);
-        }
-
-        void IDev2StreamWriter.WriteLine()
-        {
-            this.StreamWriter.WriteLine();
-        }
-
-        void IDev2StreamWriter.Flush()
-        {
-            this.StreamWriter.Flush();
-        }
-
-        public void Dispose()
-        {
-            lock (this.StreamWriter)
-            {
-                Interlocked.Decrement(ref count);
-            }
-            if (count <= 0)
-            {
-                this.StreamWriter.Dispose();
-            }
         }
     }
 }

@@ -128,8 +128,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Dev2StateLogger_Given_LogFile_AlreadyExists()
         {
             var streamWriter = new StreamWriter(new MemoryStream());
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
+            var mockedStream = new Mock<StreamWriter>();
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
@@ -148,8 +147,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_2_Days_Old()
         {
             var streamWriter = new StreamWriter(new MemoryStream());
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
+            var mockedStream = new Mock<StreamWriter>();
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();
@@ -172,8 +170,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_30_Days_Old()
         {            
             var streamWriter = new StreamWriter(new MemoryStream());
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.StreamWriter).Returns(streamWriter);
+            var mockedStream = new Mock<StreamWriter>();
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();

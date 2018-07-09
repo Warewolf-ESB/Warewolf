@@ -32,7 +32,7 @@ namespace Dev2.Common.Interfaces.Wrappers
 
         void SetAttributes(string path, FileAttributes fileAttributes);
         Stream OpenRead(string path);
-        IDev2StreamWriter AppendText(string filePath);
+        StreamWriter AppendText(string filePath);
 
         DateTime GetLastWriteTime(string filePath);
     }
