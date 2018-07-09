@@ -783,7 +783,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(345, 199));
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3, new Point(339, 274));
         }
-       
+
         [Given(@"I Make Workflow Savable")]
         [When(@"I Make Workflow Savable")]
         [Then(@"I Make Workflow Savable")]
@@ -795,7 +795,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
         }
-       
+
         [Given(@"I Make Workflow Savable And Then Save")]
         [When(@"I Make Workflow Savable And Then Save")]
         [Then(@"I Make Workflow Savable And Then Save")]
@@ -1506,7 +1506,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = filterText;
         }
-       
+
         #region UIMaps
 
         UIMap UIMap
@@ -1794,5 +1794,21 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
+
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void Drag_Explorer_Item_To_Design_Surface()
+        {
+            #region Variable Declarations
+            WpfTreeItem uIWarewolfStudioViewMoTreeItem1 = ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            WpfCustom uIFlowchartCustom1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Move 'Warewolf.Studio.ViewModels.EnvironmentViewModel' -> 'Warewolf.Studio.ViewModels.ExplorerItemViewModel' tree item to 'Flowchart' custom control
+            uIFlowchartCustom1.EnsureClickable(new Point(307, 126));
+            Mouse.StartDragging(uIWarewolfStudioViewMoTreeItem1, new Point(59, 8));
+            Mouse.StopDragging(uIFlowchartCustom1, new Point(307, 126));
+        }
     }
 }
