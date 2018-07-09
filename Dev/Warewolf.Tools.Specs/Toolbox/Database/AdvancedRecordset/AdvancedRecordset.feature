@@ -4332,21 +4332,11 @@ Scenario:  Change Field Name on the Outputs Grid Updates the Debug output field
     And Outputs are as follows
     | Mapped From | Mapped To            |
     | name        | [[TableCopy().name]] |
-    When Advanced Recordset tool is executed
-    Then recordset "[[TableCopy(*).name]]"  will be
-    | rs               | value  |
-    | TableCopy().name | Bob    |
-    | TableCopy().name | Alice  |
-    | TableCopy().name | Hatter |
-    And the execution has "NO" error
-    And the debug output as
-    |                                |
-    | [[TableCopy(3).name]] = Hatter |
 	And I update Output field to   
     | Mapped From | Mapped To                 |
     | name        | [[TableCopy().firstname]] |
-	When Advanced Recordset tool is executed
- Then recordset "[[TableCopy(*)firstname]]"  will be
+	When Advanced Recordset tool is executed after change
+	Then recordset "[[TableCopy(*).firstname]]"  will be
     | rs                    | value  |
     | TableCopy().firstname | Bob    |
     | TableCopy().firstname | Alice  |
