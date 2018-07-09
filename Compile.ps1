@@ -49,11 +49,13 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
             $VswherePath = "$env:windir\vswhere.exe"
         }
     }
-	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
+	$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format value
     $StartKey = "installationPath: "
     $EndKey = " installationVersion: "
-    $SubstringStart = $MSBuildPath.IndexOf($StartKey) + $StartKey.Length
-    $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
+    if ($GetMSBuildPath -ne $null -and $GetMSBuildPath.IndexOf($StartKey) -gt 0) {
+        $SubstringStart = $GetMSBuildPath.IndexOf($StartKey) + $StartKey.Length
+        $MSBuildPath = $GetMSBuildPath.Substring($SubStringStart, $GetMSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
+    }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
