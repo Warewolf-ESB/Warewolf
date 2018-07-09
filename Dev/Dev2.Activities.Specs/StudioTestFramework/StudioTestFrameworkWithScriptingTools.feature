@@ -244,6 +244,7 @@ Scenario: Test WF with Sharepoint Download File
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "ShapointDownloadFileTestWF" is deleted as cleanup
 	Then the file "Hello World.bite" is deleted from the Sharepoint server as cleanup
+	Then the folder "DownloadedFromSharepoint" is deleted from the server as cleanup
 	
 Scenario: Test WF with Sharepoint Upload File
 	Given I have a workflow "ShapointUploadFileTestWF"		 

@@ -429,6 +429,7 @@
     </Compile>
     <Compile Include="WorkflowTab\Tools\Utility\Web Request.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Xpath.cs" />
+    <Compile Include="Debug Output\Recordset.cs" />
     <Compile Include="WorkflowTab\Variables\Variables.cs" />
     <Compile Include="WorkflowTab\WorkflowTabUIMap.cs">
       <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
@@ -474,7 +475,9 @@
     <None Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Loop Constructs\LoopConstructToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Recordset\RecordsetToolsUIMap.uitest" />
-    <None Include="WorkflowTab\Tools\Resources\ResourcesToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Resources\ResourcesToolsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WorkflowTab\Tools\Scripting\ScriptingToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Sharepoint\SharepointToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Storage Dropbox\DropboxToolsUIMap.uitest" />
