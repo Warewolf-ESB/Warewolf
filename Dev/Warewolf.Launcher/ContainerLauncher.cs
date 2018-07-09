@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Warewolf.Launcher
@@ -391,21 +392,64 @@ namespace Warewolf.Launcher
             containerContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 3, 0);
-                var response = client.PostAsync(url, containerContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                client.Timeout = new TimeSpan(0, 0, 30);
+                try
                 {
-                    if (!response.IsSuccessStatusCode)
+                    var response = client.PostAsync(url, containerContent).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        throw new HttpRequestException("Error creating remote server container. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        serverContainerID = ParseForContainerID(reader.ReadToEnd());
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new HttpRequestException("Error creating remote server container. " + reader.ReadToEnd());
+                        }
+                        else
+                        {
+                            serverContainerID = ParseForContainerID(reader.ReadToEnd());
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to get container ID.");
+                }
             }
+            if (string.IsNullOrEmpty(serverContainerID))
+            {
+                serverContainerID = GetNewContainerID();
+            }
+        }
+
+        string GetNewContainerID()
+        {
+            Console.WriteLine($"Getting Container ID from {remoteSwarmDockerApi}.");
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/json?all=true";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 3, 0);
+                int retryCount = 0;
+                while (++retryCount < 10) 
+                {
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    var result = string.Empty;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            result = ParseForNewContainerID(reader.ReadToEnd());
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        client.Dispose();
+                        return result;
+                    }
+                    Console.WriteLine($"Still Getting Container ID from {remoteSwarmDockerApi}.");
+                    Thread.Sleep(1000);
+                }
+            }
+            throw new TimeoutException($"Timed out waiting for container ID after creating a new container on {remoteSwarmDockerApi}.");
         }
 
         string ParseForImageID(string responseText)
@@ -434,6 +478,19 @@ namespace Warewolf.Launcher
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             var JSONObj = javaScriptSerializer.Deserialize<CreateContainer>(responseText);
             return JSONObj.ID;
+        }
+
+        string ParseForNewContainerID(string responseText)
+        {
+            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+            var JSONObj = javaScriptSerializer.Deserialize<List<CreateContainer>>(responseText);
+            if (JSONObj.Count > 0)
+            {
+                var UnixEpochTimeNow = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+                Console.WriteLine($"Found container {JSONObj[0].ID}. Created {(UnixEpochTimeNow - int.Parse(JSONObj[0].Created))/10}ms ago.");
+                return JSONObj[0].ID;
+            }
+            return null;
         }
 
         void ParseForNetworkID(string responseText)
@@ -531,7 +588,7 @@ namespace Warewolf.Launcher
                     else
                     {
                         ExtractTar(reader.BaseStream);
-                        string destFileName = Path.Combine(LogOutputDirectory, "Container {serverContainerID} Warewolf Server.log");
+                        string destFileName = Path.Combine(LogOutputDirectory, $"Container {serverContainerID} Warewolf Server.log");
                         File.Move(Path.Combine(LogOutputDirectory, "warewolf-server.log"), destFileName);
                         Console.WriteLine($"Recovered server container log file to \"{destFileName}\"");
                     }
@@ -572,7 +629,7 @@ namespace Warewolf.Launcher
     class CreateContainer
     {
         public string ID { get; set; }
-        public List<string> Warnings { get; set; }
+        public string Created { get; set; }
     }
 
     class CreateService
