@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Security.Principal;
 
 namespace Warewolf.Launcher
@@ -17,10 +16,17 @@ namespace Warewolf.Launcher
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
-                    throw new UnauthorizedAccessException("Must run as an administrator.");
+                    var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(exeName)
+                    {
+                        Verb = "runas",
+                        Arguments = string.Join(" ", args)
+                    };
+                    Process.Start(startInfo);
+                    return;
                 }
             }
-            
+
             var build = Options.PargeArgs(args);
 
             build.JobSpecs = Job_Definitions.GetJobDefinitions();
@@ -61,242 +67,58 @@ namespace Warewolf.Launcher
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
             
-            if (build.TestsPath != null && build.TestsPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.TestRunner.TestsPath) && build.TestRunner.TestsPath.StartsWith(".."))
             {
-                build.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestsPath);
+                build.TestRunner.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsPath);
             }
             
-            if (build.TestsResultsPath != null && build.TestsResultsPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.TestRunner.TestsResultsPath) && build.TestRunner.TestsResultsPath.StartsWith(".."))
             {
-                build.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestsResultsPath);
+                build.TestRunner.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestRunner.TestsResultsPath);
             }
 
-            if (build.ServerPath != null && build.ServerPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.ServerPath) && build.ServerPath.StartsWith(".."))
             {
                 build.ServerPath = Path.Combine(Environment.CurrentDirectory, build.ServerPath);
             }
 
-            if (build.StudioPath != null && build.StudioPath.StartsWith(".."))
+            if (!string.IsNullOrEmpty(build.StudioPath) && build.StudioPath.StartsWith(".."))
             {
                 build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
 
-            if (!File.Exists(build.TestsResultsPath))
+            if (!string.IsNullOrEmpty(build.TestRunner.TestList))
             {
-                Directory.CreateDirectory(build.TestsResultsPath);
+                build.TestRunner.TestList = build.TestRunner.TestList.Trim();
             }
 
-            // Unpack jobs
-            var JobNames = new List<string>();
-            var JobAssemblySpecs = new List<string>();
-            var JobCategories = new List<string>();
-            if (!string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory) && string.IsNullOrEmpty(build.Cleanup))
+            if (!File.Exists(build.TestRunner.TestsResultsPath))
             {
-                foreach (var Job in build.JobName.Split(','))
+                Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
+            }
+
+            if (!build.Cleanup)
+            {
+                if (!string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
                 {
-                    var TrimJobName = Job.TrimEnd('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ');
-                    if (build.JobSpecs.ContainsKey(TrimJobName))
+                    build.RunTestJobs();
+                }
+            }
+            else
+            {
+                build.CleanupServerStudio(!build.ApplyDotCover);
+                if (string.IsNullOrEmpty(build.JobName))
+                {
+                    if (!string.IsNullOrEmpty(build.ProjectName))
                     {
-                        JobNames.Add(TrimJobName);
-                        if (build.JobSpecs[TrimJobName].Item2 == null)
-                        {
-                            JobAssemblySpecs.Add(build.JobSpecs[TrimJobName].Item1);
-                            JobCategories.Add("");
-                        }
-                        else
-                        {
-                            JobAssemblySpecs.Add(build.JobSpecs[Job].Item1);
-                            JobCategories.Add(build.JobSpecs[Job].Item2);
-                        }
+                        build.JobName = build.ProjectName;
                     }
                     else
                     {
-                        Console.WriteLine("Unrecognized Job " + Job + " was ignored from the run");
+                        build.JobName = "Manual Tests";
                     }
                 }
-            }
-            if (!string.IsNullOrEmpty(build.ProjectName))
-            {
-                JobNames.Add(build.ProjectName);
-                JobAssemblySpecs.Add(build.ProjectName);
-                if (!string.IsNullOrEmpty(build.Category))
-                {
-                    JobCategories.Add(build.Category);
-                }
-                else
-                {
-                    JobCategories.Add("");
-                }
-            }
-            var TotalNumberOfJobsToRun = JobNames.Count;
-            if (TotalNumberOfJobsToRun > 0)
-            {
-                if (!string.IsNullOrEmpty(build.VSTestPath) && !File.Exists(build.VSTestPath))
-                {
-                    if (File.Exists(build.VSTestPath.Replace("Enterprise", "Professional")))
-                    {
-                        build.VSTestPath = build.VSTestPath.Replace("Enterprise", "Professional");
-                    }
-                    if (File.Exists(build.VSTestPath.Replace("Enterprise", "Community")))
-                    {
-                        build.VSTestPath = build.VSTestPath.Replace("Enterprise", "Community");
-                    }
-                }
-                if (!string.IsNullOrEmpty(build.MSTestPath) && !(File.Exists(build.MSTestPath)))
-                {
-                    if (File.Exists(build.MSTestPath.Replace("Enterprise", "Professional")))
-                    {
-                        build.MSTestPath = build.MSTestPath.Replace("Enterprise", "Professional");
-                    }
-                    if (File.Exists(build.MSTestPath.Replace("Enterprise", "Community")))
-                    {
-                        build.MSTestPath = build.MSTestPath.Replace("Enterprise", "Community");
-                    }
-                }
-                if (!File.Exists(build.VSTestPath) && !(File.Exists(build.MSTestPath)))
-                {
-                    throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
-                }
-
-                if (build.ApplyDotCover && build.DotCoverPath != "" && !(File.Exists(build.DotCoverPath)))
-                {
-                    throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
-                }
-
-                if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))
-                {
-                    File.Move(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"), build.TestsResultsPath);
-                    Console.WriteLine("Removed loose TRX files from VS install directory.");
-                }
-
-                if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart))
-                {
-                    build.InstallServer();
-                }
-
-                if (!string.IsNullOrEmpty(build.MSTest))
-                {
-                    // Read playlists and args.
-                    if (string.IsNullOrEmpty(build.TestList))
-                    {
-                        foreach (var playlistFile in Directory.GetFiles(build.TestsPath, "*.playlist"))
-                        {
-                            XmlDocument playlistContent = new XmlDocument();
-                            playlistContent.Load(playlistFile);
-                            if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
-                            {
-                                foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
-                                {
-                                    build.TestList += "," + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                                }
-                            }
-                            else
-                            {
-                                if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
-                                {
-                                    build.TestList = " /Tests:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
-                                }
-                            }
-                        }
-                        if (build.TestList.StartsWith(","))
-                        {
-                            build.TestList = build.TestList.Replace("^.", " /Tests:");
-                        }
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(build.TestList))
-                    {
-                        foreach (var playlistFile in Directory.GetFiles(build.TestsPath, "*.playlist"))
-                        {
-                            XmlDocument playlistContent = new XmlDocument();
-                            playlistContent.Load(playlistFile);
-                            if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
-                            {
-                                foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
-                                {
-                                    build.TestList += " /test:" + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                                }
-                            }
-                            else
-                            {
-                                if (playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
-                                {
-                                    build.TestList = " /test:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
-                                }
-                            }
-                        }
-                    }
-                }
-                for (var i = 0; i < TotalNumberOfJobsToRun; i++)
-                {
-                    var JobName = JobNames[i].ToString();
-                    var ProjectSpec = JobAssemblySpecs[i].ToString();
-                    var TestCategories = JobCategories[i].ToString();
-                    var TestAssembliesList = "";
-                    var TestAssembliesDirectories = new List<string>();
-                    if (!build.TestsPath.EndsWith("\\"))
-                    {
-                        build.TestsPath += "\\";
-                    }
-                    foreach (var Project in ProjectSpec.Split(','))
-                    {
-                        Tuple<string, List<string>> UnPackTestAssembliesListAndDirectories = build.ResolveTestAssemblyFileSpecs(build.TestsPath + Project + ".dll");
-                        TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
-                        if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
-                        {
-                            TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
-                        }
-                        if (TestAssembliesList == "")
-                        {
-                            UnPackTestAssembliesListAndDirectories = build.ResolveProjectFolderSpecs(build.TestsPath + Project);
-                            TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
-                            if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
-                            {
-                                TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
-                            }
-                        }
-                    }
-                    if (string.IsNullOrEmpty(TestAssembliesList) || string.IsNullOrEmpty(TestAssembliesList))
-                    {
-                        throw new Exception("Cannot find any " + ProjectSpec + " project folders or assemblies at " + build.TestsPath + ".");
-                    }
-
-                    // Setup for screen recording
-                    var TestSettingsFile = build.ScreenRecordingTestSettingsFile(build, JobName);
-
-                    string TestRunnerPath;
-                    if (string.IsNullOrEmpty(build.MSTest))
-                    {
-                        TestRunnerPath = build.VSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
-                    }
-                    else
-                    {
-                        TestRunnerPath = build.MSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
-                    }
-
-                    //Run Tests
-                    var TrxFile = build.RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-
-                    //Re-try Failures
-                    for (var count = 0; count < build.RetryCount; count++)
-                    {
-                        build.RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count+1);
-                    }
-                }
-                if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
-                {
-                    build.MergeDotCoverSnapshots();
-                }
+                build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")));
             }
 
             if (!string.IsNullOrEmpty(build.AssemblyFileVersionsTest))
@@ -304,7 +126,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine("Testing Warewolf assembly file versions...");
                 var HighestReadVersion = "0.0.0.0";
                 var LastReadVersion = "0.0.0.0";
-                foreach (var file in Directory.GetFiles(build.TestsPath, "*", SearchOption.AllDirectories))
+                foreach (var file in Directory.GetFiles(build.TestRunner.TestsPath, "*", SearchOption.AllDirectories))
                 {
                     if ((file.EndsWith(".dll") || (file.EndsWith(".exe") && !file.EndsWith(".vshost.exe"))) && (file.StartsWith("Dev2.") || file.StartsWith("Warewolf.") || file.StartsWith("WareWolf")))
                     {
@@ -323,7 +145,7 @@ namespace Warewolf.Launcher
                         // Check for invalid.
                         if (ReadVersion.StartsWith("0.0.") || (LastReadVersion != ReadVersion && LastReadVersion != "0.0.0.0"))
                         {
-                            throw new Exception("ERROR! \"" + file + " " + ReadVersion + "\" is either an invalid version or not equal to \"" + LastReadVersion + "\". All Warewolf assembly versions in \"" + build.TestsPath + "\" must conform and cannot start with 0.0. or end with .0");
+                            throw new Exception("ERROR! \"" + file + " " + ReadVersion + "\" is either an invalid version or not equal to \"" + LastReadVersion + "\". All Warewolf assembly versions in \"" + build.TestRunner.TestsPath + "\" must conform and cannot start with 0.0. or end with .0");
                         }
                         LastReadVersion = ReadVersion;
                     }
@@ -336,40 +158,231 @@ namespace Warewolf.Launcher
                 build.MergeDotCoverSnapshots();
             }
 
-            if (!string.IsNullOrEmpty(build.Cleanup))
+            if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
-                build.CleanupServerStudio(!build.ApplyDotCover);
-                if (!string.IsNullOrEmpty(build.JobName))
+                if (build.AdminMode)
                 {
-                    if (!string.IsNullOrEmpty(build.ProjectName))
+                    if (!File.Exists(build.TestRunner.Path))
                     {
-                        build.JobName = build.ProjectName;
+                        if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                        {
+                            Console.WriteLine("\nvstest.console.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = WindowUtils.PromptForUserInput();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a MSTest test runner in order to use mstest.exe. Use --MSTest commandline parameter to specify that a MSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("VSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
+                        else if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe")
+                        {
+                            Console.WriteLine("\nmstest.exe not found. Please enter the path to that file now.");
+                            build.TestRunner.Path = WindowUtils.PromptForUserInput();
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "vstest.console.exe")
+                            {
+                                throw new ArgumentException("Launcher must be run with a VSTest test runner in order to use vstest.console.exe. Use --VSTest commandline parameter to specify that a VSTest test runner is to be used.");
+                            }
+                            if (Path.GetFileName(build.TestRunner.Path).ToLower() == "mstest.exe" && File.Exists(build.TestRunner.Path))
+                            {
+                                Environment.SetEnvironmentVariable("MSTESTEXE", build.TestRunner.Path, EnvironmentVariableTarget.Machine);
+                            }
+                        }
                     }
-                    else
+                    Console.WriteLine("\nAdmin, What would you like to do?");
+                    var options = new[] {
+                    "[1]Single Job: Run One Test Job. (This is the default)",
+                    "[2]Builds: Run Whole Builds."
+                    };
+                    foreach (var option in options)
                     {
-                        build.JobName = "Manual Tests";
+                        Console.WriteLine();
+                        var originalColour = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(option.Substring(0, 3));
+                        Console.ForegroundColor = originalColour;
+                        Console.Write(option.Substring(3, option.Length - 3));
                     }
-                }
-                build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")));
-            }
+                    Console.WriteLine("\n\nOr Press Enter to use default (Single Job)...");
 
-            if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
-            {
-                build.InstallServer();
-                build.CleanupServerStudio();
-                build.Startmywarewolfio();
-                build.TryStartLocalCIRemoteContainer();
-                if (String.IsNullOrEmpty(build.DomywarewolfioStart))
-                {
-                    build.StartServer();
-                    if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
+                    var runType = WindowUtils.PromptForUserInput();
+                    if (runType == "" || runType == "1")
                     {
-                        build.StartStudio();
+                        Console.WriteLine("\nWhich test job would you like to run?");
+                        int count = 0;
+                        foreach (var option in build.JobSpecs.Keys.ToList())
+                        {
+                            Console.WriteLine();
+                            var originalColour = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("[" + (++count).ToString() + "]");
+                            Console.ForegroundColor = originalColour;
+                            Console.Write(option);
+                        }
+                        Console.WriteLine("\n\nType the name or number of the job or press Enter to use default (Other Unit Tests)...");
+
+                        string selectedOption = WindowUtils.PromptForUserInput();
+                        if (string.IsNullOrEmpty(selectedOption))
+                        {
+                            selectedOption = "1";
+                        }
+                        if (!selectedOption.Contains(","))
+                        {
+                            var canParse = int.TryParse(selectedOption, out int jobNumber);
+                            if (canParse)
+                            {
+                                build.JobName = build.JobSpecs.Keys.ToList()[jobNumber - 1];
+                            }
+                            else
+                            {
+                                if (build.JobSpecs.Keys.ToList().Contains(selectedOption))
+                                {
+                                    build.JobName = selectedOption;
+                                }
+                                else
+                                {
+                                    throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var resolvedSelectedOptions = new List<string>();
+                            foreach (var option in selectedOption.Split(','))
+                            {
+                                var canParse = int.TryParse(option, out int jobNumber);
+                                if (canParse)
+                                {
+                                    resolvedSelectedOptions.Add(build.JobSpecs.Keys.ToList()[jobNumber - 1]);
+                                }
+                                else
+                                {
+                                    if (build.JobSpecs.Keys.ToList().Contains(option))
+                                    {
+                                        resolvedSelectedOptions.Add(option);
+                                    }
+                                    else
+                                    {
+                                        throw new ArgumentException($"{option} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                    }
+                                }
+                            }
+                            build.JobName = string.Join(",", resolvedSelectedOptions);
+                        }
+                        Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
+
+                        build.TestRunner.TestList = WindowUtils.PromptForUserInput();
+                        Console.WriteLine("\nStart the Studio?[y|N]");
+
+                        if (WindowUtils.PromptForUserInput().ToLower() == "y")
+                        {
+                            build.DoServerStart = "true";
+                            build.DoStudioStart = "true";
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nStart the Server?[y|N]");
+
+                            if (WindowUtils.PromptForUserInput().ToLower() == "y")
+                            {
+                                build.DoServerStart = "true";
+                            }
+                        }
+
+                        build.RunTestJobs();
                     }
+                    else if (runType == "2")
+                    {
+                        Console.WriteLine("\nWhat type of build do you want to run?");
+                        options = new[] {
+                        "[1]All: Run All Test Builds. (This is the default)",
+                        "[2]Unit Tests: Run All Unit Test Jobs.",
+                        "[3]Server Tests: Run All ServerTests Resource Test Jobs",
+                        "[4]Release: Run All Release Resource Test Jobs.",
+                        "[5]Desktop UI: Run All UI Test Jobs. (This is the default)",
+                        "[6]Web UI: Run All Web UI Test Jobs.",
+                        "[7]UI Load: Run All Load Test Jobs."
+                        };
+                        foreach (var option in options)
+                        {
+                            Console.WriteLine();
+                            var originalColour = Console.ForegroundColor;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(option.Substring(0, 3));
+                            Console.ForegroundColor = originalColour;
+                            Console.Write(option.Substring(3, option.Length - 3));
+                        }
+                        Console.WriteLine("\n\nOr Press Enter to use default (All)...");
+
+                        var testType = WindowUtils.PromptForUserInput();
+
+                        const int NumberOfUnitTestJobs = 34;
+                        const int NumberOfServerTestJobs = 30;
+                        const int NumberOfReleaseResourcesTestJobs = 1;
+                        const int NumberOfDesktopUITestJobs = 64;
+                        const int NumberOfWebUITestJobs = 3;
+                        const int NumberOfLoadTestJobs = 3;
+                        if (testType == "" || testType == "1")
+                        {
+                            build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
+                            build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
+                            build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
+                            build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
+                            build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
+                            build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        }
+                        else if (testType == "2")
+                        {
+                            build.RunAllUnitTestJobs(0, NumberOfUnitTestJobs);
+                        }
+                        else if (testType == "3")
+                        {
+                            build.RunAllServerTestJobs(NumberOfUnitTestJobs, NumberOfServerTestJobs);
+                        }
+                        else if (testType == "4")
+                        {
+                            build.RunAllReleaseResourcesTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs, NumberOfReleaseResourcesTestJobs);
+                        }
+                        else if (testType == "5")
+                        {
+                            build.RunAllDesktopUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs, NumberOfDesktopUITestJobs);
+                        }
+                        else if (testType == "6")
+                        {
+                            build.RunAllWebUITestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs, NumberOfWebUITestJobs);
+                        }
+                        else if (testType == "7")
+                        {
+                            build.RunAllLoadTestJobs(NumberOfUnitTestJobs + NumberOfServerTestJobs + NumberOfReleaseResourcesTestJobs + NumberOfDesktopUITestJobs + NumberOfWebUITestJobs, NumberOfLoadTestJobs);
+                        }
+                    }
+                    WindowUtils.BringToFront();
+                    var originalConsoleColour = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Admin, build has completed. Test results have been published to {build.TestRunner.TestsResultsPath}. You can now close this window.");
+                    Console.ForegroundColor = originalConsoleColour;
+                    Console.ReadKey();
                 }
-                Console.WriteLine("Press Enter to Shutdown.");
-                Console.ReadKey();
-                build.CleanupServerStudio();
+                else
+                {
+                    build.InstallServer();
+                    build.CleanupServerStudio();
+                    build.Startmywarewolfio();
+                    build.TryStartLocalCIRemoteContainer();
+                    if (String.IsNullOrEmpty(build.DomywarewolfioStart))
+                    {
+                        build.StartServer();
+                        if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
+                        {
+                            build.StartStudio();
+                        }
+                    }
+                    Console.WriteLine("Press Enter to Shutdown.");
+                    Console.ReadKey();
+                    build.CleanupServerStudio();
+                }
             }
         }
     }

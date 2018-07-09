@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -9,7 +10,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
-
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDbSources : DefaultEsbManagementEndpoint
@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            
+
             var list = Resources.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is DbSource res)
@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }).ToList();
 
             return serializer.SerializeToBuilder(new ExecuteMessage { HasError = false, Message = serializer.SerializeToBuilder(list) });
-            
+
         }
 
         public ResourceCatalog Resources => ResourceCatalog.Instance;
