@@ -84,9 +84,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
             foreach (var tableRow in declaredVariables.Rows)
-            {                
+            {
                 var expectedName = tableRow["VariableName"];
-                Assert.IsTrue(viewModel.DeclareVariables.Any(p=>p.Name == expectedName));
+                Assert.IsTrue(viewModel.DeclareVariables.Any(p => p.Name == expectedName));
             }
         }
 
@@ -109,7 +109,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];
                 var found = outputs.FirstOrDefault(mapping => mapping.MappedFrom == mappedFrom && mapping.MappedTo == mappedTo);
-                Assert.IsNotNull(found,"Outputs is null.");
+                Assert.IsNotNull(found, "Outputs is null.");
             }
         }
 
@@ -137,15 +137,34 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             _scenarioContext.Add("result", result);
         }
-
+        [When(@"Advanced Recordset tool is executed after change")]
+        public void WhenAdvancedRecordsetToolIsExecutedAfterChange()
+        {
+            BuildDataList();
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            _scenarioContext.Remove("result");
+            _scenarioContext.Add("result", result);
+        }
         [Then(@"I update Output field to")]
-        public void ThenIUpdateOutputFieldTo(Table table)
+        public void ThenIUpdateOutputFieldTo(Table expectedOutputs)
         {
 
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
             var outputMappings = viewModel.OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
+            var rowIdx = 0;
+            foreach (var tableRow in expectedOutputs.Rows)
+            {
+                var mappedFrom = tableRow["Mapped From"];
+                var mappedTo = tableRow["Mapped To"];
 
-
+                var outputMapping = outputMappings.ToList()[rowIdx];
+                outputMapping.MappedTo = mappedTo;
+                outputMapping.MappedFrom = mappedFrom;
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
+            }
         }
 
         [Given(@"recordset ""(.*)""  will be")]
@@ -179,7 +198,20 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             {
                 Action = activity
             };
-            _scenarioContext.Add("activity", activity);
+
+            _scenarioContext.TryGetValue("activity", out AdvancedRecordsetActivity activity2);
+
+            if (activity2 == null)
+            {
+                _scenarioContext.Add("activity", activity);
+            }
+            else
+            {
+                _scenarioContext.Remove("activity");
+                _scenarioContext.Add("activity", activity);
+            }
+
+
         }
     }
 }
