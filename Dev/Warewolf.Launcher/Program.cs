@@ -288,6 +288,7 @@ namespace Warewolf.Launcher
                             if (WindowUtils.PromptForUserInput().ToLower() == "y")
                             {
                                 build.DoServerStart = "true";
+                                build.RecordScreen = "true";
                             }
                         }
 
