@@ -32,9 +32,12 @@ namespace Dev2.Activities.Specs.Sources
         [AfterScenario]
         public void Cleanup()
         {
-            var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
-            environmentModel.ResourceRepository.DeleteResource(resourceModel);
-            environmentModel.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
+            ScenarioContext.Current.TryGetValue("resourceModel", out IResourceModel resourceModel);
+            if (resourceModel != null)
+            {
+                environmentModel.ResourceRepository.DeleteResource(resourceModel);
+                environmentModel.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
+            }
         }
 
         [Given(@"I create a server source as")]
