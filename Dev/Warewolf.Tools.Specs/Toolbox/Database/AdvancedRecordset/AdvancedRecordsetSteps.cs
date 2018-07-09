@@ -138,6 +138,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             _scenarioContext.Add("result", result);
         }
 
+        [Then(@"I update Output field to")]
+        public void ThenIUpdateOutputFieldTo(Table table)
+        {
+
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var outputMappings = viewModel.OutputsRegion.Outputs;
+
+
+        }
 
         [Given(@"recordset ""(.*)""  will be")]
         [Then(@"recordset ""(.*)""  will be")]
