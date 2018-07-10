@@ -181,7 +181,13 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-                dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
+                try
+                {
+                    dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
+                } catch (Exception e)
+                {
+                    //asdf
+                }
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
@@ -258,12 +264,16 @@ namespace Dev2.Runtime.ESB.Execution
                     dsfDataObject.StateLogger.LogStopExecutionState();
                 }
             }
+            catch (Exception e)
+            {
+                throw;
+            }
             finally
             {
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
-                dsfDataObject.StateLogger.Dispose();
+                dsfDataObject.StateLogger?.Dispose();
                 dsfDataObject.StateLogger = null;
                 if (outerStateLogger != null)
                 {

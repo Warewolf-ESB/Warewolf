@@ -63,15 +63,91 @@ namespace Dev2.Common.Wrappers
 
         public Stream OpenRead(string path) => File.OpenRead(path);
 
-        public StreamWriter AppendText(string filePath)
+        readonly static ConcurrentDictionary<string, RefCountedStreamWriter> cache = new ConcurrentDictionary<string, RefCountedStreamWriter>();
+        public IDev2StreamWriter AppendText(string filePath)
         {
-            var result = File.AppendText(filePath);
-            return result;
+            RefCountedStreamWriter writer;
+            try
+            {
+                RefCountedStreamWriter result;
+                if (cache.TryGetValue(filePath, out writer))
+                {
+                    result = writer.GetReference();
+                    if (result.Closed)
+                    {
+                        result.SetTextWriter(File.AppendText(filePath));
+                    }
+                    return result;
+                }
+
+                var streamWriter = File.AppendText(filePath);
+                result = new RefCountedStreamWriter(streamWriter);
+                if (!cache.TryAdd(filePath, result))
+                {
+                    throw new Exception($"failed keeping single reference to {filePath}");
+                }
+                return result.GetReference();
+            } catch (Exception e)
+            {
+                if (cache.TryGetValue(filePath, out writer))
+                {
+                    return writer.GetReference();
+                }
+                throw new Exception($"failed opening {filePath} for appending", e);
+            }
         }
 
         public DateTime GetLastWriteTime(string filePath)
         {
             return File.GetLastWriteTime(filePath).Date;
+        }
+    }
+    class RefCountedStreamWriter : IDev2StreamWriter
+    {
+        public int count;
+        public bool Closed { get; private set; } = false;
+        public RefCountedStreamWriter GetReference()
+        {
+            Interlocked.Increment(ref count);
+            return this;
+        }
+        public TextWriter SynchronizedTextWriter { get; private set; }
+        public void SetTextWriter(StreamWriter writer)
+        {
+            this.SynchronizedTextWriter = TextWriter.Synchronized(writer);
+        }
+
+        public RefCountedStreamWriter(StreamWriter writer)
+        {
+            SetTextWriter(writer);
+        }
+
+        public void WriteLine(string v)
+        {
+            this.SynchronizedTextWriter.WriteLine(v);
+        }
+
+        public void WriteLine()
+        {
+            this.SynchronizedTextWriter.WriteLine();
+        }
+
+        public void Flush()
+        {
+            this.SynchronizedTextWriter.Flush();
+        }
+
+        public void Dispose()
+        {
+            lock (this.SynchronizedTextWriter)
+            {
+                Interlocked.Decrement(ref count);
+            }
+            if (count <= 0)
+            {
+                Closed = true;
+                this.SynchronizedTextWriter.Dispose();
+            }
         }
     }
 }
