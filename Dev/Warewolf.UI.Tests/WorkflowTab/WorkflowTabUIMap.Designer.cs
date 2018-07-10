@@ -6828,6 +6828,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
+        public UIAdvancedRecordsetTreeItem UIAdvancedRecordsetTreeItem
+        {
+            get
+            {
+                if ((this.mUIAdvancedRecordsetTreeItem == null))
+                {
+                    this.mUIAdvancedRecordsetTreeItem = new UIAdvancedRecordsetTreeItem(this);
+                }
+                return this.mUIAdvancedRecordsetTreeItem;
+            }
+        }
+        
         public UIF6ExecuteOnFocusLostTreeItem UIF6ExecuteOnFocusLostTreeItem
         {
             get
@@ -6951,6 +6963,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
+        private UIAdvancedRecordsetTreeItem mUIAdvancedRecordsetTreeItem;
+        
         private UIF6ExecuteOnFocusLostTreeItem mUIF6ExecuteOnFocusLostTreeItem;
         
         private Step1 mStep1;
@@ -6968,6 +6982,63 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private FindRecordIndexTreeItem mFindRecordIndexTreeItem;
         
         private UISQLServerDatabaseTreeItem mUISQLServerDatabaseTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIAdvancedRecordsetTreeItem : WpfTreeItem
+    {
+        
+        public UIAdvancedRecordsetTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIIDText
+        {
+            get
+            {
+                if ((this.mUIIDText == null))
+                {
+                    this.mUIIDText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIIDText.SearchProperties[WpfText.PropertyNames.Name] = "id = ";
+                    this.mUIIDText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIIDText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIIDText;
+            }
+        }
+        
+        public WpfExpander UIPersonidExpander
+        {
+            get
+            {
+                if ((this.mUIPersonidExpander == null))
+                {
+                    this.mUIPersonidExpander = new WpfExpander(this);
+                    #region Search Criteria
+                    this.mUIPersonidExpander.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_DefaultRecordSetIOTemplate_AutoID";
+                    this.mUIPersonidExpander.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIPersonidExpander.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIPersonidExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIIDText;
+        
+        private WpfExpander mUIPersonidExpander;
         #endregion
     }
     

@@ -12,6 +12,7 @@ namespace Warewolf.UI.Tests
     public class RecordsetTests
     {
         const string workflow = "F6ExecuteOnFocusLostTest";
+        const string SetDeclareVarToRecordset = "SetDeclareVarToRecordset";
 
         [TestMethod]
         [TestCategory("Recordset")]
@@ -34,6 +35,18 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIF6ExecuteOnFocusLostTreeItem.UIPersonnameExpander.FirstRowOfRecordset.Exists);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIF6ExecuteOnFocusLostTreeItem.UIPersonnameExpander.ThirdRowOfRecordset.Exists);
 
+        }
+
+        [TestMethod]
+        [TestCategory("Recordset")]
+        public void Assigning_Declared_Variable_To_A_Recordset_Shows_The_Equal_Sign()
+        {
+            ExplorerUIMap.Filter_Explorer(SetDeclareVarToRecordset);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIIDText.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIIDText.DisplayText.Contains("="));
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIPersonidExpander.Exists);
         }
 
         #region Additional test attributes

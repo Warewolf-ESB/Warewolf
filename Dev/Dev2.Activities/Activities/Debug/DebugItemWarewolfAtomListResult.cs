@@ -32,7 +32,7 @@ namespace Dev2.Activities.Debug
 
         public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
-            _labelText = "";
+            _labelText = leftLabelText;
             _operand = operand;
             _isCalculate = isCalculate;
             _variable = variable;
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Debug
             _variable = variable;
             _type = DebugItemResultType.Variable;
             _rightLabel = rightLabelText;
-            _leftLabel = _labelText;
+            _leftLabel = labelText;
             _warewolfAtomListresult = warewolfAtomListresult;
             _newValue = newValue;
             _oldValue = null;

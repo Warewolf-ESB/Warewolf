@@ -42,21 +42,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
             Assert.AreEqual(this.Open_Tools_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// RecordedMethod1 - Use 'RecordedMethod1Params' to pass parameters into this method.
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfCell uIItemDev2StudioViewMoCell = this.UIWarewolfDEV2SANELEMTWindow.UILargeViewContentCustom.UIOutputsDataGridTable.UIUI_ActivityGridRow_0Row.UIItemDev2StudioViewMoCell;
-            #endregion
-
-            // Type '[[person(*).name]]' in 'Item: Dev2.Studio.ViewModels.DataList.InputOutputV...' cell
-            uIItemDev2StudioViewMoCell.Value = this.RecordedMethod1Params.UIItemDev2StudioViewMoCellValue;
-
-            // Last mouse action was not recorded.
-        }
-        
         #region Properties
         public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
         {
@@ -67,18 +52,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
                     this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams = new Open_Tools_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual RecordedMethod1Params RecordedMethod1Params
-        {
-            get
-            {
-                if ((this.mRecordedMethod1Params == null))
-                {
-                    this.mRecordedMethod1Params = new RecordedMethod1Params();
-                }
-                return this.mRecordedMethod1Params;
             }
         }
         
@@ -93,28 +66,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
                 return this.mMainStudioWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
-        private RecordedMethod1Params mRecordedMethod1Params;
-        
         private MainStudioWindow mMainStudioWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -130,21 +87,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'RecordedMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class RecordedMethod1Params
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type '[[person(*).name]]' in 'Item: Dev2.Studio.ViewModels.DataList.InputOutputV...' cell
-        /// </summary>
-        public string UIItemDev2StudioViewMoCellValue = "[[person(*).name]]";
         #endregion
     }
     
@@ -4994,141 +4936,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
         
         #region Fields
         private WpfImage mComDllTestPassedImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UILargeViewContentCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UILargeViewContentCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UILargeViewContentCustom : WpfCustom
-    {
-        
-        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIOutputsDataGridTable2 UIOutputsDataGridTable
-        {
-            get
-            {
-                if ((this.mUIOutputsDataGridTable == null))
-                {
-                    this.mUIOutputsDataGridTable = new UIOutputsDataGridTable2(this);
-                }
-                return this.mUIOutputsDataGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIOutputsDataGridTable2 mUIOutputsDataGridTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIOutputsDataGridTable2 : WpfTable
-    {
-        
-        public UIOutputsDataGridTable2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsDataGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ActivityGridRow_0Row2 UIUI_ActivityGridRow_0Row
-        {
-            get
-            {
-                if ((this.mUIUI_ActivityGridRow_0Row == null))
-                {
-                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row2(this);
-                }
-                return this.mUIUI_ActivityGridRow_0Row;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ActivityGridRow_0Row2 mUIUI_ActivityGridRow_0Row;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_ActivityGridRow_0Row2 : WpfRow
-    {
-        
-        public UIUI_ActivityGridRow_0Row2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIItemDev2StudioViewMoCell
-        {
-            get
-            {
-                if ((this.mUIItemDev2StudioViewMoCell == null))
-                {
-                    this.mUIItemDev2StudioViewMoCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIItemDev2StudioViewMoCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "To [[Variable]]";
-                    this.mUIItemDev2StudioViewMoCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
-                    this.mUIItemDev2StudioViewMoCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIItemDev2StudioViewMoCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIItemDev2StudioViewMoCell;
         #endregion
     }
 }
