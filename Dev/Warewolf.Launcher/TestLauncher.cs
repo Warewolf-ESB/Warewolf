@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.ServiceProcess;
+using System.Threading;
 using System.Xml;
 using Warewolf.Launcher.TestResultsMergers;
 
@@ -145,6 +146,7 @@ namespace Warewolf.Launcher
                 {
                     CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
                 }
+                Thread.Sleep(8000);
             }
             catch (Exception e)
             {
