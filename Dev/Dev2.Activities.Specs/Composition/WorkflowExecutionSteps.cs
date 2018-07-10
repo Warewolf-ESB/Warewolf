@@ -4446,7 +4446,7 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenTheLogFileContainsLoggingMatching(string searchString)
         {
             TryGetValue("LogFileContent", out string logFileContent);
-            Assert.IsTrue(logFileContent.Contains(searchString));
+            Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
 
         class DetailLogInfo
