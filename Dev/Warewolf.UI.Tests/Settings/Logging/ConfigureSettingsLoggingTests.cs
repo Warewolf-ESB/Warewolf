@@ -29,6 +29,8 @@ namespace Warewolf.UI.Tests
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Select_Fatal_Event_Log();
+            Playback.Wait(5000);
+            Mouse.Move(UIMap.MainStudioWindow.SideMenuBar.SaveButton as UITestControl, new System.Drawing.Point(0,0));
             UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
             UIMap.Click_ConfigureSetting_From_Menu();            
