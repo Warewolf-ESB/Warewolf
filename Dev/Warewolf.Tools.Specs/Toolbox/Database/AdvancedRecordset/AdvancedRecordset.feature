@@ -4314,7 +4314,6 @@ Scenario:  Given RecordsetName and  TableName starts with capital letter
     And the debug output as
     |                                |
     | [[TableCopy(3).name]] = Hatter |
-    | [[TableCopy(3).province]] = Western Cape |
 	
 Scenario:  Change Field Name on the Outputs Grid Updates the Debug output field
     Given I have a recordset with this shape
