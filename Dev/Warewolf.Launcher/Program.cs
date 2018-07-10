@@ -280,6 +280,7 @@ namespace Warewolf.Launcher
                         {
                             build.DoServerStart = "true";
                             build.DoStudioStart = "true";
+                            build.RecordScreen = "true";
                         }
                         else
                         {
@@ -288,7 +289,6 @@ namespace Warewolf.Launcher
                             if (WindowUtils.PromptForUserInput().ToLower() == "y")
                             {
                                 build.DoServerStart = "true";
-                                build.RecordScreen = "true";
                             }
                         }
 
