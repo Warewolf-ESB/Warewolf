@@ -322,6 +322,16 @@ namespace Dev2.Services.Execution
 
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
         {
+            DataObj.StateLogger?.LogAdditionalDetail(new
+                {
+                    this.Source,
+                    this.ProcedureName,
+                    this.SqlQuery,
+                    this.ConnectionTimeout,
+                    this.CommandTimeout,
+                },
+                nameof(MssqlSqlExecution)
+            );
 
             var connectionBuilder = new ConnectionBuilder();
             var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(connectionTimeout)));
@@ -477,6 +487,12 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                DataObj.StateLogger?.LogAdditionalDetail(new
+                    {
+                        Exception = ex,
+                    },
+                    nameof(MySqlExecution)
+                );
             }
             return false;
         }
