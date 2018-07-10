@@ -50,15 +50,15 @@ namespace Dev2.Activities.Debug
         {
         }
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string labelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
-            _labelText = "";
+            _labelText = labelText;
             _operand = operand;
             _isCalculate = isCalculate;
             _variable = variable;
             _type = DebugItemResultType.Variable;
             _rightLabel = rightLabelText;
-            _leftLabel = leftLabelText;
+            _leftLabel = _labelText;
             _warewolfAtomListresult = warewolfAtomListresult;
             _newValue = newValue;
             _oldValue = null;
@@ -381,7 +381,7 @@ namespace Dev2.Activities.Debug
                 results.Add(new DebugItemResult
                 {
                     Type = debugType,
-                    Label = _leftLabel,
+                    Label = _labelText,
                     Variable = DataListUtil.IsEvaluated(displayExpression) ? displayExpression : null,
                     Operator = debugOperator,
                     GroupName = groupName,
