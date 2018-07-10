@@ -5,6 +5,7 @@ using Microsoft.Win32.TaskScheduler;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.Scheduler
@@ -19,6 +20,8 @@ namespace Warewolf.UI.Tests.Scheduler
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
+            UIMap.Click_Settings_RibbonButton();
+            SettingsUIMap.Set_FirstResource_ResourcePermissions("GenericResource", "Public", true, true, true);
             UIMap.Click_Scheduler_RibbonButton(); 
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "SchedulerNewTask Tab does not exist.");
             //Assert NewScheduleTask Controls
@@ -34,7 +37,7 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Exists, "Username Textbox does not exist.");
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Exists, "Password Textbox does not exist.");
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.HistoryTable.Exists, "History Table does not exist.");
-            //Create Hello World Schedule Task
+            //Create GenericResource Schedule Task
             SchedulerUIMap.Click_Scheduler_ResourcePickerButton();
             Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service Picker Window does not exist.");
             DialogsUIMap.Filter_ServicePicker_Explorer("GenericResource");
@@ -85,6 +88,8 @@ namespace Warewolf.UI.Tests.Scheduler
             var taskFolder = ts.GetFolder(taskFolderName);
             taskFolder.DeleteTask(newassignwf, false);
 
+            UIMap.Click_Settings_RibbonButton();
+            SettingsUIMap.Set_FirstResource_ResourcePermissions("NewAssignWf", "Public", true, true, true);
 
             ExplorerUImap.Filter_Explorer(newassignwf);
             ExplorerUImap.Open_Explorer_First_Item_With_Double_Click();
@@ -155,6 +160,21 @@ namespace Warewolf.UI.Tests.Scheduler
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
 
         SchedulerUIMap SchedulerUIMap
         {
