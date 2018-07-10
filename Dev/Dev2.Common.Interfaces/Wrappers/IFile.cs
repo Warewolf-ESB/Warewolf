@@ -32,14 +32,14 @@ namespace Dev2.Common.Interfaces.Wrappers
 
         void SetAttributes(string path, FileAttributes fileAttributes);
         Stream OpenRead(string path);
-        StreamWriter AppendText(string filePath);
+        IDev2StreamWriter AppendText(string filePath);
 
         DateTime GetLastWriteTime(string filePath);
     }
 
     public interface IDev2StreamWriter : IDisposable
     {
-        StreamWriter StreamWriter { get; }
+        TextWriter SynchronizedTextWriter { get; }
 
         void WriteLine(string v);
         void WriteLine();

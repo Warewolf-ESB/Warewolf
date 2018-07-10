@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     class Dev2JsonStateLogger : IDev2StateLogger
     {
-        readonly StreamWriter writer;
+        readonly IDev2StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
         readonly IDSFDataObject _dsfDataObject;
         readonly IFile _fileWrapper;
@@ -35,13 +35,13 @@ namespace Dev2.Runtime.ESB.Execution
             _zipWrapper = zipWrapper;
             _detailedLogFile = new DetailedLogFile(_dsfDataObject, _fileWrapper);
             writer = GetDetailedLogWriter();
-            jsonTextWriter = new JsonTextWriter(writer)
+            jsonTextWriter = new JsonTextWriter(writer.SynchronizedTextWriter)
             {
                 CloseOutput = false,
             };
         }
 
-        private StreamWriter GetDetailedLogWriter()
+        private IDev2StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
             {
@@ -235,7 +235,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         internal static string GetDetailLogFilePath(IDSFDataObject dsfDataObject) =>
             Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(dsfDataObject.ResourceID, dsfDataObject.ServiceName)
-                         , "Detail.log--"+ dsfDataObject.ExecutionID);
+                         , "Detail.log");
     }
     static class FileCompressor
     {
