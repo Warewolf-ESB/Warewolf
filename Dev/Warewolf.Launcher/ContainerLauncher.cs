@@ -462,7 +462,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (responseText.Contains("Status: Image is up to date") || responseText.Contains($"Status: Downloaded newer image for warewolfserver/{ImageName}:{Version}"))
+                if (responseText.Contains($"Status: Image is up to date for warewolfserver/{ImageName}:{Version}") || responseText.Contains($"Status: Downloaded newer image for warewolfserver/{ImageName}:{Version}"))
                 {
                     return $"warewolfserver/{ImageName}:{Version}";
                 }
