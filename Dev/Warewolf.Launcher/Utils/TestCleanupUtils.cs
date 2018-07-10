@@ -10,7 +10,6 @@ namespace Warewolf.Launcher
 {
     static class TestCleanupUtils
     {
-
         public static void CopyOnWrite(string FileSpec)
         {
             if (File.Exists(FileSpec))
