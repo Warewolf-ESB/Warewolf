@@ -104,7 +104,7 @@ namespace Warewolf.Launcher.TestResultsMergers
             }
         }
 
-        static void Add1ExecutedToCounters(XmlNamespaceManager namespaceManager, XmlDocument doc)
+        void Add1ExecutedToCounters(XmlNamespaceManager namespaceManager, XmlDocument doc)
         {
             var countersNodes = doc.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", namespaceManager);
             if (countersNodes.Count > 0)
