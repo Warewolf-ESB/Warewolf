@@ -252,7 +252,6 @@
     <Compile Include="ESB\Control\EsbServiceInvokerTests.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\Control\ServiceLocatorTests.cs" />
-    <Compile Include="ESB\Execution\LogFileCompressorTests.cs" />
     <Compile Include="ESB\Execution\Dev2StateLoggerTests.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\ServiceTestExecutionContainerTests.cs" />

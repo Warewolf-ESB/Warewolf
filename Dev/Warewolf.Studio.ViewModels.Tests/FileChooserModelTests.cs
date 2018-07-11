@@ -12,7 +12,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     public class FileChooserModelTests
     {
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -26,7 +26,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory(" FileChooserModel_Ctor")]
         public void FileChooserModel_Ctor_NotNull()
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory(" FileChooserModel_GetDrives")]
         public void FileChooserModel_GetDrivesExpectPassThrough()
@@ -106,7 +106,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(drives[1].Name, @"d:\");
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(" FileChooserModel_GetDrives")]
         public void FileChooserModel_GetDrivesAndFilterExpectPassThrough()
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory(" FileChooserModel_GetFiles")]
         public void FileChooserModel_GetFilesExpectPassThrough()

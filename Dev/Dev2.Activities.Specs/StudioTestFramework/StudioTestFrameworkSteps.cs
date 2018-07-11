@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
-        const int EXPECTED_NUMBER_OF_RESOURCES = 105;
+        const int EXPECTED_NUMBER_OF_RESOURCES = 108;
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();
@@ -123,7 +123,14 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             _environmentModel = ServerRepository.Instance.Source;
             _environmentModel.Connect();
-            _environmentModel.ResourceRepository.Load(true);
+            if (_environmentModel.IsConnected)
+            {
+                _environmentModel.ResourceRepository.Load(true);
+            }
+            else
+            {
+                throw new Exception("Failed to connect to localhost Warewolf server.");
+            }
         }
 
         [Given(@"test folder is cleaned")]

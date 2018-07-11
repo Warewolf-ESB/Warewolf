@@ -37,31 +37,37 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateLogger_SubscribeToEventNotifications_Tests()
         {
-            TestSetup(out fileWrapper, out directoryWrapper, out dev2StateLogger, out activity, out detailedLog);
-            using (dev2StateLogger)
+            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
+            using (_dev2StateLogger)
             {
-                var listenerMock = new Mock<IStateLoggerListener>();
-                listenerMock.Setup(o => o.Notify("LogPreExecuteState", It.IsAny<object>())).Returns(true).Verifiable();
-                listenerMock.Setup(o => o.Notify("LogPostExecuteState", It.IsAny<object>())).Returns(true).Verifiable();
-                listenerMock.Setup(o => o.Notify("LogExecuteException", It.IsAny<object>())).Returns(true).Verifiable();
-                listenerMock.Setup(o => o.Notify("LogAdditionalDetail", It.IsAny<object>())).Returns(true).Verifiable();
-                listenerMock.Setup(o => o.Notify("LogExecuteCompleteState", It.IsAny<object>())).Returns(true).Verifiable();
-                listenerMock.Setup(o => o.Notify("LogStopExecutionState", It.IsAny<object>())).Returns(true).Verifiable();
-                var listener = listenerMock.Object;
-                // test
-                dev2StateLogger.Subscribe(listener);
-
-                dev2StateLogger.LogPreExecuteState(activity.Object);
                 var nextActivityMock = new Mock<IDev2Activity>();
                 var nextActivity = nextActivityMock.Object;
-                dev2StateLogger.LogPostExecuteState(activity.Object, nextActivity);
-                dev2StateLogger.LogExecuteException(new Exception("some exception"), nextActivity);
-                dev2StateLogger.LogAdditionalDetail(new { Message = "Some Message" }, nameof(Dev2StateLogger_SubscribeToEventNotifications_Tests));
-                dev2StateLogger.LogExecuteCompleteState();
-                dev2StateLogger.LogStopExecutionState();
+                var exception = new Exception("some exception");
+                var message = new { Message = "Some Message" };
+                var detailMethodName = nameof(Dev2StateLogger_SubscribeToEventNotifications_Tests);
+
+                var notifier = new StateNotifier();
+                var stateLoggerMock = new Mock<IStateListener>();
+                stateLoggerMock.Setup(o => o.LogPreExecuteState(_activity.Object)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogPostExecuteState(_activity.Object, nextActivity)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogExecuteCompleteState()).Verifiable();
+                stateLoggerMock.Setup(o => o.LogStopExecutionState()).Verifiable();
+                var listener = stateLoggerMock.Object;
+                // test
+                notifier.Subscribe(listener);
+
+                notifier.LogPreExecuteState(_activity.Object);
+                notifier.LogPostExecuteState(_activity.Object, nextActivity);
+                notifier.LogExecuteException(exception, nextActivity);
+                notifier.LogAdditionalDetail(message, detailMethodName);
+                notifier.LogExecuteCompleteState();
+                notifier.LogStopExecutionState();
 
                 // verify
-                listenerMock.Verify();
+                stateLoggerMock.Verify();
+                notifier.Dispose();
             }
         }
         [TestMethod]
@@ -159,10 +165,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists()
         {
-            var stream = new MemoryStream();
+            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-1));
             _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject);
@@ -177,12 +185,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_2_Days_Old()
         {
-            var stream = new MemoryStream();
+            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();
             zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-5));
             _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);
@@ -198,13 +208,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_30_Days_Old()
-        {
-            var stream = new MemoryStream();
+        {            
+            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
+            var mockedStream = new Mock<IDev2StreamWriter>();
+            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
             var mockedDataObject = SetupDataObject();
             var mockedFileWrapper = new Mock<IFile>();
             var zipWrapper = new Mock<IZipFile>();
             zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(new StreamWriter(stream));
+            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
             mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
             mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-45));
             _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);

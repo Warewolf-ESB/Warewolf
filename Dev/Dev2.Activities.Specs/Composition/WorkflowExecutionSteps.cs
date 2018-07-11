@@ -135,19 +135,19 @@ namespace Dev2.Activities.Specs.Composition
 
         [AfterScenario]
         public void CleanUp()
-        {
-            if (_debugWriterSubscriptionService != null)
-            {
-                _debugWriterSubscriptionService.Unsubscribe();
-                _debugWriterSubscriptionService.Dispose();
-            }
-            CleanUp_DetailedLogFile();
+        {         
             _resetEvt?.Close();
         }
         public void CleanUp_DetailedLogFile()
         {
             if (_dirHelper.Exists(EnvironmentVariables.DetailLogPath))
             {
+                var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
+                
+                foreach (var item in files)
+                {
+                    File.Delete(item);
+                }
                 _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
             }
         }
@@ -4381,6 +4381,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
             var logFileContent = detailLogInfo.ReadAllText();
+            AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Length > 0);
         }
         
@@ -4423,15 +4424,29 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
             var logFileContent = detailLogInfo.ReadAllText();
-            Add("LogFileContent", logFileContent);
+            AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString));
+        }
+
+        private void AddLogFileContentToContext(string logFileContent)
+        {
+            TryGetValue("LogFileContent", out string fileContent);
+            if (fileContent == null)
+            {
+                Add("LogFileContent", logFileContent);
+            }
+            else
+            {
+                _scenarioContext.Remove("LogFileContent");
+                Add("LogFileContent", logFileContent);
+            }
         }
 
         [Then(@"The Log file contains Logging matching ""(.*)""")]
         public void ThenTheLogFileContainsLoggingMatching(string searchString)
         {
             TryGetValue("LogFileContent", out string logFileContent);
-            Assert.IsTrue(logFileContent.Contains(searchString));
+            Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
 
         [Then(@"The Log file ""(.*)"" search results contain ""(.*)"" with type ""(.*)"" for ""(.*)""")]
