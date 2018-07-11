@@ -65,13 +65,19 @@ namespace Dev2.Services.Sql
 			_connection.Open();
 			return true;
 		}
-		public IDbCommand CreateCommand()
+		public IDbConnection Connection()
 		{
 			VerifyConnection();
-			var command = _connection.CreateCommand();
-			return command;
+          
+			return _connection;
 		}
-		public DataTable FetchDataTable(IDbCommand command)
+        public IDbCommand CreateCommand()
+        {
+            VerifyConnection();
+            var command = _connection.CreateCommand();
+            return command;
+        }
+        public DataTable FetchDataTable(IDbCommand command)
 		{
 			VerifyArgument.IsNotNull("command", command);
 
@@ -89,8 +95,8 @@ namespace Dev2.Services.Sql
 
 			return _factory.ExecuteNonQuery(command);
 		}
-
-		public int ExecuteScalar(IDbCommand command)
+        
+        public int ExecuteScalar(IDbCommand command)
 		{
 			VerifyArgument.IsNotNull("command", command);
 
