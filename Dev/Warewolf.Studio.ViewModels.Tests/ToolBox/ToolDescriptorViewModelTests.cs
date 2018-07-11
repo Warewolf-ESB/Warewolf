@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullLocalModel()
         {
@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestTool()
         {
             //act
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreSame(_toolMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestName()
         {
             //arrange
@@ -73,7 +73,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(expectedName, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(IOException))]
         public void TestIcon()
         {
@@ -85,7 +85,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             var img = _target.Icon;
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDesigner()
         {
             //arrange
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(expectedDesignerMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivity()
         {
             //act
@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(_warewolfTypeMock.Object, value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivityTypeNull()
         {
             //act
@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsNull(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivityType()
         {
             //arrange
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(name, value.GetData(formats[0]));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivityTypeFlowDecision()
         {
             //arrange
@@ -155,7 +155,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(name, value.GetData(formats[0]));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestActivityTypeFlowSwitchString()
         {
             //arrange
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.AreEqual(name, value.GetData(formats[0]));
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledfalse()
         {
             //act
@@ -183,7 +183,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             Assert.IsFalse(value);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsEnabledtrue()
         {
             //arrange
