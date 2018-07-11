@@ -50,7 +50,7 @@ namespace Warewolf.Launcher.TestResultsMergers
             {
                 if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                 {
-                    SetOutcomePassed(originalTrxContent, OriginalTestResult);
+                    SetOutcomePassed(originalNamespaceManager, originalTrxContent, OriginalTestResult);
                     ImportStdOutNode(originalNamespaceManager, newNamespaceManager, OriginalTestResult, TestResult);
                 }
             }
@@ -89,17 +89,31 @@ namespace Warewolf.Launcher.TestResultsMergers
             }
         }
 
-        void SetOutcomePassed(XmlDocument originalDoc, XmlNode OriginalNode)
+        void SetOutcomePassed(XmlNamespaceManager namespaceManager, XmlDocument doc, XmlNode node)
         {
-            if (OriginalNode.Attributes["outcome"] == null)
+            if (node.Attributes["outcome"] == null)
             {
-                var newOutcomeAttribute = originalDoc.CreateAttribute("outcome");
+                var newOutcomeAttribute = doc.CreateAttribute("outcome");
                 newOutcomeAttribute.Value = "Passed";
-                OriginalNode.Attributes.Append(newOutcomeAttribute);
+                node.Attributes.Append(newOutcomeAttribute);
+                Add1ExecutedToCounters(namespaceManager, doc);
             }
             else
             {
-                OriginalNode.Attributes["outcome"].InnerText = "Passed";
+                node.Attributes["outcome"].InnerText = "Passed";
+            }
+        }
+
+        static void Add1ExecutedToCounters(XmlNamespaceManager namespaceManager, XmlDocument doc)
+        {
+            var countersNodes = doc.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", namespaceManager);
+            if (countersNodes.Count > 0)
+            {
+                var countersNode = countersNodes.Item(0);
+                var executedBefore = int.Parse(countersNode.Attributes["executed"].InnerText);
+                var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
+                countersNode.Attributes["executed"].InnerText = (++executedBefore).ToString();
+                countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
             }
         }
 
