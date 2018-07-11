@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test commands
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCancelCommandCanExecute()
         {
             //act
@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestCancelCommandExecute()
         {
             //act
@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNull(_target.SelectedDll);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectCommandCanExecute()
         {
             //act
@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSaveCommandExecute()
         {
             //act
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Test properties
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSelectedDll()
         {
             //act
@@ -92,7 +92,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_modelMock.Object, _target.SelectedDll);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestIsLoading()
         {
             //act
@@ -102,7 +102,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsLoading);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestSearchTerm()
         {
             //act

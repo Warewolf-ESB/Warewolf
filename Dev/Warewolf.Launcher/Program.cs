@@ -61,15 +61,24 @@ namespace Warewolf.Launcher
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
             
-            if (build.TestsPath.StartsWith(".."))
+            if (build.TestsPath != null && build.TestsPath.StartsWith(".."))
             {
                 build.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestsPath);
             }
-
-
-            if (build.TestsResultsPath.StartsWith(".."))
+            
+            if (build.TestsResultsPath != null && build.TestsResultsPath.StartsWith(".."))
             {
                 build.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestsResultsPath);
+            }
+
+            if (build.ServerPath != null && build.ServerPath.StartsWith(".."))
+            {
+                build.ServerPath = Path.Combine(Environment.CurrentDirectory, build.ServerPath);
+            }
+
+            if (build.StudioPath != null && build.StudioPath.StartsWith(".."))
+            {
+                build.StudioPath = Path.Combine(Environment.CurrentDirectory, build.StudioPath);
             }
 
             if (!File.Exists(build.TestsResultsPath))
@@ -146,12 +155,12 @@ namespace Warewolf.Launcher
                 }
                 if (!File.Exists(build.VSTestPath) && !(File.Exists(build.MSTestPath)))
                 {
-                    throw new Exception("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
+                    throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
                 }
 
                 if (build.ApplyDotCover && build.DotCoverPath != "" && !(File.Exists(build.DotCoverPath)))
                 {
-                    throw new Exception("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+                    throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
                 }
 
                 if (File.Exists(Environment.ExpandEnvironmentVariables("%vs140comntools%..\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx")))
@@ -268,20 +277,20 @@ namespace Warewolf.Launcher
                     string TestRunnerPath;
                     if (string.IsNullOrEmpty(build.MSTest))
                     {
-                        TestRunnerPath = build.VSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
+                        TestRunnerPath = build.VSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
                     }
                     else
                     {
-                        TestRunnerPath = build.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
+                        TestRunnerPath = build.MSTestRunner(JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
 
                     //Run Tests
-                    var TrxFile = build.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    var TrxFile = build.RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
 
                     //Re-try Failures
                     for (var count = 0; count < build.RetryCount; count++)
                     {
-                        build.RetryTestFailures(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                        build.RetryTestFailures(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count+1);
                     }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
@@ -329,14 +338,7 @@ namespace Warewolf.Launcher
 
             if (!string.IsNullOrEmpty(build.Cleanup))
             {
-                if (build.ApplyDotCover)
-                {
-                    build.CleanupServerStudio(false);
-                }
-                else
-                {
-                    build.CleanupServerStudio();
-                }
+                build.CleanupServerStudio(!build.ApplyDotCover);
                 if (!string.IsNullOrEmpty(build.JobName))
                 {
                     if (!string.IsNullOrEmpty(build.ProjectName))
@@ -353,17 +355,21 @@ namespace Warewolf.Launcher
 
             if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
+                build.InstallServer();
                 build.CleanupServerStudio();
                 build.Startmywarewolfio();
+                build.TryStartLocalCIRemoteContainer();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
                 {
-                    build.InstallServer();
                     build.StartServer();
                     if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.StartStudio();
                     }
                 }
+                Console.WriteLine("Press Enter to Shutdown.");
+                Console.ReadKey();
+                build.CleanupServerStudio();
             }
         }
     }

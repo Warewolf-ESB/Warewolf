@@ -10,14 +10,14 @@ using System.IO.Compression;
 using Dev2.Communication;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Security.Principal;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     class Dev2JsonStateLogger : IStateListener
     {
-        readonly StreamWriter _writer;
-        readonly JsonTextWriter _jsonTextWriter;
+        readonly IDev2StreamWriter writer;
+        readonly JsonTextWriter jsonTextWriter;
         readonly IDSFDataObject _dsfDataObject;
         readonly IFile _fileWrapper;
         readonly IZipFile _zipWrapper;
@@ -34,11 +34,14 @@ namespace Dev2.Runtime.ESB.Execution
             _fileWrapper = fileWrapper;
             _zipWrapper = zipWrapper;
             _detailedLogFile = new DetailedLogFile(_dsfDataObject, _fileWrapper);
-            _writer = GetDetailedLogWriter();
-            _jsonTextWriter = new JsonTextWriter(_writer);
+            writer = GetDetailedLogWriter();
+            jsonTextWriter = new JsonTextWriter(writer.SynchronizedTextWriter)
+            {
+                CloseOutput = false,
+            };
         }
 
-        private StreamWriter GetDetailedLogWriter()
+        private IDev2StreamWriter GetDetailedLogWriter()
         {
             if (_detailedLogFile.IsOlderThanToday)
             {
@@ -46,147 +49,134 @@ namespace Dev2.Runtime.ESB.Execution
                 MoveLogFileIfOld();
                 RunBackgroundLogTasks(compress);
             }
+
             return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
         }
 
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
-            _writer.WriteLine("header:LogPreExecuteState");
-            Notify(nameof(LogPreExecuteState), nextActivity);
+            writer.WriteLine("header:LogPreExecuteState");
             WriteHeader(null, nextActivity);
-            _dsfDataObject.LogState(_jsonTextWriter);
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            _dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         public void LogAdditionalDetail(object detail, string callerName)
         {
-            _writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
-            _jsonTextWriter.WriteStartObject();
-            _jsonTextWriter.WritePropertyName("Detail");
-            Notify(nameof(LogAdditionalDetail), new
-            {
-                CallerName = callerName,
-                Detail = detail,
-            });
+            writer.WriteLine($"header:LogAdditionalDetail:{callerName}");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("Detail");
             var serializer = new Dev2JsonSerializer();
-            _jsonTextWriter.WriteRawValue(serializer.Serialize(detail, Formatting.None));
-            _jsonTextWriter.WriteEndObject();
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            jsonTextWriter.WriteRawValue(serializer.Serialize(detail, Formatting.None));
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
-            _writer.WriteLine("header:LogPostExecuteState");
-            Notify(nameof(LogPostExecuteState), nextActivity);
+            writer.WriteLine("header:LogPostExecuteState");
             WriteHeader(previousActivity, nextActivity);
-            _dsfDataObject.LogState(_jsonTextWriter);
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            _dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         public void LogExecuteException(Exception e, IDev2Activity activity)
         {
-            _writer.WriteLine("header:LogExecuteException");
-            Notify(nameof(LogExecuteException), new
-            {
-                Activity = activity,
-                Exception = e,
-            });
+            writer.WriteLine("header:LogExecuteException");
             WriteHeader(activity, e);
-            _dsfDataObject.LogState(_jsonTextWriter);
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            _dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         public void LogExecuteCompleteState()
         {
-            Notify(nameof(LogExecuteCompleteState), null);
-            _writer.WriteLine("header:LogExecuteCompleteState");
-            _jsonTextWriter.WriteStartObject();
-            _jsonTextWriter.WritePropertyName("timestamp");
-            _jsonTextWriter.WriteValue(DateTime.Now);
-            _jsonTextWriter.WriteEndObject();
-            _writer.WriteLine();
-            _writer.Flush();
-            _dsfDataObject.LogState(_jsonTextWriter);
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            writer.WriteLine("header:LogExecuteCompleteState");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WriteEndObject();
+            writer.WriteLine();
+            writer.Flush();
+            _dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         public void LogStopExecutionState()
         {
-            Notify(nameof(LogStopExecutionState), null);
-            _writer.WriteLine("header:LogStopExecutionState");
-            _jsonTextWriter.WriteStartObject();
-            _jsonTextWriter.WritePropertyName("timestamp");
-            _jsonTextWriter.WriteValue(DateTime.Now);
-            _jsonTextWriter.WriteEndObject();
-            _writer.WriteLine();
-            _writer.Flush();
-            _dsfDataObject.LogState(_jsonTextWriter);
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            writer.WriteLine("header:LogStopExecutionState");
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WriteEndObject();
+            writer.WriteLine();
+            writer.Flush();
+            _dsfDataObject.LogState(jsonTextWriter);
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         private void WriteHeader(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
-            _jsonTextWriter.WriteStartObject();
-            _jsonTextWriter.WritePropertyName("timestamp");
-            _jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
             if (!(previousActivity is null))
             {
-                _jsonTextWriter.WritePropertyName("PreviousActivity");
-                _jsonTextWriter.WriteValue(previousActivity.UniqueID);
+                jsonTextWriter.WritePropertyName("PreviousActivity");
+                jsonTextWriter.WriteValue(previousActivity.UniqueID);
             }
             if (!(nextActivity is null))
             {
-                _jsonTextWriter.WritePropertyName("NextActivity");
+                jsonTextWriter.WritePropertyName("NextActivity");
 
-                _jsonTextWriter.WriteStartObject();
-                _jsonTextWriter.WritePropertyName("Id");
-                _jsonTextWriter.WriteValue(nextActivity.UniqueID);
-                _jsonTextWriter.WritePropertyName("Type");
-                _jsonTextWriter.WriteValue(nextActivity.GetType().ToString());
-                _jsonTextWriter.WritePropertyName("DisplayName");
-                _jsonTextWriter.WriteValue(nextActivity.GetDisplayName());
+                jsonTextWriter.WriteStartObject();
+                jsonTextWriter.WritePropertyName("Id");
+                jsonTextWriter.WriteValue(nextActivity.UniqueID);
+                jsonTextWriter.WritePropertyName("Type");
+                jsonTextWriter.WriteValue(nextActivity.GetType().ToString());
+                jsonTextWriter.WritePropertyName("DisplayName");
+                jsonTextWriter.WriteValue(nextActivity.GetDisplayName());
                 if (nextActivity is DsfActivity dsfActivity)
                 {
-                    _jsonTextWriter.WritePropertyName("Inputs");
+                    jsonTextWriter.WritePropertyName("Inputs");
                     var jsonSerializer = new Dev2JsonSerializer();
-                    _jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Inputs, Formatting.None));
-                    _jsonTextWriter.WritePropertyName("Outputs");
-                    _jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Outputs, Formatting.None));
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Inputs, Formatting.None));
+                    jsonTextWriter.WritePropertyName("Outputs");
+                    jsonTextWriter.WriteRawValue(jsonSerializer.Serialize(dsfActivity.Outputs, Formatting.None));
                 }
-                _jsonTextWriter.WriteEndObject();
+                jsonTextWriter.WriteEndObject();
             }
-            _jsonTextWriter.WriteEndObject();
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         private void WriteHeader(IDev2Activity activity, Exception exception)
         {
-            _jsonTextWriter.WriteStartObject();
-            _jsonTextWriter.WritePropertyName("timestamp");
-            _jsonTextWriter.WriteValue(DateTime.Now);
-            _jsonTextWriter.WritePropertyName("PreviousActivity");
-            _jsonTextWriter.WriteValue(activity.UniqueID);
-            _jsonTextWriter.WritePropertyName("Exception");
-            _jsonTextWriter.WriteValue(exception.Message);
-            _jsonTextWriter.WriteEndObject();
-            _jsonTextWriter.Flush();
-            _writer.WriteLine();
-            _writer.Flush();
+            jsonTextWriter.WriteStartObject();
+            jsonTextWriter.WritePropertyName("timestamp");
+            jsonTextWriter.WriteValue(DateTime.Now);
+            jsonTextWriter.WritePropertyName("PreviousActivity");
+            jsonTextWriter.WriteValue(activity.UniqueID);
+            jsonTextWriter.WritePropertyName("Exception");
+            jsonTextWriter.WriteValue(exception.Message);
+            jsonTextWriter.WriteEndObject();
+            jsonTextWriter.Flush();
+            writer.WriteLine();
+            writer.Flush();
         }
 
         private void MoveLogFileIfOld()
@@ -207,27 +197,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Dispose()
         {
-            _jsonTextWriter.Close();
-            ((IDisposable)_jsonTextWriter).Dispose();
+            jsonTextWriter.Close();
+            writer.Dispose();
         }
-
-        readonly IList<IStateLoggerListener> stateListeners = new List<IStateLoggerListener>();
-        public void Subscribe(IStateLoggerListener listener)
-        {
-            stateListeners.Add(listener);
-        }
-        private void Notify(string callerName, object payload)
-        {
-            foreach (var stateListener in stateListeners)
-            {
-                var result = stateListener.Notify(callerName, payload);
-                if (!result)
-                {
-                    throw new StateLoggerStoppedException();
-                }
-            }
-        }
-        class StateLoggerStoppedException : Exception {}
     }
 
     class DetailedLogFile
@@ -307,7 +279,7 @@ namespace Dev2.Runtime.ESB.Execution
             jsonTextWriter.WriteValue(dsfDataObject.ClientID);
 
             jsonTextWriter.WritePropertyName("ExecutingUser");
-            jsonTextWriter.WriteValue(dsfDataObject.ExecutingUser.Identity.ToJson());
+            jsonTextWriter.WriteValue(dsfDataObject?.ExecutingUser?.Identity?.ToJson());
 
             jsonTextWriter.WritePropertyName("ExecutionID");
             jsonTextWriter.WriteValue(dsfDataObject.ExecutionID);
