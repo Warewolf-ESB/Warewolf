@@ -4434,6 +4434,20 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(logFileContent.Contains(searchString));
         }
 
+        [Then(@"The Log file ""(.*)"" search results contain ""(.*)"" with type ""(.*)"" for ""(.*)""")]
+        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string searchString, string auditType, string workflowName)
+        {
+            var query = new
+            {
+                WorkflowName = workflowName,
+                AuditType = auditType,
+                SearchString = searchString,
+            };
+            var audits = AuditLogger.GetAuditClient();
+            var results = audits.Search(query);
+            Assert.AreEqual(expectedCount, results.Length);
+        }
+
         class DetailLogInfo
         {
             readonly IContextualResourceModel resourceModel;
