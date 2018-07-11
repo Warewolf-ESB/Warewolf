@@ -271,60 +271,61 @@ namespace Warewolf.Launcher
         {
             if (build.Cleanup)
             {
-                //Write failing tests playlist.
-                Console.WriteLine($"Writing all test failures in \"{build.TestRunner.TestsResultsPath}\" to a playlist file.");
-
-                var PlayList = "<Playlist Version=\"1.0\">";
                 foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
                     var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
                     namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
                     {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
+                        //Write failing tests playlist.
+                        Console.WriteLine($"Writing all test failures in \"{build.TestRunner.TestsResultsPath}\" to a playlist file.");
+                        var PlayList = "<Playlist Version=\"1.0\">";
+                        if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
                         {
-                            if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                            foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                             {
-                                if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
+                                if (TestResult.Attributes["outcome"].InnerText == "Failed")
                                 {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
+                                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
                                     {
-                                        if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
+                                        foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
                                         {
-                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
+                                            if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
+                                            {
+                                                PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
-                                    continue;
+                                    else
+                                    {
+                                        Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
+                                    }
                                 }
                             }
-                        }
-                    }
-                    else
-                    {
-                        if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
-                        {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
                         }
                         else
                         {
-                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
+                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
                             {
-                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                                PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
+                            }
+                            else
+                            {
+                                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
+                                {
+                                    Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                                }
                             }
                         }
+                        PlayList += "</Playlist>";
+                        var OutPlaylistPath = $"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist";
+                        CopyOnWrite(OutPlaylistPath);
+                        File.WriteAllText(OutPlaylistPath, PlayList);
+                        Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
                     }
                 }
-                PlayList += "</Playlist>";
-                var OutPlaylistPath = $"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist";
-                CopyOnWrite(OutPlaylistPath);
-                File.WriteAllText(OutPlaylistPath, PlayList);
-                Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
             }
 
             if (Studio)
