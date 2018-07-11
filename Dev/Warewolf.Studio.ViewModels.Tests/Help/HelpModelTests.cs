@@ -33,7 +33,7 @@ namespace Warewolf.Studio.Models.Help.Tests
 
         #region Test construction
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestHelpModel()
         {
@@ -44,7 +44,7 @@ namespace Warewolf.Studio.Models.Help.Tests
 
         #region Test methods
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestFireOnHelpReceived()
         {
             //arrange
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Models.Help.Tests
             Assert.IsTrue(isOnHelpTextReceivedRaised);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         public void TestDispose()
         {
             //arrange

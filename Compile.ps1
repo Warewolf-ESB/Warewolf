@@ -216,7 +216,7 @@ open System.Reflection;
 [<assembly: AssemblyCopyright("Copyright Warewolf 
 "@ + (Get-Date).year + @"
 ")>]
-[<assembly: AssemblyVersion(" 
+[<assembly: AssemblyVersion("
 "@ + $FullVersionString + @"
 ")>]
 do()

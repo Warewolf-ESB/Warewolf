@@ -100,13 +100,6 @@ namespace Dev2.Runtime.ESB.Execution
         Guid ExecuteWf()
         {
             var result = new Guid();
-            var wfSetting = new Dev2WorkflowSettingsTO
-            {
-                EnableDetailedLogging = true,
-                LoggerType = LoggerType.JSON,
-                KeepLogsForDays = 2,
-                CompressOldLogFiles = true
-            };
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
@@ -114,7 +107,6 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
-                DataObject.Settings = wfSetting;
                 if (DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
@@ -182,7 +174,20 @@ namespace Dev2.Runtime.ESB.Execution
             var outerStateLogger = dsfDataObject.StateNotifier;
             try
             {
-                dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                dsfDataObject.Settings = new Dev2WorkflowSettingsTO
+                {
+                    EnableDetailedLogging = true,
+                    LoggerType = LoggerType.JSON,
+                    KeepLogsForDays = 2,
+                    CompressOldLogFiles = true
+                };
+                try
+                {
+                    dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
+                } catch (Exception e)
+                {
+                    //asdf
+                }
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
@@ -262,14 +267,14 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception e)
             {
-                throw new Exception($"Fatal error while running workflow:\n{e.Message}", e);
+                throw;
             }
             finally
             {
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
-                dsfDataObject.StateNotifier.Dispose();
+                dsfDataObject.StateNotifier?.Dispose();
                 dsfDataObject.StateNotifier = null;
                 if (outerStateLogger != null)
                 {

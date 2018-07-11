@@ -279,6 +279,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 76
     testRunner.And("the workflow \"MySqlWorkflowForTimeout\" execution has \"AN\" error \"Timeout expired." +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
+ testRunner.And("the workflow \"MySqlWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

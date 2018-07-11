@@ -8,7 +8,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class DummyServiceTestTests
     {
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DummyServiceTest_Constructor")]
         public void DummyServiceTest_Constructor_Constructor_NoException()
@@ -23,7 +23,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DummyServiceTest_Constructor")]
         public void DummyServiceTest_Constructor_isNew_SetsNeverRunTests()
@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constuctor_GivenNullAction_ShouldPassThrough()
         {
@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constuctor_GivenAction_ShouldDefaultPropertyValues()
         {
@@ -84,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void Constuctor_GivenAction_ShouldCreateCommand()
         {
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(dummyServiceTest.CreateTestCommand);
         }
 
-        [TestMethod]
+        [TestMethod,Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
         public void CreateTestCommand_GivenAction_ShouldExecuteCorrectly()
         {
