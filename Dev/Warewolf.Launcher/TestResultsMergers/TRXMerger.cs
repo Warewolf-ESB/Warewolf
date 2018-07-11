@@ -39,7 +39,6 @@ namespace Warewolf.Launcher.TestResultsMergers
                 else
                 {
                     ImportAllTestStdOutNodes(originalNamespaceManager, newNamespaceManager, originalTrxContent, TestResult);
-                    Add1PassedToCounters(originalNamespaceManager, originalTrxContent);
                 }
             }
         }
@@ -52,6 +51,27 @@ namespace Warewolf.Launcher.TestResultsMergers
                 {
                     SetOutcomePassed(originalNamespaceManager, originalTrxContent, OriginalTestResult);
                     ImportStdOutNode(originalNamespaceManager, newNamespaceManager, OriginalTestResult, TestResult);
+                    if (OriginalTestResult.Attributes["outcome"] == null || OriginalTestResult.Attributes["outcome"].InnerText == "Failed")
+                    {
+                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", newNamespaceManager);
+                        if (countersNodes.Count > 0)
+                        {
+                            var countersNode = countersNodes.Item(0);
+                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
+                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
+                            if (--failuresBefore <= 0)
+                            {
+                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", newNamespaceManager);
+                                if (resultsSummaryNodes.Count > 0)
+                                {
+                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
+                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
+                                }
+                            }
+                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
+                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
+                        }
+                    }
                 }
             }
         }
@@ -64,28 +84,6 @@ namespace Warewolf.Launcher.TestResultsMergers
                 {
                     ImportOutputNode(originalNamespaceManager, newNamespaceManager, OriginalTestResult, TestResult);
                 }
-            }
-        }
-
-        void Add1PassedToCounters(XmlNamespaceManager namespaceManager, XmlDocument doc)
-        {
-            var countersNodes = doc.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", namespaceManager);
-            if (countersNodes.Count > 0)
-            {
-                var countersNode = countersNodes.Item(0);
-                var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
-                var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
-                if (--failuresBefore <= 0)
-                {
-                    var resultsSummaryNodes = doc.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", namespaceManager);
-                    if (resultsSummaryNodes.Count > 0)
-                    {
-                        var resultsSummaryNode = resultsSummaryNodes.Item(0);
-                        resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
-                    }
-                }
-                countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
             }
         }
 
