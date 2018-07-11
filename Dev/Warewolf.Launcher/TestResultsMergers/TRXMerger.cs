@@ -34,49 +34,54 @@ namespace Warewolf.Launcher.TestResultsMergers
             {
                 if (TestResult.Attributes["outcome"] == null || TestResult.Attributes["outcome"].InnerText == "Failed")
                 {
-                    ImportAllTestOutputNodes(originalNamespaceManager, newNamespaceManager, originalTrxContent, TestResult);
+                    ImportAllFailingNodes(originalNamespaceManager, newNamespaceManager, originalTrxContent, TestResult);
                 }
                 else
                 {
-                    ImportAllTestStdOutNodes(originalNamespaceManager, newNamespaceManager, originalTrxContent, TestResult);
+                    ImportAllPassingTestNodes(originalNamespaceManager, newNamespaceManager, originalTrxContent, TestResult);
                 }
             }
         }
 
-        void ImportAllTestStdOutNodes(XmlNamespaceManager originalNamespaceManager, XmlNamespaceManager newNamespaceManager, XmlDocument originalTrxContent, XmlNode TestResult)
+        void ImportAllPassingTestNodes(XmlNamespaceManager originalNamespaceManager, XmlNamespaceManager newNamespaceManager, XmlDocument originalTrxContent, XmlNode TestResult)
         {
             foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
             {
                 if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                 {
+                    Add1PassedToCounters(originalNamespaceManager, originalTrxContent, OriginalTestResult.Attributes["outcome"]);
                     SetOutcomePassed(originalNamespaceManager, originalTrxContent, OriginalTestResult);
                     ImportStdOutNode(originalNamespaceManager, newNamespaceManager, OriginalTestResult, TestResult);
-                    if (OriginalTestResult.Attributes["outcome"] == null || OriginalTestResult.Attributes["outcome"].InnerText == "Failed")
-                    {
-                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", newNamespaceManager);
-                        if (countersNodes.Count > 0)
-                        {
-                            var countersNode = countersNodes.Item(0);
-                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
-                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
-                            if (--failuresBefore <= 0)
-                            {
-                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", newNamespaceManager);
-                                if (resultsSummaryNodes.Count > 0)
-                                {
-                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
-                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
-                                }
-                            }
-                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
-                        }
-                    }
                 }
             }
         }
 
-        void ImportAllTestOutputNodes(XmlNamespaceManager originalNamespaceManager, XmlNamespaceManager newNamespaceManager, XmlDocument originalTrxContent, XmlNode TestResult)
+        void Add1PassedToCounters(XmlNamespaceManager originalNamespaceManager, XmlDocument originalTrxContent, XmlAttribute OriginalTestResult)
+        {
+            if (OriginalTestResult == null || OriginalTestResult.InnerText == "Failed")
+            {
+                var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", originalNamespaceManager);
+                if (countersNodes.Count > 0)
+                {
+                    var countersNode = countersNodes.Item(0);
+                    var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
+                    var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
+                    if (--failuresBefore <= 0)
+                    {
+                        var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", originalNamespaceManager);
+                        if (resultsSummaryNodes.Count > 0)
+                        {
+                            var resultsSummaryNode = resultsSummaryNodes.Item(0);
+                            resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
+                        }
+                    }
+                    countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
+                    countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
+                }
+            }
+        }
+
+        void ImportAllFailingNodes(XmlNamespaceManager originalNamespaceManager, XmlNamespaceManager newNamespaceManager, XmlDocument originalTrxContent, XmlNode TestResult)
         {
             foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
             {
