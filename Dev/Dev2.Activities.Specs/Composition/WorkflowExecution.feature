@@ -1366,3 +1366,20 @@ Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed 
     Then the workflow execution has "No" error
 	And The Log file for "PowerOfTwo" contains additional Logging
 	And The Log file for "TestPowerOfTwo" contains additional Logging
+
+	
+Scenario: Detailed Log Audit Query
+	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The detailed log file is created for "Hello World"
+	And The Log file "3" search results contain "If [[Name]] <> (Not Equal) " with type "Dev2.Activities.DsfDecision" for "Hello World"
+
+Scenario: Detailed Log Audit Query No Results
+	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The detailed log file is created for "Hello World"
+	And The Log file "0" search results contain "Something that doesn't exist" with type "Dev2.Activities.DsfDecision" for "Hello World"
