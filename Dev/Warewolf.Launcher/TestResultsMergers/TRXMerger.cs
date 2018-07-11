@@ -161,11 +161,7 @@ namespace Warewolf.Launcher.TestResultsMergers
             XmlNode removeNode = parentNode.SelectSingleNode(nodeXpath, parentNamespaceManager);
             if (removeNode != null)
             {
-                try
-                {
-                    parentNode.RemoveChild(removeNode);
-                }
-                catch (ArgumentException) { }
+                parentNode.RemoveChild(removeNode);
             }
         }
 
