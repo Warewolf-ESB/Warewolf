@@ -49,16 +49,16 @@ namespace Warewolf.Launcher.TestResultsMergers
             {
                 if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                 {
-                    Add1PassedToCounters(originalNamespaceManager, originalTrxContent, OriginalTestResult.Attributes["outcome"]);
+                    Add1PassedToCounters(originalNamespaceManager, originalTrxContent, OriginalTestResult.Attributes["outcome"]?.InnerText);
                     SetOutcomePassed(originalNamespaceManager, originalTrxContent, OriginalTestResult);
                     ImportStdOutNode(originalNamespaceManager, newNamespaceManager, OriginalTestResult, TestResult);
                 }
             }
         }
 
-        void Add1PassedToCounters(XmlNamespaceManager originalNamespaceManager, XmlDocument originalTrxContent, XmlAttribute OriginalTestResult)
+        void Add1PassedToCounters(XmlNamespaceManager originalNamespaceManager, XmlDocument originalTrxContent, string OriginalTestResult)
         {
-            if (OriginalTestResult == null || OriginalTestResult.InnerText == "Failed")
+            if (OriginalTestResult == "Failed")
             {
                 var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", originalNamespaceManager);
                 if (countersNodes.Count > 0)
