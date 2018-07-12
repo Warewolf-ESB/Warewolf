@@ -73,9 +73,12 @@ namespace Dev2.Common.Wrappers
                 if (cache.TryGetValue(filePath, out writer))
                 {
                     result = writer.GetReference();
-                    if (result.Closed)
+                    lock (result)
                     {
-                        result.SetTextWriter(File.AppendText(filePath));
+                        if (result.Closed)
+                        {
+                            result.SetTextWriter(File.AppendText(filePath));
+                        }
                     }
                     return result;
                 }
@@ -115,6 +118,7 @@ namespace Dev2.Common.Wrappers
         public void SetTextWriter(StreamWriter writer)
         {
             this.SynchronizedTextWriter = TextWriter.Synchronized(writer);
+            Closed = false;
         }
 
         public RefCountedStreamWriter(StreamWriter writer)
