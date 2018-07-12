@@ -327,12 +327,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (evalResult.IsWarewolfAtomResult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
             {
                 AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
-                return;
             }
             if (evalResult.IsWarewolfAtomListresult && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
             {
                 AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
-                return;
             }
             if (evalResult.IsWarewolfAtomListresult && evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recSetResult)
             {
@@ -447,7 +445,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var eq = base.Equals(other);
-            for (int i=0; i<FieldsCollection.Count; i++)
+            for (int i = 0; i < FieldsCollection.Count; i++)
             {
                 eq &= FieldsCollection[i].Equals(other.FieldsCollection[i]);
             }
