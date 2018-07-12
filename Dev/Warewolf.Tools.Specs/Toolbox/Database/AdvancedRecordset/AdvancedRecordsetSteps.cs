@@ -83,10 +83,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
         public void ThenTheDeclaredVariablesAre(Table declaredVariables)
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
-            foreach (var tableRow in declaredVariables.Rows)
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
             {
-                var expectedName = tableRow["VariableName"];
-                Assert.IsTrue(viewModel.DeclareVariables.Any(p => p.Name == expectedName));
+                Assert.AreEqual<string>(viewModel.DeclareVariables[i].Name, row["Name"]);
+                Assert.AreEqual<string>(viewModel.DeclareVariables[i].Value, row["Value"]);
+                i++;
             }
         }
 
@@ -138,14 +140,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             _scenarioContext.Remove("result");
             _scenarioContext.Add("result", result);
         }
-        [When(@"Advanced Recordset tool is executed after change")]
-        public void WhenAdvancedRecordsetToolIsExecutedAfterChange()
-        {
-            BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            _scenarioContext.Remove("result");
-            _scenarioContext.Add("result", result);
-        }
+
         [Then(@"I update Output field to")]
         public void ThenIUpdateOutputFieldTo(Table expectedOutputs)
         {
@@ -168,8 +163,27 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             }
         }
 
+        [Given(@"I update Declare Variable Value to")]
         [Then(@"I update Declare Variable Value to")]
+        [When(@"I update Declare Variable Value to")]
         public void ThenIUpdateDeclareVariableValueTo(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
+            {
+                viewModel.DeclareVariables[i].Name = row["Name"];
+                viewModel.DeclareVariables[i].Value = row["Value"];
+                if (!string.IsNullOrWhiteSpace(row["Name"]) && !string.IsNullOrWhiteSpace(row["Value"]))
+                {
+                    i++;
+                }
+            }
+        }
+        [Given(@"declared Variables are")]
+        [Then(@"declared Variables are")]
+        [When(@"declared Variables are")]
+        public void ThenDeclaredVariablesAre(Table declaredVariables)
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
             var i = 0;
