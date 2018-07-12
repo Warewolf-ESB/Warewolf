@@ -301,7 +301,14 @@ namespace Dev2.Activities
                 Dev2Logger.Error("AdvancedRecorset", e, GlobalConstants.WarewolfError);
             }
         }
-        string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => AdvancedRecordset.GetVariableValue(match.Value));
+        string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => 
+            {
+                if (DeclareVariables.FirstOrDefault(nv => "@"+nv.Name == match.Value) != null)
+                {
+                    return AdvancedRecordset.GetVariableValue(match.Value);
+                }
+                return match.Value;
+            });
 
 
 
