@@ -161,10 +161,10 @@ namespace Warewolf.Launcher.TestResultsMergers
 
         void RemoveChildNode(XmlNamespaceManager parentNamespaceManager, XmlNode parentNode, string nodeXpath)
         {
-            XmlNode removeNode = parentNode.SelectSingleNode(nodeXpath, parentNamespaceManager);
+            XmlElement removeNode = (XmlElement)parentNode.SelectSingleNode(nodeXpath, parentNamespaceManager);
             if (removeNode != null)
             {
-                parentNode.RemoveChild(removeNode);
+                removeNode.ParentNode.RemoveChild(removeNode);
             }
         }
 
