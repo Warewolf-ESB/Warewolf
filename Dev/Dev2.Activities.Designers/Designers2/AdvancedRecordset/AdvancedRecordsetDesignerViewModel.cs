@@ -193,7 +193,6 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                     }));
                 }
             }
-
         }
         void DeclareVariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -201,6 +200,24 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             RemoveItemPropertyChangeEvent(e);
             _modelItem.SetProperty("DeclareVariables", _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (_declareVariables.Where(name => string.IsNullOrEmpty(name.Name)).ToList().Count() >= 2)
+            {
+                foreach (var nv in _declareVariables.Where(name => string.IsNullOrEmpty(name.Name) && string.IsNullOrEmpty(name.Value)).ToList())
+                {
+                    DeclareVariables.Remove(nv);
+                }
+
+                DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
+                {
+                    _modelItem.SetProperty("DeclareVariables",
+                        _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                }));
+            }
+            _modelItem.SetProperty("DeclareVariables", _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+        }
+
         private void GenerateOutputs()
         {
             try
@@ -451,10 +468,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 }
             }
         }
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _modelItem.SetProperty("DeclareVariables", _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-        }
+       
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
