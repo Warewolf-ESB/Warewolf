@@ -12968,6 +12968,195 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove Row when deleting  Declared variable Test 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void RemoveRowWhenDeletingDeclaredVariableTest1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Row when deleting  Declared variable Test 1", ((string[])(null)));
+#line 4417
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table712 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table712.AddRow(new string[] {
+                        "person().name",
+                        "Bob"});
+#line 4418
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table712, "Given ");
+#line 4421
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table713 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table713.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table713.AddRow(new string[] {
+                        "var2",
+                        "value2"});
+            table713.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4422
+    testRunner.And("Declare variables as", ((string)(null)), table713, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table714 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table714.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table714.AddRow(new string[] {
+                        "",
+                        ""});
+            table714.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4427
+ testRunner.Then("I update Declare Variable Value to", ((string)(null)), table714, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table715 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table715.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table715.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4432
+    testRunner.Then("The declared Variables are", ((string)(null)), table715, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove Row when deleting  Declared variable  Test 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void RemoveRowWhenDeletingDeclaredVariableTest2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Row when deleting  Declared variable  Test 2", ((string[])(null)));
+#line 4436
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table716 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table716.AddRow(new string[] {
+                        "person().name",
+                        "Bob"});
+#line 4437
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table716, "Given ");
+#line 4440
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table717 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table717.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table717.AddRow(new string[] {
+                        "var2",
+                        "value2"});
+            table717.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4441
+    testRunner.And("Declare variables as", ((string)(null)), table717, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table718 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table718.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table718.AddRow(new string[] {
+                        "",
+                        ""});
+            table718.AddRow(new string[] {
+                        "",
+                        ""});
+#line 4446
+ testRunner.Then("I update Declare Variable Value to", ((string)(null)), table718, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table719 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table719.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+#line 4451
+    testRunner.Then("The declared Variables are", ((string)(null)), table719, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove Row when deleting  Declared variable  Test 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void RemoveRowWhenDeletingDeclaredVariableTest3()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove Row when deleting  Declared variable  Test 3", ((string[])(null)));
+#line 4454
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table720 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table720.AddRow(new string[] {
+                        "person().name",
+                        "Bob"});
+#line 4455
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table720, "Given ");
+#line 4458
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table721 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table721.AddRow(new string[] {
+                        "var1",
+                        "value1"});
+            table721.AddRow(new string[] {
+                        "var2",
+                        "value2"});
+            table721.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4459
+    testRunner.And("Declare variables as", ((string)(null)), table721, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table722 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table722.AddRow(new string[] {
+                        "",
+                        ""});
+            table722.AddRow(new string[] {
+                        "",
+                        ""});
+            table722.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4464
+ testRunner.Then("I update Declare Variable Value to", ((string)(null)), table722, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table723 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table723.AddRow(new string[] {
+                        "var3",
+                        "value3"});
+#line 4469
+    testRunner.Then("The declared Variables are", ((string)(null)), table723, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
