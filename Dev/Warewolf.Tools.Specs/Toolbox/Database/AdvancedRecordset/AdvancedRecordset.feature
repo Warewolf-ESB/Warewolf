@@ -4413,3 +4413,59 @@ Scenario: Character cannot be used in a literal Select statement
     |                                                |
     | [[newPerson(1).name]] = cands.daniel@gmail.com |
     | [[newPerson(1).age]] = 28                      |
+
+Scenario:  Remove Row when deleting  Declared variable Test 1
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    | var1 | value1 |
+    |      |        |
+    | var3 | value3 |
+    Then The declared Variables are
+    | Name | Value  |
+    | var1 | value1 |
+    | var3 | value3 |
+Scenario:  Remove Row when deleting  Declared variable  Test 2
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    | var1 | value1 |
+    |      |        |
+    |      |        |
+    Then The declared Variables are
+    | Name | Value  |
+    | var1 | value1 |   
+Scenario:  Remove Row when deleting  Declared variable  Test 3
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    |      |        |
+    |      |        |
+    | var3 | value3 |
+    Then The declared Variables are
+    | Name | Value  |
+    | var3 | value3 |   
