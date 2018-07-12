@@ -103,7 +103,7 @@ namespace Dev2.Studio.Core
                     }
                 }
             }
-            BuildBindableListFromDebugItems(value.Inputs, _inputs);
+            BuildBindableListFromDebugItems(value.Inputs, _inputs, true);
             BuildBindableListFromDebugItems(value.Outputs, _outputs);
             BuildBindableListFromDebugItems(value.AssertResultList, _assertResultList);
 
@@ -194,7 +194,7 @@ namespace Dev2.Studio.Core
             SelectionType = ActivitySelectionType.Single;
         }
 
-        static void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList)
+        static void BuildBindableListFromDebugItems(IEnumerable<IDebugItem> debugItems, ICollection<object> destinationList, bool isInputs = false)
         {
             destinationList.Clear();
 
@@ -209,14 +209,14 @@ namespace Dev2.Studio.Core
                 var groups = new Dictionary<string, DebugLineGroup>();
                 foreach (var result in item.FetchResultsList())
                 {
-                    BuildBindableListFromDebugItems(list, groups, result);
+                    BuildBindableListFromDebugItems(list, groups, result, isInputs);
                 }
 
                 destinationList.Add(list);
             }
         }
 
-        static void BuildBindableListFromDebugItems(DebugLine list, Dictionary<string, DebugLineGroup> groups, IDebugItemResult result)
+        static void BuildBindableListFromDebugItems(DebugLine list, Dictionary<string, DebugLineGroup> groups, IDebugItemResult result, bool isInputs)
         {
             if (string.IsNullOrEmpty(result.GroupName))
             {
@@ -226,7 +226,8 @@ namespace Dev2.Studio.Core
             {
                 if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
                 {
-                    group = new DebugLineGroup(result.GroupName, result.Label)
+                    var label = isInputs ? string.Format("{0} = ", result.Label) : result.Label;                    
+                    group = new DebugLineGroup(result.GroupName, label)
                     {
                         MoreLink = result.MoreLink
                     };
