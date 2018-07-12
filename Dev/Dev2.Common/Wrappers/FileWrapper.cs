@@ -69,27 +69,30 @@ namespace Dev2.Common.Wrappers
             RefCountedStreamWriter writer;
             try
             {
-                RefCountedStreamWriter result;
-                if (cache.TryGetValue(filePath, out writer))
+                lock (cache)
                 {
-                    result = writer.GetReference();
-                    lock (result)
+                    RefCountedStreamWriter result;
+                    if (cache.TryGetValue(filePath, out writer))
                     {
-                        if (result.Closed)
+                        result = writer.GetReference();
+                        lock (result)
                         {
-                            result.SetTextWriter(File.AppendText(filePath));
+                            if (result.Closed)
+                            {
+                                result.SetTextWriter(File.AppendText(filePath));
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
 
-                var streamWriter = File.AppendText(filePath);
-                result = new RefCountedStreamWriter(streamWriter);
-                if (!cache.TryAdd(filePath, result))
-                {
-                    throw new Exception($"failed keeping single reference to {filePath}");
+                    var streamWriter = File.AppendText(filePath);
+                    result = new RefCountedStreamWriter(streamWriter);
+                    if (!cache.TryAdd(filePath, result))
+                    {
+                        throw new Exception($"failed keeping single reference to {filePath}");
+                    }
+                    return result.GetReference();
                 }
-                return result.GetReference();
             } catch (Exception e)
             {
                 if (cache.TryGetValue(filePath, out writer))
