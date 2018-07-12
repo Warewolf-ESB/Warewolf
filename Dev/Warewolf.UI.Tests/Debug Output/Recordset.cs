@@ -6,6 +6,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using System.Drawing;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
 
 namespace Warewolf.UI.Tests
 {
@@ -15,6 +16,7 @@ namespace Warewolf.UI.Tests
         const string workflow = "F6ExecuteOnFocusLostTest";
         const string SetDeclareVarToRecordset = "SetDeclareVarToRecordset";
         const string ChangeDeclareVarUpdatesOutput = "ChangeDeclareVarUpdatesOutput";
+        const string CopyPasteADNameChange = "CopyPasteADNameChange";
 
         [TestMethod]
         [TestCategory("Recordset")]
@@ -76,6 +78,43 @@ namespace Warewolf.UI.Tests
             
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void AdvancedRecordsetTool_Declare_Value_Change_Debug_Should_Update()
+        {
+            ExplorerUIMap.Filter_Explorer(CopyPasteADNameChange);
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
+
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset tool does not exist on design surface.");
+            UIMap.Press_F6();
+
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = "Advanced Recordset";
+
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
+            Assert.AreEqual("John", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+
+            advancedRecordset.LargeView.DeclareVariablesDataTable.ActivityGridRow.ItemColumnDisplayCell1.Variable.TextEdit.Text = "Jeff";
+            UIMap.Press_F6();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
+            Assert.AreEqual("Jeff", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+
+            Keyboard.SendKeys("^C");
+            UIMap.Click_NewWorkflow_RibbonButton();
+            Keyboard.SendKeys("^V");
+
+            Mouse.Click(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTabNext);
+
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
+
+            advancedRecordset.LargeView.DeclareVariablesDataTable.ActivityGridRow.ItemColumnDisplayCell1.Variable.TextEdit.Text = "George";
+            UIMap.Press_F6();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
+            Assert.AreEqual("George", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+        }
+
 
         #region Additional test attributes
 
@@ -117,20 +156,20 @@ namespace Warewolf.UI.Tests
 
         private WorkflowTabUIMap _WorkflowTabUIMap;
 
-        DataToolsUIMap DataToolsUIMap
+        ScriptingToolsUIMap ScriptingToolsUIMap
         {
             get
             {
-                if (_DataToolsUIMap == null)
+                if (_ScriptingToolsUIMap == null)
                 {
-                    _DataToolsUIMap = new DataToolsUIMap();
+                    _ScriptingToolsUIMap = new ScriptingToolsUIMap();
                 }
 
-                return _DataToolsUIMap;
+                return _ScriptingToolsUIMap;
             }
         }
 
-        private DataToolsUIMap _DataToolsUIMap;
+        private ScriptingToolsUIMap _ScriptingToolsUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
