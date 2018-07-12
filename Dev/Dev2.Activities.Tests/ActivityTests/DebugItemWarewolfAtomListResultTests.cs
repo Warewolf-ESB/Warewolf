@@ -153,6 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(debugEvalResult);
             //---------------Execute Test ----------------------
+            Assert.AreEqual("", debugEvalResult.LabelText);
             var debugItemResults = debugEvalResult.GetDebugItemResult();
             //---------------Test Result -----------------------
             Assert.AreEqual(2, debugItemResults.Count);
@@ -180,6 +181,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(debugEvalResult);
             //---------------Execute Test ----------------------
+            Assert.AreEqual("", debugEvalResult.LabelText);
             var debugItemResults = debugEvalResult.GetDebugItemResult();
             //---------------Test Result -----------------------
             Assert.AreEqual(2, debugItemResults.Count);
@@ -289,6 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var value = debugItemResults[0].Value;
             var operato = debugItemResults[0].Operator;
             Assert.AreEqual("newValue", value);
+            Assert.AreEqual("", debugEvalResult.LabelText);
             Assert.AreEqual("=", operato);
         }
     }
