@@ -135,6 +135,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            _scenarioContext.Remove("result");
             _scenarioContext.Add("result", result);
         }
         [When(@"Advanced Recordset tool is executed after change")]
@@ -164,6 +165,19 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
                 Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
                 rowIdx++;
+            }
+        }
+
+        [Then(@"I update Declare Variable Value to")]
+        public void ThenIUpdateDeclareVariableValueTo(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
+            {
+                viewModel.DeclareVariables[i].Name = row["Name"];
+                viewModel.DeclareVariables[i].Value = row["Value"];
+                i++;
             }
         }
 
