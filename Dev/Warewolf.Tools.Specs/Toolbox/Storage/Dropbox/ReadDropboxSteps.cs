@@ -78,11 +78,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             return scenarioContext.Get<DropBoxFileListDesignerViewModel>("viewModel");
         }
 
-        Mock<IServer> GeEnvrionmentModel()
-        {
-            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
-        }
-
         Mock<IEventAggregator> GetEventAggregator()
         {
             return scenarioContext.Get<Mock<IEventAggregator>>("eventAggrMock");
