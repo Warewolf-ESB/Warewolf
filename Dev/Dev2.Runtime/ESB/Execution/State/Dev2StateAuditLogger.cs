@@ -22,11 +22,22 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog,bool>> queryExpression)
         {
-            var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
-            var database = new SQLiteConnection(filePath);
+            SQLiteConnection database = GetDatabase();
             return database.Table<AuditLog>().Where(queryExpression).AsEnumerable();
         }
 
+        private static SQLiteConnection GetDatabase()
+        {
+            var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
+            var database = new SQLiteConnection(filePath);
+            return database;
+        }
+
+        public static void ClearAuditLog()
+        {
+            var database = GetDatabase();
+            database.Table<AuditLog>().Delete(item => true);
+        }
         public void LogAdditionalDetail(object detail, string callerName)
         {
             var serializer = new Dev2JsonSerializer();
@@ -191,11 +202,11 @@ namespace Dev2.Runtime.ESB.Execution
             AdditionalDetail = detail;
             if (previousActivity != null)
             {
-                PreviousActivity = previousActivity.ToString();
+                PreviousActivity = previousActivity.GetDisplayName();
             }
             if (nextActivity != null)
             {
-                NextActivity = nextActivity.ToString();
+                NextActivity = nextActivity.GetDisplayName();
             }
         }
     }

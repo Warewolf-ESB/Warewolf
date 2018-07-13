@@ -89,6 +89,7 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4513,7 +4514,6 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
         {
@@ -4603,7 +4603,14 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
 
-        [Then(@"The Log file ""(.*)"" search results contain ""(.*)"" with type ""(.*)"" for ""(.*)""")]
+        [Given(@"the audit database is empty")]
+        public void GivenTheAuditDatabaseIsEmpty()
+        {
+            Dev2StateAuditLogger.ClearAuditLog();
+        }
+
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)""")]
         public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string searchString, string auditType, string workflowName)
         {
             var query = new
@@ -4612,9 +4619,15 @@ namespace Dev2.Activities.Specs.Composition
                 AuditType = auditType,
                 SearchString = searchString,
             };
-            var audits = AuditLogger.GetAuditClient();
-            var results = audits.Search(query);
-            Assert.AreEqual(expectedCount, results.Length);
+            var results = Dev2StateAuditLogger.Query(item =>
+                (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+                (auditType == "" || item.AuditType.Equals(auditType)) &&
+                (searchString == "" || (
+                    (item.PreviousActivity != null && item.PreviousActivity.Contains(searchString)) ||
+                    (item.PreviousActivity != null && item.PreviousActivity.Contains(searchString))
+                ))
+            );
+            Assert.AreEqual(expectedCount, results.Count());
         }
 
         class DetailLogInfo
