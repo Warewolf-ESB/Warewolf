@@ -1421,18 +1421,20 @@ Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed 
 	And The Log file for "TestPowerOfTwo" contains additional Logging
 
 	
-Scenario: Detailed Log Audit Query
+Scenario: Audit Log Query Expect 3 Items
 	Given I have a server at "localhost" with workflow "Hello World"
+	And the audit database is empty
 	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
-	And The Log file "3" search results contain "If [[Name]] <> (Not Equal) " with type "Dev2.Activities.DsfDecision" for "Hello World"
+	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal) " with type "Dev2.Activities.DsfDecision" for "Hello World"
 
-Scenario: Detailed Log Audit Query No Results
+Scenario: Audit Log Query Expect No Results
 	Given I have a server at "localhost" with workflow "Hello World"
+	And the audit database is empty
 	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
-	And The Log file "0" search results contain "Something that doesn't exist" with type "Dev2.Activities.DsfDecision" for "Hello World"
+	And The audit database has "0" search results containing "Something that doesn't exist" with type "Dev2.Activities.DsfDecision" for "Hello World"

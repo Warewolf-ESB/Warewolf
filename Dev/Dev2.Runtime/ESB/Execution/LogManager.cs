@@ -40,8 +40,9 @@ namespace Dev2.Runtime.ESB.Execution
             // TODO: check if there is already a state notifier for this workflow
             //       in this server instance. Re-use either the notifier or its loggers.
             var stateNotifier = new StateNotifier();
-            // TODO: add AuditLogger as a listener
-            // stateNotifier.Subscribe(AuditLogger.GetStateNotificationListener())
+
+            stateNotifier.Subscribe(new Dev2StateAuditLogger(dsfDataObject));
+
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
                 if (dsfDataObject.Settings.LoggerType == LoggerType.JSON)

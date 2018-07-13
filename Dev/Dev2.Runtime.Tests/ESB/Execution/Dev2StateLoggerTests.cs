@@ -335,9 +335,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 || a.AuditType.Equals("")));
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
-
-            ////Expect something like: "header:LogPreExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
+            var result = results.FirstOrDefault(a => a.WorkflowID == str);
+            Assert.IsTrue(result != null);
+            Assert.AreEqual("{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}",
+                            result.Environment);
         }
         
         private static void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Dev2JsonStateLogger dev2StateLogger, out Mock<IDev2Activity> activity, out DetailedLogFile detailedLog)
