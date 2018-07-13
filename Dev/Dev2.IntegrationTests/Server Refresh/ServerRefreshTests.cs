@@ -16,15 +16,26 @@ namespace Dev2.Integration.Tests.Server_Refresh
     public class ServerRefreshTests
     {
         const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.bite";
+        const string PassResultOld = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            TryUndoMoveFileTemporarily(PassResult);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Run_a_workflow_to_test_server_refresh()
         {
+            Assert.IsTrue(File.Exists(PassResult));
+            Assert.IsFalse(File.Exists(PassResultOld));
+
             SetupPermissions();
             var url1 = $"http://localhost:3142/secure/RefreshWorkflow1.json";
             var passRequest1 = ExecuteRequest(new Uri(url1));
             //Delete this workflow and continue making requests
-            FileIsDeleted(PassResult);
+            MoveFileTemporarily(PassResult);
             var passRequest2 = ExecuteRequest(new Uri(url1));
             var passRequest3 = ExecuteRequest(new Uri(url1));
             var passRequest4 = ExecuteRequest(new Uri(url1));
@@ -64,15 +75,16 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        void FileIsDeleted(string fileToDelete)
+        void MoveFileTemporarily(string fileName)
         {
-            try
+            File.Move(fileName, $"{fileName}.Moved");
+        }
+        void TryUndoMoveFileTemporarily(string fileName)
+        {
+            var tmpName = $"{fileName}.Moved";
+            if (File.Exists(tmpName))
             {
-                File.Delete(fileToDelete);
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, "Warewolf Error");
+                File.Move(tmpName, fileName);
             }
         }
 

@@ -61,17 +61,6 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;DeleteWorkflowTest&quot;&gt;
-        ///  &lt;Action Name=&quot;InvokeWorkflow&quot; Type=&quot;Workflow&quot;&gt;
-        ///    &lt;XamlDefinition&gt;&amp;lt;Activity mc:Ignorable=&quot;sap&quot; x:Class=&quot;DeleteWorkflowTest&quot; xmlns=&quot;http://schemas.microsoft.com/netfx/2009/xaml/activities&quot; xmlns:av=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; xmlns:dsca=&quot;clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities&quot; xmlns:mc=&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot; xmlns:mva=&quot;clr-namespace:Microsoft.VisualBasic.A [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string DeleteWorkflowTest {
-            get {
-                return ResourceManager.GetString("DeleteWorkflowTest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to I73573r0.
         /// </summary>
         internal static string PathOperations_Correct_Password {

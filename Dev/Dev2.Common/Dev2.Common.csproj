@@ -86,6 +86,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -222,6 +223,7 @@
     <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
+    <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
