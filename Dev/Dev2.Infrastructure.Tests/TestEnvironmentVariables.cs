@@ -1,6 +1,8 @@
 ﻿using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Moq;
+using System;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Infrastructure.Tests
 {
@@ -96,6 +98,21 @@ namespace Dev2.Infrastructure.Tests
             var folderPath = EnvironmentVariables.WorkspacePath;
             //------------Assert Results-------------------------
             StringAssert.Contains(folderPath, folderPart);
+        }
+        
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("EnvironmentVariables_WorkflowDetailLogPath")]
+        public void EnvironmentVariables_WorkflowDetailLogPath_ShouldReturnDetailedLogsInProgramData()
+        {
+            //------------Setup for test--------------------------
+            const string folderPart = "ProgramData\\Warewolf\\DetailedLogs";
+            //------------Execute Test---------------------------
+            var folderPath = EnvironmentVariables.WorkflowDetailLogPath(It.IsAny<Guid>(), It.IsAny<string>());
+            //------------Assert Results-------------------------
+            StringAssert.Contains(folderPath, folderPart);
+            var directory = new DirectoryWrapper();
+            directory.Delete(folderPath, true);
         }
     }
 }

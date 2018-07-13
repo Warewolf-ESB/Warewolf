@@ -117,17 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WebserverURI_Local" xml:space="preserve">
-    <value>http://localhost:3142/services/</value>
-  </data>
   <data name="PathOperations_Correct_Password" xml:space="preserve">
     <value>I73573r0</value>
   </data>
   <data name="PathOperations_Correct_Username" xml:space="preserve">
     <value>IntegrationTester</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="DeleteWorkflowTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\DeleteWorkflowTest.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="WebserverURI_Local" xml:space="preserve">
+    <value>http://localhost:3142/services/</value>
   </data>
 </root>

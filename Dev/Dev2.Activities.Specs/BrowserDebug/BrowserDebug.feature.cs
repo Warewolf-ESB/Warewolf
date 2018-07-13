@@ -468,10 +468,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 118
 this.ScenarioSetup(scenarioInfo);
 #line 119
-testRunner.Given("I Debug \"http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-" +
                     "4f87-869f-7c03d86f330b\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 120
-testRunner.Then("Browser content is \"Hello World.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Browser content is \"Hello World.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -485,10 +485,10 @@ testRunner.Then("Browser content is \"Hello World.\"", ((string)(null)), ((TechT
 #line 122
 this.ScenarioSetup(scenarioInfo);
 #line 123
-testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
                     "ut.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
-testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -502,10 +502,10 @@ testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFl
 #line 126
 this.ScenarioSetup(scenarioInfo);
 #line 127
-testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
+ testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
                     "ut.xml\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
-testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -521,13 +521,13 @@ testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechT
 #line 130
 this.ScenarioSetup(scenarioInfo);
 #line 131
-  testRunner.Given("I have a workflow \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 132
-  testRunner.And("Public \"Has\" Permissions to Execute \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Public \"Has\" Permissions to Execute \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
-  testRunner.And("I Debug \"http://localhost:3142/public/OuterWorkflow.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Debug \"http://localhost:3142/public/OuterWorkflow.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
-  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Out" +
+ testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Out" +
                     "erWorkflow.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -540,15 +540,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with No Execute Permissions", ((string[])(null)));
 #line 136
-  this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 137
-  testRunner.Given("I have a workflow \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 138
-  testRunner.And("Public \"\" Permissions to Execute \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Public \"\" Permissions to Execute \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-  testRunner.And("I Debug \"http://localhost:3142/public/Nested.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Debug \"http://localhost:3142/public/Nested.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Nes" +
+ testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Nes" +
                     "ted.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

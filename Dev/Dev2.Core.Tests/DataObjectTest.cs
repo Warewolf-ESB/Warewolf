@@ -24,9 +24,7 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Security.Principal;
-
-
-
+using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Tests
 {
@@ -64,7 +62,7 @@ namespace Dev2.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
             Assert.IsNotNull(field);
-            Assert.AreEqual(0,field.Count);
+            Assert.AreEqual(0, field.Count);
             //---------------Execute Test ----------------------
             dataObject.PopEnvironment();
             //---------------Test Result -----------------------
@@ -85,7 +83,7 @@ namespace Dev2.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
             Assert.IsNotNull(field);
-            Assert.AreEqual(0,field.Count);
+            Assert.AreEqual(0, field.Count);
             //---------------Execute Test ----------------------
             dataObject.PushEnvironment(new ExecutionEnvironment());
             dataObject.PopEnvironment();
@@ -246,7 +244,9 @@ namespace Dev2.Tests
             dataObject.IsDebugFromWeb = true;
             dataObject.SourceResourceID = Guid.NewGuid();
             dataObject.IsSubExecution = true;
-            dataObject.ServiceTest = new ServiceTestModelTO {TestName = "Test Mock"};
+            dataObject.ServiceTest = new ServiceTestModelTO { TestName = "Test Mock" };
+            dataObject.StateLogger = new Dev2JsonStateLogger(dataObject);
+            dataObject.Settings = new Dev2WorkflowSettingsTO { KeepLogsForDays = 999 };
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             var guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -259,7 +259,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(67, properties.Length);
+            Assert.AreEqual(69, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -319,10 +319,13 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebugFromWeb, clonedObject.IsDebugFromWeb);
             Assert.AreNotEqual(dataObject.ServiceTest, clonedObject.ServiceTest);
             Assert.AreEqual(dataObject.ServiceTest.TestName, clonedObject.ServiceTest.TestName);
-            Assert.AreEqual(dataObject.IsSubExecution,clonedObject.IsSubExecution);
-            Assert.AreEqual(dataObject.WebUrl,clonedObject.WebUrl);
-            Assert.AreEqual(dataObject.QueryString,clonedObject.QueryString);
+            Assert.AreEqual(dataObject.IsSubExecution, clonedObject.IsSubExecution);
+            Assert.AreEqual(dataObject.WebUrl, clonedObject.WebUrl);
+            Assert.AreEqual(dataObject.QueryString, clonedObject.QueryString);
             Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
+            Assert.AreEqual(dataObject.StateLogger, clonedObject.StateLogger);
+            Assert.AreNotEqual(dataObject.Settings, clonedObject.Settings);
+            Assert.AreEqual(dataObject.Settings.KeepLogsForDays, clonedObject.Settings.KeepLogsForDays);
         }
 
         #region Debug Mode Test

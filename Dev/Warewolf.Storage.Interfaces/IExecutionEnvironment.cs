@@ -86,5 +86,7 @@ namespace Warewolf.Storage.Interfaces
 
         List<string> GetIndexes(string exp);
         int GetObjectLength(string recordSetName);
+
+        string ToJson();
     }
 }
