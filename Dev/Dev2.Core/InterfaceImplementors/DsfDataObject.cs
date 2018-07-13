@@ -12,11 +12,13 @@ using System;
 using System.Activities.Persistence;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
+
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
@@ -74,8 +76,8 @@ namespace Dev2.DynamicServices
                     {
                         xe = XElement.Parse(xmldata);
                     }
-                }                
-                catch (Exception)                
+                }
+                catch (Exception)
                 {
                     // try parse ;)
                 }
@@ -100,7 +102,7 @@ namespace Dev2.DynamicServices
 
         void ExtractXmlValues(XElement xe)
         {
-            bool isDebug;
+            bool isDebug;           
             var debugString = ExtractValue(xe, "IsDebug");
             if (!string.IsNullOrEmpty(debugString))
             {
@@ -314,6 +316,8 @@ namespace Dev2.DynamicServices
 
         public Guid? ExecutionID { get; set; }
         public string WebUrl { get; set; }
+        public IDev2StateLogger StateLogger { get; set; }
+        public IDev2WorkflowSettings Settings { get; set; }
 
         #endregion Properties
 
@@ -388,11 +392,18 @@ namespace Dev2.DynamicServices
             result.IsSubExecution = IsSubExecution;
             result.QueryString = QueryString;
             result.ExecutingUser = ExecutingUser;
+            result.StateLogger = StateLogger;
             if (ServiceTest != null)
             {
                 var serializer = new Dev2JsonSerializer();
                 var testString = serializer.Serialize(ServiceTest);
                 result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
+            }            
+            if (Settings != null)
+            {
+                var serializer = new Dev2JsonSerializer();
+                var testString = serializer.Serialize(Settings);
+                result.Settings = serializer.Deserialize<IDev2WorkflowSettings>(testString);
             }
             return result;
         }
