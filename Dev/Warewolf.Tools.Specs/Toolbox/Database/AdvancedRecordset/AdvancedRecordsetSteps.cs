@@ -78,9 +78,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 i++;
             }
         }
-
-        [Then(@"The declared Variables are")]
-        public void ThenTheDeclaredVariablesAre(Table declaredVariables)
+        [Then(@"Declare variables will be")]
+        public void ThenDeclareVariablesWillbe(Table declaredVariables)
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
             var i = 0;
@@ -89,6 +88,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 Assert.AreEqual<string>(viewModel.DeclareVariables[i].Name, row["Name"]);
                 Assert.AreEqual<string>(viewModel.DeclareVariables[i].Value, row["Value"]);
                 i++;
+            }
+        }
+        [Then(@"The declared Variables are")]
+        public void ThenTheDeclaredVariablesAre(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            foreach (var tableRow in declaredVariables.Rows)
+            {
+                var expectedName = tableRow["VariableName"];
+                Assert.IsTrue(viewModel.DeclareVariables.Any(p => p.Name == expectedName));
             }
         }
 
