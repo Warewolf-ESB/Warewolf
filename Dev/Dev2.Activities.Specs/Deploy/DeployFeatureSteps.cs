@@ -41,7 +41,6 @@ namespace Dev2.Activities.Specs.Deploy
         public void ConnectServers()
         {
             _containerOps = new ContainerLauncher();
-            Thread.Sleep(8000);
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
