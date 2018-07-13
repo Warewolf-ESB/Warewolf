@@ -7,6 +7,8 @@ using System.Drawing;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Warewolf.UI.Tests
 {
@@ -92,26 +94,28 @@ namespace Warewolf.UI.Tests
 
             WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = "Advanced Recordset";
 
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
-            Assert.AreEqual("John", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+            string displayTextJohn = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIKimText.DisplayText;
+            Assert.AreEqual("John", displayTextJohn);
 
-            advancedRecordset.LargeView.DeclareVariablesDataTable.ActivityGridRow.ItemColumnDisplayCell1.Variable.TextEdit.Text = "Jeff";
+            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.DeclareVariablesDataTable.UINameRow.UIItemnameColumnDisplaCell.UIThevalueofthelocalvaComboBox.UITextEdit.Text = "Jeff";
             UIMap.Press_F6();
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
-            Assert.AreEqual("Jeff", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+            string displayTextJeff = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIKimText.DisplayText;
+            Assert.AreEqual("Jeff", displayTextJeff);
+
+            DatabaseToolsUIMap.AdvancedRecordsetTool_Select_With_SingleClick();
 
             Keyboard.SendKeys("^C");
             UIMap.Click_NewWorkflow_RibbonButton();
+            WorkflowTabUIMap.Click_Start_Node();
             Keyboard.SendKeys("^V");
 
-            Mouse.Click(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTabNext);
+            DatabaseToolsUIMap.Right_Click_AdvancedRecordsetTool();            
+            UIMap.Context_Menu_Set_As_Start_Node();
+            Mouse.DoubleClick(advancedRecordset, new Point(182, 15));
 
-            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
-
-            advancedRecordset.LargeView.DeclareVariablesDataTable.ActivityGridRow.ItemColumnDisplayCell1.Variable.TextEdit.Text = "George";
             UIMap.Press_F6();
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText.Exists);
-            Assert.AreEqual("George", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UINameText);
+            string displayTextGeorge = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UIAdvancedRecordsetTreeItem.UIKimText.DisplayText;
+            Assert.AreEqual("Jeff", displayTextGeorge);
         }
 
 
@@ -122,7 +126,6 @@ namespace Warewolf.UI.Tests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            
         }
 
         UIMap UIMap

@@ -4646,7 +4646,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.AdvancedRecordsetDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Advanced Recordset(AdvancedRecordsetDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "Advanced Recordset", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
