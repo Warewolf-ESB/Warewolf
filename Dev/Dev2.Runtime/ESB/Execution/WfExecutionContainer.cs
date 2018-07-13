@@ -181,13 +181,7 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-                try
-                {
-                    dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
-                } catch (Exception e)
-                {
-                    //asdf
-                }
+                dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);

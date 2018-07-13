@@ -87,9 +87,7 @@ namespace Dev2.Runtime.ESB.Execution
                     {
                         Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser,()=>
                         {
-                            var res = eme.Execute(Request.Args, TheWorkspace);
-                            Request.ExecuteResult = res;
-                            result = DataObject.DataListID;
+                            result = ExecuteService(eme);
                         });
                         errors.MergeErrors(invokeErrors);
 
@@ -110,6 +108,19 @@ namespace Dev2.Runtime.ESB.Execution
                 errors.AddError(ex.Message);
             }
 
+            return result;
+        }
+
+        private Guid ExecuteService(IEsbManagementEndpoint eme)
+        {
+            Guid result;
+            var res = eme.Execute(Request.Args, TheWorkspace);
+            if (res == null)
+            {
+                Dev2Logger.Error($"Null result return from internal service:{ServiceAction.Name}", GlobalConstants.WarewolfError);
+            }
+            Request.ExecuteResult = res;
+            result = DataObject.DataListID;
             return result;
         }
 
