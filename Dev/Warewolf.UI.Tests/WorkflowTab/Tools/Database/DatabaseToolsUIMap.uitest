@@ -2623,10 +2623,10 @@
                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ClassName">Uia.AdvancedRecordsetDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Advanced Recordset(AdvancedRecordsetDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">Advanced Recordset</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>

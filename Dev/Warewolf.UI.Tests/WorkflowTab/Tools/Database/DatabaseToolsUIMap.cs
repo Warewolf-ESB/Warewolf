@@ -45,6 +45,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset, new Point(238, 15));
         }
 
+        [When(@"I Single Click AdvancedRecordset Tool to Change View")]
+        public void AdvancedRecordsetTool_Select_With_SingleClick()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset, new Point(238, 15));
+        }
+
         [When(@"I Double Click MySqlDatabase Tool to Change View")]
         public void MySqlDatabaseTool_ChangeView_With_DoubleClick()
         {
@@ -139,6 +145,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         public void Click_NewSourceButton_From_OracleTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeView.NewSourceButton, new Point(30, 4));
+        }
+
+        internal void Right_Click_AdvancedRecordsetTool()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset, MouseButtons.Right, ModifierKeys.None, new Point(182, 15));
         }
 
         [Given(@"I Click New Source Button From PostgreSQL Tool")]
