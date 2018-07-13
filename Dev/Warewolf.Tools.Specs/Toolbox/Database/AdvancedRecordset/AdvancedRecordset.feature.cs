@@ -12734,7 +12734,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 4334
  testRunner.And("I update Output field to", ((string)(null)), table696, "And ");
 #line 4337
- testRunner.When("Advanced Recordset tool is executed after change", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table697 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -13029,7 +13029,7 @@ this.ScenarioSetup(scenarioInfo);
                         "var3",
                         "value3"});
 #line 4432
-    testRunner.Then("The declared Variables are", ((string)(null)), table715, "Then ");
+    testRunner.Then("Declare variables will be", ((string)(null)), table715, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -13091,7 +13091,7 @@ this.ScenarioSetup(scenarioInfo);
                         "var1",
                         "value1"});
 #line 4451
-    testRunner.Then("The declared Variables are", ((string)(null)), table719, "Then ");
+    testRunner.Then("Declare variables will be", ((string)(null)), table719, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -13153,7 +13153,7 @@ this.ScenarioSetup(scenarioInfo);
                         "var3",
                         "value3"});
 #line 4469
-    testRunner.Then("The declared Variables are", ((string)(null)), table723, "Then ");
+    testRunner.Then("Declare variables will be", ((string)(null)), table723, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

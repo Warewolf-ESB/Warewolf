@@ -4334,7 +4334,7 @@ Scenario:  Change Field Name on the Outputs Grid Updates the Debug output field
 	And I update Output field to   
     | Mapped From | Mapped To                 |
     | name        | [[TableCopy().firstname]] |
-	When Advanced Recordset tool is executed after change
+	When Advanced Recordset tool is executed
 	Then recordset "[[TableCopy(*).firstname]]"  will be
     | rs                    | value  |
     | TableCopy().firstname | Bob    |
@@ -4429,7 +4429,7 @@ Scenario:  Remove Row when deleting  Declared variable Test 1
     | var1 | value1 |
     |      |        |
     | var3 | value3 |
-    Then The declared Variables are
+    Then Declare variables will be
     | Name | Value  |
     | var1 | value1 |
     | var3 | value3 |
@@ -4448,7 +4448,7 @@ Scenario:  Remove Row when deleting  Declared variable  Test 2
     | var1 | value1 |
     |      |        |
     |      |        |
-    Then The declared Variables are
+    Then Declare variables will be
     | Name | Value  |
     | var1 | value1 |   
 Scenario:  Remove Row when deleting  Declared variable  Test 3
@@ -4466,6 +4466,6 @@ Scenario:  Remove Row when deleting  Declared variable  Test 3
     |      |        |
     |      |        |
     | var3 | value3 |
-    Then The declared Variables are
+    Then Declare variables will be
     | Name | Value  |
     | var3 | value3 |   
