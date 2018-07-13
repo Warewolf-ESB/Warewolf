@@ -1322,6 +1322,59 @@ Scenario: COM DLL service execute
 	|                                |
 	| [[PrimitiveReturnValue]] = 0   |
 
+Scenario: Workflow with ForEach and Manual Loop
+      Given I have a workflow "WFWithForEachWithManualLoop"
+	  And "WFWithForEachWithManualLoop" contains an Assign "Setup Counter" as
+	    | variable    | value |
+	    | [[counter]] | 0     |	
+	  And "WFWithForEachWithManualLoop" contains an Assign "Increment Counter" as
+	    | variable    | value          |
+	    | [[counter]] | =[[counter]]+1 |
+	  And "WFWithForEachWithManualLoop" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	  And "ForEachTest" contains an Assign "MyAssign" as
+	    | variable    | value |
+	    | [[rec().a]] | Test  |
+	  And "WFWithForEachWithManualLoop" contains a Decision "Check Counter" as
+		| ItemToCheck | Condition | ValueToCompareTo | TrueArmToolName | FalseArmToolName  |
+		| [[counter]] | =         | 3                | End Result      | Increment Counter |	  	 	  
+	  And "WFWithForEachWithManualLoop" contains an Assign "End Result" as
+	    | variable   | value |
+	    | [[result]] | DONE  |	 
+      When "WFWithForEachWithManualLoop" is executed
+	  Then the workflow execution has "NO" error
+	  And the "ForEachTest" number '1' in WorkFlow "WFWithForEachWithManualLoop" debug inputs as 
+	    |                 | Number |
+	    | No. of Executes | 2      |
+      And the "ForEachTest" number '1' in WorkFlow "WFWithForEachWithManualLoop" has "2" nested children 
+	  And the "MyAssign" in step 1 for "ForEachTest" number '1' debug inputs as
+	    | # | Variable      | New Value |
+	    | 1 | [[rec().a]] = | Test      |
+	  And the "MyAssign" in step 1 for "ForEachTest" number '1' debug outputs as
+		| # |                     |
+		| 1 | [[rec(1).a]] = Test |
+	  And the "MyAssign" in step 2 for "ForEachTest" number '1' debug inputs as
+		| # | Variable      | New Value |
+		| 1 | [[rec().a]] = | Test      |
+	  And the "MyAssign" in step 2 for "ForEachTest" number '1' debug outputs as
+		| # |                     |
+		| 1 | [[rec(2).a]] = Test |
+	  And the "ForEachTest" number '2' in WorkFlow "WFWithForEachWithManualLoop" debug inputs as 
+	    |                 | Number |
+	    | No. of Executes | 2      |
+      And the "ForEachTest" number '2' in WorkFlow "WFWithForEachWithManualLoop" has "2" nested children 
+	  And the "MyAssign" in step 1 for "ForEachTest" number '2' debug inputs as
+	    | # | Variable      | New Value |
+	    | 1 | [[rec().a]] = | Test      |
+	  And the "MyAssign" in step 1 for "ForEachTest" number '2' debug outputs as
+		| # |                     |
+		| 1 | [[rec(3).a]] = Test |
+	  And the "MyAssign" in step 2 for "ForEachTest" number '2' debug inputs as
+		| # | Variable      | New Value |
+		| 1 | [[rec().a]] = | Test      |
+	  And the "MyAssign" in step 2 for "ForEachTest" number '2' debug outputs as
+		| # |                     |
+		| 1 | [[rec(4).a]] = Test |
+
 Scenario: Detailed Log Execute Workflow with error Creates Detailed Log
 	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
 	And The detailed log file does not exist for "StopExecutionOnMySQLTimeoutError"

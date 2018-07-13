@@ -69,24 +69,30 @@ namespace Dev2.Common.Wrappers
             RefCountedStreamWriter writer;
             try
             {
-                RefCountedStreamWriter result;
-                if (cache.TryGetValue(filePath, out writer))
+                lock (cache)
                 {
-                    result = writer.GetReference();
-                    if (result.Closed)
+                    RefCountedStreamWriter result;
+                    if (cache.TryGetValue(filePath, out writer))
                     {
-                        result.SetTextWriter(File.AppendText(filePath));
+                        result = writer.GetReference();
+                        lock (result)
+                        {
+                            if (result.Closed)
+                            {
+                                result.SetTextWriter(File.AppendText(filePath));
+                            }
+                        }
+                        return result;
                     }
-                    return result;
-                }
 
-                var streamWriter = File.AppendText(filePath);
-                result = new RefCountedStreamWriter(streamWriter);
-                if (!cache.TryAdd(filePath, result))
-                {
-                    throw new Exception($"failed keeping single reference to {filePath}");
+                    var streamWriter = File.AppendText(filePath);
+                    result = new RefCountedStreamWriter(streamWriter);
+                    if (!cache.TryAdd(filePath, result))
+                    {
+                        throw new Exception($"failed keeping single reference to {filePath}");
+                    }
+                    return result.GetReference();
                 }
-                return result.GetReference();
             } catch (Exception e)
             {
                 if (cache.TryGetValue(filePath, out writer))
@@ -115,6 +121,7 @@ namespace Dev2.Common.Wrappers
         public void SetTextWriter(StreamWriter writer)
         {
             this.SynchronizedTextWriter = TextWriter.Synchronized(writer);
+            Closed = false;
         }
 
         public RefCountedStreamWriter(StreamWriter writer)
