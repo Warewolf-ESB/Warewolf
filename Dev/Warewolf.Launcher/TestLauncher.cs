@@ -146,7 +146,6 @@ namespace Warewolf.Launcher
                 {
                     CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
                 }
-                Thread.Sleep(8000);
             }
             catch (Exception e)
             {

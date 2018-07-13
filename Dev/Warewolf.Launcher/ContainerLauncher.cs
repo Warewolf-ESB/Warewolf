@@ -361,6 +361,11 @@ namespace Warewolf.Launcher
                     {
                         throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
                     }
+                    else
+                    {
+                        Console.WriteLine($"Waiting for Warewolf server to start in {serverContainerID.Substring(0, 12)}.");
+                        Thread.Sleep(8000);
+                    }
                 }
             }
         }
