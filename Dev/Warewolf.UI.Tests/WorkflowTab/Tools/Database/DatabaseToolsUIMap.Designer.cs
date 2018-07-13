@@ -4800,6 +4800,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         }
         
         #region Properties
+        public UINameRow UINameRow
+        {
+            get
+            {
+                if ((this.mUINameRow == null))
+                {
+                    this.mUINameRow = new UINameRow(this);
+                }
+                return this.mUINameRow;
+            }
+        }
+        
         public ActivityGridRow ActivityGridRow
         {
             get
@@ -4814,7 +4826,113 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         #endregion
         
         #region Fields
+        private UINameRow mUINameRow;
+        
         private ActivityGridRow mActivityGridRow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UINameRow : WpfRow
+    {
+        
+        public UINameRow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow__AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemnameColumnDisplaCell UIItemnameColumnDisplaCell
+        {
+            get
+            {
+                if ((this.mUIItemnameColumnDisplaCell == null))
+                {
+                    this.mUIItemnameColumnDisplaCell = new UIItemnameColumnDisplaCell(this);
+                }
+                return this.mUIItemnameColumnDisplaCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemnameColumnDisplaCell mUIItemnameColumnDisplaCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemnameColumnDisplaCell : WpfCell
+    {
+        
+        public UIItemnameColumnDisplaCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIThevalueofthelocalvaComboBox UIThevalueofthelocalvaComboBox
+        {
+            get
+            {
+                if ((this.mUIThevalueofthelocalvaComboBox == null))
+                {
+                    this.mUIThevalueofthelocalvaComboBox = new UIThevalueofthelocalvaComboBox(this);
+                }
+                return this.mUIThevalueofthelocalvaComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIThevalueofthelocalvaComboBox mUIThevalueofthelocalvaComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIThevalueofthelocalvaComboBox : WpfComboBox
+    {
+        
+        public UIThevalueofthelocalvaComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "The value of the local variable to be used in SQL Query. Scalar variables can be " +
+                "used as a value.";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
         #endregion
     }
     
