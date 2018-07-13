@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
-        const int EXPECTED_NUMBER_OF_RESOURCES = 105;
+        const int EXPECTED_NUMBER_OF_RESOURCES = 108;
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();

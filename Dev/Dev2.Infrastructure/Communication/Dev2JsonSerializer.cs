@@ -40,7 +40,8 @@ namespace Dev2.Communication
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             };
-        public string Serialize<T>(T obj) => JsonConvert.SerializeObject(obj, Formatting, _serializerSettings);
+        public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
+        public string Serialize<T>(T obj, Formatting formatting) => JsonConvert.SerializeObject(obj, formatting, _serializerSettings);
 
         public T Deserialize<T>(string obj)
         {

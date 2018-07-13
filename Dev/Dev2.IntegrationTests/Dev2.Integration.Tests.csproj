@@ -65,6 +65,15 @@
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
+    <Compile Include="TestResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestResource.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="TestResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -218,11 +227,6 @@
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
-    <Compile Include="TestResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestResource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Test utils\WebTester\Utils\AsynchronousRequest.cs" />
     <Compile Include="Test utils\WebTester\Utils\RequestState.cs" />
@@ -239,11 +243,6 @@
     <EmbeddedResource Include="Properties\TestStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TestResource.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -280,7 +279,7 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Resources\DeleteWorkflowTest.xml" />
+    <None Include="Server Refresh\Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -1135,6 +1135,7 @@ Examples:
 
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
+	  And The detailed log file does not exist for "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | name                | <nameVariable>  |
@@ -1145,6 +1146,10 @@ Scenario Outline: Database MySqlDB Database service last  indexes
 	  |                                       |
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
+      And The detailed log file is created for "<WorkflowName>"
+	  And The Log file contains Logging matching ""MappedFrom":"email""
+	  And The Log file contains Logging matching ""MappedTo":"[[rec().email]]""
+	  And The Log file contains Logging matching ""RecordSetName":"rec""
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
@@ -1369,3 +1374,49 @@ Scenario: Workflow with ForEach and Manual Loop
 	  And the "MyAssign" in step 2 for "ForEachTest" number '2' debug outputs as
 		| # |                     |
 		| 1 | [[rec(4).a]] = Test |
+
+Scenario: Detailed Log Execute Workflow with error Creates Detailed Log
+	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
+	And The detailed log file does not exist for "StopExecutionOnMySQLTimeoutError"
+	When "localhost" is the active environment used to execute "StopExecutionOnMySQLTimeoutError"
+    Then the workflow execution has "AN" error
+	And The detailed log file is created for "StopExecutionOnMySQLTimeoutError"
+	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
+	And The Log file for "StopExecutionOnMySQLTimeoutError" contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
+	And The Log file contains Logging matching ""Inputs":[],"Outputs":[]"
+	And The Log file contains Logging matching "LogAdditionalDetail"
+	And The Log file contains Logging matching ""$type":"System.Net.Sockets.SocketException, System","NativeErrorCode":10060"
+
+Scenario: Detailed Log Executing Hello World Creates Detailed Log
+	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The detailed log file is created for "Hello World"
+	
+Scenario: Detailed Log Executing Hello World Creates Detailed Log And Appends Logging For Each Execution
+	Given I have a server at "localhost" with workflow "Hello World"
+	And The detailed log file does not exist for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The detailed log file is created for "Hello World"
+	And The Log file contains Logging for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The Log file for "Hello World" contains additional Logging
+
+Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed Log for inner and outer workflows
+	Given I have a server at "localhost" with workflow "TestPowerOfTwo"
+	And The detailed log file does not exist for "TestPowerOfTwo"
+	And The detailed log file does not exist for id "80225a8b-9711-4e0a-93e9-ed25e5e02e95" - "PowerOfTwo"
+	When "localhost" is the active environment used to execute "TestPowerOfTwo"
+    Then the workflow execution has "No" error
+	And The detailed log file is created for "TestPowerOfTwo"
+	And The detailed log file is created for "PowerOfTwo"
+	And The Log file contains Logging for "TestPowerOfTwo"
+	And The Log file contains Logging for "PowerOfTwo"
+	When "localhost" is the active environment used to execute "TestPowerOfTwo"
+    Then the workflow execution has "No" error
+	And The Log file for "PowerOfTwo" contains additional Logging
+	And The Log file for "TestPowerOfTwo" contains additional Logging
+>>>>>>> develop
