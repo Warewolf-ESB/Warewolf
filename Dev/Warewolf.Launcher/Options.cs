@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
 {
@@ -98,6 +99,15 @@ namespace Warewolf.Launcher
         [Option("RetryCount")]
         public string RetryCount { get; private set; }
 
+        [Option("RetryFile")]
+        public string RetryFile { get; private set; }
+
+        [Option("ConsoleServer")]
+        public bool ConsoleServer { get; private set; }
+
+        [Option("AdminMode")]
+        public bool AdminMode { get; private set; }
+
         public static TestLauncher PargeArgs(string[] args)
         {
             var testLauncher = new TestLauncher();
@@ -136,13 +146,16 @@ namespace Warewolf.Launcher
                 }
                 if (options.VSTest)
                 {
-                    Console.WriteLine("VSTest");
-                    testLauncher.VSTest = "true";
+                    Console.WriteLine("Test Runner: VSTest");
+                }
+                if (options.VSTest || (!options.MSTest && !options.VSTest))
+                {
+                    testLauncher.TestRunner = new VSTestRunner();
                 }
                 if (options.MSTest)
                 {
-                    Console.WriteLine("MSTest");
-                    testLauncher.MSTest = "true";
+                    Console.WriteLine("Test Runner: MSTest");
+                    testLauncher.TestRunner = new MSTestRunner();
                 }
                 if (options.DotCoverPath != null)
                 {
@@ -166,7 +179,7 @@ namespace Warewolf.Launcher
                 if (options.Cleanup)
                 {
                     Console.WriteLine("Cleaning Up.");
-                    testLauncher.Cleanup = "true";
+                    testLauncher.Cleanup = true;
                 }
                 if (options.AssemblyFileVersionsTest != null)
                 {
@@ -226,8 +239,8 @@ namespace Warewolf.Launcher
                 if (options.TestsPath != null)
                 {
                     Console.WriteLine("TestsPath: " + options.TestsPath);
-                    testLauncher.TestsPath = options.TestsPath;
-                    testLauncher.TestsResultsPath = testLauncher.TestsPath + "\\TestResults";
+                    testLauncher.TestRunner.TestsPath = options.TestsPath;
+                    testLauncher.TestRunner.TestsResultsPath = testLauncher.TestRunner.TestsPath + "\\TestResults";
                 }
                 if (options.JobName != null)
                 {
@@ -237,7 +250,7 @@ namespace Warewolf.Launcher
                 if (options.TestList != null)
                 {
                     Console.WriteLine("TestList: " + options.TestList);
-                    testLauncher.TestList = options.TestList;
+                    testLauncher.TestRunner.TestList = options.TestList;
                 }
                 if (options.MergeDotCoverSnapshotsInDirectory != null)
                 {
@@ -247,17 +260,17 @@ namespace Warewolf.Launcher
                 if (options.TestsResultsPath != null)
                 {
                     Console.WriteLine("TestsResultsPath: " + options.TestsResultsPath);
-                    testLauncher.TestsResultsPath = options.TestsResultsPath;
+                    testLauncher.TestRunner.TestsResultsPath = options.TestsResultsPath;
                 }
                 if (options.VSTestPath != null)
                 {
                     Console.WriteLine("VSTestPath: " + options.VSTestPath);
-                    testLauncher.VSTestPath = options.VSTestPath;
+                    testLauncher.TestRunner.Path = options.VSTestPath;
                 }
                 if (options.MSTestPath != null)
                 {
                     Console.WriteLine("MSTestPath: " + options.MSTestPath);
-                    testLauncher.MSTestPath = options.MSTestPath;
+                    testLauncher.TestRunner.Path = options.MSTestPath;
                 }
                 if (options.RetryCount != null)
                 {
@@ -270,6 +283,20 @@ namespace Warewolf.Launcher
                     {
                         Console.WriteLine("RetryCount: Expects a number of times to re-try failing tests. Cannot parse " + options.RetryCount);
                     }
+                }
+                if (options.RetryFile != null)
+                {
+                    Console.WriteLine("Retrying all failures in file: " + options.RetryFile);
+                    testLauncher.RetryFile = options.RetryFile;
+                }
+                if (options.ConsoleServer)
+                {
+                    Console.WriteLine("ConsoleServer: Starting the server in a console window.");
+                    testLauncher.StartServerAsConsole = true;
+                }
+                if (options.AdminMode)
+                {
+                    testLauncher.AdminMode = true;
                 }
             }).WithNotParsed(errs =>
             {

@@ -87,6 +87,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -94,6 +96,7 @@ namespace Dev2.Activities.Specs.Composition
     public class WorkflowExecutionSteps : RecordSetBases
     {
         readonly ScenarioContext _scenarioContext;
+        IDirectory _dirHelper;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -101,6 +104,7 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
             AppUsageStats.LocalHost = "http://localhost:3142";
+            _dirHelper = new DirectoryWrapper();
         }
 
         const int EnvironmentConnectionTimeout = 15;
@@ -147,14 +151,22 @@ namespace Dev2.Activities.Specs.Composition
 
         [AfterScenario]
         public void CleanUp()
+        {         
+            _resetEvt?.Close();
+        }
+        public void CleanUp_DetailedLogFile()
         {
             WorkflowIsDeletedAsCleanup();
             if (_debugWriterSubscriptionService != null)
             {
-                _debugWriterSubscriptionService.Unsubscribe();
-                _debugWriterSubscriptionService.Dispose();
+                var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
+                
+                foreach (var item in files)
+                {
+                    File.Delete(item);
+                }
+                _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
             }
-            _resetEvt?.Close();
             _scenarioContext?.Clear();
         }
 
@@ -241,6 +253,10 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     LoadResourcesAndSubscribeToDebugOutput(workflow, environmentModel);
                 }
+            }
+            else
+            {
+                Assert.Fail($"Server \"{serverName}\" not found");
             }
         }
 
@@ -739,7 +755,7 @@ namespace Dev2.Activities.Specs.Composition
                 var resName = splitNameAndCat[splitNameAndCat.Length - 1];
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName
                                                                          || model.Category == remoteWf.Replace('/', '\\'), true);
-                
+
                 if (remoteResourceModel == null)
                 {
                     remoteEnvironment.LoadResources();
@@ -2774,7 +2790,7 @@ namespace Dev2.Activities.Specs.Composition
             };
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
-        
+
         [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
@@ -2908,7 +2924,7 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, downloadActivity);
         }
-        
+
         [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
         public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
         {
@@ -3015,7 +3031,7 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
-        
+
         [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
         public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
         {
@@ -3031,7 +3047,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
         }
-        
+
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
@@ -3060,7 +3076,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
-        
+
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
         public void WhenIRollbackToVersion(string workflowName, string version)
         {
@@ -3078,7 +3094,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
-            
+
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             debugStates.Clear();
 
@@ -4516,6 +4532,135 @@ namespace Dev2.Activities.Specs.Composition
             if (!server.IsConnected)
             {
                 server.Connect();
+            }
+        }
+
+
+
+        [Given(@"The detailed log file does not exist for ""(.*)""")]
+        public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
+        {
+            var detailLogInfo = new DetailLogInfo(workflowName, this);
+            detailLogInfo.DeleteIfExists();
+            Add($"DetailLogInfo {workflowName}", detailLogInfo);
+        }
+
+        [Given(@"The detailed log file does not exist for id ""(.*)"" - ""(.*)""")]
+        public void GivenTheDetailedLogFileDoesNotExistForId(string id, string workflowName)
+        {
+            var detailLogInfo = new DetailLogInfo(workflowName, id);
+            detailLogInfo.DeleteIfExists();
+            Add($"DetailLogInfo {workflowName}", detailLogInfo);
+        }
+
+        [Then(@"The detailed log file is created for ""(.*)""")]
+        public void ThenTheDetailedLogFileIsCreatedFor(string workflowName)
+        {
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logFileContent = detailLogInfo.ReadAllText();
+            AddLogFileContentToContext(logFileContent);
+            Assert.IsTrue(logFileContent.Length > 0);
+        }
+        
+        [Then(@"The Log file contains Logging for ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingFor(string workflowName)
+        {
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logContent = detailLogInfo.ReadAllText();
+            Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogExecuteCompleteState"));
+            Assert.IsFalse(logContent.Contains("header:LogStopExecutionState"));
+        }
+
+        [Then(@"The Log file contains Logging for stopped ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingForStopped(string workflowName)
+        {
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logContent = detailLogInfo.ReadAllText();
+            Assert.IsTrue(logContent.Contains("header:LogPreExecuteState"));
+            Assert.IsTrue(logContent.Contains("header:LogPostExecuteState"));
+            Assert.IsFalse(logContent.Contains("header:LogExecuteCompleteState"));
+            Assert.IsTrue(logContent.Contains("header:LogStopExecutionState"));
+        }
+
+        [Then(@"The Log file for ""(.*)"" contains additional Logging")]
+        public void ThenTheLogFileContainsAdditionalLogging(string workflowName)
+        {
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var previousLogFileSize = detailLogInfo.PreviousLength;
+            var logContent = detailLogInfo.ReadAllText();
+            Assert.IsTrue(logContent.Length > previousLogFileSize);
+            var sizeDifference = logContent.Length / (double)previousLogFileSize;
+            Assert.IsTrue(sizeDifference > 1.9);
+            Assert.IsTrue(sizeDifference < 2.1);
+        }
+
+        [Then(@"The Log file for ""(.*)"" contains Logging matching ""(.*)""")]
+        public void ThenTheLogFileForContainsLoggingMatching(string workflowName, string searchString)
+        {
+            TryGetValue($"DetailLogInfo {workflowName}", out DetailLogInfo detailLogInfo);
+            var logFileContent = detailLogInfo.ReadAllText();
+            AddLogFileContentToContext(logFileContent);
+            Assert.IsTrue(logFileContent.Contains(searchString));
+        }
+
+        private void AddLogFileContentToContext(string logFileContent)
+        {
+            TryGetValue("LogFileContent", out string fileContent);
+            if (fileContent == null)
+            {
+                Add("LogFileContent", logFileContent);
+            }
+            else
+            {
+                _scenarioContext.Remove("LogFileContent");
+                Add("LogFileContent", logFileContent);
+            }
+        }
+
+        [Then(@"The Log file contains Logging matching ""(.*)""")]
+        public void ThenTheLogFileContainsLoggingMatching(string searchString)
+        {
+            TryGetValue("LogFileContent", out string logFileContent);
+            Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
+        }
+
+        class DetailLogInfo
+        {
+            readonly IContextualResourceModel resourceModel;
+            readonly string LogFilePath;
+            readonly FileWrapper fileWrapper;
+            public int PreviousLength { get; private set; }
+            private DetailLogInfo()
+            {
+                fileWrapper = new FileWrapper();
+            }
+            public DetailLogInfo(string workflowName, WorkflowExecutionSteps workflowExecutionSteps)
+                : this()
+            {
+                workflowExecutionSteps.TryGetValue(workflowName, out resourceModel);
+                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+            }
+            public DetailLogInfo(string workflowName, string resourceModelId)
+                : this()
+            {
+                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
+            }
+
+            internal void DeleteIfExists()
+            {
+                if (fileWrapper.Exists(LogFilePath))
+                {
+                    fileWrapper.Delete(LogFilePath);
+                }
+            }
+
+            internal string ReadAllText()
+            {
+                var result = fileWrapper.ReadAllText(LogFilePath);
+                PreviousLength = result.Length;
+                return result;
             }
         }
     }

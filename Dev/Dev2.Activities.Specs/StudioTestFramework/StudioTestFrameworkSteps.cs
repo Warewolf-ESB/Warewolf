@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
-        const int EXPECTED_NUMBER_OF_RESOURCES = 105;
+        const int EXPECTED_NUMBER_OF_RESOURCES = 108;
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.TestFramework
         static void SetupFeature()
         {
             ConnectAndLoadServer();
-            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
+            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
         }
 
         [AfterFeature("StudioTestFramework")]
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [BeforeScenario("StudioTestFramework")]
         public static void SetupScenario()
         {
-            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
+            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
         }
 
         [AfterScenario("StudioTestFrameworkWithDropboxTools")]
