@@ -471,10 +471,10 @@ namespace Warewolf.Launcher
 
         static void MoveScreenRecordingsToTestResults(string TestsResultsPath)
         {
-            Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
             var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder(TestsResultsPath);
             if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
             {
+                Console.WriteLine($"Getting UI test screen recordings from \"{TestsResultsPath}\"");
                 string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
                 if (Directory.Exists(directoryToRemove))
                 {
