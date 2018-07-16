@@ -140,7 +140,7 @@ namespace Dev2.Activities.Specs.Composition
 
         [AfterScenario]
         public void CleanUp()
-        {         
+        {
             _resetEvt?.Close();
         }
         public void CleanUp_DetailedLogFile()
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Specs.Composition
             if (_dirHelper.Exists(EnvironmentVariables.DetailLogPath))
             {
                 var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
-                
+
                 foreach (var item in files)
                 {
                     File.Delete(item);
@@ -1069,7 +1069,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 foreach (var activity in activityList)
                 {
-                    if(activity.Value is DsfDecision dec)
+                    if (activity.Value is DsfDecision dec)
                     {
                         var decConfig = Get<(string TrueArm, string FalseArm)>(dec.DisplayName);
                         var trueArmToolName = decConfig.TrueArm;
@@ -4362,9 +4362,9 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Col1 = tableRow["ItemToCheck"],
                     EvaluationFn = DecisionDisplayHelper.GetValue(tableRow["Condition"]),
-                    Col2=tableRow["ValueToCompareTo"]
+                    Col2 = tableRow["ValueToCompareTo"]
                 });
-                Add(decisionName, (TrueArm:tableRow["TrueArmToolName"], FalseArm:tableRow["FalseArmToolName"]));
+                Add(decisionName, (TrueArm: tableRow["TrueArmToolName"], FalseArm: tableRow["FalseArmToolName"]));
             }
 
             _commonSteps.AddActivityToActivityList(workflowName, decisionName, activity);
@@ -4392,7 +4392,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).Skip(toolNum-1).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).Skip(toolNum - 1).ToList();
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
@@ -4407,7 +4407,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             else
             {
-                inputState = toolSpecificDebug.Skip(toolNum-1).FirstOrDefault();
+                inputState = toolSpecificDebug.Skip(toolNum - 1).FirstOrDefault();
             }
 
             if (inputState != null && inputState.Inputs != null)
@@ -4431,7 +4431,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).Skip(itemNumber-1).ToList().Select(a => a.ID).First();
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).Skip(itemNumber - 1).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
             Assert.AreEqual(count, children);
         }
@@ -4538,7 +4538,7 @@ namespace Dev2.Activities.Specs.Composition
             AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Length > 0);
         }
-        
+
         [Then(@"The Log file contains Logging for ""(.*)""")]
         public void ThenTheLogFileContainsLoggingFor(string workflowName)
         {
@@ -4610,59 +4610,49 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)""")]
-        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string searchString, string auditType, string workflowName)
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" with activity ""(.*)"" for ""(.*)""")]
+        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string searchString, string auditType, string activityName, string workflowName)
         {
-            var query = new
-            {
-                WorkflowName = workflowName,
-                AuditType = auditType,
-                SearchString = searchString,
-            };
             var results = Dev2StateAuditLogger.Query(item =>
                 (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
                 (auditType == "" || item.AuditType.Equals(auditType)) &&
-                (searchString == "" || (
-                    (item.PreviousActivity != null && item.PreviousActivity.Contains(searchString)) ||
-                    (item.PreviousActivity != null && item.PreviousActivity.Contains(searchString))
-                ))
-            );
+                (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
             Assert.AreEqual(expectedCount, results.Count());
         }
 
         class DetailLogInfo
         {
-            readonly IContextualResourceModel resourceModel;
-            readonly string LogFilePath;
-            readonly FileWrapper fileWrapper;
+            readonly IContextualResourceModel _resourceModel;
+            readonly string _logFilePath;
+            readonly FileWrapper _fileWrapper;
             public int PreviousLength { get; private set; }
             private DetailLogInfo()
             {
-                fileWrapper = new FileWrapper();
+                _fileWrapper = new FileWrapper();
             }
             public DetailLogInfo(string workflowName, WorkflowExecutionSteps workflowExecutionSteps)
                 : this()
             {
-                workflowExecutionSteps.TryGetValue(workflowName, out resourceModel);
-                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+                workflowExecutionSteps.TryGetValue(workflowName, out _resourceModel);
+                _logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(_resourceModel.ID, _resourceModel.ResourceName), "Detail.log");
             }
             public DetailLogInfo(string workflowName, string resourceModelId)
                 : this()
             {
-                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
+                _logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
             }
 
             internal void DeleteIfExists()
             {
-                if (fileWrapper.Exists(LogFilePath))
+                if (_fileWrapper.Exists(_logFilePath))
                 {
-                    fileWrapper.Delete(LogFilePath);
+                    _fileWrapper.Delete(_logFilePath);
                 }
             }
 
             internal string ReadAllText()
             {
-                var result = fileWrapper.ReadAllText(LogFilePath);
+                var result = _fileWrapper.ReadAllText(_logFilePath);
                 PreviousLength = result.Length;
                 return result;
             }
