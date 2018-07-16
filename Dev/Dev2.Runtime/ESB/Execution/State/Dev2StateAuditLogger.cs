@@ -272,7 +272,7 @@ namespace Dev2.Runtime.ESB.Execution
             var filters = new List<AuditFilter>();
             var filter = new AuditFilter
             {
-                AuditType = "LogPreExecuteState"
+                AuditType = "SQL Server Database"
             };
             filters.Add(filter);
 
@@ -284,6 +284,10 @@ namespace Dev2.Runtime.ESB.Execution
             foreach (var filter in filters)
             {
                 if (filter.AuditType == previousActivity.GetDisplayName())
+                {
+                    return false;
+                }
+                if (filter.AuditType == nextActivity.GetDisplayName())
                 {
                     return false;
                 }
