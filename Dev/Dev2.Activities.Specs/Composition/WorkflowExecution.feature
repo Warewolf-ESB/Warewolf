@@ -1421,14 +1421,21 @@ Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed 
 	And The Log file for "TestPowerOfTwo" contains additional Logging
 
 	
-Scenario: Audit Log Query Expect 3 Items
+Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
 	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
-	And The audit database has "0" search results containing "If [[Name]] <> (Not Equal) " with type "" with activity "Decision" for "Hello World"
+	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal) " with log type "" for "Hello World"
+
+Scenario: Audit Log Query Expect 3 Items Search on Activity Type
+	Given I have a server at "localhost" with workflow "Hello World"
+	And the audit database is empty
+	And The detailed log file does not exist for "Hello World"
+	When "localhost" is the active environment used to execute "Hello World"
+    Then the workflow execution has "No" error
+	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with log type "" for "Hello World"
 
 Scenario: Audit Log Query Expect No Results
 	Given I have a server at "localhost" with workflow "Hello World"
@@ -1437,13 +1444,23 @@ Scenario: Audit Log Query Expect No Results
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
-	And The audit database has "0" search results containing "Something that doesn't exist" with type "" with activity "SQL Server Database" for "Hello World"
+	And The audit database has "0" search results containing "Something that doesn't exist" with log type "Dev2.Activities.DsfDecision" for "Hello World"
 
-Scenario: Audit Log Query Log Saves to DB
+Scenario: Audit Log Query Expect 8 Items
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
 	And The detailed log file does not exist for "TestSqlExecutesOnce"
+	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
-	And The detailed log file is created for "TestSqlExecutesOnce"
-	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal) " with type "" with activity "SQL Server Database" for "TestSqlExecutesOnce"
+	And The audit database has "8" search results containing "Dev2.Activities.DsfSqlServerDatabaseActivity" with log type "" for "TestSqlExecutesOnce"
+
+Scenario: Audit Log Query Expect 1 Items from search
+	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
+	And the audit database is empty
+	And The detailed log file does not exist for "TestSqlExecutesOnce"
+	Then Then I add Filter "SQL Server Database"
+	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
+    Then the workflow execution has "No" error
+	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with log type "" for "TestSqlExecutesOnce"
+
