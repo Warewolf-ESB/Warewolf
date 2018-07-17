@@ -268,7 +268,7 @@ namespace Dev2.Runtime.ESB.Execution
             WorkflowName = dsfDataObject.ServiceName;
             ServerID = dsfDataObject.ServerID.ToString();
             ParentID = dsfDataObject.ParentID.ToString();
-            ExecutingUser = dsfDataObject.ExecutingUser.ToString();
+            ExecutingUser = dsfDataObject.ExecutingUser?.ToString();
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dsfDataObject.ExecutionToken.ToJson();
             Environment = dsfDataObject.Environment.ToJson();
