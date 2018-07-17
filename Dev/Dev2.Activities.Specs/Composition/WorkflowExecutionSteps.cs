@@ -90,6 +90,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.ESB.Execution;
+using System.Linq.Expressions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4607,6 +4608,49 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenTheAuditDatabaseIsEmpty()
         {
             Dev2StateAuditLogger.ClearAuditLog();
+        }
+
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type """"(.*)""Decision""(.*)""Hello World"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeDecisionHelloWorldAs(int expectedCount, string searchString, string auditType, string activityName, string workflowName, Table table)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+            (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+            (auditType == "" || item.AuditType.Equals(auditType)) &&
+            (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
+            Assert.AreEqual(expectedCount, results.Count());
+            var prop = table.Rows[0][0];
+            var val = table.Rows[0][1];
+            foreach (var item in results)
+            {
+                var value = item.GetType().GetProperty(prop).GetValue(item, null);
+                Assert.AreEqual(val, value);
+            }
+        }
+
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" with activity ""(.*)"" for ""(.*)"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string searchString, string auditType, string activityName, string workflowName, Table table)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+              (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+              (auditType == "" || item.AuditType.Equals(auditType)) &&
+              (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
+            Assert.AreEqual(expectedCount, results.Count());
+
+            if (results.Count() > 0 && table.Rows.Count > 0)
+            {
+                foreach (var item in table.Rows)
+                {
+                    Assert.IsNotNull(typeof(AuditLog).GetProperty(item["PropertyName"]), "AuditLog does not have " + item["PropertyName"]);
+                    List<object> resultValues = new List<object>();
+                    for (int i = 0; i < results.Count(); i++)
+                    {
+                        var resultRow = results.Select(p => p.GetType().GetProperty(item["PropertyName"])).ToArray();
+                        resultValues.Add(resultRow[i].GetValue(results.ToArray()[i]));
+                    }
+                    Assert.IsTrue(resultValues.Any(p => p.Equals(item["ExpectedValue"])));
+                }
+            }
         }
 
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
