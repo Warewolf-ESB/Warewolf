@@ -4639,16 +4639,15 @@ namespace Dev2.Activities.Specs.Composition
 
             if (results.Count() > 0 && table.Rows.Count > 0)
             {
-                foreach (var item in table.Rows)
+                var index = 0;
+                foreach (var row in table.Rows)
                 {
-                    Assert.IsNotNull(typeof(AuditLog).GetProperty(item["PropertyName"]), "AuditLog does not have " + item["PropertyName"]);
-                    List<object> resultValues = new List<object>();
-                    for (int i = 0; i < results.Count(); i++)
-                    {
-                        var resultRow = results.Select(p => p.GetType().GetProperty(item["PropertyName"])).ToArray();
-                        resultValues.Add(resultRow[i].GetValue(results.ToArray()[i]));
-                    }
-                    Assert.IsTrue(resultValues.Any(p => p.Equals(item["ExpectedValue"])));
+                    var currentResult = results.ToArray()[index];                    
+                    Assert.AreEqual(row["AuditType"], currentResult.AuditType);
+                    Assert.AreEqual(row["WorkflowName"], currentResult.WorkflowName);
+                    Assert.AreEqual(row["PreviousActivityType"], currentResult.PreviousActivity);
+                    Assert.AreEqual(row["NextActivityType"], currentResult.NextActivity);
+                    index++;
                 }
             }
         }

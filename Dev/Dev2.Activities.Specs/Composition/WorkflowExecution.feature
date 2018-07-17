@@ -1448,6 +1448,7 @@ Scenario: Audit Log Query Log Saves to DB
     Then the workflow execution has "No" error
 	And The detailed log file is created for "TestSqlExecutesOnce"
 	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal)" with type "" with activity "SQL Server Database" for "TestSqlExecutesOnce" as 
-	| PropertyName | ExpectedValue       |
-	| AuditType    | LogPostExecuteState |
-	| WorkflowName | TestSqlExecutesOnce |
+	| AuditType           | WorkflowName | PreviousActivityType        | NextActivityType       |
+	| LogPreExecuteState  | Hello World  | Dev2.Activities.DsfDecision |                        |
+	| LogPostExecuteState | Hello World  |                             | Dev2.Activities.Assign |
+		
