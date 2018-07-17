@@ -181,8 +181,7 @@ namespace Warewolf.Launcher.TestResultsMergers
                 }
                 else
                 {
-                    originalNode.OwnerDocument.ImportNode(importNode, true);
-                    originalNode.AppendChild(importNode);
+                    originalNode.AppendChild(originalNode.OwnerDocument.ImportNode(importNode, true));
                 }
             }
         }
