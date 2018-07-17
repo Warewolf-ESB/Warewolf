@@ -171,8 +171,8 @@ namespace Warewolf.Launcher.TestResultsMergers
         void ImportErrorNode(XmlNamespaceManager originalNamespaceManager, XmlNamespaceManager newNamespaceManager, XmlNode originalNode, XmlNode newNode)
         {
             XmlNode originalErrorInfoNode = originalNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
-            XmlNode importNode = newNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
-            if (importNode != null)
+            XmlNode newErrorInfoNode = newNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
+            if (newErrorInfoNode != null)
             {
                 if (originalErrorInfoNode != null)
                 {
@@ -181,7 +181,7 @@ namespace Warewolf.Launcher.TestResultsMergers
                 }
                 else
                 {
-                    originalNode.AppendChild(originalNode.OwnerDocument.ImportNode(importNode, true));
+                    originalNode.AppendChild(originalNode.OwnerDocument.ImportNode(newErrorInfoNode, true));
                 }
             }
         }
