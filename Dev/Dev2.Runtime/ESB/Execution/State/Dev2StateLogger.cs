@@ -97,9 +97,10 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public void LogExecuteCompleteState()
+        public void LogExecuteCompleteState(IDev2Activity activity)
         {
             writer.WriteLine("header:LogExecuteCompleteState");
+            WriteHeader(null, activity);
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
             jsonTextWriter.WriteValue(DateTime.Now);
@@ -112,9 +113,10 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public void LogStopExecutionState()
+        public void LogStopExecutionState(IDev2Activity activity)
         {
             writer.WriteLine("header:LogStopExecutionState");
+            WriteHeader(null, activity);
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
             jsonTextWriter.WriteValue(DateTime.Now);

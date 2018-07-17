@@ -30,8 +30,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 listenerMock.Setup(o => o.LogPostExecuteState(activity, nextActivity)).Verifiable();
                 listenerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
                 listenerMock.Setup(o => o.LogAdditionalDetail(It.IsAny<object>(), It.IsAny<string>())).Verifiable();
-                listenerMock.Setup(o => o.LogExecuteCompleteState()).Verifiable();
-                listenerMock.Setup(o => o.LogStopExecutionState()).Verifiable();
+                listenerMock.Setup(o => o.LogExecuteCompleteState(activity)).Verifiable();
+                listenerMock.Setup(o => o.LogStopExecutionState(activity)).Verifiable();
                 var listener = listenerMock.Object;
                 // test
                 notifier.Subscribe(listener);
@@ -40,8 +40,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 notifier.LogPostExecuteState(activity, nextActivity);
                 notifier.LogExecuteException(exception, nextActivity);
                 notifier.LogAdditionalDetail(additionalDetailObject, additionalDetailMethodName);
-                notifier.LogExecuteCompleteState();
-                notifier.LogStopExecutionState();
+                notifier.LogExecuteCompleteState(activity);
+                notifier.LogStopExecutionState(activity);
 
                 // verify
                 listenerMock.Verify();
