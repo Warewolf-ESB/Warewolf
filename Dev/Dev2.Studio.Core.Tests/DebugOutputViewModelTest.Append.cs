@@ -9,12 +9,15 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
+using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -181,17 +184,17 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, viewModel.RootItems.Count);
             var child = viewModel.RootItems[0] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child);
-            
+
             if(child != null)
-            
+
             {
                 Assert.AreEqual("Content", child.Content.DisplayName);
             }
             var child2 = viewModel.RootItems[1] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child2);
-            
+
             if(child2 != null)
-            
+
             {
                 Assert.AreEqual("Content2", child2.Content.DisplayName);
             }
@@ -327,6 +330,45 @@ namespace Dev2.Core.Tests
 
             // Assert Nothing Appended
             Assert.AreEqual(0, viewModel.RootItems.Count);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void Given_GroupDebugOutputViewModel_Append_Adds_Assing_On_Label()
+        {
+            var inputs = new List<IDebugItem>
+            {
+                new DebugItem
+                {
+                    ResultsList = new List<IDebugItemResult>
+                    {
+                        new DebugItemResult { GroupIndex=0,GroupName="something",HasError = false, Label= "OutputLabel",MockSelected=false,MoreLink=null,Operator="",TestStepHasError=false,Type=DebugItemResultType.Value, Value="",Variable=null },
+                        new DebugItemResult { GroupIndex=0,GroupName="something",HasError = false, Label= "Variable",MockSelected=false,MoreLink=null,Operator="=",TestStepHasError=false,Type=DebugItemResultType.Variable, Value="",Variable="[[recordset().recordsetfield]]"},
+                        new DebugItemResult { GroupIndex=0,GroupName="something",HasError = false, Label= "New Value",MockSelected=false,MoreLink=null,Operator="",TestStepHasError=false,Type=DebugItemResultType.Variable, Value="s",Variable=null }
+                    }
+                }
+            };
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
+            var mockedContent = new Mock<IDebugState>();
+            mockedContent.Setup(p => p.DisplayName).Returns("Content");
+            mockedContent.Setup(p => p.ID).Returns(Guid.NewGuid());
+            mockedContent.Setup(p => p.ParentID).Returns(Guid.Empty);
+            mockedContent.Setup(p => p.StateType).Returns(StateType.End);
+            mockedContent.Setup(p => p.SessionID).Returns(viewModel.SessionID);
+            mockedContent.Setup(p => p.Inputs).Returns(inputs);
+            //------------Execute Test---------------------------
+            viewModel.Append(mockedContent.Object);
+
+            // Assert Nothing Appended
+            var item = viewModel.RootItems[0];
+            var debugItem = item as DebugStateTreeViewItemViewModel;
+            var input = debugItem.Inputs[0];
+            var debugLine = input as DebugLine;
+            var lineItem = debugLine.LineItems[0];
+            var grp = lineItem as DebugLineGroup;
+            Assert.AreEqual("OutputLabel = ", grp.GroupLabel);
         }
     }
 }

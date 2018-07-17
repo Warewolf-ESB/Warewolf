@@ -87,7 +87,10 @@ namespace Dev2.UI
         {
             base.OnPreviewKeyDown(e);
             var isOpen = IsDropDownOpen;
-
+            if (e.Key == Key.F6)
+            {
+                LostFocusImpl();
+            }
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 HandleEnterAndTab(e, isOpen);
