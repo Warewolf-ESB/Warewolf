@@ -4634,13 +4634,19 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" with activity ""(.*)"" for ""(.*)"" as")]
-        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string searchString, string auditType, string activityName, string workflowName, Table table)
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string activityName, string auditType, string workflowName, Table table)
         {
             var results = Dev2StateAuditLogger.Query(item =>
-              (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
-              (auditType == "" || item.AuditType.Equals(auditType)) &&
-              (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
+               (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+               (auditType == "" || item.AuditType.Equals(auditType)) &&
+               (activityName == "" || (
+                   (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
+                   (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
+                   (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
+                   (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
+               ))
+           );
             Assert.AreEqual(expectedCount, results.Count());
 
             if (results.Count() > 0 && table.Rows.Count > 0)
@@ -4651,8 +4657,8 @@ namespace Dev2.Activities.Specs.Composition
                     var currentResult = results.ToArray()[index];                    
                     Assert.AreEqual(row["AuditType"], currentResult.AuditType);
                     Assert.AreEqual(row["WorkflowName"], currentResult.WorkflowName);
-                    Assert.AreEqual(row["PreviousActivityType"], currentResult.PreviousActivity);
-                    Assert.AreEqual(row["NextActivityType"], currentResult.NextActivity);
+                    Assert.AreEqual(row["PreviousActivityType"], currentResult.PreviousActivityType ?? "null");
+                    Assert.AreEqual(row["NextActivityType"], currentResult.NextActivityType ?? "null");
                     index++;
                 }
             }
