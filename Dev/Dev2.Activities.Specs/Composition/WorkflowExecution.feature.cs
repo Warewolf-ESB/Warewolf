@@ -5276,9 +5276,30 @@ this.FeatureBackground();
  testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1429
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table249.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "Hello World",
+                        "null",
+                        "Dev2.Activities.DsfDecision"});
+            table249.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+            table249.AddRow(new string[] {
+                        "LogExecuteCompleteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
 #line 1430
- testRunner.And("The audit database has \"3\" search results containing \"If [[Name]] <> (Not Equal) " +
-                    "\" with log type \"\" for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The audit database has \"3\" search results containing \"Dev2.Activities.DsfDecision" +
+                    "\" with type \"\" for \"Hello World\" as", ((string)(null)), table249, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5290,23 +5311,44 @@ this.FeatureBackground();
         public virtual void AuditLogQueryExpect3ItemsSearchOnActivityType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 3 Items Search on Activity Type", ((string[])(null)));
-#line 1432
+#line 1436
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1433
- testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1434
- testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1435
- testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1436
- testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1437
-    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1438
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1439
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1440
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1441
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table250 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table250.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "Hello World",
+                        "null",
+                        "Dev2.Activities.DsfDecision"});
+            table250.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+            table250.AddRow(new string[] {
+                        "LogExecuteCompleteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+#line 1442
  testRunner.And("The audit database has \"3\" search results containing \"Dev2.Activities.DsfDecision" +
-                    "\" with log type \"\" for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\" with type \"\" for \"Hello World\" as", ((string)(null)), table250, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5318,23 +5360,23 @@ this.FeatureBackground();
         public virtual void AuditLogQueryExpectNoResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect No Results", ((string[])(null)));
-#line 1440
+#line 1448
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1441
+#line 1449
  testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1442
+#line 1450
  testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1443
+#line 1451
  testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1444
+#line 1452
  testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1445
+#line 1453
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1446
+#line 1454
  testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1447
+#line 1455
  testRunner.And("The audit database has \"0\" search results containing \"Something that doesn\'t exis" +
                     "t\" with log type \"Dev2.Activities.DsfDecision\" for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5348,73 +5390,153 @@ this.FeatureBackground();
         public virtual void AuditLogQueryExpect8Items()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 8 Items", ((string[])(null)));
-#line 1449
+#line 1457
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1450
+#line 1458
  testRunner.Given("I have a server at \"localhost\" with workflow \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1451
+#line 1459
  testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1452
+#line 1460
  testRunner.And("The detailed log file does not exist for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1453
+#line 1461
  testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1454
+#line 1462
  testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1455
+#line 1463
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1456
- testRunner.And("The audit database has \"8\" search results containing \"Dev2.Activities.DsfSqlServe" +
-                    "rDatabaseActivity\" with log type \"\" for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table251 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfRandomActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfDecision"});
+#line 1464
+ testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
+                    "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table251, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 3 Items from search")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 8 Items from search")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void AuditLogQueryExpect3ItemsFromSearch()
+        public virtual void AuditLogQueryExpect8ItemsFromSearch()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 3 Items from search", ((string[])(null)));
-#line 1458
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 8 Items from search", ((string[])(null)));
+#line 1475
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1459
+#line 1476
  testRunner.Given("I have a server at \"localhost\" with workflow \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1460
+#line 1477
  testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1461
+#line 1478
  testRunner.And("The detailed log file does not exist for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1462
+#line 1479
  testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1463
+#line 1480
  testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1464
+#line 1481
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1465
+#line 1482
  testRunner.And("The detailed log file is created for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table252 = new TechTalk.SpecFlow.Table(new string[] {
                         "AuditType",
                         "WorkflowName",
                         "PreviousActivityType",
                         "NextActivityType"});
-            table249.AddRow(new string[] {
-                        "LogPreExecuteState",
-                        "Hello World",
-                        "Dev2.Activities.DsfDecision",
-                        ""});
-            table249.AddRow(new string[] {
+            table252.AddRow(new string[] {
                         "LogPostExecuteState",
-                        "Hello World",
-                        "",
-                        "Dev2.Activities.Assign"});
-#line 1466
- testRunner.And("The audit database has \"3\" search results containing \"If [[Name]] <> (Not Equal)\"" +
-                    " with type \"\" with activity \"SQL Server Database\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table249, "And ");
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfRandomActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfDecision"});
+#line 1483
+ testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
+                    "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table252, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
