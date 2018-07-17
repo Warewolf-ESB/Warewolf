@@ -875,6 +875,11 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIHelloWorldText.Exists, "Hello World workflow tab does not exist.");
         }
 
+        public void Context_Menu_Set_As_Start_Node()
+        {
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.SetasStartNode);
+        }
+
         [When(@"I Expand Debug Output Recordset")]
         public void Expand_Debug_Output_Recordset()
         {

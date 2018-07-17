@@ -102,6 +102,7 @@ namespace Dev2.Common.Interfaces
             set
             {
                 _name = value;
+                OnPropertyChanged();
             }
         }
    
@@ -114,6 +115,7 @@ namespace Dev2.Common.Interfaces
             set
             {
                 _value = value;
+                OnPropertyChanged();
             }
         }
 
@@ -185,6 +187,7 @@ namespace Dev2.Common.Interfaces
                 }
                 _name = value;
                 _update?.Invoke(_name);
+                OnPropertyChanged();
             }
         }
 
@@ -204,6 +207,7 @@ namespace Dev2.Common.Interfaces
                 }
                 _value = value;
                 _update?.Invoke(_value);
+                OnPropertyChanged();
             }
         }
         public ICommand RemoveRowCommand { get; set; }

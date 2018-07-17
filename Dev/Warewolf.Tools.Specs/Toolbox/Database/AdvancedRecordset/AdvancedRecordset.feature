@@ -4267,3 +4267,205 @@ Scenario: Handle Nulls set to Nothing
     | [[TableCopy(3).name]] = Hatter           |
     | [[TableCopy(3).city]] =                  |
     | [[TableCopy(3).province]] = Western Cape |
+
+Scenario:  Given RecordsetName starts with capital letter but TableName starts with small letter
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | Person().name | Bob    |
+    | Person().name | Alice  |
+    | Person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from person"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    When Advanced Recordset tool is executed	
+	And the advancerecodset execution has "AN" error
+
+	
+Scenario:  Given RecordsetName and  TableName starts with capital letter
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | Person().name | Bob    |
+    | Person().name | Alice  |
+    | Person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from Person"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs               | value  |
+    | TableCopy().name | Bob    |
+    | TableCopy().name | Alice  |
+    | TableCopy().name | Hatter |
+    And the execution has "NO" error
+    And the debug output as
+    |                                |
+    | [[TableCopy(3).name]] = Hatter |
+	
+Scenario:  Change Field Name on the Outputs Grid Updates the Debug output field
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    | person().name | Alice  |
+    | person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from person"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+	And I update Output field to   
+    | Mapped From | Mapped To                 |
+    | name        | [[TableCopy().firstname]] |
+	When Advanced Recordset tool is executed
+	Then recordset "[[TableCopy(*).firstname]]"  will be
+    | rs                    | value  |
+    | TableCopy().firstname | Bob    |
+    | TableCopy().firstname | Alice  |
+    | TableCopy().firstname | Hatter |
+
+Scenario:  Change Declare Variable Value and make sure the property change updated in the collection
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    | person().name | Alice  |
+    | person().name | Hatter |
+    | checkName     | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name       | Value         |
+    | FilterName | [[checkName]] |
+    And I have the following sql statement "SELECT * from person where name like @FilterName"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs               | value |
+    | TableCopy().name | Bob   |
+    And the execution has "NO" error
+    And the debug output as
+    |                             |
+    | [[TableCopy(1).name]] = Bob |
+	And I update Declare Variable Value to   
+    | Name       | Value |
+    | FilterName | Alice |
+	When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs               | value |
+    | TableCopy().name | Alice |
+
+Scenario: Character cannot be used in a literal Select statement
+    Given I have a recordset with this shape
+    | [[person]]     |       |
+    | person(1).name | Bob   |
+    | person(1).age  | 56    |
+    | person(2).name | Alice |
+    | person(2).age  | 30    |
+    | person(3).name | cands.daniel@gmail.com   |
+    | person(3).age  | 28    |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from person where name = 'cands.daniel@gmail.com'"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    | age         | [[TableCopy().age]]  |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    | age         | [[TableCopy().age]]  |
+    When I update Recordset to "newPerson"
+    Then Recordset is "newPerson"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[newPerson().name]] |
+    | age         | [[newPerson().age]]  |
+    When Advanced Recordset tool is executed
+    Then recordset "[[newPerson(*).name]]"  will be
+    | rs               | value |
+    | newPerson().name | cands.daniel@gmail.com |
+    Then recordset "[[newPerson(*).age]]"  will be
+    | rs              | value |
+    | newPerson().age | 28    |
+    And the execution has "NO" error
+    And the debug output as
+    |                                                |
+    | [[newPerson(1).name]] = cands.daniel@gmail.com |
+    | [[newPerson(1).age]] = 28                      |
+
+Scenario:  Remove Row when deleting  Declared variable Test 1
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    | var1 | value1 |
+    |      |        |
+    | var3 | value3 |
+    Then Declare variables will be
+    | Name | Value  |
+    | var1 | value1 |
+    | var3 | value3 |
+Scenario:  Remove Row when deleting  Declared variable  Test 2
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    | var1 | value1 |
+    |      |        |
+    |      |        |
+    Then Declare variables will be
+    | Name | Value  |
+    | var1 | value1 |   
+Scenario:  Remove Row when deleting  Declared variable  Test 3
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value  |
+    | var1 | value1 |
+    | var2 | value2 |
+    | var3 | value3 |
+	Then I update Declare Variable Value to   
+    | Name | Value  |
+    |      |        |
+    |      |        |
+    | var3 | value3 |
+    Then Declare variables will be
+    | Name | Value  |
+    | var3 | value3 |   
