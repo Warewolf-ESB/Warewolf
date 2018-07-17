@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
                 stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
                 stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogStopExecutionState(_nextActivity)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogStopExecutionState(nextActivity)).Verifiable();
                 var listener = stateLoggerMock.Object;
                 // test
                 notifier.Subscribe(listener);
