@@ -215,8 +215,10 @@ namespace Dev2.Runtime.ESB.Execution
                 dsfDataObject.StateNotifier.LogPreExecuteState(resource);
 
                 IDev2Activity next;
+                IDev2Activity lastActivity;
                 try
                 {
+                    lastActivity = resource;
                     next = resource.Execute(dsfDataObject, update);
                     dsfDataObject.StateNotifier.LogPostExecuteState(resource, next);
                 }
@@ -237,6 +239,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                     dsfDataObject.StateNotifier.LogPreExecuteState(next);
                     var current = next;
+                    lastActivity = current;
                     try
                     {
                         next = current.Execute(dsfDataObject, update);
@@ -252,11 +255,11 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (!stoppedExecution)
                 {
-                    dsfDataObject.StateNotifier.LogExecuteCompleteState();
+                    dsfDataObject.StateNotifier.LogExecuteCompleteState(lastActivity);
                 }
                 else
                 {
-                    dsfDataObject.StateNotifier.LogStopExecutionState();
+                    dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
                 }
             }
             catch (Exception e)

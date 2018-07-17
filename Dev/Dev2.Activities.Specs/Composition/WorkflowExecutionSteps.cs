@@ -4603,7 +4603,13 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("LogFileContent", out string logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
+        [Then(@"Then I add Filter ""(.*)""")]
+        public void ThenThenIAddFilter(string filterString)
+        {
+            var auditFilter = new ActivityAuditFilter(filterString, filterString, filterString);
 
+            Dev2StateAuditLogger.AddFilter(auditFilter);
+        }
         [Given(@"the audit database is empty")]
         public void GivenTheAuditDatabaseIsEmpty()
         {
@@ -4653,13 +4659,19 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" with activity ""(.*)"" for ""(.*)""")]
-        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string searchString, string auditType, string activityName, string workflowName)
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with log type ""(.*)"" for ""(.*)""")]
+        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string activityName, string logType, string workflowName)
         {
             var results = Dev2StateAuditLogger.Query(item =>
-                (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
-                (auditType == "" || item.AuditType.Equals(auditType)) &&
-                (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
+               (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+               (logType == "" || item.AuditType.Equals(logType)) &&
+               (activityName == "" || (
+                   (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
+                   (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
+                   (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
+                   (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
+               ))
+           );
             Assert.AreEqual(expectedCount, results.Count());
         }
 

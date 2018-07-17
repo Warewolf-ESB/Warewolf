@@ -9,8 +9,8 @@ namespace Dev2.Interfaces
         void LogAdditionalDetail(object detail, string callerName);
         void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity);
         void LogExecuteException(Exception e, IDev2Activity activity);
-        void LogExecuteCompleteState();
-        void LogStopExecutionState();
+        void LogExecuteCompleteState(IDev2Activity activity);
+        void LogStopExecutionState(IDev2Activity activity);
     }
     public interface IStateNotifier : IStateListener
     {

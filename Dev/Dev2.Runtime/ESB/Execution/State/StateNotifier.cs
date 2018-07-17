@@ -25,11 +25,11 @@ namespace Dev2.Runtime.ESB.Execution.State
             }
         }
 
-        public void LogExecuteCompleteState()
+        public void LogExecuteCompleteState(IDev2Activity activity)
         {
             foreach (var stateListener in stateListeners)
             {
-                stateListener.LogExecuteCompleteState();
+                stateListener.LogExecuteCompleteState(activity);
             }
         }
 
@@ -57,11 +57,11 @@ namespace Dev2.Runtime.ESB.Execution.State
             }
         }
 
-        public void LogStopExecutionState()
+        public void LogStopExecutionState(IDev2Activity activity)
         {
             foreach (var stateListener in stateListeners)
             {
-                stateListener.LogStopExecutionState();
+                stateListener.LogStopExecutionState(activity);
             }
         }
 

@@ -15,6 +15,10 @@ namespace Dev2.Runtime.ESB.Execution
     class Dev2StateAuditLogger : IStateListener
     {
         readonly IDSFDataObject _dsfDataObject;
+        public static List<IAuditFilter> Filters { get; private set; } = new List<IAuditFilter>
+        {
+            new AllPassFilter()
+        };
 
         public Dev2StateAuditLogger(IDSFDataObject dsfDataObject)
         {
@@ -40,61 +44,61 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public void LogAdditionalDetail(object detail, string callerName)
         {
-            if (AuditFilter.FilterAuditLog(detail))
-            {
-                return;
-            }
             var serializer = new Dev2JsonSerializer();
             var auditLog = new AuditLog(_dsfDataObject, "LogAdditionalDetail", serializer.Serialize(detail, Formatting.None), null, null);
-            LogAuditState(auditLog);
-        }
-        public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
-        {
-            if (AuditFilter.FilterAuditLog(previousActivity, nextActivity))
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, detail))
             {
                 return;
             }
-            var auditLog = new AuditLog(_dsfDataObject, "LogPostExecuteState", null, previousActivity, nextActivity);
-            LogAuditState(auditLog);
-        }
-
-        public void LogExecuteException(Exception e, IDev2Activity activity)
-        {
-            if (AuditFilter.FilterAuditLog(activity))
-            {
-                return;
-            }
-            var auditLog = new AuditLog(_dsfDataObject, "LogExecuteException", e.Message, activity, null);
-            LogAuditState(auditLog);
-        }
-
-        public void LogExecuteCompleteState()
-        {
-            if (AuditFilter.FilterAuditLog("LogStopExecutionState"))
-            {
-                return;
-            }
-            var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, null, null);
-            LogAuditState(auditLog);
-        }
-
-        public void LogStopExecutionState()
-        {
-            if (AuditFilter.FilterAuditLog("LogStopExecutionState"))
-            {
-                return;
-            }
-            var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, null, null);
             LogAuditState(auditLog);
         }
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
-            if (AuditFilter.FilterAuditLog(nextActivity))
+            var auditLog = new AuditLog(_dsfDataObject, "LogPreExecuteState", null, null, nextActivity);
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, nextActivity))
             {
                 return;
             }
-            var auditLog = new AuditLog(_dsfDataObject, "LogPreExecuteState", null, null, nextActivity);
+            LogAuditState(auditLog);
+        }
+        public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
+        {
+            var auditLog = new AuditLog(_dsfDataObject, "LogPostExecuteState", null, previousActivity, nextActivity);
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, previousActivity, nextActivity))
+            {
+                return;
+            }
+            LogAuditState(auditLog);
+        }
+
+        public void LogExecuteException(Exception e, IDev2Activity activity)
+        {
+            var auditLog = new AuditLog(_dsfDataObject, "LogExecuteException", e.Message, activity, null);
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            {
+                return;
+            }
+            LogAuditState(auditLog);
+        }
+
+        public void LogExecuteCompleteState(IDev2Activity activity)
+        {
+            var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, activity, null);
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            {
+                return;
+            }
+            LogAuditState(auditLog);
+        }
+
+        public void LogStopExecutionState(IDev2Activity activity)
+        {
+            var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, activity, null);
+            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            {
+                return;
+            }
             LogAuditState(auditLog);
         }
 
@@ -105,7 +109,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void InsertLog(AuditLog auditLog, int reTry)
         {
-           
+
             try
             {
                 var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
@@ -143,6 +147,58 @@ namespace Dev2.Runtime.ESB.Execution
                 throw new Exception(e.Message);
             }
         }
+        public static void AddFilter(IAuditFilter filter)
+        {
+            Filters.Add(filter);
+        }
+        public static void RemoveFilter(IAuditFilter filter)
+        {
+            Filters.Remove(filter);
+        }
+        public static bool FilterAuditLog(AuditLog auditLog, IDev2Activity previousActivity, IDev2Activity nextActivity)
+        {
+            var ret = FilterAuditLog(auditLog, previousActivity);
+            ret |= FilterAuditLog(auditLog, nextActivity);
+            return ret;
+        }
+
+        public static bool FilterAuditLog(AuditLog auditLog, object detail)
+        {
+            foreach (var filter in Filters)
+            {
+                var pass = filter.FilterDetailLogEntry(auditLog, detail);
+                if (pass)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool FilterAuditLog(AuditLog auditLog, IDev2Activity activity)
+        {
+            foreach (var filter in Filters)
+            {
+                var pass = filter.FilterLogEntry(auditLog, activity);
+                if (pass)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool FilterAuditLog(AuditLog auditLog)
+        {
+            foreach (var filter in Filters)
+            {
+                var pass = filter.FilterLogEntry(auditLog);
+                if (pass)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void Dispose()
         {
 
@@ -180,9 +236,17 @@ namespace Dev2.Runtime.ESB.Execution
 
         [Column("PreviousActivity")]
         public string PreviousActivity { get; set; }
+        [Column("PreviousActivityType")]
+        public string PreviousActivityType { get; set; }
+        [Column("PreviousActivityID")]
+        public string PreviousActivityId { get; set; }
 
         [Column("NextActivity")]
         public string NextActivity { get; set; }
+        [Column("NextActivityType")]
+        public string NextActivityType { get; set; }
+        [Column("NextActivityID")]
+        public string NextActivityId { get; set; }
 
         [Column("ServerID")]
         public string ServerID { get; set; }
@@ -229,83 +293,96 @@ namespace Dev2.Runtime.ESB.Execution
             if (previousActivity != null)
             {
                 PreviousActivity = previousActivity.GetDisplayName();
+                PreviousActivityType = previousActivity.GetType().ToString();
+                PreviousActivityId = previousActivity.ActivityId.ToString();
             }
             if (nextActivity != null)
             {
                 NextActivity = nextActivity.GetDisplayName();
-            }           
+                NextActivityType = nextActivity.GetType().ToString();
+                NextActivityId = nextActivity.ActivityId.ToString();
+            }
         }
     }
 
-    public class AuditFilter
+    public interface IAuditFilter
     {
-        public string AuditType { get; set; }
-        public AuditFilter() { }
-        public AuditFilter(AuditLog log)
-        {
-            AuditType = log.AuditType;
-        }
-        public static void AddFilter(AuditFilter filter)
-        {
-            var filters = new List<AuditFilter>();
-            filters.Add(filter);
-        }
-        public static void RemoveFilter(AuditFilter filter)
-        {
-            var filters = new List<AuditFilter>();
-            filters.Remove(filter);
-        }
-        public static bool FilterAuditLog(IDev2Activity activity)
-        {
-            var filters = AuditFilter.ReturnFilters();
-            foreach (var filter in filters)
-            {
-                if (filter.AuditType == activity.GetDisplayName())
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public static List<AuditFilter> ReturnFilters()
-        {
-            var filters = new List<AuditFilter>();
-            var filter = new AuditFilter
-            {
-                AuditType = "SQL Server Database"
-            };
-            filters.Add(filter);
+        bool FilterLogEntry(AuditLog log, IDev2Activity activity);
+        bool FilterDetailLogEntry(AuditLog auditLog, object detail);
+        bool FilterLogEntry(AuditLog auditLog);
+    }
 
-            return filters;
+    public class AllPassFilter : IAuditFilter
+    {
+        public bool FilterDetailLogEntry(AuditLog auditLog, object detail) => true;
+        public bool FilterLogEntry(AuditLog log, IDev2Activity activity) => true;
+        public bool FilterLogEntry(AuditLog auditLog) => true;
+    }
+
+    public class ActivityAuditFilter : IAuditFilter {
+        readonly string _activityId;
+        readonly string _activityType;
+        readonly string _activityDisplayName;
+        public ActivityAuditFilter(string activityId, string activityType, string activityDisplayName) {
+            _activityId = activityId;
+            _activityType = activityType;
+            _activityDisplayName = activityDisplayName;
         }
 
-        public static bool FilterAuditLog(IDev2Activity previousActivity, IDev2Activity nextActivity) {
-            var filters = AuditFilter.ReturnFilters();
-            foreach (var filter in filters)
+        public bool FilterLogEntry(AuditLog log, IDev2Activity activity)
+        {
+            if (log.PreviousActivityId.Equals(_activityId)
+                || log.PreviousActivityType.Equals(_activityType)
+                || log.PreviousActivity.Equals(_activityDisplayName))
             {
-                if (filter.AuditType == previousActivity.GetDisplayName())
-                {
-                    return false;
-                }
-                if (filter.AuditType == nextActivity.GetDisplayName())
-                {
-                    return false;
-                }
+                return true;
             }
-            return true;
+            if (log.NextActivityId.Equals(_activityId)
+                || log.NextActivityType.Equals(_activityType)
+                || log.NextActivity.Equals(_activityDisplayName))
+            {
+                return true;
+            }
+            return false;
         }
 
-        public static bool FilterAuditLog(object detail)
+        public bool FilterDetailLogEntry(AuditLog auditLog, object detail)
         {
-            var filters = AuditFilter.ReturnFilters();
-            foreach (var filter in filters)
+            return FilterLogEntry(auditLog, null);
+        }
+        public bool FilterLogEntry(AuditLog auditLog)
+        {
+            return FilterLogEntry(auditLog, null);
+        }
+    }
+
+    public class WorkflowAuditFilter : IAuditFilter
+    {
+        readonly string _workflowId;
+        readonly string _workflowName;
+        public WorkflowAuditFilter(string workflowId, string workflowName)
+        {
+            _workflowId = workflowId;
+            _workflowName = workflowName;
+        }
+
+        public bool FilterLogEntry(AuditLog log, IDev2Activity activity)
+        {
+            if (log.WorkflowID.Equals(_workflowId)
+                || log.WorkflowName.Equals(_workflowName))
             {
-                if (filter.AuditType == detail.ToString())
-                {
-                    return false;
-                }
+                return true;
             }
-            return true;
+            return false;
+        }
+
+        public bool FilterDetailLogEntry(AuditLog auditLog, object detail)
+        {
+            return FilterLogEntry(auditLog, null);
+        }
+        public bool FilterLogEntry(AuditLog auditLog)
+        {
+            return FilterLogEntry(auditLog, null);
         }
     }
 }
