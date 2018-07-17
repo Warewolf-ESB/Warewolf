@@ -5372,12 +5372,12 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 1 Items from search")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 3 Items from search")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void AuditLogQueryExpect1ItemsFromSearch()
+        public virtual void AuditLogQueryExpect3ItemsFromSearch()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 1 Items from search", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 3 Items from search", ((string[])(null)));
 #line 1458
 this.ScenarioSetup(scenarioInfo);
 #line 7
