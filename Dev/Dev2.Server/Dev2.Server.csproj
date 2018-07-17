@@ -357,9 +357,6 @@
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="NewAzureUser.bite">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="ServerLifecycleManager.cs" />
   </ItemGroup>
   <ItemGroup>
