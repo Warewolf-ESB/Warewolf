@@ -1427,7 +1427,11 @@ Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
 	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal) " with log type "" for "Hello World"
+	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
+	| AuditType               | WorkflowName | PreviousActivityType        | NextActivityType            |
+	| LogPreExecuteState      | Hello World  | null                        | Dev2.Activities.DsfDecision |
+	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
+	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
 
 Scenario: Audit Log Query Expect 3 Items Search on Activity Type
 	Given I have a server at "localhost" with workflow "Hello World"
@@ -1435,7 +1439,11 @@ Scenario: Audit Log Query Expect 3 Items Search on Activity Type
 	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with log type "" for "Hello World"
+	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
+	| AuditType               | WorkflowName | PreviousActivityType        | NextActivityType            |
+	| LogPreExecuteState      | Hello World  | null                        | Dev2.Activities.DsfDecision |
+	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
+	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
 
 Scenario: Audit Log Query Expect No Results
 	Given I have a server at "localhost" with workflow "Hello World"
@@ -1453,9 +1461,18 @@ Scenario: Audit Log Query Expect 8 Items
 	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
-	And The audit database has "8" search results containing "Dev2.Activities.DsfSqlServerDatabaseActivity" with log type "" for "TestSqlExecutesOnce"
-
-Scenario: Audit Log Query Expect 3 Items from search
+	And The audit database has "8" search results containing "SQL Server Database" with type "" for "TestSqlExecutesOnce" as 
+	| AuditType           | WorkflowName        | PreviousActivityType                                                                | NextActivityType                                                                    |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfRandomActivity                                                   | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivity |
+	| LogPostExecuteState | TestSqlExecutesOnce | Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivity | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfDecision                                                         |
+	
+Scenario: Audit Log Query Expect 8 Items from search
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
 	And The detailed log file does not exist for "TestSqlExecutesOnce"
@@ -1463,8 +1480,14 @@ Scenario: Audit Log Query Expect 3 Items from search
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "TestSqlExecutesOnce"
-	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal)" with type "" with activity "SQL Server Database" for "TestSqlExecutesOnce" as 
-	| AuditType           | WorkflowName | PreviousActivityType        | NextActivityType       |
-	| LogPreExecuteState  | Hello World  | Dev2.Activities.DsfDecision |                        |
-	| LogPostExecuteState | Hello World  |                             | Dev2.Activities.Assign |
+	And The audit database has "8" search results containing "SQL Server Database" with type "" for "TestSqlExecutesOnce" as 
+	| AuditType           | WorkflowName        | PreviousActivityType                                                                | NextActivityType                                                                    |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfRandomActivity                                                   | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivity |
+	| LogPostExecuteState | TestSqlExecutesOnce | Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivity | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
+	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfDecision                                                         |
 		
