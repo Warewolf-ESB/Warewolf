@@ -20,12 +20,24 @@ namespace Dev2.Activities.Specs.Sources
     [Binding]
     public sealed class ServerSourceSteps : RecordSetBases
     {
+        IServer environmentModel;
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
-            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
+        }
+
+        [AfterScenario]
+        public void Cleanup()
+        {
+            ScenarioContext.Current.TryGetValue("resourceModel", out IResourceModel resourceModel);
+            if (resourceModel != null)
+            {
+                environmentModel.ResourceRepository.DeleteResource(resourceModel);
+                environmentModel.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
+            }
         }
 
         [Given(@"I create a server source as")]
@@ -69,6 +81,7 @@ namespace Dev2.Activities.Specs.Sources
             var firstOrDefault = explorerItems.FirstOrDefault(item => item.DisplayName.Equals(p0, StringComparison.InvariantCultureIgnoreCase));
             IResourceModel resourceModel = server.ResourceRepository.LoadContextualResourceModel(firstOrDefault.ResourceId);
             ScenarioContext.Current.Add("resourceModel", resourceModel);
+            server.ResourceRepository.ReLoadResources();
         }
 
         [When(@"I Test ""(.*)""")]

@@ -137,6 +137,18 @@ namespace Dev2.Activities.Specs.Composition
             _externalProcessExecutor = new SpecExternalProcessExecutor();
         }
 
+        public void WorkflowIsDeletedAsCleanup()
+        {
+            TryGetValue("resourcemodel", out IContextualResourceModel resourceModel);
+            if (resourceModel != null)
+            {
+                TryGetValue("environment", out IServer server);
+                TryGetValue("resourceRepo", out IResourceRepository repository);
+                repository.DeleteResourceFromWorkspace(resourceModel);
+                repository.DeleteResource(resourceModel);
+            }
+        }
+
         [AfterScenario]
         public void CleanUp()
         {         
@@ -144,7 +156,8 @@ namespace Dev2.Activities.Specs.Composition
         }
         public void CleanUp_DetailedLogFile()
         {
-            if (_dirHelper.Exists(EnvironmentVariables.DetailLogPath))
+            WorkflowIsDeletedAsCleanup();
+            if (_debugWriterSubscriptionService != null)
             {
                 var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
                 
@@ -154,6 +167,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 _dirHelper.Delete(EnvironmentVariables.DetailLogPath, true);
             }
+            _scenarioContext?.Clear();
         }
 
         [Given(@"Debug states are cleared")]
@@ -290,6 +304,7 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
 
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            Add("resourcemodel", resourceModel);
             Add(workflowName, resourceModel);
             Add("resourceId", resourceId);
             Add("parentWorkflowName", workflowName);
@@ -2600,12 +2615,20 @@ namespace Dev2.Activities.Specs.Composition
             repository.DeleteResourceFromWorkspace(resourceModel);
             repository.DeleteResource(resourceModel);
         }
-
+        
         [Then(@"the file ""(.*)"" is deleted from the Sharepoint server as cleanup")]
         public void ThenFileIsDeletedFromSharepointServerAsCleanup(string fileName)
         {
             DeleteSharepointFile(fileName);
         }
+
+        [Then(@"the folder ""(.*)"" is deleted from the server as cleanup")]
+        public void ThenTheFolderIsDeletedFromTheServerAsCleanup(string shapointLocalFolder)
+        {
+            var folderToDelete = Path.Combine(EnvironmentVariables.ResourcePath, shapointLocalFolder);
+            Directory.Delete(folderToDelete, true);
+        }
+
 
         static void DeleteSharepointFile(string serverPathTo)
         {

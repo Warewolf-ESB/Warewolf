@@ -447,11 +447,5 @@ namespace Dev2.Activities.Specs.Merge
             var allActivitiesDesignersAreMapped = activityTypes.All(t => ActivityDesignerHelper.DesignerAttributes.ContainsKey(t));
             Assert.IsTrue(allActivitiesDesignersAreMapped, "Not all activities are mapped in the ActivityDesignerHelper class");
         }
-
-        [AfterScenario]
-        public void CleanUp()
-        {
-            _scenarioContext?.Clear();
-        }
     }
 }
