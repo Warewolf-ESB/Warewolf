@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Dev2.Runtime.ESB.Execution.State
 {
-    class StateNotifier : IStateNotifier, IDisposable
+    class StateNotifier : IStateNotifier
     {
         public void Dispose()
         {
-            foreach (var listener in stateListeners)
+            foreach (var listener in _stateListeners)
             {
                 if (listener is IDisposable disposable)
                 {
@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogAdditionalDetail(object detail, string callerName)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogAdditionalDetail(detail, callerName);
             }
@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogExecuteCompleteState(IDev2Activity activity)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogExecuteCompleteState(activity);
             }
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogExecuteException(Exception e, IDev2Activity activity)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogExecuteException(e, activity);
             }
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogPostExecuteState(previousActivity, nextActivity);
             }
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogPreExecuteState(nextActivity);
             }
@@ -59,16 +59,16 @@ namespace Dev2.Runtime.ESB.Execution.State
 
         public void LogStopExecutionState(IDev2Activity activity)
         {
-            foreach (var stateListener in stateListeners)
+            foreach (var stateListener in _stateListeners)
             {
                 stateListener.LogStopExecutionState(activity);
             }
         }
 
-        readonly IList<IStateListener> stateListeners = new List<IStateListener>();
+        readonly IList<IStateListener> _stateListeners = new List<IStateListener>();
         public void Subscribe(IStateListener listener)
         {
-            stateListeners.Add(listener);
+            _stateListeners.Add(listener);
         }
     }
 }
