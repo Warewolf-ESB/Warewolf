@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
         {
-            SQLiteConnection database = GetDatabase();
+            var database = GetDatabase();
             return database.Table<AuditLog>().Where(queryExpression).AsEnumerable();
         }
 
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var serializer = new Dev2JsonSerializer();
             var auditLog = new AuditLog(_dsfDataObject, "LogAdditionalDetail", serializer.Serialize(detail, Formatting.None), null, null);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, detail))
+            if (!FilterAuditLog(auditLog, detail))
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
             var auditLog = new AuditLog(_dsfDataObject, "LogPreExecuteState", null, null, nextActivity);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, nextActivity))
+            if (!FilterAuditLog(auditLog, nextActivity))
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
             var auditLog = new AuditLog(_dsfDataObject, "LogPostExecuteState", null, previousActivity, nextActivity);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, previousActivity, nextActivity))
+            if (!FilterAuditLog(auditLog, previousActivity, nextActivity))
             {
                 return;
             }
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void LogExecuteException(Exception e, IDev2Activity activity)
         {
             var auditLog = new AuditLog(_dsfDataObject, "LogExecuteException", e.Message, activity, null);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            if (!FilterAuditLog(auditLog, activity))
             {
                 return;
             }
@@ -84,8 +84,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void LogExecuteCompleteState(IDev2Activity activity)
         {
-            var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, activity, null);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            var auditLog = new AuditLog(_dsfDataObject, "LogExecuteCompleteState", null, activity, null);
+            if (!FilterAuditLog(auditLog, activity))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ESB.Execution
         public void LogStopExecutionState(IDev2Activity activity)
         {
             var auditLog = new AuditLog(_dsfDataObject, "LogStopExecutionState", null, activity, null);
-            if (!Dev2StateAuditLogger.FilterAuditLog(auditLog, activity))
+            if (!FilterAuditLog(auditLog, activity))
             {
                 return;
             }
@@ -132,21 +132,6 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public List<AuditLog> ReturnLogAudit(AuditLog auditLog)
-        {
-            try
-            {
-                var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
-                var conn = new SQLiteConnection(filePath);
-                var query = conn.Table<AuditLog>().Where(v => v.WorkflowID.Equals(auditLog.WorkflowID));
-                var result = query.ToList();
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
         public static void AddFilter(IAuditFilter filter)
         {
             Filters.Add(filter);
