@@ -52,8 +52,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 stateLoggerMock.Setup(o => o.LogPostExecuteState(_activity.Object, nextActivity)).Verifiable();
                 stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
                 stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogExecuteCompleteState()).Verifiable();
-                stateLoggerMock.Setup(o => o.LogStopExecutionState()).Verifiable();
+                stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
+                stateLoggerMock.Setup(o => o.LogStopExecutionState(_nextActivity)).Verifiable();
                 var listener = stateLoggerMock.Object;
                 // test
                 notifier.Subscribe(listener);
@@ -62,8 +62,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 notifier.LogPostExecuteState(_activity.Object, nextActivity);
                 notifier.LogExecuteException(exception, nextActivity);
                 notifier.LogAdditionalDetail(message, detailMethodName);
-                notifier.LogExecuteCompleteState();
-                notifier.LogStopExecutionState();
+                notifier.LogExecuteCompleteState(nextActivity);
+                notifier.LogStopExecutionState(nextActivity);
 
                 // verify
                 stateLoggerMock.Verify();
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
-            _dev2StateLogger.LogExecuteCompleteState();
+            _dev2StateLogger.LogExecuteCompleteState(nextActivity.Object);
             _dev2StateLogger.Dispose();
             // verify
             var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var nextActivity = new Mock<IDev2Activity>();
             var exception = new NullReferenceException();
             // test
-            _dev2StateLogger.LogStopExecutionState();
+            _dev2StateLogger.LogStopExecutionState(nextActivity.Object);
             _dev2StateLogger.Dispose();
             // verify
             var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
@@ -233,10 +233,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         {
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
             // test
-            _dev2StateAuditLogger.LogExecuteCompleteState();
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
 
             // verify
             var str = expectedWorkflowId.ToString();
