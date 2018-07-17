@@ -1429,6 +1429,7 @@ Scenario: Audit Log Query Expect 3 Items
     Then the workflow execution has "No" error
 	And The detailed log file is created for "Hello World"
 	And The audit database has "0" search results containing "If [[Name]] <> (Not Equal) " with type "" with activity "Decision" for "Hello World"
+	
 
 Scenario: Audit Log Query Expect No Results
 	Given I have a server at "localhost" with workflow "Hello World"
@@ -1446,4 +1447,7 @@ Scenario: Audit Log Query Log Saves to DB
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
 	And The detailed log file is created for "TestSqlExecutesOnce"
-	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal) " with type "" with activity "SQL Server Database" for "TestSqlExecutesOnce"
+	And The audit database has "3" search results containing "If [[Name]] <> (Not Equal)" with type "" with activity "SQL Server Database" for "TestSqlExecutesOnce" as 
+	| PropertyName | ExpectedValue       |
+	| AuditType    | LogPostExecuteState |
+	| WorkflowName | TestSqlExecutesOnce |
