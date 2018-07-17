@@ -5340,14 +5340,20 @@ this.FeatureBackground();
  testRunner.And("The detailed log file is created for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
-                        "PropertyName",
-                        "ExpectedValue"});
-            table249.AddRow(new string[] {
                         "AuditType",
-                        "LogPostExecuteState"});
-            table249.AddRow(new string[] {
                         "WorkflowName",
-                        "TestSqlExecutesOnce"});
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table249.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        ""});
+            table249.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "Hello World",
+                        "",
+                        "Dev2.Activities.Assign"});
 #line 1450
  testRunner.And("The audit database has \"3\" search results containing \"If [[Name]] <> (Not Equal)\"" +
                     " with type \"\" with activity \"SQL Server Database\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table249, "And ");
