@@ -1455,7 +1455,7 @@ Scenario: Audit Log Query Expect 8 Items
     Then the workflow execution has "No" error
 	And The audit database has "8" search results containing "Dev2.Activities.DsfSqlServerDatabaseActivity" with log type "" for "TestSqlExecutesOnce"
 
-Scenario: Audit Log Query Expect 1 Items from search
+Scenario: Audit Log Query Expect 3 Items from search
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
 	And The detailed log file does not exist for "TestSqlExecutesOnce"
