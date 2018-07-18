@@ -330,11 +330,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
             var str = expectedWorkflowId.ToString();
-            var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
-                || a.WorkflowName.Equals("LogPreExecuteState")
-                || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+            var results = Dev2StateAuditLogger.Query(item => true);
             _dev2StateAuditLogger.Dispose();
+
+            foreach (var item in results)
+            {
+
+            }
 
             var result = results.FirstOrDefault(a => a.WorkflowID == str);
             Assert.IsTrue(result != null);

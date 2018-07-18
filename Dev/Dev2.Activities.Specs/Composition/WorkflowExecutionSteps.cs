@@ -212,8 +212,9 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
             environmentModel.ResourceRepository.Load(true);
 
-            // connect to the remove environment now ;)
+            // connect to the remote environment now
             var remoteServerList = environmentModel.ResourceRepository.FindSourcesByType<Connection>(environmentModel, enSourceType.Dev2Server);
+
             if (remoteServerList != null && remoteServerList.Count > 0)
             {
                 var remoteServer = remoteServerList.FirstOrDefault(r => r.ResourceName == serverName);
@@ -4646,7 +4647,7 @@ namespace Dev2.Activities.Specs.Composition
                    (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
                    (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
                ))
-           );
+            );
             Assert.AreEqual(expectedCount, results.Count());
 
             if (results.Count() > 0 && table.Rows.Count > 0)

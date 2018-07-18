@@ -1,17 +1,30 @@
 ﻿using System;
-using System.IO;
 using Newtonsoft.Json;
 using Dev2.Interfaces;
-using Dev2.Common;
 using Dev2.Communication;
 using System.Runtime.Serialization;
-using SQLite;
+using System.Data.SQLite;
+using System.Data.Entity;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Data.Linq.Mapping;
 using System.Linq.Expressions;
+using System.ComponentModel.DataAnnotations;
+using System.Data.SQLite.EF6;
+using System.Data.Entity.Core.Common;
 
 namespace Dev2.Runtime.ESB.Execution
 {
+    public class SQLiteConfiguration : DbConfiguration
+    {
+        public SQLiteConfiguration()
+        {
+            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+            SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
+            SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
+        }
+    }
     class Dev2StateAuditLogger : IStateListener
     {
         readonly IDSFDataObject _dsfDataObject;
@@ -26,21 +39,25 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
         {
-            var database = GetDatabase();
-            return database.Table<AuditLog>().Where(queryExpression).AsEnumerable();
+            var db = GetDatabase();
+
+            var res = db.Audits.ToList();
+
+            return db.Audits.Where(queryExpression).AsEnumerable();
         }
 
-        private static SQLiteConnection GetDatabase()
+        private static DatabaseContext GetDatabase()
         {
-            var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
-            var database = new SQLiteConnection(filePath);
-            return database;
+            var databaseContext = new DatabaseContext();
+            return databaseContext;
         }
 
         public static void ClearAuditLog()
         {
-            var database = GetDatabase();
-            database.Table<AuditLog>().Delete(item => true);
+            var db = GetDatabase();
+            var items = db.Audits;
+            db.Audits.RemoveRange(items);
+            db.SaveChanges();
         }
         public void LogAdditionalDetail(object detail, string callerName)
         {
@@ -109,26 +126,26 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static void InsertLog(AuditLog auditLog, int reTry)
         {
-
-            try
+            using (var database = GetDatabase())
             {
-                var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits", "auditDB.db");
-                var database = new SQLiteConnection(filePath);
-                database.Insert(auditLog);
-                database.Close();
-            }
-            catch (SQLiteException e)
-            {
-                if (reTry == 0)
+                try
+                {
+                    database.Audits.Add(auditLog);
+                    database.SaveChanges();
+                 }
+                catch (SQLiteException e)
+                {
+                    if (reTry == 0)
+                    {
+                        throw new Exception(e.Message);
+                    }
+                    reTry--;
+                    InsertLog(auditLog, reTry);
+                }
+                catch (Exception e)
                 {
                     throw new Exception(e.Message);
                 }
-                reTry--;
-                InsertLog(auditLog, reTry);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
             }
         }
 
@@ -190,71 +207,95 @@ namespace Dev2.Runtime.ESB.Execution
         }
     }
 
-    [Table("AuditLog")]
+    [Database]
+    class DatabaseContext : DbContext
+    {
+        public DatabaseContext() : base(new SQLiteConnection() {
+                ConnectionString = new SQLiteConnectionStringBuilder() {
+                    DataSource = "C:\\ProgramData\\Warewolf\\Audits\\auditDB.db", ForeignKeys = true
+                }.ConnectionString
+               }, true)
+        {
+            DbConfiguration.SetConfiguration(new SQLiteConfiguration());
+            this.Database.CreateIfNotExists();
+            this.Database.Initialize(false);
+            this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<AuditLog> Audits { get; set; }
+    }
+
+    [Table(Name = "AuditLog")]
     [DataContract(Name = "AuditLog", Namespace = "")]
     public class AuditLog
     {
-        [Column("Id")]
-        [AutoIncrement, PrimaryKey, Ignore]
+        [Column(Name = "Id", IsDbGenerated = true, DbType = "Integer", IsPrimaryKey = true)]
+        [Key]
         public int Id { get; set; }
 
-        [Column("WorkflowID")]
+        [Column(Name = "WorkflowID", CanBeNull = true)]
         public string WorkflowID { get; set; }
 
-        [Column("ExecutionID")]
+        [Column(Name = "ExecutionID", CanBeNull = true)]
         public string ExecutionID { get; set; }
 
-        [Column("ExecutionOrigin")]
+        [Column(Name = "ExecutionOrigin", CanBeNull = true)]
         public long ExecutionOrigin { get; set; }
 
-        [Column("IsSubExecution")]
+        [Column(Name = "IsSubExecution", CanBeNull = true)]
         public long IsSubExecution { get; set; }
 
-        [Column("IsRemoteWorkflow")]
+        [Column(Name = "IsRemoteWorkflow", CanBeNull = true)]
         public long IsRemoteWorkflow { get; set; }
 
-        [Column("WorkflowName")]
+        [Column(Name = "WorkflowName", CanBeNull = true)]
         public string WorkflowName { get; set; }
 
-        [Column("AuditType")]
+        [Column(Name = "AuditType", CanBeNull = true)]
         public string AuditType { get; set; }
 
-        [Column("PreviousActivity")]
+        [Column(Name = "PreviousActivity", CanBeNull = true)]
         public string PreviousActivity { get; set; }
-        [Column("PreviousActivityType")]
+        [Column(Name = "PreviousActivityType", CanBeNull = true)]
         public string PreviousActivityType { get; set; }
-        [Column("PreviousActivityID")]
+        [Column(Name = "PreviousActivityID", CanBeNull = true)]
         public string PreviousActivityId { get; set; }
 
-        [Column("NextActivity")]
+        [Column(Name = "NextActivity", CanBeNull = true)]
         public string NextActivity { get; set; }
-        [Column("NextActivityType")]
+        [Column(Name = "NextActivityType", CanBeNull = true)]
         public string NextActivityType { get; set; }
-        [Column("NextActivityID")]
+        [Column(Name = "NextActivityID", CanBeNull = true)]
         public string NextActivityId { get; set; }
 
-        [Column("ServerID")]
+        [Column(Name = "ServerID", CanBeNull = true)]
         public string ServerID { get; set; }
 
-        [Column("ParentID")]
+        [Column(Name = "ParentID", CanBeNull = true)]
         public string ParentID { get; set; }
 
-        [Column("ExecutingUser")]
+        [Column(Name = "ExecutingUser", CanBeNull = true)]
         public string ExecutingUser { get; set; }
 
-        [Column("ExecutionOriginDescription")]
+        [Column(Name = "ExecutionOriginDescription", CanBeNull = true)]
         public string ExecutionOriginDescription { get; set; }
 
-        [Column("ExecutionToken")]
+        [Column(Name = "ExecutionToken", CanBeNull = true)]
         public string ExecutionToken { get; set; }
 
-        [Column("AdditionalDetail")]
+        [Column(Name = "AdditionalDetail", CanBeNull = true)]
         public string AdditionalDetail { get; set; }
 
-        [Column("Environment")]
+        [Column(Name = "Environment", CanBeNull = true)]
         public string Environment { get; set; }
 
-        [Column("AuditDate")]
+        [Column(Name = "AuditDate", CanBeNull = true)]
         public string AuditDate { get; set; }
 
         public AuditLog() { }
