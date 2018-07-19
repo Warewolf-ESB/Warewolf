@@ -88,11 +88,13 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\AdminMode.cs" />
     <Compile Include="ContainerLauncher.cs" />
     <Compile Include="ITestCoverageMerger.cs" />
     <Compile Include="ITestResultsMerger.cs" />
     <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Utils\ManualMode.cs" />
     <Compile Include="Utils\ProcessUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Utils\TestCleanupUtils.cs" />
