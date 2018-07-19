@@ -9,6 +9,7 @@ RUN New-Item -Path Server -ItemType Directory
 ADD . Server
 ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
 ENV SERVER_USERNAME "WarewolfAdmin"
 
