@@ -359,7 +359,7 @@ this.FeatureBackground();
                         "[[values().low]]"});
 #line 79
    testRunner.And("\"TestAssignWithRemoteOutputsErrors\" contains \"WorkflowUsedBySpecs\" from server \"R" +
-                    "emote Connection Integration\" with mapping as", ((string)(null)), table15, "And ");
+                    "emote Container\" with mapping as", ((string)(null)), table15, "And ");
 #line 84
    testRunner.When("\"TestAssignWithRemoteOutputsErrors\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 85
