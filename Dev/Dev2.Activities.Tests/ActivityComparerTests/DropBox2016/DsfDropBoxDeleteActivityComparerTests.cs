@@ -190,7 +190,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A"};
+            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
             var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A"};
+            var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
             //---------------Execute Test ----------------------
@@ -231,13 +231,48 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             //------------Setup for test--------------------------
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { DeletePath = "DeletePath" };
+            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { DeletePath = "Path", Result = "Deleted" };
             //------------Execute Test---------------------------
             var stateItems = dropBoxDeleteActivity.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId
+                },
+                new StateVariable
+                {
+                    Name = "DeletePath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Path"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "Deleted"
+                }
+            };
+
+            var iter = dropBoxDeleteActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, stateItems.Count());
-            Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[0].Type);
-            Assert.AreEqual("DeletePath", stateItems.ToList()[0].Value);
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
