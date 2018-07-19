@@ -68,7 +68,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string ValidationMessage = "validationMessage";
 
 
+        [Given(@"the advancerecodset execution has ""(.*)"" error")]
         [When(@"the advancerecodset execution has ""(.*)"" error")]
+        [Then(@"the advancerecodset execution has ""(.*)"" error")]
         public void WhenTheAdvancerecodsetExecutionHasError(string anError)
         {
 

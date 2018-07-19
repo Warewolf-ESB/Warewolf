@@ -91,8 +91,8 @@ namespace Dev2.Util
                     if (SkipToken(tokens[i - 1]))
                     {
                         continue;
-                    }
-                    tableNames.Add(tokenValue.ToLower(CultureInfo.InvariantCulture));
+                    }                    
+                    tableNames.Add(tokens[i].Text);
                 }
             }
             return tableNames;
