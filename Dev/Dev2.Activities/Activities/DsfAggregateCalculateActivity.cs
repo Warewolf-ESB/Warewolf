@@ -256,11 +256,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
            {
                 new StateVariable
                 {
+                    Name="Expression",
                     Type = StateVariable.StateType.Input,
                     Value = Expression
                 },
                 new StateVariable
                 {
+                    Name="Result",
                     Type = StateVariable.StateType.Output,
                     Value = Result
                 }
