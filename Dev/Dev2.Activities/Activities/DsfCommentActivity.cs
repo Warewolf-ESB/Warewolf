@@ -14,13 +14,11 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
-
-
-
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -147,6 +145,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return (base.GetHashCode() * 397) ^ (Text != null ? Text.GetHashCode() : 0);
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] 
+            {
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Output,
+                    Value = Text
+                }
+            };
         }
     }
 }
