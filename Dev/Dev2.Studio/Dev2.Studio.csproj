@@ -327,11 +327,6 @@
     <Compile Include="ViewModels\SearchModel.cs" />
     <Compile Include="ViewModels\Workflow\MergePreviewWorkflowDesignerViewModel.cs" />
     <Compile Include="WorkflowDesignerWrapper.cs" />
-    <None Include="..\Run Tests.ps1">
-      <Visible>False</Visible>
-      <Link>Run Tests.ps1</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
