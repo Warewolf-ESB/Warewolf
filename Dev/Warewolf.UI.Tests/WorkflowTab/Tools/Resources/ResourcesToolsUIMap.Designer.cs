@@ -515,6 +515,30 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
         }
         
         #region Properties
+        public Flowchart1 Flowchart1
+        {
+            get
+            {
+                if ((this.mFlowchart1 == null))
+                {
+                    this.mFlowchart1 = new Flowchart1(this);
+                }
+                return this.mFlowchart1;
+            }
+        }
+        
+        public Service1 Service
+        {
+            get
+            {
+                if ((this.mService == null))
+                {
+                    this.mService = new Service1(this);
+                }
+                return this.mService;
+            }
+        }
+        
         public ComDll ComDll
         {
             get
@@ -553,11 +577,444 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClass
         #endregion
         
         #region Fields
+        private Flowchart1 mFlowchart1;
+        
+        private Service1 mService;
+        
         private ComDll mComDll;
         
         private DotNetDll mDotNetDll;
         
         private WcfService mWcfService;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Flowchart1 : WpfCustom
+    {
+        
+        public Flowchart1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Service Service
+        {
+            get
+            {
+                if ((this.mService == null))
+                {
+                    this.mService = new Service(this);
+                }
+                return this.mService;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Service mService;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Service : WpfCustom
+    {
+        
+        public Service(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "F6ExecuteOnFocusLostTest(ServiceDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ServiceToolLargeView ServiceToolLargeView
+        {
+            get
+            {
+                if ((this.mServiceToolLargeView == null))
+                {
+                    this.mServiceToolLargeView = new ServiceToolLargeView(this);
+                }
+                return this.mServiceToolLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServiceToolLargeView mServiceToolLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServiceToolLargeView : WpfCustom
+    {
+        
+        public ServiceToolLargeView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOutputsDataGridTable UIOutputsDataGridTable
+        {
+            get
+            {
+                if ((this.mUIOutputsDataGridTable == null))
+                {
+                    this.mUIOutputsDataGridTable = new UIOutputsDataGridTable(this);
+                }
+                return this.mUIOutputsDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOutputsDataGridTable mUIOutputsDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIOutputsDataGridTable : WpfTable
+    {
+        
+        public UIOutputsDataGridTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ActivityGridRow_0Row UIUI_ActivityGridRow_0Row
+        {
+            get
+            {
+                if ((this.mUIUI_ActivityGridRow_0Row == null))
+                {
+                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row(this);
+                }
+                return this.mUIUI_ActivityGridRow_0Row;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ActivityGridRow_0Row mUIUI_ActivityGridRow_0Row;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_ActivityGridRow_0Row : WpfRow
+    {
+        
+        public UIUI_ActivityGridRow_0Row(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemDev2StudioViewMoCell UIItemDev2StudioViewMoCell
+        {
+            get
+            {
+                if ((this.mUIItemDev2StudioViewMoCell == null))
+                {
+                    this.mUIItemDev2StudioViewMoCell = new UIItemDev2StudioViewMoCell(this);
+                }
+                return this.mUIItemDev2StudioViewMoCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemDev2StudioViewMoCell mUIItemDev2StudioViewMoCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemDev2StudioViewMoCell : WpfCell
+    {
+        
+        public UIItemDev2StudioViewMoCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "To [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemComboBox UIItemComboBox
+        {
+            get
+            {
+                if ((this.mUIItemComboBox == null))
+                {
+                    this.mUIItemComboBox = new UIItemComboBox(this);
+                }
+                return this.mUIItemComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemComboBox mUIItemComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemComboBox : WpfComboBox
+    {
+        
+        public UIItemComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Service1 : WpfCustom
+    {
+        
+        public Service1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "F6ExecuteOnFocusLostTest(ServiceDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ServiceToolLargeView1 ServiceToolLargeView
+        {
+            get
+            {
+                if ((this.mServiceToolLargeView == null))
+                {
+                    this.mServiceToolLargeView = new ServiceToolLargeView1(this);
+                }
+                return this.mServiceToolLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServiceToolLargeView1 mServiceToolLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServiceToolLargeView1 : WpfCustom
+    {
+        
+        public ServiceToolLargeView1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIOutputsDataGridTable1 UIOutputsDataGridTable
+        {
+            get
+            {
+                if ((this.mUIOutputsDataGridTable == null))
+                {
+                    this.mUIOutputsDataGridTable = new UIOutputsDataGridTable1(this);
+                }
+                return this.mUIOutputsDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIOutputsDataGridTable1 mUIOutputsDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIOutputsDataGridTable1 : WpfTable
+    {
+        
+        public UIOutputsDataGridTable1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ActivityGridRow_0Row1 UIUI_ActivityGridRow_0Row
+        {
+            get
+            {
+                if ((this.mUIUI_ActivityGridRow_0Row == null))
+                {
+                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row1(this);
+                }
+                return this.mUIUI_ActivityGridRow_0Row;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ActivityGridRow_0Row1 mUIUI_ActivityGridRow_0Row;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_ActivityGridRow_0Row1 : WpfRow
+    {
+        
+        public UIUI_ActivityGridRow_0Row1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemDev2StudioViewMoCell1 UIItemDev2StudioViewMoCell
+        {
+            get
+            {
+                if ((this.mUIItemDev2StudioViewMoCell == null))
+                {
+                    this.mUIItemDev2StudioViewMoCell = new UIItemDev2StudioViewMoCell1(this);
+                }
+                return this.mUIItemDev2StudioViewMoCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemDev2StudioViewMoCell1 mUIItemDev2StudioViewMoCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemDev2StudioViewMoCell1 : WpfCell
+    {
+        
+        public UIItemDev2StudioViewMoCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemComboBox1 UIItemComboBox
+        {
+            get
+            {
+                if ((this.mUIItemComboBox == null))
+                {
+                    this.mUIItemComboBox = new UIItemComboBox1(this);
+                }
+                return this.mUIItemComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemComboBox1 mUIItemComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemComboBox1 : WpfComboBox
+    {
+        
+        public UIItemComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
         #endregion
     }
     

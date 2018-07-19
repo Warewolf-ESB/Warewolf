@@ -78,15 +78,26 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 i++;
             }
         }
-
+        [Then(@"Declare variables will be")]
+        public void ThenDeclareVariablesWillbe(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
+            {
+                Assert.AreEqual<string>(viewModel.DeclareVariables[i].Name, row["Name"]);
+                Assert.AreEqual<string>(viewModel.DeclareVariables[i].Value, row["Value"]);
+                i++;
+            }
+        }
         [Then(@"The declared Variables are")]
         public void ThenTheDeclaredVariablesAre(Table declaredVariables)
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
             foreach (var tableRow in declaredVariables.Rows)
-            {                
+            {
                 var expectedName = tableRow["VariableName"];
-                Assert.IsTrue(viewModel.DeclareVariables.Any(p=>p.Name == expectedName));
+                Assert.IsTrue(viewModel.DeclareVariables.Any(p => p.Name == expectedName));
             }
         }
 
@@ -109,7 +120,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];
                 var found = outputs.FirstOrDefault(mapping => mapping.MappedFrom == mappedFrom && mapping.MappedTo == mappedTo);
-                Assert.IsNotNull(found,"Outputs is null.");
+                Assert.IsNotNull(found, "Outputs is null.");
             }
         }
 
@@ -135,9 +146,63 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
         {
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            _scenarioContext.Remove("result");
             _scenarioContext.Add("result", result);
         }
 
+        [Then(@"I update Output field to")]
+        public void ThenIUpdateOutputFieldTo(Table expectedOutputs)
+        {
+
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var outputMappings = viewModel.OutputsRegion.Outputs;
+            Assert.IsNotNull(outputMappings);
+            var rowIdx = 0;
+            foreach (var tableRow in expectedOutputs.Rows)
+            {
+                var mappedFrom = tableRow["Mapped From"];
+                var mappedTo = tableRow["Mapped To"];
+
+                var outputMapping = outputMappings.ToList()[rowIdx];
+                outputMapping.MappedTo = mappedTo;
+                outputMapping.MappedFrom = mappedFrom;
+                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                rowIdx++;
+            }
+        }
+
+        [Given(@"I update Declare Variable Value to")]
+        [Then(@"I update Declare Variable Value to")]
+        [When(@"I update Declare Variable Value to")]
+        public void ThenIUpdateDeclareVariableValueTo(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
+            {
+                viewModel.DeclareVariables[i].Name = row["Name"];
+                viewModel.DeclareVariables[i].Value = row["Value"];
+                if (!string.IsNullOrWhiteSpace(row["Name"]) && !string.IsNullOrWhiteSpace(row["Value"]))
+                {
+                    i++;
+                }
+            }
+        }
+        [Given(@"declared Variables are")]
+        [Then(@"declared Variables are")]
+        [When(@"declared Variables are")]
+        public void ThenDeclaredVariablesAre(Table declaredVariables)
+        {
+            var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
+            var i = 0;
+            foreach (var row in declaredVariables.Rows)
+            {
+                viewModel.DeclareVariables[i].Name = row["Name"];
+                viewModel.DeclareVariables[i].Value = row["Value"];
+                i++;
+            }
+        }
 
         [Given(@"recordset ""(.*)""  will be")]
         [Then(@"recordset ""(.*)""  will be")]
@@ -170,7 +235,20 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
             {
                 Action = activity
             };
-            _scenarioContext.Add("activity", activity);
+
+            _scenarioContext.TryGetValue("activity", out AdvancedRecordsetActivity activity2);
+
+            if (activity2 == null)
+            {
+                _scenarioContext.Add("activity", activity);
+            }
+            else
+            {
+                _scenarioContext.Remove("activity");
+                _scenarioContext.Add("activity", activity);
+            }
+
+
         }
     }
 }

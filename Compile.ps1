@@ -45,14 +45,14 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
         if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
             $VswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
         } else {
-            Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+            wget "https://github.com/Microsoft/vswhere/releases/download/2.5.2/vswhere.exe" -OutFile "$env:windir\vswhere.exe"
+            $VswherePath = "$env:windir\vswhere.exe"
         }
     }
-	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
-    $StartKey = "installationPath: "
-    $EndKey = " installationVersion: "
-    $SubstringStart = $MSBuildPath.IndexOf($StartKey) + $StartKey.Length
-    $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
+	[xml]$GetMSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0 -format xml    
+    if ($GetMSBuildPath -ne $null) {
+        $MSBuildPath = $GetMSBuildPath.instances.instance.installationPath + "\MSBuild\15.0\Bin\MSBuild.exe"
+    }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if (Test-Path $MSBuildPath.Replace("Enterprise", "Professional")) {
@@ -60,6 +60,9 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     }
     if (Test-Path $MSBuildPath.Replace("Enterprise", "Community")) {
         $MSBuildPath = $MSBuildPath.Replace("Enterprise", "Community")
+    }
+    if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
+        $MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
@@ -77,7 +80,7 @@ if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 }
 if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
     wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
-    $NuGetCommand = "$env:windir\nuget.exe"
+    $NuGet = "$env:windir\nuget.exe"
 }
 if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
@@ -91,7 +94,7 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
     # Get all the latest version tags from server repo.
-    git -C "$PSScriptRoot" fetch --tags
+    git -C "$PSScriptRoot" fetch --all --tags
 
     # Generate informational version.
     # (from git commit id and time)

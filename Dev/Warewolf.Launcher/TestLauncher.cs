@@ -1,15 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
+using Warewolf.Launcher.TestResultsMergers;
 
 namespace Warewolf.Launcher
 {
@@ -20,13 +18,11 @@ namespace Warewolf.Launcher
         public string ServerPath { get; set; }
         public string StudioPath { get; set; }
         public string ResourcesType { get; set; }
-        public string VSTest { get; set; }
-        public string MSTest { get; set; }
         public string DotCoverPath { get; set; }
         public string ServerUsername { get; set; }
         public string ServerPassword { get; set; }
         public string RunAllJobs { get; set; }
-        public string Cleanup { get; set; }
+        public bool Cleanup { get; set; }
         public string AssemblyFileVersionsTest { get; set; }
         public string RecordScreen { get; set; }
         string Parallelize { get; set; }
@@ -39,38 +35,38 @@ namespace Warewolf.Launcher
         public string RunAllWebUITests { get; set; }
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
-        public string TestsPath { get; set; } = Environment.CurrentDirectory;
         public string JobName { get; set; }
-        public string TestList { get; set; }
         public string MergeDotCoverSnapshotsInDirectory { get; set; }
         public string StartDocker { get; set; }
-        public string TestsResultsPath { get; set; } = Environment.CurrentDirectory + "\\TestResults";
-        public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
-        public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
         public int RetryCount { get; internal set; } = 0;
+        public bool StartServerAsConsole { get; internal set; } = false;
+        public bool AdminMode { get; internal set; } = false;
+        public ITestRunner TestRunner { get; internal set; }
+        public ITestResultsMerger TestResultsMerger { get; internal set; }
+        public ITestCoverageMerger TestCoverageMerger { get; internal set; }
+        public string RetryFile { get; internal set; }
 
         public string ServerExeName;
         public string StudioExeName;
         public List<string> ServerPathSpecs;
         public List<string> StudioPathSpecs;
         public bool ApplyDotCover;
-
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
-        ContainerLauncher ciRemoteContainerLauncher;
+        public ContainerLauncher ciRemoteContainerLauncher;
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
+        string RunServerWithDotcoverScript;
 
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
+        public TestLauncher()
+        {
+            TestResultsMerger = new TRXMerger();
+        }
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
             var NumberOfParentsSearched = -1;
             var FilePath = "";
-            var CurrentDirectory = TestsPath;
+            var CurrentDirectory = TestRunner.TestsPath;
             while (FilePath == "" && NumberOfParentsSearched++ < NumberOfParentsToSearch && CurrentDirectory != "")
             {
                 var NumberOfFileSpecsSearched = -1;
@@ -90,7 +86,7 @@ namespace Warewolf.Launcher
                     {
                         if (string.IsNullOrEmpty(CurrentDirectory))
                         {
-                            CurrentDirectory = TestsPath;
+                            CurrentDirectory = TestRunner.TestsPath;
                         }
                     }
                     if (Directory.Exists(Path.GetDirectoryName(Path.Combine(CurrentDirectory, FileSpec))))
@@ -118,240 +114,24 @@ namespace Warewolf.Launcher
             return FilePath;
         }
 
-        public void CopyOnWrite(string FileSpec)
-        {
-            if (File.Exists(FileSpec))
-            {
-                var num = 1;
-                var FileExtention = Path.GetExtension(FileSpec);
-                var FileSpecWithoutExtention = FileSpec.Substring(0, FileSpec.LastIndexOf('.') + 1);
-                while (File.Exists(FileSpecWithoutExtention + num + FileExtention))
-                {
-                    num++;
-                }
-                File.Move(FileSpec, FileSpecWithoutExtention + num + FileExtention);
-            }
-        }
-
-        void MoveFileToTestResults(string SourceFilePath, string DestinationFileName)
-        {
-            var DestinationFilePath = Path.Combine(TestsResultsPath, DestinationFileName);
-            if (File.Exists(SourceFilePath))
-            {
-                CopyOnWrite(DestinationFilePath);
-                Console.WriteLine($"Moving \"{SourceFilePath}\" to \"{DestinationFilePath}\"");
-                var DestinationFolderPath = Path.GetDirectoryName(DestinationFilePath);
-                if (!Directory.Exists(DestinationFolderPath))
-                {
-                    Directory.CreateDirectory(DestinationFolderPath);
-                }
-                File.Move(SourceFilePath, DestinationFilePath);
-            }
-        }
-
-        void MoveFolderToTestResults(string SourceFolderPath, string DestinationFolderName)
-        {
-            var DestinationFolderPath = Path.Combine(TestsResultsPath, DestinationFolderName);
-            if (Directory.Exists(SourceFolderPath))
-            {
-                CopyOnWrite(DestinationFolderPath);
-                Console.WriteLine($"Moving \"{SourceFolderPath}\" to \"{DestinationFolderPath}\"");
-                Directory.Move(SourceFolderPath, DestinationFolderPath);
-            }
-        }
-
-        public void CleanupServerStudio(bool Force = true)
-        {
-            if (!string.IsNullOrEmpty(ServerPath) && File.Exists(ServerPath))
-            {
-                string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
-                if (File.Exists(serverStartedFile))
-                {
-                    File.Delete(serverStartedFile);
-                }
-            }
-
-            //Find Webs
-            if (string.IsNullOrEmpty(WebsPath))
-            {
-                WebsPath = Path.Combine(TestsPath, "_PublishedWebsites", "Dev2.Web");
-                if (!File.Exists(WebsPath) && !String.IsNullOrEmpty(ServerPath))
-                {
-                    WebsPath = Path.Combine(Path.GetDirectoryName(ServerPath), "_PublishedWebsites", "Dev2.Web");
-                }
-            }
-            else
-            {
-                if (!Directory.Exists(WebsPath))
-                {
-                    throw new ArgumentException("No webs folder found at " + WebsPath);
-                }
-            }
-
-            //Find Studio
-            if (string.IsNullOrEmpty(StudioPath))
-            {
-                bool foundStudio = TryFindWarewolfStudioExe(out string studioPath);
-                if (foundStudio)
-                {
-                    StudioPath = studioPath;
-                }
-            }
-            else
-            {
-                if (!File.Exists(StudioPath))
-                {
-                    throw new ArgumentException("No studio found at " + StudioPath);
-                }
-            }
-            string studioStartedFile = Path.Combine(Path.GetDirectoryName(StudioPath), "StudioStarted");
-            if (File.Exists(studioStartedFile))
-            {
-                File.Delete(studioStartedFile);
-            }
-
-            int WaitForCloseTimeout = Force ? 10 : 1800;
-            int WaitForCloseRetryCount = Force ? 1 : 10;
-
-            //Stop Studio
-            Process process = StartProcess("taskkill", "/im \"Warewolf Studio.exe\"");
-            var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-
-            //Soft Kill
-            int i = 0;
-            string WaitTimeoutMessage = "This command stopped operation because process ";
-            string WaitOutput = WaitTimeoutMessage;
-            while (!(Output.StartsWith("ERROR: ")) && WaitOutput.StartsWith(WaitTimeoutMessage) && i < WaitForCloseRetryCount)
-            {
-                i++;
-                Console.WriteLine(Output);
-                Process.GetProcessesByName("Warewolf Studio")[0].WaitForExit(WaitForCloseTimeout);
-                var FormatWaitForCloseTimeoutMessage = WaitOutput.Replace(WaitTimeoutMessage, "");
-                if (FormatWaitForCloseTimeoutMessage != "" && !(FormatWaitForCloseTimeoutMessage.StartsWith("Cannot find a process with the name ")))
-                {
-                    Console.WriteLine(FormatWaitForCloseTimeoutMessage);
-                }
-                process.Start();
-                process.WaitForExit();
-                Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-            }
-
-            //Force Kill
-            process.StartInfo.Arguments = "/im \"Warewolf Studio.exe\" /f";
-            process.Start();
-            process.WaitForExit();
-            Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-            if (!(Output.StartsWith("ERROR: ")))
-            {
-                Console.WriteLine(Output);
-            }
-
-            //Stop my.warewolf.io
-            process.StartInfo.Arguments = "/im iisexpress.exe /f";
-            process.Start();
-            process.WaitForExit();
-            Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-            if (!(Output.StartsWith("ERROR: ")))
-            {
-                Console.WriteLine(Output);
-            }
-
-            //Stop Server
-            var stopServerService = new Process();
-            stopServerService.StartInfo.UseShellExecute = false;
-            stopServerService.StartInfo.RedirectStandardOutput = true;
-            stopServerService.StartInfo.RedirectStandardError = true;
-            stopServerService.StartInfo.FileName = "sc.exe";
-            stopServerService.StartInfo.Arguments = "stop \"Warewolf Server\"";
-            stopServerService.Start();
-            stopServerService.WaitForExit();
-            var ServiceOutput = stopServerService.StandardOutput.ReadToEnd() + stopServerService.StandardError.ReadToEnd();
-            if (ServiceOutput != "[SC] ControlService FAILED 1062:\r\n\r\nThe service has not been started.\r\n\r\n")
-            {
-                Console.WriteLine(ServiceOutput.TrimStart('\n'));
-                var allServerProcesses = Process.GetProcessesByName("Warewolf Server");
-                if (allServerProcesses.Length > 0)
-                {
-                    allServerProcesses[0].WaitForExit(WaitForCloseTimeout);
-                }
-            }
-            process.StartInfo.Arguments = "/im \"Warewolf Server.exe\" /f";
-            process.Start();
-            process.StartInfo.Arguments = "/im \"operadriver.exe\" /f";
-            process.Start();
-            process.StartInfo.Arguments = "/im \"geckodriver.exe\" /f";
-            process.Start();
-            process.StartInfo.Arguments = "/im \"IEDriverServer.exe\" /f";
-            process.Start();
-
-            //Delete CI Remote Container
-            if (ciRemoteContainerLauncher != null)
-            {
-                try
-                {
-                    ciRemoteContainerLauncher.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
-                }
-            }
-
-            //Delete Certain Studio and Server Resources
-            var ToClean = new[]
-            {
-                "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
-                "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
-                "%PROGRAMDATA%\\Warewolf\\Workspaces",
-                "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl"
-            };
-
-            foreach (var FileOrFolder in ToClean)
-            {
-                var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
-                if (File.Exists(ActualPath))
-                {
-                    File.Delete(ActualPath);
-                }
-                if (Directory.Exists(ActualPath))
-                {
-                    Directory.Delete(ActualPath, true);
-                }
-                if ((File.Exists(FileOrFolder) || Directory.Exists(FileOrFolder)))
-                {
-                    Console.Error.WriteLine("Cannot delete " + FileOrFolder);
-                }
-            }
-
-            if (String.IsNullOrEmpty(JobName))
-            {
-                JobName = "Test Run";
-            }
-
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Resources"), $"{JobName} Server Resources Folder");
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\Tests"), $"{JobName} Server Tests Folder");
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA\Warewolf\VersionControl"), $"{JobName} Server VersionControl Folder");
-        }
-
-        bool TryFindWarewolfServerExe(out string serverPath)
+        public bool TryFindWarewolfServerExe(out string serverPath)
         {
             serverPath = FindFileInParent(ServerPathSpecs);
             if (serverPath.EndsWith(".zip"))
             {
-                ZipFile.ExtractToDirectory(serverPath, TestsResultsPath + "\\Server");
-                serverPath = TestsResultsPath + "\\Server\\" + ServerExeName;
+                ZipFile.ExtractToDirectory(serverPath, TestRunner.TestsResultsPath + "\\Server");
+                serverPath = TestRunner.TestsResultsPath + "\\Server\\" + ServerExeName;
             }
             return (!string.IsNullOrEmpty(serverPath) && File.Exists(serverPath));
         }
 
-        bool TryFindWarewolfStudioExe(out string studioPath)
+        public bool TryFindWarewolfStudioExe(out string studioPath)
         {
             studioPath = FindFileInParent(StudioPathSpecs);
             if (studioPath.EndsWith(".zip"))
             {
-                ZipFile.ExtractToDirectory(studioPath, TestsResultsPath + "\\Studio");
-                studioPath = $"{TestsResultsPath}\\Studio\\{StudioExeName}";
+                ZipFile.ExtractToDirectory(studioPath, TestRunner.TestsResultsPath + "\\Studio");
+                studioPath = $"{TestRunner.TestsResultsPath}\\Studio\\{StudioExeName}";
             }
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
@@ -361,31 +141,29 @@ namespace Warewolf.Launcher
             try
             {
                 ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
-                if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.IP))
+                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
+                if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
                 {
-                    CIRemoteOverloading(ciRemoteContainerLauncher.IP);
+                    CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
                 }
-                else
-                {
-                    throw new Exception("Cannot get container IP address.");
-                }
+                Thread.Sleep(8000);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message);
+                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message.Replace(".",": ") + e.InnerException??e.InnerException.Message);
             }
         }
 
-        void CIRemoteOverloading(string ip)
+        void CIRemoteOverloading(string address)
         {
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
             string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - UITests", "Resources", "Acceptance Testing Resources", "Remote Connection Integration.xml");
-            Console.WriteLine($"Redirecting to containerized CI remote server in {ServerTestsCIRemote} and {UITestsCIRemote} to {ip}");
+            Console.WriteLine($"Redirecting to containerized CI remote server in \"{ServerTestsCIRemote}\" and \"{UITestsCIRemote}\" to {address}");
             var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
             var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
-            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, ip);
-            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, ip);
+            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, address);
+            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, address);
             ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
                 .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
             UITestsCIRemoteContents = UITestsCIRemoteContents
@@ -408,239 +186,17 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        bool WaitForFileUnlock(string FileSpec)
-        {
-            var locked = true;
-            var RetryCount = 0;
-            while (locked && RetryCount < 100)
-            {
-                RetryCount++;
-                try
-                {
-                    File.OpenWrite(FileSpec).Close();
-                    locked = false;
-                }
-                catch
-                {
-                    Console.WriteLine($"Still waiting for {FileSpec} file to unlock.");
-                    Thread.Sleep(3000);
-                }
-            }
-            return locked;
-        }
-
-        bool WaitForFileExist(string FileSpec)
-        {
-            var exists = false;
-            var RetryCount = 0;
-            while (!exists && RetryCount < 100)
-            {
-                RetryCount++;
-                if (File.Exists(FileSpec))
-                {
-                    exists = true;
-                }
-                else
-                {
-                    Console.WriteLine($"Still waiting for {FileSpec} file to exist.");
-                   Thread.Sleep(3000);
-                }
-            }
-            return exists;
-        }
-
-        public void MergeDotCoverSnapshots(List<string> DotCoverSnapshots, string DestinationFilePath, string LogFilePath)
-        {
-            if (DotCoverSnapshots != null)
-            {
-                if (DotCoverSnapshots.Count > 1)
-                {
-                    var DotCoverSnapshotsString = String.Join("\";\"", DotCoverSnapshots);
-                    CopyOnWrite(LogFilePath + ".merge.log");
-                    CopyOnWrite(LogFilePath + ".report.log");
-                    CopyOnWrite(DestinationFilePath + ".dcvr");
-                    CopyOnWrite(DestinationFilePath + ".html");
-                    Process.Start(DotCoverPath, $"merge /Source=\"{DotCoverSnapshotsString}\" /Output=\"{DestinationFilePath}.dcvr\" /LogFile=\"{LogFilePath}.merge.log\"");
-                }
-                if (DotCoverSnapshots.Count == 1)
-                {
-                    var LoneSnapshot = DotCoverSnapshots[0];
-                    if (DotCoverSnapshots.Count == 1 && (File.Exists(LoneSnapshot)))
-                    {
-                        Process.Start(DotCoverPath, $"report /Source=\"{LoneSnapshot}\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
-                        Console.WriteLine($"DotCover report written to {DestinationFilePath}\\DotCover Report.html");
-                    }
-                }
-            }
-            if (File.Exists(DestinationFilePath + ".dcvr"))
-            {
-                Process.Start(DotCoverPath, $"report /Source=\"{DestinationFilePath}.dcvr\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
-                Console.WriteLine($"DotCover report written to{DestinationFilePath}\\DotCover Report.html");
-            }
-        }
-
-        public void MoveArtifactsToTestResults(bool DotCover, bool Server, bool Studio)
-        {
-            if (Cleanup != null)
-            {
-                //Write failing tests playlist.
-                Console.WriteLine($"Writing all test failures in \"{TestsResultsPath}\" to a playlist file.");
-
-                var PlayList = "<Playlist Version=\"1.0\">";
-                foreach (var FullTRXFilePath in Directory.GetFiles(TestsResultsPath, "*.trx"))
-                {
-                    XmlDocument trxContent = new XmlDocument();
-                    trxContent.Load(FullTRXFilePath);
-                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
-                    {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
-                        {
-                            if (TestResult.Attributes["outcome"].InnerText == "Failed")
-                            {
-                                if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
-                                {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
-                                    {
-                                        if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
-                                        {
-                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
-                        {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
-                        }
-                        else
-                        {
-                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
-                            {
-                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
-                            }
-                        }
-                    }
-                }
-                PlayList += "</Playlist>";
-                var OutPlaylistPath = $"{TestsResultsPath}\\{JobName} Failures.playlist";
-                CopyOnWrite(OutPlaylistPath);
-                File.WriteAllText(OutPlaylistPath, PlayList);
-                Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
-            }
-
-            if (Studio)
-            {
-                string studioLogFile = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log");
-                WaitForFileUnlock(studioLogFile);
-                MoveFileToTestResults(studioLogFile, $"{JobName} Studio.log");
-            }
-            if (Studio && DotCover)
-            {
-                var StudioSnapshot = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                var exists = WaitForFileExist(StudioSnapshot);
-                if (exists)
-                {
-                    var locked = WaitForFileUnlock(StudioSnapshot);
-                    if (!(locked))
-                    {
-                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                        CopyOnWrite($"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                        File.Move(StudioSnapshot, $"{TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Studio Coverage Snapshot File is locked.");
-                    }
-                }
-                else
-                {
-                    throw new FileNotFoundException($"Studio coverage snapshot not found at {StudioSnapshot}");
-                }
-                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log")))
-                {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log"), $"{JobName} Studio DotCover.log");
-                }
-            }
-            if (Server)
-            {
-                string serverLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log");
-                WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(serverLogFile, $"{JobName} Server.log");
-
-                string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
-                WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(myWarewolfIoLogFile, $"{JobName} my.warewolf.io Server.log");
-
-                string myWarewolfIoErrorsLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log");
-                WaitForFileUnlock(myWarewolfIoErrorsLogFile);
-                MoveFileToTestResults(myWarewolfIoErrorsLogFile, $"{JobName} my.warewolf.io Server Errors.log");
-            }
-            if (Server && DotCover)
-            {
-                var ServerSnapshot = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
-                var exists = WaitForFileExist(ServerSnapshot);
-                if (exists)
-                {
-                    var locked = WaitForFileUnlock(ServerSnapshot);
-                    if (!locked)
-                    {
-                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {TestsResultsPath}\\{JobName} Server DotCover.dcvr");
-                        MoveFileToTestResults(ServerSnapshot, $"{JobName} Server DotCover.dcvr");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Server Coverage Snapshot File still locked after retrying for 2 minutes.");
-                    }
-                }
-                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log")))
-                {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{JobName} Server DotCover.log");
-                }
-                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log")))
-                {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{JobName} my.warewolf.io.log");
-                }
-                if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log")))
-                {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{JobName} my.warewolf.io Errors.log");
-                }
-            }
-            if (Server && Studio && DotCover)
-            {
-                MergeDotCoverSnapshots(new List<string> { Path.Combine(TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
-            }
-            if (RecordScreen != null)
-            {
-                MoveScreenRecordingsToTestResults();
-            }
-            foreach (var scriptFile in Directory.GetFiles(Path.GetDirectoryName(TestsResultsPath)))
-            {
-                if (Path.GetFileName(scriptFile).StartsWith("Run ") && Path.GetExtension(scriptFile) == ".bat")
-                {
-                    MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile));
-                }
-            }
-        }
-
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
-            TestsResultsPath = Path.Combine(TestsResultsPath, NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+            if (ciRemoteContainerLauncher != null)
+            {
+                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
+            }
 
-            WaitForFileUnlock(FullTRXFilePath);
-            TestList = "";
+            TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
+            TestRunner.TestList = "";
+            var TestFailures = new List<string>();
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
             var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
@@ -649,9 +205,9 @@ namespace Warewolf.Launcher
             {
                 foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                 {
-                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
+                    if (TestResult.Attributes["outcome"] == null || TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
-                        TestList += "," + TestResult.Attributes["testName"].InnerXml;
+                        TestFailures.Add(TestResult.Attributes["testName"].InnerXml);
                     }
                 }
             }
@@ -660,18 +216,10 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Error parsing /TestRun/Results/UnitTestResult from trx file at {FullTRXFilePath}");
             }
             string TestRunnerPath;
-            if (TestList.StartsWith(","))
+            if (TestFailures.Count > 0)
             {
-                if (string.IsNullOrEmpty(MSTest))
-                {
-                    TestList = " /Tests:" + TestList.Substring(1, TestList.Length-1);
-                    TestRunnerPath = VSTestRunner(jobName, "", "", testAssembliesList, testSettingsFile);
-                }
-                else
-                {
-                    TestList = TestList.Replace(",", " /test:");
-                    TestRunnerPath = MSTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestsResultsPath, "RetryResults"));
-                }
+                TestRunner.TestList = string.Join(",", TestFailures);
+                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
             }
             else
             {
@@ -680,288 +228,17 @@ namespace Warewolf.Launcher
             }
             Console.WriteLine($"Re-running all test failures in \"{FullTRXFilePath}\".");
             var retryResults = RunTests(jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
-            if (retryResults != FullTRXFilePath)
+            if (!string.IsNullOrEmpty(retryResults) && retryResults != FullTRXFilePath)
             {
-                MergeRetryResults(FullTRXFilePath, retryResults);
+                TestResultsMerger.MergeRetryResults(FullTRXFilePath, retryResults);
             }
             else
             {
-                Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestsResultsPath}");
+                Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestRunner.TestsResultsPath}");
             }
         }
 
-        public static string NumberToWords(int number)
-        {
-            if (number == 0)
-                return "zero";
-
-            if (number < 0)
-                return "minus " + NumberToWords(Math.Abs(number));
-
-            string words = "";
-
-            if ((number / 1000000) > 0)
-            {
-                words += NumberToWords(number / 1000000) + " Millionth ";
-                number %= 1000000;
-            }
-
-            if ((number / 1000) > 0)
-            {
-                words += NumberToWords(number / 1000) + " Thousandth ";
-                number %= 1000;
-            }
-
-            if ((number / 100) > 0)
-            {
-                words += NumberToWords(number / 100) + " Hundredth ";
-                number %= 100;
-            }
-
-            if (number > 0)
-            {
-                if (words != "")
-                    words += "and ";
-
-                var unitsMap = new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" };
-                var tensMap = new[] { "None", "Tenth", "Twentieth", "Thirtieth", "Fortieth", "Fiftieth", "Sixtieth", "Seventieth", "Eightieth", "Ninetieth" };
-
-                if (number < 20)
-                    words += unitsMap[number];
-                else
-                {
-                    words += tensMap[number / 10];
-                    if ((number % 10) > 0)
-                        words += "-" + unitsMap[number % 10];
-                }
-            }
-
-            return words;
-        }
-
-        void MergeRetryResults(string originalResults, string retryResults)
-        {
-            var trxContent = new XmlDocument();
-            trxContent.Load(retryResults);
-            var newNamespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-            newNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager).Count > 0)
-            {
-                var originalTrxContent = new XmlDocument();
-                originalTrxContent.Load(originalResults);
-                var originalNamespaceManager = new XmlNamespaceManager(originalTrxContent.NameTable);
-                originalNamespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", newNamespaceManager))
-                {
-                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
-                    {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
-                        {
-                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
-                            {
-                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
-                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
-                                if (newOutputNode != null)
-                                {
-                                    if (originalOutputNode != null)
-                                    {
-                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
-                                        XmlNode newStdErrNode = newOutputNode.SelectSingleNode("//a:StdErr", newNamespaceManager);
-                                        if (newStdErrNode != null)
-                                        {
-                                            if (originalStdErrNode != null)
-                                            {
-                                                originalStdErrNode.InnerText += "\n" + newStdErrNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(newStdErrNode);
-                                            }
-                                        }
-                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
-                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
-                                        if (newStdOutNode != null)
-                                        {
-                                            if (originalStdOutNode != null)
-                                            {
-                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(newStdOutNode);
-                                            }
-                                        }
-                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
-                                        XmlNode newErrorInfoNode = newOutputNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
-                                        if (newErrorInfoNode != null)
-                                        {
-                                            if (originalErrorInfoNode != null)
-                                            {
-                                                XmlNode originalMessageNode = originalErrorInfoNode.SelectSingleNode("//a:Message", originalNamespaceManager);
-                                                XmlNode newMessageNode = newErrorInfoNode.SelectSingleNode("//a:Message", newNamespaceManager);
-                                                if (newErrorInfoNode != null)
-                                                {
-                                                    if (originalMessageNode != null)
-                                                    {
-                                                        originalMessageNode.InnerText += "\n" + newErrorInfoNode.InnerText;
-                                                    }
-                                                    else
-                                                    {
-                                                        originalMessageNode.AppendChild(newErrorInfoNode);
-                                                    }
-                                                }
-                                                XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("//a:StackTrace", originalNamespaceManager);
-                                                XmlNode newStackTraceNode = newErrorInfoNode.SelectSingleNode("//a:StackTrace", newNamespaceManager);
-                                                if (newStackTraceNode != null)
-                                                {
-                                                    if (originalStackTraceNode != null)
-                                                    {
-                                                        originalStackTraceNode.InnerText += "\n" + newStackTraceNode.InnerText;
-                                                    }
-                                                    else
-                                                    {
-                                                        originalStackTraceNode.AppendChild(newStackTraceNode);
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(newErrorInfoNode);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        OriginalTestResult.AppendChild(newOutputNode);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", originalNamespaceManager))
-                        {
-                            if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
-                            {
-                                if (OriginalTestResult.Attributes["outcome"] == null)
-                                {
-                                    var newOutcomeAttribute = originalTrxContent.CreateAttribute("outcome");
-                                    newOutcomeAttribute.Value = "Passed";
-                                    OriginalTestResult.Attributes.Append(newOutcomeAttribute);
-                                }
-                                else
-                                {
-                                    OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
-                                }
-                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
-                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
-                                if (newOutputNode != null)
-                                {
-                                    if (originalOutputNode != null)
-                                    {
-                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
-                                        if (originalStdErrNode != null)
-                                        {
-                                            try
-                                            {
-                                                originalOutputNode.RemoveChild(originalStdErrNode);
-                                            }
-                                            catch (ArgumentException) { }
-                                        }
-                                        XmlNode originalStdOutNode = originalOutputNode.SelectSingleNode("//a:StdOut", originalNamespaceManager);
-                                        XmlNode newStdOutNode = newOutputNode.SelectSingleNode("//a:StdOut", newNamespaceManager);
-                                        if (newStdOutNode != null)
-                                        {
-                                            if (originalStdOutNode != null)
-                                            {
-                                                originalStdOutNode.InnerText += "\n" + newStdOutNode.InnerText;
-                                            }
-                                            else
-                                            {
-                                                originalOutputNode.AppendChild(newStdOutNode);
-                                            }
-                                        }
-                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
-                                        if (originalErrorInfoNode != null)
-                                        {
-                                            try
-                                            {
-                                                originalOutputNode.RemoveChild(originalErrorInfoNode);
-                                            }
-                                            catch (ArgumentException) { }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        OriginalTestResult.AppendChild(newOutputNode);
-                                    }
-                                }
-                            }
-                        }
-                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters", originalNamespaceManager);
-                        if (countersNodes.Count > 0)
-                        {
-                            var countersNode = countersNodes.Item(0);
-                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
-                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
-                            if (--failuresBefore <= 0)
-                            {
-                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary", originalNamespaceManager);
-                                if (resultsSummaryNodes.Count > 0)
-                                {
-                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
-                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
-                                }
-                            }
-                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
-                        }
-                    }
-                }
-                originalTrxContent.Save(originalResults);
-                File.Delete(retryResults);
-            }
-            else
-            {
-                Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at " + retryResults);
-            }
-        }
-
-        void MoveScreenRecordingsToTestResults()
-        {
-            Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
-            var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder();
-            if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
-            {
-                string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
-                if (Directory.Exists(directoryToRemove))
-                {
-                    foreach (var subDir in Directory.GetDirectories(directoryToRemove))
-                    {
-                        string subDirName = Path.GetFileName(subDir);
-                        string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
-                        Directory.Move(subDir, newDirFullPath);
-                    }
-                    Directory.Delete(directoryToRemove);
-                }
-                else
-                {
-                    Console.WriteLine(directoryToRemove + " not found.");
-                }
-            }
-        }
-
-        string GetLatestScreenRecordingsFolder()
-        {
-            var directory = new DirectoryInfo(TestsResultsPath);
-            var screenRecordingFolders = directory.GetDirectories().Where((folderPath) => { return folderPath.Name.StartsWith("ScreenRecordings"); });
-            if (screenRecordingFolders.Count() > 0)
-            {
-                return screenRecordingFolders.OrderByDescending(f => f.LastWriteTime).First().FullName;
-            }
-            return "";
-        }
+        public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
 
         public void InstallServer()
         {
@@ -973,6 +250,10 @@ namespace Warewolf.Launcher
                 {
                     ServerPath = serverPath;
                 }
+                else
+                {
+                    throw new ArgumentException($"No server found. Make sure your server is compiled and try again.");
+                }
             }
             else
             {
@@ -981,7 +262,7 @@ namespace Warewolf.Launcher
                     throw new ArgumentException($"No server found at {ServerPath}. Make sure your server is compiled and try again.");
                 }
             }
-            Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestsResultsPath + ".");
+            Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestRunner.TestsResultsPath + ".");
             if (string.IsNullOrEmpty(ResourcesType))
             {
                 Console.WriteLine("\nWhat type of resources would you like to install the server with?");
@@ -1001,18 +282,8 @@ namespace Warewolf.Launcher
                     Console.Write(option.Substring(3, option.Length-3));
                 }
                 Console.WriteLine("\n\nOr Press Enter to use default (UITest)...");
-                string originalTitle = Console.Title;
-                string uniqueTitle = Guid.NewGuid().ToString();
-                Console.Title = uniqueTitle;
-                Thread.Sleep(50);
-                IntPtr handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
 
-                if (handle != IntPtr.Zero)
-                {
-                    Console.Title = originalTitle;
-                    SetForegroundWindow(handle);
-                }
-                ResourcesType = Console.ReadLine();
+                ResourcesType = WindowUtils.PromptForUserInput();
                 if (ResourcesType == "" || ResourcesType.ToLower() == "u")
                 {
                     ResourcesType = "UITests";
@@ -1037,23 +308,25 @@ namespace Warewolf.Launcher
                 throw new ArgumentException($"Invalid resource type. Folder not found {resourcesPath}");
             }
 
-            var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
-            if (!ApplyDotCover)
+            if (!StartServerAsConsole)
             {
-                if (!ServerService)
+                var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
+                if (!ApplyDotCover)
                 {
-                    Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    if (!ServerService)
+                    {
+                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Configuring service to " + ServerPath);
+                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Configuring service to " + ServerPath);
-                    Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
-                }
-            }
-            else
-            {
-                var ServerBinDir = Path.GetDirectoryName(ServerPath);
-                var RunnerXML = @"<AnalyseParams>
+                    var ServerBinDir = Path.GetDirectoryName(ServerPath);
+                    var RunnerXML = @"<AnalyseParams>
     <TargetExecutable>" + ServerPath + @"</TargetExecutable>
     <Output>" + Environment.ExpandEnvironmentVariables("%ProgramData%") + @"\Warewolf\Server Log\dotCover.dcvr</Output>
     <Scope>
@@ -1074,30 +347,20 @@ namespace Warewolf.Launcher
         </AttributeFilters>
     </Filters>
 </AnalyseParams>";
-
-                if (string.IsNullOrEmpty(JobName))
-                {
-                    if (ProjectName != "")
+                    
+                    var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Server DotCover Runner.xml";
+                    TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
+                    File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
+                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestRunner.TestsResultsPath + "\\ServerDotCover.log\\\"";
+                    if (!ServerService)
                     {
-                        JobName = ProjectName;
+                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
                     }
                     else
                     {
-                        JobName = "Manual Tests";
+                        Console.WriteLine("Configuring service to " + RunServerWithDotcoverScript);
+                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\"");
                     }
-                }
-                var DotCoverRunnerXMLPath = TestsResultsPath + "\\Server DotCover Runner.xml";
-                CopyOnWrite(DotCoverRunnerXMLPath);
-                File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                var BinPathWithDotCover = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestsResultsPath + "\\ServerDotCover.log\\\"";
-                if (!ServerService)
-                {
-                    Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + BinPathWithDotCover + "\" start= demand");
-                }
-                else
-                {
-                    Console.WriteLine("Configuring service to " + BinPathWithDotCover);
-                    Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + BinPathWithDotCover + "\"");
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
@@ -1130,23 +393,38 @@ namespace Warewolf.Launcher
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             Console.WriteLine($"Deploying New resources from {ServerFolderPath}\\Resources - {ResourcesType}\\*");
             RecursiveFolderCopy(Path.Combine(ServerFolderPath, $"Resources - {ResourcesType}"), Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"));
-            try
-            {
-                ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine(e.Message);
-            }
 
-            var process = StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
-            var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-            if (!(Output.EndsWith("RUNNING ")))
+            if (!StartServerAsConsole)
             {
-                Console.WriteLine(Output);
-                process.StartInfo.Arguments = "start \"Warewolf Server\"";
-                process.Start();
-                process.WaitForExit();
+                try
+                {
+                    ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
+                var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+                if (!(Output.EndsWith("RUNNING ")))
+                {
+                    Console.WriteLine(Output);
+                    process.StartInfo.Arguments = "start \"Warewolf Server\"";
+                    process.Start();
+                    process.WaitForExit();
+                }
+            }
+            else
+            {
+                if (!ApplyDotCover)
+                {
+                    Process.Start(ServerPath);
+                }
+                else
+                {
+                    Process.Start(RunServerWithDotcoverScript);
+                }
             }
 
             WaitForServerStart(ServerFolderPath);
@@ -1155,7 +433,7 @@ namespace Warewolf.Launcher
         void WaitForServerStart(string ServerFolderPath)
         {
             var ServerStartedFilePath = ServerFolderPath + "\\ServerStarted";
-            WaitForFileExist(ServerStartedFilePath);
+            TestCleanupUtils.WaitForFileExist(ServerStartedFilePath);
             if (!(File.Exists(ServerStartedFilePath)))
             {
                 throw new Exception("Server Cannot Start.");
@@ -1184,7 +462,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestsPath + "\\_PublishedWebsites\\Dev2.Web");
+                Console.WriteLine("my.warewolf.io cannot be hosted. Webs not found at " + TestRunner.TestsPath + "\\_PublishedWebsites\\Dev2.Web");
                 if (!string.IsNullOrEmpty(ServerPath))
                 {
                     Console.Write(" or at " + Path.GetDirectoryName(ServerPath) + "\\_PublishedWebsites\\Dev2.Web");
@@ -1199,7 +477,7 @@ namespace Warewolf.Launcher
                 throw new FileNotFoundException("Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath");
             }
             var StudioLogFile = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log");
-            CopyOnWrite(StudioLogFile);
+            TestCleanupUtils.CopyOnWrite(StudioLogFile);
             if (!ApplyDotCover)
             {
                 Process.Start(StudioPath);
@@ -1230,10 +508,10 @@ namespace Warewolf.Launcher
     </Filters>
 </AnalyseParams>
 ";
-                var DotCoverRunnerXMLPath = TestsResultsPath + "\\Studio DotCover Runner.xml";
-                CopyOnWrite(DotCoverRunnerXMLPath);
+                var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml";
+                TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
                 File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
+                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
             }
             try
             {
@@ -1247,7 +525,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    Process.Start(DotCoverPath, "cover \"" + TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
+                    Process.Start(DotCoverPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
                 }
                 WaitForStudioStart(Path.GetDirectoryName(StudioPath));
             }
@@ -1255,8 +533,8 @@ namespace Warewolf.Launcher
 
         void WaitForStudioStart(string StudioFolderPath)
         {
-            var StudioStartedFilePath = StudioFolderPath + "\\StudioStarted";
-            WaitForFileExist(StudioStartedFilePath);
+            var StudioStartedFilePath = Path.Combine(StudioFolderPath, "StudioStarted");
+            TestCleanupUtils.WaitForFileExist(StudioStartedFilePath);
             if (!(File.Exists(StudioStartedFilePath)))
             {
                 throw new Exception("Studio Cannot Start.");
@@ -1280,19 +558,6 @@ namespace Warewolf.Launcher
             return !JobAssemblySpecs.Contains(AssemblyNameToCheck);
         }
 
-        public List<string> AllCategoriesDefinedForProject(string AssemblyNameToCheck)
-        {
-            var JobCategorySpecs = new List<string>();
-            foreach (var Job in JobSpecs.Values)
-            {
-                if (!string.IsNullOrEmpty(Job.Item2) && AssemblyNameToCheck == Job.Item1)
-                {
-                    JobCategorySpecs.Add(Job.Item2);
-                }
-            }
-            return JobCategorySpecs;
-        }
-
         public Tuple<string, List<string>> ResolveProjectFolderSpecs(string ProjectFolderSpec)
         {
             var TestAssembliesList = "";
@@ -1304,14 +569,7 @@ namespace Warewolf.Launcher
                 {
                     foreach (var projectFolder in Directory.GetDirectories(ProjectFolderSpecInParent))
                     {
-                        if (File.Exists(VSTestPath) && string.IsNullOrEmpty(MSTest))
-                        {
-                            TestAssembliesList += " \"" + projectFolder + "\\bin\\Debug\\" + Path.GetFileName(projectFolder) + ".dll\"";
-                        }
-                        else
-                        {
-                            TestAssembliesList += " /testcontainer:\"" + projectFolder + "\\bin\\Debug\\" + Path.GetFileName(projectFolder) + ".dll\"";
-                        }
+                        TestAssembliesList += TestRunner.AppendProjectFolder(projectFolder);
                         if (!TestAssembliesDirectories.Contains(projectFolder + "\\bin\\Debug"))
                         {
                             TestAssembliesDirectories.Add(projectFolder + "\\bin\\Debug");
@@ -1320,14 +578,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    if (File.Exists(VSTestPath) && string.IsNullOrEmpty(MSTest))
-                    {
-                        TestAssembliesList += " \"" + ProjectFolderSpecInParent + "\\bin\\Debug\\" + Path.GetFileName(ProjectFolderSpecInParent) + ".dll\"";
-                    }
-                    else
-                    {
-                        TestAssembliesList += " /testcontainer:\"" + ProjectFolderSpecInParent + "\\bin\\Debug\\" + Path.GetFileName(ProjectFolderSpecInParent) + ".dll\"";
-                    }
+                    TestAssembliesList += TestRunner.AppendProjectFolder(ProjectFolderSpecInParent);
                     if (!TestAssembliesDirectories.Contains(ProjectFolderSpecInParent + "\\bin\\Debug"))
                     {
                         TestAssembliesDirectories.Add(ProjectFolderSpecInParent + "\\bin\\Debug");
@@ -1371,14 +622,7 @@ namespace Warewolf.Launcher
                     var AssemblyNameToCheck = Path.GetFileNameWithoutExtension(file);
                     if (!TestAssembliesFileSpecsInParent.Contains("*") || (AssemblyIsNotAlreadyDefinedWithoutWildcards(AssemblyNameToCheck)))
                     {
-                        if (string.IsNullOrEmpty(MSTest))
-                        {
-                            TestAssembliesList = TestAssembliesList + " \"" + file + "\"";
-                        }
-                        else
-                        {
-                            TestAssembliesList += " /testcontainer:\"" + file + "\"";
-                        }
+                        TestAssembliesList = TestRunner.AppendTestAssembly(TestAssembliesList, file);
                         if (!TestAssembliesDirectories.Contains(Path.GetDirectoryName(file)))
                         {
                             TestAssembliesDirectories.Add(Path.GetDirectoryName(file));
@@ -1390,16 +634,16 @@ namespace Warewolf.Launcher
             throw new Exception($"Cannot find test assemblies at {TestAssemblyFileSpecs}. Make sure your test assemblies are compiled and try again.");
         }
 
-        public string ScreenRecordingTestSettingsFile(TestLauncher build, string JobName)
+        public string ScreenRecordingTestSettingsFile(string JobName)
         {
             var TestSettingsFile = "";
-            if (build.RecordScreen != null)
+            if (RecordScreen != null)
             {
                 var TestSettingsId = Guid.NewGuid();
 
                 // Create test settings.
-                TestSettingsFile = build.TestsResultsPath + "\\" + JobName + ".testsettings";
-                build.CopyOnWrite(TestSettingsFile);
+                TestSettingsFile = TestRunner.TestsResultsPath + "\\" + JobName + ".testsettings";
+                TestCleanupUtils.CopyOnWrite(TestSettingsFile);
                 File.WriteAllText(TestSettingsFile, @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <TestSettings id=""" + TestSettingsId + @""" name=""JobName"" xmlns=""http://microsoft.com/schemas/VisualStudio/TeamTest/2010"">
     <Description>Run " + JobName + @" With Screen Recording.</Description>
@@ -1421,130 +665,13 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string TestSettingsArgument(string TestSettingsFile)
-        {
-            string TestSettings = "";
-            if (RecordScreen != null)
-            {
-                TestSettings = $" /Settings:\"{TestSettingsFile}\"";
-            }
-            return TestSettings;
-        }
-
-        public string VSTestCategories(string ProjectSpec, string TestCategories)
-        {
-            if (string.IsNullOrEmpty(TestList))
-            {
-                if (!string.IsNullOrEmpty(TestCategories))
-                {
-                    TestCategories = $" /TestCaseFilter:\"(TestCategory={TestCategories})\"";
-                }
-                else
-                {
-                    var DefinedCategories = AllCategoriesDefinedForProject(ProjectSpec);
-                    if (DefinedCategories.Count() > 0)
-                    {
-                        TestCategories = String.Join(")&(TestCategory!=", DefinedCategories);
-                        TestCategories = $" /TestCaseFilter:\"(TestCategory!={TestCategories})\"";
-                    }
-                }
-            }
-            else
-            {
-                TestCategories = "";
-            }
-
-            return TestCategories;
-        }
-
-        public string MSTestCategories(string ProjectSpec, string TestCategories)
-        {
-            if (String.IsNullOrEmpty(TestList))
-            {
-                if (!String.IsNullOrEmpty(TestCategories))
-                {
-                    TestCategories = $" /category:\"{TestCategories}\"";
-                }
-                else
-                {
-                    var DefinedCategories = AllCategoriesDefinedForProject(ProjectSpec);
-                    if (DefinedCategories.Any())
-                    {
-                        TestCategories = string.Join("&!", DefinedCategories);
-                        TestCategories = $" /category:\"!{TestCategories}\"";
-                    }
-                }
-            }
-            else
-            {
-                TestCategories = "";
-            }
-
-            return TestCategories;
-        }
-
-        public string VSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
-        {
-            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /Tests:"))
-            {
-                TestList = $" /Tests:{TestList}";
-            }
-            string TestRunnerPath;
-            Environment.CurrentDirectory = $"{TestsResultsPath}\\..";
-            string FullArgsList;
-            if (string.IsNullOrEmpty(TestList))
-            {
-                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{VSTestCategories(ProjectSpec, TestCategories)}";
-            }
-            else
-            {
-                FullArgsList = $"{TestAssembliesList}{TestSettingsArgument(TestSettingsFile)} /logger:trx{TestList}";
-            }
-
-            // Write full command including full argument string.
-            TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite(TestRunnerPath);
-            File.WriteAllText(TestRunnerPath, $"\"{VSTestPath}\"{FullArgsList}");
-            return TestRunnerPath;
-        }
-
-        public string MSTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
-        {
-            if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /test:"))
-            {
-                var TestNames = string.Join(" /test:", TestList.Split(','));
-                TestList = $" /test:{TestNames}";
-            }
-            // Resolve test results file name
-            var TestResultsFile = TestsResultsPath + $"\"{JobName} Results.trx";
-            CopyOnWrite(TestResultsFile);
-
-            // Create full MSTest argument string.
-            string categories = MSTestCategories(ProjectSpec, TestCategories);
-            string FullArgsList;
-            if (TestList == "")
-            {
-                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{categories}";
-            }
-            else
-            {
-                FullArgsList = $"{TestAssembliesList} /resultsfile:\"{TestResultsFile}\"{TestSettingsArgument(TestSettingsFile)}{TestList}";
-            }
-
-            // Write full command including full argument string.
-            var TestRunnerPath = $"{TestsResultsPath}\\..\\Run {JobName}.bat";
-            CopyOnWrite(TestRunnerPath);
-            File.WriteAllText(TestRunnerPath, $"\"{MSTestPath}\"{FullArgsList}");
-            return TestRunnerPath;
-        }
-
         public string DotCoverRunner(string JobName, List<string> TestAssembliesDirectories)
         {
             // Write DotCover Runner XML 
-            var DotCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} DotCover Output.dcvr");
-            CopyOnWrite(DotCoverSnapshotFile);
+            var DotCoverSnapshotFile = Path.Combine(TestRunner.TestsResultsPath, $"{JobName} DotCover Output.dcvr");
+            TestCleanupUtils.CopyOnWrite(DotCoverSnapshotFile);
             var DotCoverArgs = @"<AnalyseParams>
-    <TargetExecutable>" + TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
+    <TargetExecutable>" + TestRunner.TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
     <Output>" + DotCoverSnapshotFile + @"</Output>
     <Scope>";
             foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
@@ -1569,18 +696,18 @@ namespace Warewolf.Launcher
         </AttributeFilters>
     </Filters>
 </AnalyseParams>";
-            var DotCoverRunnerXMLPath = Path.Combine(TestsResultsPath, JobName + " DotCover Runner.xml");
-            CopyOnWrite(DotCoverRunnerXMLPath);
+            var DotCoverRunnerXMLPath = Path.Combine(TestRunner.TestsResultsPath, JobName + " DotCover Runner.xml");
+            TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
             File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
 
             // Create full DotCover argument string.
-            var DotCoverLogFile = TestsResultsPath + "\\DotCover.xml.log";
-            CopyOnWrite(DotCoverLogFile);
+            var DotCoverLogFile = TestRunner.TestsResultsPath + "\\DotCover.xml.log";
+            TestCleanupUtils.CopyOnWrite(DotCoverLogFile);
             var FullArgsList = $" cover \"{DotCoverRunnerXMLPath}\" /LogFile=\"{DotCoverLogFile}\"";
 
             // Write DotCover Runner Batch File
-            var DotCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} DotCover.bat";
-            CopyOnWrite(DotCoverRunnerPath);
+            var DotCoverRunnerPath = $"{TestRunner.TestsResultsPath}\\Run {JobName} DotCover.bat";
+            TestCleanupUtils.CopyOnWrite(DotCoverRunnerPath);
             File.WriteAllText(DotCoverRunnerPath, $"\"{DotCoverPath}\"{FullArgsList}");
             return DotCoverRunnerPath;
         }
@@ -1592,7 +719,7 @@ namespace Warewolf.Launcher
             {
                 if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                 {
-                    CleanupServerStudio();
+                    this.CleanupServerStudio();
                     Startmywarewolfio();
                     TryStartLocalCIRemoteContainer();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
@@ -1609,58 +736,24 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    trxTestResultsFile = StartTestRunnerProcess(DotCoverRunnerPath);
+                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
-                        CleanupServerStudio(false);
+                        this.CleanupServerStudio(false);
                     }
                 }
                 else
                 {
                     // Run Test Runner Batch File
-                    trxTestResultsFile = StartTestRunnerProcess(TestRunnerPath);
+                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
-                        CleanupServerStudio(!ApplyDotCover);
+                        this.CleanupServerStudio(!ApplyDotCover);
                     }
                 }
-                MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart));
+                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart));
             }
             return trxTestResultsFile;
-        }
-
-        string StartTestRunnerProcess(string TestRunnerPath)
-        {
-            ProcessStartInfo startinfo = new ProcessStartInfo();
-            startinfo.FileName = TestRunnerPath;
-            Process process = new Process();
-            process.StartInfo = startinfo;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.Start();
-            var trxFilePath = "";
-
-            while (!process.StandardOutput.EndOfStream)
-            {
-                string testRunLine = process.StandardOutput.ReadLine();
-                Console.WriteLine(testRunLine);
-                if (testRunLine.StartsWith("Results File: "))
-                {
-                    trxFilePath = ParseTrxFilePath(testRunLine);
-                }
-            }
-            process.WaitForExit();
-            string allErrors = process.StandardError.ReadToEnd();
-            Console.WriteLine(allErrors);
-            return trxFilePath;
-        }
-
-        string ParseTrxFilePath(string standardOutput)
-        {
-            const string parseFrom = "Results File: ";
-            int StartIndex = standardOutput.IndexOf(parseFrom) + parseFrom.Length;
-            return standardOutput.Substring(StartIndex, standardOutput.Length-StartIndex);
         }
 
         void RecursiveFolderCopy(string sourceDir, string targetDir)
@@ -1681,19 +774,6 @@ namespace Warewolf.Launcher
             }
         }
 
-        Process StartProcess(string exeName, string args)
-        {
-            var process = new Process();
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.FileName = exeName;
-            process.StartInfo.Arguments = args;
-            process.Start();
-            process.WaitForExit();
-            return process;
-        }
-
         public void MergeDotCoverSnapshots()
         {
             var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
@@ -1703,7 +783,188 @@ namespace Warewolf.Launcher
             }
             var MergedSnapshotFileName = JobName.Split(',')[0];
             MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-            MergeDotCoverSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover");
+            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
+        }
+
+        public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfUnitTestJobs));
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllServerTestJobs(int startIndex, int NumberOfServerTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfServerTestJobs));
+            ResourcesType = "ServerTests";
+            DoServerStart = "true";
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllReleaseResourcesTestJobs(int startIndex, int NumberOfReleaseResourcesTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfReleaseResourcesTestJobs));
+            ResourcesType = "Release";
+            DoServerStart = "true";
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllDesktopUITestJobs(int startIndex, int NumberOfDesktopUITestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfDesktopUITestJobs));
+            ResourcesType = "UITests";
+            DoStudioStart = "true";
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllWebUITestJobs(int startIndex, int NumberOfWebUITestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfWebUITestJobs));
+            DomywarewolfioStart = "true";
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunAllLoadTestJobs(int startIndex, int NumberOfLoadTestJobs)
+        {
+            JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfLoadTestJobs));
+            ResourcesType = "Load";
+            DoStudioStart = "true";
+            RunTestJobs();
+            this.CleanupServerStudio(ApplyDotCover);
+        }
+
+        public void RunTestJobs(string jobName = "")
+        {
+            if (jobName != "")
+            {
+                JobName = jobName;
+            }
+
+            // Unpack jobs
+            var JobNames = new List<string>();
+            var JobAssemblySpecs = new List<string>();
+            var JobCategories = new List<string>();
+            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory))
+            {
+                foreach (var Job in JobName.Split(','))
+                {
+                    var TrimJobName = Job.TrimEnd('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ');
+                    if (JobSpecs.ContainsKey(TrimJobName))
+                    {
+                        JobNames.Add(TrimJobName);
+                        if (JobSpecs[TrimJobName].Item2 == null)
+                        {
+                            JobAssemblySpecs.Add(JobSpecs[TrimJobName].Item1);
+                            JobCategories.Add("");
+                        }
+                        else
+                        {
+                            JobAssemblySpecs.Add(JobSpecs[Job].Item1);
+                            JobCategories.Add(JobSpecs[Job].Item2);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Unrecognized Job {Job} was ignored from the run");
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(ProjectName))
+            {
+                JobNames.Add(ProjectName);
+                JobAssemblySpecs.Add(ProjectName);
+                if (!string.IsNullOrEmpty(Category))
+                {
+                    JobCategories.Add(Category);
+                }
+                else
+                {
+                    JobCategories.Add("");
+                }
+            }
+            if (!File.Exists(TestRunner.Path))
+            {
+                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
+            }
+
+            if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
+            {
+                throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+            }
+
+            if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
+            {
+                InstallServer();
+            }
+
+            TestRunner.ReadPlaylist();
+
+            for (var i = 0; i < JobNames.Count; i++)
+            {
+                var ThisJobName = JobNames[i].ToString();
+                var ProjectSpec = JobAssemblySpecs[i].ToString();
+                var TestCategories = JobCategories[i].ToString();
+                var TestAssembliesList = "";
+                var TestAssembliesDirectories = new List<string>();
+                if (!TestRunner.TestsPath.EndsWith("\\"))
+                {
+                    TestRunner.TestsPath += "\\";
+                }
+                foreach (var Project in ProjectSpec.Split(','))
+                {
+                    Tuple<string, List<string>> UnPackTestAssembliesListAndDirectories = ResolveTestAssemblyFileSpecs(TestRunner.TestsPath + Project + ".dll");
+                    TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
+                    if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
+                    {
+                        TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
+                    }
+                    if (TestAssembliesList == "")
+                    {
+                        UnPackTestAssembliesListAndDirectories = ResolveProjectFolderSpecs(TestRunner.TestsPath + Project);
+                        TestAssembliesList += UnPackTestAssembliesListAndDirectories.Item1;
+                        if (UnPackTestAssembliesListAndDirectories.Item2.Count > 0)
+                        {
+                            TestAssembliesDirectories = TestAssembliesDirectories.Concat(UnPackTestAssembliesListAndDirectories.Item2).ToList();
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(TestAssembliesList))
+                {
+                    throw new Exception($"Cannot find any {ProjectSpec} project folders or assemblies at {TestRunner.TestsPath}.");
+                }
+
+                // Setup for screen recording
+                var TestSettingsFile = ScreenRecordingTestSettingsFile(ThisJobName);
+
+                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
+
+                string TrxFile;
+                if (string.IsNullOrEmpty(RetryFile))
+                {
+                    //Run Tests
+                    TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                }
+                else
+                {
+                    TrxFile = RetryFile;
+                }
+                if (!string.IsNullOrEmpty(TrxFile))
+                {
+                    //Re-try Failures
+                    for (var count = 0; count < RetryCount; count++)
+                    {
+                        RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                    }
+                }
+            }
+            if (ApplyDotCover && JobName.Split(',').Count() > 1)
+            {
+                MergeDotCoverSnapshots();
+            }
         }
     }
 }

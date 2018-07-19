@@ -112,23 +112,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1445 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1445.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "[[firstMail]];[[secondMail]] = testmail@freemail.com;test2@freemail.com",
                         "Just testing",
                         "testing email from the cool specflow"});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table1445, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1446 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1446.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table1446, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -153,23 +153,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Then("the new exchange email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1447 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1447.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "\"\"",
                         "Just testing",
                         "testing email from the cool specflow"});
 #line 29
- testRunner.And("the debug inputs as", ((string)(null)), table1447, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1448 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1448.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[result]] ="});
 #line 32
- testRunner.And("the debug output as", ((string)(null)), table1448, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -198,23 +198,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1449 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1449.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "test1@freemail.com",
                         "News: [[subject]] = News: <Wow>400%</Wow>",
                         "testing email from the cool specflow"});
 #line 44
- testRunner.And("the debug inputs as", ((string)(null)), table1449, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1450 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1450.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 47
- testRunner.And("the debug output as", ((string)(null)), table1450, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -239,23 +239,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1451 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1451.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "test1@freemail.com",
                         "Testing this cool framework",
                         "\"\""});
 #line 57
- testRunner.And("the debug inputs as", ((string)(null)), table1451, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1452 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1452.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 60
- testRunner.And("the debug output as", ((string)(null)), table1452, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -285,24 +285,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 71
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1453 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1453.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "test1@freemail.com",
                         "News",
                         "testing email from [[body]] the cool specflow = testing email from <body><inner>i" +
                             "nside</inner></body> the cool specflow"});
 #line 72
- testRunner.And("the debug inputs as", ((string)(null)), table1453, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1454 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1454.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 75
- testRunner.And("the debug output as", ((string)(null)), table1454, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -332,23 +332,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 86
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1455 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1455.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "test1@freemail.com",
                         "News",
                         "[[body]] =  <body><inner>inside</inner></body>"});
 #line 87
- testRunner.And("the debug inputs as", ((string)(null)), table1455, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1456 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1456.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 90
- testRunner.And("the debug output as", ((string)(null)), table1456, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -367,23 +367,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 96
  testRunner.Then("the new exchange email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1457 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1457.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "\"\"",
                         "\"\"",
                         "\"\""});
 #line 97
- testRunner.And("the debug inputs as", ((string)(null)), table1457, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1458 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1458.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "[[result]] ="});
 #line 100
- testRunner.And("the debug output as", ((string)(null)), table1458, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -410,23 +410,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 110
  testRunner.And("the new exchange execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1459 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1459.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "[[me(-1).to]] =",
                         "Just testing",
                         "testing email from the cool specflow"});
 #line 111
- testRunner.And("the debug inputs as", ((string)(null)), table1459, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1460 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1460.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "[[result]] ="});
 #line 114
- testRunner.And("the debug output as", ((string)(null)), table1460, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -453,23 +453,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 124
  testRunner.And("the new exchange execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1461 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1461.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "test1@freemail.com",
                         "[[my(-1).subject]] =",
                         "testing email from the cool specflow"});
 #line 125
- testRunner.And("the debug inputs as", ((string)(null)), table1461, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1462 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1462.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "[[result]] ="});
 #line 128
- testRunner.And("the debug output as", ((string)(null)), table1462, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -494,23 +494,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 137
  testRunner.And("the new exchange execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1463 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1463.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "test1@freemail.com",
                         "\"\"",
                         "[[my(-1).body]] ="});
 #line 138
- testRunner.And("the debug inputs as", ((string)(null)), table1463, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1464 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1464.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "[[result]] ="});
 #line 141
- testRunner.And("the debug output as", ((string)(null)), table1464, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -537,23 +537,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 151
  testRunner.And("the new exchange execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1465 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1465.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "test1@freemail.com",
                         "Testing this cool framework",
                         "testing email with \\r\n new line"});
 #line 152
- testRunner.And("the debug inputs as", ((string)(null)), table1465, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1466 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1466.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "[[result]] = Success"});
 #line 155
- testRunner.And("the debug output as", ((string)(null)), table1466, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -580,23 +580,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 165
  testRunner.Then("the new exchange email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1467 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "To",
                         "Subject",
                         "Body"});
-            table1467.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "\"\"",
                         "Just testing",
                         "testing email from the cool specflow"});
 #line 166
- testRunner.And("the debug inputs as", ((string)(null)), table1467, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1468 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1468.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "[[result]] ="});
 #line 169
- testRunner.And("the debug output as", ((string)(null)), table1468, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

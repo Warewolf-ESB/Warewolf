@@ -52,19 +52,19 @@ namespace Dev2.Activities.Specs.TestFramework
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();
-        }        
+        }
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
         }
-       
+
         ScenarioContext MyContext { get; }
 
         [BeforeFeature("StudioTestFramework")]
         static void SetupFeature()
         {
             ConnectAndLoadServer();
-            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
+            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
         }
 
         [AfterFeature("StudioTestFramework")]
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [BeforeScenario("StudioTestFramework")]
         public static void SetupScenario()
         {
-            Assert.AreEqual(EXPECTED_NUMBER_OF_RESOURCES, _environmentModel.ResourceRepository.All().Count);
+            Assert.IsTrue(_environmentModel.ResourceRepository.All().Count >= EXPECTED_NUMBER_OF_RESOURCES, $"This test expects {EXPECTED_NUMBER_OF_RESOURCES} resources on localhost but there are only {_environmentModel.ResourceRepository.All().Count}.");
         }
 
         [AfterScenario("StudioTestFrameworkWithDropboxTools")]
@@ -98,6 +98,20 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [AfterScenario()]
+        public void CleanupResources()
+        {
+            MyContext.TryGetValue("resourcemodels", out List<ResourceModel> resourceModels);
+            if (resourceModels != null)
+            {
+                foreach (var item in resourceModels)
+                {
+                    _environmentModel.ResourceRepository.DeleteResourceFromWorkspace(item);
+                    _environmentModel.ResourceRepository.DeleteResource(item);
+                }
+            }
+        }
+
         [AfterScenario("StudioTestFramework")]
         public void CleanupTestFramework()
         {
@@ -106,7 +120,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 ConnectAndLoadServer();
             }
             var allValues = MyContext.Values;
-            foreach(var value in allValues)
+            foreach (var value in allValues)
             {
                 if (value is ResourceModel resource)
                 {
@@ -117,6 +131,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 serviceTest?.Dispose();
             }
+
         }
 
         private static void ConnectAndLoadServer()
@@ -151,7 +166,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIReloadTests()
         {
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
-            commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);            
+            commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
         [Then(@"test folder is cleaned")]
@@ -171,7 +186,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             };
         }
-
+        List<ResourceModel> allResourcemodels;
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
@@ -194,6 +209,15 @@ namespace Dev2.Activities.Specs.TestFramework
                 AddVariables(variablesRow["Input Var Name"], datalistViewModel, enDev2ColumnArgumentDirection.Input);
             }
             datalistViewModel.WriteToResourceModel();
+            if (allResourcemodels == null)
+            {
+                allResourcemodels = new List<ResourceModel>();
+            }
+            allResourcemodels.Add(resourceModel);
+
+            //Update the collection on the Current Context
+            MyContext.Remove("resourcemodels");
+            MyContext.Add("resourcemodels", allResourcemodels);
             MyContext.Add(workflowName, resourceModel);
             MyContext.Add($"{workflowName}dataListViewModel", datalistViewModel);
             if (!MyContext.ContainsKey("popupController"))
@@ -792,7 +816,7 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         private Mock<Common.Interfaces.Studio.Controller.IPopupController> GetPopupController()
-        {            
+        {
             if (!MyContext.ContainsKey("popupController"))
             {
                 var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
@@ -1208,8 +1232,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"tests count is ""(.*)""")]
         public void WhenTestsCountIs(int testCount)
         {
-            var serviceTest = GetTestFrameworkFromContext();            
-            var workflowTests =_environmentModel.ResourceRepository.LoadAllTests();
+            var serviceTest = GetTestFrameworkFromContext();
+            var workflowTests = _environmentModel.ResourceRepository.LoadAllTests();
             var filteredTests = workflowTests.Where(test => test.ResourceId == serviceTest.ResourceID);
             Assert.AreEqual(testCount, filteredTests.Count());
         }
@@ -1635,7 +1659,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIAddTo(string testNames, string rName)
         {
             MyContext.TryGetValue("folderPath", out string path);
-            var serviceTestModelTos = new List<IServiceTestModelTO>();            
+            var serviceTestModelTos = new List<IServiceTestModelTO>();
             if (!string.IsNullOrEmpty(path))
             {
 
@@ -1704,7 +1728,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteFolder(string folderName)
         {
             var path = MyContext.Get<string>("folderPath");
-            
+
             var controller = new CommunicationController { ServiceName = "DeleteItemService" };
             controller.AddPayloadArgument("folderToDelete", path);
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);

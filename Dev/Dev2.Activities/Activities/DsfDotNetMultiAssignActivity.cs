@@ -445,7 +445,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var eq = base.Equals(other);
-            for (int i=0; i<FieldsCollection.Count; i++)
+            for (int i = 0; i < FieldsCollection.Count; i++)
             {
                 eq &= FieldsCollection[i].Equals(other.FieldsCollection[i]);
             }
