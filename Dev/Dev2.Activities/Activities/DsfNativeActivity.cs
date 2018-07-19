@@ -264,9 +264,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
         public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
+        public abstract List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update);
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
+        public abstract List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update);
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) => DispatchDebugState(dataObject, stateType, update, null, null, false);
 
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime) => DispatchDebugState(dataObject, stateType, update, startTime, null, false);
