@@ -413,10 +413,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.IsNotNull(stateItems);
             Assert.AreEqual(2, stateItems.Count());
+            Assert.AreEqual("Expression", stateItems.ToList()[0].Name);
             Assert.AreEqual(StateVariable.StateType.Input, stateItems.ToList()[0].Type);
             Assert.AreEqual(expression, stateItems.ToList()[0].Value);
+            Assert.AreEqual("Result", stateItems.ToList()[1].Name);
             Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[1].Type);
-            Assert.AreEqual(result, stateItems.ToList()[1].Value)
+            Assert.AreEqual(result, stateItems.ToList()[1].Value);
         }
     }
 }
