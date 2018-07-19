@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Activities.DropBox2016.DeleteActivity;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -219,6 +221,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfCommentActivity_GetState")]
+        public void DsfDropBoxDeleteActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            //------------Setup for test--------------------------
+            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { DeletePath = "DeletePath" };
+            //------------Execute Test---------------------------
+            var stateItems = dropBoxDeleteActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, stateItems.Count());
+            Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[0].Type);
+            Assert.AreEqual("DeletePath", stateItems.ToList()[0].Value);
         }
     }
 }
