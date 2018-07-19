@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Activities.DropBox2016.DeleteActivity;
+using Dev2.Common.Interfaces;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -229,9 +230,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
-            var uniqueId = Guid.NewGuid().ToString();
+            var uniqueId = Guid.NewGuid();
+            var selectedSource = new MockOAuthSource(uniqueId);
+
             //------------Setup for test--------------------------
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { DeletePath = "Path", Result = "Deleted" };
+            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { SelectedSource = selectedSource, DeletePath = "Path", Result = "Deleted" };
             //------------Execute Test---------------------------
             var stateItems = dropBoxDeleteActivity.GetState();
             Assert.AreEqual(3, stateItems.Count());
@@ -242,7 +245,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 {
                     Name = "SelectedSource.ResourceID",
                     Type = StateVariable.StateType.Input,
-                    Value = uniqueId
+                    Value = uniqueId.ToString()
                 },
                 new StateVariable
                 {
@@ -272,6 +275,26 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        class MockOAuthSource : OauthSource
+        {
+            public MockOAuthSource(Guid id)
+            {
+                ResourceID = id;
+            }
+            public override string AppKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public override string AccessToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+            public override bool Equals(IOAuthSource other)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override string GetConnectionString()
+            {
+                throw new NotImplementedException();
             }
         }
     }
