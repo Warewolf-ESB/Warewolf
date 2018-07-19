@@ -140,7 +140,7 @@ namespace Warewolf.Launcher
         {
             try
             {
-                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
+                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
                 ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
                 if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
                 {
