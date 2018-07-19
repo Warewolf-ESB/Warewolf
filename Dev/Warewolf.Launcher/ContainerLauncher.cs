@@ -364,7 +364,7 @@ namespace Warewolf.Launcher
                     else
                     {
                         Console.WriteLine($"Waiting for Warewolf server to start in {serverContainerID.Substring(0, 12)}.");
-                        Thread.Sleep(10000);
+                        Thread.Sleep(16000);
                     }
                 }
             }
