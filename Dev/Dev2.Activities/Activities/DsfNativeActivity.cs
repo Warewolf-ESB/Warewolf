@@ -45,6 +45,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -1080,6 +1081,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public Guid GetWorkSurfaceMappingId() => WorkSurfaceMappingId;
 
+        public abstract IEnumerable<StateVariable> GetState();
 
         public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
 
