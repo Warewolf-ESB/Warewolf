@@ -11,8 +11,11 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using ActivityUnitTests;            
+using System.Linq;
+using ActivityUnitTests;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -331,6 +334,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[result]]", inputs[0].Name);
         }
 
+        [TestMethod]
+        public void DsfBaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar2]]", "Text", "Base 64", "[[testVar2]]", 1) };
+            var act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
+            //------------Execute Test---------------------------
+            var stateList = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(stateList);
+            Assert.AreEqual(1, stateList.Count());
+            Assert.AreEqual(StateVariable.StateType.InputOutput, stateList.ToList()[0].Type);
+            Assert.AreEqual("Convert Collection", stateList.ToList()[0].Name);
+            var expectedResults = JsonConvert.SerializeObject(convertCollection);
+            Assert.AreEqual(expectedResults, stateList.ToList()[0].Value);
+        }
         #endregion
 
         #region RecordSet Tests
