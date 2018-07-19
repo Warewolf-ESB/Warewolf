@@ -15,6 +15,7 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
@@ -28,7 +29,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public DsfDropBoxDeleteActivity()
         {
-            
             DisplayName = "Delete from Dropbox";
         }
 
@@ -80,13 +80,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             _client.Dispose();
         }
 
-        #region Overrides of DsfNativeActivity<string>
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
-
-        #endregion Overrides of DsfNativeActivity<string>
-
-        #region Overrides of DsfBaseActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -97,11 +91,9 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        #endregion Overrides of DsfBaseActivity
-
         public bool Equals(DsfDropBoxDeleteActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -147,6 +139,18 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
                 hashCode = (hashCode * 397) ^ (DeletePath != null ? DeletePath.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Type = StateVariable.StateType.Input,
+                    Value = DeletePath
+                }
+            };
         }
     }
 }
