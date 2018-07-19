@@ -19,12 +19,12 @@ namespace Warewolf.UISpecs
         [BeforeScenario("Explorer")]
         public void EnsureResourceDoesNotExistOnRemote()
         {
-            var xmlResourcePath = @"\\tst-ci-remote.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.xml";
+            var xmlResourcePath = @"\\tst-ci-remote-obsolete.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.xml";
             if (File.Exists(xmlResourcePath))
             {
                 File.Delete(xmlResourcePath);
             }
-            var biteResourcePath = @"\\tst-ci-remote.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.bite";
+            var biteResourcePath = @"\\tst-ci-remote-obsolete.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.bite";
             if (File.Exists(biteResourcePath))
             {
                 File.Delete(biteResourcePath);
