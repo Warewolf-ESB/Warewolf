@@ -586,7 +586,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I validate and delete the existing resource with ""(.*)""")]
         public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {
-            string resourcePath = @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
+            string resourcePath = @"\\tst-ci-remote-obsolete\C$\ProgramData\Warewolf\Resources\" + resourceName;
 
             if (File.Exists(resourcePath))
             {

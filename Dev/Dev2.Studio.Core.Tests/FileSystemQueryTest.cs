@@ -617,7 +617,7 @@ namespace Dev2.Core.Tests
         public void FileSystemQuery_ShareCollection()
         {
             //------------Setup for test--------------------------
-            var shareCollection = new ShareCollection(@"\\tst-ci-remote\");
+            var shareCollection = new ShareCollection(@"\\tst-ci-remote-obsolete\");
             Assert.AreEqual(5, shareCollection.Count);
         }
 
