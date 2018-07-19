@@ -147,8 +147,21 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             {
                 new StateVariable
                 {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SelectedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "DeletePath",
                     Type = StateVariable.StateType.Input,
                     Value = DeletePath
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
                 }
             };
         }

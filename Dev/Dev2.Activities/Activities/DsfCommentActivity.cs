@@ -153,6 +153,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 new StateVariable
                 {
+                    Name = "Text",
                     Type = StateVariable.StateType.Output,
                     Value = Text
                 }
