@@ -424,26 +424,50 @@ Wallis0000Buchan
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Sanele Mthembu")]
         [TestCategory("DsfDataMergeActivity_GetForEachOutputs")]
         public void DsfDataMergeActivity_GetState_Returns_Inputs_And_Outputs()
         {
             //------------Setup for test--------------------------
             _mergeCollection.Clear();
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
-            var expectedResults = ActivityHelper.GetSerializedStateValueFromCollection(_mergeCollection);
             var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
             //------------Execute Test---------------------------
-            var stateList = act.GetState();
+            var stateItems = act.GetState();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, stateList.Count());
-            Assert.AreEqual(StateVariable.StateType.Input, stateList.ToList()[0].Type);
-            Assert.AreEqual("Merge Collection", stateList.ToList()[0].Name);
-            Assert.AreEqual(expectedResults, stateList.ToList()[0].Value);
-            Assert.AreEqual(StateVariable.StateType.Output, stateList.ToList()[1].Type);
-            Assert.AreEqual("Result", stateList.ToList()[1].Name);
-            Assert.AreEqual(act.Result, stateList.ToList()[1].Value);
+            Assert.IsTrue(stateItems.Count() > 0);
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="Merge Collection",
+                    Type=StateVariable.StateType.Input,
+                    Value= ActivityHelper.GetSerializedStateValueFromCollection(_mergeCollection)
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value=act.Result
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
 
         }
         #region Private Test Methods
