@@ -576,20 +576,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_GetState()
         {
             //------------Setup for test--------------------------
+            var remoteResourceID = Guid.Empty;
             var environmentID = Guid.Empty;
             var env = new ExecutionEnvironment();
-            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
-            {
-
-                ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
-                IsDebug = true,
-                EnvironmentID = environmentID,
-                Environment = env,
-                IsRemoteInvokeOverridden = false,
-                DataList = new StringBuilder(CurrentDl),
-                IsServiceTestExecution = true
-            };
             env.Assign("[[list().Name]]", "bob", 0);
             //------------Execute Test---------------------------
             var Inputs = new List<IServiceInput>
@@ -600,37 +589,85 @@ namespace Dev2.Tests.Activities.ActivityTests
                     {
                         new ServiceOutputMapping("bob", "[[out]]", "list")
                     };
-            var act = new DsfActivity
-            {
-                ObjectName = "objectname",
-                IsObject = true,
-                Inputs = Inputs,
-                Outputs = Outputs
-            };
-            //------------Execute Test---------------------------
-            var stateItems = act.GetState();
-            Assert.AreEqual(2, stateItems.Count());
 
             var serializer = new Dev2JsonSerializer();
             var inputs = serializer.Serialize(Inputs);
             var outputs = serializer.Serialize(Outputs);
-
+            var remoteServerId = Guid.NewGuid();
+            var ServiceServer = remoteServerId;
+            var EnvironmentID = remoteServerId;
+            var IsWorkflow = "false";
+            var ServiceUri = "remoteEnvironment.Connection.AppServerUri";
+            var ServiceName = "remote category";
+            var ResourceID = remoteResourceID;
+            var act = new DsfWorkflowActivity
+            {
+                ObjectName = "objectname",
+                IsObject = true,
+                Inputs = Inputs,
+                Outputs = Outputs,
+                IsWorkflow = false,
+                ResourceID = new InArgument<Guid>(ResourceID),
+                ServiceName = ServiceName,
+                ServiceUri = ServiceUri,
+                EnvironmentID = EnvironmentID,
+                ServiceServer = ServiceServer,
+                
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(8, stateItems.Count());
             var expectedResults = new[]
             {
                 new StateVariable
                 {
-                    Name = "Inputs",
+                    Name="Inputs",
                     Type = StateVariable.StateType.Input,
                     Value = inputs
                 },
-                new StateVariable
+                 new StateVariable
                 {
-                    Name = "Outputs",
+                    Name="Outputs",
                     Type = StateVariable.StateType.Output,
                     Value = outputs
-                }
+                 },
+                 new StateVariable
+                {
+                    Name="ServiceServer",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServiceServer.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="EnvironmentID",
+                    Type = StateVariable.StateType.Input,
+                    Value = EnvironmentID.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="IsWorkflow",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                 },
+                 new StateVariable
+                {
+                    Name="ServiceUri",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServiceUri
+                 },
+                 new StateVariable
+                {
+                    Name="ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = ResourceID.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServiceName",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServiceName
+                 }
             };
-
             var iter = act.GetState().Select(
                 (item, index) => new
                 {
