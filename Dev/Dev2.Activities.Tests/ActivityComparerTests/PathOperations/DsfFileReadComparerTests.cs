@@ -324,12 +324,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var inputPath = "/Path";
+            var result = "[result]";
 
             //------------Setup for test--------------------------
-            var activity = new DsfFileRead { InputPath = inputPath };
+            var activity = new DsfFileRead { InputPath = inputPath, Result = result };
             //------------Execute Test---------------------------
             var stateItems = activity.GetState();
-            Assert.AreEqual(1, stateItems.Count());
+            Assert.AreEqual(2, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -338,6 +339,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
                     Name = "InputPath",
                     Type = StateVariable.StateType.Input,
                     Value = inputPath
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
                 }
             };
 
