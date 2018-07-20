@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -679,6 +680,51 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(ProcessPriorityClass.Normal, priority);
 
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsExecuteCommandLineActivity_GetState")]
+        public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = "cm bob", CommandResult="[[res]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Command",
+                    Type = StateVariable.StateType.Input,
+                    Value = "cm bob"
+                },                
+                new StateVariable
+                {
+                    Name="CommandResult",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
