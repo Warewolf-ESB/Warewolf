@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -312,6 +314,48 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             var @equals = fileRead.Equals(fileRead1);
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfFileReadActivity_GetState")]
+        public void DsfFileReadActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var inputPath = "/Path";
+
+            //------------Setup for test--------------------------
+            var activity = new DsfFileRead { InputPath = inputPath };
+            //------------Execute Test---------------------------
+            var stateItems = activity.GetState();
+            Assert.AreEqual(1, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = inputPath
+                }
+            };
+
+            var iter = activity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
