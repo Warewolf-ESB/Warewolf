@@ -127,6 +127,12 @@ namespace Dev2.Activities
                 },
                 new StateVariable
                 {
+                    Name = "CommandPriority",
+                    Value = CommandPriority.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
                     Name="CommandResult",
                     Value = CommandResult,
                     Type = StateVariable.StateType.Output
