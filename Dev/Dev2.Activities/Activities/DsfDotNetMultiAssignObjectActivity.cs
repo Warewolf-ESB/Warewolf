@@ -33,6 +33,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -457,6 +459,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
                                                                       where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                                                                       select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Fields Collection",
+                    Type=StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FieldsCollection)
+                }
+            };
+        }
 
         public bool Equals(DsfDotNetMultiAssignObjectActivity other)
         {
