@@ -317,7 +317,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var selectedSource = new MockOAuthSource(uniqueId);
 
             //------------Setup for test--------------------------
-            var dropBoxDeleteActivity = new DsfDropBoxDownloadActivity
+            var dropBoxDownloadActivity = new DsfDropBoxDownloadActivity
             {
                 SelectedSource = selectedSource,
                 FromPath = "Path_From",
@@ -326,7 +326,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 Result = "Downloaded"
             };
             //------------Execute Test---------------------------
-            var stateItems = dropBoxDeleteActivity.GetState();
+            var stateItems = dropBoxDownloadActivity.GetState();
             Assert.AreEqual(5, stateItems.Count());
 
             var expectedResults = new[]
@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 }
             };
 
-            var iter = dropBoxDeleteActivity.GetState().Select(
+            var iter = dropBoxDownloadActivity.GetState().Select(
                 (item, index) => new
                 {
                     value = item,
