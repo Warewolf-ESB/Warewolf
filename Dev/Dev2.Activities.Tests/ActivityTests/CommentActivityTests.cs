@@ -167,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, stateItems.Count());
             Assert.AreEqual("Text", stateItems.ToList()[0].Name);
-            Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[0].Type);
+            Assert.AreEqual(StateVariable.StateType.InputOutput, stateItems.ToList()[0].Type);
             Assert.AreEqual("SomeText", stateItems.ToList()[0].Value);
         }
     }
