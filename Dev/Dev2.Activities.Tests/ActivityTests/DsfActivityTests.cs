@@ -19,12 +19,12 @@ using ActivityUnitTests;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -611,8 +611,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var stateItems = act.GetState();
             Assert.AreEqual(2, stateItems.Count());
 
-            var inputs = JsonConvert.SerializeObject(Inputs);
-            var outputs = JsonConvert.SerializeObject(Outputs);
+            var serializer = new Dev2JsonSerializer();
+            var inputs = serializer.Serialize(Inputs);
+            var outputs = serializer.Serialize(Outputs);
 
             var expectedResults = new[]
             {

@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Converters;
 using Dev2.Data.TO;
@@ -420,7 +421,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-        private static string GetStateValueFromCollection(IList<BaseConvertTO> convertCollection) =>
-            JsonConvert.SerializeObject(convertCollection);
+        private static string GetStateValueFromCollection(IList<BaseConvertTO> convertCollection)
+        {
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            return dev2JsonSerializer.Serialize(convertCollection);
+        }
     }
 }

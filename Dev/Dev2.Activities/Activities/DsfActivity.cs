@@ -38,7 +38,7 @@ using Dev2.Comparer;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Dev2.Common.State;
-using Newtonsoft.Json;
+using Dev2.Communication;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -639,9 +639,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
         public override IEnumerable<StateVariable> GetState() {
-            
-            var inputs = JsonConvert.SerializeObject(Inputs);
-            var outputs = JsonConvert.SerializeObject(Outputs);
+            var serializer = new Dev2JsonSerializer();
+            var inputs = serializer.Serialize(Inputs);
+            var outputs = serializer.Serialize(Outputs);
 
             return new[]
             {
