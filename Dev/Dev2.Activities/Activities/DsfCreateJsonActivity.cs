@@ -31,7 +31,7 @@ using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.State;
-using Dev2.Communication;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -264,16 +264,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IEnumerable<StateVariable> GetState()
         {
-            var serializer = new Dev2JsonSerializer();
-            var jsonMappings = serializer.Serialize(JsonMappings);
-
             return new[]
             {
                 new StateVariable
                 {
                     Name="JsonMappings",
                     Type = StateVariable.StateType.Input,
-                    Value = jsonMappings
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(JsonMappings)
                 },
                 new StateVariable
                 {
