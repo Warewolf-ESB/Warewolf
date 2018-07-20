@@ -154,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 new StateVariable
                 {
                     Name = "Text",
-                    Type = StateVariable.StateType.Output,
+                    Type = StateVariable.StateType.InputOutput,
                     Value = Text
                 }
             };
