@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -196,6 +197,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Expression",
+                    Type = StateVariable.StateType.Input,
+                    Value = Expression
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }
