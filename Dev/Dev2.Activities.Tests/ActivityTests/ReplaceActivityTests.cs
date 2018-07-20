@@ -527,7 +527,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
             //------------Assert Results-------------------------
-            Assert.IsTrue(stateItems.Count() > 0);
+            Assert.AreEqual(5, stateItems.Count());
             var expectedResults = new[]
             {
                  new StateVariable
