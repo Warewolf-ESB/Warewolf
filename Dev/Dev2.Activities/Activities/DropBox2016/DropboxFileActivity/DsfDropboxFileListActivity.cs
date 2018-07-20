@@ -19,15 +19,14 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
     public class DsfDropboxFileListActivity : DsfBaseActivity,IEquatable<DsfDropboxFileListActivity>
     {
-        
         public IDropboxFactory DropboxFactory { get; set; }
-
         
         public OauthSource SelectedSource { get; set; }
 
@@ -57,8 +56,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
-
-
 
         DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
@@ -156,7 +153,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
-        #region Overrides of DsfBaseActivity
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
@@ -189,15 +185,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             return _debugInputs;
-
         }
-
-
-        #endregion
 
         public bool Equals(DsfDropboxFileListActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -223,7 +215,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -258,6 +250,55 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SelectedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "ToPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ToPath
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesAndFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IsRecursive",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsRecursive.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }
