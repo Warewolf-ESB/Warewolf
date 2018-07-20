@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Activities.DropBox2016.DeleteActivity;
-using Dev2.Common.Interfaces;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -226,7 +225,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("DsfCommentActivity_GetState")]
+        [TestCategory("DsfDropBoxDeleteActivity_GetState")]
         public void DsfDropBoxDeleteActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
@@ -275,26 +274,6 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
-            }
-        }
-
-        class MockOAuthSource : OauthSource
-        {
-            public MockOAuthSource(Guid id)
-            {
-                ResourceID = id;
-            }
-            public override string AppKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-            public override string AccessToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            public override bool Equals(IOAuthSource other)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override string GetConnectionString()
-            {
-                throw new NotImplementedException();
             }
         }
     }
