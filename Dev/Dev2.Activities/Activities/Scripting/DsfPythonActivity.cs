@@ -7,6 +7,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -58,6 +59,36 @@ namespace Dev2.Activities.Scripting
         public string IncludeFile { get; set; }
 
         readonly IStringScriptSources _sources;
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Script",
+                    Value = Script,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "IncludeFile",
+                    Value = IncludeFile,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "EscapeScript",
+                    Value = EscapeScript.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
 
         #region Overrides of DsfNativeActivity<string>
