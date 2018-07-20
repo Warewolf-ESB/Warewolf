@@ -250,7 +250,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public IEnumerable<StateVariable> GetState()
+        public override IEnumerable<StateVariable> GetState()
         {
             return new[]
            {
