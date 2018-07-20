@@ -41,8 +41,6 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var db = GetDatabase();
 
-            var res = db.Audits.ToList();
-
             return db.Audits.Where(queryExpression).AsEnumerable();
         }
 
@@ -55,8 +53,12 @@ namespace Dev2.Runtime.ESB.Execution
         public static void ClearAuditLog()
         {
             var db = GetDatabase();
-            var items = db.Audits;
-            db.Audits.RemoveRange(items);
+            foreach (var id in db.Audits.Select(e => e.Id))
+            {
+                var entity = new AuditLog { Id = id };
+                db.Audits.Attach(entity);
+                db.Audits.Remove(entity);
+            }
             db.SaveChanges();
         }
         public void LogAdditionalDetail(object detail, string callerName)
