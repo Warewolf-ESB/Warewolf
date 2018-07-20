@@ -19,6 +19,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
@@ -57,10 +58,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public bool OverWriteMode
         {
-            get
-            {
-                return _overWriteMode;
-            }
+            get => _overWriteMode;
             set
             {
                 _addMode = !value;
@@ -70,10 +68,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public bool AddMode
         {
-            get
-            {
-                return _addMode;
-            }
+            get => _addMode;
             set
             {
                 _overWriteMode = !value;
@@ -95,11 +90,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             return _client;
         }
 
-        #region Overrides of DsfActivity
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
-
-        #region Overrides of DsfBaseActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -113,8 +104,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             base.ExecuteTool(dataObject, update);
         }
-
-        #endregion Overrides of DsfBaseActivity
         
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
@@ -135,7 +124,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             var executionError = Exception.InnerException?.Message ?? Exception.Message;
             throw new Exception(executionError);
         }
-
 
         public WriteMode GetWriteMode()
         {
@@ -168,12 +156,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             _debugInputs.Add(debugItem);
            
             return _debugInputs;
-
         }
 
         public bool Equals(DsfDropBoxUploadActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -195,7 +182,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -231,7 +218,42 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _client.Dispose();
         }
-    }
 
-        #endregion Overrides of DsfActivity
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SelectedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FromPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = FromPath
+                },
+                new StateVariable
+                {
+                    Name = "ToPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ToPath
+                },
+                new StateVariable
+                {
+                    Name = "OverWriteMode",
+                    Type = StateVariable.StateType.Input,
+                    Value = OverWriteMode.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
+    }
 }
