@@ -21,6 +21,7 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -414,6 +415,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="DateTime",
+                    Type = StateVariable.StateType.Input,
+                    Value = DateTime
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputFormat
+                },
+                new StateVariable
+                {
+                    Name="OutputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = OutputFormat
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierType",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierType
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmountDisplay",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierAmountDisplay
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmount",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierAmount.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
 
 #pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067
