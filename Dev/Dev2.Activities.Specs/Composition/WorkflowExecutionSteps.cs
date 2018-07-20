@@ -89,6 +89,8 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ESB.Execution;
+using System.Linq.Expressions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -151,7 +153,7 @@ namespace Dev2.Activities.Specs.Composition
 
         [AfterScenario]
         public void CleanUp()
-        {         
+        {
             _resetEvt?.Close();
         }
         public void CleanUp_DetailedLogFile()
@@ -160,7 +162,7 @@ namespace Dev2.Activities.Specs.Composition
             if (_debugWriterSubscriptionService != null)
             {
                 var files = Directory.GetFiles(EnvironmentVariables.DetailLogPath, "*", SearchOption.AllDirectories);
-                
+
                 foreach (var item in files)
                 {
                     File.Delete(item);
@@ -224,8 +226,9 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
             environmentModel.ResourceRepository.Load(true);
 
-            // connect to the remove environment now ;)
+            // connect to the remote environment now
             var remoteServerList = environmentModel.ResourceRepository.FindSourcesByType<Connection>(environmentModel, enSourceType.Dev2Server);
+
             if (remoteServerList != null && remoteServerList.Count > 0)
             {
                 var remoteServer = remoteServerList.FirstOrDefault(r => r.ResourceName == serverName);
@@ -1083,7 +1086,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 foreach (var activity in activityList)
                 {
-                    if(activity.Value is DsfDecision dec)
+                    if (activity.Value is DsfDecision dec)
                     {
                         var decConfig = Get<(string TrueArm, string FalseArm)>(dec.DisplayName);
                         var trueArmToolName = decConfig.TrueArm;
@@ -4384,9 +4387,9 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Col1 = tableRow["ItemToCheck"],
                     EvaluationFn = DecisionDisplayHelper.GetValue(tableRow["Condition"]),
-                    Col2=tableRow["ValueToCompareTo"]
+                    Col2 = tableRow["ValueToCompareTo"]
                 });
-                Add(decisionName, (TrueArm:tableRow["TrueArmToolName"], FalseArm:tableRow["FalseArmToolName"]));
+                Add(decisionName, (TrueArm: tableRow["TrueArmToolName"], FalseArm: tableRow["FalseArmToolName"]));
             }
 
             _commonSteps.AddActivityToActivityList(workflowName, decisionName, activity);
@@ -4414,7 +4417,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).Skip(toolNum-1).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).Skip(toolNum - 1).ToList();
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
@@ -4429,7 +4432,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             else
             {
-                inputState = toolSpecificDebug.Skip(toolNum-1).FirstOrDefault();
+                inputState = toolSpecificDebug.Skip(toolNum - 1).FirstOrDefault();
             }
 
             if (inputState != null && inputState.Inputs != null)
@@ -4453,7 +4456,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).Skip(itemNumber-1).ToList().Select(a => a.ID).First();
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).Skip(itemNumber - 1).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
             Assert.AreEqual(count, children);
         }
@@ -4536,7 +4539,6 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
         {
@@ -4561,7 +4563,7 @@ namespace Dev2.Activities.Specs.Composition
             AddLogFileContentToContext(logFileContent);
             Assert.IsTrue(logFileContent.Length > 0);
         }
-        
+
         [Then(@"The Log file contains Logging for ""(.*)""")]
         public void ThenTheLogFileContainsLoggingFor(string workflowName)
         {
@@ -4625,40 +4627,117 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("LogFileContent", out string logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
+        [Then(@"Then I add Filter ""(.*)""")]
+        public void ThenThenIAddFilter(string filterString)
+        {
+            var auditFilter = new ActivityAuditFilter(filterString, filterString, filterString);
+
+            Dev2StateAuditLogger.AddFilter(auditFilter);
+        }
+        [Given(@"the audit database is empty")]
+        public void GivenTheAuditDatabaseIsEmpty()
+        {
+            Dev2StateAuditLogger.ClearAuditLog();
+        }
+
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type """"(.*)""Decision""(.*)""Hello World"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeDecisionHelloWorldAs(int expectedCount, string searchString, string auditType, string activityName, string workflowName, Table table)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+            (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+            (auditType == "" || item.AuditType.Equals(auditType)) &&
+            (activityName == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName))));
+            Assert.AreEqual(expectedCount, results.Count());
+            var prop = table.Rows[0][0];
+            var val = table.Rows[0][1];
+            foreach (var item in results)
+            {
+                var value = item.GetType().GetProperty(prop).GetValue(item, null);
+                Assert.AreEqual(val, value);
+            }
+        }
+
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string activityName, string auditType, string workflowName, Table table)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+               (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+               (auditType == "" || item.AuditType.Equals(auditType)) &&
+               (activityName == "" || (
+                   (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
+                   (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
+                   (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
+                   (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
+               ))
+            );
+            Assert.AreEqual(expectedCount, results.Count());
+
+            if (results.Count() > 0 && table.Rows.Count > 0)
+            {
+                var index = 0;
+                foreach (var row in table.Rows)
+                {
+                    var currentResult = results.ToArray()[index];                    
+                    Assert.AreEqual(row["AuditType"], currentResult.AuditType);
+                    Assert.AreEqual(row["WorkflowName"], currentResult.WorkflowName);
+                    Assert.AreEqual(row["PreviousActivityType"], currentResult.PreviousActivityType ?? "null");
+                    Assert.AreEqual(row["NextActivityType"], currentResult.NextActivityType ?? "null");
+                    index++;
+                }
+            }
+        }
+
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with log type ""(.*)"" for ""(.*)""")]
+        public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string activityName, string logType, string workflowName)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+               (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+               (logType == "" || item.AuditType.Equals(logType)) &&
+               (activityName == "" || (
+                   (item.NextActivity != null && item.NextActivity.Contains(activityName)) ||
+                   (item.NextActivityType != null && item.NextActivityType.Contains(activityName)) ||
+                   (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
+                   (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
+               ))
+           );
+            Assert.AreEqual(expectedCount, results.Count());
+        }
 
         class DetailLogInfo
         {
-            readonly IContextualResourceModel resourceModel;
-            readonly string LogFilePath;
-            readonly FileWrapper fileWrapper;
+            readonly IContextualResourceModel _resourceModel;
+            readonly string _logFilePath;
+            readonly FileWrapper _fileWrapper;
             public int PreviousLength { get; private set; }
             private DetailLogInfo()
             {
-                fileWrapper = new FileWrapper();
+                _fileWrapper = new FileWrapper();
             }
             public DetailLogInfo(string workflowName, WorkflowExecutionSteps workflowExecutionSteps)
                 : this()
             {
-                workflowExecutionSteps.TryGetValue(workflowName, out resourceModel);
-                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(resourceModel.ID, resourceModel.ResourceName), "Detail.log");
+                workflowExecutionSteps.TryGetValue(workflowName, out _resourceModel);
+                _logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(_resourceModel.ID, _resourceModel.ResourceName), "Detail.log");
             }
             public DetailLogInfo(string workflowName, string resourceModelId)
                 : this()
             {
-                LogFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
+                _logFilePath = Path.Combine(EnvironmentVariables.WorkflowDetailLogPath(Guid.Parse(resourceModelId), workflowName), "Detail.log");
             }
 
             internal void DeleteIfExists()
             {
-                if (fileWrapper.Exists(LogFilePath))
+                if (_fileWrapper.Exists(_logFilePath))
                 {
-                    fileWrapper.Delete(LogFilePath);
+                    _fileWrapper.Delete(_logFilePath);
                 }
             }
 
             internal string ReadAllText()
             {
-                var result = fileWrapper.ReadAllText(LogFilePath);
+                var result = _fileWrapper.ReadAllText(_logFilePath);
                 PreviousLength = result.Length;
                 return result;
             }
