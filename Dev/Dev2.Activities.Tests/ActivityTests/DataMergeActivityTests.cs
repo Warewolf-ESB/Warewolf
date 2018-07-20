@@ -11,8 +11,11 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common.State;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -22,13 +25,13 @@ namespace Dev2.Tests.Activities.ActivityTests
     public class DataMergeActivityTest : BaseActivityUnitTest
     {
         IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
-        
+
         #region Additional test attributes
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            if(_mergeCollection == null)
+            if (_mergeCollection == null)
             {
                 _mergeCollection = new List<DataMergeDTO>();
             }
@@ -61,7 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual("Wallis,Barney,Trevor,Travis,Jurie,Brendon,Massimo,Ashley,Sashen,Wallis,", actual);
         }
-        
+
         [TestMethod]
         public void Merge_RecordsetWithStarCharMerge_Given_CharSameAsLastCharacterInEntry_Expected_DataMergedTogether()
         {
@@ -242,7 +245,7 @@ Wallis0000Buchan
             FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
-        
+
         [TestMethod]
         public void MergeTwoFieldsInRecordsetsIndexWithIndexEqualToDataLengthExpectedNoDataLoss()
         {
@@ -420,6 +423,29 @@ Wallis0000Buchan
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMergeActivity_GetForEachOutputs")]
+        public void DsfDataMergeActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Clear();
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
+            var expectedResults = ActivityHelper.GetSerializedStateValueFromCollection(_mergeCollection);
+            var act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
+
+            //------------Execute Test---------------------------
+            var stateList = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, stateList.Count());
+            Assert.AreEqual(StateVariable.StateType.Input, stateList.ToList()[0].Type);
+            Assert.AreEqual("Merge Collection", stateList.ToList()[0].Name);
+            Assert.AreEqual(expectedResults, stateList.ToList()[0].Value);
+            Assert.AreEqual(StateVariable.StateType.Output, stateList.ToList()[1].Type);
+            Assert.AreEqual("Result", stateList.ToList()[1].Name);
+            Assert.AreEqual(act.Result, stateList.ToList()[1].Value);
+
+        }
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string result, IList<DataMergeDTO> mergeCollection)

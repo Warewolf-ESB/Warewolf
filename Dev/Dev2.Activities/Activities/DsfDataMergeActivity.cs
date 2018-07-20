@@ -34,12 +34,14 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Dev2.Comparer;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Data-DataMerge", "Data Merge", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Merge")]
-    public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfDataMergeActivity>
+    public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfDataMergeActivity>
     {
         #region Class Members
 
@@ -499,6 +501,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Merge Collection",
+                    Type=StateVariable.StateType.Input,
+                    Value= ActivityHelper.GetSerializedStateValueFromCollection(MergeCollection)
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value=Result
+                }
+            };
+        }
+
         public bool Equals(DsfDataMergeActivity other)
         {
             if (ReferenceEquals(null, other))
@@ -533,7 +554,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfDataMergeActivity) obj);
+            return Equals((DsfDataMergeActivity)obj);
         }
 
         public override int GetHashCode()
