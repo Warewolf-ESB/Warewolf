@@ -47,6 +47,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = nameof(InputPath),
                     Type = StateVariable.StateType.Input,
                     Value = InputPath
+                },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
                 }
             };
         }
