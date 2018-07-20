@@ -1,8 +1,11 @@
-﻿using Dev2.TO;
+﻿using Dev2.Common.State;
+using Dev2.Communication;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
@@ -187,6 +190,62 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.CreateJson
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfCreateJsonActivity_GetState")]
+        public void DsfCreateJsonActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var mappings = new List<JsonMappingTo>
+            {
+                new JsonMappingTo
+                {
+                    DestinationName = "Some Name"
+                }
+            };
+
+            //------------Setup for test--------------------------
+            var activity = new DsfCreateJsonActivity() { UniqueID = uniqueId, JsonMappings = mappings, JsonString = "{ Json String }" };
+            //------------Execute Test---------------------------
+            var stateItems = activity.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var serializer = new Dev2JsonSerializer();
+            var mappingItems = serializer.Serialize(activity.JsonMappings);
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="JsonMappings",
+                    Type = StateVariable.StateType.Input,
+                    Value = mappingItems
+                },
+                new StateVariable
+                {
+                    Name="JsonString",
+                    Type = StateVariable.StateType.Output,
+                    Value = "{ Json String }"
+                }
+            };
+
+            var iter = activity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

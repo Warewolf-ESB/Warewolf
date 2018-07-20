@@ -30,12 +30,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     [ToolDescriptorInfo("Scripting-CreateJSON", "Create JSON", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Create_JSON")]
-    public class DsfCreateJsonActivity : DsfActivityAbstract<string>,IEquatable<DsfCreateJsonActivity>
+    public class DsfCreateJsonActivity : DsfActivityAbstract<string>, IEquatable<DsfCreateJsonActivity>
     {
         /// <summary>
         ///     Gets or sets the Warewolf source scalars, lists or record sets, and the destination JSON names of the resulting
@@ -51,7 +52,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("JsonString")]
         [FindMissing]
         public string JsonString { get; set; }
-
 
         public DsfCreateJsonActivity()
             : base("Create JSON")
@@ -89,14 +89,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 if (!dataObject.Environment.Errors.Any() && !JsonMappings.Any())
-
                 {
                     dataObject.Environment.AddError("No JSON Mappings supplied to activity.");
                 }
 
-
                 if (!dataObject.Environment.Errors.Any())
-
                 {
                     JsonMappings.ToList().ForEach(m =>
                     {
@@ -113,7 +110,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var j = 0;
 
                     foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
-
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams(string.Empty, (++j).ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -123,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if (!dataObject.Environment.Errors.Any())
                 {
-                    var json = new JObject(); 
+                    var json = new JObject();
 
                     var jsonMappingList = JsonMappings.ToList();
                     var results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
@@ -133,7 +129,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         ParseResultsJSON(x, json);
                     });
-
 
                     dataObject.Environment.Assign(JsonString, json.ToString(Formatting.None), update);
 
@@ -146,7 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch (Exception e)
             {
                 JsonMappings.ToList().ForEach(x =>
-
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.SourceName, "SourceName", "="));
                     AddDebugInputItem(new DebugItemStaticDataParams("", x.DestinationName, "DestinationName"));
@@ -178,36 +172,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (!x.IsCompound)
             {
-                json.Add(new JProperty(
-                    x.DestinationName,
-                    x.EvaluatedResultIndexed(0))
-                    );
+                json.Add(new JProperty(x.DestinationName, x.EvaluatedResultIndexed(0)));
             }
             else
             {
                 if (!x.EvalResult.IsWarewolfRecordSetResult)
                 {
-                    json.Add(new JProperty(
-                                x.DestinationName,
-                                x.ComplexEvaluatedResultIndexed(0))
-                                );
+                    json.Add(new JProperty(x.DestinationName, x.ComplexEvaluatedResultIndexed(0)));
                 }
                 else
                 {
                     if (x.EvalResult.IsWarewolfRecordSetResult)
                     {
-                        json.Add(
-                       x.ComplexEvaluatedResultIndexed(0));
+                        json.Add(x.ComplexEvaluatedResultIndexed(0));
                     }
                 }
             }
         }
 
         bool validMapping(JsonMappingTo a) => !(String.IsNullOrEmpty(a.DestinationName) && string.IsNullOrEmpty(a.SourceName));
-
-        #region Get Debug Inputs/Outputs
-
-        #region GetDebugInputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
@@ -220,28 +203,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        #endregion
-
-        #endregion Get Inputs/Outputs
-
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
-        
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
-        #region GetForEachInputs/Outputs
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
         public override IList<DsfForEachItem> GetForEachInputs() => throw new NotImplementedException();
 
         public override IList<DsfForEachItem> GetForEachOutputs() => throw new NotImplementedException();
 
-        #endregion
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         public bool Equals(DsfCreateJsonActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -252,14 +226,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var jsonMappingsAreEqual = Dev2.Common.CommonEqualityOps.CollectionEquals(JsonMappings, other.JsonMappings, new JsonMappingToComparer());
-            return base.Equals(other) 
+            return base.Equals(other)
                 && jsonMappingsAreEqual
                 && string.Equals(JsonString, other.JsonString);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -274,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfCreateJsonActivity) obj);
+            return Equals((DsfCreateJsonActivity)obj);
         }
 
         public override int GetHashCode()
@@ -286,6 +260,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (JsonString != null ? JsonString.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="JsonMappings",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(JsonMappings)
+                },
+                new StateVariable
+                {
+                    Name="JsonString",
+                    Type = StateVariable.StateType.Output,
+                    Value = JsonString
+                }
+            };
         }
     }
 }
