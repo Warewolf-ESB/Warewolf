@@ -372,7 +372,34 @@ namespace Warewolf.Launcher
         void WaitForServerInContainer()
         {
             Console.WriteLine($"Waiting for Warewolf server to start in {serverContainerID.Substring(0, 12)}.");
-            Thread.Sleep(16000);
+            
+            var url = $"http://{Hostname}:3142/apis.json";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
+                int retryCount = 0;
+                while (++retryCount < 10)
+                {
+                    try
+                    {
+                        var result = client.GetAsync(url).Result;
+                        if (result != null)
+                        {
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"Still waiting for Warewolf server in {serverContainerID.Substring(0, 12)} to start.");
+                        Thread.Sleep(1000);
+                    }
+                }
+                if (retryCount >= 10)
+                {
+                    client.Dispose();
+                    throw new TimeoutException($"Timed out waiting for Warewolf server in {serverContainerID.Substring(0, 12)} to start.");
+                }
+            }
         }
 
         void CreateContainer()
@@ -384,7 +411,11 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Creating {FullImageID} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
-     ""Image"":""" + FullImageID + @"""
+     ""Image"":""" + FullImageID + @""",
+     ""HostConfig"":
+     {
+          ""Memory"": 1000000000
+     }
 }
 ");
             }
@@ -394,7 +425,11 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + FullImageID + @"""
+     ""Image"":""" + FullImageID + @""",
+     ""HostConfig"":
+     {
+          ""Memory"": 1000000000
+     }
 }
 ");
             }
@@ -427,6 +462,10 @@ namespace Warewolf.Launcher
             if (string.IsNullOrEmpty(serverContainerID))
             {
                 serverContainerID = GetNewContainerID();
+            }
+            if (string.IsNullOrEmpty(Hostname))
+            {
+                Hostname = serverContainerID.Substring(0, 12);
             }
         }
 
