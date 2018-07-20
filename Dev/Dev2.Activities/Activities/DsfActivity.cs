@@ -37,6 +37,8 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
+using Dev2.Common.State;
+using Dev2.Communication;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -636,6 +638,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
+        public override IEnumerable<StateVariable> GetState() {
+            var serializer = new Dev2JsonSerializer();
+            var inputs = serializer.Serialize(Inputs);
+            var outputs = serializer.Serialize(Outputs);
+
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Inputs",
+                    Type = StateVariable.StateType.Input,
+                    Value = inputs
+                },
+                 new StateVariable
+                {
+                    Name="Outputs",
+                    Type = StateVariable.StateType.Output,
+                    Value = outputs
+                 }
+            };
+        }
         public bool Equals(DsfActivity other)
         {
             if (ReferenceEquals(null, other))

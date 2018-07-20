@@ -12,11 +12,14 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;
@@ -32,7 +35,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    
+
     [TestClass]
     public class DsfActivityTests : BaseActivityUnitTest
     {
@@ -127,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var findMissingType = dsfActivity.GetFindMissingType();
             //------------Assert Results-------------------------
-            Assert.AreEqual(enFindMissingType.DsfActivity,findMissingType);
+            Assert.AreEqual(enFindMissingType.DsfActivity, findMissingType);
         }
 
         [TestMethod]
@@ -136,11 +139,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            var act = new DsfActivity { Outputs =  new List<IServiceOutputMapping>
+            var act = new DsfActivity
+            {
+                Outputs = new List<IServiceOutputMapping>
             {
                 new ServiceOutputMapping {MappedTo = "[[res1]]"},
                 new ServiceOutputMapping {MappedTo = "[[res2]]"}
-            } };
+            }
+            };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
@@ -167,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(5, inRes.Count);
         }
 
-     
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
@@ -220,10 +226,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             User = new Mock<IPrincipal>().Object;
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID);
 
-            
+
             var resultEnvironmentID = result.EnvironmentID;
             var isRemoteOverridden = result.IsRemoteInvokeOverridden;
-            
+
 
             //------------Assert Results-------------------------
             Assert.AreEqual(environmentID, resultEnvironmentID);
@@ -232,7 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        
+
         public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
 
         {
@@ -257,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        
+
         public void DsfActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
 
         {
@@ -290,9 +296,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string resultValidationExpression = "resValidationExp";
             //------------Execute Test---------------------------
 
-            var dsfActivity = new DsfActivity(toolboxFriendlyName,iconPath,serviceName,dataTags,resultValidationRequiredTags,resultValidationExpression);
+            var dsfActivity = new DsfActivity(toolboxFriendlyName, iconPath, serviceName, dataTags, resultValidationRequiredTags, resultValidationExpression);
             //------------Assert Results-------------------------
-            Assert.AreEqual(toolboxFriendlyName,dsfActivity.ToolboxFriendlyName);
+            Assert.AreEqual(toolboxFriendlyName, dsfActivity.ToolboxFriendlyName);
             Assert.AreEqual(serviceName, dsfActivity.ServiceName);
             Assert.AreEqual(dataTags, dsfActivity.DataTags);
             Assert.AreEqual(resultValidationRequiredTags, dsfActivity.ResultValidationRequiredTags);
@@ -307,7 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var dsfActivity = new DsfActivity();
-            
+
             //------------Execute Test---------------------------
             dsfActivity.Inputs = new List<IServiceInput>();
             //------------Assert Results-------------------------
@@ -333,7 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_ExecuteTool")]
-        
+
         public void DsfActivity_ExecuteTool_DataObjectWithNullChannel_ShouldError()
 
         {
@@ -467,7 +473,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsServiceTestExecution = true
             };
             var resourceID = Guid.NewGuid();
-            
+
             var act = new DsfActivity
             {
                 ResourceID = new InArgument<Guid>(resourceID),
@@ -563,6 +569,83 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs[0].ResultsList.Count);
             Assert.AreEqual("objectname", outputs[0].ResultsList[0].Value);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfActivity_GetState")]
+        public void DsfActivity_GetState()
+        {
+            //------------Setup for test--------------------------
+            var environmentID = Guid.Empty;
+            var env = new ExecutionEnvironment();
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            env.Assign("[[list().Name]]", "bob", 0);
+            //------------Execute Test---------------------------
+            var Inputs = new List<IServiceInput>
+                    {
+                        new ServiceInput("Input1", "[[list(*).Name]]")
+                    };
+            var Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("bob", "[[out]]", "list")
+                    };
+            var act = new DsfActivity
+            {
+                ObjectName = "objectname",
+                IsObject = true,
+                Inputs = Inputs,
+                Outputs = Outputs
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var serializer = new Dev2JsonSerializer();
+            var inputs = serializer.Serialize(Inputs);
+            var outputs = serializer.Serialize(Outputs);
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Inputs",
+                    Type = StateVariable.StateType.Input,
+                    Value = inputs
+                },
+                new StateVariable
+                {
+                    Name = "Outputs",
+                    Type = StateVariable.StateType.Output,
+                    Value = outputs
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
