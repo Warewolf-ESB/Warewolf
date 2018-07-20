@@ -432,7 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
-        public void DsfBaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
+        public void DsfCaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
         {            
             //------------Setup for test--------------------------
             var fieldsCollection = new List<ICaseConvertTO>
