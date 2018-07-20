@@ -16,6 +16,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Common;
+using System.IO;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -202,7 +203,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             if (!string.IsNullOrEmpty(_inputPath) && dirHelper.Exists(_inputPath))
             {
-                dirHelper.Delete(_inputPath, true);
+                try
+                {
+                    dirHelper.Delete(_inputPath, true);
+                }
+                catch (IOException e)
+                {
+                    Console.WriteLine($"Error during cleanup {e.Message}");
+                }
             }
         }
     }
