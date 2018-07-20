@@ -16,6 +16,8 @@ using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common;
 using Dev2.Activities.DateAndTime;
+using System.Linq;
+using Dev2.Common.State;
 
 namespace ActivityUnitTests.ActivityTests
 
@@ -197,6 +199,75 @@ namespace ActivityUnitTests.ActivityTests
             activity2.Result = tmp_holder;
 
             Assert.IsTrue(activity1.Equals(activity2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDotNetDateTimeDifferenceActivity_GetState")]
+        public void DsfDotNetDateTimeDifferenceActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var dotNetDateTimeDifferenceActivity = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "date1",
+                Input2 = "date2",
+                InputFormat = "yyyy/MM/dd",
+                OutputType = "Years",
+                Result = "DateChanged"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dotNetDateTimeDifferenceActivity.GetState();
+            Assert.AreEqual(5, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Input1",
+                    Type = StateVariable.StateType.Input,
+                    Value = "date1"
+                },
+                new StateVariable
+                {
+                    Name = "Input2",
+                    Type = StateVariable.StateType.Input,
+                    Value = "date2"
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = "yyyy/MM/dd"
+                },
+                new StateVariable
+                {
+                    Name="OutputType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Years"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "DateChanged"
+                }
+            };
+
+            var iter = dotNetDateTimeDifferenceActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         #region Private Test Methods
