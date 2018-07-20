@@ -596,10 +596,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var remoteServerId = Guid.NewGuid();
             var ServiceServer = remoteServerId;
             var EnvironmentID = remoteServerId;
-            var IsWorkflow = "false";
             var ServiceUri = "remoteEnvironment.Connection.AppServerUri";
             var ServiceName = "remote category";
             var ResourceID = remoteResourceID;
+            var ParentServiceName = "ParentServiceName";
             var act = new DsfWorkflowActivity
             {
                 ObjectName = "objectname",
@@ -612,7 +612,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ServiceUri = ServiceUri,
                 EnvironmentID = EnvironmentID,
                 ServiceServer = ServiceServer,
-                
+                ParentServiceName = ParentServiceName
+
             };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
@@ -666,6 +667,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Name="ServiceName",
                     Type = StateVariable.StateType.Input,
                     Value = ServiceName
+                 },
+                 new StateVariable
+                {
+                    Name="ParentServiceName",
+                    Type = StateVariable.StateType.Input,
+                    Value = ParentServiceName
                  }
             };
             var iter = act.GetState().Select(
