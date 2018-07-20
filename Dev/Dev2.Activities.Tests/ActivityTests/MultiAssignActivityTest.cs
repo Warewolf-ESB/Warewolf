@@ -1064,7 +1064,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
             var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
-            //------------Execute Test---------------------------
+            //------------Execute Test---------------------------            
             var expectedResults = new[]
             {
                 new StateVariable
@@ -1074,8 +1074,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Value = ActivityHelper.GetSerializedStateValueFromCollection(fieldsCollection)
                 }
             };
-
-            var iter = act.GetState().Select(
+            var listItems = act.GetState();
+            Assert.AreEqual(1, listItems.Count());
+            var iter = listItems.Select(
                 (item, index) => new
                 {
                     value = item,
