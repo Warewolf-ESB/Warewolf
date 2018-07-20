@@ -432,7 +432,16 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
             resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
-            var sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
+            var sourceString = "";
+            if (File.Exists("LargeRowsDataSplit.txt"))
+            {
+                sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
+            }
+            else if (File.Exists("Out\\LargeRowsDataSplit.txt"))
+            {
+                sourceString = File.ReadAllText("Out\\LargeRowsDataSplit.txt");
+            }
+            Assert.IsFalse(string.IsNullOrEmpty(sourceString), "Cannot find Deployment Item LargeRowsDataSplit.txt");
             var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection, SkipBlankRows = true };
             var dataObject = new DsfDataObject("", Guid.Empty)
             {
