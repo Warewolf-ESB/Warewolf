@@ -1081,11 +1081,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public Guid GetWorkSurfaceMappingId() => WorkSurfaceMappingId;
 
-        public virtual IEnumerable<StateVariable> GetState()
-        {
-            return new List<StateVariable>();
+        //public abstract IEnumerable<StateVariable> GetState()
 
-        }
+        public virtual IEnumerable<StateVariable> GetState() { return new List<StateVariable>(); }
 
         public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
 
