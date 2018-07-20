@@ -436,7 +436,7 @@ Wallis0000Buchan
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
             //------------Assert Results-------------------------
-            Assert.IsTrue(stateItems.Count() > 0);
+            Assert.AreEqual(2, stateItems.Count());
             var expectedResults = new[]
             {
                 new StateVariable
