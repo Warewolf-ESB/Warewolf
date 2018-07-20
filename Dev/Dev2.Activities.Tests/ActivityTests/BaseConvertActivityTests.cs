@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common.State;
+using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -347,7 +348,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, stateList.Count());
             Assert.AreEqual(StateVariable.StateType.InputOutput, stateList.ToList()[0].Type);
             Assert.AreEqual("Convert Collection", stateList.ToList()[0].Name);
-            var expectedResults = JsonConvert.SerializeObject(convertCollection);
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var expectedResults = dev2JsonSerializer.Serialize(convertCollection);
             Assert.AreEqual(expectedResults, stateList.ToList()[0].Value);
         }
         #endregion

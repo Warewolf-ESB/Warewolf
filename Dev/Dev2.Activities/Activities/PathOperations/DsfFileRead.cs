@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -36,6 +37,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InputPath = string.Empty;
         }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = nameof(InputPath),
+                    Type = StateVariable.StateType.Input,
+                    Value = InputPath
+                },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
+
         protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
