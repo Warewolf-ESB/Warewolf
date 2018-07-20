@@ -453,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dotNetAggregateCalculateActivity = new DsfDotNetAggregateCalculateActivity { Expression = "[[Numeric(1).num]]", Result = "Passed" };
             //------------Execute Test---------------------------
             var stateItems = dotNetAggregateCalculateActivity.GetState();
-            Assert.AreEqual(3, stateItems.Count());
+            Assert.AreEqual(2, stateItems.Count());
 
             var expectedResults = new[]
             {
