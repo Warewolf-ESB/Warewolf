@@ -10,6 +10,8 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
@@ -210,6 +212,45 @@ namespace Dev2.Activities.Sharepoint
         public Guid SharepointServerResourceId { get; set; }
         public string SharepointList { get; set; }
         public List<SharepointReadListTo> ReadListItems { get; set; }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            var serializer = new Dev2JsonSerializer();
+            var readListItems = serializer.Serialize(ReadListItems);
+            return new[]
+            {
+                 new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                new StateVariable
+                {
+                    Name="ReadListItems",
+                    Type = StateVariable.StateType.Input,
+                    Value = readListItems
+                },
+                  new StateVariable
+                {
+                    Name="SharepointList",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointList
+                },
+                  new StateVariable
+                {
+                    Name="UniqueID",
+                    Type = StateVariable.StateType.Input,
+                    Value = UniqueID
+                },
+                 new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                 }
+            };
+        }
 
         public bool Equals(SharepointCreateListItemActivity other)
         {
