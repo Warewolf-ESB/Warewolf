@@ -692,7 +692,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfExecuteCommandLineActivity { CommandFileName = "cm bob", CommandResult="[[res]]" };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(2, stateItems.Count());
+            Assert.AreEqual(3, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -701,7 +701,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Name = "Command",
                     Type = StateVariable.StateType.Input,
                     Value = "cm bob"
-                },                
+                },
+                new StateVariable
+                {
+                    Name = "CommandPriority",
+                    Type = StateVariable.StateType.Input,
+                    Value = ProcessPriorityClass.Normal.ToString()
+                },
                 new StateVariable
                 {
                     Name="CommandResult",
