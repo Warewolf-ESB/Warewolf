@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Globalization;
 using Dev2.Common;
+using Dev2.Common.State;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -441,6 +442,50 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsFalse(act1.Equals(act2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDotNetAggregateCalculateActivity_GetState")]
+        public void DsfDotNetAggregateCalculateActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var dotNetAggregateCalculateActivity = new DsfDotNetAggregateCalculateActivity { Expression = "[[Numeric(1).num]]", Result = "Passed" };
+            //------------Execute Test---------------------------
+            var stateItems = dotNetAggregateCalculateActivity.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Expression",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[Numeric(1).num]]"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "Passed"
+                }
+            };
+
+            var iter = dotNetAggregateCalculateActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
