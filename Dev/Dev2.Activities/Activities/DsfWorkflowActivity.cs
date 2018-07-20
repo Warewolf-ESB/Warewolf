@@ -74,6 +74,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name="ServiceName",
                     Type = StateVariable.StateType.Input,
                     Value = ServiceName
+                 },
+                 new StateVariable
+                 {
+                     Name="ParentServiceName",
+                     Type = StateVariable.StateType.Input,
+                     Value = ParentServiceName
                  }
             };
         }
