@@ -23,6 +23,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -113,6 +114,24 @@ namespace Dev2.Activities
             }
 
             ExecuteTool(dataObject, 0);
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Command",
+                    Value = CommandFileName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="CommandResult",
+                    Value = CommandResult,
+                    Type = StateVariable.StateType.Output
+                }
+            };
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
