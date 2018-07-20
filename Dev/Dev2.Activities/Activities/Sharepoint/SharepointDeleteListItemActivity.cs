@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
@@ -20,13 +21,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
-
+using Dev2.Utilities;
 
 
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Delete List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_List_Item")]
-    public class SharepointDeleteListItemActivity : DsfActivityAbstract<string>,IEquatable<SharepointDeleteListItemActivity>
+    public class SharepointDeleteListItemActivity : DsfActivityAbstract<string>, IEquatable<SharepointDeleteListItemActivity>
     {
 
         public SharepointDeleteListItemActivity()
@@ -38,7 +39,48 @@ namespace Dev2.Activities.Sharepoint
             _sharepointUtils = new SharepointUtils();
             _indexCounter = 1;
         }
-        
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="FilterCriteria",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FilterCriteria)
+                 },
+                new StateVariable
+                {
+                    Name="ReadListItems",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ReadListItems)
+                },
+                new StateVariable
+                {
+                    Name="SharepointList",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointList
+                },
+                 new StateVariable
+                {
+                    Name="RequireAllCriteriaToMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = RequireAllCriteriaToMatch.ToString()
+                 }
+                 ,new StateVariable
+                {
+                    Name="DeleteCount",
+                    Type = StateVariable.StateType.Output,
+                    Value = DeleteCount
+                 }
+            };
+        }
         [Outputs("DeleteCount")]
         [FindMissing]
         public string DeleteCount { get; set; }
@@ -47,11 +89,11 @@ namespace Dev2.Activities.Sharepoint
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
-        
+
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            ExecuteTool(dataObject, 0);
         }
 
         public override List<string> GetOutputs() => new List<string> { DeleteCount };
@@ -96,7 +138,7 @@ namespace Dev2.Activities.Sharepoint
                 var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
                 using (var ctx = sharepointHelper.GetContext())
                 {
-                    var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields,update , RequireAllCriteriaToMatch);
+                    var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
                     var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
                     listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
@@ -114,9 +156,9 @@ namespace Dev2.Activities.Sharepoint
                     ctx.ExecuteQuery();
                 }
                 var successfulDeleteCount = listItems.Count();
-                if(!string.IsNullOrWhiteSpace(DeleteCount))
+                if (!string.IsNullOrWhiteSpace(DeleteCount))
                 {
-                    dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString(),update);
+                    dataObject.Environment.Assign(DeleteCount, successfulDeleteCount.ToString(), update);
                     env.CommitAssign();
                     AddOutputDebug(dataObject, update);
                 }
@@ -137,7 +179,7 @@ namespace Dev2.Activities.Sharepoint
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before,update);
+                    DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
@@ -159,7 +201,7 @@ namespace Dev2.Activities.Sharepoint
 
                 foreach (var varDebug in FilterCriteria)
                 {
-                    if(string.IsNullOrEmpty(varDebug.FieldName))
+                    if (string.IsNullOrEmpty(varDebug.FieldName))
                     {
                         return;
                     }
@@ -174,7 +216,7 @@ namespace Dev2.Activities.Sharepoint
                     var searchType = varDebug.SearchType;
                     if (!string.IsNullOrEmpty(searchType))
                     {
-                        AddDebugItem(new DebugEvalResult(searchType, "Search Type", env,update), debugItem);
+                        AddDebugItem(new DebugEvalResult(searchType, "Search Type", env, update), debugItem);
                     }
                     var valueToMatch = varDebug.ValueToMatch;
                     if (!string.IsNullOrEmpty(valueToMatch))
@@ -221,13 +263,13 @@ namespace Dev2.Activities.Sharepoint
                 return true;
             }
 
-            return base.Equals(other) 
-                && string.Equals(DeleteCount, other.DeleteCount) 
-                && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer()) 
-                && SharepointServerResourceId.Equals(other.SharepointServerResourceId) 
-                && string.Equals(SharepointList, other.SharepointList) 
-                && string.Equals(DisplayName, other.DisplayName) 
-                && FilterCriteria.SequenceEqual( other.FilterCriteria, new SharepointSearchToComparer()) 
+            return base.Equals(other)
+                && string.Equals(DeleteCount, other.DeleteCount)
+                && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer())
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId)
+                && string.Equals(SharepointList, other.SharepointList)
+                && string.Equals(DisplayName, other.DisplayName)
+                && FilterCriteria.SequenceEqual(other.FilterCriteria, new SharepointSearchToComparer())
                 && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
         }
 
@@ -248,7 +290,7 @@ namespace Dev2.Activities.Sharepoint
                 return false;
             }
 
-            return Equals((SharepointDeleteListItemActivity) obj);
+            return Equals((SharepointDeleteListItemActivity)obj);
         }
 
         public override int GetHashCode()
