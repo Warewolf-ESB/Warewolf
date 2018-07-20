@@ -617,7 +617,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(8, stateItems.Count());
+            Assert.AreEqual(9, stateItems.Count());
             var expectedResults = new[]
             {
                 new StateVariable
