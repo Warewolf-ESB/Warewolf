@@ -11,9 +11,12 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.State;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -509,6 +512,73 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, result.Environment.Errors.Count);
             Assert.AreEqual("The result field only allows a single result\r\nScalar value { rec } is NULL", result.Environment.FetchErrors());
         }
+
+
+        [TestMethod]
+        [TestCategory("DsfReplaceActivity_UpdateForEachOutputs")]
+        public void DsfReplaceActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            const string FieldsToSearch = "[[Numeric(1).num]]";
+            const string Find = "Up";
+            const string Result = "[[res]]";
+            const string ReplaceWith = "2";
+            var act = new DsfReplaceActivity { FieldsToSearch = FieldsToSearch, Find = Find, ReplaceWith = ReplaceWith, Result = Result };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(stateItems.Count() > 0);
+            var expectedResults = new[]
+            {
+                 new StateVariable
+                {
+                    Name ="FieldsToSearch",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.FieldsToSearch
+                },
+                new StateVariable
+                {
+                    Name ="Find",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.Find
+                },
+                new StateVariable
+                {
+                    Name ="ReplaceWith",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.ReplaceWith
+                },
+                new StateVariable
+                {
+                    Name ="CaseMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.CaseMatch.ToString()
+                },
+                new StateVariable
+                {
+                    Name ="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = act.Result
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
 
         #region Private Test Methods
 

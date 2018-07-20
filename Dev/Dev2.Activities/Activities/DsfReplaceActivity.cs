@@ -20,6 +20,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -43,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Activity for replacing a certain character set in a number of field with a new character set 
     /// </New>
     [ToolDescriptorInfo("Data-Replace", "Replace", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Replace")]
-    public class DsfReplaceActivity : DsfActivityAbstract<string>,IEquatable<DsfReplaceActivity>
+    public class DsfReplaceActivity : DsfActivityAbstract<string>, IEquatable<DsfReplaceActivity>
     {
 
         #region Properties
@@ -353,15 +354,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion
-
-        #region GetForEachInputs/Outputs
+        #endregion        
 
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(FieldsToSearch, Find, ReplaceWith);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name ="FieldsToSearch",
+                    Type = StateVariable.StateType.Input,
+                    Value = FieldsToSearch
+                },
+                new StateVariable
+                {
+                    Name ="Find",
+                    Type = StateVariable.StateType.Input,
+                    Value = Find
+                },
+                new StateVariable
+                {
+                    Name ="ReplaceWith",
+                    Type = StateVariable.StateType.Input,
+                    Value = ReplaceWith
+                },
+                new StateVariable
+                {
+                    Name ="CaseMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = CaseMatch.ToString()
+                },
+                new StateVariable
+                {
+                    Name ="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
 
         public bool Equals(DsfReplaceActivity other)
         {
@@ -375,11 +409,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return true;
             }
 
-            return base.Equals(other) 
-                && string.Equals(FieldsToSearch, other.FieldsToSearch) 
-                && string.Equals(Find, other.Find) 
-                && string.Equals(ReplaceWith, other.ReplaceWith) 
-                && CaseMatch == other.CaseMatch 
+            return base.Equals(other)
+                && string.Equals(FieldsToSearch, other.FieldsToSearch)
+                && string.Equals(Find, other.Find)
+                && string.Equals(ReplaceWith, other.ReplaceWith)
+                && CaseMatch == other.CaseMatch
                 && string.Equals(Result, other.Result);
         }
 
@@ -400,7 +434,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfReplaceActivity) obj);
+            return Equals((DsfReplaceActivity)obj);
         }
 
         public override int GetHashCode()
