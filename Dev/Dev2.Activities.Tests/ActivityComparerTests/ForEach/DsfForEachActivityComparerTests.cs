@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Activities;
+using System.Linq;
 using Dev2.Activities.SelectAndApply;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -501,6 +503,316 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ForEach
             Assert.IsFalse(@equals);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfForEachActivity_GetState")]
+        public void DsfForEachActivity_GetState_InRange_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var dsfForEachActivity = new DsfForEachActivity
+            {
+                ForEachType = enForEachType.InRange,
+                From = "[[From]]",
+                To = "[[To]]",
+                CsvIndexes = "",
+                NumOfExections = "",
+                Recordset = ""
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dsfForEachActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, stateItems.Count());
 
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "ForEachType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "InRange"
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[From]]"
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[To]]"
+                },
+                new StateVariable
+                {
+                    Name = "CsvIndexes",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "NumOfExections",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "Recordset",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                }
+            };
+
+            var iter = dsfForEachActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfForEachActivity_GetState")]
+        public void DsfForEachActivity_GetState_InCSV_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var dsfForEachActivity = new DsfForEachActivity
+            {
+                ForEachType = enForEachType.InCSV,
+                From = "",
+                To = "",
+                CsvIndexes = "[[CsvIndexes]]",
+                NumOfExections = "",
+                Recordset = ""
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dsfForEachActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "ForEachType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "InCSV"
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "CsvIndexes",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[CsvIndexes]]"
+                },
+                new StateVariable
+                {
+                    Name = "NumOfExections",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "Recordset",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                }
+            };
+
+            var iter = dsfForEachActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfForEachActivity_GetState")]
+        public void DsfForEachActivity_GetState_NumOfExecution_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var dsfForEachActivity = new DsfForEachActivity
+            {
+                ForEachType = enForEachType.NumOfExecution,
+                From = "",
+                To = "",
+                CsvIndexes = "",
+                NumOfExections = "[[NumOfExection]]",
+                Recordset = ""
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dsfForEachActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "ForEachType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "NumOfExecution"
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "CsvIndexes",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "NumOfExections",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[NumOfExection]]"
+                },
+                new StateVariable
+                {
+                    Name = "Recordset",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                }
+            };
+
+            var iter = dsfForEachActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfForEachActivity_GetState")]
+        public void DsfForEachActivity_GetState_InRecordset_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var dsfForEachActivity = new DsfForEachActivity
+            {
+                ForEachType = enForEachType.InRecordset,
+                From = "",
+                To = "",
+                CsvIndexes = "",
+                NumOfExections = "",
+                Recordset = "[[Recordset]]"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dsfForEachActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "ForEachType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "InRecordset"
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "CsvIndexes",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "NumOfExections",
+                    Type = StateVariable.StateType.Input,
+                    Value = ""
+                },
+                new StateVariable
+                {
+                    Name = "Recordset",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[Recordset]]"
+                }
+            };
+
+            var iter = dsfForEachActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

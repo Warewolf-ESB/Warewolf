@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -55,6 +56,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Length";
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Value = RecordsetName,
+                    Type = StateVariable.StateType.InputOutput
+                },
+                new StateVariable
+                {
+                    Name="RecordsLength",
+                    Value = RecordsLength,
+                    Type = StateVariable.StateType.Input
+                }
+            };
+        }
 
         public override List<string> GetOutputs() => new List<string> { RecordsLength };
 
