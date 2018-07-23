@@ -12,18 +12,16 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
-
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("ControlFlow-Switch", "Switch", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Switch")]
     public class DsfFlowSwitchActivity : DsfFlowNodeActivity<string>
     {
-        #region Ctor
-
         public DsfFlowSwitchActivity()
             : base("Switch")
         {
@@ -44,8 +42,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             return armConnectors;
         }
-
-        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -72,5 +68,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override List<string> GetOutputs() => new List<string>();
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
     }
 }
