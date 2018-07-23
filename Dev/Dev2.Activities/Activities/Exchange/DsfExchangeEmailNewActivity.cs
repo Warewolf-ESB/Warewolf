@@ -24,6 +24,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Exchange.Email.Wrapper;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.Exchange
 {
@@ -77,7 +78,60 @@ namespace Dev2.Activities.Exchange
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
-        #region Overrides of DsfNativeActivity<string>
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SavedSource.ResourceID",
+                    Type=StateVariable.StateType.Input,
+                    Value= SavedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name="To",
+                    Type=StateVariable.StateType.Input,
+                    Value= To
+                },
+                new StateVariable
+                {
+                    Name="Cc",
+                    Type=StateVariable.StateType.Input,
+                    Value= Cc
+                },
+                new StateVariable
+                {
+                    Name="Bcc",
+                    Type=StateVariable.StateType.Input,
+                    Value= Bcc
+                },
+                new StateVariable
+                {
+                    Name="Subject",
+                    Type=StateVariable.StateType.Input,
+                    Value= Subject
+                },
+                new StateVariable
+                {
+                    Name="Attachments",
+                    Type=StateVariable.StateType.Input,
+                    Value= Attachments
+                },
+                new StateVariable
+                {
+                    Name="Body",
+                    Type=StateVariable.StateType.Input,
+                    Value= Body
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= Result
+                }
+            };
+        }
 
         bool IsDebug
         {
@@ -273,8 +327,6 @@ namespace Dev2.Activities.Exchange
             }
         }
 
-        #region Overrides of DsfNativeActivity<string>
-
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
@@ -293,21 +345,13 @@ namespace Dev2.Activities.Exchange
             return _debugOutputs;
         }
 
-        #endregion
-
-        #endregion
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
-
         public bool Equals(DsfExchangeEmailNewActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -333,7 +377,7 @@ namespace Dev2.Activities.Exchange
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
