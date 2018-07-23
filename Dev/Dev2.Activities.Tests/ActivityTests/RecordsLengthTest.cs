@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new StateVariable
                 {
                     Name = "RecordsetName",
-                    Type = StateVariable.StateType.InputOutput,
+                    Type = StateVariable.StateType.Input,
                     Value = "[[recset()]]"
                 },
                 new StateVariable

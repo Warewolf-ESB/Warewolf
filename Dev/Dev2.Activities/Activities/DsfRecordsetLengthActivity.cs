@@ -63,7 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Name = "RecordsetName",
                     Value = RecordsetName,
-                    Type = StateVariable.StateType.InputOutput
+                    Type = StateVariable.StateType.Input
                 },
                 new StateVariable
                 {
