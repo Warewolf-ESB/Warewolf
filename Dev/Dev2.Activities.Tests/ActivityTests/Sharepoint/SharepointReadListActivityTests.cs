@@ -155,7 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                  new StateVariable
                 {
                     Name="ReadListItems",
-                    Type = StateVariable.StateType.Input,
+                    Type = StateVariable.StateType.InputOutput,
                     Value =  ActivityHelper.GetSerializedStateValueFromCollection(readListItems)
                  },
                 new StateVariable
@@ -176,17 +176,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                     Type = StateVariable.StateType.Input,
                     Value = sharepointList
                 }
-                ,
-                new StateVariable
-                {
-                    Name="SharepointUtils",
-                    Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(sharepointUtils)
-                }
+                
             };
             //---------------Test Result -----------------------
             var stateItems = sharepointReadListActivity.GetState();
-            Assert.AreEqual(6, stateItems.Count());
+            Assert.AreEqual(5, stateItems.Count());
             var iter = stateItems.Select(
                 (item, index) => new
                 {

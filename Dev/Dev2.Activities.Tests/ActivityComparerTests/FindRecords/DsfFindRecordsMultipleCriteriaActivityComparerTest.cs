@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.State;
+using Dev2.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
@@ -352,6 +355,82 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.NumberFormat
             var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfFindRecordsMultipleCriteriaActivity_GetState")]
+        public void DsfFindRecordsMultipleCriteriaActivity_GetState_ReturnsStateVariable()
+        {
+            var resultsCol = new List<FindRecordsTO>
+            {
+                new FindRecordsTO
+                {
+                    SearchType = "SOMETHING"
+                }
+                ,
+                new FindRecordsTO
+                {
+                    SearchType = "NONE"
+                }
+
+            };
+            
+            var act = new DsfFindRecordsMultipleCriteriaActivity() { ResultsCollection = resultsCol,FieldsToSearch="[[rec().a]]",RequireAllTrue=true,RequireAllFieldsToMatch=false,Result="[[match]]" };
+
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(5, stateItems.Count());
+
+            var expectedResults = new[]
+            {                
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(resultsCol)
+                },
+                new StateVariable
+                {
+                    Name="FieldsToSearch",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[rec().a]]"
+                },
+                new StateVariable
+                {
+                    Name="RequireAllTrue",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name="RequireAllFieldsToMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[match]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

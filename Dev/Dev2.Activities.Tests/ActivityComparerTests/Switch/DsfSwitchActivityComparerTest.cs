@@ -3,6 +3,7 @@ using Dev2.Tests.Activities.ActivityTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
@@ -383,6 +384,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfFlowSwitchActivity_GetState")]
+        public void DsfFlowSwitchActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfFlowSwitchActivity();
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, stateItems.Count());
         }
     }
 }
