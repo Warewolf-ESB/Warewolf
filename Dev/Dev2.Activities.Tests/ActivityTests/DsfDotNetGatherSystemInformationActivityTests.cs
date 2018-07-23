@@ -5,6 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using Dev2.Data.Interfaces.Enums;
+using System.Linq;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -146,6 +149,46 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var warewolfServerVersion = env.EvalAsListOfStrings("[[warewolfServerVersion]]", 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfServerVersion[0]));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsExecuteCommandLineActivity_GetState")]
+        public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            //------------Setup for test--------------------------
+            var act = new DsfDotNetGatherSystemInformationActivity { SystemInformationCollection = systemInformationCollection };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(1, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SystemInformationCollection",
+                    Type = StateVariable.StateType.InputOutput,
+                     Value= ActivityHelper.GetSerializedStateValueFromCollection(systemInformationCollection)
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

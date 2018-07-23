@@ -20,11 +20,13 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -56,6 +58,19 @@ namespace Dev2.Activities
             : base("Gather System Information")
         {
             SystemInformationCollection = new List<GatherSystemInformationTO>();
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SystemInformationCollection",
+                    Type=StateVariable.StateType.InputOutput,
+                    Value= ActivityHelper.GetSerializedStateValueFromCollection(SystemInformationCollection)
+                }
+            };
         }
 
         void CleanArgs()
