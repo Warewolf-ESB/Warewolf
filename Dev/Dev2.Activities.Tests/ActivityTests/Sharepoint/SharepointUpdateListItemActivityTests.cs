@@ -10,6 +10,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
 using Dev2.TO;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using static Dev2.Tests.Activities.ActivityTests.Sharepoint.SharepointCopyFileActivityTests;
@@ -133,14 +134,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Result = result,
                 RequireAllCriteriaToMatch = requireAllCriteriaToMatch
             };
-            var dataObj = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>());
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            var privateObject = new PrivateObject(sharepointUpdateListItemActivity);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             //------------Execute Test---------------------------
-            privateObject.Invoke("ExecuteTool", dataObj, 0);
-
-            var serializer = new Dev2JsonSerializer();
             var expectedResults = new[]
             {
                    new StateVariable
@@ -152,14 +146,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 new StateVariable
                 {
                     Name="ReadListItems",
-                    Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(readListItems)
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(readListItems)
                 },
                 new StateVariable
                 {
                     Name="FilterCriteria",
                     Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(filterCriteria)
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(filterCriteria)
                 },
                   new StateVariable
                 {
