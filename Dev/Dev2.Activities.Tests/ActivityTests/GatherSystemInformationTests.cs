@@ -21,6 +21,8 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Globalization;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -855,6 +857,46 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[testVar]]", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsExecuteCommandLineActivity_GetState")]
+        public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
+            //------------Setup for test--------------------------
+            var act = new DsfGatherSystemInformationActivity { SystemInformationCollection=systemInformationCollection };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(1, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SystemInformationCollection",
+                    Type = StateVariable.StateType.InputOutput,
+                     Value= ActivityHelper.GetSerializedStateValueFromCollection(systemInformationCollection)
+                }                
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         static DsfGatherSystemInformationActivity DsfGatherSystemInformationActivity(Mock<IGetSystemInformation> mock)
