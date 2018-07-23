@@ -27,7 +27,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Move File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Move_File")]
+    [ToolDescriptorInfo("SharepointLogo", "Move File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Move_File")]
     public class SharepointMoveFileActivity : DsfAbstractFileActivity,IEquatable<SharepointMoveFileActivity>
     {
         public SharepointMoveFileActivity() : base("SharePoint Move File")

@@ -26,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Download File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Download_File")]
+    [ToolDescriptorInfo("SharepointLogo", "Download File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Download_File")]
     public class SharepointFileDownLoadActivity : DsfAbstractFileActivity,IEquatable<SharepointFileDownLoadActivity>
     {
         public SharepointFileDownLoadActivity() : base("SharePoint Download File")
