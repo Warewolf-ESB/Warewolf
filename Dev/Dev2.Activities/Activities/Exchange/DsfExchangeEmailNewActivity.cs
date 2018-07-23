@@ -120,6 +120,12 @@ namespace Dev2.Activities.Exchange
                 },
                 new StateVariable
                 {
+                    Name = nameof(IsHtml),
+                    Type = StateVariable.StateType.Input,
+                    Value = IsHtml.ToString()
+                },
+                new StateVariable
+                {
                     Name="Body",
                     Type=StateVariable.StateType.Input,
                     Value= Body

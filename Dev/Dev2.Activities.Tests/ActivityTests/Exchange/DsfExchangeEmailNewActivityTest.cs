@@ -97,12 +97,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Exchange
                 Bcc = expectedBcc,
                 Subject = expectedSubject,
                 Attachments = expectedAttachments,
+                IsHtml = true,
                 Body = expectedBody,
                 Result = expectedResult
             };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(8, stateItems.Count());
+            Assert.AreEqual(9, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -141,6 +142,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Exchange
                     Name="Attachments",
                     Type=StateVariable.StateType.Input,
                     Value= expectedAttachments
+                },
+                new StateVariable
+                {
+                    Name="IsHtml",
+                    Type=StateVariable.StateType.Input,
+                    Value = "True"
                 },
                 new StateVariable
                 {
