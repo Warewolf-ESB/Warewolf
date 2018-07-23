@@ -497,7 +497,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -534,7 +534,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
 
         }
 
@@ -574,7 +574,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             dsfConsumeRabbitMQActivity.GetDebugInputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
             dsfConsumeRabbitMQActivity.GetDebugOutputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>());
             //------------Execute Test---------------------------
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
         [TestMethod]
         [Owner("Mthembu Sanele")]
@@ -707,7 +707,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -749,7 +749,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
 
 
@@ -793,7 +793,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.InnerException.Message, string.Format("Queue {0} not found", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
 
 
@@ -909,7 +909,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -949,7 +949,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             try
             {
                 var serializedAct = serializer.SerializeToBuilder(dsfConsumeRabbitMQActivity);
-                //------------Assert Results-------------------------            
+                //------------Assert Results-------------------------
                 Assert.IsNotNull(serializedAct);
             }
             catch (Exception e)
@@ -1057,7 +1057,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Prefetch = "10",
                 RabbitMQSourceResourceId = sourceId,
                 ReQueue = false,
-                TimeOut = "100",                
+                TimeOut = "100",
                 Result = "[[res]]",
                 Response = "[[data]]"
             };
@@ -1085,31 +1085,31 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                     Type = StateVariable.StateType.Input,
                     Value = "False"
                 },
-                 new StateVariable
+                new StateVariable
                 {
                     Name = "ObjectName",
                     Type = StateVariable.StateType.Input,
                     Value = "[[@result]]"
                 },
-                 new StateVariable
+                new StateVariable
                 {
                     Name = "Prefetch",
                     Type = StateVariable.StateType.Input,
                     Value = "10"
                 },
-                  new StateVariable
+                new StateVariable
                 {
                     Name = "RabbitMQSourceResourceId",
                     Type = StateVariable.StateType.Input,
                     Value = sourceId.ToString()
                 },
-                   new StateVariable
+                new StateVariable
                 {
                     Name = "ReQueue",
                     Type = StateVariable.StateType.Input,
                     Value = "False"
                 },
-                   new StateVariable
+                new StateVariable
                 {
                     Name = "TimeOut",
                     Type = StateVariable.StateType.Input,
