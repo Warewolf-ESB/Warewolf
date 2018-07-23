@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
@@ -75,6 +76,54 @@ namespace Dev2.Activities.RabbitMQ.Publish
         internal IModel Channel { get; set; }
 
         public RabbitMQSource RabbitMQSource { get; set; }
+
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "QueueName",
+                    Value = QueueName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "IsDurable",
+                    Value = IsDurable.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "IsExclusive",
+                    Value = IsExclusive.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Message",
+                    Value = Message,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RabbitMQSourceResourceId",
+                    Value = RabbitMQSourceResourceId.ToString(),
+                    Type = StateVariable.StateType.Input
+                },new StateVariable
+                {
+                    Name = "IsAutoDelete",
+                    Value = IsAutoDelete.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }                
+            };
+        }
 
         #region Overrides of DsfBaseActivity
 
