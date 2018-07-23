@@ -37,7 +37,7 @@ using WarewolfParserInterop;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "013E421A-C9EF-45A5-8E18-70233DCCC766", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
+    [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "013E421A-C9EF-45A5-8E18-70233DCCC766", "Dev2.Activities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
     public class DsfDotNetMultiAssignActivity : DsfActivityAbstract<string>
     {
         public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
