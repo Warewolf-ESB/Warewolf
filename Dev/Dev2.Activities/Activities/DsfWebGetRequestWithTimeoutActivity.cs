@@ -16,6 +16,7 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -82,6 +83,35 @@ namespace Dev2.Activities
             TimeOutText = "100";
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Url",
+                    Value = Url,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Headers",
+                    Value = Headers,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "TimeOutText",
+                    Value = TimeOutText,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
