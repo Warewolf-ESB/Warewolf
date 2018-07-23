@@ -861,7 +861,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsExecuteCommandLineActivity_GetState")]
+        [TestCategory("DsfGatherSystemInformationActivity_GetState")]
         public void DsfGatherSystemInformationActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
