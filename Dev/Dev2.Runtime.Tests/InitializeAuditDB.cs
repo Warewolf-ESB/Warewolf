@@ -11,7 +11,7 @@ namespace Dev2.Runtime.Tests
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {
-            string inputFilePath = "Dev2.Tests.Activities.auditDB.db";
+            string inputFilePath = "Dev2.Runtime.Tests.auditDB.db";
             string outputFilePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Audits\auditDB.db");
             if (File.Exists(outputFilePath))
             {
