@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Warewolf.Tools.Specs
 {
     [TestClass]
-    static class InitializeAuditDB
+    public static class InitializeAuditDB
     {
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
