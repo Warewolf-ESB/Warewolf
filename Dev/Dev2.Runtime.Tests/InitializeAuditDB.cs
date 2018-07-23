@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Dev2.Tests.Activities
+namespace Dev2.Runtime.Tests
 {
     [TestClass]
     static class InitializeAuditDB
