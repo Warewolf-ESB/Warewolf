@@ -20,6 +20,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces.Enums;
@@ -36,9 +37,7 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     [ToolDescriptorInfo("Execution-ForEach", "ForEach", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_For Each")]
     public class DsfForEachActivity : DsfActivityAbstract<bool>,IEquatable<DsfForEachActivity>
@@ -69,12 +68,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Inputs("FromDisplayName")]
         [FindMissing]
         public string FromDisplayName
-        
         {
-            get
-            {
-                return _displayName;
-            }
+            get => _displayName;
             set
             {
                 _displayName = value;
@@ -88,7 +83,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         public int ExecutionCount
-        
         {
             get
             {
@@ -99,6 +93,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 return 0;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "ForEachType",
+                    Type = StateVariable.StateType.Input,
+                    Value = ForEachType.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = From
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = To
+                },
+                new StateVariable
+                {
+                    Name = "CsvIndexes",
+                    Type = StateVariable.StateType.Input,
+                    Value = CsvIndexes
+                },
+                new StateVariable
+                {
+                    Name = "NumOfExections",
+                    Type = StateVariable.StateType.Input,
+                    Value = NumOfExections
+                },
+                new StateVariable
+                {
+                    Name = "Recordset",
+                    Type = StateVariable.StateType.Input,
+                    Value = Recordset
+                }
+            };
         }
 
 #pragma warning disable S100 // Methods and properties should be named in camel case
@@ -187,13 +224,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
             {
                 AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
-
             }
             if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
             {
-
                 AddDebugItem(new DebugEvalResult(To, "To", environment, update), debugItem);
-
             }
         }
 
@@ -247,8 +281,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 error = e.Message;
             }
-
-
             return result;
         }
 
@@ -363,7 +395,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var testRunResult = new TestRunResult();
                     GetFinalTestRunResult(serviceTestStep, testRunResult);
                     serviceTestStep.Result = testRunResult;
-
                 }
             }
 
@@ -493,8 +524,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             equals &= FailOnFirstError == other.FailOnFirstError;
             equals &= string.Equals(ElementName, other.ElementName);
             return equals;
-                 
-                
         }
 
         public override bool Equals(object obj)
