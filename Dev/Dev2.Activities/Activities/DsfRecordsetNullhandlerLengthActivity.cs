@@ -26,6 +26,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Linq;
+using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -59,6 +60,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TreatNullAsZero = true;
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Value = RecordsetName,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "TreatNullAsZero",
+                    Value = TreatNullAsZero.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="RecordsLength",
+                    Value = RecordsLength,
+                    Type = StateVariable.StateType.Input
+                }
+            };
+        }
 
         public override List<string> GetOutputs() => new List<string> { RecordsLength };
 
