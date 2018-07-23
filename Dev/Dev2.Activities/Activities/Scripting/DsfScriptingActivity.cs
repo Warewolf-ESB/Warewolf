@@ -29,6 +29,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.State;
 
 namespace Dev2.Activities
 {
@@ -72,6 +73,37 @@ namespace Dev2.Activities
         }
 
         #endregion Ctor
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Script",
+                    Value = Script,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "IncludeFile",
+                    Value = IncludeFile,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "EscapeScript",
+                    Value = EscapeScript.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
         public override List<string> GetOutputs() => new List<string> { Result };
         #region Overrides of DsfNativeActivity<string>
         
