@@ -237,7 +237,8 @@ namespace Warewolf.Launcher
                 "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
                 "%PROGRAMDATA%\\Warewolf\\Workspaces",
                 "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl"
+                "%PROGRAMDATA%\\Warewolf\\VersionControl",
+                "%PROGRAMDATA%\\Warewolf\\Audits"
             };
 
             foreach (var FileOrFolder in ToClean)
