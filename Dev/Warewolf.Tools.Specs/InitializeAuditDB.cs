@@ -11,7 +11,7 @@ namespace Warewolf.Tools.Specs
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {
-            string inputFilePath = "Dev2.Tests.Activities.auditDB.db";
+            string inputFilePath = "Warewolf.Tools.Specs.auditDB.db";
             string outputFilePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Audits\auditDB.db");
             if (File.Exists(outputFilePath))
             {
