@@ -15,6 +15,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Common.Utils;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
@@ -188,6 +189,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get;
             set;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = nameof(OutputPath),
+                    Value = OutputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = nameof(Overwrite),
+                    Value = Overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(AppendTop),
+                    Value = AppendTop.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(AppendBottom),
+                    Value = AppendBottom.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(FileContents),
+                    Value = FileContents,
+                    Type = StateVariable.StateType.InputOutput
+                },
+                new StateVariable
+                {
+                    Name = nameof(Username),
+                    Value = Username,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(PrivateKeyFile),
+                    Value = PrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
         }
 
 
