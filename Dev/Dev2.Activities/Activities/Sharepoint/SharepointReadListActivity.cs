@@ -59,7 +59,7 @@ namespace Dev2.Activities.Sharepoint
                  new StateVariable
                 {
                     Name="ReadListItems",
-                    Type = StateVariable.StateType.Input,
+                    Type = StateVariable.StateType.InputOutput,
                     Value =  ActivityHelper.GetSerializedStateValueFromCollection(ReadListItems)
                  },
                 new StateVariable
@@ -79,12 +79,6 @@ namespace Dev2.Activities.Sharepoint
                     Name="SharepointList",
                     Type = StateVariable.StateType.Input,
                     Value = SharepointList
-                },
-                new StateVariable
-                {
-                    Name="SharepointUtils",
-                    Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(SharepointUtils)
                 }
             };
         }
