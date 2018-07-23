@@ -20,6 +20,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.TO;
 using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -47,7 +48,6 @@ namespace Dev2.Activities.Sharepoint
         public new string Result { get; set; }
         public override IEnumerable<StateVariable> GetState()
         {
-            var serializer = new Dev2JsonSerializer();
             return new[]
             {
                  new StateVariable
@@ -56,17 +56,17 @@ namespace Dev2.Activities.Sharepoint
                     Type = StateVariable.StateType.Input,
                     Value = SharepointServerResourceId.ToString()
                  },
-                new StateVariable
+                 new StateVariable
                 {
                     Name="ReadListItems",
-                    Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(ReadListItems)
-                },
+                    Type = StateVariable.StateType.InputOutput,
+                    Value =  ActivityHelper.GetSerializedStateValueFromCollection(ReadListItems)
+                 },
                 new StateVariable
                 {
                     Name="FilterCriteria",
                     Type = StateVariable.StateType.Input,
-                    Value = serializer.Serialize(FilterCriteria)
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FilterCriteria)
                 },
                   new StateVariable
                 {
