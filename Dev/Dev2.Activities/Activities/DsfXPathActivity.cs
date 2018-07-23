@@ -17,12 +17,14 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -80,6 +82,26 @@ namespace Dev2.Activities
         {
             ResultsCollection = new List<XPathDTO>();
         }
+
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Value = SourceString,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ResultsCollection),
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         #endregion
 
