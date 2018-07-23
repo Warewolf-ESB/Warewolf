@@ -81,6 +81,12 @@ namespace Dev2.Activities.Sharepoint
                     Name="ServerInputPath",
                     Type = StateVariable.StateType.Input,
                     Value = ServerInputPath
+                },
+                new StateVariable
+                {
+                    Name="Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = Overwrite.ToString()
                 }
                 ,
                 new StateVariable
