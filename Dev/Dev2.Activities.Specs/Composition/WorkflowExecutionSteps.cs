@@ -793,7 +793,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else
                 {
-                    throw new Exception("Remote Warewolf service " + remoteWf + " not found on server " + server + ".");
+                    throw new Exception($"Remote Warewolf service {remoteWf} not found on server {server}.");
                 }
             }
             else
