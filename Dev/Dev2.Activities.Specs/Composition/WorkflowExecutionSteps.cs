@@ -1355,7 +1355,21 @@ namespace Dev2.Activities.Specs.Composition
             {
                 if (toolName != null && workflowName != null)
                 {
-                    workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+                    IDebugState debugState = debugStates.FirstOrDefault(wf => wf.DisplayName.Equals(workflowName));
+                    if (debugState != null)
+                    {
+                        workflowId = debugState.ID;
+                    }
+                    else
+                    {
+                        var errors = debugStates.Where(wf => wf.ErrorMessage != "");
+                        var errorsMessage = "";
+                        if (errors != null)
+                        {
+                            errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
+                        }
+                        Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
+                    }
                 }
                 else
                 {
