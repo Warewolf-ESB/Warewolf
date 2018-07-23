@@ -24,6 +24,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Exchange.Email.Wrapper;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.Exchange
 {
@@ -73,6 +74,61 @@ namespace Dev2.Activities.Exchange
         public new string Result { get; set; }
 
         public override List<string> GetOutputs() => new List<string> { Result };
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SavedSource.ResourceID",
+                    Type=StateVariable.StateType.Input,
+                    Value= SavedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name="To",
+                    Type=StateVariable.StateType.Input,
+                    Value= To
+                },
+                new StateVariable
+                {
+                    Name="Cc",
+                    Type=StateVariable.StateType.Input,
+                    Value= Cc
+                },
+                new StateVariable
+                {
+                    Name="Bcc",
+                    Type=StateVariable.StateType.Input,
+                    Value= Bcc
+                },
+                new StateVariable
+                {
+                    Name="Subject",
+                    Type=StateVariable.StateType.Input,
+                    Value= Subject
+                },
+                new StateVariable
+                {
+                    Name="Attachments",
+                    Type=StateVariable.StateType.Input,
+                    Value= Attachments
+                },
+                new StateVariable
+                {
+                    Name="Body",
+                    Type=StateVariable.StateType.Input,
+                    Value= Body
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= Result
+                }
+            };
+        }
 
         #region Overrides of DsfNativeActivity<string>
 
