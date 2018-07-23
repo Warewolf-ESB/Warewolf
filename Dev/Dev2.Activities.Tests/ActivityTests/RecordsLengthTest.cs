@@ -13,6 +13,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -213,6 +214,51 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRecordsetLengthActivity_GetState")]
+        public void DsfRecordsetLengthActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfRecordsetLengthActivity { RecordsetName = "[[recset()]]", RecordsLength = "[[len]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = "[[recset()]]"
+                },
+                new StateVariable
+                {
+                    Name="RecordsLength",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[len]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         #region Private Test Methods
