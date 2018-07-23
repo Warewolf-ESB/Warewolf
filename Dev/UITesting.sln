@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Load.Specs", "Warewolf.UI.Load.Specs\Warewolf.UI.Load.Specs.csproj", "{D694D1B5-C299-459C-AFAB-2CAE589204B7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionWideBuildOutputs", "SolutionWideBuildOutputs", "{C9DEE0C5-E59A-4830-9DD6-E68929177D6F}"
+	ProjectSection(SolutionItems) = preProject
+		UITesting.sln.Compile.bat = UITesting.sln.Compile.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
