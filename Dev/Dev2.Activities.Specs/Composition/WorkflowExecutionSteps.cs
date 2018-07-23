@@ -89,6 +89,8 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Warewolf.Launcher;
+using System.Reflection;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -97,6 +99,7 @@ namespace Dev2.Activities.Specs.Composition
     {
         readonly ScenarioContext _scenarioContext;
         IDirectory _dirHelper;
+        static ContainerLauncher _containerOps;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -731,9 +734,16 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [AfterFeature("SubworkflowExecution")]
+        public static void ScenarioCleaning() => _containerOps.Dispose();
+
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
+            if (remoteWf == "Remote Container")
+            {
+                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
