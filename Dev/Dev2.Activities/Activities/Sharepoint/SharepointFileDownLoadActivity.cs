@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
@@ -27,7 +28,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Download File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Download_File")]
-    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity,IEquatable<SharepointFileDownLoadActivity>
+    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity, IEquatable<SharepointFileDownLoadActivity>
     {
         public SharepointFileDownLoadActivity() : base("SharePoint Download File")
         {
@@ -59,7 +60,37 @@ namespace Dev2.Activities.Sharepoint
         [Inputs("Overwrite")]
         [FindMissing]
         public bool Overwrite { get; set; }
-
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="LocalInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = LocalInputPath
+                 },
+                new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServerInputPath
+                }
+                ,
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
         public SharepointSource SharepointSource { get; set; }
 
         public Guid SharepointServerResourceId { get; set; }
@@ -91,7 +122,7 @@ namespace Dev2.Activities.Sharepoint
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
-        {           
+        {
             _debugInputs = new List<DebugItem>();
             error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
@@ -238,9 +269,9 @@ namespace Dev2.Activities.Sharepoint
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
             return base.Equals(other)
-                && string.Equals(ServerInputPath, other.ServerInputPath) 
-                && string.Equals(LocalInputPath, other.LocalInputPath) 
-                && Overwrite == other.Overwrite 
+                && string.Equals(ServerInputPath, other.ServerInputPath)
+                && string.Equals(LocalInputPath, other.LocalInputPath)
+                && Overwrite == other.Overwrite
                 && isSourceEqual
                 && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
@@ -262,7 +293,7 @@ namespace Dev2.Activities.Sharepoint
                 return false;
             }
 
-            return Equals((SharepointFileDownLoadActivity) obj);
+            return Equals((SharepointFileDownLoadActivity)obj);
         }
 
         public override int GetHashCode()
