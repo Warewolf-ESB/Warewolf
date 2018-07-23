@@ -36,6 +36,8 @@ using Dev2.Comparer;
 using System.IO;
 using System.Text;
 using Dev2.Common.Common;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -95,6 +97,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ResultsCollection = new List<DataSplitDTO>();
         }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Value = SourceString,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ReverseOrder",
+                    Value = ReverseOrder.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "SkipBlankRows",
+                    Value = SkipBlankRows.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ResultsCollection),
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
