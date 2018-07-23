@@ -274,7 +274,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new StateVariable
                 {
                     Name="RecordsLength",
-                    Type = StateVariable.StateType.Input,
+                    Type = StateVariable.StateType.Output,
                     Value = "[[len]]"
                 }
             };

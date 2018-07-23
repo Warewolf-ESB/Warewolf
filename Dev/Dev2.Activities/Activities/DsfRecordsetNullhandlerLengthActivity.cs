@@ -79,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Name="RecordsLength",
                     Value = RecordsLength,
-                    Type = StateVariable.StateType.Input
+                    Type = StateVariable.StateType.Output
                 }
             };
         }
