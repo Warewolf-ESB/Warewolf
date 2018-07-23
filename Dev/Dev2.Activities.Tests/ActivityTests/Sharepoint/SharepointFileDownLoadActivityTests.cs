@@ -225,13 +225,15 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var result = "[[Files().Name]]";
             var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
             var localInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var overwrite = true;
             var sharepointFileDownLoadActivity = new SharepointFileDownLoadActivity
             {
                 DisplayName = activityName,
                 SharepointServerResourceId = sharepointServerResourceId,
                 Result = result,
                 ServerInputPath = serverInputPath,
-                LocalInputPath = localInputPath
+                LocalInputPath = localInputPath,
+                Overwrite = overwrite
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             var mockSharepointHelper = new Mock<ISharepointHelper>();
@@ -266,6 +268,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                     Name="ServerInputPath",
                     Type = StateVariable.StateType.Input,
                     Value = serverInputPath
+                },
+                new StateVariable
+                {
+                    Name="Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = overwrite.ToString()
                 }
                 ,
                 new StateVariable
@@ -277,7 +285,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             };
             //---------------Test Result -----------------------
             var stateItems = sharepointFileDownLoadActivity.GetState();
-            Assert.AreEqual(4, stateItems.Count());
+            Assert.AreEqual(5, stateItems.Count());
             var iter = stateItems.Select(
                 (item, index) => new
                 {
