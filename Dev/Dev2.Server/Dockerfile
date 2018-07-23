@@ -11,6 +11,7 @@ ENV SERVER_PATH "Server\Warewolf Server.exe"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 ENV SERVER_USERNAME "WarewolfAdmin"
 ENV SERVER_PASSWORD "W@rEw0lf@dm1n"
+ENV SERVER_USERNAME "WarewolfAdmin"
 
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
