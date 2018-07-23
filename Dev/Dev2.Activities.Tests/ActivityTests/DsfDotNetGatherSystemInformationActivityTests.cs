@@ -153,8 +153,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DsExecuteCommandLineActivity_GetState")]
-        public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
+        [TestCategory("DsfDotNetGatherSystemInformationActivity_GetState")]
+        public void DsfDotNetGatherSystemInformationActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
