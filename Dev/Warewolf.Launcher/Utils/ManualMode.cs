@@ -9,7 +9,7 @@ namespace Warewolf.Launcher.Utils
             build.InstallServer();
             build.CleanupServerStudio();
             build.Startmywarewolfio();
-            build.TryStartLocalCIRemoteContainer();
+            build.ciRemoteContainerLauncher = TestLauncher.TryStartLocalCIRemoteContainer(build.TestRunner.TestsResultsPath);
             if (String.IsNullOrEmpty(build.DomywarewolfioStart))
             {
                 build.StartServer();

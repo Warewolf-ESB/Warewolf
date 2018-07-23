@@ -11,7 +11,7 @@ using Warewolf.Launcher.TestResultsMergers;
 
 namespace Warewolf.Launcher
 {
-    class TestLauncher
+    public class TestLauncher
     {
         public string DoServerStart { get; set; }
         public string DoStudioStart { get; set; }
@@ -136,39 +136,11 @@ namespace Warewolf.Launcher
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
-        internal void TryStartLocalCIRemoteContainer()
+        public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
         {
-            try
-            {
-                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
-                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
-                if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
-                {
-                    CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message.Replace(".",": ") + e.InnerException??e.InnerException.Message);
-            }
-        }
-
-        void CIRemoteOverloading(string address)
-        {
-            var ServerFolderPath = Path.GetDirectoryName(ServerPath);
-            string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
-            string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - UITests", "Resources", "Acceptance Testing Resources", "Remote Connection Integration.xml");
-            Console.WriteLine($"Redirecting to containerized CI remote server in \"{ServerTestsCIRemote}\" and \"{UITestsCIRemote}\" to {address}");
-            var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
-            var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
-            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, address);
-            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, address);
-            ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
-            UITestsCIRemoteContents = UITestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
-            File.WriteAllText(ServerTestsCIRemote, ServerTestsCIRemoteContents);
-            File.WriteAllText(UITestsCIRemote, UITestsCIRemoteContents);
+            var containerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
+            containerLauncher.LogOutputDirectory = logDirectory;
+            return containerLauncher;
         }
 
         string InsertServerSourceAddress(string serverSourceXML, string newAddress)
@@ -721,7 +693,6 @@ namespace Warewolf.Launcher
                 {
                     this.CleanupServerStudio();
                     Startmywarewolfio();
-                    TryStartLocalCIRemoteContainer();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
                     {
                         StartServer();
