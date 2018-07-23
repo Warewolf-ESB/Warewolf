@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -70,6 +71,29 @@ namespace Dev2.Activities
             Headers = string.Empty;
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Url",
+                    Value = Url,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Headers",
+                    Value = Headers,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
 
         public override List<string> GetOutputs() => new List<string> { Result };
