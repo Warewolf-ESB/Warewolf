@@ -862,7 +862,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsExecuteCommandLineActivity_GetState")]
-        public void DsExecuteCommandLineActivity_GetState_ReturnsStateVariable()
+        public void DsfGatherSystemInformationActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
@@ -879,7 +879,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Name = "SystemInformationCollection",
                     Type = StateVariable.StateType.InputOutput,
                      Value= ActivityHelper.GetSerializedStateValueFromCollection(systemInformationCollection)
-                }                
+                }
             };
 
             var iter = act.GetState().Select(
