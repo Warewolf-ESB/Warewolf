@@ -30,7 +30,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
+using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -82,6 +82,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [Outputs("Result")]
         [FindMissing]
         public new string Result { get; set; }
+
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Expression",
+                    Value = Expression,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RoundingType",
+                    Value = RoundingType,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RoundingDecimalPlaces",
+                    Value = RoundingDecimalPlaces,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "DecimalPlacesToShow",
+                    Value = DecimalPlacesToShow,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         protected override bool CanInduceIdle => true;
 
