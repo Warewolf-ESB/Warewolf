@@ -15,6 +15,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -55,7 +56,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Sort Records";
         }
 
-        
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SortField",
+                    Value = SortField,
+                    Type = StateVariable.StateType.InputOutput
+                },                 
+                new StateVariable
+                {
+                    Name="SelectedSort",
+                    Value = SelectedSort,
+                    Type = StateVariable.StateType.Input
+                }
+            };
+        }
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);

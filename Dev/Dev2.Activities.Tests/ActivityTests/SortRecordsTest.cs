@@ -11,7 +11,9 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -423,6 +425,51 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             var debugOut = act.GetDebugOutputs(null, 0);
             Assert.AreEqual(0, debugOut.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfSortRecordsActivity_GetState")]
+        public void DsfSortRecordsActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfSortRecordsActivity { SortField = "[[recset()]]", SelectedSort = "Forward" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SortField",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = "[[recset()]]"
+                },               
+                new StateVariable
+                {
+                    Name="SelectedSort",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Forward"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
         #region Private Test Methods
 
