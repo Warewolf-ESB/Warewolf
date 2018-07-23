@@ -46,7 +46,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 new StateVariable
                 {
                     Name="OutputPath",
-                    Type = StateVariable.StateType.Input,
+                    Type = StateVariable.StateType.Output,
                     Value = OutputPath
                 },
                 new StateVariable
@@ -57,21 +57,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 },
                 new StateVariable
                 {
-                    Name="DestinationPassword",
-                    Type = StateVariable.StateType.Input,
-                    Value = DestinationPassword
-                },
-                new StateVariable
-                {
                     Name="Username",
                     Type = StateVariable.StateType.Input,
                     Value = Username
-                },
-                new StateVariable
-                {
-                    Name="Password",
-                    Type = StateVariable.StateType.Input,
-                    Value = Password
                 },
                 new StateVariable
                 {

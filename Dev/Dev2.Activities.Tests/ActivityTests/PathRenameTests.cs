@@ -284,7 +284,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(10, stateItems.Count());
+            Assert.AreEqual(8, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -297,7 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new StateVariable
                 {
                     Name="OutputPath",
-                    Type = StateVariable.StateType.Input,
+                    Type = StateVariable.StateType.Output,
                     Value = outputPath
                 },
                 new StateVariable
@@ -308,21 +308,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 },
                 new StateVariable
                 {
-                    Name="DestinationPassword",
-                    Type = StateVariable.StateType.Input,
-                    Value = destinationPassword
-                },
-                new StateVariable
-                {
                     Name="Username",
                     Type = StateVariable.StateType.Input,
                     Value = username
-                },
-                new StateVariable
-                {
-                    Name="Password",
-                    Type = StateVariable.StateType.Input,
-                    Value = password
                 },
                 new StateVariable
                 {
