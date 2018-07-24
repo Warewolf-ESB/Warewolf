@@ -144,5 +144,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             //---------------Test Result -----------------------
             Assert.AreEqual(1, nodes.Count());
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfSequenceActivity_GetState")]
+        public void DsfSequenceActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfSequenceActivity();
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, stateItems.Count());
+
+        }
     }
 }

@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new StateVariable
                 {
                     Name = "InputPath",
-                    Type = StateVariable.StateType.Output,
+                    Type = StateVariable.StateType.InputOutput,
                     Value = "[[InputPath]]"
                 },
                 new StateVariable
