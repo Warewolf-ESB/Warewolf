@@ -10,8 +10,10 @@
 
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
+using System.Collections.Generic;
 using Warewolf.Core;
 
 
@@ -35,6 +37,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void MoveRemainingIterators()
         {
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputPath
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = Username
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = PrivateKeyFile
+                },
+                new StateVariable
+                {
+                    Name = "OutputPath",
+                    Type = StateVariable.StateType.Output,
+                    Value = OutputPath
+                },
+                new StateVariable
+                {
+                    Name = "DestinationUsername",
+                    Type = StateVariable.StateType.Input,
+                    Value = DestinationUsername
+                },
+                new StateVariable
+                {
+                    Name = "DestinationPrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = DestinationPrivateKeyFile
+                },
+                new StateVariable
+                {
+                    Name = "Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = Overwrite.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }

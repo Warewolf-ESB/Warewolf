@@ -11,7 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Communication;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
@@ -292,6 +294,96 @@ namespace Dev2.Tests.Activities.ActivityTests
             var pathMove = new DsfPathMove();
             IDestinationUsernamePassword password = pathMove;
             Assert.IsNotNull(password);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfPathMove_GetState")]
+        public void DsfPathMove_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfPathMove
+            {
+                InputPath = "[[InputPath]]",
+                Username = "Bob",
+                PrivateKeyFile = "abcde",
+                OutputPath = "[[OutputPath]]",
+                DestinationUsername = "John",
+                DestinationPrivateKeyFile = "fghij",
+                Result = "[[res]]"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(8, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[InputPath]]"
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Bob"
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "abcde"
+                },
+                new StateVariable
+                {
+                    Name = "OutputPath",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[OutputPath]]"
+                },
+                new StateVariable
+                {
+                    Name = "DestinationUsername",
+                    Type = StateVariable.StateType.Input,
+                    Value = "John"
+                },
+                new StateVariable
+                {
+                    Name = "DestinationPrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "fghij"
+                },
+                new StateVariable
+                {
+                    Name = nameof(Overwrite),
+                    Type = StateVariable.StateType.Input,
+                    Value = Overwrite.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
