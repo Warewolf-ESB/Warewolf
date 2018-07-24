@@ -37,6 +37,7 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
+using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -700,6 +701,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             throw new NotImplementedException();
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
         }
     }
 }
