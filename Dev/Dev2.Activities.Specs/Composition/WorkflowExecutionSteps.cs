@@ -156,7 +156,9 @@ namespace Dev2.Activities.Specs.Composition
         public void CleanUp()
         {         
             _resetEvt?.Close();
+            _containerOps.Dispose()
         }
+
         public void CleanUp_DetailedLogFile()
         {
             WorkflowIsDeletedAsCleanup();
@@ -733,9 +735,6 @@ namespace Dev2.Activities.Specs.Composition
                 }
             }
         }
-
-        [AfterFeature("SubworkflowExecution")]
-        public static void ScenarioCleaning() => _containerOps.Dispose();
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)

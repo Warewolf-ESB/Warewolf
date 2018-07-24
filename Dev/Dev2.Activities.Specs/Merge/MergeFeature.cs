@@ -35,6 +35,7 @@ namespace Dev2.Activities.Specs.Merge
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         static ContainerLauncher _containerOps;
+
         public MergeFeature(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
@@ -59,8 +60,11 @@ namespace Dev2.Activities.Specs.Merge
 #pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
-        [AfterFeature("MergeExecution")]
-        public static void ScenarioCleaning() => _containerOps.Dispose();
+        [AfterScenario]
+        public void CleanUp()
+        {
+            _containerOps.Dispose()
+        }
 
         IServer localHost;
         readonly IServerRepository environmentModel = ServerRepository.Instance;
