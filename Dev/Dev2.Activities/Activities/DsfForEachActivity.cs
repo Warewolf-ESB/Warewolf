@@ -40,14 +40,14 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("Execution-ForEach", "ForEach", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_For Each")]
-    public class DsfForEachActivity : DsfActivityAbstract<bool>,IEquatable<DsfForEachActivity>
+    public class DsfForEachActivity : DsfActivityAbstract<bool>, IEquatable<DsfForEachActivity>
     {
         string _previousParentId;
         string _displayName;
         readonly int _previousInputsIndex = -1;
-        readonly int _previousOutputsIndex = -1;       
+        readonly int _previousOutputsIndex = -1;
         ForEachBootstrapTO _operationalData;
-        
+
         public enForEachType ForEachType { get; set; }
 
         [FindMissing]
@@ -101,6 +101,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 new StateVariable
                 {
+                    Name = "ForEachElementName",
+                    Type = StateVariable.StateType.Input,
+                    Value = ForEachElementName
+                },
+                new StateVariable
+                {
                     Name = "ForEachType",
                     Type = StateVariable.StateType.Input,
                     Value = ForEachType.ToString()
@@ -144,12 +150,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore S100 // Methods and properties should be named in camel case
         public ActivityFunc<string, bool> DataFunc { get; set; }
-        public bool FailOnFirstError { get; set; }        
+        public bool FailOnFirstError { get; set; }
         public string ElementName { private set; get; }
         public string PreservedDataList { private set; get; }
         readonly Variable<string> _origInput = new Variable<string>("origInput");
         readonly Variable<string> _origOutput = new Variable<string>("origOutput");
-        
+
         string _childUniqueID;
         Guid _originalUniqueID;
 
@@ -178,11 +184,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (_originalUniqueID == Guid.Empty)
             {
                 _originalUniqueID = Guid.Parse(UniqueID);
-            }                 
+            }
             WorkSurfaceMappingId = _originalUniqueID;
             UniqueID = Guid.NewGuid().ToString();
         }
-        
+
         protected override void OnBeforeExecute(NativeActivityContext context) => throw new NotImplementedException();
 
         protected override void OnExecute(NativeActivityContext context) => throw new NotImplementedException();
@@ -333,10 +339,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var innerA = GetInnerActivity(out string error);
                 var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
-                DispatchDebug(dataObject,StateType.Before, update);
+                DispatchDebug(dataObject, StateType.Before, update);
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
-                DispatchDebug(dataObject, StateType.After, update);                
+                DispatchDebug(dataObject, StateType.After, update);
                 exePayload.InnerActivity = innerA;
 
                 while (itr?.HasMore() ?? false)
@@ -465,7 +471,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return new List<IDev2Activity>();
             }
-            var nextNodes = new List<IDev2Activity> { act  };           
+            var nextNodes = new List<IDev2Activity> { act };
             return nextNodes;
         }
 
@@ -543,7 +549,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfForEachActivity) obj);
+            return Equals((DsfForEachActivity)obj);
         }
 
         public override int GetHashCode()
@@ -554,7 +560,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _previousInputsIndex;
                 hashCode = (hashCode * 397) ^ _previousOutputsIndex;
-                hashCode = (hashCode * 397) ^ (int) ForEachType;
+                hashCode = (hashCode * 397) ^ (int)ForEachType;
                 hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Recordset != null ? Recordset.GetHashCode() : 0);
