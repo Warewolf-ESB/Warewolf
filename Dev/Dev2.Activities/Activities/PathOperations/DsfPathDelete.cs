@@ -112,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Name = "InputPath",
                     Value = InputPath,
-                    Type = StateVariable.StateType.Output
+                    Type = StateVariable.StateType.InputOutput
                 },
                 new StateVariable
                 {
