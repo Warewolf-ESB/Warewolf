@@ -25,6 +25,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.State;
 
 namespace Dev2.Activities
 {
@@ -46,7 +47,12 @@ namespace Dev2.Activities
             base.CacheMetadata(metadata);
             metadata.AddChild(_innerSequence);
         }
-        
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
+
         public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
             var nextNodes = new List<IDev2Activity>();
