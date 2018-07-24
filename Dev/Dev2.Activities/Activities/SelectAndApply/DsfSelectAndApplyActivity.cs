@@ -100,7 +100,7 @@ namespace Dev2.Activities.SelectAndApply
                 new StateVariable
                 {
                     Name = "Alias",
-                    Type = StateVariable.StateType.Output,
+                    Type = StateVariable.StateType.InputOutput,
                     Value = Alias
                 }
             };
