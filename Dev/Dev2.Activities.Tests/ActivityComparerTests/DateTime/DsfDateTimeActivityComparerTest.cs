@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.State;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
@@ -290,6 +292,88 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DateTime
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
-         //       && TimeModifierAmount == other.TimeModifierAmount 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDateTimeActivity_GetState")]
+        public void DsfDateTimeActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var calculateActivity = new DsfDateTimeActivity
+            {
+                DateTime = "2018/07/20",
+                InputFormat = "yyyy/MM/dd",
+                OutputFormat = "yyyy/MM/dd",
+                TimeModifierType = "days",
+                TimeModifierAmountDisplay = "days",
+                TimeModifierAmount = 1,
+                Result = "TimeChanged"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = calculateActivity.GetState();
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="DateTime",
+                    Type = StateVariable.StateType.Input,
+                    Value = "2018/07/20"
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = "yyyy/MM/dd"
+                },
+                new StateVariable
+                {
+                    Name="OutputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = "yyyy/MM/dd"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "days"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmountDisplay",
+                    Type = StateVariable.StateType.Input,
+                    Value = "days"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmount",
+                    Type = StateVariable.StateType.Input,
+                    Value = "1"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "TimeChanged"
+                }
+            };
+
+            var iter = calculateActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

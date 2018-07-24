@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Dev2.Activities;
+using Dev2.Common.State;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -683,6 +686,141 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Database
             var @equals = sharepointCopyFileActivity.Equals(sharepoint);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfSqlBulkInsertActivity_GetState")]
+        public void DsfSqlBulkInsertActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid();
+            var dbSource = new DbSource
+            {
+                ResourceID = uniqueId
+            };
+            //------------Setup for test--------------------------
+            const string expectedTableName = "[[TableName]]";
+            var expectedInputMappings = new List<DataColumnMapping>();
+            const string expectedBatchSize = "[[BatchSize]]";
+            const string expectedTimeout = "[[Timeout]]";
+            const bool expectedCheckConstraints = false;
+            const bool expectedKeepTableLock = false;
+            const bool expectedFireTriggers = false;
+            const bool expectedKeepIdentity = false;
+            const bool expectedUseInternalTransaction = false;
+            const bool expectedIgnoreBlankRows = false;
+            const string expectedResult = "[[Res]]";
+            var act = new DsfSqlBulkInsertActivity
+            {
+                Database = dbSource,
+                TableName = expectedTableName,
+                InputMappings = expectedInputMappings,
+                BatchSize = expectedBatchSize,
+                Timeout = expectedTimeout,
+                CheckConstraints = expectedCheckConstraints,
+                KeepTableLock = expectedKeepTableLock,
+                FireTriggers = expectedFireTriggers,
+                KeepIdentity = expectedKeepIdentity,
+                UseInternalTransaction = expectedUseInternalTransaction,
+                IgnoreBlankRows = expectedIgnoreBlankRows,
+                Result = expectedResult
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(12, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Database.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "TableName",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedTableName
+                },
+                new StateVariable
+                {
+                    Name = "InputMappings",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(expectedInputMappings)
+                },
+                new StateVariable
+                {
+                    Name = "BatchSize",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedBatchSize
+                },
+                new StateVariable
+                {
+                    Name = "Timeout",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedTimeout
+                },
+                new StateVariable
+                {
+                    Name = "CheckConstraints",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedCheckConstraints.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "KeepTableLock",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedKeepTableLock.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FireTriggers",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedFireTriggers.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "KeepIdentity",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedKeepIdentity.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "UseInternalTransaction",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedUseInternalTransaction.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IgnoreBlankRows",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedIgnoreBlankRows.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = expectedResult
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

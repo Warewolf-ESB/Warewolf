@@ -15,7 +15,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.State;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -1051,6 +1053,45 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[result]]", inputs[0].Name);
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
+        public void DsfMultiAssignActivity_GetState_Returns_Input_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            var fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
+            };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            //------------Execute Test---------------------------            
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="Fields Collection",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(fieldsCollection)
+                }
+            };
+            var listItems = act.GetState();
+            Assert.AreEqual(1, listItems.Count());
+            var iter = listItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
         #endregion
 
         #region Private Test Methods

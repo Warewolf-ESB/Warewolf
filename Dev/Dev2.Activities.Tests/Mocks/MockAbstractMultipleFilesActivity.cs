@@ -9,7 +9,9 @@
 */
 
 using Dev2.Activities.PathOperations;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces;
+using System.Collections.Generic;
 
 namespace Dev2.Tests.Activities.Mocks
 {
@@ -43,5 +45,10 @@ namespace Dev2.Tests.Activities.Mocks
         }
 
         #endregion
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
     }
 }

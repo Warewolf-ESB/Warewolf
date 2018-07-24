@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
@@ -209,6 +211,73 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
+        }
+
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointDeleteFile_GetState")]
+        public void SharepointDeleteFile_GetState()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointDeleteFile";
+            var resourceId = Guid.NewGuid();
+            var result = "[[result]]";
+            var serverInputPath = "serverPath";
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            var sharepointDeleteFileActivity = new SharepointDeleteFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = result,
+                ServerInputPath = serverInputPath
+            };
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointSource = new Mock<SharepointSource>();
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
+            var privateObject = new PrivateObject(sharepointDeleteFileActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointDeleteFileActivity.SharepointSource = mockSharepointSource.Object;
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Execute Test---------------------------
+            var expectedResults = new[]
+            {
+                 new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = resourceId.ToString()
+                 },
+                new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                },
+                  new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            var stateItems = sharepointDeleteFileActivity.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

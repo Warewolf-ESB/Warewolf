@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
 {
@@ -460,6 +464,109 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             var @equals = exchangeEmailActivity.Equals(exchangeEmailActivity1);
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfExchangeEmailActivity_GetState")]
+        public void DsfExchangeEmailActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var uniqueId = Guid.NewGuid();
+            var mockExchangeSource = new Mock<IExchangeSource>();
+            mockExchangeSource.Setup(source => source.ResourceID).Returns(uniqueId);
+
+            var expectedSavedSource = mockExchangeSource.Object;
+            var expectedTo = "testTo@test.com";
+            var expectedCc = "testCc@test.com";
+            var expectedBcc = "testBcc@test.com";
+            var expectedSubject = "test Email";
+            var expectedAttachments = "att_1;att_2;att_3";
+            var expectedBody = "Email Body";
+            var expectedResult = "[[res]]";
+
+            var act = new DsfExchangeEmailActivity
+            {
+                SavedSource = expectedSavedSource,
+                To = expectedTo,
+                Cc = expectedCc,
+                Bcc = expectedBcc,
+                Subject = expectedSubject,
+                Attachments = expectedAttachments,
+                Body = expectedBody,
+                Result = expectedResult
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(8, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SavedSource.ResourceID",
+                    Type=StateVariable.StateType.Input,
+                    Value= uniqueId.ToString()
+                },
+                new StateVariable
+                {
+                    Name="To",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedTo
+                },
+                new StateVariable
+                {
+                    Name="Cc",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedCc
+                },
+                new StateVariable
+                {
+                    Name="Bcc",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedBcc
+                },
+                new StateVariable
+                {
+                    Name="Subject",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedSubject
+                },
+                new StateVariable
+                {
+                    Name="Attachments",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedAttachments
+                },
+                new StateVariable
+                {
+                    Name="Body",
+                    Type=StateVariable.StateType.Input,
+                    Value= expectedBody
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= expectedResult
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         [TestMethod]
