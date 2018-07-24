@@ -468,26 +468,28 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var inputPath = @"c:\OldFile.txt";
-            var outputPath = @"c:\OldFile_Zip.txt";
-            var archivePassword = "[[archivePassword]]";
-            var archiveName = "[[archiveName]]";
-            var compressionRatio = "[[compressionRatio]]";
             var username = "[[username]]";
             var privateKeyFile = "[[KeyFile]]";
-            var password = "[[Password]]";
+            var outputPath = @"c:\OldFile_Zip.txt";
+            var destinationUsername = "[[destinationUsername]]";
+            var destinationPrivateKeyFile = "[[destinationPrivateKeyFile]]";
+            var overwrite = false;
+            var archiveName = "[[archiveName]]";
+            var compressionRatio = "[[compressionRatio]]";
             var result = "[[result]]";
 
             var zip = new DsfZip()
             {
                 UniqueID = uniqueId,
-                Username = username,
-                Password = password,
                 InputPath = inputPath,
+                Username = username,
+                PrivateKeyFile = privateKeyFile,
                 OutputPath = outputPath,
-                ArchivePassword = archivePassword,
+                DestinationUsername = destinationUsername,
+                DestinationPrivateKeyFile = destinationPrivateKeyFile,
+                Overwrite = overwrite,
                 ArchiveName = archiveName,
                 CompressionRatio = compressionRatio,
-                PrivateKeyFile = privateKeyFile,
                 Result = result
             };
 
@@ -505,36 +507,6 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
                 },
                 new StateVariable
                 {
-                    Name = "ArchivePassword",
-                    Value = archivePassword,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = "ArchiveName",
-                    Value = archiveName,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name ="CompressionRatio",
-                    Value = compressionRatio,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = "Username",
-                    Value = username,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = "OutputPath",
-                    Value = outputPath,
-                    Type = StateVariable.StateType.Output
-                },
-                new StateVariable
-                {
                     Name = "Username",
                     Value = username,
                     Type = StateVariable.StateType.Input
@@ -547,8 +519,38 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
                 },
                 new StateVariable
                 {
-                    Name = "Password",
-                    Value = password,
+                    Name = "OutputPath",
+                    Value = outputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "DestinationUsername",
+                    Value = destinationUsername,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "DestinationPrivateKeyFile",
+                    Value = destinationPrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Overwrite",
+                    Value = overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ArchiveName",
+                    Value = archiveName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "CompressionRatio",
+                    Value = compressionRatio,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
