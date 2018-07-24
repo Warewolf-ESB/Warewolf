@@ -17,6 +17,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -62,10 +63,32 @@ namespace Dev2.Activities
         }
 
         #endregion
-
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = nameof(InFields),
+                    Value = InFields,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(ResultFields),
+                    Value = ResultFields,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }              
+            };
+        }
         #region Overrides of DsfNativeActivity<string>
 
-        
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
