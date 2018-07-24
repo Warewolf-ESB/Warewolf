@@ -14,9 +14,12 @@ using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Launcher;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
 
@@ -31,6 +34,7 @@ namespace Dev2.Activities.Specs.Merge
         const string mergeVmString = "mergeVm";
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
+        static ContainerLauncher _containerOps;
         public MergeFeature(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
@@ -55,11 +59,18 @@ namespace Dev2.Activities.Specs.Merge
 #pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
+        [AfterFeature("MergeExecution")]
+        public static void ScenarioCleaning() => _containerOps.Dispose();
+
         IServer localHost;
         readonly IServerRepository environmentModel = ServerRepository.Instance;
         [Given(@"I Load workflow ""(.*)"" from ""(.*)""")]
         public void GivenILoadWorkflowFrom(string resourceName, string serverName)
         {
+            if (serverName == "Remote Container")
+            {
+                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
