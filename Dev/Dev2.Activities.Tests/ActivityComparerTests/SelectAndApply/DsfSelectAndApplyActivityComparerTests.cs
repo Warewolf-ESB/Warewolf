@@ -227,7 +227,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SelectAndApply
                 new StateVariable
                 {
                     Name = "Alias",
-                    Type = StateVariable.StateType.Output,
+                    Type = StateVariable.StateType.InputOutput,
                     Value = "[[Alias]]"
                 }
             };
