@@ -15,8 +15,10 @@ using System.Linq;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.State;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -550,6 +552,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[recset1(*).field1]]", dsfForEachItems[0].Value);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfXPathActivity_GetState")]
+        public void DsfXPathActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            //------------Setup for test--------------------------
+            var act = new DsfXPathActivity { SourceString = "xml", ResultsCollection = _resultsCollection };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Type = StateVariable.StateType.Input,
+                    Value = "xml"
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Type = StateVariable.StateType.Output,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(_resultsCollection)
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
 
         #region Private Test Methods
 

@@ -22,14 +22,13 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
-using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Converters;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Dev2.Validation;
-using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
@@ -415,16 +414,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 new StateVariable
                 {
                     Name = "Convert Collection",
-                    Value = GetStateValueFromCollection(ConvertCollection),
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ConvertCollection),
                     Type = StateVariable.StateType.InputOutput
                 }
             };
-        }
-
-        private static string GetStateValueFromCollection(IList<BaseConvertTO> convertCollection)
-        {
-            var dev2JsonSerializer = new Dev2JsonSerializer();
-            return dev2JsonSerializer.Serialize(convertCollection);
         }
     }
 }

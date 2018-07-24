@@ -16,6 +16,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -31,7 +32,7 @@ using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
+    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
     public class DsfFolderReadActivity : DsfAbstractFileActivity, IPathInput, IEquatable<DsfFolderReadActivity>
     {
         public DsfFolderReadActivity()
@@ -75,8 +76,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 while (colItr.HasMoreData())
                 {
-
-
                     var broker = ActivityIOFactory.CreateOperationsBroker();
                     var ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                     colItr.FetchNextValue(unameItr),
@@ -98,7 +97,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 return outputs;
             }
-
         }
 
         void ExecuteConcreteAction(IList<OutputTO> outputs, IActivityOperationsBroker broker, IActivityIOOperationsEndPoint endPoint)
@@ -197,6 +195,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get;
             set;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputPath
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesAndFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = Username
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = PrivateKeyFile
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= Result
+                }
+            };
         }
 
         ReadTypes GetReadType()

@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -23,9 +24,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     public class DsfDeleteRecordActivity : DsfActivityAbstract<string>,IEquatable<DsfDeleteRecordActivity>
     {
@@ -55,7 +54,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             base.CacheMetadata(metadata);
 
         }
-        
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -65,8 +63,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             var allErrors = new ErrorResultTO();
             var errors = new ErrorResultTO();
 
@@ -114,36 +110,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="RecordsetName",
+                    Type=StateVariable.StateType.Input,
+                    Value= RecordsetName
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= Result
+                }
+            };
+        }
+
         void GetDebug(IDSFDataObject dataObject, int update)
         {
             try
             {
-
-
                 if (dataObject.IsDebugMode() && ExecutionEnvironment.IsRecordSetName(RecordsetName))
                 {
                     AddDebugInputItem(new DebugEvalResult(RecordsetName, "Records", dataObject.Environment, update));
                 }
-
             }
-             
             catch(Exception)
             {
-
                 AddDebugInputItem(new DebugItemWarewolfAtomResult("", RecordsetName, "Recordset", "", "", "", "="));
             }
         }
-
-        #region Get Debug Inputs/Outputs
-
-        #region GetDebugInputs
-
-
-        #endregion
-
-        #endregion Get Inputs/Outputs
-
-
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
@@ -152,14 +151,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if(updates != null)
             {
                 foreach(var t in updates)
                 {
-
                     if(t.Item1 == RecordsetName)
                     {
                         RecordsetName = t.Item2;
@@ -177,17 +174,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(RecordsetName);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
-
         public bool Equals(DsfDeleteRecordActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -202,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

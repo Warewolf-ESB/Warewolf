@@ -14,6 +14,7 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -33,11 +34,9 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.DateAndTime
 {
-    [ToolDescriptorInfo("Utility-DateTime", "Date Time", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time")]
+    [ToolDescriptorInfo("Utility-DateTime", "Date Time", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time")]
     public class DsfDotNetDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
     {
-        #region Properties
-
         /// <summary>
         /// The property that holds the date time string the user enters into the "Input" box
         /// </summary>
@@ -84,10 +83,6 @@ namespace Dev2.Activities.DateAndTime
         [FindMissing]
         public new string Result { get; set; }
 
-        #endregion Properties
-
-        #region Ctor
-
         /// <summary>
         /// The consructor for the activity 
         /// </summary>
@@ -102,8 +97,6 @@ namespace Dev2.Activities.DateAndTime
             TimeModifierAmount = 0;
             Result = string.Empty;
         }
-
-        #endregion Ctor
         
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -185,9 +178,7 @@ namespace Dev2.Activities.DateAndTime
                         );
 
                     var format = DateTimeConverterFactory.CreateStandardFormatter();
-                    string result;
-                    string error;
-                    if (format.TryFormat(transObj, out result, out error))
+                    if (format.TryFormat(transObj, out string result, out string error))
                     {
                         AddDefaultDebugInfo(dataObject, result);
                         AddDebugInfo(dataObject, update);
@@ -310,7 +301,6 @@ namespace Dev2.Activities.DateAndTime
         {
             foreach (Tuple<string, string> t in updates)
             {
-
                 if (t.Item1 == DateTime)
                 {
                     DateTime = t.Item2;
@@ -367,6 +357,55 @@ namespace Dev2.Activities.DateAndTime
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="DateTime",
+                    Type = StateVariable.StateType.Input,
+                    Value = DateTime
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputFormat
+                },
+                new StateVariable
+                {
+                    Name="OutputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = OutputFormat
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierType",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierType
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmountDisplay",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierAmountDisplay
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmount",
+                    Type = StateVariable.StateType.Input,
+                    Value = TimeModifierAmount.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }
