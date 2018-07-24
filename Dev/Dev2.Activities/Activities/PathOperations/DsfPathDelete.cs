@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -23,7 +24,6 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
-
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -88,15 +88,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
                     error.AddError(e.Message);
                     break;
-                }
-
-                
+                }   
             }
 
             return outputs;
         }
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the input path.
@@ -109,7 +105,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
-        #endregion Properties
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Value = InputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Value = Username,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Value = PrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -128,12 +152,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InputPath);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
-
-        #endregion
     }
 }
