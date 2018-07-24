@@ -121,36 +121,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 },
                 new StateVariable
                 {
-                    Name = nameof(ArchivePassword),
-                    Value = ArchivePassword,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = nameof(ArchiveName),
-                    Value = ArchiveName,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = nameof(CompressionRatio),
-                    Value = CompressionRatio,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = nameof(Username),
-                    Value = Username,
-                    Type = StateVariable.StateType.Input
-                },
-                new StateVariable
-                {
-                    Name = nameof(OutputPath),
-                    Value = OutputPath,
-                    Type = StateVariable.StateType.Output
-                },
-                new StateVariable
-                {
                     Name = nameof(Username),
                     Value = Username,
                     Type = StateVariable.StateType.Input
@@ -163,8 +133,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 },
                 new StateVariable
                 {
-                    Name = nameof(Password),
-                    Value = Password,
+                    Name = nameof(OutputPath),
+                    Value = OutputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = nameof(DestinationUsername),
+                    Value = DestinationUsername,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(DestinationPrivateKeyFile),
+                    Value = DestinationPrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(Overwrite),
+                    Value = Overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(ArchiveName),
+                    Value = ArchiveName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(CompressionRatio),
+                    Value = CompressionRatio,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
