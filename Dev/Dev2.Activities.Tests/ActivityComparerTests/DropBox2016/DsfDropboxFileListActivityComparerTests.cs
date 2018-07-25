@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -440,6 +442,92 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-       
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDropboxFileListActivity_GetState")]
+        public void DsfDropboxFileListActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid();
+            var selectedSource = new MockOAuthSource(uniqueId);
+
+            //------------Setup for test--------------------------
+            var dropboxFileListActivity = new DsfDropboxFileListActivity
+            {
+                SelectedSource = selectedSource,
+                ToPath = "Path_To",
+                IsFilesSelected = false,
+                IsFoldersSelected = false,
+                IsFilesAndFoldersSelected = false,
+                IsRecursive = false,
+                Result = "List_Complete"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dropboxFileListActivity.GetState();
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "ToPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Path_To"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsRecursive",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "List_Complete"
+                }
+            };
+
+            var iter = dropboxFileListActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

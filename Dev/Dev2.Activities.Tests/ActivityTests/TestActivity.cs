@@ -13,6 +13,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -49,6 +50,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 throw new Exception("Error in execution");
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,6 +51,21 @@ namespace Dev2.Tests.Activities
 
             act1 = new TestMockStep();
             Assert.IsFalse(act.Equals(act1));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("TestMockStep_GetState")]
+        public void TestMockStep_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new TestMockStep();
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, stateItems.Count());
+            
         }
     }
 }

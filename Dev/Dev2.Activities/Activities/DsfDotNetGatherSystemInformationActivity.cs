@@ -20,11 +20,13 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -33,7 +35,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Utility-SystemInformation", "Sys Info", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Sys_Info")]
+    [ToolDescriptorInfo("Utility-SystemInformation", "Sys Info", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Sys_Info")]
     public class DsfDotNetGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
         IGetSystemInformation _getSystemInformation;
@@ -56,6 +58,19 @@ namespace Dev2.Activities
             : base("Gather System Information")
         {
             SystemInformationCollection = new List<GatherSystemInformationTO>();
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SystemInformationCollection",
+                    Type=StateVariable.StateType.InputOutput,
+                    Value= ActivityHelper.GetSerializedStateValueFromCollection(SystemInformationCollection)
+                }
+            };
         }
 
         void CleanArgs()

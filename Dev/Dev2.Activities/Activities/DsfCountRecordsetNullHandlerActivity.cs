@@ -16,6 +16,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -31,7 +32,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    [ToolDescriptorInfo("RecordSet-CountRecords", "Count", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Count")]
+    [ToolDescriptorInfo("RecordSet-CountRecords", "Count", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Count")]
     public class DsfCountRecordsetNullHandlerActivity : DsfActivityAbstract<string>,IEquatable<DsfCountRecordsetNullHandlerActivity>
     {
         #region Fields
@@ -61,7 +62,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TreatNullAsZero = true;
         }
 
-        
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Value = RecordsetName,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "TreatNullAsZero",
+                    Value = TreatNullAsZero.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="CountNumber",
+                    Value = CountNumber,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);

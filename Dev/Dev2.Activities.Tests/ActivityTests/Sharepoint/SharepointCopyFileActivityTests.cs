@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
@@ -231,7 +233,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 SharepointServerResourceId = resourceId,
                 Result = "[[Files(*).Name]]",
                 ServerInputPathFrom = @"C:\ProgramData\Warewolf\Resources\Hello World.bite",
-                Overwrite = true
+                Overwrite = true,
+
             };
 
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -245,6 +248,42 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointCopyFileActivity_GetState")]
+        public void SharepointCopyFileActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+            var resourceId = Guid.NewGuid();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "[[Files(*).Name]]",
+                ServerInputPathFrom = @"C:\ProgramData\Warewolf\Resources\Hello World.bite",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true
+            };
+            //------------Execute Test---------------------------
+            var stateItems = sharepointCopyFileActivity.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, stateItems.Count());
+            Assert.AreEqual("ServerInputPathFrom", stateItems.ToList()[0].Name);
+            Assert.AreEqual("ServerInputPathTo", stateItems.ToList()[1].Name);
+            Assert.AreEqual("Overwrite", stateItems.ToList()[2].Name);
+            Assert.AreEqual("Result", stateItems.ToList()[3].Name);
+
+            Assert.AreEqual(StateVariable.StateType.Input, stateItems.ToList()[0].Type);
+            Assert.AreEqual(StateVariable.StateType.Input, stateItems.ToList()[1].Type);
+            Assert.AreEqual(StateVariable.StateType.Input, stateItems.ToList()[2].Type);
+            Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[3].Type);
+
+            Assert.AreEqual("C:\\ProgramData\\Warewolf\\Resources\\Hello World.bite", stateItems.ToList()[0].Value);
+            Assert.AreEqual("Hello World.bite", stateItems.ToList()[1].Value);
+            Assert.AreEqual("True", stateItems.ToList()[2].Value);
+            Assert.AreEqual("[[Files(*).Name]]", stateItems.ToList()[3].Value);
         }
     }
 }

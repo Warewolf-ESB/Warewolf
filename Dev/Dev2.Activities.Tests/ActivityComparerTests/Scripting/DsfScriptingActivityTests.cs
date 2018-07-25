@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.State;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -304,6 +306,63 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
             var @equals = javascriptActivity.Equals(dsfScriptingActivity);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfScriptingActivity_GetState")]
+        public void DsfScriptingActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfScriptingActivity { Script = "def add", EscapeScript = true, IncludeFile = "temp.py", Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(4, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Script",
+                    Type = StateVariable.StateType.Input,
+                    Value = "def add"
+                },
+                new StateVariable
+                {
+                    Name = "IncludeFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "temp.py"
+                },
+                new StateVariable
+                {
+                    Name = "EscapeScript",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

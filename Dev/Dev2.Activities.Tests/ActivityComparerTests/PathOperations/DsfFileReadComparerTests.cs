@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -13,8 +15,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId };
-            var dsfFileRead = new DsfFileRead() { UniqueID = uniqueId };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId };
+            var dsfFileRead = new DsfFileRead { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -45,8 +47,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileRead() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfFileRead() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfFileRead { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfFileRead { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -63,8 +65,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfFileRead() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfFileRead() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfFileRead { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfFileRead { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -81,8 +83,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, InputPath = "a" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, InputPath = "a" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, InputPath = "a" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, InputPath = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -97,8 +99,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, InputPath = "A" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, InputPath = "ass" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, InputPath = "A" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, InputPath = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -113,8 +115,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, InputPath = "AAA" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, InputPath = "aaa" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, InputPath = "AAA" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, InputPath = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -129,8 +131,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "a" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "a" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, DisplayName = "a" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -145,8 +147,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "A" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "ass" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, DisplayName = "A" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -161,8 +163,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "AAA" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, DisplayName = "aaa" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, DisplayName = "AAA" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, DisplayName = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -177,8 +179,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Username = "a" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Username = "a" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Username = "a" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Username = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -193,8 +195,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Username = "A" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Username = "ass" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Username = "A" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Username = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -209,8 +211,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Username = "AAA" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Username = "aaa" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Username = "AAA" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Username = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -225,8 +227,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "a" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "a" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "a" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -241,8 +243,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "A" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "ass" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "A" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -257,8 +259,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "AAA" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, PrivateKeyFile = "aaa" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "AAA" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, PrivateKeyFile = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -272,8 +274,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Password = "a" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Password = "a" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Password = "a" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Password = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -288,8 +290,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Password = "A" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Password = "ass" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Password = "A" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Password = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
@@ -304,14 +306,63 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var fileRead = new DsfFileRead() { UniqueID = uniqueId, Password = "AAA" };
-            var fileRead1 = new DsfFileRead() { UniqueID = uniqueId, Password = "aaa" };
+            var fileRead = new DsfFileRead { UniqueID = uniqueId, Password = "AAA" };
+            var fileRead1 = new DsfFileRead { UniqueID = uniqueId, Password = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(fileRead);
             //---------------Execute Test ----------------------
             var @equals = fileRead.Equals(fileRead1);
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfFileReadActivity_GetState")]
+        public void DsfFileReadActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var inputPath = "/Path";
+            var result = "[result]";
+
+            //------------Setup for test--------------------------
+            var activity = new DsfFileRead { InputPath = inputPath, Result = result };
+            //------------Execute Test---------------------------
+            var stateItems = activity.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = inputPath
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+
+            var iter = activity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
