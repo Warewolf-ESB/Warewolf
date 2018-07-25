@@ -20,6 +20,7 @@ namespace Warewolf.Launcher
                 ["Studio Core Unit Tests"] = new Tuple<string, string>("Dev2.Studio.Core.Tests", null),
                 ["COMIPC Unit Tests"] = new Tuple<string, string>("Warewolf.COMIPC.Tests", null),
                 ["Studio View Models Unit Tests"] = new Tuple<string, string>("Warewolf.Studio.ViewModels.Tests", null),
+                ["Request Service Name View Models Unit Tests"] = new Tuple<string, string>("Warewolf.Studio.ViewModels.Tests", "RequestServiceNameViewModel"),
                 ["Activity Designers Unit Tests"] = new Tuple<string, string>("Dev2.Activities.Designers.Tests", null),
                 ["Activities Unit Tests"] = new Tuple<string, string>("Dev2.Activities.Tests", null),
                 ["Other Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", null),
