@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.TO;
@@ -31,6 +32,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -40,7 +42,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("MicrosoftSQL", "SQL Bulk Insert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Bulk_Insert")]
+    [ToolDescriptorInfo("MicrosoftSQL", "SQL Bulk Insert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Bulk_Insert")]
     public class DsfSqlBulkInsertActivity : DsfActivityAbstract<string>, IEquatable<DsfSqlBulkInsertActivity>
     {
         [NonSerialized]
@@ -96,7 +98,83 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
-        #region Overrides of DsfNativeActivity<string>
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Database.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = Database.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "TableName",
+                    Type = StateVariable.StateType.Input,
+                    Value = TableName
+                },
+                new StateVariable
+                {
+                    Name = "InputMappings",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(InputMappings)
+                },
+                new StateVariable
+                {
+                    Name = "BatchSize",
+                    Type = StateVariable.StateType.Input,
+                    Value = BatchSize
+                },
+                new StateVariable
+                {
+                    Name = "Timeout",
+                    Type = StateVariable.StateType.Input,
+                    Value = Timeout
+                },
+                new StateVariable
+                {
+                    Name = "CheckConstraints",
+                    Type = StateVariable.StateType.Input,
+                    Value = CheckConstraints.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "KeepTableLock",
+                    Type = StateVariable.StateType.Input,
+                    Value = KeepTableLock.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FireTriggers",
+                    Type = StateVariable.StateType.Input,
+                    Value = FireTriggers.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "KeepIdentity",
+                    Type = StateVariable.StateType.Input,
+                    Value = KeepIdentity.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "UseInternalTransaction",
+                    Type = StateVariable.StateType.Input,
+                    Value = UseInternalTransaction.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "IgnoreBlankRows",
+                    Type = StateVariable.StateType.Input,
+                    Value = IgnoreBlankRows.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
 
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -290,7 +368,6 @@ namespace Dev2.Activities
                 {
                     timeout = parsedValue;
                 }
-
             }
             else
             {
@@ -307,7 +384,6 @@ namespace Dev2.Activities
                 {
                     batchSize = parsedValue;
                 }
-
             }
             else
             {
@@ -476,7 +552,6 @@ namespace Dev2.Activities
                     throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                 }
 
-
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(string))
                 {
@@ -549,9 +624,6 @@ namespace Dev2.Activities
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
-        #endregion
-
-        #region GetDebugInputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -562,10 +634,6 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        #endregion
-
-        #region GetDebugOutputs
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -575,11 +643,9 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        #endregion
-
         public bool Equals(DsfSqlBulkInsertActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -608,7 +674,7 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

@@ -10,8 +10,10 @@
 
 using System;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
 
 namespace Dev2.Utilities
@@ -140,6 +142,12 @@ namespace Dev2.Utilities
         public static void HandleDragEnter(DragEventArgs e)
         {
             //This is to ensure nothing can be dragged onto a Activity Designer
+        }
+
+        public static string GetSerializedStateValueFromCollection<T>(IList<T> collection)
+        {
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            return dev2JsonSerializer.Serialize(collection);
         }
     }
 }

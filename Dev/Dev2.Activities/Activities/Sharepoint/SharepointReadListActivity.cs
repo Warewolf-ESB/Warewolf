@@ -9,6 +9,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
@@ -16,6 +18,7 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.TO;
+using Dev2.Utilities;
 using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -24,7 +27,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
+    [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
     public class SharepointReadListActivity : DsfActivityAbstract<string>, IEquatable<SharepointReadListActivity>
     {
         public SharepointReadListActivity()
@@ -42,7 +45,43 @@ namespace Dev2.Activities.Sharepoint
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
         public SharepointUtils SharepointUtils { get; set; }
-
+        public override IEnumerable<StateVariable> GetState()
+        {
+            var serializer = new Dev2JsonSerializer();
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ReadListItems",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value =  ActivityHelper.GetSerializedStateValueFromCollection(ReadListItems)
+                 },
+                new StateVariable
+                {
+                    Name="FilterCriteria",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FilterCriteria)
+                },
+                new StateVariable
+                {
+                    Name="RequireAllCriteriaToMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = RequireAllCriteriaToMatch.ToString()
+                },
+                new StateVariable
+                {
+                    Name="SharepointList",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointList
+                }
+            };
+        }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>

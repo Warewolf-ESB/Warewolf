@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
@@ -215,6 +217,95 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("sharepointMoveFileActivity_GetState")]
+        public void SharepointMoveFileActivity_GetState()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointMoveFile";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Move]]";
+            var overwrite = true;
+            var serverInputPathFrom = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var serverInputPathTo = "Hello World.bite";
+            var sharepointMoveFileActivity = new SharepointMoveFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = result,
+                ServerInputPathFrom = serverInputPathFrom,
+                ServerInputPathTo = serverInputPathTo,
+                Overwrite = overwrite
+            };
+            var dataObj = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>());
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointSource = new Mock<SharepointSource>();
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
+
+
+            var privateObject = new PrivateObject(sharepointMoveFileActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointMoveFileActivity.SharepointSource = mockSharepointSource.Object;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+
+            var expectedResults = new[]
+         {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPathFrom",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPathFrom
+                 },
+                new StateVariable
+                {
+                    Name="ServerInputPathTo",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPathTo
+                },
+                new StateVariable
+                {
+                    Name="Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = overwrite.ToString()
+                }
+                ,
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointMoveFileActivity.GetState();
+            Assert.AreEqual(5, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

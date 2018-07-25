@@ -15,6 +15,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -54,6 +55,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             RecordsetName = string.Empty;
             CountNumber = string.Empty;
             DisplayName = "Count Records";
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Value = RecordsetName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="CountNumber",
+                    Value = CountNumber,
+                    Type = StateVariable.StateType.Output
+                }
+            };
         }
 
 

@@ -36,27 +36,21 @@ using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.State;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Utility-SendMail", "SMTP Send", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_SMTP_Send")]
+    [ToolDescriptorInfo("Utility-SendMail", "SMTP Send", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_SMTP_Send")]
     public class DsfSendEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfSendEmailActivity>
     {
-        #region Fields
-
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
         string _password;
         EmailSource _selectedEmailSource;
-    
-        #endregion
                 
         public EmailSource SelectedEmailSource
         {
-            get
-            {
-                return _selectedEmailSource;
-            }
+            get => _selectedEmailSource;
             set
             {
                 _selectedEmailSource = value;
@@ -74,7 +68,7 @@ namespace Dev2.Activities
         [FindMissing]
         public string Password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 if (DataListUtil.ShouldEncrypt(value))
@@ -105,7 +99,6 @@ namespace Dev2.Activities
         public string Cc { get; set; }
         [FindMissing]
         public string Bcc { get; set; }
-
         
         public enMailPriorityEnum Priority { get; set; }
         
@@ -115,7 +108,6 @@ namespace Dev2.Activities
         public string Attachments { get; set; }
         [FindMissing]
         public string Body { get; set; }
-
         
         public bool IsHtml { get; set; }
         
@@ -124,17 +116,84 @@ namespace Dev2.Activities
 
         public IEmailSender EmailSender
         {
-            get
-            {
-                return _emailSender ?? (_emailSender = new EmailSender());
-            }
+            get => _emailSender ?? (_emailSender = new EmailSender());
             set
             {
                 _emailSender = value;
             }
         }
 
-        #region Ctor
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SelectedEmailSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SelectedEmailSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FromAccount",
+                    Type = StateVariable.StateType.Input,
+                    Value = FromAccount
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = To
+                },
+                new StateVariable
+                {
+                    Name = "Cc",
+                    Type = StateVariable.StateType.Input,
+                    Value = Cc
+                },
+                new StateVariable
+                {
+                    Name = "Bcc",
+                    Type = StateVariable.StateType.Input,
+                    Value = Bcc
+                },
+                new StateVariable
+                {
+                    Name = "Priority",
+                    Type = StateVariable.StateType.Input,
+                    Value = Priority.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Subject",
+                    Type = StateVariable.StateType.Input,
+                    Value = Subject
+                },
+                new StateVariable
+                {
+                    Name = "Attachments",
+                    Type = StateVariable.StateType.Input,
+                    Value = Attachments
+                },
+                new StateVariable
+                {
+                    Name = "IsHtml",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsHtml.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Body",
+                    Type = StateVariable.StateType.Input,
+                    Value = Body
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
 
         public DsfSendEmailActivity()
             : base("Email")
@@ -151,11 +210,7 @@ namespace Dev2.Activities
             IsHtml = false;
         }
 
-        #endregion
-
         public override List<string> GetOutputs() => new List<string> { Result };
-
-        #region Overrides of DsfNativeActivity<string>
 
         bool IsDebug
         {
@@ -170,7 +225,6 @@ namespace Dev2.Activities
         }
 
         protected override void OnExecute(NativeActivityContext context)
-            
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
@@ -284,7 +338,6 @@ namespace Dev2.Activities
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
-
             }
             else
             {
@@ -322,9 +375,7 @@ namespace Dev2.Activities
             return indexToUpsertTo;
         }
 
-
         string SendEmail(EmailSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-            
         {
             errors = new ErrorResultTO();
             var fromAccountValue = colItr.FetchNextValue(fromAccountItr);
@@ -480,7 +531,6 @@ namespace Dev2.Activities
                     {
                         Body = t.Item2;
                     }
-
                 }
             }
         }
@@ -493,8 +543,6 @@ namespace Dev2.Activities
                 Result = itemUpdate.Item2;
             }
         }
-
-        #region Overrides of DsfNativeActivity<string>
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -514,21 +562,13 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        #endregion
-
-        #endregion
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(FromAccount, Password, To, Cc, Bcc, Subject, Attachments, Body);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
-
         public bool Equals(DsfSendEmailActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -558,7 +598,7 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

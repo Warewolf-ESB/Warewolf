@@ -2,6 +2,10 @@
 using Dev2.Common.Interfaces.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Activities;
+using System.Linq;
+using Dev2.Common.State;
+using Moq;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
 {
@@ -566,6 +570,133 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             var @equals = emailActivity.Equals(emailActivity1);
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfSendEmailActivity_GetState")]
+        public void DsfSendEmailActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid();
+            var emailSource = new EmailSource
+            {
+                ResourceID = uniqueId
+            };
+            //------------Setup for test--------------------------
+            const string expectedFromAccount = "[[FromAccount]]";
+            const string expectedTo = "[[ToAccount]]";
+            const string expectedCc = "[[CcAccount]]";
+            const string expectedBcc = "[[BccAccount]]";
+            const Dev2.Data.Interfaces.Enums.enMailPriorityEnum expectedPriority = Data.Interfaces.Enums.enMailPriorityEnum.Normal;
+            const string expectedSubject = "[[Subject]]";
+            const string expectedAttachments = "[[Attachments]]";
+            const bool expectedIsHtml = true;
+            const string expectedBody = "[[Body]]";
+            const string expectedResult = "[[Res]]";
+            var act = new DsfSendEmailActivity
+            {
+                SelectedEmailSource = emailSource,
+                FromAccount = expectedFromAccount,
+                To = expectedTo,
+                Cc = expectedCc,
+                Bcc = expectedBcc,
+                Priority = expectedPriority,
+                Subject = expectedSubject,
+                Attachments = expectedAttachments,
+                IsHtml = expectedIsHtml,
+                Body = expectedBody,
+                Result = expectedResult
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(11, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedEmailSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FromAccount",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedFromAccount
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedTo
+                },
+                new StateVariable
+                {
+                    Name = "Cc",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedCc
+                },
+                new StateVariable
+                {
+                    Name = "Bcc",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedBcc
+                },
+                new StateVariable
+                {
+                    Name = "Priority",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedPriority.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Subject",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedSubject
+                },
+                new StateVariable
+                {
+                    Name = "Attachments",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedAttachments
+                },
+                new StateVariable
+                {
+                    Name = "IsHtml",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedIsHtml.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "Body",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedBody
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = expectedResult
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

@@ -28,6 +28,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
+using Dev2.Common.State;
+using Dev2.Communication;
+using Dev2.Utilities;
 
 namespace Dev2.Activities
 {
@@ -110,6 +113,44 @@ namespace Dev2.Activities
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            var serializer = new Dev2JsonSerializer();
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Conditions",
+                    Value = serializer.Serialize(Conditions),
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "And",
+                    Value = And.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name="TrueArm",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(TrueArm?.ToList()),
+                    Type = StateVariable.StateType.Output
+                }
+                ,
+                new StateVariable
+                {
+                    Name="FalseArm",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FalseArm?.ToList()),
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
@@ -469,6 +510,12 @@ namespace Dev2.Activities
 
         public TestMockDecisionStep() : base("Mock Decision")
         {
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            //This Activity is only used as part of the Warewolf Test Exection Framework and is not used in normal exeuction.
+            return new StateVariable[0];
         }
 
         public TestMockDecisionStep(DsfDecision dsfDecision)
