@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,11 +184,18 @@ namespace Warewolf.Launcher
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.GetAsync(url).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                try
                 {
-                    return response.IsSuccessStatusCode;
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    {
+                        return response.IsSuccessStatusCode;
+                    }
+                }
+                catch (SocketException e)
+                {
+                    return false;
                 }
             }
         }
