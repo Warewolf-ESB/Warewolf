@@ -195,6 +195,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
+    <Compile Include="Toolbox\Data\DotNetAssign\DotNetAssign.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DotNetAssign.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\DotNetAssign\DotNetAssignSteps.cs" />
     <Compile Include="Toolbox\Data\FindIndex\FindIndex.feature.cs">
       <DependentUpon>FindIndex.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -589,6 +595,10 @@
     <None Include="Toolbox\Data\DataSplit\DataSplit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\DotNetAssign\DotNetAssign.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DotNetAssign.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\FindIndex\FindIndex.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
