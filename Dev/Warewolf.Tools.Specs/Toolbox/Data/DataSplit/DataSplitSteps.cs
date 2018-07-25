@@ -245,10 +245,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"remote server container has started")]
-        public void GivenRemoteServerContainerHasStarted()
-        {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-        }
+        public void GivenRemoteServerContainerHasStarted() => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
 
         [AfterScenario]
         public void CleanUp() => _containerOps.Dispose();

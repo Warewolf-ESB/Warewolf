@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Dev2.Activities.Specs.Composition;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Controller;
+using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Warewolf.Launcher;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 
@@ -101,7 +106,9 @@ namespace Dev2.Activities.Specs.Sources
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
             var instanceSource = ServerRepository.Instance.Source;
-            var environmentConnection = instanceSource.Connection;
+            var environmentConnection = new ServerProxy(instanceSource.Connection.WebServerUri.AbsoluteUri, 
+                ScenarioContext.Current.Get<string>("Username"), 
+                ScenarioContext.Current.Get<string>("Password"));
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
             var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
@@ -139,5 +146,8 @@ namespace Dev2.Activities.Specs.Sources
         {
             throw new NotImplementedException();
         }
+
+        [BeforeFeature("ServerSourceTests")]
+        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
     }
 }
