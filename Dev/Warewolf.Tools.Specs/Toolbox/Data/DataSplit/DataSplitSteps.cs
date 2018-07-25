@@ -248,6 +248,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void GivenRemoteServerContainerHasStarted() => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
 
         [AfterScenario]
-        public void CleanUp() => _containerOps.Dispose();
+        public void CleanUp() => _containerOps?.Dispose();
     }
 }
