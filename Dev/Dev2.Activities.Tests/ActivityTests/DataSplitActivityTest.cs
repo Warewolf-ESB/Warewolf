@@ -15,8 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -784,6 +786,62 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[CompanyName]]", dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataSplitActivity_GetState")]
+        public void DsfDataSplitActivity_GetState_ReturnsStateVariable()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ReverseOrder=true,SkipBlankRows=true, ResultsCollection = resultsCollection };
+
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(4, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[CompanyName]]"
+                },
+                new StateVariable
+                {
+                    Name = "ReverseOrder",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name = "SkipBlankRows",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Type = StateVariable.StateType.Output,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(resultsCollection)
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
 
         #region Private Test Methods
 

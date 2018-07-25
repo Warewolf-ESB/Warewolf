@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.State;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
@@ -165,6 +167,56 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
             var @equals = activity1.Equals(activity);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDeleteRecordNullHandlerActivity_GetState")]
+        public void DsfDeleteRecordNullHandlerActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfDeleteRecordNullHandlerActivity { RecordsetName = "[[Numeric()]]", TreatNullAsZero = false, Result = "[[res]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Type = StateVariable.StateType.Input,
+                     Value= "[[Numeric()]]"
+                },
+                new StateVariable
+                {
+                    Name = "TreatNullAsZero",
+                    Type = StateVariable.StateType.Input,
+                     Value= "False"
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                     Value= "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

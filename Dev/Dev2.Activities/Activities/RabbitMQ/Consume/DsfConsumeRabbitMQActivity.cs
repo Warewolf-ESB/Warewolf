@@ -29,10 +29,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Consume
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Consume")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity, IEquatable<DsfConsumeRabbitMQActivity>
     {
         internal List<string> _messages;
@@ -114,6 +115,72 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public RabbitMQSource RabbitSource { get; set; }
         public bool ShouldSerializeRabbitSource() => false;
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "QueueName",
+                    Value = QueueName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Acknowledge",
+                    Value = Acknowledge.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "IsObject",
+                    Value = IsObject.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ObjectName",
+                    Value = ObjectName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Prefetch",
+                    Value = Prefetch,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RabbitMQSourceResourceId",
+                    Value = RabbitMQSourceResourceId.ToString(),
+                    Type = StateVariable.StateType.Input
+                },new StateVariable
+                {
+                    Name = "ReQueue",
+                    Value = ReQueue.ToString(),
+                    Type = StateVariable.StateType.Input
+                },new StateVariable
+                {
+                    Name = "TimeOut",
+                    Value = TimeOut,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+                ,
+                new StateVariable
+                {
+                    Name="Response",
+                    Value = Response,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {

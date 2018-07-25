@@ -18,6 +18,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -36,8 +37,8 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    [ToolDescriptorInfo("Data-FindIndex", "Find Index", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Find_Index")]
-    public class DsfIndexActivity : DsfActivityAbstract<string>,IEquatable<DsfIndexActivity>
+    [ToolDescriptorInfo("Data-FindIndex", "Find Index", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Find_Index")]
+    public class DsfIndexActivity : DsfActivityAbstract<string>, IEquatable<DsfIndexActivity>
     {
 
         #region Properties
@@ -142,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 #region Handle Errors
 
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
@@ -151,9 +152,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if (hasErrors)
                     {
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
@@ -252,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            foreach(DebugItem debugInput in _debugInputs)
+            foreach (DebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -261,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -274,17 +275,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
 
-                    if(t.Item1 == InField)
+                    if (t.Item1 == InField)
                     {
                         InField = t.Item2;
                     }
 
-                    if(t.Item1 == Characters)
+                    if (t.Item1 == Characters)
                     {
                         Characters = t.Item2;
                     }
@@ -295,7 +296,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
@@ -303,13 +304,59 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InField, Characters);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "StartIndex",
+                    Type = StateVariable.StateType.Input,
+                    Value = StartIndex
+                },
+                new StateVariable
+                {
+                    Name ="MatchCase",
+                    Type = StateVariable.StateType.Input,
+                    Value = MatchCase.ToString()
+                },
+                new StateVariable
+                {
+                    Name ="Direction",
+                    Type = StateVariable.StateType.Input,
+                    Value = Direction
+                },
+                new StateVariable
+                {
+                    Name ="Characters",
+                    Type = StateVariable.StateType.Input,
+                    Value = Characters
+                },
+                new StateVariable
+                {
+                    Name ="Index",
+                    Type = StateVariable.StateType.Input,
+                    Value = Index
+                },
+                new StateVariable
+                {
+                    Name ="InField",
+                    Type = StateVariable.StateType.Input,
+                    Value = InField
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                },
+            };
+        }
 
         public bool Equals(DsfIndexActivity other)
         {
@@ -343,7 +390,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfIndexActivity) obj);
+            return Equals((DsfIndexActivity)obj);
         }
 
         public override int GetHashCode()

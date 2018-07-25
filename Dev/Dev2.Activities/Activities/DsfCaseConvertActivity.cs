@@ -30,11 +30,13 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Activities.Factories.Case;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Data-CaseConversion", "Case Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Case_Convert")]
-    public class DsfCaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfCaseConvertActivity>
+    [ToolDescriptorInfo("Data-CaseConversion", "Case Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Case_Convert")]
+    public class DsfCaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfCaseConvertActivity>
     {
         public IList<ICaseConvertTO> ConvertCollection { get; set; }
 
@@ -279,7 +281,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-          
+
 
         void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
@@ -405,6 +407,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Convert Collection",
+                    Type= StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ConvertCollection)
+                }
+            };
+        }
 
         public bool Equals(DsfCaseConvertActivity other)
         {

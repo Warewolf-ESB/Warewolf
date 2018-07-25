@@ -13,6 +13,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,6 +55,11 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public TestDsfNativeActivity()
             : base(false, "Test", new Mock<IDebugDispatcher>().Object)
         {
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
         }
 
         public override List<string> GetOutputs()

@@ -22,6 +22,7 @@ using System.Linq;
 using Moq;
 using Warewolf.Storage;
 using Dev2.Common;
+using Dev2.Common.State;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -38,6 +39,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             public TestActivity(string displayName) : base(displayName)
             {
 
+            }
+            public override IEnumerable<StateVariable> GetState()
+            {
+                return new StateVariable[0];
             }
             public string InputPath;
             public string Result;

@@ -36,10 +36,12 @@ using Dev2.Comparer;
 using System.IO;
 using System.Text;
 using Dev2.Common.Common;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Data-DataSplit", "Data Split", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Split")]
+    [ToolDescriptorInfo("Data-DataSplit", "Data Split", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Split")]
     public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfDataSplitActivity>
     {
         string _sourceString;
@@ -95,6 +97,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ResultsCollection = new List<DataSplitDTO>();
         }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Value = SourceString,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ReverseOrder",
+                    Value = ReverseOrder.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "SkipBlankRows",
+                    Value = SkipBlankRows.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ResultsCollection),
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {

@@ -13,6 +13,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 
 namespace Dev2.Core.Tests.Workflows
@@ -46,6 +47,7 @@ namespace Dev2.Core.Tests.Workflows
         IEnumerable<IDev2Activity> IDev2Activity.GetChildrenNodes() => throw new NotImplementedException();
         public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
         public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
+        public IEnumerable<StateVariable> GetState() => throw new NotImplementedException();
     }
 
     public class TestDecisionActivity : Activity<bool>, IDev2Activity
@@ -76,5 +78,6 @@ namespace Dev2.Core.Tests.Workflows
         IEnumerable<IDev2Activity> IDev2Activity.GetChildrenNodes() => throw new NotImplementedException();
         public IEnumerable<IDev2Activity> GetNextNodes() => throw new NotImplementedException();
         public List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors() => throw new NotImplementedException();
+        public IEnumerable<StateVariable> GetState() => throw new NotImplementedException();
     }
 }
