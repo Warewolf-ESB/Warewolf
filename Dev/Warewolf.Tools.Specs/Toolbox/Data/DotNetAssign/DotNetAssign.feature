@@ -1,7 +1,7 @@
 ﻿Feature: DotNetAssign
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to use variables
+	As a Warewolf user
+	I want a tool that assigns data to variables
 
 @mytag
 Scenario: DotNetAssign multiple variables to the same recordset
