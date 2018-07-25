@@ -302,7 +302,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             }
         }
 
-        readonly List<(string hashCode, IRecordSetItemModel recSet)> _hasedRecSets = new List<(string hashCode, IRecordSetItemModel recSet)>();
+        readonly List<(string hashCode, IRecordSetItemModel recSet)> _hashedRecSets = new List<(string hashCode, IRecordSetItemModel recSet)>();
         void LoadRecordsets(string sqlQuery)
         {
             var advancedRecordset = new Dev2.Activities.AdvancedRecordset();
@@ -311,7 +311,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 if (!string.IsNullOrEmpty(recSet.DisplayName))
                 {
                     var recSetHash = "A"+recSet.GetHashCode().ToString().Replace("-","B");
-                    _hasedRecSets.Add((recSetHash, recSet));
+                    _hashedRecSets.Add((recSetHash, recSet));
                     advancedRecordset.AddRecordsetAsTable((recSetHash, recSet.Children.Select(c => c.DisplayName).ToList()));
                 }
             }
@@ -320,7 +320,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             if (sqlQuery.Contains("UNION") && countOfStatements == 2)
             {
                 var sqlQueryToUpdate = sqlQuery;
-                foreach(var item in _hasedRecSets)
+                foreach(var item in _hashedRecSets)
                 {
                     sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet.DisplayName, item.hashCode);
                 }                
@@ -375,7 +375,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             {
                 if (token.Type == TSQL.Tokens.TSQLTokenType.Identifier)
                 {
-                    var hash = _hasedRecSets.FirstOrDefault(x => x.recSet.DisplayName == token.Text);
+                    var hash = _hashedRecSets.FirstOrDefault(x => x.recSet.DisplayName == token.Text);
                     if (!hash.Equals(default((string, IRecordSetItemModel))))
                     {
                         sqlToUpdate = sqlToUpdate.Replace(token.Text, hash.hashCode);
