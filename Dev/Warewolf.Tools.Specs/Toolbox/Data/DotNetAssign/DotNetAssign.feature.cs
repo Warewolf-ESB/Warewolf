@@ -84,12 +84,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DotNetAssign
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign multiple variables to the same recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("DotNetAssign multiple variables to the same recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DotNetAssign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
-        public virtual void AssignMultipleVariablesToTheSameRecordset()
+        public virtual void DotNetAssignMultipleVariablesToTheSameRecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple variables to the same recordset", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DotNetAssign multiple variables to the same recordset", new string[] {
                         "mytag"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
@@ -103,6 +103,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the dotnetassign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+ testRunner.Then("the debug inputs count equals \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -120,7 +122,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[person().name]] =",
                         "jack"});
-#line 13
+#line 14
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -128,17 +130,14 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table2.AddRow(new string[] {
                         "1",
-                        "[[rec(1).set]] = 10"});
+                        "[[person(1).name]] = Kim"});
             table2.AddRow(new string[] {
                         "2",
-                        "[[rec(2).set]] = 20"});
+                        "[[person(2).name]] = bob"});
             table2.AddRow(new string[] {
                         "3",
-                        "[[rec(3).set]] = 30"});
-            table2.AddRow(new string[] {
-                        "4",
-                        "[[value]] = 30"});
-#line 18
+                        "[[person(3).name]] = jack"});
+#line 19
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
