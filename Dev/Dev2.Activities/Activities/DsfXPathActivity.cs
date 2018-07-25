@@ -17,12 +17,14 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
@@ -30,7 +32,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Utility-Path", "XPath", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Xpath")]
+    [ToolDescriptorInfo("Utility-Path", "XPath", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Xpath")]
     public class DsfXPathActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfXPathActivity>
     {
         #region Fields
@@ -80,6 +82,26 @@ namespace Dev2.Activities
         {
             ResultsCollection = new List<XPathDTO>();
         }
+
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SourceString",
+                    Value = SourceString,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="ResultsCollection",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ResultsCollection),
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
 
         #endregion
 

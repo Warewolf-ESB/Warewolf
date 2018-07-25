@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -304,6 +306,78 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-       
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDropBoxDownloadActivity_GetState")]
+        public void DsfDropBoxDownloadActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid();
+            var selectedSource = new MockOAuthSource(uniqueId);
+
+            //------------Setup for test--------------------------
+            var dropBoxDownloadActivity = new DsfDropBoxDownloadActivity
+            {
+                SelectedSource = selectedSource,
+                FromPath = "Path_From",
+                ToPath = "Path_To",
+                OverwriteFile = false,
+                Result = "Downloaded"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dropBoxDownloadActivity.GetState();
+            Assert.AreEqual(5, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FromPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Path_From"
+                },
+                new StateVariable
+                {
+                    Name = "ToPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Path_To"
+                },
+                new StateVariable
+                {
+                    Name = "OverwriteFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "Downloaded"
+                }
+            };
+
+            var iter = dropBoxDownloadActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

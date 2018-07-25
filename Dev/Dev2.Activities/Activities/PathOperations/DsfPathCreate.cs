@@ -14,6 +14,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -25,13 +26,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("FileFolder-Create", "Create", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Create")]
+    [ToolDescriptorInfo("FileFolder-Create", "Create", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Create")]
     public class DsfPathCreate : DsfAbstractFileActivity, IPathOutput, IPathOverwrite,IEquatable<DsfPathCreate>
     {
-
         public DsfPathCreate()
             : base("Create")
         {
@@ -40,7 +39,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
-
             IList<OutputTO> outputs = new List<OutputTO>();
 
             error = new ErrorResultTO();
@@ -94,8 +92,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return outputs;
         }
 
-        #region Properties
-
         /// <summary>
         /// Gets or sets the output path.
         /// </summary>
@@ -117,7 +113,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
-        #endregion Properties
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "OutputPath",
+                    Value = OutputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "Overwrite",
+                    Value = Overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Value = Username,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Value = PrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -136,17 +166,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(OutputPath);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
-        #endregion
-
         public bool Equals(DsfPathCreate other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -161,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }

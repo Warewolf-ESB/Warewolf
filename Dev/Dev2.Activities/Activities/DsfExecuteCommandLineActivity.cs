@@ -23,6 +23,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -38,7 +39,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
+    [ToolDescriptorInfo("Scripting-CMDScript", "CMD Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_CMD_Script")]
     public class DsfExecuteCommandLineActivity : DsfActivityAbstract<string>,IEquatable<DsfExecuteCommandLineActivity>, IDisposable
     {
         #region Fields
@@ -113,6 +114,30 @@ namespace Dev2.Activities
             }
 
             ExecuteTool(dataObject, 0);
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Command",
+                    Value = CommandFileName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "CommandPriority",
+                    Value = CommandPriority.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="CommandResult",
+                    Value = CommandResult,
+                    Type = StateVariable.StateType.Output
+                }
+            };
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)

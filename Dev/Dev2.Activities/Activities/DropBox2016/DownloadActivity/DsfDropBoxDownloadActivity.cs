@@ -20,17 +20,15 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
-
+using Dev2.Common.State;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
+    [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable,IEquatable<DsfDropBoxDownloadActivity>
     {
         public DsfDropBoxDownloadActivity()
         {
-            
             DisplayName = "Download from Dropbox";
             OverwriteFile = false;
             
@@ -73,7 +71,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         public string ToPath { get; set; }
 
         public bool OverwriteFile { get; set; }
-
         
         [Inputs("Local File Path")]
         [FindMissing]
@@ -93,11 +90,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             return _client;
         }
 
-        #region Overrides of DsfActivity
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
-
-        #region Overrides of DsfBaseActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -111,8 +104,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             base.ExecuteTool(dataObject, update);
         }
-
-        #endregion Overrides of DsfBaseActivity
 
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
@@ -167,12 +158,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             _debugInputs.Add(debugItem);
 
             return _debugInputs;
-
         }
 
         public bool Equals(DsfDropBoxDownloadActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -193,7 +183,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -227,7 +217,42 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             _client.Dispose();
         }
-    }
 
-        #endregion Overrides of DsfActivity
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "SelectedSource.ResourceID",
+                    Type = StateVariable.StateType.Input,
+                    Value = SelectedSource.ResourceID.ToString()
+                },
+                new StateVariable
+                {
+                    Name = "FromPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = FromPath
+                },
+                new StateVariable
+                {
+                    Name = "ToPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ToPath
+                },
+                new StateVariable
+                {
+                    Name = "OverwriteFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = OverwriteFile.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
+    }
 }

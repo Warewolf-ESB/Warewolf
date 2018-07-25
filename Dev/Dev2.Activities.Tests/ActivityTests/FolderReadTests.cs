@@ -16,6 +16,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Common;
+using System.Linq;
+using Dev2.Common.State;
 using System.IO;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -196,6 +198,255 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfFolderRead_GetState")]
+        public void DsfFolderRead_GetState_IsFilesSelected_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfFolderRead
+            {
+                InputPath = "[[InputPath]]",
+                IsFilesSelected = true,
+                Username = "Bob",
+                PrivateKeyFile = "absdef",
+                Result = "[[res]]"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[InputPath]]"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Bob"
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "absdef"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfFolderRead_GetState")]
+        public void DsfFolderRead_GetState_IsFoldersSelected_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfFolderRead
+            {
+                InputPath = "[[InputPath]]",
+                IsFoldersSelected = true,
+                Username = "Bob",
+                PrivateKeyFile = "absdef",
+                Result = "[[res]]"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[InputPath]]"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Bob"
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "absdef"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfFolderRead_GetState")]
+        public void DsfFolderRead_GetState_IsFilesAndFoldersSelected_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfFolderRead
+            {
+                InputPath = "[[InputPath]]",
+                IsFilesAndFoldersSelected = true,
+                Username = "Bob",
+                PrivateKeyFile = "absdef",
+                Result = "[[res]]"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[InputPath]]"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name = "IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = "Bob"
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = "absdef"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type=StateVariable.StateType.Output,
+                    Value= "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         [TestCleanup]

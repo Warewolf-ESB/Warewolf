@@ -183,6 +183,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>

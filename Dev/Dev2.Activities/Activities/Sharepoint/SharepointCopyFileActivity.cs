@@ -23,11 +23,12 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Copy File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Copy_File")]
-    public class SharepointCopyFileActivity : DsfAbstractFileActivity,IEquatable<SharepointCopyFileActivity>
+    [ToolDescriptorInfo("SharepointLogo", "Copy File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Copy_File")]
+    public class SharepointCopyFileActivity : DsfAbstractFileActivity, IEquatable<SharepointCopyFileActivity>
     {
         public SharepointCopyFileActivity() : base("SharePoint Copy File")
         {
@@ -232,7 +233,36 @@ namespace Dev2.Activities.Sharepoint
             }
             return _debugOutputs;
         }
-
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="ServerInputPathFrom",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServerInputPathFrom
+                },
+                 new StateVariable
+                {
+                    Name="ServerInputPathTo",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServerInputPathTo
+                },
+                 new StateVariable
+                {
+                    Name="Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = Overwrite.ToString()
+                },
+                 new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
         public bool Equals(SharepointCopyFileActivity other)
         {
             if (ReferenceEquals(null, other))
@@ -246,10 +276,10 @@ namespace Dev2.Activities.Sharepoint
             }
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
-            return base.Equals(other) 
-                && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom) 
-                && string.Equals(ServerInputPathTo, other.ServerInputPathTo) 
-                && string.Equals(DisplayName, other.DisplayName) 
+            return base.Equals(other)
+                && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom)
+                && string.Equals(ServerInputPathTo, other.ServerInputPathTo)
+                && string.Equals(DisplayName, other.DisplayName)
                 && Overwrite == other.Overwrite
                 && isSourceEqual
                 && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
@@ -272,7 +302,7 @@ namespace Dev2.Activities.Sharepoint
                 return false;
             }
 
-            return Equals((SharepointCopyFileActivity) obj);
+            return Equals((SharepointCopyFileActivity)obj);
         }
 
         public override int GetHashCode()

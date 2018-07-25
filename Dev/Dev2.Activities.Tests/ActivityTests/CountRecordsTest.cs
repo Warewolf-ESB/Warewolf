@@ -13,6 +13,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -229,6 +230,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCountRecordsetActivity_GetState")]
+        public void DsfCountRecordsetActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            const string recordsetName = "[[Customers()]]";
+            //------------Setup for test--------------------------
+            var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "RecordsetName",
+                    Type = StateVariable.StateType.Input,
+                    Value = recordsetName
+                },
+                new StateVariable
+                {
+                    Name="CountNumber",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         #region |Valid Recordset Name|

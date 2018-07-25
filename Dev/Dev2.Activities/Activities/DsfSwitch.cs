@@ -22,6 +22,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common;
 using System.Activities.Statements;
+using Dev2.Common.State;
+using Dev2.Communication;
 
 namespace Dev2.Activities
 {
@@ -92,6 +94,37 @@ namespace Dev2.Activities
             return nextNodes;
         }
         public string Switch { get; set; }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            var serializer = new Dev2JsonSerializer();
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Switch",
+                    Type = StateVariable.StateType.Input,
+                    Value = Switch
+                },
+                new StateVariable
+                {
+                    Name = "Switches",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(Switches)
+                },
+                 new StateVariable
+                {
+                    Name = "Default",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(Default)
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         /// <summary>
         /// When overridden runs the activity's execution logic
@@ -305,6 +338,12 @@ namespace Dev2.Activities
         public override List<string> GetOutputs() => new List<string>();
 
         public string ConditionToUse { get; set; }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            //This Activity is only used as part of the Warewolf Test Exection Framework and is not used in normal exeuction.
+            return new StateVariable[0];
+        }
 
         #region Overrides of DsfNativeActivity<string>
 
