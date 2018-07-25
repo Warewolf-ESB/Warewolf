@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table1.AddRow(new string[] {
-                        "http://tst-ci-remote-obsolete:3142",
+                        "http://localhost:3142",
                         "Windows"});
 #line 8
  testRunner.Given("I create a server source as", ((string)(null)), table1, "Given ");
@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table2.AddRow(new string[] {
-                        "http://tst-ci-remote-obsolete:3142",
+                        "http://test-remotewarewolf:3142",
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
@@ -137,8 +137,8 @@ this.ScenarioSetup(scenarioInfo);
                         "username",
                         "Password"});
             table3.AddRow(new string[] {
-                        "dev2\\integrationtester",
-                        "I73573r0"});
+                        ".\\WarewolfAdmin",
+                        "W@rEw0lf@dm1n"});
 #line 20
  testRunner.And("User details as", ((string)(null)), table3, "And ");
 #line 23
@@ -177,7 +177,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Password"});
             table5.AddRow(new string[] {
                         "BadUser",
-                        "I73573r0"});
+                        "W@rEw0lf@dm1n"});
 #line 32
  testRunner.And("User details as", ((string)(null)), table5, "And ");
 #line 35
@@ -202,7 +202,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table6.AddRow(new string[] {
-                        "http://tst-ci-remote-obsolete:3142",
+                        "http://wolfs-den:3142",
                         "Public"});
 #line 39
  testRunner.Given("I create a server source as", ((string)(null)), table6, "Given ");

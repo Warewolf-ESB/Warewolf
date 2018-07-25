@@ -99,7 +99,7 @@ namespace Dev2.Activities.Specs.Composition
     {
         readonly ScenarioContext _scenarioContext;
         IDirectory _dirHelper;
-        static ContainerLauncher _containerOps;
+        public static ContainerLauncher _containerOps;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -156,7 +156,7 @@ namespace Dev2.Activities.Specs.Composition
         public void CleanUp()
         {         
             _resetEvt?.Close();
-            _containerOps.Dispose()
+            _containerOps?.Dispose();
         }
 
         public void CleanUp_DetailedLogFile()

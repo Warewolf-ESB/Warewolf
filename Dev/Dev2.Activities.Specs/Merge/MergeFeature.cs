@@ -1,5 +1,6 @@
 ﻿using Dev2.Activities.PathOperations;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Activities.Specs.Composition;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -34,7 +35,6 @@ namespace Dev2.Activities.Specs.Merge
         const string mergeVmString = "mergeVm";
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        static ContainerLauncher _containerOps;
 
         public MergeFeature(ScenarioContext scenarioContext)
         {
@@ -60,12 +60,6 @@ namespace Dev2.Activities.Specs.Merge
 #pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
-        [AfterScenario]
-        public void CleanUp()
-        {
-            _containerOps.Dispose()
-        }
-
         IServer localHost;
         readonly IServerRepository environmentModel = ServerRepository.Instance;
         [Given(@"I Load workflow ""(.*)"" from ""(.*)""")]
@@ -73,7 +67,7 @@ namespace Dev2.Activities.Specs.Merge
         {
             if (serverName == "Remote Container")
             {
-                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                WorkflowExecutionSteps._containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {
