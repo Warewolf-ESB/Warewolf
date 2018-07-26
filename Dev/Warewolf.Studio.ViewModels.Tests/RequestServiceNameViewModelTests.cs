@@ -19,9 +19,9 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class RequestServiceNameViewModelTests
     {
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_CreateAsync")]
+        [TestCategory("RequestServiceNameViewModel")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RequestServiceNameViewModel_CreateAsync_NullParameters_ShouldError()
         {
@@ -33,9 +33,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_CreateAsync")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_CreateAsync_ParametersPassed_ShouldConstructCorrectly()
         {
             //------------Setup for test--------------------------
@@ -52,9 +52,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("", requestServiceNameViewModel.Name);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NoItemSelected_ShouldReturnResourceNameNoPath()
         {
             //------------Setup for test--------------------------
@@ -78,9 +78,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelected_ShouldReturnResourceNameWithPath()
         {
             //------------Setup for test--------------------------
@@ -108,9 +108,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("TestResource", requestServiceNameViewModel.ResourceName.Name);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasParent_ShouldReturnResourceNameWithPathWithParent()
         {
             //------------Setup for test--------------------------
@@ -146,8 +146,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Can only save to folders or root", requestServiceNameViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestMethod, Timeout(60000)]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasMultipleParents_ShouldReturnResourceNameWithPathWithParent()
         {
             //------------Setup for test--------------------------
@@ -195,9 +195,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasDuplicateName_ShouldReturnError()
         {
             //------------Setup for test--------------------------
@@ -235,9 +235,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasDuplicateName_WhenDuplicate_ShouldReturnError()
         {
             //------------Setup for test--------------------------
@@ -260,7 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnvironmentModel.Setup(model => model.Children).Returns(new AsyncObservableCollection<IExplorerItemViewModel> { mockExplorerTreeItem.Object });
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "", mockExplorerTreeItem.Object);
             requestServiceNameViewModel.ShowSaveDialog();
-            
+
             requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.SelectedItem = null;
             //------------Execute Test---------------------------
             requestServiceNameViewModel.Name = "MyFolder";
@@ -270,9 +270,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NoItemSelectedHasDuplicateName_ShouldReturnError()
         {
             //------------Setup for test--------------------------
@@ -301,9 +301,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameEmpty_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -320,9 +320,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameContainsInvalidCharacters_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -340,9 +340,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameContainsLeadingTrailingSpaces_ShouldHaveErrorMessage()
         {
             //------------Setup for test--------------------------
@@ -360,9 +360,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(requestServiceNameViewModel.OkCommand.CanExecute(null));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_ShowSaveDialog_NameValidNotLoaded_CanClickOk()
         {
             //------------Setup for test--------------------------
@@ -385,9 +385,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canExecute);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_Header")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_Header_Set_ShouldFirePropertyChangedEvent()
         {
             //------------Setup for test--------------------------
@@ -416,9 +416,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("TestHeader", requestServiceNameViewModel.Header);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_CancelCommand_Called_ShouldCloseView()
         {
             //------------Setup for test--------------------------
@@ -441,9 +441,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_SetName_SingleEnvironmentModelNull_ErrorMessageEmpty()
         {
             //------------Setup for test--------------------------
@@ -462,9 +462,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Hagashen Naidu")]
-        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_SetName_SingleEnvironmentModelEnvironmentsNull_ErrorMessageEmpty()
         {
             //------------Setup for test--------------------------
@@ -485,9 +485,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("", requestServiceNameViewModel.ErrorMessage);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("RequestServiceNameViewModel_CancelCommand")]
+        [TestCategory("RequestServiceNameViewModel")]
         public async Task RequestServiceNameViewModel_HasLoadedFalse_CanDuplicateFalse()
         {
             //------------Setup for test--------------------------
@@ -500,9 +500,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
             CustomContainer.Register(serverRepo.Object);
             var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
-           
+
             var fieldInfo = typeof(RequestServiceNameViewModel).GetField("_selectedPath", BindingFlags.NonPublic | BindingFlags.Instance);
-            
+
             fieldInfo.SetValue(requestServiceNameViewModel, "Hello World");
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments = new ObservableCollection<IEnvironmentViewModel>();
@@ -514,8 +514,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(canExecute);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RequestServiceNameViewModel")]
         public void FixReferences_GivenIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
@@ -530,8 +531,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(viewModel.FixReferences);
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RequestServiceNameViewModel")]
         public void CallDuplicateService_GivenValidComsController_ShouldExecuteCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -558,13 +560,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyCon.SetValue(viewModel, envMock.Object);
             var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
-            
+
             selectedItem.SetValue(viewModel, selectedItemMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
@@ -584,8 +586,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Verify(communicationController => communicationController.ExecuteCommand<ResourceCatalogDuplicateResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RequestServiceNameViewModel")]
         public void CallDuplicateCommand_GivenNoItemPassed_ShouldSetCanExecuteFalse()
         {
             //---------------Set up test pack-------------------
@@ -610,13 +613,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyCon.SetValue(viewModel, envMock.Object);
             var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
-            
+
             selectedItem.SetValue(viewModel, selectedItemMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
@@ -628,8 +631,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
 
-        [TestMethod,Timeout(60000)]
+        [TestMethod, Timeout(60000)]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RequestServiceNameViewModel")]
         public void CallDuplicateCommand_GivenIsFolder_ShouldAddValidPayloads()
         {
             //---------------Set up test pack-------------------
@@ -658,13 +662,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             controller.Setup(communicationController => communicationController.AddPayloadArgument("FixRefs", It.IsAny<string>()));
             controller.Setup(communicationController => communicationController.ExecuteCommand<ExecuteMessage>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>()));
             var lazyCon = typeof(RequestServiceNameViewModel).GetField("_lazyCon", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyCon.SetValue(viewModel, envMock.Object);
             var lazyComs = typeof(RequestServiceNameViewModel).GetField("_lazyComs", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
-            
+
             lazyComs.SetValue(viewModel, controller.Object);
             var selectedItem = typeof(RequestServiceNameViewModel).GetProperty("SingleEnvironmentExplorerViewModel", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
-            
+
             selectedItem.SetValue(viewModel, selectedItemMock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
@@ -679,7 +683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
             catch (Exception f) when (f is NullReferenceException)
             {
-                 Console.WriteLine(f);
+                Console.WriteLine(f);
             }
             catch (Exception e)
             {

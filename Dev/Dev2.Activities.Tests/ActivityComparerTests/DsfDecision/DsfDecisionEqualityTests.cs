@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -989,6 +990,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
             var equals = decision.Equals(decision1);
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfFlowDecisionActivity_GetState")]
+        public void DsfFlowDecisionActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfFlowDecisionActivity();
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, stateItems.Count());
+
         }
     }
 }

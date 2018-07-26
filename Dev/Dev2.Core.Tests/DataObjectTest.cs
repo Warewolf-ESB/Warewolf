@@ -245,7 +245,7 @@ namespace Dev2.Tests
             dataObject.SourceResourceID = Guid.NewGuid();
             dataObject.IsSubExecution = true;
             dataObject.ServiceTest = new ServiceTestModelTO { TestName = "Test Mock" };
-            dataObject.StateLogger = new Dev2JsonStateLogger(dataObject);
+            dataObject.StateNotifier = new Mock<IStateNotifier>().Object;
             dataObject.Settings = new Dev2WorkflowSettingsTO { KeepLogsForDays = 999 };
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             var guidList = new List<Guid> { Guid.NewGuid() };
@@ -323,7 +323,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.WebUrl, clonedObject.WebUrl);
             Assert.AreEqual(dataObject.QueryString, clonedObject.QueryString);
             Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
-            Assert.AreEqual(dataObject.StateLogger, clonedObject.StateLogger);
+            Assert.AreEqual(dataObject.StateNotifier, clonedObject.StateNotifier);
             Assert.AreNotEqual(dataObject.Settings, clonedObject.Settings);
             Assert.AreEqual(dataObject.Settings.KeepLogsForDays, clonedObject.Settings.KeepLogsForDays);
         }

@@ -11,10 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -24,7 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    
+
     public class PathRenameTests : BaseActivityUnitTest
     {
 
@@ -34,7 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -84,11 +87,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
             var act = new DsfPathRename
-                {
-                    InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
-                    OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
-                    Result = result
-                };
+            {
+                InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
+                OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
+                Result = result
+            };
 
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -104,11 +107,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
             var act = new DsfPathRename
-                {
-                    InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
-                    OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
-                    Result = result
-                };
+            {
+                InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
+                OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
+                Result = result
+            };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -166,11 +169,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             const string result = "[[CompanyName]]";
             var act = new DsfPathRename
-                {
-                    InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
-                    OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
-                    Result = result
-                };
+            {
+                InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"),
+                OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"),
+                Result = result
+            };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
@@ -191,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt")
                 };
 
-            foreach(string fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -202,16 +205,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
             var act = new DsfPathRename
-                {
-                    InputPath = @"c:\OldFile.txt",
-                    OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
-                    Result = "[[res]]",
-                    DestinationUsername = "destUName",
-                    DestinationPassword = "destPWord",
-                    Username = "uName",
-                    Password = "pWord",
-                    GetOperationBroker = () => activityOperationBrokerMock
-                };
+            {
+                InputPath = @"c:\OldFile.txt",
+                OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
+                Result = "[[res]]",
+                DestinationUsername = "destUName",
+                DestinationPassword = "destPWord",
+                Username = "uName",
+                Password = "pWord",
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                        dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
@@ -230,6 +233,126 @@ namespace Dev2.Tests.Activities.ActivityTests
             var pathRename = new DsfPathRename();
             IDestinationUsernamePassword password = pathRename;
             Assert.IsNotNull(password);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfPathRename_GetState()")]
+        public void DsfPathRename_GetState()
+        {
+            var fileNames = new List<string>
+                {
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"),
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt")
+                };
+
+            foreach (string fileName in fileNames)
+            {
+                File.WriteAllText(fileName, @"TestData");
+            }
+
+            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out string dataListShape,
+                                                   out string dataListWithData);
+
+            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
+            var inputPath = @"c:\OldFile.txt";
+            var outputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt");
+            var result = "[[res]]";
+            var destinationUsername = "[[DestUsername]]";
+            var destinationPassword = "[[DestPassword]]";
+            var username = "[[username]]";
+            var password = "[[Password]]";
+            var overwrite = false;
+            var privateKeyFile = "[[KeyFile]]";
+            var destinationPrivateKeyFile = "[[DestKeyFile]]";
+            var act = new DsfPathRename
+            {
+                InputPath = inputPath,
+                OutputPath = outputPath,
+                Result = result,
+                Overwrite = overwrite,
+                DestinationUsername = destinationUsername,
+                DestinationPassword = destinationPassword,
+                Username = username,
+                Password = password,
+                PrivateKeyFile = privateKeyFile,
+                DestinationPrivateKeyFile = destinationPrivateKeyFile,
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
+
+            CheckPathOperationActivityDebugInputOutput(act, dataListShape,
+                                                       dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
+
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(8, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="InputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = inputPath
+                },
+                new StateVariable
+                {
+                    Name="OutputPath",
+                    Type = StateVariable.StateType.Output,
+                    Value = outputPath
+                },
+                new StateVariable
+                {
+                    Name="DestinationUsername",
+                    Type = StateVariable.StateType.Input,
+                    Value =destinationUsername
+                },
+                new StateVariable
+                {
+                    Name="Username",
+                    Type = StateVariable.StateType.Input,
+                    Value = username
+                },
+                new StateVariable
+                {
+                    Name="Overwrite",
+                    Type = StateVariable.StateType.Input,
+                    Value = overwrite.ToString()
+                },
+                new StateVariable
+                {
+                    Name="PrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value = privateKeyFile
+                },
+                new StateVariable
+                {
+                    Name="DestinationPrivateKeyFile",
+                    Type = StateVariable.StateType.Input,
+                    Value =destinationPrivateKeyFile
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

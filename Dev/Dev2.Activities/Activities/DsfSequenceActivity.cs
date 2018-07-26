@@ -25,10 +25,11 @@ using Warewolf.Core;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.State;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
+    [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
     public class DsfSequenceActivity : DsfActivityAbstract<string>,IEquatable<DsfSequenceActivity>
     {
         readonly Sequence _innerSequence = new Sequence();
@@ -46,7 +47,12 @@ namespace Dev2.Activities
             base.CacheMetadata(metadata);
             metadata.AddChild(_innerSequence);
         }
-        
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
+
         public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
             var nextNodes = new List<IDev2Activity>();
