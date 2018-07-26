@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dev2.Interfaces;
 using System.Activities.Statements;
 using Dev2.Common;
+using Dev2.Common.State;
 
 namespace Dev2
 {
@@ -21,6 +22,7 @@ namespace Dev2
         IEnumerable<IDev2Activity> GetChildrenNodes();
         FlowNode GetFlowNode();
         string GetDisplayName();
+        IEnumerable<StateVariable> GetState();
         IEnumerable<IDev2Activity> GetNextNodes();
         List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors();
     }

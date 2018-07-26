@@ -22,6 +22,8 @@ using Dev2.Activities.DateAndTime;
 using Moq;
 using Warewolf.Storage;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
+using System.Linq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -297,91 +299,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.", executionEnvironment.FetchErrors());
         }
 
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_CurrentCulture_Called_ShouldPassAllDatesWithoutErrors()
-        {
-            //------------Setup for test--------------------------
-            var faiCount = 0;
-            var passCount = 0;
-            var total = 0;
-            var n = @"C:\Users\nkosinathi.sangweni\Desktop\New Text Document.txt";
-            var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-            foreach (var culture in allCultures)
-            {
-                var cultures = new List<string>();
-                foreach (var format in culture.DateTimeFormat.GetAllDateTimePatterns())
-                {
-                    cultures.Add(format);
-                }
-
-                var now = DateTime.Now;
-
-                foreach (var item in cultures)
-                {
-                    const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-                    SetupArguments(currDL
-                                 , currDL
-                                 , now.ToString()
-                                 , ""
-                                 , item
-                                 , "Years"
-                                 , 10
-                                 , "[[MyTestResult]]");
-
-                    var result = ExecuteProcess();
-                    var a = now.ToString(item);
-                    GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-                    total++;
-                    try
-                    {
-                        // remove test datalist ;)
-                        var allErrors = result.Environment.FetchErrors();
-                        var hasErrors = string.IsNullOrEmpty(allErrors);
-                        var asDate = DateTime.ParseExact(actual, item, culture, DateTimeStyles.AdjustToUniversal);
-
-
-                        var localDate = new LocalDate(now.Year, now.Month, now.Day);
-                        var localDate1 = new LocalDate(asDate.Year, asDate.Month, asDate.Day);
-                        var period = Period.Between(localDate, localDate1);
-
-                        Assert.IsTrue(hasErrors);
-                        if (item.ToUpper().Contains("y".ToUpper()))
-                        {
-                            Assert.IsTrue(period.Years >= 9, "this format has failed " + item);
-                        }
-                        else
-                        {
-                            Assert.AreEqual(a, actual);
-                        }
-
-                        passCount++;
-                        //using (var stream = File.AppendText(n))
-                        //{                            
-                        //    stream.WriteLine(item);
-                        //    stream.Flush();
-                        //}
-                       
-                    }
-                    catch (Exception e)
-                    {
-                        // Debug.WriteLine(actual + " "+ item+" "+ culture);
-                        faiCount++;
-                    }
-                }
-            }
-            Debug.WriteLine(faiCount + " " + "failures");
-            Debug.WriteLine(passCount + " " + "Passed");
-            Debug.WriteLine(total + " " + "total");
-
-            //Assert.AreEqual(13590, faiCount);
-            //Assert.AreEqual(15877, passCount);
-            //Assert.AreEqual(29467, total);
-
-        }
-
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
@@ -506,6 +423,89 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsFalse(act1.Equals(act2));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfDotNetDateTimeActivity_GetState")]
+        public void DsfDotNetDateTimeActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var calculateActivity = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "2018/07/20",
+                InputFormat = "yyyy/MM/dd",
+                OutputFormat = "yyyy/MM/dd",
+                TimeModifierType = "days",
+                TimeModifierAmountDisplay = "days",
+                TimeModifierAmount = 1,
+                Result = "TimeChanged"
+            };
+            //------------Execute Test---------------------------
+            var stateItems = calculateActivity.GetState();
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="DateTime",
+                    Type = StateVariable.StateType.Input,
+                    Value = "2018/07/20"
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = "yyyy/MM/dd"
+                },
+                new StateVariable
+                {
+                    Name="OutputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = "yyyy/MM/dd"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "days"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmountDisplay",
+                    Type = StateVariable.StateType.Input,
+                    Value = "days"
+                },
+                new StateVariable
+                {
+                    Name="TimeModifierAmount",
+                    Type = StateVariable.StateType.Input,
+                    Value = "1"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "TimeChanged"
+                }
+            };
+
+            var iter = calculateActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

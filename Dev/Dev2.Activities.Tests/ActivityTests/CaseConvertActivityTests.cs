@@ -17,6 +17,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Factories.Case;
 using Moq;
+using Dev2.Communication;
+using System.Linq;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -424,6 +428,27 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual("[[result]]", inputs[0].Value);
             Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
+        }
+
+
+        [TestMethod]
+        public void DsfCaseConvertActivity_GetState_Returns_Inputs_And_Outputs()
+        {            
+            //------------Setup for test--------------------------
+            var fieldsCollection = new List<ICaseConvertTO>
+            {
+                new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
+            };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
+            var expectedResults = ActivityHelper.GetSerializedStateValueFromCollection(fieldsCollection);
+            //------------Execute Test---------------------------
+            var stateList = dsfCaseConvert.GetState();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(stateList);
+            Assert.AreEqual(1, stateList.Count());
+            Assert.AreEqual(StateVariable.StateType.InputOutput, stateList.ToList()[0].Type);
+            Assert.AreEqual("Convert Collection", stateList.ToList()[0].Name);            
+            Assert.AreEqual(expectedResults, stateList.ToList()[0].Value);
         }
         #endregion
 

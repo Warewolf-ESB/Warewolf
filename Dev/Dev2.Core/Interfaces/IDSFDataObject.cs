@@ -112,6 +112,6 @@ namespace Dev2.Interfaces
         string QueryString { get; set; }
 
         IDev2WorkflowSettings Settings { get; set; }
-        IDev2StateLogger StateLogger { get; set; }
+        IStateNotifier StateNotifier { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -266,7 +267,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 GetScalarValueFromEnvironment(result.Environment, "sumResult", out string actual, out string error);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 StringAssert.Contains(e.Message, "No Value assigned for: [[sumResult]]");
             }
@@ -395,6 +396,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
+        public void DsfCalculateActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(stateItems);
+            Assert.AreEqual(2, stateItems.Count());
+            Assert.AreEqual("Expression", stateItems.ToList()[0].Name);
+            Assert.AreEqual(StateVariable.StateType.Input, stateItems.ToList()[0].Type);
+            Assert.AreEqual(expression, stateItems.ToList()[0].Value);
+            Assert.AreEqual("Result", stateItems.ToList()[1].Name);
+            Assert.AreEqual(StateVariable.StateType.Output, stateItems.ToList()[1].Type);
+            Assert.AreEqual(result, stateItems.ToList()[1].Value);
         }
     }
 }

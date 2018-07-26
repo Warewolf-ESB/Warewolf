@@ -5,6 +5,8 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Dev2.Common.Interfaces.Core.Graph;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using System.Linq;
+using Dev2.Common.State;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
@@ -282,6 +284,57 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             var @equals = webGet.Equals(webGet1);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebGetRequestActivity_GetState")]
+        public void DsfWebGetRequestActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfWebGetRequestActivity { Url = "http://localhsot", Headers="Content-Type:json", Result="[[res]]" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Url",
+                    Type = StateVariable.StateType.Input,
+                    Value ="http://localhsot"
+                },
+                new StateVariable
+                {
+                    Name = "Headers",
+                    Type = StateVariable.StateType.Input,
+                    Value ="Content-Type:json"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -23,6 +24,12 @@ namespace Dev2
         public TestMockStep()
         {
             DisplayName = "Mock Step";
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            //This Activity is only used as part of the Warewolf Test Exection Framework and is not used in normal exeuction.
+            return new StateVariable[0];
         }
 
         public TestMockStep(IDev2Activity originalActivity , List<IServiceTestOutput> outputs)
