@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.State;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -161,6 +162,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var result = evaluatedValues["Input1"] + " - " + evaluatedValues["Input2"];
             return new List<string> { result };
+        }
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
         }
     }
     

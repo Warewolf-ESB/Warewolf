@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Runtime.Interfaces;
 using System.Reflection;
-
-
+using Dev2.Common.State;
+using System.Linq;
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 {
@@ -171,6 +171,91 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             //------------Assert Results-------------------------
             Assert.Fail("Exception not thrown");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfPublishRabbitMQActivity_GetState")]
+        public void DsfPublishRabbitMQActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var sourceId = Guid.NewGuid();
+            //------------Setup for test--------------------------
+            var act = new DsfPublishRabbitMQActivity
+            {
+                QueueName = "bob",
+                IsDurable = true,
+                IsExclusive = false,
+                Message = "hello",
+                RabbitMQSourceResourceId = sourceId,
+                IsAutoDelete = false,
+                Result = "[[res]]",
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(7, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "QueueName",
+                    Type = StateVariable.StateType.Input,
+                    Value = "bob"
+                },
+                new StateVariable
+                {
+                    Name = "IsDurable",
+                    Type = StateVariable.StateType.Input,
+                    Value = "True"
+                },
+                new StateVariable
+                {
+                    Name = "IsExclusive",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                 new StateVariable
+                {
+                    Name = "Message",
+                    Type = StateVariable.StateType.Input,
+                    Value = "hello"
+                },                 
+                  new StateVariable
+                {
+                    Name = "RabbitMQSourceResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sourceId.ToString()
+                },
+                   new StateVariable
+                {
+                    Name = "IsAutoDelete",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },              
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[res]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

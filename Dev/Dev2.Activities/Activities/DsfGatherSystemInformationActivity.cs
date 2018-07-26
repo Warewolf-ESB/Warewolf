@@ -31,6 +31,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Dev2.Comparer;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Dev2.Activities
 {
@@ -71,6 +73,18 @@ namespace Dev2.Activities
             SystemInformationCollection = new List<GatherSystemInformationTO>();
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SystemInformationCollection",
+                    Type=StateVariable.StateType.InputOutput,
+                    Value= ActivityHelper.GetSerializedStateValueFromCollection(SystemInformationCollection)
+                }
+            };
+        }
 
         void CleanArgs()
         {

@@ -33,6 +33,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -40,7 +42,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
-    [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
+    [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
     public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfFindRecordsMultipleCriteriaActivity>
     {
         #region Properties
@@ -93,6 +95,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Ctor
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "ResultsCollection",
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(ResultsCollection),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "FieldsToSearch",
+                    Value = FieldsToSearch,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RequireAllTrue",
+                    Value = RequireAllTrue.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RequireAllFieldsToMatch",
+                    Value = RequireAllFieldsToMatch.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         public override List<string> GetOutputs() => new List<string> { Result };
 

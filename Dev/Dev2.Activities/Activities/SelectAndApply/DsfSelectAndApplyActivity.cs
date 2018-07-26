@@ -18,11 +18,11 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.SelectAndApply
 {
-
-    [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
+    [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Activities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>, IEquatable<DsfSelectAndApplyActivity>
     {
         class NullDataSource : Exception
@@ -88,6 +88,24 @@ namespace Dev2.Activities.SelectAndApply
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
 
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "DataSource",
+                    Type = StateVariable.StateType.Input,
+                    Value = DataSource
+                },
+                new StateVariable
+                {
+                    Name = "Alias",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = Alias
+                }
+            };
+        }
+
         protected override void OnBeforeExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -97,7 +115,6 @@ namespace Dev2.Activities.SelectAndApply
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
-
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
@@ -166,7 +183,6 @@ namespace Dev2.Activities.SelectAndApply
                     //Do nothing exception aleady added to errors
                     throw new NullDataSource();
                 }
-
 
                 if (dataObject.IsDebugMode())
                 {
@@ -330,12 +346,11 @@ namespace Dev2.Activities.SelectAndApply
         void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
-
         }
 
         public bool Equals(DsfSelectAndApplyActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -357,7 +372,7 @@ namespace Dev2.Activities.SelectAndApply
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -390,6 +405,4 @@ namespace Dev2.Activities.SelectAndApply
             }
         }
     }
-
-
 }

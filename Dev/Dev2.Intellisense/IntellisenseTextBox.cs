@@ -426,7 +426,7 @@ namespace Dev2.UI
             else
             {
                 if (error.Item2 != string.Empty)
-                {                    
+                {
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -458,7 +458,7 @@ namespace Dev2.UI
             else
             {
                 if (error.Item2 != string.Empty)
-                {                    
+                {
                     ToolTip = error.Item2;
                     HasError = true;
                 }
@@ -470,7 +470,7 @@ namespace Dev2.UI
             }
         }
 
-        private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error,string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
+        private void SetToolTip(Tuple<LanguageAST.LanguageExpression, string> error, string message) => ToolTip = error.Item2 != string.Empty ? error.Item2 : message;
         private void TrackIntellisenseEvent(string text)
         {
             if (FilterType == enIntellisensePartType.JsonObject)

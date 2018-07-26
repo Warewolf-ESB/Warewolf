@@ -185,6 +185,7 @@
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
     <Compile Include="Search\Search.cs" />
+    <Compile Include="State\StateVariable.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />

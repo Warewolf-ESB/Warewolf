@@ -14,18 +14,16 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
-
-
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    [ToolDescriptorInfo("Utility-Comment", "Comment", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Comment")]
+    [ToolDescriptorInfo("Utility-Comment", "Comment", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Comment")]
     public class DsfCommentActivity : DsfActivityAbstract<string>,IEquatable<DsfCommentActivity>
     {
         string _text;
@@ -147,6 +145,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return (base.GetHashCode() * 397) ^ (Text != null ? Text.GetHashCode() : 0);
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] 
+            {
+                new StateVariable
+                {
+                    Name = "Text",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = Text
+                }
+            };
         }
     }
 }

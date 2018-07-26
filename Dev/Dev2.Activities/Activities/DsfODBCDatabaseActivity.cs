@@ -19,7 +19,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Odbc", "ODBC", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EE11", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_ODBC")]
+    [ToolDescriptorInfo("Odbc", "ODBC", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EE11", "Dev2.Activities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_ODBC")]
     public class DsfODBCDatabaseActivity : DsfActivity,IEquatable<DsfODBCDatabaseActivity>
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

@@ -11,8 +11,11 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
+using Dev2.Common.State;
 using Dev2.Interfaces;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -343,6 +346,78 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]
+        public void DsfIndexActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfIndexActivity { InField = "[[CompanyName]]", Index = "First Occurance", Characters = "2", Direction = "Left To Right", Result = "[[res]]" };
+            //------------Execute Test---------------------------            
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(stateItems.Count() > 0);
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "StartIndex",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.StartIndex
+                },
+                new StateVariable
+                {
+                    Name ="MatchCase",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.MatchCase.ToString()
+                },
+                new StateVariable
+                {
+                    Name ="Direction",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.Direction
+                },
+                new StateVariable
+                {
+                    Name ="Characters",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.Characters
+                },
+                new StateVariable
+                {
+                    Name ="Index",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.Index
+                },
+                new StateVariable
+                {
+                    Name ="InField",
+                    Type = StateVariable.StateType.Input,
+                    Value = act.InField
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = act.Result
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
 
         #region Private Test Methods
 

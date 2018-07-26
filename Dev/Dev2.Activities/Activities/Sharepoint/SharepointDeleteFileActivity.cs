@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
@@ -26,7 +27,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Delete File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_File")]
+    [ToolDescriptorInfo("SharepointLogo", "Delete File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_File")]
     public class SharepointDeleteFileActivity : DsfAbstractFileActivity,IEquatable<SharepointDeleteFileActivity>
     {
         public SharepointDeleteFileActivity() : base("SharePoint Delete File")
@@ -199,6 +200,30 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                 new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServerInputPath
+                },
+                 new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                 }
+            };
         }
 
         public bool Equals(SharepointDeleteFileActivity other)

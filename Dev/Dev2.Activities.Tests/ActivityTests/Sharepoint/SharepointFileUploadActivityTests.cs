@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
@@ -211,6 +213,89 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointFileUploadGetState")]
+        public void SharepointFileUpload_GetState()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointFileUpload";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Files().Name]]";
+            var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var localInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var sharepointFileUploadActivity = new SharepointFileUploadActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = "[[Files().Name]]",
+                ServerInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite",
+                LocalInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite"
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            mockSharepointHelper.Setup(helper => helper.UploadFile(It.IsAny<string>(), It.IsAny<string>())).Returns("Success");
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            var privateObject = new PrivateObject(sharepointFileUploadActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointFileUploadActivity.SharepointSource = mockSharepointSource;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            var expectedResults = new[]
+           {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="LocalInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = localInputPath
+                 },
+                new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointFileUploadActivity.GetState();
+            Assert.AreEqual(4, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }
