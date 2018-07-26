@@ -43,7 +43,7 @@ Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	Given The Warewolf Studio is running
 	When I Set Resource Permissions For "DeployViewOnly" to Group "Public" and Permissions for View to "true" and Contribute to "false" and Execute to "false"
 	And I Click Deploy Ribbon Button
-	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Select RemoteContainer From Deploy Tab Destination Server Combobox
 	And I Select "DeployViewOnly" from the source tab 
 	Then Filtered Resourse Is Checked For Deploy
 	When I Click Deploy button

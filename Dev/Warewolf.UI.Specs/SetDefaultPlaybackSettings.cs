@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Reflection;
 using TechTalk.SpecFlow;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests;
 
 namespace Warewolf.UISpecs
@@ -10,25 +12,20 @@ namespace Warewolf.UISpecs
     [DeploymentItem("Warewolf.UI.Tests.dll")]
     class SetDefaultPlaybackSettings
     {
+        static ContainerLauncher _containerOps;
+
         [BeforeScenario]
         public void UseDefaultPlaybackSettings()
         {
             UIMap.SetPlaybackSettings();
         }
 
-        [BeforeScenario("Explorer")]
-        public void EnsureResourceDoesNotExistOnRemote()
-        {
-            var xmlResourcePath = @"\\tst-ci-remote-obsolete.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.xml";
-            if (File.Exists(xmlResourcePath))
-            {
-                File.Delete(xmlResourcePath);
-            }
-            var biteResourcePath = @"\\tst-ci-remote-obsolete.dev2.local\C$\ProgramData\Warewolf\Resources\LocalWorkflowWithRemoteSubworkflowToDelete.bite";
-            if (File.Exists(biteResourcePath))
-            {
-                File.Delete(biteResourcePath);
-            }
-        }
+        [BeforeFeature("Deploy")]
+        [BeforeFeature("Explorer")]
+        public static void StartRemoteContainer() => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+
+        [AfterFeature("Deploy")]
+        [AfterFeature("Explorer")]
+        public static void StopRemoteContainer() => _containerOps.Dispose();
     }
 }
