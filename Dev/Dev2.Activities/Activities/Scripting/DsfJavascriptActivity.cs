@@ -7,6 +7,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -26,7 +27,7 @@ namespace Dev2.Activities.Scripting
     /// <summary>
     /// Activity used for executing JavaScript through a tool
     /// </summary>
-    [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript")]
+    [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Activities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript")]
     public class DsfJavascriptActivity : DsfActivityAbstract<string>, IEquatable<DsfJavascriptActivity>
     {
         public DsfJavascriptActivity()
@@ -59,6 +60,36 @@ namespace Dev2.Activities.Scripting
 
         readonly IStringScriptSources _sources;
 
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Script",
+                    Value = Script,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "IncludeFile",
+                    Value = IncludeFile,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "EscapeScript",
+                    Value = EscapeScript.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
 
         #region Overrides of DsfNativeActivity<string>
 

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
@@ -488,6 +489,63 @@ namespace Dev2.Tests.Activities.ActivityTests
             _environment = new ExecutionEnvironment();
             Assert.IsNotNull(_environment);
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfUniqueActivity_GetState")]
+        public void DsfUniqueActivity_GetState()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            //------------Execute Test---------------------------
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 });
+            //------------Assert Results-------------------------
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(3, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "InFields",
+                    Type = StateVariable.StateType.Input,
+                    Value = InFields
+                },
+                new StateVariable
+                {
+                    Name = "ResultFields",
+                    Type = StateVariable.StateType.Input,
+                    Value = ResultFields
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
         #region Private Test Methods
 

@@ -10,7 +10,6 @@ namespace Warewolf.Launcher
 {
     static class TestCleanupUtils
     {
-
         public static void CopyOnWrite(string FileSpec)
         {
             if (File.Exists(FileSpec))
@@ -237,7 +236,8 @@ namespace Warewolf.Launcher
                 "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
                 "%PROGRAMDATA%\\Warewolf\\Workspaces",
                 "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl"
+                "%PROGRAMDATA%\\Warewolf\\VersionControl",
+                "%PROGRAMDATA%\\Warewolf\\Audits"
             };
 
             foreach (var FileOrFolder in ToClean)
@@ -250,6 +250,7 @@ namespace Warewolf.Launcher
                 }
                 if (Directory.Exists(ActualPath))
                 {
+                    WaitForFolderUnlock(ActualPath);
                     Directory.Delete(ActualPath, true);
                 }
                 if ((File.Exists(FileOrFolder) || Directory.Exists(FileOrFolder)))
@@ -440,6 +441,29 @@ namespace Warewolf.Launcher
                 {
                     Console.WriteLine($"Still waiting for {FileSpec} file to unlock.");
                     Thread.Sleep(3000);
+                }
+            }
+            return locked;
+        }
+
+        public static bool WaitForFolderUnlock(string FolderSpec)
+        {
+            var locked = true;
+            foreach (var file in Directory.GetFiles(FolderSpec, "*", SearchOption.AllDirectories))
+            {
+                var RetryCount = 0;
+                while (locked && RetryCount < 100)
+                {
+                    RetryCount++;
+                    if (WaitForFileUnlock(file))
+                    {
+                        Console.WriteLine($"Still waiting for {FolderSpec} folder to unlock.");
+                        Thread.Sleep(3000);
+                    }
+                    else
+                    {
+                        locked = false;
+                    }
                 }
             }
             return locked;

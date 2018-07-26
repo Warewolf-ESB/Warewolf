@@ -23,6 +23,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics.Debug;
@@ -672,6 +673,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
     }
 
     class TestExecutionService : IExecutableService

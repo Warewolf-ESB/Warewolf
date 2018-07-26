@@ -26,7 +26,7 @@ using System.Globalization;
 namespace Dev2.Activities
 {
 
-    [ToolDescriptorInfo("AdvancedRecordset", "Advanced Recordset", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_AdvancedRecordset")]
+    [ToolDescriptorInfo("AdvancedRecordset", "Advanced Recordset", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_AdvancedRecordset")]
     public class AdvancedRecordsetActivity : DsfActivity, IEquatable<AdvancedRecordsetActivity>
     {
         public IExecutionEnvironment ExecutionEnvironment { get; protected set; }

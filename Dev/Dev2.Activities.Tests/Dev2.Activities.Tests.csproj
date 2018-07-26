@@ -183,8 +183,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="FindRecsetOptionsTests\IsNotNullFindRecsetOptionTests.cs" />
     <Compile Include="FindRecsetOptionsTests\IsNullFindRecsetOptionTests.cs" />
     <Compile Include="ForEachBootstrapTOTests.cs" />
+    <Compile Include="InitializeAuditDB.cs" />
     <Compile Include="Mocks\ActivityOperationBrokerMock.cs" />
     <Compile Include="Mocks\MockAbstractMultipleFilesActivity.cs" />
     <Compile Include="ActivityStrings.Designer.cs">
@@ -543,6 +545,9 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
+    <EmbeddedResource Include="..\Resources - ServerTests\Audits\auditDB.db">
+      <Link>auditDB.db</Link>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

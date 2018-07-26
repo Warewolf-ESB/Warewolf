@@ -1274,6 +1274,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithNonNullableColumnWithDataMappedWhenMultiTable_HasDataTableWithData()
         {
             //------------Setup for test--------------------------

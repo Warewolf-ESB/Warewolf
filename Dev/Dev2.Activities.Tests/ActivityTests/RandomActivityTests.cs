@@ -12,10 +12,12 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.State;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -508,6 +510,69 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(Result, dsfForEachItems[0].Name);
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfRandomActivity_GetState")]
+        public void DsfRandomActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfRandomActivity { RandomType=enRandomType.LetterAndNumbers,From="1",To="5",Length="2",Result="[[rand]]"};
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(5, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "RandomType",
+                    Type = StateVariable.StateType.Input,
+                    Value = "LetterAndNumbers"
+                },
+                new StateVariable
+                {
+                    Name = "From",
+                    Type = StateVariable.StateType.Input,
+                    Value = "1"
+                },
+                new StateVariable
+                {
+                    Name = "To",
+                    Type = StateVariable.StateType.Input,
+                    Value = "5"
+                },
+                new StateVariable
+                {
+                    Name = "Length",
+                    Type = StateVariable.StateType.Input,
+                    Value = "2"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "[[rand]]"
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
 
         #region Private Test Methods

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
+using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
@@ -356,6 +358,408 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointReadFolderItemActivity_GetState")]
+        public void SharepointReadFolderItemActivity_GetState_IsFilesSelected()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointReadFolderItem";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Files().Name]]";
+            var isFilesSelected = true;
+            var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var sharepointReadFolderItemActivity = new SharepointReadFolderItemActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = result,
+                ServerInputPath = serverInputPath,
+                IsFilesSelected = isFilesSelected
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            mockSharepointHelper.Setup(helper => helper.LoadFiles(It.IsAny<string>())).Returns(new List<string> { "Success" });
+
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            var expectedResults = new[]
+       {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                 },
+                 new StateVariable
+                {
+                    Name="IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value =  "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = isFilesSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointReadFolderItemActivity.GetState();
+            Assert.AreEqual(6, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointReadFolderItemActivity_GetState")]
+        public void SharepointReadFolderItemActivity_GetState_IsFoldersSelected()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointReadFolderItem";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Files().Name]]";
+            var isFoldersSelected = true;
+            var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+            var sharepointReadFolderItemActivity = new SharepointReadFolderItemActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = result,
+                ServerInputPath = serverInputPath,
+                IsFoldersSelected = isFoldersSelected
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            mockSharepointHelper.Setup(helper => helper.LoadFolders(It.IsAny<string>())).Returns(new List<string> { "Success" });
+
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                 },
+                new StateVariable
+                {
+                    Name="IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = isFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name="IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointReadFolderItemActivity.GetState();
+            Assert.AreEqual(6, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointReadFolderItemActivity_GetState")]
+        public void SharepointReadFolderItemActivity_GetState_IsFilesAndFoldersSelected()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointReadFolderItem";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Files().Name]]";
+            var isFilesAndFoldersSelected = true;
+            var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+
+            var sharepointReadFolderItemActivity = new SharepointReadFolderItemActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = result,
+                ServerInputPath = serverInputPath,
+                IsFilesAndFoldersSelected = isFilesAndFoldersSelected
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            mockSharepointHelper.Setup(helper => helper.LoadFiles(It.IsAny<string>())).Returns(new List<string> { "Success" });
+            mockSharepointHelper.Setup(helper => helper.LoadFolders(It.IsAny<string>())).Returns(new List<string> { "Success" });
+
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            var expectedResults = new[]
+        {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                 },
+                 new StateVariable
+                {
+                    Name="IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = isFilesAndFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name="IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointReadFolderItemActivity.GetState();
+            Assert.AreEqual(6, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SharepointReadFolderItemActivity_GetState")]
+        public void SharepointReadFolderItemActivity_GetState_NoneSelected()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointReadFolderItem";
+            var sharepointServerResourceId = Guid.NewGuid();
+            var result = "[[Files().Name]]";
+            var serverInputPath = @"C:\ProgramData\Warewolf\Resources\Hello World.bite";
+
+            var sharepointReadFolderItemActivity = new SharepointReadFolderItemActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = sharepointServerResourceId,
+                Result = result,
+                ServerInputPath = serverInputPath
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            mockSharepointHelper.Setup(helper => helper.LoadFiles(It.IsAny<string>())).Returns(new List<string> { "Success" });
+            mockSharepointHelper.Setup(helper => helper.LoadFolders(It.IsAny<string>())).Returns(new List<string> { "Success" });
+
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            var privateObject = new PrivateObject(sharepointReadFolderItemActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            sharepointReadFolderItemActivity.SharepointSource = mockSharepointSource;
+
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            var expectedResults = new[]
+        {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = serverInputPath
+                 },
+                 new StateVariable
+                {
+                    Name="IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = "False"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = result
+                }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = sharepointReadFolderItemActivity.GetState();
+            Assert.AreEqual(6, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
@@ -24,7 +25,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {
-    [ToolDescriptorInfo("SharepointLogo", "Read Folder", ToolType.Native, "8222E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_Folder")]
+    [ToolDescriptorInfo("SharepointLogo", "Read Folder", ToolType.Native, "8222E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_Folder")]
     public class SharepointReadFolderItemActivity : DsfAbstractFileActivity,IEquatable<SharepointReadFolderItemActivity>
     {
         public SharepointReadFolderItemActivity() : base("SharePoint Read Folder Items")
@@ -77,7 +78,49 @@ namespace Dev2.Activities.Sharepoint
         public SharepointSource SharepointSource { get; set; }
 
         public Guid SharepointServerResourceId { get; set; }
-
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = SharepointServerResourceId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="ServerInputPath",
+                    Type = StateVariable.StateType.Input,
+                    Value = ServerInputPath
+                 },
+                new StateVariable
+                {
+                    Name="IsFilesAndFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesAndFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name="IsFoldersSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFoldersSelected.ToString()
+                },
+                new StateVariable
+                {
+                    Name="IsFilesSelected",
+                    Type = StateVariable.StateType.Input,
+                    Value = IsFilesSelected.ToString()
+                }
+                ,
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
+        }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
