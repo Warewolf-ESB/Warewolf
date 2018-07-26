@@ -29,10 +29,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.State;
 
 namespace Dev2.Activities
 {
-    //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
+    //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
     [ExcludeFromCodeCoverage]
     public class DsfScriptingActivity : DsfActivityAbstract<string>, IEquatable<DsfScriptingActivity>
     {
@@ -72,6 +73,37 @@ namespace Dev2.Activities
         }
 
         #endregion Ctor
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "Script",
+                    Value = Script,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "IncludeFile",
+                    Value = IncludeFile,
+                    Type = StateVariable.StateType.Input
+                },
+                 new StateVariable
+                {
+                    Name = "EscapeScript",
+                    Value = EscapeScript.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+        }
+
         public override List<string> GetOutputs() => new List<string> { Result };
         #region Overrides of DsfNativeActivity<string>
         

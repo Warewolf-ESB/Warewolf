@@ -10,8 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -151,6 +153,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual("SomeText", dsfForEachItems[0].Name);
             Assert.AreEqual("SomeText", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfCommentActivity_GetState")]
+        public void DsfCommentActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfCommentActivity { Text = "SomeText" };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, stateItems.Count());
+            Assert.AreEqual("Text", stateItems.ToList()[0].Name);
+            Assert.AreEqual(StateVariable.StateType.InputOutput, stateItems.ToList()[0].Type);
+            Assert.AreEqual("SomeText", stateItems.ToList()[0].Value);
         }
     }
 }

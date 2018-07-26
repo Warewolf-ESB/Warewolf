@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
+using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -402,6 +404,77 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(activity.NextNodes);
             Assert.AreEqual(0, activity.NextNodes.Count());
             Assert.AreEqual(1, executionEnvironment.AllErrors.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfSwitch_GetState")]
+        public void DsfSwitch_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            var nextActivity = new Mock<IDev2Activity>();
+            var serializer = new Dev2JsonSerializer();
+            //------------Setup for test--------------------------
+
+            const string expectedResult = "[[MyResult]]";
+            const string expectedSwitch = "[[Switch]]";
+            var expectedSwitches = new Dictionary<string, IDev2Activity>();
+            var expectedDefault = new List<IDev2Activity> { nextActivity.Object };
+
+            var act = new DsfSwitch
+            {
+                Result = expectedResult,
+                Switch = expectedSwitch,
+                Switches = expectedSwitches,
+                Default = expectedDefault
+            };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(4, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Switch",
+                    Type = StateVariable.StateType.Input,
+                    Value = expectedSwitch
+                },
+                new StateVariable
+                {
+                    Name = "Switches",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(expectedSwitches)
+                },
+                 new StateVariable
+                {
+                    Name = "Default",
+                    Type = StateVariable.StateType.Output,
+                    Value = serializer.Serialize(expectedDefault)
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Value = expectedResult,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

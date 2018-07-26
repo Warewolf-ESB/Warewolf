@@ -45,6 +45,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.State;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -117,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isExecuteAsync = isExecuteAsync;
             UniqueID = Guid.NewGuid().ToString();
         }
-        
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IResourceCatalog ResourceCatalog
         {
@@ -333,7 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (state != null)
             {
-                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution,dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
             }
         }
 
@@ -516,7 +517,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var factory = Dev2DecisionFactory.Instance();
             var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory));
             var testRunResults = res as IList<TestRunResult> ?? res.ToList();
-            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
+            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult == RunResult.None);
             var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
             UpdateStepWithFinalResult(dataObject, stepToBeAsserted, testPassed, testRunResults, serviceTestFailureMessage);
@@ -635,45 +636,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var factory = Dev2DecisionFactory.Instance();
             var testRunResults = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory)).ToList();
-            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult==RunResult.None);
+            var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult == RunResult.None);
             var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
             var finalResult = new TestRunResult();
-            if(testPassed)
+            if (testPassed)
             {
                 finalResult.RunTestResult = RunResult.TestPassed;
-                if(stepToBeAsserted.Result != null)
+                if (stepToBeAsserted.Result != null)
                 {
                     stepToBeAsserted.Result.RunTestResult = RunResult.TestPassed;
                 }
             }
-            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
             {
                 finalResult.RunTestResult = RunResult.TestFailed;
                 finalResult.Message = serviceTestFailureMessage;
-                if(stepToBeAsserted.Result != null)
+                if (stepToBeAsserted.Result != null)
                 {
                     stepToBeAsserted.Result.RunTestResult = RunResult.TestFailed;
                 }
             }
-            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
             {
                 finalResult.RunTestResult = RunResult.TestInvalid;
                 finalResult.Message = serviceTestFailureMessage;
-                if(stepToBeAsserted.Result != null)
+                if (stepToBeAsserted.Result != null)
                 {
                     stepToBeAsserted.Result.RunTestResult = RunResult.TestInvalid;
                 }
             }
-            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestPending))
+            if (testRunResults.Any(result => result.RunTestResult == RunResult.TestPending))
             {
                 finalResult.RunTestResult = RunResult.TestPending;
                 finalResult.Message = serviceTestFailureMessage;
-                if(stepToBeAsserted.Result != null)
+                if (stepToBeAsserted.Result != null)
                 {
                     stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
                 }
             }
-            if(dataObject.ServiceTest != null)
+            if (dataObject.ServiceTest != null)
             {
                 dataObject.ServiceTest.Result = finalResult;
                 dataObject.ServiceTest.TestFailing = !testPassed;
@@ -944,7 +945,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             dest.AddRange(src);
         }
-        
+
         protected static void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
         {
             var errorBuilder = new StringBuilder();
@@ -979,7 +980,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
             try
-            {   
+            {
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
@@ -1029,7 +1030,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            foreach(var next in GetNextNodes())
+            foreach (var next in GetNextNodes())
             {
                 armConnectors.Add(($"{GetDisplayName()} -> {next.GetDisplayName()}", null, UniqueID, next.UniqueID));
             }
@@ -1038,7 +1039,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public virtual IEnumerable<IDev2Activity> GetChildrenNodes()
         {
-            var nextNodes = new List<IDev2Activity>();            
+            var nextNodes = new List<IDev2Activity>();
             return nextNodes;
         }
 
@@ -1059,7 +1060,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugAssertResultItem(DebugOutputBase parameters)
         {
             var itemToAdd = new DebugItem();
-            itemToAdd.AddRange(parameters.GetDebugItemResult());            
+            itemToAdd.AddRange(parameters.GetDebugItemResult());
             _debugState.AssertResultList.Add(itemToAdd);
         }
 
@@ -1080,6 +1081,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public Guid GetWorkSurfaceMappingId() => WorkSurfaceMappingId;
 
+        public abstract IEnumerable<StateVariable> GetState();
 
         public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
 

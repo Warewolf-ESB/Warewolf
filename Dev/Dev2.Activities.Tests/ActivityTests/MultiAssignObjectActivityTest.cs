@@ -14,10 +14,12 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
-using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Collections.Generic;
 using System;
+using System.Linq;
+using Dev2.Common.State;
+using Dev2.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -482,6 +484,45 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[@Pet.Name]]", inputs[0].Value);
             Assert.AreEqual("[[result]]", inputs[0].Name);
         }
-    }
 
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
+        public void DsfMultiAssignObjectActivity_GetState_Returns_Inputs_And_Outputs()
+        {
+            //------------Setup for test--------------------------
+            var fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
+            };
+            var act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            Assert.AreEqual(1, stateItems.Count());
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="Fields Collection",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(fieldsCollection)
+                }
+            };
+
+            var iter = act.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
+    }
 }
