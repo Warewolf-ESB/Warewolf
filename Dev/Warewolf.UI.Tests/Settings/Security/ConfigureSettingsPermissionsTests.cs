@@ -96,7 +96,7 @@ namespace Warewolf.UI.Tests
         public void Edit_Server_Removes_Server_From_Explorer()
         {
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists);
             ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists, "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
