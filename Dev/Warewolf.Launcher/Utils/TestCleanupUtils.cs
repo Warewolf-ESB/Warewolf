@@ -216,19 +216,6 @@ namespace Warewolf.Launcher
             process.StartInfo.Arguments = "/im \"IEDriverServer.exe\" /f";
             process.Start();
 
-            //Delete CI Remote Container
-            if (build.ciRemoteContainerLauncher != null)
-            {
-                try
-                {
-                    build.ciRemoteContainerLauncher.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
-                }
-            }
-
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
             {
