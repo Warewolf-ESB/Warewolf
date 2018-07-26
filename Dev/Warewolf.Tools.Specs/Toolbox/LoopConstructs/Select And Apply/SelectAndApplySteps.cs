@@ -15,6 +15,7 @@ using Dev2.Interfaces;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Common.State;
 
 namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
 {
@@ -266,6 +267,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             return new List<string>();
         }
         public int Called { get; private set; }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new StateVariable[0];
+        }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

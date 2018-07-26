@@ -15,6 +15,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Common.Utils;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
@@ -31,7 +32,7 @@ using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
+    [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
     public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<DsfFileWrite>
     {
 
@@ -188,6 +189,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get;
             set;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = nameof(OutputPath),
+                    Value = OutputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = nameof(Overwrite),
+                    Value = Overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(AppendTop),
+                    Value = AppendTop.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(AppendBottom),
+                    Value = AppendBottom.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(FileContents),
+                    Value = FileContents,
+                    Type = StateVariable.StateType.InputOutput
+                },
+                new StateVariable
+                {
+                    Name = nameof(Username),
+                    Value = Username,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(PrivateKeyFile),
+                    Value = PrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = nameof(Result),
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
         }
 
 

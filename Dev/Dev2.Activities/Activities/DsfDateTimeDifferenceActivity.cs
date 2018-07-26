@@ -19,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -341,11 +342,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return true;
             }
 
-            return base.Equals(other) 
-                && string.Equals(Input1, other.Input1) 
-                && string.Equals(Input2, other.Input2) 
-                && string.Equals(InputFormat, other.InputFormat) 
-                && string.Equals(OutputType, other.OutputType) 
+            return base.Equals(other)
+                && string.Equals(Input1, other.Input1)
+                && string.Equals(Input2, other.Input2)
+                && string.Equals(InputFormat, other.InputFormat)
+                && string.Equals(OutputType, other.OutputType)
                 && string.Equals(Result, other.Result);
         }
 
@@ -366,7 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfDateTimeDifferenceActivity) obj);
+            return Equals((DsfDateTimeDifferenceActivity)obj);
         }
 
         public override int GetHashCode()
@@ -381,6 +382,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "Input1",
+                    Type = StateVariable.StateType.Input,
+                    Value = Input1
+                },
+                new StateVariable
+                {
+                    Name = "Input2",
+                    Type = StateVariable.StateType.Input,
+                    Value = Input2
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputFormat
+                },
+                new StateVariable
+                {
+                    Name="OutputType",
+                    Type = StateVariable.StateType.Input,
+                    Value = OutputType
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
 #pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067
     }

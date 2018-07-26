@@ -16,7 +16,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.WcfEndPoint
 {
-    [ToolDescriptorInfo("WcfEndPoint", "WCF", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_WCF")]
+    [ToolDescriptorInfo("WcfEndPoint", "WCF", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_WCF")]
     public class DsfWcfEndPointActivity : DsfMethodBasedActivity,IEquatable<DsfWcfEndPointActivity>
     {
         public IWcfAction Method { get; set; }

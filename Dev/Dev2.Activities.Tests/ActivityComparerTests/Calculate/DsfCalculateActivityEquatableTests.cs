@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -179,6 +181,50 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Calculate
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfCalculateActivity_GetState")]
+        public void DsfCalculateActivity_GetState_ReturnsStateVariable()
+        {
+            //------------Setup for test--------------------------
+            var calculateActivity = new DsfCalculateActivity { Expression = "[[Numeric(1).num]]", Result = "Passed" };
+            //------------Execute Test---------------------------
+            var stateItems = calculateActivity.GetState();
+            Assert.AreEqual(2, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name = "Expression",
+                    Type = StateVariable.StateType.Input,
+                    Value = "[[Numeric(1).num]]"
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = "Passed"
+                }
+            };
+
+            var iter = calculateActivity.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
         }
     }
 }

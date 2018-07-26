@@ -21,6 +21,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -28,6 +29,7 @@ using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
+using Dev2.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -471,6 +473,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
                                                                       where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                                                                       select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "Fields Collection",
+                    Type = StateVariable.StateType.InputOutput,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(FieldsCollection)
+                }
+            };
+        }
 
         public bool Equals(DsfMultiAssignActivity other)
         {

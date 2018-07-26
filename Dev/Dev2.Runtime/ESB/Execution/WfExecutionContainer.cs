@@ -171,7 +171,7 @@ namespace Dev2.Runtime.ESB.Execution
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             bool stoppedExecution = false;
-            var outerStateLogger = dsfDataObject.StateLogger;
+            var outerStateLogger = dsfDataObject.StateNotifier;
             try
             {
                 dsfDataObject.Settings = new Dev2WorkflowSettingsTO
@@ -181,7 +181,7 @@ namespace Dev2.Runtime.ESB.Execution
                     KeepLogsForDays = 2,
                     CompressOldLogFiles = true
                 };
-                dsfDataObject.StateLogger = LogManager.CreateDetailedLoggerForWorkflow(dsfDataObject);
+                dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
 
                 var exe = CustomContainer.Get<IExecutionManager>();
                 Dev2Logger.Debug("Got Execution Manager", GlobalConstants.WarewolfDebug);
@@ -212,17 +212,19 @@ namespace Dev2.Runtime.ESB.Execution
                 //       arrange for "resource" to be set to the correct activity and load the
                 //       old environment
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                dsfDataObject.StateLogger.LogPreExecuteState(resource);
+                dsfDataObject.StateNotifier.LogPreExecuteState(resource);
 
                 IDev2Activity next;
+                IDev2Activity lastActivity;
                 try
                 {
+                    lastActivity = resource;
                     next = resource.Execute(dsfDataObject, update);
-                    dsfDataObject.StateLogger.LogPostExecuteState(resource, next);
+                    dsfDataObject.StateNotifier.LogPostExecuteState(resource, next);
                 }
                 catch (Exception e)
                 {
-                    dsfDataObject.StateLogger.LogExecuteException(e, resource);
+                    dsfDataObject.StateNotifier.LogExecuteException(e, resource);
                     throw;
                 }
 
@@ -235,27 +237,29 @@ namespace Dev2.Runtime.ESB.Execution
                         break;
                     }
 
-                    dsfDataObject.StateLogger.LogPreExecuteState(next);
+                    dsfDataObject.StateNotifier.LogPreExecuteState(next);
                     var current = next;
+                    lastActivity = current;
                     try
                     {
                         next = current.Execute(dsfDataObject, update);
-                        dsfDataObject.StateLogger.LogPostExecuteState(current, next);
+                        dsfDataObject.StateNotifier.LogPostExecuteState(current, next);
                     }
                     catch (Exception e)
                     {
-                        dsfDataObject.StateLogger.LogExecuteException(e, current);
+                        dsfDataObject.StateNotifier.LogExecuteException(e, current);
                         throw;
                     }
                     dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
                 }
+
                 if (!stoppedExecution)
                 {
-                    dsfDataObject.StateLogger.LogExecuteCompleteState();
+                    dsfDataObject.StateNotifier.LogExecuteCompleteState(lastActivity);
                 }
                 else
                 {
-                    dsfDataObject.StateLogger.LogStopExecutionState();
+                    dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
                 }
             }
             catch (Exception e)
@@ -267,11 +271,11 @@ namespace Dev2.Runtime.ESB.Execution
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
-                dsfDataObject.StateLogger?.Dispose();
-                dsfDataObject.StateLogger = null;
+                dsfDataObject.StateNotifier?.Dispose();
+                dsfDataObject.StateNotifier = null;
                 if (outerStateLogger != null)
                 {
-                    dsfDataObject.StateLogger = outerStateLogger;
+                    dsfDataObject.StateNotifier = outerStateLogger;
                 }
             }
         }

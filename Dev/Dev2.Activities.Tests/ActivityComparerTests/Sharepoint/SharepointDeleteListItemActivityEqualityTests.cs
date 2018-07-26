@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Sharepoint;
+using Dev2.Common.State;
 using Dev2.TO;
+using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
@@ -440,7 +443,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             var itemActivity = new SharepointDeleteListItemActivity()
             {
                 UniqueID = uniqueId,
-                
+
                 FilterCriteria = new List<SharepointSearchTo>()
                 {
                     new SharepointSearchTo("A","a","",1)
@@ -449,7 +452,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             var createListItemActivity = new SharepointDeleteListItemActivity()
             {
                 UniqueID = uniqueId,
-                
+
                 FilterCriteria = new List<SharepointSearchTo>()
                 {
                     new SharepointSearchTo("A","A","",1)
@@ -499,6 +502,89 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sharepoint
             Assert.IsTrue(equals);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void SharepointDeleteListItemActivity_GetState()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid();
+            var filterCriteria = new List<SharepointSearchTo>()
+                {
+                    new SharepointSearchTo("A","A","",1)
+                };
 
+            var sharepointList = "SharepointList";
+            var requireAllCriteriaToMatch = true;
+            var deleteCount = 1;
+            var readListItems = new List<SharepointReadListTo>();
+            var activity = new SharepointDeleteListItemActivity
+            {
+                SharepointServerResourceId = uniqueId,
+                RequireAllCriteriaToMatch = requireAllCriteriaToMatch,
+                FilterCriteria = filterCriteria,
+                SharepointList = sharepointList,
+                ReadListItems = readListItems,
+                DeleteCount = deleteCount.ToString()
+            };
+            //---------------Execute Test ----------------------
+            activity.RequireAllCriteriaToMatch = true;
+            var expectedResults = new[]
+            {
+                new StateVariable
+                {
+                    Name="SharepointServerResourceId",
+                    Type = StateVariable.StateType.Input,
+                    Value = uniqueId.ToString()
+                 },
+                 new StateVariable
+                {
+                    Name="FilterCriteria",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(filterCriteria)
+                 },
+                new StateVariable
+                {
+                    Name="ReadListItems",
+                    Type = StateVariable.StateType.Input,
+                    Value = ActivityHelper.GetSerializedStateValueFromCollection(readListItems)
+                },
+                new StateVariable
+                {
+                    Name="SharepointList",
+                    Type = StateVariable.StateType.Input,
+                    Value = sharepointList
+                },
+                 new StateVariable
+                {
+                    Name="RequireAllCriteriaToMatch",
+                    Type = StateVariable.StateType.Input,
+                    Value = requireAllCriteriaToMatch.ToString()
+                 }
+                 ,new StateVariable
+                {
+                    Name="DeleteCount",
+                    Type = StateVariable.StateType.Output,
+                    Value = deleteCount.ToString()
+                 }
+            };
+            //---------------Test Result -----------------------
+            var stateItems = activity.GetState();
+            Assert.AreEqual(6, stateItems.Count());
+            var iter = stateItems.Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+        }
     }
 }

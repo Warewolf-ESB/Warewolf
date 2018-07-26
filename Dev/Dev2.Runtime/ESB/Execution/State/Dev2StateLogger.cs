@@ -14,7 +14,7 @@ using System.Collections.Concurrent;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    class Dev2JsonStateLogger : IDev2StateLogger
+    class Dev2JsonStateLogger : IStateListener
     {
         readonly IDev2StreamWriter writer;
         readonly JsonTextWriter jsonTextWriter;
@@ -52,6 +52,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             return _fileWrapper.AppendText(_detailedLogFile.LogFilePath);
         }
+
 
         public void LogPreExecuteState(IDev2Activity nextActivity)
         {
@@ -96,9 +97,10 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public void LogExecuteCompleteState()
+        public void LogExecuteCompleteState(IDev2Activity activity)
         {
             writer.WriteLine("header:LogExecuteCompleteState");
+            WriteHeader(null, activity);
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
             jsonTextWriter.WriteValue(DateTime.Now);
@@ -111,9 +113,10 @@ namespace Dev2.Runtime.ESB.Execution
             writer.Flush();
         }
 
-        public void LogStopExecutionState()
+        public void LogStopExecutionState(IDev2Activity activity)
         {
             writer.WriteLine("header:LogStopExecutionState");
+            WriteHeader(null, activity);
             jsonTextWriter.WriteStartObject();
             jsonTextWriter.WritePropertyName("timestamp");
             jsonTextWriter.WriteValue(DateTime.Now);

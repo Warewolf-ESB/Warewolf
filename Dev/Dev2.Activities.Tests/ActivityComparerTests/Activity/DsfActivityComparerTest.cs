@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 
@@ -652,6 +653,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             var firstWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "bravo" };
             var secondWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "charlie" };
             Assert.IsTrue(firstWcfServiceSourceDefinition != secondWcfServiceSourceDefinition, "Not equals operator doesnt work.");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DsfActivity_GetState")]
+        public void DsfActivity_GetState_ReturnsStateVariable()
+        {
+            //---------------Set up test pack-------------------
+            //------------Setup for test--------------------------
+            var act = new DsfActivity();
+            //------------Execute Test---------------------------
+            var stateItems = act.GetState();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, stateItems.Count());
+
         }
     }
 }

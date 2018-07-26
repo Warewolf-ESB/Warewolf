@@ -17,6 +17,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -32,7 +33,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Utility-Calculate", "Calculate", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Calculate")]
+    [ToolDescriptorInfo("Utility-Calculate", "Calculate", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Calculate")]
     public class DsfDotNetCalculateActivity : DsfActivityAbstract<string>
     {
         [Inputs("Expression")]
@@ -196,6 +197,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name="Expression",
+                    Type = StateVariable.StateType.Input,
+                    Value = Expression
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }

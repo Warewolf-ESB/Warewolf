@@ -21,10 +21,11 @@ using Dev2.Common.Interfaces.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
+using Dev2.Common.State;
 
 namespace Dev2.Activities.RabbitMQ.Publish
 {
-    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
+    [ToolDescriptorInfo("RabbitMq", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Rabbit_MQ_Publish")]
     public class DsfPublishRabbitMQActivity : DsfBaseActivity, IEquatable<DsfPublishRabbitMQActivity>
     {
         #region Ctor
@@ -75,6 +76,54 @@ namespace Dev2.Activities.RabbitMQ.Publish
         internal IModel Channel { get; set; }
 
         public RabbitMQSource RabbitMQSource { get; set; }
+
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "QueueName",
+                    Value = QueueName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "IsDurable",
+                    Value = IsDurable.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "IsExclusive",
+                    Value = IsExclusive.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Message",
+                    Value = Message,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "RabbitMQSourceResourceId",
+                    Value = RabbitMQSourceResourceId.ToString(),
+                    Type = StateVariable.StateType.Input
+                },new StateVariable
+                {
+                    Name = "IsAutoDelete",
+                    Value = IsAutoDelete.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Value = Result,
+                    Type = StateVariable.StateType.Output
+                }                
+            };
+        }
 
         #region Overrides of DsfBaseActivity
 

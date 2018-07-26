@@ -14,6 +14,7 @@ using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -35,7 +36,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.DateAndTime
 {
-    [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
+    [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
     public class DsfDotNetDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
         /// <summary>
@@ -318,6 +319,43 @@ namespace Dev2.Activities.DateAndTime
                 return Equals(instance);
             }
             return false;
+        }
+
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[]
+            {
+                new StateVariable
+                {
+                    Name = "Input1",
+                    Type = StateVariable.StateType.Input,
+                    Value = Input1
+                },
+                new StateVariable
+                {
+                    Name = "Input2",
+                    Type = StateVariable.StateType.Input,
+                    Value = Input2
+                },
+                new StateVariable
+                {
+                    Name="InputFormat",
+                    Type = StateVariable.StateType.Input,
+                    Value = InputFormat
+                },
+                new StateVariable
+                {
+                    Name="OutputType",
+                    Type = StateVariable.StateType.Input,
+                    Value = OutputType
+                },
+                new StateVariable
+                {
+                    Name="Result",
+                    Type = StateVariable.StateType.Output,
+                    Value = Result
+                }
+            };
         }
     }
 }

@@ -15,6 +15,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.State;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -28,7 +29,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    [ToolDescriptorInfo("RecordSet-SortRecords", "Sort", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Sort")]
+    [ToolDescriptorInfo("RecordSet-SortRecords", "Sort", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Sort")]
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>,IEquatable<DsfSortRecordsActivity>
     {
 
@@ -55,7 +56,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Sort Records";
         }
 
-        
+        public override IEnumerable<StateVariable> GetState()
+        {
+            return new[] {
+                new StateVariable
+                {
+                    Name = "SortField",
+                    Value = SortField,
+                    Type = StateVariable.StateType.InputOutput
+                },                 
+                new StateVariable
+                {
+                    Name="SelectedSort",
+                    Value = SelectedSort,
+                    Type = StateVariable.StateType.Input
+                }
+            };
+        }
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);

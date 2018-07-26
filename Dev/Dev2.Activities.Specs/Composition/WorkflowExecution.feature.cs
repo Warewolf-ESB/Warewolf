@@ -4210,6 +4210,8 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line 1137
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1138
+   testRunner.And(string.Format("The detailed log file does not exist for \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table213 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -4226,11 +4228,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1138
+#line 1139
   testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table213, "And ");
-#line 1142
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1143
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1144
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table214 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4239,8 +4241,16 @@ this.FeatureBackground();
                         "[[rec(1).name]] = Monk"});
             table214.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.com"});
-#line 1144
+#line 1145
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs is", serviceName, workflowName), ((string)(null)), table214, "And ");
+#line 1149
+      testRunner.And(string.Format("The detailed log file is created for \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1150
+   testRunner.And("The Log file contains Logging matching \"\"MappedFrom\":\"email\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1151
+   testRunner.And("The Log file contains Logging matching \"\"MappedTo\":\"[[rec().email]]\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1152
+   testRunner.And("The Log file contains Logging matching \"\"RecordSetName\":\"rec\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4265,11 +4275,11 @@ this.DatabaseMySqlDBDatabaseServiceLastIndexes("TestMySqlWFWithMySqlLastIndex", 
         public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service scalar outputs", exampleTags);
-#line 1152
+#line 1157
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1153
+#line 1158
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table215 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4287,11 +4297,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1154
-  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table215, "And ");
-#line 1158
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1159
+  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table215, "And ");
+#line 1163
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1164
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table216 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4300,7 +4310,7 @@ this.FeatureBackground();
                         "[[name]] = Monk"});
             table216.AddRow(new string[] {
                         "[[email]] = dora@explorers.com"});
-#line 1160
+#line 1165
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table216, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4318,7 +4328,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceScalarOutputs_TestMySqlWFWithMySqlScalar()
         {
-#line 1152
+#line 1157
 this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "MySqlEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4326,11 +4336,11 @@ this.DatabaseMySqlDBDatabaseServiceScalarOutputs("TestMySqlWFWithMySqlScalar", "
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service Error outputs", exampleTags);
-#line 1168
+#line 1173
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1169
+#line 1174
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table217 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4348,11 +4358,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1170
-  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table217, "And ");
-#line 1174
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1175
+  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table217, "And ");
+#line 1179
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1180
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -4371,7 +4381,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidIndex()
         {
-#line 1168
+#line 1173
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidIndex", "MySqlEmail", "[[rec(-1).name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -4389,7 +4399,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVar()
         {
-#line 1168
+#line 1173
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVar", "MySqlEmail", "[[123]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -4407,7 +4417,7 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseMySqlDBDatabaseServiceErrorOutputs_TestMySqlWFWithMySqlMailsInvalidVarWithIndex()
         {
-#line 1168
+#line 1173
 this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvalidVarWithIndex", "MySqlEmail", "[[rec(-1).name.bob]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -4415,11 +4425,11 @@ this.DatabaseMySqlDBDatabaseServiceErrorOutputs("TestMySqlWFWithMySqlMailsInvali
         public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database MySqlDB Database service inputs and outputs", exampleTags);
-#line 1182
+#line 1187
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1183
+#line 1188
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table218 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4437,11 +4447,11 @@ this.FeatureBackground();
                         "",
                         "description",
                         string.Format("{0}", emailVariable)});
-#line 1184
-  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table218, "And ");
-#line 1188
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1189
+  testRunner.And(string.Format("\"{0}\" contains a mysql database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table218, "And ");
+#line 1193
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1194
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table219 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4450,7 +4460,7 @@ this.FeatureBackground();
                         "[[countries(1).id]] = 1"});
             table219.AddRow(new string[] {
                         "[[countries(1).description]] = Afghanistan"});
-#line 1190
+#line 1195
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table219, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4469,7 +4479,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseMySqlDBDatabaseServiceInputsAndOutputs_TestMySqlWFWithMySqlCountries()
         {
-#line 1182
+#line 1187
 this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountries", "Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4477,11 +4487,11 @@ this.DatabaseMySqlDBDatabaseServiceInputsAndOutputs("TestMySqlWFWithMySqlCountri
         public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB Database service inputs and outputs", exampleTags);
-#line 1198
+#line 1203
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1199
+#line 1204
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table220 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4499,11 +4509,11 @@ this.FeatureBackground();
                         "",
                         "description",
                         string.Format("{0}", emailVariable)});
-#line 1200
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table220, "And ");
-#line 1204
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1205
+  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table220, "And ");
+#line 1209
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1210
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table221 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4512,7 +4522,7 @@ this.FeatureBackground();
                         "[[countries(1).id]] = 1"});
             table221.AddRow(new string[] {
                         "[[countries(1).description]] = Afghanistan"});
-#line 1206
+#line 1211
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table221, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4531,7 +4541,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBDatabaseServiceInputsAndOutputs_TestSqlWFWithSqlServerCountries()
         {
-#line 1198
+#line 1203
 this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountries", "dbo.Pr_CitiesGetCountries", "[[countries(*).id]]", "[[countries(*).description]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4539,11 +4549,11 @@ this.DatabaseSqlDBDatabaseServiceInputsAndOutputs("TestSqlWFWithSqlServerCountri
         public virtual void DatabaseSqlDBServiceDBErrors(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service DBErrors", exampleTags);
-#line 1214
+#line 1219
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1215
+#line 1220
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table222 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4551,11 +4561,11 @@ this.FeatureBackground();
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 1216
+#line 1221
   testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table222, "And ");
-#line 1218
+#line 1223
       testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1219
+#line 1224
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -4573,7 +4583,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "YES")]
         public virtual void DatabaseSqlDBServiceDBErrors_TestWFWithDBSqlServerErrorProcSql()
         {
-#line 1214
+#line 1219
 this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "dbo.willalwayserror", "[[name]]", "[[email]]", "YES", ((string[])(null)));
 #line hidden
         }
@@ -4581,11 +4591,11 @@ this.DatabaseSqlDBServiceDBErrors("TestWFWithDBSqlServerErrorProcSql", "dbo.will
         public virtual void DatabaseSqlDBServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using int indexes", exampleTags);
-#line 1224
+#line 1229
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1225
+#line 1230
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table223 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4603,11 +4613,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1226
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table223, "And ");
-#line 1230
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1231
+  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table223, "And ");
+#line 1235
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1236
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table224 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4616,7 +4626,7 @@ this.FeatureBackground();
                         "[[rec(1).name]] = dora"});
             table224.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-#line 1232
+#line 1237
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table224, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4634,7 +4644,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingIntIndexes_TestWFWithDBSqlServerIntIndex()
         {
-#line 1224
+#line 1229
 this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "dbo.SQLEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4642,11 +4652,11 @@ this.DatabaseSqlDBServiceUsingIntIndexes("TestWFWithDBSqlServerIntIndex", "dbo.S
         public virtual void DatabaseSqlDBServiceUsingLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using last indexes", exampleTags);
-#line 1240
+#line 1245
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1241
+#line 1246
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table225 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4664,11 +4674,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1242
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table225, "And ");
-#line 1246
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1247
+  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table225, "And ");
+#line 1251
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1252
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table226 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4677,7 +4687,7 @@ this.FeatureBackground();
                         "[[rec(1).name]] = dora"});
             table226.AddRow(new string[] {
                         "[[rec(1).email]] = dora@explorers.co.za"});
-#line 1248
+#line 1253
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table226, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4695,7 +4705,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingLastIndexes_TestWFWithDBSqlServerLastIndex()
         {
-#line 1240
+#line 1245
 this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "dbo.SQLEmail", "[[rec().name]]", "[[rec().email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4703,11 +4713,11 @@ this.DatabaseSqlDBServiceUsingLastIndexes("TestWFWithDBSqlServerLastIndex", "dbo
         public virtual void DatabaseSqlDBServiceUsingScalarOutputs(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Database SqlDB  service using scalar outputs", exampleTags);
-#line 1256
+#line 1261
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1257
+#line 1262
      testRunner.Given(string.Format("I have a workflow \"{0}\"", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table227 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4725,11 +4735,11 @@ this.FeatureBackground();
                         "",
                         "email",
                         string.Format("{0}", emailVariable)});
-#line 1258
-  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table227, "And ");
-#line 1262
-      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1263
+  testRunner.And(string.Format("\"{0}\" contains a sqlserver database service \"{1}\" with mappings as", workflowName, serviceName), ((string)(null)), table227, "And ");
+#line 1267
+      testRunner.When(string.Format("\"{0}\" is executed", workflowName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1268
      testRunner.Then(string.Format("the workflow execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table228 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4738,7 +4748,7 @@ this.FeatureBackground();
                         "[[name]] = dora"});
             table228.AddRow(new string[] {
                         "[[email]] = dora@explorers.co.za"});
-#line 1264
+#line 1269
   testRunner.And(string.Format("the \"{0}\" in Workflow \"{1}\" debug outputs as", serviceName, workflowName), ((string)(null)), table228, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4756,7 +4766,7 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void DatabaseSqlDBServiceUsingScalarOutputs_TestWFWithDBSqlServerScalar()
         {
-#line 1256
+#line 1261
 this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.SQLEmail", "[[name]]", "[[email]]", "NO", ((string[])(null)));
 #line hidden
         }
@@ -4768,11 +4778,11 @@ this.DatabaseSqlDBServiceUsingScalarOutputs("TestWFWithDBSqlServerScalar", "dbo.
         public virtual void ExecutingUnsavedWorkflowShouldExecuteByID()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing unsaved workflow should execute by ID", ((string[])(null)));
-#line 1272
+#line 1277
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1273
+#line 1278
  testRunner.Given("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table229 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4784,11 +4794,11 @@ this.FeatureBackground();
             table229.AddRow(new string[] {
                         "[[rec(2).a]]",
                         "no"});
-#line 1274
- testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table229, "And ");
-#line 1278
-   testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1279
+ testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table229, "And ");
+#line 1283
+   testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1284
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table230 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4800,9 +4810,9 @@ this.FeatureBackground();
             table230.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = no"});
-#line 1280
+#line 1285
    testRunner.And("the \"Rec To Convert\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table230, "And ");
-#line 1284
+#line 1289
    testRunner.Then("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table231 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4814,9 +4824,9 @@ this.FeatureBackground();
             table231.AddRow(new string[] {
                         "[[rec(2).a]]",
                         "2"});
-#line 1285
+#line 1290
    testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table231, "And ");
-#line 1289
+#line 1294
    testRunner.When("\'2\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table232 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4828,7 +4838,7 @@ this.FeatureBackground();
             table232.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = 2"});
-#line 1290
+#line 1295
    testRunner.And("the \"Assign 1\" in Workflow \"Unsaved 1\" debug outputs as", ((string)(null)), table232, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4841,25 +4851,25 @@ this.FeatureBackground();
         public virtual void WFWithRabbitMqConsumeTimeout5()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("WF with RabbitMq Consume timeout 5", ((string[])(null)));
-#line 1295
+#line 1300
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1296
+#line 1301
  testRunner.Given("I have a workflow \"RabbitMqConsume5mintimeout\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1297
+#line 1302
  testRunner.And("\"RabbitMqConsume5mintimeout\" contains RabbitMQPublish and Queue1 \"DsfPublishRabbi" +
                     "tMQActivity\" into \"[[result1]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1298
+#line 1303
  testRunner.And("\"RabbitMqConsume5mintimeout\" contains RabbitMQConsume \"DsfConsumeRabbitMQActivity" +
                     "\" with timeout 5 seconds into \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1299
+#line 1304
  testRunner.When("\"RabbitMqConsume5mintimeout\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1300
+#line 1305
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1301
+#line 1306
  testRunner.And("the \"RabbitMqConsume5mintimeout\" has a start and end duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1302
+#line 1307
  testRunner.And("\"RabbitMqConsume5mintimeout\" Duration is greater or equal to 5 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4872,22 +4882,22 @@ this.FeatureBackground();
         public virtual void WFWithRabbitMqConsumeWithNoTimeout()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("WF with RabbitMq Consume with no timeout", ((string[])(null)));
-#line 1304
+#line 1309
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1305
+#line 1310
  testRunner.Given("I have a workflow \"RabbitMqConsumeNotimeout\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1306
+#line 1311
  testRunner.And("\"RabbitMqConsumeNotimeout\" contains RabbitMQConsume \"DsfConsumeRabbitMQActivity\" " +
                     "with timeout -1 seconds into \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1307
+#line 1312
  testRunner.When("\"RabbitMqConsumeNotimeout\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1308
+#line 1313
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1309
+#line 1314
  testRunner.And("the \"RabbitMqConsumeNotimeout\" has a start and end duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1310
+#line 1315
  testRunner.And("\"RabbitMqConsumeNotimeout\" Duration is less or equal to 2 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4900,23 +4910,23 @@ this.FeatureBackground();
         public virtual void COMDLLServiceExecute()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COM DLL service execute", ((string[])(null)));
-#line 1312
+#line 1317
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1313
+#line 1318
  testRunner.Given("I have a server at \"localhost\" with workflow \"Testing COM DLL Activity Execute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1314
+#line 1319
  testRunner.When("\"localhost\" is the active environment used to execute \"Testing COM DLL Activity E" +
                     "xecute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1315
+#line 1320
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table233 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table233.AddRow(new string[] {
                         "[[PrimitiveReturnValue]] = 0"});
-#line 1316
+#line 1321
  testRunner.And("the \"Com DLL\" in Workflow \"Testing COM DLL Activity Execute\" debug outputs is", ((string)(null)), table233, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4929,11 +4939,11 @@ this.FeatureBackground();
         public virtual void WorkflowWithForEachAndManualLoop()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with ForEach and Manual Loop", ((string[])(null)));
-#line 1320
+#line 1325
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 1321
+#line 1326
       testRunner.Given("I have a workflow \"WFWithForEachWithManualLoop\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table234 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4942,7 +4952,7 @@ this.FeatureBackground();
             table234.AddRow(new string[] {
                         "[[counter]]",
                         "0"});
-#line 1322
+#line 1327
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Setup Counter\" as", ((string)(null)), table234, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table235 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4951,9 +4961,9 @@ this.FeatureBackground();
             table235.AddRow(new string[] {
                         "[[counter]]",
                         "=[[counter]]+1"});
-#line 1325
+#line 1330
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"Increment Counter\" as", ((string)(null)), table235, "And ");
-#line 1328
+#line 1333
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Foreach \"ForEachTest\" as \"NumOfExecution" +
                     "\" executions \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -4963,7 +4973,7 @@ this.FeatureBackground();
             table236.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-#line 1329
+#line 1334
    testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table236, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table237 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4978,7 +4988,7 @@ this.FeatureBackground();
                         "3",
                         "End Result",
                         "Increment Counter"});
-#line 1332
+#line 1337
    testRunner.And("\"WFWithForEachWithManualLoop\" contains a Decision \"Check Counter\" as", ((string)(null)), table237, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table238 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4987,11 +4997,11 @@ this.FeatureBackground();
             table238.AddRow(new string[] {
                         "[[result]]",
                         "DONE"});
-#line 1335
+#line 1340
    testRunner.And("\"WFWithForEachWithManualLoop\" contains an Assign \"End Result\" as", ((string)(null)), table238, "And ");
-#line 1338
+#line 1343
       testRunner.When("\"WFWithForEachWithManualLoop\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1339
+#line 1344
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table239 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5000,10 +5010,10 @@ this.FeatureBackground();
             table239.AddRow(new string[] {
                         "No. of Executes",
                         "2"});
-#line 1340
+#line 1345
    testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
                     "ts as", ((string)(null)), table239, "And ");
-#line 1343
+#line 1348
       testRunner.And("the \"ForEachTest\" number \'1\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                     "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5015,7 +5025,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-#line 1344
+#line 1349
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table240, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table241 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5024,7 +5034,7 @@ this.FeatureBackground();
             table241.AddRow(new string[] {
                         "1",
                         "[[rec(1).a]] = Test"});
-#line 1347
+#line 1352
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table241, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table242 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5035,7 +5045,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-#line 1350
+#line 1355
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug inputs as", ((string)(null)), table242, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table243 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5044,7 +5054,7 @@ this.FeatureBackground();
             table243.AddRow(new string[] {
                         "1",
                         "[[rec(2).a]] = Test"});
-#line 1353
+#line 1358
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'1\' debug outputs as", ((string)(null)), table243, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table244 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5053,10 +5063,10 @@ this.FeatureBackground();
             table244.AddRow(new string[] {
                         "No. of Executes",
                         "2"});
-#line 1356
+#line 1361
    testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" debug inpu" +
                     "ts as", ((string)(null)), table244, "And ");
-#line 1359
+#line 1364
       testRunner.And("the \"ForEachTest\" number \'2\' in WorkFlow \"WFWithForEachWithManualLoop\" has \"2\" ne" +
                     "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -5068,7 +5078,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-#line 1360
+#line 1365
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table245, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table246 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5077,7 +5087,7 @@ this.FeatureBackground();
             table246.AddRow(new string[] {
                         "1",
                         "[[rec(3).a]] = Test"});
-#line 1363
+#line 1368
    testRunner.And("the \"MyAssign\" in step 1 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table246, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table247 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5088,7 +5098,7 @@ this.FeatureBackground();
                         "1",
                         "[[rec().a]] =",
                         "Test"});
-#line 1366
+#line 1371
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug inputs as", ((string)(null)), table247, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table248 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5097,8 +5107,436 @@ this.FeatureBackground();
             table248.AddRow(new string[] {
                         "1",
                         "[[rec(4).a]] = Test"});
-#line 1369
+#line 1374
    testRunner.And("the \"MyAssign\" in step 2 for \"ForEachTest\" number \'2\' debug outputs as", ((string)(null)), table248, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Detailed Log Execute Workflow with error Creates Detailed Log")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void DetailedLogExecuteWorkflowWithErrorCreatesDetailedLog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detailed Log Execute Workflow with error Creates Detailed Log", ((string[])(null)));
+#line 1378
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1379
+ testRunner.Given("I have a server at \"localhost\" with workflow \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1380
+ testRunner.And("The detailed log file does not exist for \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1381
+ testRunner.When("\"localhost\" is the active environment used to execute \"StopExecutionOnMySQLTimeou" +
+                    "tError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1382
+    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1383
+ testRunner.And("The detailed log file is created for \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1384
+ testRunner.And("The Log file contains Logging for stopped \"StopExecutionOnMySQLTimeoutError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1385
+ testRunner.And("The Log file for \"StopExecutionOnMySQLTimeoutError\" contains Logging matching \"De" +
+                    "v2.Services.Sql\\\\MySqlServer.cs:line \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1386
+ testRunner.And("The Log file contains Logging matching \"\"Inputs\":[],\"Outputs\":[]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1387
+ testRunner.And("The Log file contains Logging matching \"LogAdditionalDetail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1388
+ testRunner.And("The Log file contains Logging matching \"\"$type\":\"System.Net.Sockets.SocketExcepti" +
+                    "on, System\",\"NativeErrorCode\":10060\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Detailed Log Executing Hello World Creates Detailed Log")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void DetailedLogExecutingHelloWorldCreatesDetailedLog()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detailed Log Executing Hello World Creates Detailed Log", ((string[])(null)));
+#line 1390
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1391
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1392
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1393
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1394
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1395
+ testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Detailed Log Executing Hello World Creates Detailed Log And Appends Logging For E" +
+            "ach Execution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void DetailedLogExecutingHelloWorldCreatesDetailedLogAndAppendsLoggingForEachExecution()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detailed Log Executing Hello World Creates Detailed Log And Appends Logging For E" +
+                    "ach Execution", ((string[])(null)));
+#line 1397
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1398
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1399
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1400
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1401
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1402
+ testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1403
+ testRunner.And("The Log file contains Logging for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1404
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1405
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1406
+ testRunner.And("The Log file for \"Hello World\" contains additional Logging", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed Log for inn" +
+            "er and outer workflows")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void DetailedLogExecutingTestPowerOfTwoCreatesAndAppendsToDetailedLogForInnerAndOuterWorkflows()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed Log for inn" +
+                    "er and outer workflows", ((string[])(null)));
+#line 1408
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1409
+ testRunner.Given("I have a server at \"localhost\" with workflow \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1410
+ testRunner.And("The detailed log file does not exist for \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1411
+ testRunner.And("The detailed log file does not exist for id \"80225a8b-9711-4e0a-93e9-ed25e5e02e95" +
+                    "\" - \"PowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1412
+ testRunner.When("\"localhost\" is the active environment used to execute \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1413
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1414
+ testRunner.And("The detailed log file is created for \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1415
+ testRunner.And("The detailed log file is created for \"PowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1416
+ testRunner.And("The Log file contains Logging for \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1417
+ testRunner.And("The Log file contains Logging for \"PowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1418
+ testRunner.When("\"localhost\" is the active environment used to execute \"TestPowerOfTwo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1419
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1420
+ testRunner.And("The Log file for \"PowerOfTwo\" contains additional Logging", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1421
+ testRunner.And("The Log file for \"TestPowerOfTwo\" contains additional Logging", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 3 Items Search on Activity Display Name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void AuditLogQueryExpect3ItemsSearchOnActivityDisplayName()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 3 Items Search on Activity Display Name", ((string[])(null)));
+#line 1424
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1425
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1426
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1427
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1428
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1429
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table249.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "Hello World",
+                        "null",
+                        "Dev2.Activities.DsfDecision"});
+            table249.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+            table249.AddRow(new string[] {
+                        "LogExecuteCompleteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+#line 1430
+ testRunner.And("The audit database has \"3\" search results containing \"Dev2.Activities.DsfDecision" +
+                    "\" with type \"\" for \"Hello World\" as", ((string)(null)), table249, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 3 Items Search on Activity Type")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void AuditLogQueryExpect3ItemsSearchOnActivityType()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 3 Items Search on Activity Type", ((string[])(null)));
+#line 1436
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1437
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1438
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1439
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1440
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1441
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table250 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table250.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "Hello World",
+                        "null",
+                        "Dev2.Activities.DsfDecision"});
+            table250.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+            table250.AddRow(new string[] {
+                        "LogExecuteCompleteState",
+                        "Hello World",
+                        "Dev2.Activities.DsfDecision",
+                        "null"});
+#line 1442
+ testRunner.And("The audit database has \"3\" search results containing \"Dev2.Activities.DsfDecision" +
+                    "\" with type \"\" for \"Hello World\" as", ((string)(null)), table250, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect No Results")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void AuditLogQueryExpectNoResults()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect No Results", ((string[])(null)));
+#line 1448
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1449
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1450
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1451
+ testRunner.And("The detailed log file does not exist for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1452
+ testRunner.When("\"localhost\" is the active environment used to execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1453
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1454
+ testRunner.And("The detailed log file is created for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1455
+ testRunner.And("The audit database has \"0\" search results containing \"Something that doesn\'t exis" +
+                    "t\" with log type \"Dev2.Activities.DsfDecision\" for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 8 Items")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void AuditLogQueryExpect8Items()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 8 Items", ((string[])(null)));
+#line 1457
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1458
+ testRunner.Given("I have a server at \"localhost\" with workflow \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1459
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1460
+ testRunner.And("The detailed log file does not exist for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1461
+ testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1462
+ testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1463
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table251 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfRandomActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table251.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfDecision"});
+#line 1464
+ testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
+                    "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table251, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Query Expect 8 Items from search")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void AuditLogQueryExpect8ItemsFromSearch()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 8 Items from search", ((string[])(null)));
+#line 1475
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 1476
+ testRunner.Given("I have a server at \"localhost\" with workflow \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1477
+ testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1478
+ testRunner.And("The detailed log file does not exist for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1479
+ testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1480
+ testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1481
+    testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1482
+ testRunner.And("The detailed log file is created for \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table252 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AuditType",
+                        "WorkflowName",
+                        "PreviousActivityType",
+                        "NextActivityType"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfRandomActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Unlimited.Applications.BusinessDesignStudio.Activities.DsfDotNetMultiAssignActivi" +
+                            "ty",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPreExecuteState",
+                        "TestSqlExecutesOnce",
+                        "null",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity"});
+            table252.AddRow(new string[] {
+                        "LogPostExecuteState",
+                        "TestSqlExecutesOnce",
+                        "Dev2.Activities.DsfSqlServerDatabaseActivity",
+                        "Dev2.Activities.DsfDecision"});
+#line 1483
+ testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
+                    "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table252, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

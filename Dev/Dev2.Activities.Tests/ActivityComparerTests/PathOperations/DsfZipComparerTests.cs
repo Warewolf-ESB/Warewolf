@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Dev2.Common.State;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -75,7 +77,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             Assert.IsTrue(@equals);
         }
 
-      
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -458,6 +460,123 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             var @equals = zip.Equals(zip1);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void DsfZip_GetState()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var inputPath = @"c:\OldFile.txt";
+            var username = "[[username]]";
+            var privateKeyFile = "[[KeyFile]]";
+            var outputPath = @"c:\OldFile_Zip.txt";
+            var destinationUsername = "[[destinationUsername]]";
+            var destinationPrivateKeyFile = "[[destinationPrivateKeyFile]]";
+            var overwrite = false;
+            var archiveName = "[[archiveName]]";
+            var compressionRatio = "[[compressionRatio]]";
+            var result = "[[result]]";
+
+            var zip = new DsfZip()
+            {
+                UniqueID = uniqueId,
+                InputPath = inputPath,
+                Username = username,
+                PrivateKeyFile = privateKeyFile,
+                OutputPath = outputPath,
+                DestinationUsername = destinationUsername,
+                DestinationPrivateKeyFile = destinationPrivateKeyFile,
+                Overwrite = overwrite,
+                ArchiveName = archiveName,
+                CompressionRatio = compressionRatio,
+                Result = result
+            };
+
+            //------------Execute Test---------------------------
+            var stateItems = zip.GetState();
+            Assert.AreEqual(10, stateItems.Count());
+
+            var expectedResults = new[]
+            {
+               new StateVariable
+                {
+                    Name = "InputPath",
+                    Value = inputPath,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Username",
+                    Value = username,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "PrivateKeyFile",
+                    Value = privateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "OutputPath",
+                    Value = outputPath,
+                    Type = StateVariable.StateType.Output
+                },
+                new StateVariable
+                {
+                    Name = "DestinationUsername",
+                    Value = destinationUsername,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "DestinationPrivateKeyFile",
+                    Value = destinationPrivateKeyFile,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Overwrite",
+                    Value = overwrite.ToString(),
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "ArchiveName",
+                    Value = archiveName,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "CompressionRatio",
+                    Value = compressionRatio,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "Result",
+                    Value = result,
+                    Type = StateVariable.StateType.Output
+                }
+            };
+
+            var iter = zip.GetState().Select(
+                (item, index) => new
+                {
+                    value = item,
+                    expectValue = expectedResults[index]
+                }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+            }
+
         }
     }
 }
