@@ -18,6 +18,7 @@ using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.DB;
 using System.Text;
+using TSQL;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -95,7 +96,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             string returnRecordsetName = "person";
             string query = "select * from person";
             var worker = CreatePersonAddressWorkers();
-            var results = worker.ExecuteQuery(query);
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
+
+            var results = worker.ExecuteQuery(updatedQuery);
             var started = false;
 
             // apply sql results to environment
@@ -125,10 +129,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AdvancedRecordset_Converter_CanRunSimpleQuery()
         {
             string query = "select * from person";
-            var Worker = CreatePersonAddressWorkers();
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
 
-            var Results = Worker.ExecuteQuery(query);
-            Assert.AreEqual(4, Results.Tables[0].Rows.Count);
+            var results = worker.ExecuteQuery(updatedQuery);
+            Assert.AreEqual(4, results.Tables[0].Rows.Count);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -137,10 +143,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AdvancedRecordset_Converter_CanRunQueryContainingAlias()
         {
             string query = "select name as username from person";
-            var Worker = CreatePersonAddressWorkers();
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
 
-            var Results = Worker.ExecuteQuery(query);
-            Assert.AreEqual(4, Results.Tables[0].Rows.Count);
+            var results = worker.ExecuteQuery(updatedQuery);
+            Assert.AreEqual(4, results.Tables[0].Rows.Count);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -150,11 +158,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var worker = CreatePersonAddressWorkers();
             string query = "select * from person p join address a on p.address_id=a.id";
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery= worker.UpdateSqlWithHashCodes(statements[0]);
 
-            var results = worker.ExecuteQuery(query);
+            var results = worker.ExecuteQuery(updatedQuery);
 
             Assert.IsInstanceOfType(results, typeof(DataSet));
-            Assert.AreEqual(results.Tables[0].Rows.Count, 3);
+            Assert.AreEqual(3, results.Tables[0].Rows.Count);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -164,15 +174,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             string query = "SELECT * FROM person JOIN address on person.address_id = address.id";
-            var Worker = CreatePersonAddressWorkers();
-            var results = Worker.ExecuteQuery(query);
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
+
+            var results = worker.ExecuteQuery(updatedQuery);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Name"] as byte[]), "bob");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Age"] as byte[])), (Int32)21);
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["address_id"] as byte[])), (Int32)1);
-            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Addr"] as byte[]), "11 test lane");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Postcode"] as byte[])), (Int32)3421);
+            Assert.AreEqual("bob",Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Name"] as byte[]));
+            Assert.AreEqual(21,int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Age"] as byte[])));
+            Assert.AreEqual(1,int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["address_id"] as byte[])));
+            Assert.AreEqual("11 test lane", Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Addr"] as byte[]));
+            Assert.AreEqual(3421,int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Postcode"] as byte[])));
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -181,8 +194,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AdvancedRecordset_Converter_CanRunWhereQuery_ExpectFilteredResults()
         {
             string query = "select * from person p join address a on p.address_id=a.id where a.addr=\"11 test lane\" order by Name";
-            var Worker = CreatePersonAddressWorkers();
-            var results = Worker.ExecuteQuery(query);
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
+
+            var results = worker.ExecuteQuery(updatedQuery);
             Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["name"] as byte[]), "bob");
             Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["age"] as byte[])), (Int32)21);
             Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["address_id"] as byte[])), (Int32)1);
@@ -199,10 +215,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AdvancedRecordset_Converter_CanRunWhereQuery_ExpectNoResults()
         {
             string query = "select * from person p join address a on p.address_id=a.id where p.Name=\"zak\"";
-            var Worker = CreatePersonAddressWorkers();
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
 
-            var results = Worker.ExecuteQuery(query);
-            Assert.AreEqual(results.Tables[0].Rows.Count, 0);
+            var results = worker.ExecuteQuery(updatedQuery);
+
+            Assert.AreEqual(0,results.Tables[0].Rows.Count);
         }
 
         [TestMethod]
@@ -214,18 +233,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             string query = "select CURRENT_TIMESTAMP;" +
                 "select * from address;update person set Age=20 where Name=\"zak\";" +
                 "select * from person p join address a on p.address_id=a.id where a.addr=\"11 test lane\" order by Name";
-            var Worker = CreatePersonAddressWorkers();
+            var worker = CreatePersonAddressWorkers();
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = "";
+            foreach(var statement in statements)
+            {
+                updatedQuery += worker.UpdateSqlWithHashCodes(statement)+";";
+            }
+            
 
-            var results = Worker.ExecuteQuery(query);
+            var results = worker.ExecuteQuery(updatedQuery);
            
-            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Name"] as byte[]), "bob");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Age"] as byte[])), (Int32)21);
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["address_id"] as byte[])), (Int32)1);
-            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Addr"] as byte[]), "11 test lane");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Postcode"] as byte[])), (Int32)3421);
+            Assert.AreEqual("bob",Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Name"] as byte[]));
+            Assert.AreEqual(21, int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Age"] as byte[])));
+            Assert.AreEqual(1, int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["address_id"] as byte[])));
+            Assert.AreEqual("11 test lane",Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Addr"] as byte[]));
+            Assert.AreEqual(3421,int.Parse(Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Postcode"] as byte[])));
 
-            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Name"] as byte[]), "jef");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Age"] as byte[])), (Int32)24);
+            Assert.AreEqual("jef",Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Name"] as byte[]));
+            Assert.AreEqual(24,int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Age"] as byte[])));
            
         }
 
@@ -235,14 +261,19 @@ namespace Dev2.Tests.Activities.ActivityTests
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void AdvancedRecordset_Converter_ExpectUpdateAffectedRows()
         {
-            var Worker = CreatePersonAddressWorkers();
+            var worker = CreatePersonAddressWorkers();
             string query = "update person set Age=65 where Name=\"zak\";";
-            var results = Worker.ExecuteNonQuery(query);
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
+            var results = worker.ExecuteNonQuery(updatedQuery);
             Assert.AreEqual(1, results);
             query = "select * from person where Name=\"zak\";";
-            var result = Worker.ExecuteQuery(query);
-            Assert.AreEqual(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Name"] as byte[]), "zak");
-            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Age"] as byte[])), (Int32)65);
+            statements = TSQLStatementReader.ParseStatements(query);
+            updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
+            var result = worker.ExecuteQuery(updatedQuery);
+            
+            Assert.AreEqual("zak",Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Name"] as byte[]));
+            Assert.AreEqual(65,int.Parse(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Age"] as byte[])));
         }
 
         [TestMethod]
