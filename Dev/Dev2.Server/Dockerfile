@@ -15,6 +15,5 @@ ENV SERVER_USERNAME "WarewolfAdmin"
 
 RUN New-Item -Path "programdata\Warewolf" -ItemType Directory
 RUN Copy-Item -Path \"Server\Resources - Release\*\" -Destination \"programdata\Warewolf\" -Recurse -Force
-ADD NewAzureUser.bite \programdata\Warewolf\Resources
 
 ENTRYPOINT cmd /c NET user "$env:SERVER_USERNAME" "$env:SERVER_PASSWORD" /ADD /Y;cmd /c NET localgroup "Administrators" "$env:SERVER_USERNAME" /ADD;cmd /c NET localgroup "Warewolf Administrators" "$env:SERVER_USERNAME" /ADD;Start-Process -FilePath "$env:SERVER_PATH" -ArgumentList "--interactive" -Verb RunAs -Wait
