@@ -4268,26 +4268,6 @@ Scenario: Handle Nulls set to Nothing
     | [[TableCopy(3).city]] =                  |
     | [[TableCopy(3).province]] = Western Cape |
 
-Scenario:  Given RecordsetName starts with capital letter but TableName starts with small letter
-    Given I have a recordset with this shape
-    | [[person]]    |        |
-    | Person().name | Bob    |
-    | Person().name | Alice  |
-    | Person().name | Hatter |
-    And I drag on an Advanced Recordset tool
-    And I have the following sql statement "SELECT * from person"
-    When I click Generate Outputs
-    Then Outputs are as follows
-    | Mapped From | Mapped To            |
-    | name        | [[TableCopy().name]] |
-    And Recordset is "TableCopy"
-    And Outputs are as follows
-    | Mapped From | Mapped To            |
-    | name        | [[TableCopy().name]] |
-    When Advanced Recordset tool is executed	
-	And the advancerecodset execution has "AN" error
-
-	
 Scenario:  Given RecordsetName and  TableName starts with capital letter
     Given I have a recordset with this shape
     | [[person]]    |        |
@@ -4469,3 +4449,34 @@ Scenario:  Remove Row when deleting  Declared variable  Test 3
     Then Declare variables will be
     | Name | Value  |
     | var3 | value3 |   
+
+
+Scenario: Select from recordset with same name different casing
+    Given I have a recordset with this shape
+    | [[person]]      |            |
+    | person(1).name  | Bob        |
+    | person(2).name  | Alice      |
+    | person(3).name  | Hatter     |
+    | Person(1).name   | Builder    |
+    | Person(2).name   | Wonderland |
+    | Person(3).name   | Mad        |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "Select * from person;"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                  |
+    | name  | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs                     | value  |
+    | TableCopy().name | Bob    |
+    | TableCopy().name | Alice  |
+    | TableCopy().name | Hatter |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                |
+    | [[TableCopy(3).name]] = Hatter |

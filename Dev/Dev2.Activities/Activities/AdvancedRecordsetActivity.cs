@@ -21,6 +21,7 @@ using Dev2.DataList.Contract;
 using Dev2.Util;
 using Warewolf.Storage;
 using Dev2.Data;
+using System.Globalization;
 
 namespace Dev2.Activities
 {
@@ -110,10 +111,9 @@ namespace Dev2.Activities
             var iter = new WarewolfListIterator();
             var started = false;
             var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
-            var allTables = new List<string>();
             if (DeclareVariables == null || DeclareVariables.All(d => String.IsNullOrEmpty(d.Value)))
             {
-                ExecuteSql(update, allTables, ref started);
+                ExecuteSql(update, ref started);
             }
             else
             {
@@ -135,18 +135,18 @@ namespace Dev2.Activities
                     {
                         AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
                     }
-                    ExecuteSql(update, allTables, ref started);
+                    ExecuteSql(update, ref started);
                     started = true;
                 }
             }
-            foreach (var table in allTables)
+            foreach (var hashedRecSet in AdvancedRecordset.HashedRecSets)
             {
-                AdvancedRecordset.DeleteTableInSqlite(table);
+                AdvancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
             }
 
         }
 
-        private void ExecuteSql(int update, List<string> allTables, ref bool started)
+        private void ExecuteSql(int update, ref bool started)
         {
             var queryText = AddSqlForVariables(SqlQuery);
             var statements = TSQLStatementReader.ParseStatements(queryText);
@@ -157,9 +157,13 @@ namespace Dev2.Activities
                 foreach (var table in tables)
                 {
                     LoadRecordset(table.TableName);
-                    allTables.Add(table.TableName);
                 }
-                var results = AdvancedRecordset.ExecuteQuery(queryText);
+                var sqlQueryToUpdate = queryText;
+                foreach (var item in AdvancedRecordset.HashedRecSets)
+                {
+                    sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet, item.hashCode);
+                }
+                var results = AdvancedRecordset.ExecuteQuery(sqlQueryToUpdate);
                 foreach (DataTable dt in results.Tables)
                 {
                     AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
@@ -167,11 +171,11 @@ namespace Dev2.Activities
             }
             else
             {
-                ExecuteAllSqlStatements(update, allTables, statements, ref started);
+                ExecuteAllSqlStatements(update, statements, ref started);
             }
         }
 
-        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements, ref bool started)
+        private void ExecuteAllSqlStatements(int update, List<TSQLStatement> statements, ref bool started)
         {
             foreach (var statement in statements)
             {
@@ -179,7 +183,6 @@ namespace Dev2.Activities
                 foreach (var table in tables)
                 {
                     LoadRecordset(table.TableName);
-                    allTables.Add(table.TableName);
                 }
                 if (statement.Type == TSQLStatementType.Select)
                 {
@@ -194,9 +197,12 @@ namespace Dev2.Activities
             }
         }
 
+        
+
         void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update, ref bool started)
         {
-            var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(selectStatement);
+            var results = AdvancedRecordset.ExecuteQuery(sqlQuery);
             foreach (DataTable dt in results.Tables)
             {
                 AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
@@ -261,10 +267,12 @@ namespace Dev2.Activities
                     outputRecordsetName = tokens[i + 2].Text;
                 }
             }
-            var recordset = new DataTable();
 
+            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+
+            var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
-            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
+            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
             object sumObject;
             sumObject = recordset.Compute("Sum(records_affected)", "");
             _recordsAffected += Convert.ToInt16(sumObject.ToString());
@@ -274,15 +282,14 @@ namespace Dev2.Activities
             if (mapping != null)
             {
                 AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
-
             }
-            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + outputRecordsetName);
+            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
             foreach (DataTable dt in results.Tables)
             {
                 AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
             }
         }
-        int _recordsAffected = 0;
+        int _recordsAffected;
         void LoadRecordset(string tableName)
         {
 

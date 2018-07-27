@@ -13,6 +13,9 @@ using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite.EF6;
 using System.Data.Entity.Core.Common;
+using Dev2.Common;
+using System.IO;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -212,12 +215,14 @@ namespace Dev2.Runtime.ESB.Execution
     [Database]
     class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base(new SQLiteConnection() {
-                ConnectionString = new SQLiteConnectionStringBuilder() {
-                    DataSource = "C:\\ProgramData\\Warewolf\\Audits\\auditDB.db", ForeignKeys = true
+        public DatabaseContext() : base(new SQLiteConnection {
+                ConnectionString = new SQLiteConnectionStringBuilder {
+                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\auditDB.db"), ForeignKeys = true
                 }.ConnectionString
                }, true)
-        {
+        {            
+            var directoryWrapper = new DirectoryWrapper();
+            directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
             DbConfiguration.SetConfiguration(new SQLiteConfiguration());
             this.Database.CreateIfNotExists();
             this.Database.Initialize(false);

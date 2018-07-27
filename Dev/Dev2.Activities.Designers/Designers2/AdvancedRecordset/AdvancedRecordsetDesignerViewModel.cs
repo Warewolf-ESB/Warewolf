@@ -38,6 +38,7 @@ using System.Text.RegularExpressions;
 using Dev2.Data.Util;
 using static LanguageAST.LanguageExpression;
 using System.Text;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Activities.Designers2.AdvancedRecordset
 {
@@ -300,6 +301,8 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 ErrorMessage(e, true);
             }
         }
+
+        readonly List<(string hashCode, IRecordSetItemModel recSet)> _hashedRecSets = new List<(string hashCode, IRecordSetItemModel recSet)>();
         void LoadRecordsets(string sqlQuery)
         {
             var advancedRecordset = new Dev2.Activities.AdvancedRecordset();
@@ -307,14 +310,21 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             {
                 if (!string.IsNullOrEmpty(recSet.DisplayName))
                 {
-                    advancedRecordset.AddRecordsetAsTable((recSet.DisplayName, recSet.Children.Select(c => c.DisplayName).ToList()));
+                    var recSetHash = "A"+recSet.GetHashCode().ToString().Replace("-","B");
+                    _hashedRecSets.Add((recSetHash, recSet));
+                    advancedRecordset.AddRecordsetAsTable((recSetHash, recSet.Children.Select(c => c.DisplayName).ToList()));
                 }
             }
             var statements = TSQLStatementReader.ParseStatements(sqlQuery);
             var countOfStatements = statements.Count;
             if (sqlQuery.Contains("UNION") && countOfStatements == 2)
             {
-                var sql = Regex.Replace(sqlQuery, @"\@\w+\b", match => "''");
+                var sqlQueryToUpdate = sqlQuery;
+                foreach(var item in _hashedRecSets)
+                {
+                    sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet.DisplayName, item.hashCode);
+                }                
+                var sql = Regex.Replace(sqlQueryToUpdate, @"\@\w+\b", match => "''");
                 var result = advancedRecordset.ExecuteQuery(sql);
                 var table = result.Tables[0];
                 if (table.Columns.Count > 0)
@@ -337,8 +347,10 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             for (var i = 0; i < countOfStatements; i++)
             {
                 var statement = statements[i];
+
                 var sql = advancedRecordset.ReturnSql(statement.Tokens);
-                
+                sql = UpdateSqlWithHashCodes(statement, sql);
+
                 sql = Regex.Replace(sql, @"\@\w+\b", match => "''");
                 var result = advancedRecordset.ExecuteStatement(statement, sql);
                 if (i == countOfStatements - 1)
@@ -354,6 +366,24 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                     }
                 }
             }
+        }
+
+        private string UpdateSqlWithHashCodes(TSQLStatement statement, string sql)
+        {
+            var sqlToUpdate = sql;
+            foreach (var token in statement.Tokens)
+            {
+                if (token.Type == TSQL.Tokens.TSQLTokenType.Identifier)
+                {
+                    var hash = _hashedRecSets.FirstOrDefault(x => x.recSet.DisplayName == token.Text);
+                    if (!hash.Equals(default((string, IRecordSetItemModel))))
+                    {
+                        sqlToUpdate = sqlToUpdate.Replace(token.Text, hash.hashCode);
+                    }
+                }
+            }
+
+            return sqlToUpdate;
         }
 
         private static List<string> GetFields(DataTable table)
