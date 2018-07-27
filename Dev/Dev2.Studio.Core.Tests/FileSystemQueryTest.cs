@@ -619,13 +619,10 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            using (var container = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))
-            {
-                //------------Execute Test---------------------------
-                var shareCollection = new ShareCollection(@"\\test-remotewarewolf\");
-                //------------Assert Results-------------------------
-                Assert.AreEqual(5, shareCollection.Count);
-            }
+            //------------Execute Test---------------------------
+            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc\");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(17, shareCollection.Count);
         }
 
         static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
