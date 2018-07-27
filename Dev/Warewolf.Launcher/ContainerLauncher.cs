@@ -193,10 +193,9 @@ namespace Warewolf.Launcher
                         return response.IsSuccessStatusCode;
                     }
                 }
-                catch (SocketException e)
-                {
-                    return false;
-                }
+                catch(AggregateException e) { return false; }
+                catch (SocketException e) { return false; }
+                catch (HttpRequestException e) { return false; }
             }
         }
 
