@@ -15,6 +15,7 @@ namespace Dev2.Runtime.Tests
             string outputFilePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Audits\auditDB.db");
             if (File.Exists(outputFilePath))
             {
+                Launcher.TestCleanupUtils.WaitForFileUnlock(outputFilePath);
                 File.Delete(outputFilePath);
             }
             if (!Directory.Exists(Path.GetDirectoryName(outputFilePath)))

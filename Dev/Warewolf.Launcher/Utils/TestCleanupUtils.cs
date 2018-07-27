@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Warewolf.Launcher
 {
-    static class TestCleanupUtils
+    public static class TestCleanupUtils
     {
         public static void CopyOnWrite(string FileSpec)
         {
