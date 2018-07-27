@@ -21,6 +21,7 @@ using Warewolf.Core;
 using TSQL.Statements;
 using TSQL.Tokens;
 using System.Text;
+using System.Linq;
 
 namespace Dev2.Activities
 {
@@ -117,10 +118,40 @@ namespace Dev2.Activities
                 throw new Exception(e.Message);
             }
         }
+
+        public List<(string hashCode, string recSet)> HashedRecSets { get; } = new List<(string hashCode, string recSet)>();
+
         public void LoadRecordsetAsTable(string recordsetName)
         {
             var table = Environment.EvalAsTable("[[" + recordsetName + "(*)]]", 0);
-            LoadIntoSqliteDb(recordsetName, table);
+            var recSetHash = HashTableName(recordsetName);
+            LoadIntoSqliteDb(recSetHash, table);
+        }
+
+        public string HashTableName(string recordsetName)
+        {
+            var recSetHash = "A" + recordsetName.GetHashCode().ToString().Replace("-", "B");
+            HashedRecSets.Add((recSetHash, recordsetName));
+            return recSetHash;
+        }
+
+        public string UpdateSqlWithHashCodes(TSQLStatement statement)
+        {
+            var sqlBuildUp = new List<string>();
+            foreach (var token in statement.Tokens)
+            {
+                if (token.Type == TSQLTokenType.Identifier)
+                {
+                    var hash = HashedRecSets.FirstOrDefault(x => x.recSet == token.Text);
+                    sqlBuildUp.Add(!hash.Equals(default) ? hash.hashCode : token.Text);
+                }
+                else
+                {
+                    sqlBuildUp.Add(token.Text);
+                }
+            }
+
+            return string.Join(" ", sqlBuildUp);
         }
         public void CreateVariableTable()
         {

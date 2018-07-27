@@ -35,6 +35,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             ExplorerUIMap.Filter_Explorer("Hello World");
             WorkflowTabUIMap.Drag_Explorer_workflow_Onto_Workflow_Design_Surface();
             UIMap.Press_F6();
+            WorkflowTabUIMap.WaitForDebugOutput();
             var helloWorldIsHighlighted = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(helloWorldIsHighlighted, "Sub-workflow is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }

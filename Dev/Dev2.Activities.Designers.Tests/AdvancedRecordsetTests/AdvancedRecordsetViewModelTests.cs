@@ -620,6 +620,127 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AdvancedRecordset_Operations")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void SelectStatement_WhenTwoRecordsetsDifferentCased_Should_ReturnOutputs()
+        {
+            //------------Setup for test--------------------------
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageSqliteServiceInputViewModel)
+            };
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            var server = new Mock<IServer>();
+            var updatemanager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();
+            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            var recordSetItemModel = new RecordSetItemModel("person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("id", recordSetItemModel)
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            var recordSetItemModel2 = new RecordSetItemModel("Person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels2 = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+               new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("id", recordSetItemModel)
+            };
+            recordSetItemModel2.Children = recordSetFieldItemModels2;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel2);
+            DataListSingleton.SetDataList(dataListViewModel);
+            var act = new AdvancedRecordsetActivity();
+            const string query = "select * from person";
+            //------------Execute Test---------------------------
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
+            {
+                viewModel.SqlQuery = query;
+                viewModel.GenerateOutputsCommand.Execute(query);
+
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(viewModel.OutputsRegion.Outputs);
+                Assert.IsTrue(viewModel.OutputsRegion.IsEnabled);
+                Assert.IsTrue(viewModel.ErrorRegion.IsEnabled);
+
+                Assert.AreEqual(2, viewModel.OutputsRegion.Outputs.Count);
+                Assert.AreEqual("[[TableCopy().id]]", viewModel.OutputsRegion.Outputs.Last().MappedTo);
+                Assert.AreEqual("id", viewModel.OutputsRegion.Outputs.Last().MappedFrom);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AdvancedRecordset_Operations")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void SelectStatement_WhenJoinedTwoRecordsetsDifferentCased_Should_ReturnOutputs()
+        {
+            //------------Setup for test--------------------------
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageSqliteServiceInputViewModel)
+            };
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            var server = new Mock<IServer>();
+            var updatemanager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();
+            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            var recordSetItemModel = new RecordSetItemModel("person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("id", recordSetItemModel)
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            var recordSetItemModel2 = new RecordSetItemModel("Person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels2 = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+               new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("id", recordSetItemModel)
+            };
+            recordSetItemModel2.Children = recordSetFieldItemModels2;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel2);
+            DataListSingleton.SetDataList(dataListViewModel);
+            var act = new AdvancedRecordsetActivity();
+            const string query = "select * from person p join Person pp on p.id=pp.id";
+            //------------Execute Test---------------------------
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
+            {
+                viewModel.SqlQuery = query;
+                viewModel.GenerateOutputsCommand.Execute(query);
+
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(viewModel.OutputsRegion.Outputs);
+                Assert.IsTrue(viewModel.OutputsRegion.IsEnabled);
+                Assert.IsTrue(viewModel.ErrorRegion.IsEnabled);
+
+                Assert.AreEqual(4, viewModel.OutputsRegion.Outputs.Count);
+                Assert.AreEqual("[[TableCopy().id1]]", viewModel.OutputsRegion.Outputs.Last().MappedTo);
+                Assert.AreEqual("id1", viewModel.OutputsRegion.Outputs.Last().MappedFrom);
+            }
+        }
+
     }
     public class SqliteModel : ISqliteService
     {

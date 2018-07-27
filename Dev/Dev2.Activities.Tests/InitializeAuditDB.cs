@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common;
+using Dev2.Common.Wrappers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Reflection;
@@ -12,16 +14,14 @@ namespace Dev2.Tests.Activities
         public static void AssemblyInit(TestContext context)
         {
             string inputFilePath = "Dev2.Tests.Activities.auditDB.db";
-            string outputFilePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Audits\auditDB.db");
+            string outputFilePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\auditDB.db");
             if (File.Exists(outputFilePath))
             {
                 Warewolf.Launcher.TestCleanupUtils.WaitForFileUnlock(outputFilePath);
                 File.Delete(outputFilePath);
             }
-            if (!Directory.Exists(Path.GetDirectoryName(outputFilePath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-            }
+            var directoryWrapper = new DirectoryWrapper();
+            directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));           
             Stream inputFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(inputFilePath);
             Assert.IsNotNull(inputFile, inputFilePath + " file not found in " + string.Join(", ", Assembly.GetExecutingAssembly().GetManifestResourceNames()));
             using (Stream input = inputFile)
