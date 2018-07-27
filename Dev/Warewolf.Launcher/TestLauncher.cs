@@ -864,7 +864,7 @@ namespace Warewolf.Launcher
 
             if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
             {
-                throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+                throw new ArgumentException("Error cannot find dotcover.exe. Use --DotCoverPath parameter to pass a path to that file.");
             }
 
             if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
