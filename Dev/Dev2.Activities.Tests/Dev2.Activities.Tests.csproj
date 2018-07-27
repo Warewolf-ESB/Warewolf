@@ -551,9 +551,6 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
-    <EmbeddedResource Include="..\Resources - ServerTests\Audits\auditDB.db">
-      <Link>auditDB.db</Link>
-    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
