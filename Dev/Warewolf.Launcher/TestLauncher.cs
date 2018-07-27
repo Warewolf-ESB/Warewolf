@@ -859,7 +859,7 @@ namespace Warewolf.Launcher
             }
             if (!File.Exists(TestRunner.Path))
             {
-                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
+                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
             }
 
             if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
