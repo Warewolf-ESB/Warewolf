@@ -224,7 +224,7 @@ namespace Warewolf.Launcher
                 "%PROGRAMDATA%\\Warewolf\\Workspaces",
                 "%PROGRAMDATA%\\Warewolf\\Server Settings",
                 "%PROGRAMDATA%\\Warewolf\\VersionControl",
-                "%PROGRAMDATA%\\Warewolf\\Audits"
+                "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
             };
 
             foreach (var FileOrFolder in ToClean)
