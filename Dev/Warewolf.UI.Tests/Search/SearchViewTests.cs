@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
@@ -40,6 +41,7 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory("Search")]
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
+            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
             Mouse.Click(SearchUIMap.MainStudioWindow.RemoteConnectionInteCustom);
@@ -162,6 +164,11 @@ namespace Warewolf.UI.Tests.Search
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
+
+        static ContainerLauncher _containerOps;
+
+        [TestCleanup]
+        public void CleanupContainer() => _containerOps?.Dispose();
 
         public ExplorerUIMap ExplorerUIMap
         {

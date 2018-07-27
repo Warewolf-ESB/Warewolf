@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -125,6 +127,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.WhenISelectFromTheSourceTab("Hello World");
             DeployUIMap.ThenIClickDeployButton();
         }
+
         [TestMethod]
         [TestCategory("Deploy from Remote")]
         public void Open_Deploy_Tab_And_Change_Source_Loads_Resources()
@@ -157,6 +160,17 @@ namespace Warewolf.UI.Tests
             UIMap.AssertStudioIsRunning();
             UIMap.Click_Deploy_Ribbon_Button();
         }
+
+        static ContainerLauncher _containerOps;
+
+        [ClassInitialize]
+        public void MyClassInitialize()
+        {
+            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        }
+
+        [ClassCleanup]
+        public void CleanupContainer() => _containerOps?.Dispose();
 
         public UIMap UIMap
         {
