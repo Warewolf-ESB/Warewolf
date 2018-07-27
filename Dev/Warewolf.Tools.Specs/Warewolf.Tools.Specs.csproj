@@ -117,9 +117,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <EmbeddedResource Include="..\Resources - ServerTests\Audits\auditDB.db">
-      <Link>auditDB.db</Link>
-    </EmbeddedResource>
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
