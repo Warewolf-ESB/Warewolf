@@ -106,9 +106,8 @@ namespace Dev2.Activities.Specs.Sources
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
             var instanceSource = ServerRepository.Instance.Source;
-            var environmentConnection = new ServerProxy(instanceSource.Connection.WebServerUri.AbsoluteUri, 
-                ScenarioContext.Current.Get<string>("Username"), 
-                ScenarioContext.Current.Get<string>("Password"));
+            var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+            var environmentConnection = instanceSource.Connection;
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
             var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
