@@ -81,7 +81,7 @@ namespace Warewolf.Launcher
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
                 }
             }
         }
@@ -496,7 +496,14 @@ namespace Warewolf.Launcher
                         string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
                         Directory.Move(subDir, newDirFullPath);
                     }
-                    Directory.Delete(directoryToRemove);
+                    try
+                    {
+                        Directory.Delete(directoryToRemove);
+                    }
+                    catch (IOException e)
+                    {
+                        Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    }
                 }
                 else
                 {
