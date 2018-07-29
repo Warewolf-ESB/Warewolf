@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests
         public void Deploy_Select_Server_AutoConnects_Destination_Server()
         {
             DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
-            Assert.AreEqual("Remote Connection Integration (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteContainerText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
+            Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteContainerText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests
         public void Deploy_Select_Server_AutoConnects_Source_Server()
         {
             DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
-            Assert.AreEqual("Remote Connection Integration (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText);
+            Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText);
         }
 
         [TestMethod]
