@@ -374,7 +374,7 @@ namespace Warewolf.Launcher
                 }
                 catch (InvalidOperationException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
                 }
 
                 var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
