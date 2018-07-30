@@ -235,8 +235,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
 
-        [When(@"I Select Remote Connection Integration From Explorer")]
-        public void Select_RemoteConnectionIntegration_From_Explorer()
+        [When(@"I Select Remote Container From Explorer")]
+        public void Select_RemoteContainer_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
@@ -467,7 +467,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"I Select Explorer Remote Server Dropdown List")]
         public void Select_Explorer_Remote_Server_Dropdown_List()
         {
-            Mouse.Click(MainStudioWindow.RemoteConnectionItem);
+            Mouse.Click(MainStudioWindow.ComboboxItemAsRemoteContainer);
         }
 
         [Given(@"I Click Explorer ServerCombobox ToggleButton")]
@@ -514,7 +514,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
-            Select_RemoteConnectionIntegration_From_Explorer();
+            Select_RemoteContainer_From_Explorer();
             Playback.Wait(1000);
             UIMap.Click_Settings_RibbonButton();
             var deleteFirstResourceButton = SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
@@ -635,7 +635,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
         {
-            Select_RemoteConnectionIntegration_From_Explorer();
+            Select_RemoteContainer_From_Explorer();
             Filter_Explorer(ResourceName);
             try
             {
