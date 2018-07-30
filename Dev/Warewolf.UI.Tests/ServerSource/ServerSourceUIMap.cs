@@ -96,7 +96,7 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
             DeployUIMap.ValidateICanNotDeploy(resource);
         }        
 
-        public void Click_UserButton_On_ServerSourceTab()
+        public void Select_Server_Authentication_User()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton);
         }

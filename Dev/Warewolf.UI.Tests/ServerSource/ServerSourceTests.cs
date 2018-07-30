@@ -14,8 +14,6 @@ namespace Warewolf.UI.Tests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
-        private const string SourceName = "CodedUITestServerSource";
-
         [TestMethod]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
@@ -39,7 +37,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
+            ServerSourceUIMap.Select_Server_Authentication_User();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
@@ -54,12 +52,15 @@ namespace Warewolf.UI.Tests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
+            ServerSourceUIMap.Select_Server_Authentication_User();
+            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             //Save Source
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            ExplorerUIMap.Filter_Explorer(SourceName);
+            const string sourceName = "NewCodedUITestServerSource";
+            UIMap.Save_With_Ribbon_Button_And_Dialog(sourceName);
+            ExplorerUIMap.Filter_Explorer(sourceName);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
         }
 
@@ -73,7 +74,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
-            ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
+            ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
@@ -178,7 +179,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
@@ -194,8 +195,9 @@ namespace Warewolf.UI.Tests.ServerSource
             _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
-            ServerSourceUIMap.Select_Server_Authentication_Public();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
+            ServerSourceUIMap.Select_Server_Authentication_User();
+            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
 
@@ -203,8 +205,7 @@ namespace Warewolf.UI.Tests.ServerSource
 
             DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesServerResource");
             WorkflowTabUIMap.Enter_Using_Shortcut();
-            Point point;
-            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out Point point), 60000);
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 

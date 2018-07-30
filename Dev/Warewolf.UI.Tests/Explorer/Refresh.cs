@@ -39,10 +39,9 @@ namespace Warewolf.UI.Tests
             {
                 _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 ExplorerUIMap.Collapse_Localhost();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                Point point;
+                ExplorerUIMap.Select_RemoteContainer_From_Explorer();
                 Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-                Assert.IsFalse(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point), "Localhost spinner is showing while refreshing remote.");
+                Assert.IsFalse(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out Point point), "Localhost spinner is showing while refreshing remote.");
                 ExplorerUIMap.Expand_Localhost();
             }
             finally
