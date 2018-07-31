@@ -91,6 +91,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.ESB.Execution;
 using System.Linq.Expressions;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Activities.Specs.Composition
 {
