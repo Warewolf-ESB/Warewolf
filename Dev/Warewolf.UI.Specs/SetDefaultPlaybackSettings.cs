@@ -22,7 +22,7 @@ namespace Warewolf.UISpecs
 
         [BeforeFeature("Deploy")]
         [BeforeFeature("Explorer")]
-        public static void StartRemoteContainer() => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        public static void StartRemoteContainer() => _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
 
         [AfterFeature("Deploy")]
         [AfterFeature("Explorer")]

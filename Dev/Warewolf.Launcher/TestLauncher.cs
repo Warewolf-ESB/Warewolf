@@ -136,9 +136,16 @@ namespace Warewolf.Launcher
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
-        public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
+        public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
+            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf");
+            containerLauncher.LogOutputDirectory = logDirectory;
+            return containerLauncher;
+        }
+
+        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql");
             containerLauncher.LogOutputDirectory = logDirectory;
             return containerLauncher;
         }

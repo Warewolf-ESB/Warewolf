@@ -310,7 +310,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = "RSAKLFSVRDEV-ashleydeprecated",
+                Server = "TEST-MSSQL",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,

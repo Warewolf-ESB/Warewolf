@@ -187,7 +187,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "CitiesDB",
                     ResourceType = "DbSource",
-                    Server = "RSAKLFSVRDEV-ashleydeprecated",
+                    Server = "TEST-MSSQL",
                     DatabaseName = "Cities",
                     AuthenticationType = AuthenticationType.Windows,
                 }

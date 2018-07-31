@@ -744,7 +744,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (server == "Remote Container")
             {
-                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
             var localHostEnv = LocalEnvModel;
 
