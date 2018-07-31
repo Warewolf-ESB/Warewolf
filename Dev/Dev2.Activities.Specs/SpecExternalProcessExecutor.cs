@@ -41,7 +41,7 @@ namespace Dev2.Activities.Specs
             {
                 using (var client = new WebClient())
                 {
-                    client.Credentials = new NetworkCredential("LocalSchedulerAdmin", "987Sched#@!");
+                    client.UseDefaultCredentials = true;
                     WebResult.Add(client.DownloadString(url));
                 }
 
