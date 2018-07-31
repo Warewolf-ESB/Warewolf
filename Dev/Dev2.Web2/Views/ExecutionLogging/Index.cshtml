@@ -158,16 +158,11 @@
     }
 
     var OnSuccessCall = function (response, textStatus, jqXHR) {
-
-        var url = "ExecutionLogging/ExecutionList";
-        if (browserType == "Firefox") {
-            url = "/ExecutionLogging/ExecutionList";
-        }
-
+        var url = location.href +  "/ExecutionLogging/ExecutionList";
         $.ajax({
             type: "POST",
             url: url,
-            data: { 'logEntries': response },
+            data: { 'jsonData': response },
             success: function (executionListHTML) {
                 showExecutionList();
                 $("#divExecutionList").html(executionListHTML);
