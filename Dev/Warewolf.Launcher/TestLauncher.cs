@@ -11,7 +11,7 @@ using Warewolf.Launcher.TestResultsMergers;
 
 namespace Warewolf.Launcher
 {
-    class TestLauncher
+    public class TestLauncher
     {
         public string DoServerStart { get; set; }
         public string DoStudioStart { get; set; }
@@ -136,40 +136,11 @@ namespace Warewolf.Launcher
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
-        internal void TryStartLocalCIRemoteContainer()
+        public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
         {
-            try
-            {
-                ciRemoteContainerLauncher = new ContainerLauncher("localhost", "", "latest", true);
-                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
-                if (!string.IsNullOrEmpty(ciRemoteContainerLauncher.Hostname))
-                {
-                    CIRemoteOverloading(ciRemoteContainerLauncher.Hostname);
-                }
-                Thread.Sleep(8000);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to start CI Remote server container.\n" + e.Message.Replace(".",": ") + e.InnerException??e.InnerException.Message);
-            }
-        }
-
-        void CIRemoteOverloading(string address)
-        {
-            var ServerFolderPath = Path.GetDirectoryName(ServerPath);
-            string ServerTestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - ServerTests", "Resources", "Remote Connection Integration.xml");
-            string UITestsCIRemote = Path.Combine(ServerFolderPath, $"Resources - UITests", "Resources", "Acceptance Testing Resources", "Remote Connection Integration.xml");
-            Console.WriteLine($"Redirecting to containerized CI remote server in \"{ServerTestsCIRemote}\" and \"{UITestsCIRemote}\" to {address}");
-            var ServerTestsCIRemoteContents = File.ReadAllText(ServerTestsCIRemote);
-            var UITestsCIRemoteContents = File.ReadAllText(UITestsCIRemote);
-            ServerTestsCIRemoteContents = InsertServerSourceAddress(ServerTestsCIRemoteContents, address);
-            UITestsCIRemoteContents = InsertServerSourceAddress(UITestsCIRemoteContents, address);
-            ServerTestsCIRemoteContents = ServerTestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
-            UITestsCIRemoteContents = UITestsCIRemoteContents
-                .Replace(";AuthenticationType=Windows", $";AuthenticationType=User;UserName={ContainerLauncher.Username};Password={ContainerLauncher.Password}");
-            File.WriteAllText(ServerTestsCIRemote, ServerTestsCIRemoteContents);
-            File.WriteAllText(UITestsCIRemote, UITestsCIRemoteContents);
+            var containerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
+            containerLauncher.LogOutputDirectory = logDirectory;
+            return containerLauncher;
         }
 
         string InsertServerSourceAddress(string serverSourceXML, string newAddress)
@@ -189,6 +160,7 @@ namespace Warewolf.Launcher
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
             if (ciRemoteContainerLauncher != null)
             {
                 ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
@@ -402,7 +374,7 @@ namespace Warewolf.Launcher
                 }
                 catch (InvalidOperationException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
                 }
 
                 var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
@@ -721,7 +693,6 @@ namespace Warewolf.Launcher
                 {
                     this.CleanupServerStudio();
                     Startmywarewolfio();
-                    TryStartLocalCIRemoteContainer();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
                     {
                         StartServer();
@@ -888,12 +859,12 @@ namespace Warewolf.Launcher
             }
             if (!File.Exists(TestRunner.Path))
             {
-                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --TestRunner.Path or --MSTestPath parameters to pass paths to one of those files.");
+                throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
             }
 
             if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
             {
-                throw new ArgumentException("Error cannot find dotcover.exe. Use -build.DotCoverPath parameter to pass a path to that file.");
+                throw new ArgumentException("Error cannot find dotcover.exe. Use --DotCoverPath parameter to pass a path to that file.");
             }
 
             if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))

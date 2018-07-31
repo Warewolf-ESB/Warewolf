@@ -117,9 +117,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <EmbeddedResource Include="..\Resources - ServerTests\Audits\auditDB.db">
-      <Link>auditDB.db</Link>
-    </EmbeddedResource>
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -131,7 +128,6 @@
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
-    <Compile Include="InitializeAuditDB.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -956,6 +952,10 @@
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
+      <Project>{9B669D51-14CE-44A3-9407-8251BA3BAD19}</Project>
+      <Name>Warewolf.Launcher</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

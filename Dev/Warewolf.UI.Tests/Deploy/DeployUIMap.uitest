@@ -251,7 +251,7 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
-                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                                                    <UIObject ControlType="Text" Id="RemoteContainerText" FriendlyName="Remote Container" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf</WindowTitle>
@@ -259,7 +259,7 @@
                                                       <AndCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Container</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
@@ -490,7 +490,7 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
-                                                    <UIObject ControlType="Text" Id="RemoteConnectionIntegrationText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+                                                    <UIObject ControlType="Text" Id="RemoteContainerText" FriendlyName="Remote Container" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf</WindowTitle>
@@ -498,7 +498,7 @@
                                                       <AndCondition>
                                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                                                        <PropertyCondition Name="Name" Operator="Contains">Remote Container</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />

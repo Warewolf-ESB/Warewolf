@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {
-    interface ITestRunner
+    public interface ITestRunner
     {
         string Path { get; set; }
         string TestList { get; set; }

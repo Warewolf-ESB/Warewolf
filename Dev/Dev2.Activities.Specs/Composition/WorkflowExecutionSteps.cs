@@ -91,6 +91,8 @@ using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.ESB.Execution;
 using System.Linq.Expressions;
+using Warewolf.Launcher;
+using System.Reflection;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -99,6 +101,7 @@ namespace Dev2.Activities.Specs.Composition
     {
         readonly ScenarioContext _scenarioContext;
         IDirectory _dirHelper;
+        public static ContainerLauncher _containerOps;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -155,7 +158,9 @@ namespace Dev2.Activities.Specs.Composition
         public void CleanUp()
         {
             _resetEvt?.Close();
+            _containerOps?.Dispose();
         }
+
         public void CleanUp_DetailedLogFile()
         {
             WorkflowIsDeletedAsCleanup();
@@ -737,6 +742,10 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
+            if (server == "Remote Container")
+            {
+                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
@@ -796,7 +805,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else
                 {
-                    throw new Exception("Remote Warewolf service " + remoteWf + " not found on server " + server + ".");
+                    throw new Exception($"Remote Warewolf service {remoteWf} not found on server {server}.");
                 }
             }
             else

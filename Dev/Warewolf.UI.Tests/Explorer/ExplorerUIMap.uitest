@@ -236,7 +236,7 @@
                             <UIObject ControlType="Button" Id="NewServerButton" FriendlyName="New" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -1490,23 +1490,23 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="RemoteConnectionItem" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxItemAsRemoteContainer" FriendlyName="Remote Container" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">Remote Connection Integration</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Remote Container</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
                 <UIObject ControlType="Text" Id="RemoteConnectionItemText" FriendlyName="Remote Connection Integration" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                    <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>

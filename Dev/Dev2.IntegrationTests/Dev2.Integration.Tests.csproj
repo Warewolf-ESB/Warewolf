@@ -395,7 +395,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>WarewolfParserInterop</Name>
+      <Name>Warewolf.Parser.Interop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
