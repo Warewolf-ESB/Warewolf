@@ -397,15 +397,15 @@ namespace Warewolf.Launcher
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{build.JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{build.JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{build.JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{build.JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{build.JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{build.JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
                 }
             }
             if (Server && Studio && DotCover)
@@ -420,7 +420,7 @@ namespace Warewolf.Launcher
             {
                 if (Path.GetFileName(scriptFile).StartsWith("Run ") && Path.GetExtension(scriptFile) == ".bat")
                 {
-                    TestCleanupUtils.MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile), build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile), build.TestRunner.TestsResultsPath);
                 }
             }
         }

@@ -961,8 +961,13 @@ namespace Warewolf.Launcher
                     }
                 }
             }
-            if (ApplyDotCover && JobName.Split(',').Count() > 1)
+            if (ApplyDotCover)
             {
+                MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
+                if (TestCoverageMerger == null)
+                {
+                    TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
+                }
                 MergeDotCoverSnapshots();
             }
         }
