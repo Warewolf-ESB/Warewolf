@@ -18,7 +18,7 @@ namespace Warewolf.Launcher
             return process;
         }
 
-        public static string StartTestRunnerProcess(string TestRunnerPath)
+        public static string RunFileInThisProcess(string TestRunnerPath, string args = "")
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -27,6 +27,7 @@ namespace Warewolf.Launcher
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.Arguments = args;
             process.Start();
             var trxFilePath = "";
 

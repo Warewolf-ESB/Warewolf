@@ -97,6 +97,11 @@ namespace Warewolf.Launcher
                 Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
             }
 
+            if (build.MergeDotCoverSnapshotsInDirectory != null)
+            {
+                build.MergeDotCoverSnapshots();
+            }
+
             if (!build.Cleanup)
             {
                 if (!string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
@@ -151,11 +156,6 @@ namespace Warewolf.Launcher
                     }
                 }
                 File.WriteAllText("FullVersionString", "FullVersionString=" + HighestReadVersion);
-            }
-
-            if (build.MergeDotCoverSnapshotsInDirectory != null)
-            {
-                build.MergeDotCoverSnapshots();
             }
 
             if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))

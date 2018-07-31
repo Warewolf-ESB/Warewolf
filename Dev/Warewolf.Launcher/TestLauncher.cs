@@ -736,7 +736,7 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(DotCoverRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -745,7 +745,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     // Run Test Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(TestRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(!ApplyDotCover);
