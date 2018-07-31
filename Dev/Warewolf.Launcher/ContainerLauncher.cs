@@ -25,19 +25,12 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public ContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
+        public ContainerLauncher(string imageName, string hostname = "", string remoteDockerApi = "localhost", string version = "latest")
         {
             remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
-            if (!CIRemoteResources)
-            {
-                ImageName = "warewolfserver";
-            }
-            else
-            {
-                ImageName = "ciremote";
-            }
+            ImageName = imageName;
             if (CheckForSwarm())
             {
                 StartWarewolfServerServiceOnSwarm();

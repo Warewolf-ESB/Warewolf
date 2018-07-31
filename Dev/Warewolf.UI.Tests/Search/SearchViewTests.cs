@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory("Search")]
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
             Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteContainer);
