@@ -24,13 +24,21 @@ using Warewolf.Security.Encryption;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
-using Dev2.Common.Interfaces;
+using Warewolf.Launcher;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
     [TestClass]
     public class SqlDatabaseBrokerTests
     {
+        static ContainerLauncher _containerOps;
+
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext testContext) => _containerOps = TestLauncher.StartLocalMSSQLContainer(testContext.ResultsDirectory);
+
+        [ClassCleanup]
+        public static void CleanupContainer() => _containerOps?.Dispose();
+
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]        

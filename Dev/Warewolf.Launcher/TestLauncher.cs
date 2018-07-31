@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.ServiceProcess;
-using System.Threading;
 using System.Xml;
 using Warewolf.Launcher.TestResultsMergers;
 
