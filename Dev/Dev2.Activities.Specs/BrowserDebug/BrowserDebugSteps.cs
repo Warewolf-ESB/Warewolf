@@ -21,12 +21,28 @@ namespace Dev2.Activities.Specs.BrowserDebug
             _externalProcessExecutor.OpenInBrowser(new Uri(urlString));
         }
 
+        [Then(@"I Execute ""(.*)"" in Browser")]
+        [When(@"I Execute ""(.*)"" in Browser")]
+        [Given(@"I Execute ""(.*)"" in Browser")]
+        public void ThenIExecuteInBrowser(string urlString)
+        {
+            _externalProcessExecutor.OpenInBrowserDefaultCredentials(new Uri(urlString));
+        }
+
         [Then(@"Browser content is ""(.*)""")]
         public void ThenBrowserContentIs(string p0)
         {
             var webResult = _externalProcessExecutor.WebResult.First();
             var contains = webResult.Contains(p0);
             Assert.IsTrue(contains);
+        }
+
+        [Then(@"Browser content is not ""(.*)""")]
+        public void ThenBrowserContentIsNot(string checkString)
+        {
+            var webResult = _externalProcessExecutor.WebResult.First();
+            var contains = webResult.Contains(checkString);
+            Assert.IsFalse(contains);
         }
 
         [Then(@"The Debug in Browser content contains ""(.*)""")]
