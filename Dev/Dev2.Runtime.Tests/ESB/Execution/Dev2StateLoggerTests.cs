@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using System.Linq;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
