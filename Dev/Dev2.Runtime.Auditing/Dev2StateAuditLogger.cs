@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Dev2.Interfaces;
 using Dev2.Communication;
-using System.Runtime.Serialization;
 using System.Data.SQLite;
 using System.Data.Entity;
 using System.Collections.Generic;
@@ -16,8 +15,10 @@ using System.Data.Entity.Core.Common;
 using Dev2.Common;
 using System.IO;
 using Dev2.Common.Wrappers;
+using System.Runtime.Serialization;
+using ServiceStack.Text;
 
-namespace Dev2.Runtime.ESB.Execution
+namespace Dev2.Runtime.Auditing
 {
     public class SQLiteConfiguration : DbConfiguration
     {
@@ -28,7 +29,8 @@ namespace Dev2.Runtime.ESB.Execution
             SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
         }
     }
-    class Dev2StateAuditLogger : IStateListener
+
+    public class Dev2StateAuditLogger : IStateListener
     {
         readonly IDSFDataObject _dsfDataObject;
         public static List<IAuditFilter> Filters { get; private set; } = new List<IAuditFilter>

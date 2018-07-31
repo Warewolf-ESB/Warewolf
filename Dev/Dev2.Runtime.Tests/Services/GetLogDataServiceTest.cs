@@ -311,6 +311,30 @@ namespace Dev2.Tests.Runtime.Services
             var b = a.DataListSpecification.ToString();
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
+
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
+        public void GetLogDataService_FromDB_Execute_ReturnAll()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(1, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "BadUser".ToStringBuilder() } };
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(0, logEntriesObject.Count);
+        }
     }
 
 }
