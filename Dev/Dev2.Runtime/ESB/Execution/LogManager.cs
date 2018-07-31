@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Interfaces;
+using Dev2.Runtime.Auditing;
 using Dev2.Runtime.ESB.Execution.State;
 
 namespace Dev2.Runtime.ESB.Execution
