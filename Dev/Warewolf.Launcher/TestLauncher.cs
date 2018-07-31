@@ -964,10 +964,6 @@ namespace Warewolf.Launcher
             if (ApplyDotCover)
             {
                 MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
-                if (TestCoverageMerger == null)
-                {
-                    TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
-                }
                 MergeDotCoverSnapshots();
             }
         }
