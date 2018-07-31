@@ -298,6 +298,7 @@ namespace Warewolf.Launcher
                 {
                     testLauncher.AdminMode = true;
                 }
+                testLauncher.TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
             }).WithNotParsed(errs =>
             {
                 foreach (var err in errs)
