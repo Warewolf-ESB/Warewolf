@@ -12,13 +12,16 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Launcher;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 
@@ -28,6 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     public class DataSplitSteps : RecordSetBases
     {
         readonly ScenarioContext scenarioContext;
+        static ContainerLauncher _containerOps;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -239,5 +243,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
             }
         }
+
+        [Given(@"remote server container has started")]
+        public void GivenRemoteServerContainerHasStarted() => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+
+        [AfterScenario]
+        public void CleanUp() => _containerOps?.Dispose();
     }
 }

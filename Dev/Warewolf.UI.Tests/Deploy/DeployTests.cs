@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -40,23 +42,23 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Destination_Server()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            Assert.AreEqual("Remote Connection Integration (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
+            Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteContainerText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
         }
 
         [TestMethod]
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Source_Server()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-            Assert.AreEqual("Remote Connection Integration (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText);
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
+            Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText);
         }
 
         [TestMethod]
         [TestCategory("Deploy Hello World")]
         public void Deploy_Hello_World()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.Deploy_Service_From_Deploy_View("Hello World");
         }
 
@@ -79,17 +81,17 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy")]
         public void Deploy_EditingServer_KeepsSelectedServer()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
             DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
         [TestMethod]
         [TestCategory("Deploy")]
         public void Deploy_Button_Is_Enabling_When_Selecting_Resource_In_Source_Side()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.ThenDeployButtonIsEnabled("false");
             DeployUIMap.WhenISelectFromTheSourceTab("Hello world");
             DeployUIMap.ThenDeployButtonIsEnabled("true");
@@ -99,7 +101,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy Filtering")]
         public void Filtering_And_Clearing_Filter_On_Source_Side()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.WhenIFilterForOnTheSourceFilter("Hello World");
             DeployUIMap.WhenIFilterForOnTheSourceFilter("");
             DeployUIMap.ThenDeployButtonIsEnabled("false");
@@ -109,7 +111,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy Filtering")]
         public void Deploying_With_Filter_Enabled()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.WhenIFilterForOnTheSourceFilter("Hello World");
             DeployUIMap.WhenResourcesIsVisibleOnTheTree();
             DeployUIMap.WhenISelectFromTheSourceTab("Hello world");
@@ -120,20 +122,21 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
             DeployUIMap.WhenResourcesIsVisibleOnTheTree();
             DeployUIMap.WhenISelectFromTheSourceTab("Hello World");
             DeployUIMap.ThenIClickDeployButton();
         }
+
         [TestMethod]
         [TestCategory("Deploy from Remote")]
         public void Open_Deploy_Tab_And_Change_Source_Loads_Resources()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists );
             DeployUIMap.Click_Close_Deploy_Tab();
             UIMap.Click_Deploy_Ribbon_Button();
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists);
         }
 
@@ -141,7 +144,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection_CreateNewWorkflow()
         {
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
             DeployUIMap.WhenResourcesIsVisibleOnTheTree();
             Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName);
             UIMap.Click_NewWorkflow_RibbonButton();
@@ -157,6 +160,14 @@ namespace Warewolf.UI.Tests
             UIMap.AssertStudioIsRunning();
             UIMap.Click_Deploy_Ribbon_Button();
         }
+
+        static ContainerLauncher _containerOps;
+
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext testContext) => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(testContext.ResultsDirectory);
+
+        [ClassCleanup]
+        public static void CleanupContainer() => _containerOps?.Dispose();
 
         public UIMap UIMap
         {

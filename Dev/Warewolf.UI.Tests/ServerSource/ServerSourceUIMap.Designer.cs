@@ -790,7 +790,7 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 {
                     this.mTSTCIREMOTE = new WpfListItem(this);
                     #region Search Criteria
-                    this.mTSTCIREMOTE.SearchProperties[WpfListItem.PropertyNames.Name] = "TST-CI-REMOTE";
+                    this.mTSTCIREMOTE.SearchProperties[WpfListItem.PropertyNames.Name] = "tst-ci-remote-obsolete";
                     this.mTSTCIREMOTE.WindowTitles.Add("Warewolf");
                     #endregion
                 }

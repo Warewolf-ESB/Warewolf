@@ -102,9 +102,6 @@
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
     </Reference>
-    <Reference Include="CommandLine">
-      <HintPath>..\Binaries\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.5.2.0, Culture=neutral, PublicKeyToken=4d9365c354fd6f36, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskSchedulerEditor.2.5.20\lib\net40\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
       <Private>True</Private>
