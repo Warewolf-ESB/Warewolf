@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Web2.Models.ExecutionLogging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Cors;
@@ -47,28 +48,16 @@ namespace Dev2.Web2.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateInput(false)]
         [AllowCrossSiteJson]
-        public ActionResult ExecutionList(LogEntry[] logEntries)
+        public ActionResult ExecutionList(string jsonData)
         {
-            var emptyModel = new List<LogEntry>();
-            if (logEntries != null)
-            {
-                try
-                {
-                    var request = CheckRequest(null);
-                    var model = new Tuple<LogEntry[], ExecutionLoggingRequestViewModel>(logEntries, request);
+            var logEntries = JsonConvert.DeserializeObject<List<LogEntry>>(jsonData);
+            var request = CheckRequest(null);
+            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(logEntries, request);
 
-                    return PartialView("ExecutionList", model.Item1);
-                }
-                catch (Exception ex)
-                {
-                    return PartialView("ExecutionList", emptyModel);
-                }
-            }
-            return PartialView("ExecutionList", emptyModel);
+            return PartialView("ExecutionList", model.Item1);
         }
 
         ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
