@@ -67,11 +67,6 @@ namespace Dev2.Runtime.ESB.Management
 
 
         abstract protected ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId);
-        /*var tests = TestCatalog.Fetch(resourceId)
-        var message = new CompressedExecuteMessage()
-        message.SetMessage(serializer.Serialize(tests))
-        message.HasError = false
-        return message*/
         abstract public string HandlesType();
     }
 }
