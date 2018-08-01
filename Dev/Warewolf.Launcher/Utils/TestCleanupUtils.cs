@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Warewolf.Launcher
 {
-    static class TestCleanupUtils
+    public static class TestCleanupUtils
     {
         public static void CopyOnWrite(string FileSpec)
         {
@@ -81,7 +81,7 @@ namespace Warewolf.Launcher
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
                 }
             }
         }
@@ -216,19 +216,6 @@ namespace Warewolf.Launcher
             process.StartInfo.Arguments = "/im \"IEDriverServer.exe\" /f";
             process.Start();
 
-            //Delete CI Remote Container
-            if (build.ciRemoteContainerLauncher != null)
-            {
-                try
-                {
-                    build.ciRemoteContainerLauncher.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error disposing CI Remote server container: " + e.Message);
-                }
-            }
-
             //Delete Certain Studio and Server Resources
             var ToClean = new[]
             {
@@ -237,7 +224,7 @@ namespace Warewolf.Launcher
                 "%PROGRAMDATA%\\Warewolf\\Workspaces",
                 "%PROGRAMDATA%\\Warewolf\\Server Settings",
                 "%PROGRAMDATA%\\Warewolf\\VersionControl",
-                "%PROGRAMDATA%\\Warewolf\\Audits"
+                "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
             };
 
             foreach (var FileOrFolder in ToClean)
@@ -273,60 +260,17 @@ namespace Warewolf.Launcher
         {
             if (build.Cleanup)
             {
-                //Write failing tests playlist.
-                Console.WriteLine($"Writing all test failures in \"{build.TestRunner.TestsResultsPath}\" to a playlist file.");
-
-                var PlayList = "<Playlist Version=\"1.0\">";
                 foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
                     var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
                     namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
                     {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
-                        {
-                            if (TestResult.Attributes["outcome"].InnerText == "Failed")
-                            {
-                                if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
-                                {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
-                                    {
-                                        if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
-                                        {
-                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
-                        {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
-                        }
-                        else
-                        {
-                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
-                            {
-                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
-                            }
-                        }
+                        WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
                     }
                 }
-                PlayList += "</Playlist>";
-                var OutPlaylistPath = $"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist";
-                CopyOnWrite(OutPlaylistPath);
-                File.WriteAllText(OutPlaylistPath, PlayList);
-                Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
             }
 
             if (Studio)
@@ -425,6 +369,54 @@ namespace Warewolf.Launcher
             }
         }
 
+        static void WriteFailingTestPlaylist(string OutPlaylistPath, string FullTRXFilePath, XmlDocument trxContent, XmlNamespaceManager namespaceManager)
+        {
+            //Write failing tests playlist.
+            Console.WriteLine($"Writing all test failures in \"{FullTRXFilePath}\" to a playlist file.");
+            var PlayList = "<Playlist Version=\"1.0\">";
+            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
+            {
+                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
+                {
+                    if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                    {
+                        if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
+                        {
+                            foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
+                            {
+                                if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
+                                {
+                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
+                {
+                    PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
+                }
+                else
+                {
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
+                    {
+                        Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                    }
+                }
+            }
+            PlayList += "</Playlist>";
+            CopyOnWrite(OutPlaylistPath);
+            File.WriteAllText(OutPlaylistPath, PlayList);
+            Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
+        }
+
         public static bool WaitForFileUnlock(string FileSpec)
         {
             var locked = true;
@@ -491,10 +483,10 @@ namespace Warewolf.Launcher
 
         static void MoveScreenRecordingsToTestResults(string TestsResultsPath)
         {
-            Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
             var ScreenRecordingsFolder = GetLatestScreenRecordingsFolder(TestsResultsPath);
             if (!string.IsNullOrEmpty(ScreenRecordingsFolder))
             {
+                Console.WriteLine($"Getting UI test screen recordings from \"{TestsResultsPath}\"");
                 string directoryToRemove = Path.Combine(ScreenRecordingsFolder + "\\In");
                 if (Directory.Exists(directoryToRemove))
                 {
@@ -504,7 +496,14 @@ namespace Warewolf.Launcher
                         string newDirFullPath = Path.Combine(ScreenRecordingsFolder, subDirName);
                         Directory.Move(subDir, newDirFullPath);
                     }
-                    Directory.Delete(directoryToRemove);
+                    try
+                    {
+                        Directory.Delete(directoryToRemove);
+                    }
+                    catch (IOException e)
+                    {
+                        Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    }
                 }
                 else
                 {

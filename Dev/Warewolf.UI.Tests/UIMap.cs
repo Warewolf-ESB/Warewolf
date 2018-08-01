@@ -968,14 +968,6 @@ namespace Warewolf.UI.Tests
             }
         }
 
-        public void Try_Click_No_On_Script_Error_Messagebox()
-        {
-            if (ControlExistsNow(ScriptErrorMessagebox))
-            {
-                Mouse.Click(ScriptErrorMessagebox.ScriptErrorBody.NOButton, new Point(25, 15));
-            }
-        }
-
         #region UIMaps
         WorkflowTabUIMap WorkflowTabUIMap
         {

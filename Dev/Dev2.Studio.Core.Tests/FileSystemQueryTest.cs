@@ -10,12 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Intellisense.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Launcher;
 
 namespace Dev2.Core.Tests
 {
@@ -616,9 +619,10 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            //------------Setup for test--------------------------
-            var shareCollection = new ShareCollection(@"\\tst-ci-remote\");
-            Assert.AreEqual(5, shareCollection.Count);
+            //------------Execute Test---------------------------
+            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc\");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(17, shareCollection.Count);
         }
 
         static FileSystemQuery GetFileSystemQuery(bool hasShares = true)

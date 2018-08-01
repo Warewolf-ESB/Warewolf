@@ -131,20 +131,20 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
             }
         }
         
-        public WpfCustom RemoteConnectionInteCustom
+        public WpfCustom ComboboxItemAsRemoteContainer
         {
             get
             {
-                if ((this.mRemoteConnectionInteCustom == null))
+                if ((this.mComboboxItemAsRemoteContainer == null))
                 {
-                    this.mRemoteConnectionInteCustom = new WpfCustom(this);
+                    this.mComboboxItemAsRemoteContainer = new WpfCustom(this);
                     #region Search Criteria
-                    this.mRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mRemoteConnectionInteCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mComboboxItemAsRemoteContainer.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxItemAsRemoteContainer.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Container";
+                    this.mComboboxItemAsRemoteContainer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mRemoteConnectionInteCustom;
+                return this.mComboboxItemAsRemoteContainer;
             }
         }
         #endregion
@@ -152,7 +152,7 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
         #region Fields
         private DockManager mDockManager;
         
-        private WpfCustom mRemoteConnectionInteCustom;
+        private WpfCustom mComboboxItemAsRemoteContainer;
         #endregion
     }
     

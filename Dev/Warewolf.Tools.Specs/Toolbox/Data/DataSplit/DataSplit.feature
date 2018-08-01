@@ -409,14 +409,15 @@ Scenario: Split text using Index where index > provided
      And the execution has "NO" error
 
 Scenario: Sending Error in error variable and calling webservice
-    Given A string to split with value "@!?><":}{+_)(*&^~"
+    Given remote server container has started
+    And A string to split with value "@!?><":}{+_)(*&^~"
 	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected" without escaping
 	And the direction is "Backward"
     And assign error to variable "[[error]]"
-    And call the web service "http://TST-CI-REMOTE:3142/services/ONERROR/OnError_WriteToFile.xml?errorLog=[[error]]"
+    And call the web service "http://test-remotewarewolf:3142/services/ONERROR/OnError_WriteToFile.xml?errorLog=[[error]]"
     When the data split tool is executed
     Then the execution has "AN" error
-    And the result from the web service "http://TST-CI-REMOTE:3142/services/ONERROR/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
+    And the result from the web service "http://test-remotewarewolf:3142/services/ONERROR/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
     And the debug inputs as
 	| String to Split   | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
 	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] = | Index | *     | No      |        |

@@ -227,9 +227,6 @@
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
       <Visible>False</Visible>
     </CodeAnalysisDependentAssemblyPaths>
-    <EmbeddedResource Include="..\Resources - ServerTests\Audits\auditDB.db">
-      <Link>auditDB.db</Link>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppUsageStatsTests.cs" />
@@ -257,7 +254,6 @@
     <Compile Include="Hosting\ServiceActionRepoTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
-    <Compile Include="InitializeAuditDB.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
