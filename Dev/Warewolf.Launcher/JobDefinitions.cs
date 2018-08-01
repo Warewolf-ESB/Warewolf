@@ -51,6 +51,7 @@ namespace Warewolf.Launcher
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
                 ["Other Activities Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", null),
+                ["Scheduler Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "Scheduler"),
                 ["Remote Server Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "RemoteServer"),
                 ["Workflow Merging Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowMerging"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),

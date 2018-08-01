@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
 using Warewolf.Launcher;
+using System.Threading;
+using Dev2.Activities.Specs.Composition;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -20,7 +22,6 @@ namespace Dev2.Activities.Specs.Deploy
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
-        static ContainerLauncher _containerOps = new ContainerLauncher();
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
@@ -33,12 +34,13 @@ namespace Dev2.Activities.Specs.Deploy
         [AfterScenario("Deploy")]
         public void CleanupRemoteDocker()
         {
-            _containerOps.Dispose();
+            WorkflowExecutionSteps._containerOps.Dispose();
         }
 
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
+            WorkflowExecutionSteps._containerOps = new ContainerLauncher();
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
@@ -48,7 +50,7 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServerHostname = _containerOps.Hostname;
+            string destinationServerHostname = WorkflowExecutionSteps._containerOps.Hostname;
 
             var formattableString = $"http://{destinationServerHostname}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, ContainerLauncher.Username, ContainerLauncher.Password))

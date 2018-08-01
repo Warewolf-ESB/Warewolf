@@ -1,9 +1,9 @@
-﻿Feature: Scheduler
+﻿@Scheduler
+Feature: Scheduler
 	In order to schedule workflows
 	As a Warewolf user
 	I want to setup schedules
-
-@Scheduler	
+	
 Scenario: Schedule with history
       Given I have a schedule "ScheduleWithHistory"
 	  And "ScheduleWithHistory" executes an Workflow "Hello World" 
@@ -18,7 +18,6 @@ Scenario: Schedule with history
 	  Then the schedule status is "Error"
 	  And "ScheduleWithHistory" has "2" row of history   
 
-@Scheduler
 Scenario: Creating task with schedule statud disabled
       Given I have a schedule "Diceroll00"
 	  And "Diceroll00" executes an Workflow "Hello World" 
@@ -31,7 +30,6 @@ Scenario: Creating task with schedule statud disabled
 	  When the "Diceroll00" is executed "1" times
 	  Then the Schedule task has "An" error
 
-@Scheduler
 Scenario: Setting schedule task "At log on"
       Given I have a schedule "Diceroll1"
 	  And "Diceroll1" executes an Workflow "Hello World" 
@@ -46,8 +44,6 @@ Scenario: Setting schedule task "At log on"
 	  Then the schedule status is "Error"
 	  And "Diceroll1" has "2" row of history	   
 	  
-
-@Scheduler
 Scenario: Schedule the task with Incorrect username or password
       Given I have a schedule "Diceroll1"
 	  And "Diceroll1" executes an Workflow "Hello World" 
@@ -59,7 +55,6 @@ Scenario: Schedule the task with Incorrect username or password
 	  | At log on    | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |           |
 	  Then the Schedule task has "AN" error
 
-@Scheduler
 Scenario: Schedule with LocalUser
       Given I have a schedule "LocalUserSchedule"
 	  And "LocalUserSchedule" executes an Workflow "Hello World" 
@@ -74,7 +69,6 @@ Scenario: Schedule with LocalUser
 	  Then the schedule status is "Error"
 	  And "LocalUserSchedule" has "2" row of history	   
 	  
-@Scheduler
 Scenario: Schedule with ErrorInDebug
       Given I have a schedule "ScheduleWithError"
 	  And "ScheduleWithError" executes an Workflow "moocowimpi" 
@@ -88,7 +82,6 @@ Scenario: Schedule with ErrorInDebug
 	  Then the Schedule task has "An" error
 	  Then the schedule status is "Failure"
 
-@Scheduler
 Scenario: Schedule Workflow with success
       Given I have a schedule "ScheduleAssignOutput"
 	  And "ScheduleAssignOutput" executes an Workflow "AssignOutput" 
