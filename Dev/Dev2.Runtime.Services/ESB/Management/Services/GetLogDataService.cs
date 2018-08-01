@@ -7,6 +7,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 using Dev2.Util.ExtensionMethods;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -15,64 +16,59 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
-
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var tmpObjects = BuildTempObjects();
+                var startTime = GetDate("StartDateTime", values).ToString();
+                var endTime = GetValue("CompletedDateTime", values).ToString();
+                var auditType = GetValue("AuditType", values);
+                var executingUser = GetValue("User", values);
+                var workflowID = GetValue("WorkflowID", values);
+                var executionID = GetValue("ExecutionID", values);
+                var executionOrigin = GetValue("ExecutionOrigin", values);
+                var isSubExecution = GetValue("IsSubExecution", values);
+                var isRemoteWorkflow = GetValue("IsRemoteWorkflow", values);
+                var workflowName = GetValue("WorkflowName", values);
+                var serverID = GetValue("ServerID", values);
+                var parentID = GetValue("ParentID", values);
+                var executionToken = GetValue("ExecutionToken", values);
+                var environment = GetValue("Environment", values);
+                var previousActivity = GetValue("PreviousActivity", values);
+                var nextActivity = GetValue("NextActivity", values);
 
+                var results = Dev2StateAuditLogger.Query(item =>
+               (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
+               (auditType == "" || item.AuditType.Equals(auditType)) &&
+               (previousActivity == "" || (item.PreviousActivity != null && item.PreviousActivity.Contains(previousActivity))));
+
+                //var entries = Dev2StateAuditLogger.Query(entry =>
+                //    (string.IsNullOrEmpty(startTime) || entry.AuditDate.Equals(startTime, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(endTime) || entry.AuditDate.Equals(endTime, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(auditType) || entry.AuditType.Equals(auditType, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(workflowID) || entry.WorkflowID.Equals(workflowID, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(executionID) || entry.ExecutionID.Equals(executionID, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(executionOrigin) || entry.ExecutionOrigin.Equals(int.Parse(executionOrigin)))
+                //    || (string.IsNullOrEmpty(isSubExecution) || entry.IsSubExecution.Equals(int.Parse(isSubExecution)))
+                //    || (string.IsNullOrEmpty(isRemoteWorkflow) || entry.IsRemoteWorkflow.Equals(int.Parse(isRemoteWorkflow)))
+                //    || (string.IsNullOrEmpty(workflowName) || entry.WorkflowName.Equals(workflowName, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(serverID) || entry.ServerID.Equals(serverID, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(parentID) || entry.ParentID.Equals(parentID, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(executionToken) || entry.ExecutionToken.Equals(executionToken, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(environment) || entry.Environment.Equals(environment, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(previousActivity) || entry.PreviousActivity.Equals(previousActivity, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(nextActivity) || entry.NextActivity.Equals(nextActivity, StringComparison.CurrentCultureIgnoreCase))
+                //    || (string.IsNullOrEmpty(executingUser) || (entry.ExecutingUser.Contains(executingUser, StringComparison.CurrentCultureIgnoreCase)))
+                //    )
+                var result = results.ToList();
                 var logEntries = new List<LogEntry>();
-                var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
-                foreach (var groupedEntry in groupedEntries)
-                {
-                    var logEntry = new LogEntry
-                    {
-                        ExecutionId = groupedEntry.Key,
-                        Status = "Success"
-                    };
-                    logEntry = UpdateLogEntry(groupedEntry, logEntry);
-                    if (logEntry.StartDateTime != DateTime.MinValue)
-                    {
-                        logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
-                        logEntries.Add(logEntry);
-                    }
-                }
-                LogDataCache.CurrentResults = tmpObjects;
-                return FilterResults(values, logEntries, serializer);
+                LogDataCache.CurrentResults = result;
+                return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
             {
                 Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
             }
             return serializer.SerializeToBuilder("");
-        }
-
-        LogEntry UpdateLogEntry(IGrouping<dynamic, dynamic> groupedEntry, LogEntry logEntry)
-        {
-            foreach (var s in groupedEntry)
-            {
-                if (s.Message.StartsWith("Started Execution"))
-                {
-                    logEntry.StartDateTime = ParseDate(s.DateTime);
-                }
-                if (s.LogType == "ERROR")
-                {
-                    logEntry.Status = "ERROR";
-                }
-                if (s.Message.StartsWith("Completed Execution"))
-                {
-                    logEntry.CompletedDateTime = ParseDate(s.DateTime);
-                }
-                if (s.Message.StartsWith("About to execute"))
-                {
-                    logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
-                }
-                if (!string.IsNullOrEmpty(s.Url))
-                {
-                    logEntry.Url = s.Url;
-                }
-            }
-            return logEntry;
         }
 
         string GetValue(string key, Dictionary<string, StringBuilder> values)
@@ -86,37 +82,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         DateTime GetDate(string key, Dictionary<string, StringBuilder> values) => ParseDate(GetValue(key, values));
-
-        StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
-        {
-            var startTime = GetDate("StartDateTime", values);
-            var endTime = GetDate("CompletedDateTime", values);
-            var status = GetValue("Status", values);
-            var user = GetValue("User", values);
-            var executionId = GetValue("ExecutionId", values);
-            var executionTime = GetValue("ExecutionTime", values);
-
-            var entries = filteredEntries.Where(entry => entry.StartDateTime >= startTime)
-                .Where(entry => endTime == default(DateTime) || entry.CompletedDateTime <= endTime)
-                .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase))
-                .Where(entry => string.IsNullOrEmpty(executionId) || entry.ExecutionId.Equals(executionId, StringComparison.CurrentCultureIgnoreCase))
-                .Where(entry => string.IsNullOrEmpty(executionTime) || entry.ExecutionTime.Equals(executionTime, StringComparison.CurrentCultureIgnoreCase))
-                .Where(entry => string.IsNullOrEmpty(user) || (entry.User?.Contains(user, StringComparison.CurrentCultureIgnoreCase) ?? false));
-
-            return dev2JsonSerializer.SerializeToBuilder(entries);
-        }
-
-
         static DateTime ParseDate(string s) => !string.IsNullOrEmpty(s) ?
-                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
-                new DateTime();
+              DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
+              new DateTime();
 
-        string GetUser(string message)
-        {
-            var toReturn = message.Split('[')[2].Split(':')[0];
-            return toReturn;
-        }
-
+    
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "GetLogDataService";
