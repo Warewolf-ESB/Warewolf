@@ -3,8 +3,8 @@ using Dev2.Interfaces;
 using System.Data.Linq.Mapping;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using ServiceStack.Text;
 using Newtonsoft.Json;
+using Dev2.Communication;
 
 namespace Dev2.Runtime.Auditing
 {
@@ -100,6 +100,7 @@ namespace Dev2.Runtime.Auditing
         public AuditLog() { }
         public AuditLog(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
         {
+            var dev2Serializer = new Dev2JsonSerializer();
             WorkflowID = dsfDataObject.ResourceID.ToString();
             ExecutionID = dsfDataObject.ExecutionID.ToString();
             ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
@@ -110,7 +111,7 @@ namespace Dev2.Runtime.Auditing
             ParentID = dsfDataObject.ParentID.ToString();
             ExecutingUser = dsfDataObject.ExecutingUser?.ToString();
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
-            ExecutionToken = dsfDataObject.ExecutionToken.ToJson();
+            ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
             AuditDate = DateTime.Now.ToString();
             AuditType = auditType;
