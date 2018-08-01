@@ -4552,6 +4552,43 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [Given(@"I have server running at ""(.*)""")]
+        public void GivenIHaveServerRunningAt(string server)
+        {
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.ResourceRepository.Load(true);
+            Add("environment", environmentModel);
+            Assert.IsNotNull(environmentModel);
+            Assert.AreEqual(server, environmentModel.Name);
+        }
+
+        [Given(@"I resume workflow ""(.*)""")]
+        public void GivenIResumeWorkflow(string resourceId)
+        {
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
+            Assert.IsNotNull(resourceModel);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel);
+            Add("resumeMessage", msg);
+        }
+
+        [Then(@"an error ""(.*)""")]
+        public void ThenAnError(string message)
+        {
+            TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
+            Assert.IsNotNull(executeMessage);
+            Assert.IsTrue(executeMessage.HasError);
+            Assert.AreEqual(message, executeMessage.Message.ToString());
+        }
+
+        [Then(@"Resume message is ""(.*)""")]
+        public void ThenResumeMessageIs(string message)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
 
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)

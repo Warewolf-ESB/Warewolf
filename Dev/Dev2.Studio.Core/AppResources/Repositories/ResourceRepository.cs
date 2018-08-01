@@ -1073,5 +1073,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var lists = comController.ExecuteCommand<List<ISearchResult>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             return lists;
         }
+
+        public ExecuteMessage ResumeWorkflowExecution(IResourceModel resource)
+        {
+            var comController = new CommunicationController { ServiceName = "WorkflowResume" };
+            comController.AddPayloadArgument("resourceID", resource.ID.ToString());
+            return comController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+        }
     }
 }
