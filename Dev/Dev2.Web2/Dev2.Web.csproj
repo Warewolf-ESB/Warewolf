@@ -157,13 +157,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ExecutionLoggingController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Auditing\AuditingViewModel.cs" />
-    <Compile Include="Models\ExecutionLogging\ExecutionLoggingRequestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -250,10 +249,8 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\ExecutionLogging\Index.cshtml" />
-    <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
-    <Content Include="Views\RuntimeAuditing\Index.cshtml" />
-    <Content Include="Views\RuntimeAuditing\AuditList.cshtml" />
+    <Content Include="Views\Audit\Index.cshtml" />
+    <Content Include="Views\Audit\AuditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -269,6 +266,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
+      <Project>{a398a8f3-a7ca-44f4-8a5f-03b2ba7e1c84}</Project>
+      <Name>Dev2.Runtime.Auditing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

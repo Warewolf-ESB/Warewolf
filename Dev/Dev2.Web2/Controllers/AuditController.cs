@@ -1,5 +1,5 @@
-﻿using Dev2.Common;
-using Dev2.Web2.Models.ExecutionLogging;
+﻿using Dev2.Runtime.Auditing;
+using Dev2.Web2.Models.Auditing;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,14 +23,14 @@ namespace Dev2.Web2.Controllers
     }
 
     [EnableCors("*","*","*",PreflightMaxAge =10000,SupportsCredentials = true)]
-    public class ExecutionLoggingController : Controller
+    public class AuditController : Controller
     {
-        // GET: ExecutionLogging
+        // GET: Audit
         [AllowCrossSiteJson]
         public ActionResult Index()
         {
             var request = CheckRequest(null);
-            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(new List<LogEntry>(), request);
+            var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
             return View(model);
         }
 
@@ -44,25 +44,25 @@ namespace Dev2.Web2.Controllers
                 server = "localhost";
             }
             request.Server = server;
-            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(new List<LogEntry>(), request);
+            var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
             return View(model);
         }
 
         [HttpPost]
         [ValidateInput(false)]
         [AllowCrossSiteJson]
-        public ActionResult ExecutionList(string jsonData)
+        public ActionResult AuditList(string jsonData)
         {
-            var logEntries = JsonConvert.DeserializeObject<List<LogEntry>>(jsonData);
+            var logEntries = JsonConvert.DeserializeObject<List<AuditLog>>(jsonData);
             var request = CheckRequest(null);
-            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(logEntries, request);
+            var model = new Tuple<List<AuditLog>, AuditingViewModel>(logEntries, request);
 
-            return PartialView("ExecutionList", model.Item1);
+            return PartialView("AuditList", model.Item1);
         }
 
-        ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
+        AuditingViewModel CheckRequest(AuditingViewModel Request)
         {
-            ExecutionLoggingRequestViewModel toReturn;
+            AuditingViewModel toReturn;
             if (Request != null)
             {
                 toReturn = Request;
@@ -72,15 +72,15 @@ namespace Dev2.Web2.Controllers
             }
             else
             {
-                toReturn = new ExecutionLoggingRequestViewModel { Protocol = "http", Server = "localhost", Port = "3142" };
+                toReturn = new AuditingViewModel { Protocol = "http", Server = "localhost", Port = "3142" };
             }
             return toReturn;
         }
 
-        // GET: ExecutionLogging/Create
+        // GET: Audit/Create
         public ActionResult Create() => View();
 
-        // POST: ExecutionLogging/Create
+        // POST: Audit/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -96,10 +96,10 @@ namespace Dev2.Web2.Controllers
             }
         }
 
-        // GET: ExecutionLogging/Edit/5
+        // GET: Audit/Edit/5
         public ActionResult Edit(int id) => View();
 
-        // POST: ExecutionLogging/Edit/5
+        // POST: Audit/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -115,10 +115,10 @@ namespace Dev2.Web2.Controllers
             }
         }
 
-        // GET: ExecutionLogging/Delete/5
+        // GET: Audit/Delete/5
         public ActionResult Delete(int id) => View();
 
-        // POST: ExecutionLogging/Delete/5
+        // POST: Audit/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

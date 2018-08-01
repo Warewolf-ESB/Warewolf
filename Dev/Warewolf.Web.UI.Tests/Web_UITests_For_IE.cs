@@ -43,8 +43,8 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"IEDriverServer.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        [TestCategory("ExecutionLogging")]
-        public void InternetExplorer_ExecutionLogging_ClickRefresh_UITest()
+        [TestCategory("Audit")]
+        public void InternetExplorer_Audit_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();

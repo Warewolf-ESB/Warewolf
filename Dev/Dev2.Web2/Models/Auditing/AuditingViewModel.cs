@@ -1,10 +1,10 @@
-﻿using Dev2.Common;
+﻿using Dev2.Runtime.Auditing;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Dev2.Web2.Models.Auditing
 {
-    public class AuditingViewModel : Audit
+    public class AuditingViewModel : AuditLog
     {
         public AuditingViewModel()
         {

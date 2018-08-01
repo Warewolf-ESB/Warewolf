@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dev2.Common.LogEntry>
+﻿@model IEnumerable <Dev2.Runtime.Auditing.AuditLog>
 
 <head>
     <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
@@ -41,16 +41,30 @@
     </table>
 </div>
 <div>
-    <table id="executionList" class="tablesorter">
+    <table id="auditList" class="tablesorter">
         <thead>
             <tr>
-                <th style="display:none;" class="exId" title="Execution Id">Execution Id</th>
-                <th class="exUrl" title="Url">Url</th>
-                <th class="exTime" title="Execution Time">Execution Time</th>
-                <th class="exStatus" title="Status">Status</th>
-                <th class="exStart" title="Start Time">Start Time</th>
-                <th class="exComplete" title="Completed Time">Completed Time</th>
-                <th class="exUser" title="User">User</th>
+                <th style="display:none;" class="exId" title="WorkflowID">WorkflowID</th>
+                <th class="exUrl" title="WorkflowName">WorkflowName</th>
+                <th style="display:none;" class="exId" title="ExecutionID">ExecutionID</th>
+                <th class="exStatus" title="AuditType">AuditType</th>
+                <th class="exStatus" title="PreviousActivity">PreviousActivity</th>
+                <th class="exStatus" title="PreviousActivityType">PreviousActivityType</th>
+                <th style="display:none;" class="exStatus" title="PreviousActivityID">PreviousActivityID</th>
+                <th class="exStatus" title="NextActivity">NextActivity</th>
+                <th class="exStatus" title="NextActivityType">NextActivityType</th>
+                <th style="display:none;" class="exStatus" title="NextActivityID">NextActivityID</th>
+                <th style="display:none;" class="exStatus" title="ServerID">ServerID</th>
+                <th style="display:none;" class="exStatus" title="ParentID">ParentID</th>
+                <th class="exStatus" title="ExecutingUser">ExecutingUser</th>
+                <th class="exStatus" title="ExecutionOrigin">ExecutionOrigin</th>
+                <th class="exStatus" title="ExecutionOriginDescription">ExecutionOriginDescription</th>
+                <th class="exStatus" title="ExecutionToken">ExecutionToken</th>
+                <th class="exStatus" title="AdditionalDetail">AdditionalDetail</th>
+                <th class="exStatus" title="IsSubExecution">IsSubExecution</th>
+                <th class="exStatus" title="IsRemoteWorkflow">IsRemoteWorkflow</th>
+                <th class="exStatus" title="Environment">Environment</th>
+                <th class="exStatus" title="AuditDate">AuditDate</th>
                 <th>Result</th>
             </tr>
         </thead>
@@ -59,37 +73,64 @@
             {
             <tr>
                 <td class="exRow" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.ExecutionId)
+                    @Html.DisplayFor(modelItem => item.WorkflowID)
                 </td>
                 <td class="exRow exUrl">
-                    @{
-                            if (item.Url == null)
-                            {
-                        @Html.DisplayFor(modelItem => item.Url)
-                            }
-                            else
-                            {
-                        <div id="executionUrlDiv">
-                            <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
-                        </div>
-                            }
-                    }
+                    @Html.DisplayFor(modelItem => item.WorkflowName)
                 </td>
                 <td class="exRow exTime">
-                    @Html.DisplayFor(modelItem => item.ExecutionTime)
+                    @Html.DisplayFor(modelItem => item.ExecutionID)
                 </td>
                 <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @Html.DisplayFor(modelItem => item.AuditType)
                 </td>
-                <td class="exRow exStart">
-                    @Html.DisplayFor(modelItem => item.StartDateTime)
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.PreviousActivityType)
                 </td>
-                <td class="exRow exComplete">
-                    @Html.DisplayFor(modelItem => item.CompletedDateTime)
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.PreviousActivityId)
                 </td>
-
-                <td class="exRow exUser">
-                    @Html.DisplayFor(modelItem => item.User)
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.NextActivity)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.NextActivityType)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.NextActivityId)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ServerID)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ParentID)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ExecutingUser)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ExecutionOrigin)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ExecutionOriginDescription)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.ExecutionToken)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.AdditionalDetail)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.IsSubExecution)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.IsRemoteWorkflow)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.Environment)
+                </td>
+                <td class="exRow exStatus">
+                    @Html.DisplayFor(modelItem => item.AuditDate)
                 </td>
                 <td>
                     <a class="details" href="javascript:;">[...]</a>
@@ -103,7 +144,7 @@
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
 
-        $("#executionList").tablesorter();
+        $("#auditList").tablesorter();
 
         $('.filter').multifilter();
 
@@ -123,7 +164,7 @@
 
         $(document).ready(function () {
 
-            $("#executionList .details").click(function (e) {
+            $("#auditList .details").click(function (e) {
                 e.preventDefault();
                 var serverUrl = getServerUrl();
                 var executionId = $(this).closest("tr").find("td").eq(0).html().trim();
