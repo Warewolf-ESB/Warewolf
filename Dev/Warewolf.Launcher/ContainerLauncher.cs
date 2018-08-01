@@ -36,7 +36,12 @@ namespace Warewolf.Launcher
             }
             else
             {
-                StartWarewolfServerContainer();
+                RunContainer();
+            }
+            if (imageName.ToLower() == "ciremote" ||
+                imageName.ToLower() == "warewolfserver")
+            {
+                WaitForServerInContainer();
             }
         }
 
@@ -54,7 +59,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        void StartWarewolfServerContainer()
+        void RunContainer()
         {
             try
             {
@@ -359,10 +364,6 @@ namespace Warewolf.Launcher
                     if (!response.IsSuccessStatusCode)
                     {
                         throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        WaitForServerInContainer();
                     }
                 }
             }
