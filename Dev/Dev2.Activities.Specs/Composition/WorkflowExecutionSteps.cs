@@ -746,6 +746,10 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
+            else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
+            {
+                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
@@ -1465,6 +1469,10 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
+            if (dbSrcName == "NewSqlServerSource" || dbSrcName == "NewSqlBulkInsertSource")
+            {
+                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
@@ -4201,6 +4209,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
