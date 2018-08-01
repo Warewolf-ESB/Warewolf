@@ -41,9 +41,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -115,10 +112,6 @@
       <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
@@ -130,14 +123,6 @@
     <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
-      <Project>{019a92b9-9209-4930-bc96-381cb8b1c0ea}</Project>
-      <Name>Dev2.Services.Execution</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
-      <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
-      <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

@@ -1,7 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Dev2.Interfaces;
-using Dev2.Communication;
 using System.Data.SQLite;
 using System.Data.Entity;
 using System.Collections.Generic;
@@ -12,10 +10,12 @@ using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite.EF6;
 using System.Data.Entity.Core.Common;
-using Dev2.Common;
 using System.IO;
-using Dev2.Common.Wrappers;
 using System.Runtime.Serialization;
+using Dev2.Common;
+using Dev2.Common.Wrappers;
+using Dev2.Interfaces;
+using Dev2.Communication;
 using ServiceStack.Text;
 
 namespace Dev2.Runtime.Auditing
@@ -37,7 +37,10 @@ namespace Dev2.Runtime.Auditing
         {
             new AllPassFilter()
         };
-
+        public Dev2StateAuditLogger()
+        {
+            
+        }
         public Dev2StateAuditLogger(IDSFDataObject dsfDataObject)
         {
             _dsfDataObject = dsfDataObject;
@@ -48,7 +51,7 @@ namespace Dev2.Runtime.Auditing
 
             return db.Audits.Where(queryExpression).AsEnumerable();
         }
-
+        
         private static DatabaseContext GetDatabase()
         {
             var databaseContext = new DatabaseContext();
