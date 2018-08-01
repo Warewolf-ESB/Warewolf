@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
                 var broker = new SqlDatabaseBroker();
                 var result = broker.GetServiceMethods(dbSource);
                 Assert.AreEqual(true, result.Count > 0);

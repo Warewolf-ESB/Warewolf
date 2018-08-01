@@ -18,16 +18,14 @@ namespace Dev2.Integration.Tests.Services.Sql
     [TestClass]
     public class SqlServerTestUtils
     {
-        
-
-        public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User)
+        public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User, string server = "TEST-MSSQL")
         {
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = "TEST-MSSQL",
+                Server = server,
                 AuthenticationType = authenticationType,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
