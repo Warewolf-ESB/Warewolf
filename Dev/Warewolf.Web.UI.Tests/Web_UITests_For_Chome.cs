@@ -6,7 +6,7 @@ using Warewolf.Web.UI.Tests.ScreenRecording;
 namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
 {
     [TestClass]
-    public class Chrome_ExecutionLogging_UITests
+    public class Chrome_Audit_UITests
     {
         private BaseWebDriver driver;
         string browserName = "Chrome";
@@ -43,8 +43,8 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"chromedriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        [TestCategory("ExecutionLogging")]
-        public void Chrome_ExecutionLogging_ClickRefresh_UITest()
+        [TestCategory("Audit")]
+        public void Chrome_Audit_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();

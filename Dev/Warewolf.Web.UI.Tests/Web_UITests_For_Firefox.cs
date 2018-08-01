@@ -43,8 +43,8 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"geckodriver.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        [TestCategory("ExecutionLogging")]
-        public void Firefox_ExecutionLogging_ClickRefresh_UITest()
+        [TestCategory("Audit")]
+        public void Firefox_Audit_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();

@@ -43,8 +43,8 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"swscale-4.dll")]
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        [TestCategory("ExecutionLogging")]
-        public void Opera_ExecutionLogging_ClickRefresh_UITest()
+        [TestCategory("Audit")]
+        public void Opera_Audit_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();

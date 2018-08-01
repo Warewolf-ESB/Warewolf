@@ -1,4 +1,4 @@
-﻿@model Tuple<List<Dev2.Common.Audit>, AuditingViewModel>
+﻿@model Tuple<List<Dev2.Runtime.Auditing.AuditLog>, AuditingViewModel>
 @using Dev2.Web2.Models.Auditing;
 
 @{
@@ -158,7 +158,8 @@
     }
 
     var OnSuccessCall = function (response, textStatus, jqXHR) {
-        var url = location.href +  "/RuntimeAuditing/AuditList";
+        var url =  "/Audit/AuditList";
+        console.log(url);
         $.ajax({
             type: "POST",
             url: url,
