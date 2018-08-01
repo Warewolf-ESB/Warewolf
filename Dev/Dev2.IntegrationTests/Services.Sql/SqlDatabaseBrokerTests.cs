@@ -24,7 +24,6 @@ using Warewolf.Security.Encryption;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
-using Dev2.Common.Interfaces;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
@@ -38,7 +37,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
-                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
+                var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows, "RSAKLFSVRDEV");
                 var broker = new SqlDatabaseBroker();
                 var result = broker.GetServiceMethods(dbSource);
                 Assert.AreEqual(true, result.Count > 0);
