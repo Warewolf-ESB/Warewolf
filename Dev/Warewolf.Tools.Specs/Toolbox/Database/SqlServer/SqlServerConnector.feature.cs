@@ -571,9 +571,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SqlServerBackwardCompatiblity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SqlServer backward Compatiblity", ((string[])(null)));
-#line 179
-this.ScenarioSetup(scenarioInfo);
 #line 180
+this.ScenarioSetup(scenarioInfo);
+#line 181
     testRunner.Given("I have a workflow \"DataMigration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -591,54 +591,53 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "[[dbo_GetCountries().Description]]",
                         "dbo_GetCountries().Description"});
-#line 181
+#line 182
  testRunner.And("\"DataMigration\" contains \"DataCon\" from server \"localhost\" with mapping as", ((string)(null)), table24, "And ");
-#line 185
- testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 186
+ testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 187
     testRunner.Then("the workflow \"DataMigration\" execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Sql Server With Windows Auth and Timeout")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Sql Server With Timeout")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExecuteSqlServerWithTimeout")]
-        public virtual void ExecuteSqlServerWithWindowsAuthAndTimeout()
+        public virtual void ExecuteSqlServerWithTimeout()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Sql Server With Windows Auth and Timeout", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Sql Server With Timeout", new string[] {
                         "ExecuteSqlServerWithTimeout"});
-#line 189
-this.ScenarioSetup(scenarioInfo);
 #line 190
+this.ScenarioSetup(scenarioInfo);
+#line 191
     testRunner.Given("I have workflow \"SqlServerWorkflowForTimeout\" with \"SqlServerActivity\" SqlServer " +
                     "database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 191
-    testRunner.And("Sql Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
-    testRunner.And("I Select \"WindowsAuthSqlServerSource\" as SqlServer Source for \"SqlServerActivity\"" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("Sql Server Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 193
+    testRunner.And("I Select \"NewSqlServerSource\" as SqlServer Source for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 194
     testRunner.And("I Select \"dbo.Pr_CitiesGetCountries_Delayed\" as Server Action for \"SqlServerActiv" +
                     "ity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
- testRunner.And("Sql Command Timeout is \"60\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 195
- testRunner.And("Validate Sql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Sql Command Timeout is \"60\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 196
-    testRunner.And("I click Sql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Validate Sql Server is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 197
-    testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I click Sql Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 198
-    testRunner.And("Sql Command Timeout is \"1\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 199
- testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("Sql Command Timeout is \"1\" milliseconds for \"SqlServerActivity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 200
+ testRunner.When("Sql Workflow \"SqlServerWorkflowForTimeout\" containing dbTool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 201
     testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" execution has \"AN\" error \"SQL Error: E" +
                     "xecution Timeout Expired\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 202
  testRunner.And("the workflow \"SqlServerWorkflowForTimeout\" error does not contain \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
