@@ -114,7 +114,7 @@ namespace Warewolf.Launcher.TestRunners
                     }
                     else
                     {
-                        if (playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
+                        if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
                         {
                             TestList = " /test:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
                         }

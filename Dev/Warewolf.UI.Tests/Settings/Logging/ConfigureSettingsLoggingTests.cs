@@ -30,6 +30,7 @@ namespace Warewolf.UI.Tests
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Select_Fatal_Event_Log();
             UIMap.Click_Save_RibbonButton();
+            UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
             UIMap.Click_ConfigureSetting_From_Menu();            
             SettingsUIMap.Select_LoggingTab();

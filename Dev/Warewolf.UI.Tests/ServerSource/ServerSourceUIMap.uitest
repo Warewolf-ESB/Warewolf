@@ -249,7 +249,7 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="ListItem" Id="TSTCIREMOTE" FriendlyName="TST-CI-REMOTE" SpecialControlType="None">
+                                            <UIObject ControlType="ListItem" Id="TSTCIREMOTE" FriendlyName="tst-ci-remote-obsolete" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -257,7 +257,7 @@
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                <PropertyCondition Name="Name">TST-CI-REMOTE</PropertyCondition>
+                                                <PropertyCondition Name="Name">tst-ci-remote-obsolete</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />

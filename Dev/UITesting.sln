@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Launcher", "Warewolf.Launcher\Warewolf.Launcher.csproj", "{9B669D51-14CE-44A3-9407-8251BA3BAD19}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Tests", "Warewolf.UI.Tests\Warewolf.UI.Tests.csproj", "{02F87C5E-5BDC-4932-8892-87A35B0108FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewolf.UI.Specs\Warewolf.UI.Specs.csproj", "{2E592262-E25F-4EE8-80BE-586D2788F927}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Load.Specs", "Warewolf.UI.Load.Specs\Warewolf.UI.Load.Specs.csproj", "{D694D1B5-C299-459C-AFAB-2CAE589204B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Launcher", "Warewolf.Launcher\Warewolf.Launcher.csproj", "{9B669D51-14CE-44A3-9407-8251BA3BAD19}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionWideBuildOutputs", "SolutionWideBuildOutputs", "{C9DEE0C5-E59A-4830-9DD6-E68929177D6F}"
+	ProjectSection(SolutionItems) = preProject
+		UITesting.sln.Compile.bat = UITesting.sln.Compile.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

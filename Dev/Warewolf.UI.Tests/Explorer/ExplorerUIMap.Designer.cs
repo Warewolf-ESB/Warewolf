@@ -75,15 +75,15 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             }
         }
         
-        public RemoteConnectionItem RemoteConnectionItem
+        public ComboboxItemAsRemoteContainer ComboboxItemAsRemoteContainer
         {
             get
             {
-                if ((this.mRemoteConnectionItem == null))
+                if ((this.mComboboxItemAsRemoteContainer == null))
                 {
-                    this.mRemoteConnectionItem = new RemoteConnectionItem(this);
+                    this.mComboboxItemAsRemoteContainer = new ComboboxItemAsRemoteContainer(this);
                 }
-                return this.mRemoteConnectionItem;
+                return this.mComboboxItemAsRemoteContainer;
             }
         }
         
@@ -103,7 +103,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         #region Fields
         private DockManager mDockManager;
         
-        private RemoteConnectionItem mRemoteConnectionItem;
+        private ComboboxItemAsRemoteContainer mComboboxItemAsRemoteContainer;
         
         private CodedUITestServerSourceDuplicated mCodedUITestServerSourceDuplicated;
         #endregion
@@ -342,7 +342,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
                     this.mNewServerButton = new WpfButton(this);
                     #region Search Criteria
                     this.mNewServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "NewServerButton";
-                    this.mNewServerButton.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    this.mNewServerButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNewServerButton;
@@ -2445,16 +2445,16 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class RemoteConnectionItem : WpfCustom
+    public class ComboboxItemAsRemoteContainer : WpfCustom
     {
         
-        public RemoteConnectionItem(UITestControl searchLimitContainer) : 
+        public ComboboxItemAsRemoteContainer(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Container", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -2468,7 +2468,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
                     this.mRemoteConnectionItemText = new WpfText(this);
                     #region Search Criteria
                     this.mRemoteConnectionItemText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
-                    this.mRemoteConnectionItemText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    this.mRemoteConnectionItemText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mRemoteConnectionItemText;

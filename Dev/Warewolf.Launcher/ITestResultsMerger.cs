@@ -1,6 +1,6 @@
 ﻿namespace Warewolf.Launcher
 {
-    interface ITestResultsMerger
+    public interface ITestResultsMerger
     {
         void MergeRetryResults(string originalResults, string retryResults);
     }
