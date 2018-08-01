@@ -176,7 +176,6 @@ Scenario: Recordset has invalid character
 	  |                                                                    |
 	  | [[dbo_ConvertTo, Int().result]] : Recordset name has invalid format |
 	  
-#Wolf-1262
 Scenario: SqlServer backward Compatiblity
     Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
@@ -187,10 +186,10 @@ Scenario: SqlServer backward Compatiblity
     Then the workflow "DataMigration" execution has "NO" error
 	
 @ExecuteSqlServerWithTimeout
-Scenario: Execute Sql Server With Timeout
+Scenario: Execute Sql Server With Windows Auth and Timeout
     Given I have workflow "SqlServerWorkflowForTimeout" with "SqlServerActivity" SqlServer database connector
     And Sql Server Source is Enabled
-    And I Select "NewSqlServerSource" as SqlServer Source for "SqlServerActivity"
+    And I Select "WindowsAuthSqlServerSource" as SqlServer Source for "SqlServerActivity"
     And I Select "dbo.Pr_CitiesGetCountries_Delayed" as Server Action for "SqlServerActivity"
 	And Sql Command Timeout is "60" milliseconds for "SqlServerActivity"
 	And Validate Sql Server is Enabled
