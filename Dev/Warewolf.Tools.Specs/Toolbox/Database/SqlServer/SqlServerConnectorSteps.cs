@@ -4,8 +4,10 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Designers2.Core;
@@ -19,20 +21,15 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Controller;
-using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.Enums;
 using Dev2.Threading;
-using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Launcher;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.Toolbox.Database;
 
@@ -47,6 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         DbAction _getCountriesAction;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
+        public static ContainerLauncher _containerOps;
 
         public SQLServerConnectorSteps(ScenarioContext scenarioContext)
            : base(scenarioContext)
@@ -215,6 +213,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             _scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
             _scenarioContext.Add("parentName", workflowName);
         }
+
         [Given(@"I Select ""(.*)"" as SqlServer Source for ""(.*)""")]
         public void GivenISelectAsSqlServerSourceFor(string sourceName, string activityName)
         {
@@ -239,6 +238,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             SetDbAction(activityName, actionName);
             Assert.IsNotNull(vm.ActionRegion.SelectedAction);
         }
+
         [Given(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
         [When(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
         [Then(@"Sql Command Timeout is ""(.*)"" milliseconds for ""(.*)""")]
