@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Core;
+using Warewolf.Launcher;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Integration.Tests.Database_Tools_Refresh
@@ -25,12 +26,18 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
     [TestClass]
     public class DatabaseServiceInputChangeTests
     {
+        public static ContainerLauncher _containerOps;
+
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
             var aggr = new Mock<IEventAggregator>();
             DataListSingleton.SetDataList(new DataListViewModel(aggr.Object));
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(context.ResultsDirectory);
         }
+
+        [ClassCleanup]
+        public static void CleanupContainer() => _containerOps?.Dispose();
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
