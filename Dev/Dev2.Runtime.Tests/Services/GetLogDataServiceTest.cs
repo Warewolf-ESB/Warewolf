@@ -327,14 +327,12 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Assert Precondition----------------
 
             var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longDateString = DateTime.ParseExact("2018-08-01 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            stringBuilders.Add("StartDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(0, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
         }
     }
 
