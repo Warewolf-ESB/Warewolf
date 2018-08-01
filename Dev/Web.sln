@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Warewolf.Web.UI.Tests\Warewolf.Web.UI.Tests.csproj", "{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,8 +47,15 @@ Global
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B37A4F9-645A-4CB0-A44A-C948B614E9E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36881A46-55FF-4B60-ACCE-4B7C32D8F985}
 	EndGlobalSection
 EndGlobal
