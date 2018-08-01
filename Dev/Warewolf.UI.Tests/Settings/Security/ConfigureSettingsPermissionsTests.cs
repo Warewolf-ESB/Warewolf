@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net;
+using System.Reflection;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
@@ -95,8 +97,9 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void Edit_Server_Removes_Server_From_Explorer()
         {
+            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists);
             ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists, "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
@@ -161,6 +164,11 @@ namespace Warewolf.UI.Tests
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
+
+        static ContainerLauncher _containerOps;
+
+        [TestCleanup]
+        public void CleanupContainer() => _containerOps?.Dispose();
 
         UIMap UIMap
         {

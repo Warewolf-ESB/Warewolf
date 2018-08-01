@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,12 +184,18 @@ namespace Warewolf.Launcher
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.GetAsync(url).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                try
                 {
-                    return response.IsSuccessStatusCode;
+                    var response = client.GetAsync(url).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    {
+                        return response.IsSuccessStatusCode;
+                    }
                 }
+                catch(AggregateException e) { return false; }
+                catch (SocketException e) { return false; }
+                catch (HttpRequestException e) { return false; }
             }
         }
 
@@ -361,6 +368,43 @@ namespace Warewolf.Launcher
                     {
                         throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
                     }
+                    else
+                    {
+                        WaitForServerInContainer();
+                    }
+                }
+            }
+        }
+
+        void WaitForServerInContainer()
+        {
+            Console.WriteLine($"Waiting for Warewolf server to start in {serverContainerID.Substring(0, 12)}.");
+            
+            var url = $"http://{Hostname}:3142/apis.json";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
+                int retryCount = 0;
+                while (++retryCount < 10)
+                {
+                    try
+                    {
+                        var result = client.GetAsync(url).Result;
+                        if (result != null)
+                        {
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"Still waiting for Warewolf server in {serverContainerID.Substring(0, 12)} to start.");
+                        Thread.Sleep(1000);
+                    }
+                }
+                if (retryCount >= 10)
+                {
+                    client.Dispose();
+                    throw new TimeoutException($"Timed out waiting for Warewolf server in {serverContainerID.Substring(0, 12)} to start.");
                 }
             }
         }
@@ -374,7 +418,11 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Creating {FullImageID} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
-     ""Image"":""" + FullImageID + @"""
+     ""Image"":""" + FullImageID + @""",
+     ""HostConfig"":
+     {
+          ""Memory"": 1000000000
+     }
 }
 ");
             }
@@ -384,7 +432,11 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + FullImageID + @"""
+     ""Image"":""" + FullImageID + @""",
+     ""HostConfig"":
+     {
+          ""Memory"": 1000000000
+     }
 }
 ");
             }
@@ -417,6 +469,10 @@ namespace Warewolf.Launcher
             if (string.IsNullOrEmpty(serverContainerID))
             {
                 serverContainerID = GetNewContainerID();
+            }
+            if (string.IsNullOrEmpty(Hostname))
+            {
+                Hostname = serverContainerID.Substring(0, 12);
             }
         }
 

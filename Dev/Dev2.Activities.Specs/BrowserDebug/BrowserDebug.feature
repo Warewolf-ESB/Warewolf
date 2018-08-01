@@ -138,3 +138,14 @@ Scenario: Executing Workflow with No Execute Permissions
 	And Public "" Permissions to Execute "Nested"
 	And I Debug "http://localhost:3142/public/Nested.json?" in Browser
 	Then Browser content is "requires View and Execute permissions to Execute resource Nested."
+
+Scenario: Executing a workflow should not error for logging
+		Given I have a workflow "AssignedWF"
+		And "AssignedWF" contains an Assign "AssignVar" as
+			| variable      | value    |
+			| [[dateMonth]] | February |
+		When workflow "AssignedWF" is saved "1" time
+		And I Execute "http://localhost:3142/secure/Acceptance%20Tests/AssignedWF.json" in Browser
+		Then Browser content is not "FatalError"
+
+	

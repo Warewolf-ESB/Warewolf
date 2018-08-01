@@ -1,9 +1,5 @@
-﻿@Deploy
-@RemoteServer
+﻿@RemoteServer
 Feature: Deploy Feature
-In order to deploy workflows
-	As a Warewolf user
-	I want to setup deployments
 
 Scenario: Deploy a renamed resource
 	Given localhost and destination server are connected

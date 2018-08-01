@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
+using System.Reflection;
+using Warewolf.Launcher;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
@@ -13,9 +15,10 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory("Service Search")]
         public void Search_For_Hello_World_On_Remote_Server()
         {
+            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
-            Mouse.Click(SearchUIMap.MainStudioWindow.RemoteConnectionInteCustom);
+            Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteContainer);
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = true;
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.MatchcaseCheckBox.Checked = false;
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.MatchwholewordCheckBox.Checked = false;
@@ -28,9 +31,10 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory("Service Search")]
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
         {
+            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
-            Mouse.Click(SearchUIMap.MainStudioWindow.RemoteConnectionInteCustom);
+            Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteContainer);
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = true;
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.MatchcaseCheckBox.Checked = true;
             SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.MatchwholewordCheckBox.Checked = true;
@@ -135,6 +139,11 @@ namespace Warewolf.UI.Tests.Search
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
+
+        static ContainerLauncher _containerOps;
+
+        [TestCleanup]
+        public void CleanupContainer() => _containerOps?.Dispose();
 
         public ExplorerUIMap ExplorerUIMap
         {

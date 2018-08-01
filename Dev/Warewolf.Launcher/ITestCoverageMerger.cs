@@ -2,7 +2,7 @@
 
 namespace Warewolf.Launcher
 {
-    interface ITestCoverageMerger
+    public interface ITestCoverageMerger
     {
         void MergeCoverageSnapshots(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath, string ToolPath);
     }
