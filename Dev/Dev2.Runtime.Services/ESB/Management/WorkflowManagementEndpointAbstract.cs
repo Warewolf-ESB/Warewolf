@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management
             catch (Exception err)
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-                var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
+                var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
         }
@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management
         }
 
 
-        abstract protected CompressedExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId);
+        abstract protected ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId);
         /*var tests = TestCatalog.Fetch(resourceId)
         var message = new CompressedExecuteMessage()
         message.SetMessage(serializer.Serialize(tests))
