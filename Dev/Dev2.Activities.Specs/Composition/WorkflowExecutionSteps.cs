@@ -4283,9 +4283,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
-
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {
