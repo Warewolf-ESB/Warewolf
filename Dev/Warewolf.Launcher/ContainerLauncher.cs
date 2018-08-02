@@ -110,7 +110,7 @@ namespace Warewolf.Launcher
         {
             ""Limits"": 
             {
-                ""MemoryBytes"": 1500000000
+                ""MemoryBytes"": 700000000
             }
         },
         ""RestartPolicy"": 
@@ -414,7 +414,7 @@ namespace Warewolf.Launcher
      ""AutoRemove"": true,
      ""HostConfig"":
      {
-          ""Memory"": 1000000000
+          ""Memory"": 700000000
      }
 }
 ");
@@ -429,7 +429,7 @@ namespace Warewolf.Launcher
      ""AutoRemove"": true,
      ""HostConfig"":
      {
-          ""Memory"": 1000000000
+          ""Memory"": 700000000
      }
 }
 ");
