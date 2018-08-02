@@ -13,19 +13,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class LogDataServiceBase
     {
-        string _serverLogFilePath;
-        public string ServerLogFilePath
-        {
-            get
-            {
-                return _serverLogFilePath ?? EnvironmentVariables.ServerLogFile;
-            }
-            set
-            {
-                _serverLogFilePath = value;
-            }
-        }
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
@@ -35,23 +22,30 @@ namespace Dev2.Runtime.ESB.Management.Services
             var startTime = Convert.ToDateTime(GetValue<string>("StartDateTime", values));
             var endTime = Convert.ToDateTime(GetValue<string>("CompletedDateTime", values));
             var auditType = GetValue<string>("AuditType", values);
-            var executingUser = GetValue<string>("User", values);
+            var executingUser = GetValue<string>("ExecutingUser", values);
             var workflowID = GetValue<string>("WorkflowID", values);
             var executionID = GetValue<string>("ExecutionID", values);
-            var isSubExecution = GetValue<long>("IsSubExecution", values);
-            var isRemoteWorkflow = GetValue<long>("IsRemoteWorkflow", values);
+            var isSubExecution = Convert.ToInt32( GetValue<bool>("IsSubExecution", values));
+            var isRemoteWorkflow = Convert.ToInt32(GetValue<bool>("IsRemoteWorkflow", values));
             var workflowName = GetValue<string>("WorkflowName", values);
             var serverID = GetValue<string>("ServerID", values);
             var parentID = GetValue<string>("ParentID", values);
-
+            if (startTime == default(DateTime))
+            {
+                startTime = Convert.ToDateTime(DateTime.Now.AddDays(-5));
+            }
+            if (endTime == default(DateTime))
+            {
+                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
+            }
             var results = Dev2StateAuditLogger.Query(entry =>
                     (entry.AuditDate >= startTime)
                     && (entry.AuditDate <= endTime)
                     && (string.IsNullOrEmpty(auditType) || entry.AuditType == auditType)
                     && (string.IsNullOrEmpty(workflowID) || entry.WorkflowID == workflowID)
                     && (string.IsNullOrEmpty(executionID) || entry.ExecutionID == executionID)
-                    && (isSubExecution == 0 || entry.IsSubExecution == isSubExecution)
-                    && (isRemoteWorkflow == 0 || entry.IsRemoteWorkflow == isRemoteWorkflow)
+                    && (entry.IsSubExecution == isSubExecution)
+                    && (entry.IsRemoteWorkflow == isRemoteWorkflow)
                     && (string.IsNullOrEmpty(workflowName) || entry.WorkflowName == workflowName)
                     && (string.IsNullOrEmpty(serverID) || entry.ServerID == serverID)
                     && (string.IsNullOrEmpty(parentID) || entry.ParentID == parentID)
