@@ -17,12 +17,8 @@ namespace Warewolf.Launcher.Utils
                     build.StartStudio();
                 }
             }
-            using (ContainerLauncher MSSQLContainer = TestLauncher.StartLocalMSSQLContainer(build.TestRunner.TestsResultsPath),
-                CiRemoteContainer = TestLauncher.StartLocalCIRemoteContainer(build.TestRunner.TestsResultsPath))
-            {
-                Console.WriteLine("Press Enter to Shutdown.");
-                Console.ReadKey();
-            }
+            Console.WriteLine("Press Enter to Shutdown.");
+            Console.ReadKey();
             build.CleanupServerStudio();
         }
     }
