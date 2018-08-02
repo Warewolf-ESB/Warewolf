@@ -123,7 +123,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-        public static void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
+        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
             var resource = new ActivityParser().Parse(flowchartProcess);
             EvalInner(dsfDataObject, resource, update);
