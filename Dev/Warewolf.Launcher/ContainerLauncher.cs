@@ -91,6 +91,7 @@ namespace Warewolf.Launcher
             {
                 StopContainer();
                 RecoverServerLogFile();
+                DeleteContainer();
                 serverContainerID = null;
             }
         }
