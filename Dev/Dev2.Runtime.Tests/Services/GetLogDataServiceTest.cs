@@ -274,8 +274,8 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.AreEqual(1, logEntriesObject.Count);
-            //------------Execute Test---------------------------
 
+            //------------Execute Test---------------------------
             var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "BadUser".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
@@ -292,9 +292,6 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
 
-
-            //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
             Assert.AreEqual("GetLogDataService", getLogDataService.HandlesType());
         }
@@ -307,7 +304,6 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-
 
             //------------Execute Test---------------------------
             var a = getLogDataService.CreateServiceEntry();
@@ -334,6 +330,44 @@ namespace Dev2.Tests.Runtime.Services
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.IsTrue(logEntriesObject.Count > 0);
         }
-    }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_FromDB_Execute_FilterOnDate_GetResults()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            var longStartDateString = DateTime.ParseExact("2018-08-02 00:00:00,000", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            var longEndDateString = DateTime.ParseExact("2018-08-02 23:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            stringBuilders.Add("StartDateTime", longStartDateString.ToString().ToStringBuilder());
+            stringBuilders.Add("CompletedDateTime", longEndDateString.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.IsTrue(logEntriesObject.Count > 0);
+        }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_FromDB_Execute_FilterOnDate_NoResults()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            var longStartDateString = DateTime.ParseExact("2017-08-01 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            var longEndDateString = DateTime.ParseExact("2017-08-03 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            stringBuilders.Add("StartDateTime", longStartDateString.ToString().ToStringBuilder());
+            stringBuilders.Add("CompletedDateTime", longEndDateString.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.IsTrue(logEntriesObject.Count == 0);
+        }
+    }
 }

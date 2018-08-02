@@ -93,9 +93,9 @@ namespace Dev2.Runtime.Auditing
         [JsonProperty("Environment")]
         public string Environment { get; set; }
 
-        [Column(Name = "AuditDate", CanBeNull = true)]
+        [Column(Name = "AuditDate",DbType = "string", CanBeNull = true)]
         [JsonProperty("AuditDate")]
-        public string AuditDate { get; set; }
+        public DateTime AuditDate { get; set; }
 
         public AuditLog() { }
         public AuditLog(IDSFDataObject dsfDataObject, string auditType, string detail, IDev2Activity previousActivity, IDev2Activity nextActivity)
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.Auditing
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
-            AuditDate = DateTime.Now.ToString();
+            AuditDate = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;
             if (previousActivity != null)

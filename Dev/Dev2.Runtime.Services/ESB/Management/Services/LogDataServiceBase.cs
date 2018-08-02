@@ -32,8 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IEnumerable<dynamic> BuildTempObjects(Dictionary<string, StringBuilder> values)
         {
-            var startTime = GetValue<string>("StartDateTime", values);
-            var endTime = GetValue<string>("CompletedDateTime", values);
+            var startTime = Convert.ToDateTime(GetValue<string>("StartDateTime", values));
+            var endTime = Convert.ToDateTime(GetValue<string>("CompletedDateTime", values));
             var auditType = GetValue<string>("AuditType", values);
             var executingUser = GetValue<string>("User", values);
             var workflowID = GetValue<string>("WorkflowID", values);
@@ -45,8 +45,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             var parentID = GetValue<string>("ParentID", values);
 
             var results = Dev2StateAuditLogger.Query(entry =>
-                    (string.IsNullOrEmpty(startTime) || entry.AuditDate == startTime)
-                    && (string.IsNullOrEmpty(endTime) || entry.AuditDate == endTime)
+                    (entry.AuditDate >= startTime)
+                    && (entry.AuditDate <= endTime)
                     && (string.IsNullOrEmpty(auditType) || entry.AuditType == auditType)
                     && (string.IsNullOrEmpty(workflowID) || entry.WorkflowID == workflowID)
                     && (string.IsNullOrEmpty(executionID) || entry.ExecutionID == executionID)
