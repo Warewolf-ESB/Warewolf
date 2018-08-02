@@ -10,6 +10,24 @@ namespace Warewolf.Launcher
 {
     public static class TestCleanupUtils
     {
+        static readonly string[] ToClean = new[]
+        {
+            "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
+            "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
+            "%PROGRAMDATA%\\Warewolf\\Workspaces",
+            "%PROGRAMDATA%\\Warewolf\\Server Settings",
+            "%PROGRAMDATA%\\Warewolf\\VersionControl",
+            "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
+        };
+
+        static readonly string[] ToPublish = new[]
+        {
+            "%PROGRAMDATA%\\Warewolf\\Resources",
+            "%PROGRAMDATA%\\Warewolf\\Tests",
+            "%PROGRAMDATA%\\Warewolf\\VersionControl",
+            "%PROGRAMDATA%\\Warewolf\\DetailedLogs"
+        };
+
         public static void CopyOnWrite(string FileSpec)
         {
             if (File.Exists(FileSpec))
@@ -217,16 +235,6 @@ namespace Warewolf.Launcher
             process.Start();
 
             //Delete Certain Studio and Server Resources
-            var ToClean = new[]
-            {
-                "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
-                "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
-                "%PROGRAMDATA%\\Warewolf\\Workspaces",
-                "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl",
-                "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
-            };
-
             foreach (var FileOrFolder in ToClean)
             {
                 var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
@@ -251,9 +259,15 @@ namespace Warewolf.Launcher
                 build.JobName = "Test Run";
             }
 
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Resources"), $"{build.JobName} Server Resources Folder", build.TestRunner.TestsResultsPath);
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Tests"), $"{build.JobName} Server Tests Folder", build.TestRunner.TestsResultsPath);
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\VersionControl"), $"{build.JobName} Server VersionControl Folder", build.TestRunner.TestsResultsPath);
+            //Publish Certain Studio and Server Resources
+            foreach (var FileOrFolder in ToPublish)
+            {
+                var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
+                if (Directory.Exists(ActualPath))
+                {
+                    MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(ActualPath), $"{build.JobName} Server {Path.GetFileName(ActualPath)} Folder", build.TestRunner.TestsResultsPath);
+                }
+            }
         }
 
         public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio)
