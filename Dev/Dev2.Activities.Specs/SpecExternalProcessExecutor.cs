@@ -34,6 +34,25 @@ namespace Dev2.Activities.Specs
 
         }
 
+        public void OpenInBrowserDefaultCredentials(Uri url)
+        {
+
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    client.UseDefaultCredentials = true;
+                    WebResult.Add(client.DownloadString(url));
+                }
+
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, "Warewolf Error");
+            }
+
+        }
+
         public Process Start(ProcessStartInfo startInfo)
         {
             throw new NotImplementedException();
