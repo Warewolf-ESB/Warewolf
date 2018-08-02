@@ -356,14 +356,14 @@ namespace Warewolf.Launcher
             containerStartContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
+                client.Timeout = new TimeSpan(0, 3, 0);
                 var response = client.PostAsync(url, containerStartContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
+                        throw new HttpRequestException("Error starting container. " + reader.ReadToEnd());
                     }
                 }
             }
