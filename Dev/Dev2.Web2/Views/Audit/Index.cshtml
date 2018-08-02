@@ -158,12 +158,12 @@
     }
 
     var OnSuccessCall = function (response, textStatus, jqXHR) {
-        var url =  "/Audit/AuditList";
-        console.log(url);
+        var url = "/Audit/AuditList";
+        var myJSON = JSON.stringify(response);
         $.ajax({
             type: "POST",
             url: url,
-            data: { 'jsonData': response },
+            data: { 'jsonData': myJSON },
             success: function (executionListHTML) {
                 showExecutionList();
                 $("#divExecutionList").html(executionListHTML);

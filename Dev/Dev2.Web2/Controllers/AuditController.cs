@@ -38,12 +38,13 @@ namespace Dev2.Web2.Controllers
         [AllowCrossSiteJson]
         public ActionResult Index(string server)
         {
+            var servername = server;
             var request = CheckRequest(null);
-            if (string.IsNullOrEmpty(server))
+            if (string.IsNullOrEmpty(servername))
             {
-                server = "localhost";
+                servername = "localhost";
             }
-            request.Server = server;
+            request.Server = servername;
             var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
             return View(model);
         }
@@ -75,63 +76,6 @@ namespace Dev2.Web2.Controllers
                 toReturn = new AuditingViewModel { Protocol = "http", Server = "localhost", Port = "3142" };
             }
             return toReturn;
-        }
-
-        // GET: Audit/Create
-        public ActionResult Create() => View();
-
-        // POST: Audit/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
-
-        // GET: Audit/Edit/5
-        public ActionResult Edit(int id) => View();
-
-        // POST: Audit/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
-        }
-
-        // GET: Audit/Delete/5
-        public ActionResult Delete(int id) => View();
-
-        // POST: Audit/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
         }
     }
 }
