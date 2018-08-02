@@ -91,7 +91,6 @@ namespace Warewolf.Launcher
             {
                 StopContainer();
                 RecoverServerLogFile();
-                DeleteContainer();
                 serverContainerID = null;
             }
         }
@@ -412,6 +411,7 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
      ""Image"":""" + FullImageID + @""",
+     ""AutoRemove"": true,
      ""HostConfig"":
      {
           ""Memory"": 1000000000
@@ -426,6 +426,7 @@ namespace Warewolf.Launcher
 {
     ""Hostname"": """ + Hostname + @""",
      ""Image"":""" + FullImageID + @""",
+     ""AutoRemove"": true,
      ""HostConfig"":
      {
           ""Memory"": 1000000000
