@@ -1,33 +1,43 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Communication;
+using Dev2.Interfaces;
 using Dev2.Runtime.Auditing;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
-
-// ReSharper disable InconsistentNaming
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class GetLogDataServiceTest
     {
-
         Dev2StateAuditLogger _dev2StateAuditLogger;
+        Mock<IDev2Activity> _activity;
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            if (_dev2StateAuditLogger != null)
+            {
+                _dev2StateAuditLogger.Dispose();
+            }
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
-        public void GetResourceID_ShouldReturnEmptyGuid()
+        public void GetLogDataService_GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-
             //------------Execute Test---------------------------
             var resId = getLogDataService.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
@@ -37,11 +47,10 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
-        public void GetAuthorizationContextForService_ShouldReturnContext()
+        public void GetLogDataService_GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-
             //------------Execute Test---------------------------
             var resId = getLogDataService.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
@@ -50,54 +59,25 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetLogDataService_ServerLogFilePath")]
-        public void GetLogDataService_ServerLogFilePath_NotSet_ShouldReturnStandardValue()
-        {
-            //------------Setup for test--------------------------
-            var getLogDataService = new GetLogDataService();
-
-            //------------Execute Test---------------------------
-            var logFilePath = getLogDataService.ServerLogFilePath;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(EnvironmentVariables.ServerLogFile, logFilePath);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("GetLogDataService_ServerLogFilePath")]
-        public void GetLogDataService_ServerLogFilePath_WhenSet_ShouldReturnSetValue()
-        {
-            //------------Setup for test--------------------------
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = "MyPath" };
-            //------------Execute Test---------------------------
-            var logFilePath = getLogDataService.ServerLogFilePath;
-            //------------Assert Results-------------------------
-            Assert.AreEqual("MyPath", logFilePath);
-        }
-
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_WithLogData_ShouldReturnLogDataObject()
         {
             //------------Setup for test--------------------------
-            const string logData = @"2017-05-18 10:41:03,500 [(null)] INFO  - Started Execution for Service Name:tttt Resource Id:a2352f24-fe9f-4e7d-bd0c-f5267b362d0b Mode:Debug
-2017-05-18 10:41:03,519 [(null)] DEBUG - Getting Resource to Execute
-2017-05-18 10:41:03,519 [(null)] DEBUG - Fetching Execution Plan for a2352f24-fe9f-4e7d-bd0c-f5267b362d0b for workspace 00000000-0000-0000-0000-000000000000
-2017-05-18 10:41:03,611 [(null)] DEBUG - Got Resource to Execute
-2017-05-18 10:41:03,625 [(null)] INFO  - Debug Already Started
-2017-05-18 10:41:03,681 [(null)] INFO  - Completed Execution for Service Name:tttt Resource Id: a2352f24-fe9f-4e7d-bd0c-f5267b362d0b Mode:Debug
-";
+            var serializer = new Dev2JsonSerializer();
             var getLogDataService = new GetLogDataService();
-            var logFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
-            getLogDataService.ServerLogFilePath = logFilePath;
-            File.WriteAllText(logFilePath, logData);
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
             //------------Execute Test---------------------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
             Assert.IsNotNull(logEntriesObject);
 
         }
@@ -105,184 +85,84 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
-        public void GetLogDataService_Execute_WithLogDataContainingURl_ShouldReturnLogDataObjectWithUrl()
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithAuditType()
         {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //------------Execute Test---------------------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.IsNotNull(logEntriesObject);
-            var value = logEntriesObject[0].Url;
-            Assert.IsFalse(string.IsNullOrEmpty(value));
-            Assert.AreEqual("http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist>", value);
-
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithLogDataContainingURL_shouldReturnLogDataObjectWithUrlERROR()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //------------Execute Test---------------------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.IsNotNull(logEntriesObject);
-            Assert.AreEqual("ERROR", logEntriesObject[0].Status);
-        }
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithStartDate_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            var serializer = new Dev2JsonSerializer();
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longDateString = DateTime.ParseExact("2017-05-25 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            stringBuilders.Add("StartDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "AuditType", "LogExecuteCompleteState".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual("LogExecuteCompleteState", item.AuditType);
+            }
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithEndDate_ShouldFilterLogData()
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithExecutingUser()
         {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            var serializer = new Dev2JsonSerializer();
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
             //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-            //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longDateString = DateTime.ParseExact("2017-05-25 08:14:12,420", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            stringBuilders.Add("CompletedDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutingUser", principal.Object.ToString().ToStringBuilder() } };
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(0, logEntriesObject.Count);
-
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithStatus_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-            //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "Status", "Failed".ToStringBuilder() } };
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-            //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(0, logEntriesObject.Count);
-
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(principal.Object.ToString(), item.ExecutingUser);
+            }
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithUser_ShouldFilterLogData()
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithExecutionId()
         {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
+            var serializer = new Dev2JsonSerializer();
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
             //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "DEV2\\pieter.terblanche".ToStringBuilder() } };
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionID", expectedExecutionId.ToString().ToStringBuilder() } };
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(expectedExecutionId.ToString(), item.ExecutionID);
+            }
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-            //------------Execute Test---------------------------
-
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", "06385e0f-ac27-4cf0-af55-7642c3c08ba3".ToStringBuilder() } };
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-            //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
-        public void GetLogDataService_Execute_WithBadUser_ShouldFilterLogData()
-        {
-            //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
-            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
-            //---------------Assert Precondition----------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(1, logEntriesObject.Count);
-
-            //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "BadUser".ToStringBuilder() } };
-            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-            //------------Assert Results-------------------------
-            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(0, logEntriesObject.Count);
-        }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -291,11 +171,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-
             //------------Assert Results-------------------------
             Assert.AreEqual("GetLogDataService", getLogDataService.HandlesType());
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -304,7 +182,6 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-
             //------------Execute Test---------------------------
             var a = getLogDataService.CreateServiceEntry();
             //------------Assert Results-------------------------
@@ -312,62 +189,242 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
 
-
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
-        public void GetLogDataService_FromDB_Execute_ReturnAll()
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithDatesandWorkflowID()
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-            //---------------Assert Precondition----------------
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
 
-            var stringBuilders = new Dictionary<string, StringBuilder>();
-            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.IsTrue(logEntriesObject.Count > 0);
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("GetLogDataService_FromDB_Execute")]
-        public void GetLogDataService_FromDB_Execute_FilterOnDate_GetResults()
-        {
-            //------------Setup for test--------------------------
-            var getLogDataService = new GetLogDataService();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longStartDateString = DateTime.ParseExact("2018-08-02 00:00:00,000", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            var longEndDateString = DateTime.ParseExact("2018-08-02 23:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+
+            var longStartDateString = DateTime.ParseExact(DateTime.Now.AddMinutes(-5).ToString(GlobalConstants.LogFileDateFormat), GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            var longEndDateString = DateTime.ParseExact(DateTime.Now.AddDays(1).ToString(GlobalConstants.LogFileDateFormat), GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
             stringBuilders.Add("StartDateTime", longStartDateString.ToString().ToStringBuilder());
+            stringBuilders.Add("WorkflowID", expectedWorkflowId.ToString().ToStringBuilder());
             stringBuilders.Add("CompletedDateTime", longEndDateString.ToString().ToStringBuilder());
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.IsTrue(logEntriesObject.Count > 0);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(expectedWorkflowId.ToString(), item.WorkflowID);
+            }
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
-        public void GetLogDataService_FromDB_Execute_FilterOnDate_NoResults()
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithWorkflowID()
         {
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longStartDateString = DateTime.ParseExact("2017-08-01 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            var longEndDateString = DateTime.ParseExact("2017-08-03 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
-            stringBuilders.Add("StartDateTime", longStartDateString.ToString().ToStringBuilder());
-            stringBuilders.Add("CompletedDateTime", longEndDateString.ToString().ToStringBuilder());
+            stringBuilders.Add("WorkflowID", expectedWorkflowId.ToString().ToStringBuilder());
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(logEntriesJson);
-            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.IsTrue(logEntriesObject.Count == 0);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(expectedWorkflowId.ToString(), item.WorkflowID);
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithParentID()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, Guid.NewGuid(), out _dev2StateAuditLogger, out _activity, principal,false,false,serverID, parentID);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("ParentID", parentID.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(parentID.ToString(), item.ParentID);
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithserverID()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, Guid.NewGuid(), out _dev2StateAuditLogger, out _activity, principal, false, false, serverID, parentID);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("ServerID", serverID.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(serverID.ToString(), item.ServerID);
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithexpectedWorkflowName()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("WorkflowName", expectedWorkflowName.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                Assert.AreEqual(expectedWorkflowName.ToString(), item.WorkflowName);
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithIsSubExecution()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var IsSubExecution = false;
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal, IsSubExecution);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("IsSubExecution", IsSubExecution.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+                
+                Assert.AreEqual("0", item.IsSubExecution.ToString());
+            }
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_FromDB_Execute")]
+        public void GetLogDataService_Execute_ShouldFilterLogData_WithIsRemoteWorkflow()
+        {
+            //------------Setup for test--------------------------
+            var getLogDataService = new GetLogDataService();
+            var expectedWorkflowId = Guid.NewGuid();
+            var expectedExecutionId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
+            var IsRemoteWorkflow = false;
+            var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity, principal,false , IsRemoteWorkflow);
+            _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
+            //---------------Assert Precondition----------------
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("IsRemoteWorkflow", IsRemoteWorkflow.ToString().ToStringBuilder());
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var serializer = new Dev2JsonSerializer();
+            var logEntriesObject = serializer.Deserialize<List<AuditLog>>(logEntriesJson.ToString());
+            foreach (var item in logEntriesObject)
+            {
+
+                Assert.AreEqual("0", item.IsRemoteWorkflow.ToString());
+            }
+        }
+        private static Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
+        {
+            return new Dev2StateAuditLogger(mockedDataObject.Object);
+        }
+
+        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity, Mock<IPrincipal> principle, bool isSubExecution = false, bool isRemoteWorkflow = false, Guid serverID = default(Guid), Guid parentID = default(Guid))
+        {
+            // setup
+            Mock<IDSFDataObject> mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId, principle, isSubExecution, isRemoteWorkflow, serverID, parentID);
+            activity = new Mock<IDev2Activity>();
+            dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
+        }
+
+        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, Mock<IPrincipal> principle, bool isSubExecution, bool isRemoteWorkflow, Guid serverID, Guid parentID)
+        {
+            // mocks
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
+            mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+            mockedDataObject.Setup(o => o.IsSubExecution).Returns(() => isSubExecution);
+            mockedDataObject.Setup(o => o.ParentID).Returns(() => parentID);
+            mockedDataObject.Setup(o => o.IsRemoteWorkflow()).Returns(() => isRemoteWorkflow);
+            mockedDataObject.Setup(o => o.ServerID).Returns(() => serverID);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principle.Object);
+            return mockedDataObject;
         }
     }
 }
