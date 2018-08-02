@@ -12,7 +12,7 @@ namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class GetServiceExecutionResultTest
-    {
+    {   
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]

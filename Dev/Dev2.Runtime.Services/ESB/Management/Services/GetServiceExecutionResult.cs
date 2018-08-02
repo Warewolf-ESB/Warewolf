@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             if (LogDataCache.CurrentResults == null || !LogDataCache.CurrentResults.Any())
             {
-                LogDataCache.CurrentResults = BuildTempObjects();
+                LogDataCache.CurrentResults = BuildTempObjects(values);
             }
             var tmpObjects = LogDataCache.CurrentResults.FirstOrDefault(r => r.ExecutionId == trimExecutionId && r.Message.StartsWith("Execution Result"));
             var replace = "";
