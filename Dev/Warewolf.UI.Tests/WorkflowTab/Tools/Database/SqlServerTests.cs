@@ -64,7 +64,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
                 DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();
                 DatabaseToolsUIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
                 DatabaseToolsUIMap.Click_EditSourceButton_On_SQLServerTool();
-                Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected);
                 Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
             }
         }
