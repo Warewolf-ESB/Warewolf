@@ -59,8 +59,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
                 Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
                 DatabaseToolsUIMap.Click_EditSourceButton_On_SQLServerTool();
                 Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "SQL Server Source Tab does not exist");
-                DBSourceUIMap.Click_WindowsButton_On_DatabaseSource();
-                DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
                 DBSourceUIMap.Select_master_From_DB_Source_Wizard_Database_Combobox();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();

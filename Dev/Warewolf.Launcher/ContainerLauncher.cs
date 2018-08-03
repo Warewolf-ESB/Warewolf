@@ -105,7 +105,7 @@ namespace Warewolf.Launcher
 
         void RecoverLogFile()
         {
-            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/logs";
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/logs?stderr=1&stdout=1";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -115,7 +115,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Error recoving server log file: " + reader.ReadToEnd());
+                        Console.WriteLine("Error recoving container log file: " + reader.ReadToEnd());
                     }
                     else
                     {

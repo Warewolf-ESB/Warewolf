@@ -88,7 +88,14 @@ namespace Warewolf.Launcher
         {
             foreach (string dirPath in Directory.GetDirectories(SourcePath, "*", SearchOption.AllDirectories))
             {
-                Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+                try
+                {
+                    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+                }
+                catch (PathTooLongException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
             foreach (string newPath in Directory.GetFiles(SourcePath, "*.*", SearchOption.AllDirectories))
@@ -99,7 +106,7 @@ namespace Warewolf.Launcher
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    Console.WriteLine(e.Message);
                 }
             }
         }
