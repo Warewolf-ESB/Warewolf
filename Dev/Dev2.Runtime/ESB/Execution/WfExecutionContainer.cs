@@ -27,9 +27,9 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    public class WfExecutionContainer : EsbExecutionContainer
+    public abstract class WfExecutionContainerBase : EsbExecutionContainer
     {
-        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        protected WfExecutionContainerBase(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             DataObject.Settings = GetWorkflowSetting();
@@ -139,8 +139,62 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
-        {            
+        protected abstract void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update);
+     
+        void SetDataObjectProperties()
+        {
+            DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
+
+            if (string.IsNullOrEmpty(DataObject.WebUrl))
+            {
+                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
+            }
+            if (DataObject.ServerID == Guid.Empty)
+            {
+                DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
+            }
+        }
+
+        ErrorResultTO AddErrors()
+        {
+            var errors = new ErrorResultTO();
+            foreach (var err in DataObject.Environment.Errors)
+            {
+                errors.AddError(err, true);
+            }
+            foreach (var err in DataObject.Environment.AllErrors)
+            {
+                errors.AddError(err, true);
+            }
+            return errors;
+        }
+
+        void SetExecutionOrigin()
+        {
+            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
+                DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
+            }
+            else if (DataObject.IsDebug)
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+            }
+            else
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.External;
+            }
+        }
+    }
+    class WfExecutionContainer : WfExecutionContainerBase
+    {
+        public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : base(sa, dataObj, theWorkspace, esbChannel)
+        {
+        }
+
+        override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
+        {
             var outerStateLogger = dsfDataObject.StateNotifier;
             try
             {
@@ -171,7 +225,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
 
                 ExecuteNode(dsfDataObject, update, ref next, ref lastActivity);
-            }            
+            }
             finally
             {
                 var exe = CustomContainer.Get<IExecutionManager>();
@@ -247,51 +301,6 @@ namespace Dev2.Runtime.ESB.Execution
             else
             {
                 dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
-            }
-        }
-
-        void SetDataObjectProperties()
-        {
-            DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
-
-            if (string.IsNullOrEmpty(DataObject.WebUrl))
-            {
-                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
-            }
-            if (DataObject.ServerID == Guid.Empty)
-            {
-                DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-            }
-        }
-
-        ErrorResultTO AddErrors()
-        {
-            var errors = new ErrorResultTO();
-            foreach (var err in DataObject.Environment.Errors)
-            {
-                errors.AddError(err, true);
-            }
-            foreach (var err in DataObject.Environment.AllErrors)
-            {
-                errors.AddError(err, true);
-            }
-            return errors;
-        }
-
-        void SetExecutionOrigin()
-        {
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
-                DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
-            }
-            else if (DataObject.IsDebug)
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
-            }
-            else
-            {
-                DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
         }
     }
