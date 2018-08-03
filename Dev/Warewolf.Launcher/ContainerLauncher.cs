@@ -94,16 +94,16 @@ namespace Warewolf.Launcher
                 {
                     RecoverServerLogFile();
                 }
-                else if (ImageName.ToLower() == "")
+                else
                 {
-                    RecoverMSSQLLogFile();
+                    RecoverLogFile();
                 }
                 DeleteContainer();
                 serverContainerID = null;
             }
         }
 
-        void RecoverMSSQLLogFile()
+        void RecoverLogFile()
         {
             var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/logs";
             using (var client = new HttpClient())
