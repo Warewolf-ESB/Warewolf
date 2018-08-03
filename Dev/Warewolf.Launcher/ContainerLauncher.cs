@@ -90,9 +90,38 @@ namespace Warewolf.Launcher
             if (serverContainerID != null)
             {
                 StopContainer();
-                RecoverServerLogFile();
+                if (ImageName.ToLower() == "warewolfserver" || ImageName.ToLower() == "ciremote")
+                {
+                    RecoverServerLogFile();
+                }
+                else if (ImageName.ToLower() == "")
+                {
+                    RecoverMSSQLLogFile();
+                }
                 DeleteContainer();
                 serverContainerID = null;
+            }
+        }
+
+        void RecoverMSSQLLogFile()
+        {
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/logs";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.GetAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Error recoving server log file: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        reader.BaseStream.CopyToAsync(Console.OpenStandardOutput());
+                    }
+                }
             }
         }
 
