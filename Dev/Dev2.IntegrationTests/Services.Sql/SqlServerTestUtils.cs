@@ -30,7 +30,8 @@ namespace Dev2.Integration.Tests.Services.Sql
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = authenticationType == AuthenticationType.User ? "testUser" : null,
-                Password = authenticationType == AuthenticationType.User ? "test123" : null
+                Password = authenticationType == AuthenticationType.User ? "test123" : null,
+                ConnectionTimeout = 30000
             };
             return dbSource;
         }
