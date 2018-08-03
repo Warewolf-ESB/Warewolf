@@ -192,7 +192,8 @@ namespace Dev2.Tests.Runtime.Services
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
                 UserID = "testUser",
-                Password = "test123"
+                Password = "test123",
+                ConnectionTimeout = 30000
             };
             return dbSource;
         }
