@@ -31,7 +31,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 ReloadActions = true,
                 UserID = authenticationType == AuthenticationType.User ? "testUser" : null,
                 Password = authenticationType == AuthenticationType.User ? "test123" : null,
-                ConnectionTimeout = 30000
+                ConnectionTimeout = 30
             };
             return dbSource;
         }

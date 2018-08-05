@@ -193,7 +193,7 @@ namespace Dev2.Tests.Runtime.Services
                 ReloadActions = true,
                 UserID = "testUser",
                 Password = "test123",
-                ConnectionTimeout = 30000
+                ConnectionTimeout = 30
             };
             return dbSource;
         }
