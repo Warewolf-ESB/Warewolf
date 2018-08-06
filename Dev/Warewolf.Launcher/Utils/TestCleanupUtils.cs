@@ -404,7 +404,7 @@ namespace Warewolf.Launcher
                             {
                                 if (TestResult.Attributes["testName"] != null && TestDefinition.Attributes["name"].InnerText == TestResult.Attributes["testName"].InnerText)
                                 {
-                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Attributes["name"].InnerText + "\" />";
+                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"].InnerText + "." + TestDefinition.Attributes["name"].InnerText + "\" />";
                                 }
                             }
                         }
@@ -419,7 +419,7 @@ namespace Warewolf.Launcher
             {
                 if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
                 {
-                    PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
+                    PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["name"].InnerText + "\" />";
                 }
                 else
                 {
