@@ -29,8 +29,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public IEnumerable<dynamic> BuildTempObjects(Dictionary<string, StringBuilder> keyValue)
         {
-            var startTime = DateTime.Parse(HttpUtility.UrlDecode(GetValue<string>("StartDateTime", keyValue)));
-            var endTime = DateTime.Parse(HttpUtility.UrlDecode(GetValue<string>("CompletedDateTime", keyValue))); 
+            var startDateTime = GetValue<string>("StartDateTime", keyValue);
+            var startTime = default(DateTime);
+            if (!string.IsNullOrEmpty(startDateTime))
+            {
+                startTime = DateTime.Parse(HttpUtility.UrlDecode(startDateTime));
+            }
+            var completedDateTime = GetValue<string>("CompletedDateTime", keyValue);
+            var endTime = default(DateTime);
+            if (!string.IsNullOrEmpty(startDateTime))
+            {
+                endTime = DateTime.Parse(HttpUtility.UrlDecode(completedDateTime));
+            }
             var auditType = GetValue<string>("AuditType", keyValue);
             var executingUser = GetValue<string>("ExecutingUser", keyValue);
             var workflowID = GetValue<string>("WorkflowID", keyValue);
