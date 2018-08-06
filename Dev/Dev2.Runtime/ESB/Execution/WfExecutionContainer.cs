@@ -24,6 +24,7 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -135,7 +136,6 @@ namespace Dev2.Runtime.ESB.Execution
             var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
-
         }
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
@@ -302,6 +302,31 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
             }
+        }
+    }
+
+    class ResumableExecutionContainer : WfExecutionContainer
+    {
+        readonly Guid resumeActivityId;
+        readonly IExecutionEnvironment resumeEnvironment;
+        public ResumableExecutionContainer(Guid resumeActivityId, IExecutionEnvironment env, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+            : base(sa, dataObj, theWorkspace, esbChannel)
+        {
+            this.resumeActivityId = resumeActivityId;
+            this.resumeEnvironment = env;
+        }
+
+        protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
+        {
+            // TODO: skip to correct resume resource
+            var startAtActivity = FindActivity(resource);
+            dsfDataObject.Environment = resumeEnvironment;
+            base.EvalInner(dsfDataObject, startAtActivity, update);
+        }
+
+        private IDev2Activity FindActivity(IDev2Activity resource)
+        {
+            throw new NotImplementedException();
         }
     }
 }
