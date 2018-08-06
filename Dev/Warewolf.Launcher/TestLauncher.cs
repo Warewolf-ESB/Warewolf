@@ -151,20 +151,6 @@ namespace Warewolf.Launcher
             return containerLauncher;
         }
 
-        string InsertServerSourceAddress(string serverSourceXML, string newAddress)
-        {
-            var startFrom = "AppServerUri=http://";
-            var subStringTo = ":3142/dsf;";
-            int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
-            int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
-            string oldAddress = serverSourceXML.Substring(startIndex, length);
-            if (!string.IsNullOrEmpty(oldAddress))
-            {
-                serverSourceXML = serverSourceXML.Replace(oldAddress, "");
-            }
-            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
-        }
-
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
