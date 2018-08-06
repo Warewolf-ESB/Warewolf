@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Web.UI.Tests.BrowserWebDrivers;
-using System.Diagnostics;
 using Warewolf.Web.UI.Tests.ScreenRecording;
 
 namespace Warewolf.Web.UI.Tests
@@ -10,14 +9,15 @@ namespace Warewolf.Web.UI.Tests
     public class Web_UITests_For_Opera
     {
         private BaseWebDriver driver;
-        string browserName = "Opera";
+        readonly string browserName = "Opera";
         public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+        private FfMpegVideoRecorder screenRecorder;
 
         [TestInitialize]
         public void SetupTest()
         {
             driver = new OperaWebDriver();
+            screenRecorder = new FfMpegVideoRecorder();
             screenRecorder.StartRecording(TestContext, browserName);
         }
 
@@ -53,7 +53,7 @@ namespace Warewolf.Web.UI.Tests
             Assert.IsTrue(driver.WaitForSpinner());
             Assert.IsTrue(driver.WaitForExecutionList());
             Assert.IsTrue(driver.IsExecutionListVisible());
-            string assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            var assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
             Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
 
             driver.ClickUpdateServer();
