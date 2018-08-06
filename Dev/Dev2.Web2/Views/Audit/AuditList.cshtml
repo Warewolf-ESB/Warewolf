@@ -1,213 +1,103 @@
-﻿@model IEnumerable <Dev2.Runtime.Auditing.AuditLog>
-
-<head>
-    <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
-
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-    <script type='text/javascript' src='~/Scripts/multifilter.js'></script>
-    <script type='text/javascript' src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/tsorter.min.js"></script>
-</head>
-
-<div style="padding-top: 3px;">
-    <table id="executionFilters" class="table">
-        <tr>
-            <td style="display:none;" class='filter-container filterContainId'>
-                <input id="filterId" autocomplete='off' class='filter' name='WorkflowID' placeholder='Workflow ID' data-col='WorkflowID' />
-            </td>
-            <td class='filter-container filterContainUrl' style="width:100%">
-                <input id="filterUrl" autocomplete='off' class='filter' name='WorkflowName' placeholder='Workflow Name' data-col='WorkflowName' />
-            </td>
-            <td style="display:none;" class='filter-container filterContainId'>
-                <input id="filterId" autocomplete='off' class='filter' name='ExecutionID' placeholder='Execution ID' data-col='ExecutionID' />
-            </td>
-            <td class='filter-container filterContainTime'>
-                <input id="filterTime" autocomplete='off' class='filter' name='AuditType' placeholder='Audit Type' data-col='AuditType' />
-            </td>
-            <td class='filter-container filterContainStatus'>
-                <input id="filterStatus" autocomplete='off' class='filter' name='ServerID' placeholder='Server ID' data-col='ServerID' />
-            </td>
-            <td class='filter-container filterContainStart'>
-                <input id="filterStatus" autocomplete='off' class='filter' name='ParentID' placeholder='Parent ID' data-col='ParentID' />
-            </td>
-            <td class='filter-container filterContainComplete'>
-                <input id="filterUser" autocomplete='off' class='filter' name='ExecutingUser' placeholder='Executing User' data-col='ExecutingUser' />
-            </td>
-            <td class='filter-container filterContainUser'>
-                <input id="filterStatus" autocomplete='off' class='filter' name='IsSubExecution' placeholder='Is Sub Execution' data-col='IsSubExecution' />
-            </td>
-            <td class='filter-container filterContainUser'>
-                <input id="filterStatus" autocomplete='off' class='filter' name='IsRemoteWorkflow' placeholder='Is Remote Workflow' data-col='IsRemoteWorkflow' />
-            </td>
-            <td class='filter-container filterContainStart'>
-                <input id="filterStart" autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' data-col='Start Time' />
-            </td>
-            <td class='filter-container filterContainComplete'>
-                <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' data-col='Completed Time' />
-            </td>
-            <td class='filter-container filterContainReset'>
-                <button type="button" class="btn btn-default" id="ResetButton">Clear</button>
-            </td>
-        </tr>
-    </table>
-</div>
+﻿@model IEnumerable<Dev2.Runtime.Auditing.AuditLog>
 <div>
     <table id="auditList" class="tablesorter">
         <thead>
             <tr>
-                <th class="exId" title="WorkflowID">WorkflowID</th>
-                <th class="exUrl" title="WorkflowName">WorkflowName</th>
-                <th class="exId" title="ExecutionID">ExecutionID</th>
-                <th class="exStatus" title="AuditType">AuditType</th>
-                <th style="display:none;" class="exStatus" title="PreviousActivity">PreviousActivity</th>
-                <th style="display:none;" class="exStatus" title="PreviousActivityType">PreviousActivityType</th>
-                <th style="display:none;" class="exStatus" title="PreviousActivityID">PreviousActivityID</th>
-                <th style="display:none;" class="exStatus" title="NextActivity">NextActivity</th>
-                <th style="display:none;" class="exStatus" title="NextActivityType">NextActivityType</th>
-                <th style="display:none;" class="exStatus" title="NextActivityID">NextActivityID</th>
-                <th class="exStatus" title="ServerID">ServerID</th>
-                <th class="exStatus" title="ParentID">ParentID</th>
-                <th class="exStatus" title="ExecutingUser">ExecutingUser</th>
-                <th style="display:none;" class="exStatus" title="ExecutionOrigin">ExecutionOrigin</th>
-                <th style="display:none;" class="exStatus" title="ExecutionOriginDescription">ExecutionOriginDescription</th>
-                <th style="display:none;" class="exStatus" title="ExecutionToken">ExecutionToken</th>
-                <th style="display:none;" class="exStatus" title="AdditionalDetail">AdditionalDetail</th>
-                <th class="exStatus" title="IsSubExecution">IsSubExecution</th>
-                <th class="exStatus" title="IsRemoteWorkflow">IsRemoteWorkflow</th>
-                <th style="display:none;" class="exStatus" title="Environment">Environment</th>
-                <th class="exStatus" title="AuditDate">AuditDate</th>
-                <th>Resume</th>
+                <th class="auWorkflowID" title="WorkflowID" name="WorkflowID">WorkflowID</th>
+                <th class="auWorkflowName" title="WorkflowName" name="WorkflowName">WorkflowName</th>
+                <th class="auExecutionID" title="ExecutionID" name="ExecutionID">ExecutionID</th>
+                <th class="auAuditType" title="AuditType" name="AuditType">AuditType</th>
+                <th style="display:none;" title="PreviousActivity" name="PreviousActivity">PreviousActivity</th>
+                <th style="display:none;" title="PreviousActivityType"  name="PreviousActivityType">PreviousActivityType</th>
+                <th style="display:none;" title="PreviousActivityID" name="PreviousActivityID">PreviousActivityID</th>
+                <th style="display:none;" title="NextActivity"  name="NextActivity">NextActivity</th>
+                <th style="display:none;" title="NextActivityType" name="NextActivityType">NextActivityType</th>
+                <th style="display:none;" title="NextActivityID" name="NextActivityID">NextActivityID</th>
+                <th class="auServerID" title="ServerID" name="ServerID">ServerID</th>
+                <th class="auParentID" title="ParentID"  name="ParentID">ParentID</th>
+                <th class="auExecutingUser" title="ExecutingUser"  name="ExecutingUser">ExecutingUser</th>
+                <th style="display:none;" title="ExecutionOrigin"  name="ExecutionOrigin">ExecutionOrigin</th>
+                <th style="display:none;" title="ExecutionOriginDescription" name="ExecutionOriginDescription">ExecutionOriginDescription</th>
+                <th style="display:none;" title="AdditionalDetail"  name="AdditionalDetail">AdditionalDetail</th>
+                <th class="auIsSubExecution" title="IsSubExecution"  name="IsSubExecution">Sub Ex</th>
+                <th class="auIsRemoteWorkflow" title="IsRemoteWorkflow" name="IsRemoteWorkflow">Remote WF</th>
+                <th style="display:none;" title="Environment"  name="Environment">Environment</th>
+                <th class="auAuditDate" title="AuditDate" name="AuditDate">AuditDate</th>
+                <th>Env</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td class="exRow">
-                    @Html.DisplayFor(modelItem => item.WorkflowID)
-                </td>
-                <td class="exRow exUrl">
-                    @Html.DisplayFor(modelItem => item.WorkflowName)
-                </td>
-                <td class="exRow exTime">
-                    @Html.DisplayFor(modelItem => item.ExecutionID)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.AuditType)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.PreviousActivity)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.PreviousActivityType)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.PreviousActivityId)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.NextActivity)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.NextActivityType)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.NextActivityId)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.ServerID)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.ParentID)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.ExecutingUser)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.ExecutionOrigin)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.ExecutionOriginDescription)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.ExecutionToken)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.AdditionalDetail)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.IsSubExecution)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.IsRemoteWorkflow)
-                </td>
-                <td class="exRow exStatus" style="display:none;">
-                    @Html.DisplayFor(modelItem => item.Environment)
-                </td>
-                <td class="exRow exStatus">
-                    @Html.DisplayFor(modelItem => item.AuditDate)
-                </td>
-                <td>
-                    <a class="details" href="javascript:;">[...]</a>
-                </td>
-            </tr>
-                            }
+                <tr>
+                    <td class="exRow auWorkflowID">
+                        @Html.DisplayFor(modelItem => item.WorkflowID)
+                    </td>
+                    <td class="exRow auWorkflowName">
+                        @Html.DisplayFor(modelItem => item.WorkflowName)
+                    </td>
+                    <td class="exRow auExecutionID">
+                        @Html.DisplayFor(modelItem => item.ExecutionID)
+                    </td>
+                    <td class="exRow auAuditType">
+                        @Html.DisplayFor(modelItem => item.AuditType)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PreviousActivity)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PreviousActivityType)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PreviousActivityId)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.NextActivity)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.NextActivityType)
+                    </td>
+                    <td class="exRow" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.NextActivityId)
+                    </td>
+                    <td class="exRow auServerID">
+                        @Html.DisplayFor(modelItem => item.ServerID)
+                    </td>
+                    <td class="exRow auParentID">
+                        @Html.DisplayFor(modelItem => item.ParentID)
+                    </td>
+                    <td class="exRow auExecutingUser">
+                        @Html.DisplayFor(modelItem => item.ExecutingUser)
+                    </td>
+                    <td class="exRow exStatus" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.ExecutionOrigin)
+                    </td>
+                    <td class="exRow exStatus" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.ExecutionOriginDescription)
+                    </td>
+                    <td class="exRow exStatus" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.ExecutionToken)
+                    </td>
+                    <td class="exRow exStatus" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.AdditionalDetail)
+                    </td>
+                    <td class="exRow auIsSubExecution">
+                        @Html.DisplayFor(modelItem => item.IsSubExecution)
+                    </td>
+                    <td class="exRow auIsRemoteWorkflow">
+                        @Html.DisplayFor(modelItem => item.IsRemoteWorkflow)
+                    </td>
+                    <td class="exRow Environment" style="display:none;">
+                        @Html.DisplayFor(modelItem => item.Environment)
+                    </td>
+                    <td class="exRow auAuditDate">
+                        @Html.DisplayFor(modelItem => item.AuditDate)
+                    </td>
+                    <td>
+                        <a class="details">[...]</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
-
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-
-        $("#auditList").tablesorter();
-
-        $('.filter').multifilter();
-
-        $("#filterStart").datetimepicker({
-            format: 'Y-m-d H:i:s',
-            lang: 'en'
-        });
-
-        $("#filterComplete").datetimepicker({
-            format: 'Y-m-d H:i:s',
-            lang: 'en'
-        });
-
-        $('#ResetButton').on('click', function (e) {
-            $('#executionFilters input').val("").keyup();
-        });
-
-        $(document).ready(function () {
-
-            $("#auditList .details").click(function (e) {
-                e.preventDefault();
-                var serverUrl = getServerUrl();
-                var executionId = $(this).closest("tr").find("td").eq(0).html().trim();
-                var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
-
-                $.ajax({
-                    type: "GET",
-                    url: wareWolfUrl,
-                    data: { ExecutionId: executionId },
-                    cache: false,
-                    datatype: 'jsonp',
-                    crossDomain: true,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function (response) {
-                        createDialog();
-                        window.resultDialog.dialog('open');
-                        $('.exResult').text(response.Result);
-                    },
-                    fail: OnFailCall,
-                    error: OnErrorCall
-                });
-            });
-
-            $('.executionUrl').on('click', function () {
-                return confirm('Are you sure you want to execute the process again?');
-            });
-        });
-    })
-</script>

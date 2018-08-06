@@ -1,7 +1,10 @@
 ﻿using Dev2.Runtime.Auditing;
 using System.Collections.Generic;
 using System.Web.Mvc;
-
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 namespace Dev2.Web2.Models.Auditing
 {
     public class AuditingViewModel : AuditLog
@@ -22,5 +25,8 @@ namespace Dev2.Web2.Models.Auditing
         public string SortBy { get; set; }
 
         public string ComputerName { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime CompletedDateTime { get; set; }
     }
+    
 }

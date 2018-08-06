@@ -109,9 +109,10 @@ body {
 
 
 
-#divExecutionList {
+#divAuditList {
     display: none;
 }
+
 #generalMessageDiv {
     display: none;
 }
@@ -164,80 +165,110 @@ td {
 
 
 /*TABLE*/
-#executionList {
+#auditList {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #ddd;
     font-size: 12px;
     display: block;
 }
-    #executionList thead {
+
+    #auditList thead {
         display: block;
     }
 
-    #executionList tbody {
+    #auditList tbody {
         display: block;
     }
 
-    #executionList th {
+    #auditList th {
         cursor: pointer;
         border-right: 1px solid #ddd;
         padding: 5px 5px 0px 5px;
     }
 
-    #executionList tr {
+    #auditList tr {
         border-bottom: 1px solid #ddd;
         padding: 0px;
         display: block;
     }
 
-    #executionList td {
+    #auditList td {
         border-bottom: 1px solid #ddd;
         padding: 2px 9px;
         overflow: hidden;
         white-space: nowrap;
     }
 
-    #executionList .exRow {
+    #auditList .exRow {
         padding-left: 5px;
     }
 
-    #executionList .exId {
-        min-width: 240px;
-        max-width: 240px;
+    #auditList .auWorkflowID {
+        min-width: 200px;
+        max-width: 200px;
     }
 
-    #executionList .exTime {
-        min-width: 110px;
-        max-width: 110px;
+    #auditList .auWorkflowName {
+        width: 100%;
+        max-width: 150px;
     }
 
-    #executionList .exStatus {
+    #auditList .auExecutionID {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #auditList .auAuditType {
         min-width: 62px;
         max-width: 62px;
     }
 
-    #executionList .exStart {
+    #auditList .auServerID {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #auditList .auParentID {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #auditList .auExecutingUser {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionList .exComplete {
+    #auditList .auIsSubExecution {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #auditList .auIsRemoteWorkflow {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #auditList a {
+        cursor: pointer;
+    }
+
+    #auditList .auAuditDate {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionList .exUrl {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    #executionList .exUser {
+    #auditList .exStart {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionList .exResult {
+    #auditList .exComplete {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    #auditList .exResult {
         min-width: 50px;
         max-width: 50px;
     }
@@ -246,7 +277,7 @@ td {
     width: 50%;
 }
 
-    #filterTable td {
+    #filterTable div {
         padding: 0px;
         background-color: transparent
     }
@@ -487,6 +518,7 @@ td {
 
 
 /*BUTTON*/
+#FilterButton,
 #ResetButton {
     width: 45px;
     height: 23px;
@@ -499,6 +531,7 @@ td {
     border: none;
 }
 
+    #FilterButton:hover,
     #ResetButton:hover {
         background: #b14f05;
     }
@@ -538,6 +571,7 @@ td {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .executionUrl {
     font-size: 12px;
     color: #333;
@@ -569,9 +603,9 @@ td {
         border: 1px solid #ccc;
         background: white;
         border-radius: 4px;
-        font-size: 14px;
+        font-size: 12px;
         width: 100%;
-        padding-left: 5px;
+        padding: 5px;
     }
 
         .filter-container input:focus {
@@ -581,57 +615,77 @@ td {
             box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
         }
 
-#executionFilters {
+#auditFilters {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 3px;
-    display: block;
+    display: inline-block;
+    float: left;
 }
 
-    #executionFilters td {
+    #auditFilters div {
         padding: 2px;
         background-color: transparent;
         border: none;
         overflow: hidden;
         white-space: nowrap;
+        display: inline-block;
+        float: left;
+        min-width: 202px;
+        max-width: 202px;
     }
 
-    #executionFilters .filterContainId {
-        min-width: 240px;
-        max-width: 240px;
+    #auditFilters .filterWorkflowName {
+        width: 100%;
+        max-width: 150px;
     }
 
-    #executionFilters .filterContainTime {
-        min-width: 110px;
-        max-width: 110px;
+    #auditFilters .filterExecutionID {
+        min-width: 200px;
+        max-width: 200px;
     }
 
-    #executionFilters .filterContainStatus {
+    #auditFilters .filterAuditType {
         min-width: 62px;
         max-width: 62px;
     }
 
-    #executionFilters .filterContainStart {
+    #auditFilters .filterServerID {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #auditFilters .filterParentID {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #auditFilters .filterExecutingUser {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionFilters .filterContainComplete {
+    #auditFilters .filterIsSubExecution {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #auditFilters .filterIsRemoteWorkflow {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #auditFilters .filterContainStart {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionFilters .filterContainUrl {
-        width: 100%;
-        min-width: 150px;
-    }
-
-    #executionFilters .filterContainUser {
+    #auditFilters .filterContainComplete {
         min-width: 150px;
         max-width: 150px;
     }
 
-    #executionFilters .filterContainReset {
+    #auditFilters .filterContainReset {
         min-width: 50px;
         max-width: 50px;
     }
@@ -703,6 +757,7 @@ td {
 .navbar-inverse .navbar-nav > li > a {
     color: #fff;
 }
+
     .navbar-inverse .navbar-nav > li > a:hover {
         color: #f3700d;
     }
@@ -710,7 +765,7 @@ td {
 .navbar-inverse .navbar-nav > li > p {
     color: #fff;
 }
-    /*.navbar-inverse .navbar-nav > li > p:hover {
+/*.navbar-inverse .navbar-nav > li > p:hover {
         color: #f3700d;
     }*/
 
@@ -769,9 +824,9 @@ td {
     margin: -8px -7px;
 }
 
-.ui-button-icon-only .ui-button-text, 
-.ui-button-icons-only .ui-button-text{
-    height:0px;
+.ui-button-icon-only .ui-button-text,
+.ui-button-icons-only .ui-button-text {
+    height: 0px;
     width: 0px;
 }
 
