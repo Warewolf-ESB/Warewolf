@@ -50,8 +50,6 @@ namespace Dev2.Web2.Controllers
         }
 
         [HttpPost]
-        [ValidateInput(false)]
-        [AllowCrossSiteJson]
         public ActionResult AuditList(string jsonData)
         {
             var logEntries = JsonConvert.DeserializeObject<List<AuditLog>>(jsonData);

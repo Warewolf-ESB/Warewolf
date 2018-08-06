@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-               var results =  BuildTempObjects(values);
+                var results = BuildTempObjects(values);
                 LogDataCache.CurrentResults = results;
                 return serializer.SerializeToBuilder(results);
             }
@@ -27,11 +27,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
             }
             return serializer.SerializeToBuilder("");
-        }        
+        }
               
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => "GetLogDataService";
+
+       
     }
 
     public static class LogDataCache
