@@ -9,14 +9,15 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
     public class Chrome_Audit_UITests
     {
         private BaseWebDriver driver;
-        string browserName = "Chrome";
+        readonly string browserName = "Chrome";
         public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+        private FfMpegVideoRecorder screenRecorder;
 
         [TestInitialize]
         public void SetupTest()
         {
             driver = new ChromeWebDriver();
+            screenRecorder = new FfMpegVideoRecorder();
             screenRecorder.StartRecording(TestContext, browserName);
         }
 
@@ -27,6 +28,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
             {
                 driver.Quit();
                 driver.Close();
+                screenRecorder.Dispose();
             }
             catch (Exception)
             {
@@ -53,7 +55,7 @@ namespace Warewolf.Web.UI.Tests.ExecutionLoggingTests
             Assert.IsTrue(driver.WaitForSpinner());
             Assert.IsTrue(driver.WaitForExecutionList());
             Assert.IsTrue(driver.IsExecutionListVisible());
-            string assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            var assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
             Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
 
             driver.ClickUpdateServer();
