@@ -279,18 +279,15 @@ namespace Warewolf.Launcher
 
         public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio)
         {
-            if (build.Cleanup)
+            foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
             {
-                foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
+                XmlDocument trxContent = new XmlDocument();
+                trxContent.Load(FullTRXFilePath);
+                var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
                 {
-                    XmlDocument trxContent = new XmlDocument();
-                    trxContent.Load(FullTRXFilePath);
-                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
-                    {
-                        WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
-                    }
+                    WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
                 }
             }
 
@@ -405,9 +402,9 @@ namespace Warewolf.Launcher
                         {
                             foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
                             {
-                                if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
+                                if (TestResult.Attributes["testName"] != null && TestDefinition.Attributes["name"].InnerText == TestResult.Attributes["testName"].InnerText)
                                 {
-                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
+                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Attributes["name"].InnerText + "\" />";
                                 }
                             }
                         }
