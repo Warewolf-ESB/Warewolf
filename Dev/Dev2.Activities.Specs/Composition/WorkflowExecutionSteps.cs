@@ -300,7 +300,11 @@ namespace Dev2.Activities.Specs.Composition
             var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
-            if (workflowName == "TestMySqlWFWithMySqlCountries")
+            if (workflowName == "TestMySqlWFWithMySqlCountries" ||
+                workflowName == "TestMySqlWFWithMySqlLastIndex" ||
+                workflowName == "TestMySqlWFWithMySqlScalar" ||
+                workflowName == "TestMySqlWFWithMySqlStarIndex" ||
+                workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
                 _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 environmentModel.LoadExplorer(true);
