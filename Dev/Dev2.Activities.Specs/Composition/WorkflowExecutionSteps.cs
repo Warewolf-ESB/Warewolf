@@ -746,9 +746,16 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
+
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
+
+            if (remoteWf == "TestmySqlReturningXml")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                localHostEnv.LoadExplorer(true);
+            }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
