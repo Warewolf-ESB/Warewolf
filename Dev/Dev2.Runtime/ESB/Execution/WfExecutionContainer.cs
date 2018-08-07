@@ -319,19 +319,17 @@ namespace Dev2.Runtime.ESB.Execution
             this.resumeActivityId = resumeActivityId;
             this.resumeEnvironment = env;
         }
-        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
+
+        protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {            
-            var startAtActivity = FindActivity(resourceID);
-            dataObject.Environment = resumeEnvironment;
-            EvalInner(dataObject, startAtActivity, dataObject.ForEachUpdateValue);
+            var startAtActivity = FindActivity(resource);
+            dsfDataObject.Environment = resumeEnvironment;
+            base.EvalInner(dsfDataObject, startAtActivity, update);
         }
-        
-        private IDev2Activity FindActivity(Guid resourceID)
+
+        private IDev2Activity FindActivity(IDev2Activity resource)
         {
-            var parser = new ActivityParser();
-            var act = ResourceCatalog.Instance.GetActivity(ResourceCatalog.Instance.GetServiceAction(TheWorkspace.ID, resourceID));
-            var dev2Activity = parser.Parse(act);
-            var allNodes = parser.ParseToLinkedFlatList(dev2Activity);
+            var allNodes = new ActivityParser().ParseToLinkedFlatList(resource);
             return allNodes.FirstOrDefault(p => p.UniqueID == resumeActivityId.ToString());
         }
     }
