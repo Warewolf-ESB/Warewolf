@@ -148,11 +148,13 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc", "172.27.185.174")
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
             {
                 LogOutputDirectory = logDirectory
             };
-            Thread.Sleep(10000);
+            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+            Thread.Sleep(30000);
             return containerLauncher;
         }
 
