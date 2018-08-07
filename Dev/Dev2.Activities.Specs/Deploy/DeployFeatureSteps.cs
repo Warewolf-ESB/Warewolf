@@ -40,7 +40,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            WorkflowExecutionSteps._containerOps = new ContainerLauncher();
+            WorkflowExecutionSteps._containerOps = new ContainerLauncher("warewolfserver");
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
