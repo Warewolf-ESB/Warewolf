@@ -22,16 +22,7 @@
 		</table>
 	</div>
 
-	<div id="loader">
-		<div id="loader_1" class="loader"></div>
-		<div id="loader_2" class="loader"></div>
-		<div id="loader_3" class="loader"></div>
-		<div id="loader_4" class="loader"></div>
-		<div id="loader_5" class="loader"></div>
-		<div id="loader_6" class="loader"></div>
-		<div id="loader_7" class="loader"></div>
-		<div id="loader_8" class="loader"></div>
-	</div>
+
 
 	<div style="padding-top: 3px;">
 		<div id="auditFilters" class="auditFilters">
@@ -81,6 +72,16 @@
 	</div>
 
 	<div id="divAuditList" class="animate-bottom">
+		<div id="loader">
+			<div id="loader_1" class="loader"></div>
+			<div id="loader_2" class="loader"></div>
+			<div id="loader_3" class="loader"></div>
+			<div id="loader_4" class="loader"></div>
+			<div id="loader_5" class="loader"></div>
+			<div id="loader_6" class="loader"></div>
+			<div id="loader_7" class="loader"></div>
+			<div id="loader_8" class="loader"></div>
+		</div>
 	</div>
 
 	<div id="ExecutionResults" class="dialogResult">
@@ -162,62 +163,28 @@
 				result[keyName] = new Date(startdate).toISOString();
 			}
 			else if (keyName == 'CompletedDateTime' && enddate != '') {
-				result[keyName] = enddate;
+				result[keyName] = new Date(enddate).toISOString();
 			}
 			else {
 				result[keyName] = keyValue.toString();
 			}
 		});
 		console.log(result);
+		$.ajax({
+			type: "POST",
+			url: wareWolfUrl,
+			cache: false,
+			'Content-Type': "application/json",
+			data: result,
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: OnSuccessCall,
+			fail: OnFailCall,
+			error: OnErrorCall
+		});
 
-		if (browserType == "Edge") {
-			var oReq = new XMLHttpRequest();
-			oReq.open('GET', pingUrl, true);
-			oReq.withCredentials = true;
-			oReq.onreadystatechange = function () {
-				if (oReq.readyState == oReq.DONE) {
-					if (oReq.status == 200) {
-						var xhr = new XMLHttpRequest();
-						xhr.open('POST', wareWolfUrl, true);
-						xhr.withCredentials = true;
-						xhr.onreadystatechange = function () {
-							if (xhr.readyState == xhr.DONE) {
-								if (xhr.status == 200) {
-									var returnData = JSON.parse(xhr.response);
-									OnSuccessCall(returnData, xhr.statusText, xhr);
-								}
-							}
-						};
-						xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-						xhr.setRequestHeader("Content-Length", xhr.response.length);
-						xhr.setRequestHeader("Connection", "close");
-						xhr.send();
-					}
-					else {
-						$('.generalMessageText').text("This feature is not currently available in Microsoft Edge");
-						hideExecutionAndLoader();
-						document.getElementById("generalMessageDiv").style.display = "block";
-					}
-				}
-			};
-			oReq.send();
-		}
-		else {
-			$.ajax({
-				type: "POST",
-				url: wareWolfUrl,
-				cache: false,
-				'Content-Type': "application/json",
-				data: result,
-				crossDomain: true,
-				xhrFields: {
-					withCredentials: true
-				},
-				success: OnSuccessCall,
-				fail: OnFailCall,
-				error: OnErrorCall
-			});
-		}
 	}
 
 	var OnSuccessCall = function (response, textStatus, jqXHR) {
