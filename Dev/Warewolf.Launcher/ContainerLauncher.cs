@@ -25,13 +25,12 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public ContainerLauncher(string imageName, string remoteDockerApi = "localhost", string hostname = "", string version = "latest", string ip = "")
+        public ContainerLauncher(string imageName, string remoteDockerApi = "localhost", string hostname = "", string version = "latest")
         {
             remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
             ImageName = imageName;
-            IP = ip;
             if (CheckForSwarm())
             {
                 StartWarewolfServerServiceOnSwarm();
@@ -408,7 +407,7 @@ namespace Warewolf.Launcher
         {
             var url = $"http://{remoteSwarmDockerApi}:2375/containers/create";
             HttpContent containerContent;
-            if (Hostname == "" && IP == "")
+            if (Hostname == "")
             {
                 Console.WriteLine($"Creating {FullImageID} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
@@ -421,57 +420,12 @@ namespace Warewolf.Launcher
 }
 ");
             }
-            else if (IP == "")
-            {
-                Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {remoteSwarmDockerApi}");
-                containerContent = new StringContent(@"
-{
-    ""Hostname"": """ + Hostname + @""",
-    ""Image"":""" + FullImageID + @""",
-    ""HostConfig"":
-    {
-         ""Memory"": 1000000000
-    }
-}
-");
-            }
-            else if (Hostname == "")
-            {
-                Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {remoteSwarmDockerApi}");
-                containerContent = new StringContent(@"
-{
-    ""NetworkingConfig"": {
-        ""EndpointsConfig"": {
-            ""nat"" : {
-                ""IPAMConfig"": {
-                    ""IPv4Address"":""" + IP + @"""
-                }
-            }
-        }
-    },
-    ""Image"":""" + FullImageID + @""",
-    ""HostConfig"":
-    {
-         ""Memory"": 1000000000
-    }
-}
-");
-            }
             else
             {
                 Console.WriteLine($"Creating {FullImageID} with hostname {Hostname} on {remoteSwarmDockerApi}");
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-    ""NetworkingConfig"": {
-        ""EndpointsConfig"": {
-            ""nat"" : {
-                ""IPAMConfig"": {
-                    ""IPv4Address"":""" + IP + @"""
-                }
-            }
-        }
-    },
     ""Image"":""" + FullImageID + @""",
     ""HostConfig"":
     {
