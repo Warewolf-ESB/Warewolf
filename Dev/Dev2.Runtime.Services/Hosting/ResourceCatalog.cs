@@ -270,6 +270,20 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        public ServiceAction GetServiceAction(Guid workspaceID, Guid resourceID)
+        {
+            ServiceAction sa = null;
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
+            {
+                sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+            }
+            return sa;
+        }
+
 
         // Travis.Frisinger - 02.05.2013 
         // 
@@ -427,20 +441,12 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            var resource = GetResource(workspaceID, resourceID);
-            var service = GetService(workspaceID, resourceID, resource.ResourceName);
-            if (service != null)
+            var sa = GetServiceAction(workspaceID, resourceID);
+            var activity = GetActivity(sa);
+            if (parser != null)
             {
-                var sa = service.Actions.FirstOrDefault();
-                MapServiceActionDependencies(workspaceID, sa);
-                ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                var activity = GetActivity(sa);
-                if (parser != null)
-                {
-                    return parser.Parse(activity, resourceID);
-                }
+                return parser.Parse(activity, resourceID);
             }
-
             return null;
         }
 

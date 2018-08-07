@@ -26,26 +26,51 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     {
 
         [TestMethod]
-        public void ResumableExecutionContainer_Given_Nodes_And_Nodes_To_Start_From()
+        public void ResumableExecutionContainer_Given_Start_From_AssignName_Tool()
         {
-            var resumeWorkflowId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var helloWolrdId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
             var env = new Mock<IExecutionEnvironment>();
             var serviceAction = new ServiceAction();
             var dataObj = new DsfDataObject("<DataList></DataList>", Guid.NewGuid());
-            dataObj.ResourceID = resumeWorkflowId;
+            dataObj.ResourceID = helloWolrdId;
             dataObj.ExecutingUser = SetupUser();
             Mock<IWorkspace> theWorkspace = SetupWorkspace();
             var esbChannel = new Mock<IEsbChannel>();
             var errors = new ErrorResultTO();
             var parser = new ActivityParser();
             CustomContainer.Register<IActivityParser>(parser);
-            var resource = ResourceCatalog.Instance.GetResource(Guid.Empty, resumeWorkflowId);
-
-            var resumeActivityId = Guid.Empty;
-            var resumableExecution = new ResumableExecutionContainer(resumeActivityId, env.Object, serviceAction, dataObj, theWorkspace.Object, esbChannel.Object);
+            var assingNameTool = Guid.Parse("bd557ca7-113b-4197-afc3-de5d086dfc69");
+            var resumableExecution = new ResumableExecutionContainer(assingNameTool, env.Object, serviceAction, dataObj, theWorkspace.Object, esbChannel.Object);
             Assert.IsNotNull(resumableExecution);
             resumableExecution.Execute(out errors, 0);
-        }        
+            Assert.IsFalse(dataObj.Environment.HasErrors());
+            var output = dataObj.Environment.Eval("[[Message]]", 0);
+            var message = WarewolfDataEvaluationCommon.evalResultToString(output);
+            Assert.AreEqual("Hello World.", message);
+        }
+
+
+        [TestMethod]
+        public void ResumableExecutionContainer_Given_No_Name_And_Start_From_AssignMessage_Tool()
+        {
+            var helloWolrdId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            var env = new Mock<IExecutionEnvironment>();
+            var serviceAction = new ServiceAction();
+            var dataObj = new DsfDataObject("<DataList></DataList>", Guid.NewGuid());
+            dataObj.ResourceID = helloWolrdId;
+            dataObj.ExecutingUser = SetupUser();
+            Mock<IWorkspace> theWorkspace = SetupWorkspace();
+            var esbChannel = new Mock<IEsbChannel>();
+            var errors = new ErrorResultTO();
+            var parser = new ActivityParser();
+            CustomContainer.Register<IActivityParser>(parser);
+            var assingMessageTool = Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118");
+            var resumableExecution = new ResumableExecutionContainer(assingMessageTool, env.Object, serviceAction, dataObj, theWorkspace.Object, esbChannel.Object);
+            Assert.IsNotNull(resumableExecution);
+            resumableExecution.Execute(out errors, 0);
+            Assert.IsTrue(dataObj.Environment.HasErrors());
+            Assert.AreEqual(1, dataObj.Environment.Errors.Count);
+        }
 
         private IPrincipal SetupUser()
         {
