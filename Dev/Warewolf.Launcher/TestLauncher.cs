@@ -146,32 +146,6 @@ namespace Warewolf.Launcher
             return containerLauncher;
         }
 
-        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
-        {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
-            {
-                LogOutputDirectory = logDirectory
-            };
-            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
-            Thread.Sleep(30000);
-            return containerLauncher;
-        }
-
-        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
-        {
-            var startFrom = "ConnectionString=\"";
-            var subStringTo = "\" ServerVersion=\"";
-            int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
-            int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
-            string oldAddress = serverSourceXML.Substring(startIndex, length);
-            if (!string.IsNullOrEmpty(oldAddress))
-            {
-                serverSourceXML = serverSourceXML.Replace(oldAddress, "");
-            }
-            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
-        }
-
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
