@@ -524,9 +524,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         [Given(@"I have workflow ""(.*)"" with ""(.*)"" MySql database connector")]
         public void GivenIHaveWorkflowWithMySqlDatabaseConnector(string workflowName, string activityName)
         {
-            _containerOps = StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             environmentModel.LoadExplorer(true);
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
@@ -584,32 +584,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             CleanupForTimeOutSpecs();
             _containerOps?.Dispose();
-        }
-
-        static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
-        {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
-            {
-                LogOutputDirectory = logDirectory
-            };
-            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
-            Thread.Sleep(30000);
-            return containerLauncher;
-        }
-
-        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
-        {
-            var startFrom = "ConnectionString=\"";
-            var subStringTo = "\" ServerVersion=\"";
-            int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
-            int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
-            string oldAddress = serverSourceXML.Substring(startIndex, length);
-            if (!string.IsNullOrEmpty(oldAddress))
-            {
-                serverSourceXML = serverSourceXML.Replace(oldAddress, "");
-            }
-            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
     }
 }
