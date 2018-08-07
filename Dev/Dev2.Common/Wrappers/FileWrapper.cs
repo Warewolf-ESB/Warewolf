@@ -18,103 +18,130 @@ namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
     public class FileWrapper : IFile
     {
-        public string ReadAllText(string fileName) => File.ReadAllText(fileName);
+        private static T PerformActionAsServerUser<T>(Func<T> actionToPerform)
+        {
+            var returnValue = default(T);
+            var userPrinciple = Utilities.ServerUser;
+            Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                if (actionToPerform != null)
+                {
+                    returnValue = actionToPerform();
+                }
+            });
+            return returnValue;
+        }
+
+        private static void PerformActionAsServerUser(Action actionToPerform)
+        {
+            var userPrinciple = Utilities.ServerUser;
+            Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                actionToPerform?.Invoke();
+            });
+        }
+
+        public string ReadAllText(string fileName) => PerformActionAsServerUser(()=>File.ReadAllText(fileName));
 
         public void Move(string source, string destination)
         {
-            File.Move(source, destination);
+            PerformActionAsServerUser(() => File.Move(source, destination));
         }
 
-        public bool Exists(string path) => File.Exists(path);
+        public bool Exists(string path) => PerformActionAsServerUser(() => File.Exists(path));
 
         public void Delete(string tmpFileName)
         {
-            File.Delete(tmpFileName);
+            PerformActionAsServerUser(() => File.Delete(tmpFileName));
         }
 
         public void WriteAllText(string p1, string p2)
         {
-            File.WriteAllText(p1, p2);
+            PerformActionAsServerUser(() => File.WriteAllText(p1, p2));
         }
 
         public void Copy(string source, string destination)
         {
-            File.Copy(source, destination);
+            PerformActionAsServerUser(() => File.Copy(source, destination));
         }
 
         public void WriteAllBytes(string path, byte[] contents)
         {
-            File.WriteAllBytes(path, contents);
+            PerformActionAsServerUser(() => File.WriteAllBytes(path, contents));
         }
 
         public void AppendAllText(string path, string contents)
         {
-            File.AppendAllText(path, contents);
+            PerformActionAsServerUser(() => File.AppendAllText(path, contents));
         }
 
-        public byte[] ReadAllBytes(string path) => File.ReadAllBytes(path);
+        public byte[] ReadAllBytes(string path) => PerformActionAsServerUser(() => File.ReadAllBytes(path));
 
-        public FileAttributes GetAttributes(string path) => File.GetAttributes(path);
+        public FileAttributes GetAttributes(string path) => PerformActionAsServerUser(() => File.GetAttributes(path));
 
         public void SetAttributes(string path, FileAttributes fileAttributes)
         {
-            File.SetAttributes(path, fileAttributes);
+            PerformActionAsServerUser(() => File.SetAttributes(path, fileAttributes));
         }
 
-        public Stream OpenRead(string path) => File.OpenRead(path);
+        public Stream OpenRead(string path) => PerformActionAsServerUser(() => File.OpenRead(path));
 
-        readonly static ConcurrentDictionary<string, RefCountedStreamWriter> cache = new ConcurrentDictionary<string, RefCountedStreamWriter>();
+        readonly static ConcurrentDictionary<string, RefCountedStreamWriter> _cache = new ConcurrentDictionary<string, RefCountedStreamWriter>();
         public IDev2StreamWriter AppendText(string filePath)
         {
-            RefCountedStreamWriter writer;
-            try
+            return PerformActionAsServerUser(() =>
             {
-                lock (cache)
+                RefCountedStreamWriter writer;
+                try
                 {
-                    RefCountedStreamWriter result;
-                    if (cache.TryGetValue(filePath, out writer))
+                    lock (_cache)
                     {
-                        result = writer.GetReference();
-                        lock (result)
+                        RefCountedStreamWriter result;
+                        if (_cache.TryGetValue(filePath, out writer))
                         {
-                            if (result.Closed)
+                            result = writer.GetReference();
+                            lock (result)
                             {
-                                result.SetTextWriter(File.AppendText(filePath));
+                                if (result.Closed)
+                                {
+                                    result.SetTextWriter(File.AppendText(filePath));
+                                }
                             }
+                            return result;
                         }
-                        return result;
-                    }
 
-                    var streamWriter = File.AppendText(filePath);
-                    result = new RefCountedStreamWriter(streamWriter);
-                    if (!cache.TryAdd(filePath, result))
-                    {
-                        throw new Exception($"failed keeping single reference to {filePath}");
+                        var streamWriter = File.AppendText(filePath);
+                        result = new RefCountedStreamWriter(streamWriter);
+                        if (!_cache.TryAdd(filePath, result))
+                        {
+                            throw new Exception($"failed keeping single reference to {filePath}");
+                        }
+                        return result.GetReference();
                     }
-                    return result.GetReference();
                 }
-            } catch (Exception e)
-            {
-                if (cache.TryGetValue(filePath, out writer))
+                catch (Exception e)
                 {
-                    return writer.GetReference();
+                    if (_cache.TryGetValue(filePath, out writer))
+                    {
+                        return writer.GetReference();
+                    }
+                    throw new Exception($"failed opening {filePath} for appending", e);
                 }
-                throw new Exception($"failed opening {filePath} for appending", e);
-            }
+            });
         }
 
         public DateTime GetLastWriteTime(string filePath)
         {
-            return File.GetLastWriteTime(filePath).Date;
+            return PerformActionAsServerUser(() => File.GetLastWriteTime(filePath).Date);
         }
     }
     class RefCountedStreamWriter : IDev2StreamWriter
     {
-        public int count;
-        public bool Closed { get; private set; } = false;
+        public int _count;
+        public bool Closed { get; private set; }
         public RefCountedStreamWriter GetReference()
         {
-            Interlocked.Increment(ref count);
+            Interlocked.Increment(ref _count);
             return this;
         }
         public TextWriter SynchronizedTextWriter { get; private set; }
@@ -148,9 +175,9 @@ namespace Dev2.Common.Wrappers
         {
             lock (this.SynchronizedTextWriter)
             {
-                Interlocked.Decrement(ref count);
+                Interlocked.Decrement(ref _count);
             }
-            if (count <= 0)
+            if (_count <= 0)
             {
                 Closed = true;
                 this.SynchronizedTextWriter.Dispose();

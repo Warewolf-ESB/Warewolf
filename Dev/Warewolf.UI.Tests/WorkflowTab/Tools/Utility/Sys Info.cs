@@ -28,7 +28,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
 
         [TestMethod]
         [TestCategory("Data Tools")]
-        public void CreateJson_Small_And_Large_Then_ShowErrorBox_UITest()
+        public void SysInfo_Small_And_Large_Then_ShowErrorBox_UITest()
         {
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.Exists, "Sys Info on the design surface does not exist");
             //Small View
