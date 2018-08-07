@@ -39,7 +39,7 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
         public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.TSTCIREMOTE, new Point(70, 19));
-            Assert.AreEqual("TST-CI-REMOTE", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
+            Assert.AreEqual("tst-ci-remote-obsolete", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text, "Server source address textbox text does not equal tst-ci-remote-obsolete");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Exists, "Server source wizard does not contain a test connection button");
         }
 
@@ -57,12 +57,12 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
                 Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
                 DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
             }
@@ -72,12 +72,12 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
                 Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Source_Server_Combobox();
                 DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
@@ -92,11 +92,11 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
             Click_Server_Source_Wizard_Test_Connection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Click_Close_Server_Source_Wizard_Tab_Button();
-            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Select_RemoteContainer_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.ValidateICanNotDeploy(resource);
         }        
 
-        public void Click_UserButton_On_ServerSourceTab()
+        public void Select_Server_Authentication_User()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton);
         }

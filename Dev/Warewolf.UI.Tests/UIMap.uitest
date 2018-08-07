@@ -40,25 +40,7 @@
     </Group>
   </Configuration>
   <InitializeActions />
-  <ExecuteActions>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.PaneContextItem.FloatingMenuItem">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>MenuItem</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-  </ExecuteActions>
+  <ExecuteActions />
   <CleanupActions />
   <OnErrorActions />
   <Maps>
@@ -11146,7 +11128,7 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteConnectionIntegration" FriendlyName="Remote Connection Integration" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsRemoteContainer" FriendlyName="Remote Connection Integration" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf</WindowTitle>
@@ -11155,7 +11137,7 @@
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                <PropertyCondition Name="Name" Operator="Contains">Remote Container</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
@@ -11167,7 +11149,7 @@
                   <AndCondition>
                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="Name" Operator="Contains">Remote Connection Integration</PropertyCondition>
+                    <PropertyCondition Name="Name" Operator="Contains">Remote Container</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -11723,70 +11705,6 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
                     <PropertyCondition Name="Name">Floating</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="ScriptErrorMessagebox" FriendlyName="Script Error" SpecialControlType="BrowserWindow" SessionId="4395060">
-          <TechnologyName>MSAA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Script Error</WindowTitle>
-          </WindowTitles>
-          <SearchConfigurations>
-            <SearchConfiguration>VisibleOnly</SearchConfiguration>
-          </SearchConfigurations>
-          <AndCondition Id="SearchCondition">
-            <PropertyCondition Name="Name">Script Error</PropertyCondition>
-            <PropertyCondition Name="ClassName">Internet Explorer_TridentDlgFrame</PropertyCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Document" Id="ScriptErrorBody" FriendlyName="Script Error" SpecialControlType="None">
-              <TechnologyName>Web</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Script Error</WindowTitle>
-              </WindowTitles>
-              <AndCondition Id="SearchCondition">
-                <AndCondition Id="Primary">
-                  <PropertyCondition Name="ControlType">Document</PropertyCondition>
-                  <PropertyCondition Name="TagName">BODY</PropertyCondition>
-                  <PropertyCondition Name="Id">bdy</PropertyCondition>
-                  <PropertyCondition Name="RedirectingPage">False</PropertyCondition>
-                  <PropertyCondition Name="FrameDocument">False</PropertyCondition>
-                </AndCondition>
-                <FilterCondition Id="Secondary">
-                  <PropertyCondition Name="Title">Script Error</PropertyCondition>
-                  <PropertyCondition Name="AbsolutePath">/error.dlg</PropertyCondition>
-                  <PropertyCondition Name="PageUrl">res://ieframe.dll/error.dlg</PropertyCondition>
-                </FilterCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Button" Id="NOButton" FriendlyName="No" SpecialControlType="None">
-                  <TechnologyName>Web</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Script Error</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition Id="SearchCondition">
-                    <AndCondition Id="Primary">
-                      <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                      <PropertyCondition Name="TagName">BUTTON</PropertyCondition>
-                      <PropertyCondition Name="Id">btnNo</PropertyCondition>
-                      <PropertyCondition Name="Name" />
-                      <PropertyCondition Name="DisplayText">No</PropertyCondition>
-                      <PropertyCondition Name="Type">reset</PropertyCondition>
-                    </AndCondition>
-                    <FilterCondition Id="Secondary">
-                      <PropertyCondition Name="Title" />
-                      <PropertyCondition Name="Class" />
-                      <PropertyCondition Name="ControlDefinition">id=btnNo style="FONT-SIZE: 8pt; HEIGHT: </PropertyCondition>
-                      <PropertyCondition Name="TagInstance">2</PropertyCondition>
-                    </FilterCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />

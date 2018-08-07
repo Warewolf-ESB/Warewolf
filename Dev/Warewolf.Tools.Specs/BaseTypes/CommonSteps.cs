@@ -39,6 +39,7 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using System.Reflection;
 using Dev2.Activities.Designers2.AdvancedRecordset;
+using Warewolf.Launcher;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -461,19 +462,26 @@ namespace Dev2.Activities.Specs.BaseTypes
                                        out string errorValue, out string error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
+            //Send the error in error variable
+            var onErrorWebserviceToCall = _scenarioContext.Get<string>("webserviceToCall").Replace("[[error]]", errorValue);
+            using (var webClient = new WebClient())
+            {
+                webClient.Credentials = new NetworkCredential(ContainerLauncher.Username, ContainerLauncher.Password);
+                webClient.DownloadString(onErrorWebserviceToCall);
+            }
+
             var retryCount = 0;
             string webCallResult;
 
             do
             {
                 retryCount++;
-                //Call the service and get the result
+                //Call the service and get the error back
                 using (var webClient = new WebClient())
                 {
-                    webClient.UseDefaultCredentials = true;
-                    webClient.Credentials = CredentialCache.DefaultCredentials;
+                    webClient.Credentials = new NetworkCredential(ContainerLauncher.Username, ContainerLauncher.Password);
                     webCallResult = webClient.DownloadString(webservice);
-                };
+                }
             }
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);

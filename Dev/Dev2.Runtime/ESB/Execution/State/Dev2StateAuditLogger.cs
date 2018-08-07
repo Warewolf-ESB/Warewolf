@@ -13,6 +13,9 @@ using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite.EF6;
 using System.Data.Entity.Core.Common;
+using Dev2.Common;
+using System.IO;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -39,9 +42,16 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
         {
-            var db = GetDatabase();
+            var audits = default(IEnumerable<AuditLog>);
+            var userPrinciple = Common.Utilities.ServerUser;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                var db = GetDatabase();
+                audits = db.Audits.Where(queryExpression).AsEnumerable();
 
-            return db.Audits.Where(queryExpression).AsEnumerable();
+            });
+
+            return audits;
         }
 
         private static DatabaseContext GetDatabase()
@@ -123,7 +133,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         public static void LogAuditState(AuditLog auditLog)
         {
-            InsertLog(auditLog, 3);
+            var userPrinciple = Common.Utilities.ServerUser;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                InsertLog(auditLog, 3);
+            });
         }
 
         private static void InsertLog(AuditLog auditLog, int reTry)
@@ -212,16 +226,21 @@ namespace Dev2.Runtime.ESB.Execution
     [Database]
     class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base(new SQLiteConnection() {
-                ConnectionString = new SQLiteConnectionStringBuilder() {
-                    DataSource = "C:\\ProgramData\\Warewolf\\Audits\\auditDB.db", ForeignKeys = true
+        public DatabaseContext() : base(new SQLiteConnection {
+                ConnectionString = new SQLiteConnectionStringBuilder {
+                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\auditDB.db"), ForeignKeys = true
                 }.ConnectionString
                }, true)
         {
-            DbConfiguration.SetConfiguration(new SQLiteConfiguration());
-            this.Database.CreateIfNotExists();
-            this.Database.Initialize(false);
-            this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
+            var userPrinciple = Common.Utilities.ServerUser;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
+                var directoryWrapper = new DirectoryWrapper();
+                directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
+                DbConfiguration.SetConfiguration(new SQLiteConfiguration());            
+                this.Database.CreateIfNotExists();
+                this.Database.Initialize(false);
+                this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
+            });
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
