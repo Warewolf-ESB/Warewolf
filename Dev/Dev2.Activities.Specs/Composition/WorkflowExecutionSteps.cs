@@ -4028,6 +4028,8 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            environmentModel.LoadExplorer(true);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
