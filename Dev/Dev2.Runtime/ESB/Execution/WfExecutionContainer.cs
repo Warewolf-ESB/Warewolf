@@ -10,6 +10,8 @@
 
 using System;
 using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
@@ -130,17 +132,11 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dsfDataObject, resource, update);
         }
 
-        void Eval(Guid resourceID, IDSFDataObject dataObject)
-        {
-            Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
-            Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
-            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
-        }
+        protected abstract void Eval(Guid resourceID, IDSFDataObject dataObject);
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         protected abstract void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update);
-     
+
         void SetDataObjectProperties()
         {
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
@@ -303,6 +299,14 @@ namespace Dev2.Runtime.ESB.Execution
                 dsfDataObject.StateNotifier.LogStopExecutionState(lastActivity);
             }
         }
+
+        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
+        {
+            Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
+            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
+            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
+        }
     }
 
     class ResumableExecutionContainer : WfExecutionContainer
@@ -315,18 +319,20 @@ namespace Dev2.Runtime.ESB.Execution
             this.resumeActivityId = resumeActivityId;
             this.resumeEnvironment = env;
         }
-
-        protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
-        {
-            // TODO: skip to correct resume resource
-            var startAtActivity = FindActivity(resource);
-            dsfDataObject.Environment = resumeEnvironment;
-            base.EvalInner(dsfDataObject, startAtActivity, update);
+        protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
+        {            
+            var startAtActivity = FindActivity(resourceID);
+            dataObject.Environment = resumeEnvironment;
+            EvalInner(dataObject, startAtActivity, dataObject.ForEachUpdateValue);
         }
-
-        private IDev2Activity FindActivity(IDev2Activity resource)
+        
+        private IDev2Activity FindActivity(Guid resourceID)
         {
-            throw new NotImplementedException();
+            var parser = new ActivityParser();
+            var act = ResourceCatalog.Instance.GetActivity(ResourceCatalog.Instance.GetServiceAction(TheWorkspace.ID, resourceID));
+            var dev2Activity = parser.Parse(act);
+            var allNodes = parser.ParseToLinkedFlatList(dev2Activity);
+            return allNodes.FirstOrDefault(p => p.UniqueID == resumeActivityId.ToString());
         }
     }
 }
