@@ -300,6 +300,11 @@ namespace Dev2.Activities.Specs.Composition
             var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
+            if (workflowName == "TestMySqlWFWithMySqlCountries")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                environmentModel.LoadExplorer(true);
+            }
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceId,
@@ -751,7 +756,7 @@ namespace Dev2.Activities.Specs.Composition
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
 
-            if (remoteWf == "TestmySqlReturningXml")
+            if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
             {
                 _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 localHostEnv.LoadExplorer(true);
