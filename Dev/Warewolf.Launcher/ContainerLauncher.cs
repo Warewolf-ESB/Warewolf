@@ -18,6 +18,7 @@ namespace Warewolf.Launcher
         string FullImageID = null;
         public string Hostname;
         public string IP;
+        public string Status;
         public string Version;
         public string ImageName;
         public string LogOutputDirectory = Environment.ExpandEnvironmentVariables("%TEMP%");
@@ -251,7 +252,7 @@ namespace Warewolf.Launcher
         void InspectContainer()
         {
             int count = 0;
-            while (string.IsNullOrEmpty(IP) && count++ < 7)
+            while ((Status != "Healthy" || string.IsNullOrEmpty(IP)) && count++ < 7)
             {
                 Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
                 var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/json";
@@ -265,7 +266,6 @@ namespace Warewolf.Launcher
                         if (response.IsSuccessStatusCode)
                         {
                             ParseForNetworkID(reader.ReadToEnd());
-                            break;
                         }
                         else
                         {
@@ -602,6 +602,7 @@ namespace Warewolf.Launcher
                 IP = JSONObj.NetworkSettings.Networks["nat"].IPAddress;
             }
             Hostname = JSONObj.Config.Hostname;
+            Status = JSONObj.State.Health?.Status??"Healthy";
         }
 
         string ParseForNodeHostname(string responseText)
@@ -654,7 +655,7 @@ namespace Warewolf.Launcher
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
+                client.Timeout = new TimeSpan(0, 3, 0);
                 var response = client.PostAsync(url, containerStopContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
@@ -709,6 +710,17 @@ namespace Warewolf.Launcher
     {
         public ServerContainerNetworkSettings NetworkSettings { get; set; }
         public ServerContainerConfig Config { get; set; }
+        public ServerContainerState State { get; set; }
+    }
+
+    public class ServerContainerState
+    {
+        public ServerContainerHealth Health;
+    }
+
+    public class ServerContainerHealth
+    {
+        public string Status;
     }
 
     class ServerContainerConfig

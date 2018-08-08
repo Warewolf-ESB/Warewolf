@@ -43,21 +43,16 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         [Owner("Nkosinathi Sangweni")]
         public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
         {
-            var newName = Guid.NewGuid().ToString();
-            var cleanProcName = newName.Replace("-", "").Replace(" ", "");
-            var dropProcedure = "USE [Dev2TestingDB]  DROP PROCEDURE [dbo].[" + cleanProcName + "]";
-            var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-            var result = SqlHelper.RunSqlCommand(createProcedure);
-            Assert.AreEqual(-1, result);
+            var procName = "TestingAddingANewInput";
             var inputs = new List<IServiceInput>()
                 {
-                    new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + cleanProcName}
+                    new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + procName}
                 };
             var sqlActivity = new DsfSqlServerDatabaseActivity()
             {
                 Inputs = inputs,
-                ActionName = "dbo." + cleanProcName,
-                ProcedureName = "dbo." + cleanProcName,
+                ActionName = "dbo." + procName,
+                ProcedureName = "dbo." + procName,
                 SourceId = new Guid("b9184f70-64ea-4dc5-b23b-02fcd5f91082")
             };
             var modelItem = ModelItemUtils.CreateModelItem(sqlActivity);
@@ -75,19 +70,17 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var selectedSource = source.Sources.Single(a => a.Id == sqlActivity.SourceId);
             source.SelectedSource = selectedSource;
             var actionRegion = new DbActionRegion(dbServiceModel, modelItem, source, new SynchronousAsyncWorker());
-
-
-            var diffAction = actionRegion.Actions.First(p => p.Name != sqlActivity.ProcedureName);
+            
             IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(modelItem, actionRegion);
             Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
             Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
             Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
-            //add testing here
-            var alterProcedure = "ALTER procedure [dbo].[" + cleanProcName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
-            //actionRegion.SelectedAction = diffAction;//trigger action changes
+            //testing here
+            var alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
             var alterTableResults = SqlHelper.RunSqlCommand(alterProcedure);
+            Assert.AreEqual(-1, alterTableResults);
             actionRegion.RefreshActionsCommand.Execute(null);
-            var underTest = actionRegion.Actions.Single(p => p.Name.EndsWith(cleanProcName));
+            var underTest = actionRegion.Actions.Single(p => p.Name.EndsWith(procName));
             Assert.AreEqual(3, databaseInputRegion.Inputs.Count);
             Assert.AreEqual("ProductId", underTest.Inputs.ToList()[0].Name);
             Assert.AreEqual("ProductId1", underTest.Inputs.ToList()[1].Name);
@@ -101,9 +94,6 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
             Assert.AreEqual("ProductId2", databaseInputRegion.Inputs.ToList()[2].Name);
             Assert.AreEqual("[[ProductId2]]", databaseInputRegion.Inputs.ToList()[2].Value);
-            Assert.AreEqual(-1, alterTableResults);
-            var resultForDrop = SqlHelper.RunSqlCommand(dropProcedure);
-            Assert.AreEqual(-1, resultForDrop);
         }
 
         [TestMethod]
