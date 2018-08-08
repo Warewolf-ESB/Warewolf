@@ -11,6 +11,8 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -22,7 +24,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-
+using Warewolf.Launcher;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -132,6 +134,7 @@ namespace Dev2.Tests.Runtime.Services
             parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
             CustomContainer.Register(parser.Object);
             //------------Setup for test--------------------------
+            GetDatabaseColumnsForTableTests._containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
             var someJsonData = JsonConvert.SerializeObject(dbSource);
@@ -197,6 +200,9 @@ namespace Dev2.Tests.Runtime.Services
             };
             return dbSource;
         }
+
+        [TestCleanup]
+        public void CleanupContainer() => GetDatabaseColumnsForTableTests._containerOps?.Dispose();
 
         #endregion
 
