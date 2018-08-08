@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
+using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
@@ -182,7 +183,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
     }
-    class WfExecutionContainer : WfExecutionContainerBase
+    public class WfExecutionContainer : WfExecutionContainerBase
     {
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -309,28 +310,35 @@ namespace Dev2.Runtime.ESB.Execution
         }
     }
 
-    class ResumableExecutionContainer : WfExecutionContainer
+    public class ResumableExecutionContainer : WfExecutionContainer, IResumableExecutionContainer
     {
-        readonly Guid resumeActivityId;
-        readonly IExecutionEnvironment resumeEnvironment;
+        readonly Guid _resumeActivityId;
+        readonly IExecutionEnvironment _resumeEnvironment;
+
+        public ResumableExecutionContainer(Guid resumeActivityId,ServiceAction sa,IDSFDataObject dataObject)
+            : this(resumeActivityId,dataObject.Environment,sa,dataObject,WorkspaceRepository.Instance.ServerWorkspace,new EsbServicesEndpoint())
+        {
+
+        }
+
         public ResumableExecutionContainer(Guid resumeActivityId, IExecutionEnvironment env, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            this.resumeActivityId = resumeActivityId;
-            this.resumeEnvironment = env;
+            _resumeActivityId = resumeActivityId;
+            _resumeEnvironment = env;
         }
 
         protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {            
-            var startAtActivity = FindActivity(resource);
-            dsfDataObject.Environment = resumeEnvironment;
+            var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
+            dsfDataObject.Environment = _resumeEnvironment;
             base.EvalInner(dsfDataObject, startAtActivity, update);
         }
 
         private IDev2Activity FindActivity(IDev2Activity resource)
         {
             var allNodes = new ActivityParser().ParseToLinkedFlatList(resource);
-            return allNodes.FirstOrDefault(p => p.UniqueID == resumeActivityId.ToString());
+            return allNodes.FirstOrDefault(p => p.UniqueID == _resumeActivityId.ToString());
         }
     }
 }
