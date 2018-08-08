@@ -1,5 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Data.TO;
+using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
+using Warewolf.Storage;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -7,37 +16,42 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override string HandlesType() => nameof(WorkflowResume);
 
-        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId)
+        protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
-            if (!Resumable(resourceId))
+            values.TryGetValue("environment", out StringBuilder environmentString);
+            if (environmentString == null)
             {
-                return new ExecuteMessage { HasError = true, Message = new System.Text.StringBuilder("this workflow is  not resumable") };
+                throw new InvalidDataContractException("no environment passed");
             }
-            return new ExecuteMessage { HasError = false, Message = new System.Text.StringBuilder("workflow resume is not implemented") };
-        }
-
-        /// <summary>
-        /// TODO:
-        /// return false if the resource does not have a failed state in the audit logs
-        /// return false if the resource is not found
-        /// return false if the resource does not contain the
-        ///      tool id from the previous execution.
-        /// </summary>
-        /// <param name="resourceId"></param>
-        /// <returns></returns>
-
-        bool Resumable(Guid resourceId)
-        {
-            if (resourceId != null)
+            values.TryGetValue("startActivityId", out StringBuilder startActivityIdString);
+            if (startActivityIdString == null)
             {
-                return true;
+                startActivityIdString = new StringBuilder(resourceId.ToString());
             }
-            //var logEntriesJson = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
-            // || a.WorkflowName.Equals("LogExecuteCompleteState")
-            // || a.ExecutionID.Equals("")
-            // || a.AuditType.Equals("")))
-            return false;
+            if (!Guid.TryParse(startActivityIdString.ToString(), out Guid startActivityId))
+            {
+                throw new InvalidDataContractException("startActivityId is not a valid GUID.");
+            }
+            var env = serializer.Deserialize<ExecutionEnvironment>(environmentString);
+            var dataObject = new DsfDataObject("", Guid.NewGuid())
+            {
+                ResourceID = resourceId,
+                Environment = env
+            };
+            var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
+            var sa = dynamicService.Actions.FirstOrDefault();
+            if(sa is null)
+            {
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
+            }
+            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId,sa,dataObject);
+            container.Execute(out ErrorResultTO errors, 0);
+            if (errors.HasErrors())
+            {
+                return new ExecuteMessage { HasError = true, Message = new StringBuilder(errors.MakeDisplayReady()) };
+            }
+            return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
-
+       
     }
 }

@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
+using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
@@ -59,5 +60,18 @@ namespace Dev2.Runtime.ESB.Execution
 
         public abstract IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity);
         public virtual SerializableResource FetchRemoteResource(Guid serviceId, string serviceName, bool isDebugMode) { throw new NotImplementedException(); }
+        /// <summary>
+        /// TODO: This should not be initialized here once 
+        /// we have the front end for creating settings.
+        /// </summary>
+        public virtual Dev2WorkflowSettingsTO GetWorkflowSetting() =>
+            new Dev2WorkflowSettingsTO
+            {
+                EnableDetailedLogging = true,
+                LoggerType = LoggerType.JSON,
+                KeepLogsForDays = 2,
+                CompressOldLogFiles = true
+            };
+
     }
 }

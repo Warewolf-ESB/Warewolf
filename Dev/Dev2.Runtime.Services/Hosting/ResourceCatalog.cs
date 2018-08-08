@@ -410,13 +410,13 @@ namespace Dev2.Runtime.Hosting
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
-                 {
-                     if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
-                     {
-                         return existingCache;
-                     }
-                     return cache;
-                 });
+                {
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
+                    {
+                        return existingCache;
+                    }
+                    return cache;
+                });
             }
             if (parser != null && parser.HasActivityInCache(resourceID))
             {

@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                var message = ExecuteImpl(serializer, resourceId);
+                var message = ExecuteImpl(serializer, resourceId,values);
 
                 return serializer.SerializeToBuilder(message);
             }
@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ESB.Management
         }
 
 
-        abstract protected ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId);
+        abstract protected ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values);
         abstract public string HandlesType();
     }
 }
