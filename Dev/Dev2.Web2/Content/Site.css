@@ -636,3 +636,19 @@ textarea {
 		-moz-transform: scale(.3);
 	}
 }
+
+.modal-header {
+	padding: 7px 15px;
+	border-bottom: 1px solid #e5e5e5;
+	color: #f3700d;
+}
+.warewolf-orange {
+	padding: 5px 12px;
+	color: #fff;
+	background-color: #f3700d;
+
+}
+	.warewolf-orange:hover {
+		color: #fff;
+		background-color: #b14f05;
+	}

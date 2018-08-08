@@ -21,9 +21,6 @@
 			</tr>
 		</table>
 	</div>
-
-
-
 	<div style="padding-top: 3px;">
 		<div id="auditFilters" class="auditFilters">
 			<div class='filter-container filterExecutionID'>
@@ -72,9 +69,7 @@
 			</div>
 		</div>
 	</div>
-
 	<div id="divAuditList" class="animate-bottom">
-
 	</div>
 	<div id="loader">
 		<div id="loader_1" class="loader"></div>
@@ -86,7 +81,6 @@
 		<div id="loader_7" class="loader"></div>
 		<div id="loader_8" class="loader"></div>
 	</div>
-
 	<div id="generalMessageDiv" class="generalMessageWrap">
 		<div class="generalMessage">
 			<div class="generalMessageContent">
@@ -101,11 +95,14 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title"></h4>
 				</div>
-				<div class="modal-body">
-
-				</div>
+				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn warewolf-orange" data-dismiss="modal">Cancel</button>
+					<button id="dialogYes" 
+							 data-Environment="0"
+								 data-WorkflowID="0"
+								 data-ActivityID="0"
+							type="button" class="btn warewolf-orange" data-dismiss="modal">Resume Workflow</button>
 				</div>
 			</div>
 		</div>
@@ -147,9 +144,7 @@
 		var protocol = document.getElementById("protocolDropdown").value;
 		var serverName = document.getElementById("serverName").value;
 		var port = document.getElementById("port").value;
-
 		var serverUrl = protocol + "://" + serverName + ":" + port;
-
 		return serverUrl;
 	}
 
@@ -194,32 +189,27 @@
 			xhrFields: {
 				withCredentials: true
 			},
-			success: OnSuccessCall,
+			success: function (response) {
+				if (Object.prototype.toString.call(response) != "[object String]") {
+					response = JSON.stringify(response);
+				}
+				$.ajax({
+					type: "POST",
+					url: "/Audit/AuditList",
+					async: false,
+					'Content-Type': "application/json; charset=utf-8",
+					data: { 'jsonData': response },
+					success: function (executionListHTML) {
+						showExecutionList();
+						$("#divAuditList").html(executionListHTML);
+					},
+					error: OnErrorCall
+				});
+			},
 			fail: OnFailCall,
 			error: OnErrorCall
 		});
-
 	}
-
-	var OnSuccessCall = function (response, textStatus, jqXHR) {
-		var url = "/Audit/AuditList";
-		//TODO: this code below will be resolved in the resume button branch
-		//console.log(response);
-		//var res = JSON.parse(response);
-		//console.log(res);
-		$.ajax({
-			type: "POST",
-			url: url,
-			async: false,
-			'Content-Type': "application/json; charset=utf-8",
-			data: { 'jsonData': response },
-			success: function (executionListHTML) {
-				showExecutionList();
-				$("#divAuditList").html(executionListHTML);
-			},
-			error: OnErrorCall
-		});
-	};
 
 	var OnFailCall = function (request, status, error) {
 		var serverName = document.getElementById("serverName").value;
@@ -261,15 +251,60 @@
 	});
 
 	$(document).on("click", "#openEnvdetails", function (e) {
-		var message = $(this).attr('data-whatever');
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
 		$('#environmentPopup .modal-title').text('Environment');
-		$('#environmentPopup .modal-body').text(message);
+		$('#environmentPopup .modal-body').html(Environment);
+		$('#environmentPopup #dialogYes').hide();
 		$('#environmentPopup').modal('toggle');
 	})
 
-	$(document).on("click", ".executionUrl", function () {
-		return confirm('Are you sure you want to execute the process again?');
-	});
+	$(document).on("click", "#resumeWorkflow", function (e) {
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
+
+		var message = "<p><b>WorkflowID: </b>" + WorkflowID + "</p>";
+		message += "<p><b>ActivityID: </b>" + ActivityID + "</p>";
+		message += "<p><b>Environment: </b></p>";
+		message += "<p>" + Environment + "</p>";
+		$('#environmentPopup .modal-title').text('Are you sure you would like to resume this workflow?');
+		$('#environmentPopup .modal-body').html(message);
+		$('#environmentPopup #dialogYes').attr('data-Environment', Environment);
+		$('#environmentPopup #dialogYes').attr('data-WorkflowID', WorkflowID);
+		$('#environmentPopup #dialogYes').attr('data-ActivityID', ActivityID);
+		$('#environmentPopup #dialogYes').show();
+		$('#environmentPopup').modal('toggle');
+	})
+	
+	$(document).on("click", "#dialogYes", function () {
+		$.support.cors = true;
+		var serverUrl = getServerUrl().toLowerCase();
+		var wareWolfUrl = serverUrl + "/services/WorkflowResume";
+		var pingUrl = serverUrl + "/secure/ping";
+
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
+
+		$.ajax({
+			type: "POST",
+			url: wareWolfUrl,
+			cache: false,
+			'Content-Type': "application/json; charset=utf-8",
+			data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID},
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function (response) {
+				alert('success');
+			},
+			fail: OnFailCall,
+			error: OnErrorCall
+		});
+	});	
 
 	$('#updateServer').on('click', function (e) {
 		e.preventDefault();
@@ -294,4 +329,5 @@
 		$("#CompletedDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
 		getLogData();
 	});
+
 </script>
