@@ -36,10 +36,10 @@ namespace Warewolf.Launcher
             }
             else
             {
-                RunContainer();
+                TryRunContainer();
             }
-            if (imageName.ToLower() == "ciremote" ||
-                imageName.ToLower() == "warewolfserver")
+            if (ImageName.ToLower() == "warewolfserver" ||
+                ImageName.ToLower() == "ciremote")
             {
                 WaitForServerInContainer();
             }
@@ -59,7 +59,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        void RunContainer()
+        void TryRunContainer()
         {
             try
             {

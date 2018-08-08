@@ -19,13 +19,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Warewolf.Tools.Specs.Toolbox.Database;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Studio.Core;
-using Dev2.Services;
-using Dev2.Messages;
+using Warewolf.Launcher;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 {
@@ -38,6 +38,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         Mock<IServiceOutputMapping> _outputMapping;
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
+        static ContainerLauncher _containerOps;
 
         public MySqlConnectorSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -525,6 +526,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            environmentModel.LoadExplorer(true);
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
 
@@ -580,6 +583,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         public void CleanUp()
         {
             CleanupForTimeOutSpecs();
+            _containerOps?.Dispose();
         }
     }
 }
