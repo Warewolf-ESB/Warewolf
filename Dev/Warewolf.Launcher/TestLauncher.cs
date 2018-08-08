@@ -41,6 +41,7 @@ namespace Warewolf.Launcher
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
+
         public ITestRunner TestRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
@@ -140,11 +141,41 @@ namespace Warewolf.Launcher
         {
             var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf");
             containerLauncher.LogOutputDirectory = logDirectory;
+            var containerLauncher = new ContainerLauncher("ciremote", "localhost", "test-remotewarewolf", "latest")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            return containerLauncher;
+        }
+
+        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+            Thread.Sleep(30000);
             return containerLauncher;
         }
 
         public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
         {
+            var startFrom = "ConnectionString=\"";
+            var subStringTo = "\" ServerVersion=\"";
+            int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
+            int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
+            string oldAddress = serverSourceXML.Substring(startIndex, length);
+            if (!string.IsNullOrEmpty(oldAddress))
+            {
+                serverSourceXML = serverSourceXML.Replace(oldAddress, "");
+            }
+            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
+        }
+
+        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        { 
             var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql");
             Thread.Sleep(30000);
             containerLauncher.LogOutputDirectory = logDirectory;
