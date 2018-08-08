@@ -51,9 +51,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             var workflowName = GetValue<string>("WorkflowName", keyValue);
             var serverID = GetValue<string>("ServerID", keyValue);
             var parentID = GetValue<string>("ParentID", keyValue);
+            var previousActivityId = GetValue<string>("PreviousActivityId", keyValue);
 
             var predicate = PredicateBuilder.True<AuditLog>();
-           predicate = predicate.And (p => (p.AuditDate >= startTime) && (p.AuditDate <= endTime));
+            predicate = predicate.And (p => (p.AuditDate >= startTime) && (p.AuditDate <= endTime));
             predicate = predicate.And (p => (string.IsNullOrEmpty(auditType) || p.AuditType == auditType));
             predicate = predicate.And(p => (string.IsNullOrEmpty(executingUser) || p.ExecutingUser == executingUser));
             predicate = predicate.And(p => (string.IsNullOrEmpty(workflowID) || p.WorkflowID == workflowID));
@@ -61,9 +62,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             predicate = predicate.And(p => (string.IsNullOrEmpty(workflowName) || p.WorkflowName == workflowName));
             predicate = predicate.And(p => (string.IsNullOrEmpty(serverID) || p.ServerID == serverID));
             predicate = predicate.And(p => (string.IsNullOrEmpty(parentID) || p.ParentID == parentID));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(previousActivityId) || p.PreviousActivityId == previousActivityId));
             predicate = predicate.And(p => (p.IsSubExecution == isSubExecution));
             predicate = predicate.And(p => (p.IsRemoteWorkflow == isRemoteWorkflow));
-
 
             var query = from p in Dev2StateAuditLogger.Query(predicate)
                   select p;
