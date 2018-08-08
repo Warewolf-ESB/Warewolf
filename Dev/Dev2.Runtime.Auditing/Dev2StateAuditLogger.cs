@@ -16,6 +16,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Interfaces;
 using Dev2.Communication;
 using ServiceStack.Text;
+using LinqKit;
 
 namespace Dev2.Runtime.Auditing
 {
@@ -44,15 +45,16 @@ namespace Dev2.Runtime.Auditing
         {
             _dsfDataObject = dsfDataObject;
         }
-        public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
+        public static IQueryable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
         {
-            var audits = default(IEnumerable<AuditLog>);
+            var audits = default(IQueryable<AuditLog>);
+          
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
                 var db = GetDatabase();
-                audits = db.Audits.Where(queryExpression).AsEnumerable();
-
+                audits = db.Audits;
+                audits = audits.AsExpandable().Where(queryExpression);
             });
 
             return audits;

@@ -26,31 +26,33 @@
 
 	<div style="padding-top: 3px;">
 		<div id="auditFilters" class="auditFilters">
+			<div class='filter-container filterExecutionID'>
+				<input id="ExecutionID" autocomplete='off' class='filter' name='ExecutionID' placeholder='Execution ID' data-col='ExecutionID' />
+			</div>
 			<div class='filter-container filterWorkflowID'>
 				<input id="WorkflowID" autocomplete='off' class='filter' name='WorkflowID' placeholder='Workflow ID' data-col='WorkflowID' />
 			</div>
 			<div class='filter-container filterWorkflowName'>
 				<input id="WorkflowName" autocomplete='off' class='filter' name='WorkflowName' placeholder='Workflow Name' data-col='WorkflowName' />
 			</div>
-			<div class='filter-container filterExecutionID'>
-				<input id="ExecutionID" autocomplete='off' class='filter' name='ExecutionID' placeholder='Execution ID' data-col='ExecutionID' />
-			</div>
+
 			<div class='filter-container filterAuditType'>
-				<input id="AuditType" autocomplete='off' class='filter' name='AuditType' placeholder='Type' data-col='AuditType' />
-			</div>
-			<div class='filter-container filterServerID'>
-				<input id="ServerID" autocomplete='off' class='filter' name='ServerID' placeholder='Server ID' data-col='ServerID' />
-			</div>
-			<div class='filter-container filterParentID'>
-				<input id="ParentID" autocomplete='off' class='filter' name='ParentID' placeholder='Parent ID' data-col='ParentID' />
+				<input id="AuditType" autocomplete='off' class='filter' name='AuditType' placeholder='Audit Type' data-col='AuditType' />
 			</div>
 			<div class='filter-container filterExecutingUser'>
 				<input id="ExecutingUser" autocomplete='off' class='filter' name='ExecutingUser' placeholder='Executing User' data-col='ExecutingUser' />
 			</div>
-			<div class='filter-container filterIsSubExecution'>
+			<div style="display:none;" class='filter-container filterServerID'>
+				<input id="ServerID" autocomplete='off' class='filter' name='ServerID' placeholder='Server ID' data-col='ServerID' />
+			</div>
+			<div style="display:none;" class='filter-container filterParentID'>
+				<input id="ParentID" autocomplete='off' class='filter' name='ParentID' placeholder='Parent ID' data-col='ParentID' />
+			</div>
+
+			<div style="display:none;" class='filter-container filterIsSubExecution'>
 				<input id="IsSubExecution" autocomplete='off' class='filter' name='IsSubExecution' placeholder='Is Sub Execution' data-col='IsSubExecution' />
 			</div>
-			<div class='filter-container filterIsRemoteWorkflow'>
+			<div style="display:none;" class='filter-container filterIsRemoteWorkflow'>
 				<input id="IsRemoteWorkflow" autocomplete='off' class='filter' name='IsRemoteWorkflow' placeholder='Is Remote Workflow' data-col='IsRemoteWorkflow' />
 			</div>
 		</div>
@@ -72,26 +74,39 @@
 	</div>
 
 	<div id="divAuditList" class="animate-bottom">
-		<div id="loader">
-			<div id="loader_1" class="loader"></div>
-			<div id="loader_2" class="loader"></div>
-			<div id="loader_3" class="loader"></div>
-			<div id="loader_4" class="loader"></div>
-			<div id="loader_5" class="loader"></div>
-			<div id="loader_6" class="loader"></div>
-			<div id="loader_7" class="loader"></div>
-			<div id="loader_8" class="loader"></div>
-		</div>
-	</div>
 
-	<div id="ExecutionResults" class="dialogResult">
-		<p class="exResult"></p>
+	</div>
+	<div id="loader">
+		<div id="loader_1" class="loader"></div>
+		<div id="loader_2" class="loader"></div>
+		<div id="loader_3" class="loader"></div>
+		<div id="loader_4" class="loader"></div>
+		<div id="loader_5" class="loader"></div>
+		<div id="loader_6" class="loader"></div>
+		<div id="loader_7" class="loader"></div>
+		<div id="loader_8" class="loader"></div>
 	</div>
 
 	<div id="generalMessageDiv" class="generalMessageWrap">
 		<div class="generalMessage">
 			<div class="generalMessageContent">
 				<p class="generalMessageText"></p>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade environmentPopup" tabindex="-1" role="dialog" id="environmentPopup">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -103,12 +118,11 @@
 	$("#auditList").tablesorter();
 	$('.filter').multifilter();
 	$("#StartDateTime").datetimepicker({
-		format: 'Y-m-d H:i:s',
+		format: 'Y/m/d H:i:s',
 		defaultDate: new Date()
 	});
-
 	$("#CompletedDateTime").datetimepicker({
-		format: 'Y-m-d H:i:s',
+		format: 'Y/m/d H:i:s',
 		defaultDate: new Date()
 	});
 
@@ -160,21 +174,21 @@
 			var keyValue = this.value.toString();
 
 			if (keyName == 'StartDateTime' && startdate != '') {
-				result[keyName] = new Date(startdate).toISOString();
+				result[keyName] = startdate;
 			}
 			else if (keyName == 'CompletedDateTime' && enddate != '') {
-				result[keyName] = new Date(enddate).toISOString();
+				result[keyName] = enddate;
 			}
 			else {
 				result[keyName] = keyValue.toString();
 			}
 		});
-		console.log(result);
+
 		$.ajax({
 			type: "POST",
 			url: wareWolfUrl,
 			cache: false,
-			'Content-Type': "application/json",
+			'Content-Type': "application/json; charset=utf-8",
 			data: result,
 			crossDomain: true,
 			xhrFields: {
@@ -189,11 +203,16 @@
 
 	var OnSuccessCall = function (response, textStatus, jqXHR) {
 		var url = "/Audit/AuditList";
-		var myJSON = JSON.stringify(response);
+		//TODO: this code below will be resolved in the resume button branch
+		//console.log(response);
+		//var res = JSON.parse(response);
+		//console.log(res);
 		$.ajax({
 			type: "POST",
 			url: url,
-			data: { 'jsonData': myJSON },
+			async: false,
+			'Content-Type': "application/json; charset=utf-8",
+			data: { 'jsonData': response },
 			success: function (executionListHTML) {
 				showExecutionList();
 				$("#divAuditList").html(executionListHTML);
@@ -228,25 +247,6 @@
 		}
 	}
 
-	var createDialog = function () {
-
-		$('#ExecutionResults').dialog({
-			autoOpen: false,
-			modal: true,
-			title: "Result",
-			maxWidth: 600,
-			maxHeight: 500,
-			minWidth: 400,
-			minHeight: 300,
-			width: 400,
-			height: 300,
-			hide: {
-				effect: "fade",
-				duration: 500
-			}
-		});
-	};
-
 	$(document).on("keypress", "#serverName", function (e) {
 		if (e.keyCode == 13)
 			$('#updateServer').click();
@@ -260,15 +260,12 @@
 		getLogData();
 	});
 
-	$(document).on("click", "#auditList .details", function (e) {
-		e.preventDefault();
-		var serverUrl = getServerUrl();
-		var executionId = $(this).closest("tr").find("td.auExecutionID").eq(0).html().trim();
-		var environment = $(this).closest("tr").find("td.Environment").eq(0).html().trim();
-		createDialog();
-		$('div#ExecutionResults').dialog('open');
-		$('.exResult').text(environment);
-	});
+	$(document).on("click", "#openEnvdetails", function (e) {
+		var message = $(this).attr('data-whatever');
+		$('#environmentPopup .modal-title').text('Environment');
+		$('#environmentPopup .modal-body').text(message);
+		$('#environmentPopup').modal('toggle');
+	})
 
 	$(document).on("click", ".executionUrl", function () {
 		return confirm('Are you sure you want to execute the process again?');
@@ -293,8 +290,8 @@
 	});
 
 	$(document).ready(function () {
-		$("#StartDateTime").val(moment().format("YYYY-MM-DD hh:mm:ss"));
-		$("#CompletedDateTime").val(moment().format("YYYY-MM-DD hh:mm:ss"));
+		$("#StartDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
+		$("#CompletedDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
 		getLogData();
 	});
 </script>
