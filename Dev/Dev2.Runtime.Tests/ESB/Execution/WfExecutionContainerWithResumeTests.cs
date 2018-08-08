@@ -10,6 +10,7 @@ using Moq;
 using Dev2.DynamicServices;
 using Dev2.Activities;
 using Warewolf.Storage;
+using System.Linq;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -62,6 +63,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             resumableExecution.Execute(out errors, 0);
             Assert.IsTrue(dataObj.Environment.HasErrors());
             Assert.AreEqual(1, dataObj.Environment.Errors.Count);
+            Assert.AreEqual("Scalar value { Name } is NULL", dataObj.Environment.Errors.FirstOrDefault());
         }
 
         private IPrincipal SetupUser()
