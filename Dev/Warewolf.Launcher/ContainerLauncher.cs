@@ -399,6 +399,10 @@ namespace Warewolf.Launcher
                             {
                                 throw new HttpRequestException("Error starting container. " + reader.ReadToEnd());
                             }
+                            else
+                            {
+                                return;
+                            }
                         }
                     }
                     catch
