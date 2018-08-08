@@ -146,7 +146,7 @@ namespace Warewolf.Launcher
         public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
         {
             var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql");
-            Thread.Sleep(3000);
+            Thread.Sleep(10000);
             containerLauncher.LogOutputDirectory = logDirectory;
             return containerLauncher;
         }
