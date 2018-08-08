@@ -225,6 +225,7 @@ namespace Dev2
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
                 StartWebServer();
+                RegisterDependencies();
                 LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }
@@ -238,6 +239,11 @@ namespace Dev2
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
+        }
+
+        private static void RegisterDependencies()
+        {
+            CustomContainer.AddToLoadedTypes(typeof(ResumableExecutionContainer));
         }
 
         void OpenCOMStream()

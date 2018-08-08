@@ -341,13 +341,13 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 PreviousActivity = previousActivity.GetDisplayName();
                 PreviousActivityType = previousActivity.GetType().ToString();
-                PreviousActivityId = previousActivity.ActivityId.ToString();
+                PreviousActivityId = previousActivity.UniqueID;
             }
             if (nextActivity != null)
             {
                 NextActivity = nextActivity.GetDisplayName();
                 NextActivityType = nextActivity.GetType().ToString();
-                NextActivityId = nextActivity.ActivityId.ToString();
+                NextActivityId = nextActivity.UniqueID;
             }
         }
     }

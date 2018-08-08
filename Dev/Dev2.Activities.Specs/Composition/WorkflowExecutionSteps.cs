@@ -93,6 +93,7 @@ using Dev2.Runtime.ESB.Execution;
 using System.Linq.Expressions;
 using Warewolf.Launcher;
 using System.Reflection;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4578,7 +4579,9 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
             Assert.IsNotNull(resourceModel);
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel);
+            var env = new ExecutionEnvironment();
+            var serEnv = env.ToJson();
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel,serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"));
             Add("resumeMessage", msg);
         }
 
