@@ -139,9 +139,7 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf");
-            containerLauncher.LogOutputDirectory = logDirectory;
-            var containerLauncher = new ContainerLauncher("ciremote", "localhost", "test-remotewarewolf", "latest")
+            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
             {
                 LogOutputDirectory = logDirectory
             };
@@ -150,7 +148,7 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
             {
                 LogOutputDirectory = logDirectory
             };
@@ -160,7 +158,7 @@ namespace Warewolf.Launcher
             return containerLauncher;
         }
 
-        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
+        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
         {
             var startFrom = "ConnectionString=\"";
             var subStringTo = "\" ServerVersion=\"";
@@ -174,7 +172,7 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
         { 
             var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql");
             Thread.Sleep(30000);
