@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]    
     public class GetDatabaseColumnsForTableTests
     {
-        static ContainerLauncher _containerOps;
+        public static ContainerLauncher _containerOps;
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -328,6 +328,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestCleanup]
         public void CleanupContainer() => _containerOps?.Dispose();
+
         #endregion
 
         #region HandlesType
