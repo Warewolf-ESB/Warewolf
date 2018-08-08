@@ -17,7 +17,7 @@
 				<td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
 				<td class="serverDesc">:</td>
 				<td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
-				<td><button id="updateServer" class="btn btn-default">Update</button></td>
+				<td><button title="Update Server" id="updateServer" class="btn btn-default">Update</button></td>
 			</tr>
 		</table>
 	</div>
@@ -29,6 +29,9 @@
 			<div class='filter-container filterWorkflowID'>
 				<input id="WorkflowID" autocomplete='off' class='filter' name='WorkflowID' placeholder='Workflow ID' data-col='WorkflowID' />
 			</div>
+			<div class='filter-container filterExecutingUser'>
+				<input id="PreviousActivityId" autocomplete='off' class='filter' name='PreviousActivityId' placeholder='Activity ID' data-col='PreviousActivityId' />
+			</div>
 			<div class='filter-container filterWorkflowName'>
 				<input id="WorkflowName" autocomplete='off' class='filter' name='WorkflowName' placeholder='Workflow Name' data-col='WorkflowName' />
 			</div>
@@ -36,9 +39,7 @@
 			<div class='filter-container filterAuditType'>
 				<input id="AuditType" autocomplete='off' class='filter' name='AuditType' placeholder='Audit Type' data-col='AuditType' />
 			</div>
-			<div class='filter-container filterExecutingUser'>
-				<input id="ExecutingUser" autocomplete='off' class='filter' name='ExecutingUser' placeholder='Executing User' data-col='ExecutingUser' />
-			</div>
+
 			<div style="display:none;" class='filter-container filterServerID'>
 				<input id="ServerID" autocomplete='off' class='filter' name='ServerID' placeholder='Server ID' data-col='ServerID' />
 			</div>
@@ -62,10 +63,10 @@
 				<input id="CompletedDateTime" class='filter' type="text" name='CompletedDateTime' placeholder='End Date' data-col='CompletedDateTime' />
 			</div>
 			<div class='filter-container filterContainReset'>
-				<button type="button" class="btn btn-default" id="FilterButton">Filter</button>
+				<button title="Filter List" type="button" class="btn btn-default" id="FilterButton">Filter</button>
 			</div>
 			<div class='filter-container filterContainReset'>
-				<button type="button" class="btn btn-default" id="ResetButton">Clear</button>
+				<button title="Clear Filters" type="button" class="btn btn-default" id="ResetButton">Clear</button>
 			</div>
 		</div>
 	</div>
@@ -98,11 +99,11 @@
 				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<button type="button" class="btn warewolf-orange" data-dismiss="modal">Cancel</button>
-					<button id="dialogYes" 
+					<button id="dialogYes" title="Cancel"
 							 data-Environment="0"
 								 data-WorkflowID="0"
 								 data-ActivityID="0"
-							type="button" class="btn warewolf-orange" data-dismiss="modal">Resume Workflow</button>
+							type="button" title="Resume Workflow" class="btn warewolf-orange" data-dismiss="modal">Resume Workflow</button>
 				</div>
 			</div>
 		</div>
