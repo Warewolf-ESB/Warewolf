@@ -11,6 +11,8 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -22,13 +24,15 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-
+using Warewolf.Launcher;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]    
     public class GetDatabaseColumnsForTableTests
     {
+        static ContainerLauncher _containerOps;
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -305,6 +309,7 @@ namespace Dev2.Tests.Runtime.Services
 
         static DbSource CreateDev2TestingDbSource()
         {
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
@@ -320,6 +325,9 @@ namespace Dev2.Tests.Runtime.Services
             };
             return dbSource;
         }
+
+        [TestCleanup]
+        public void CleanupContainer() => _containerOps?.Dispose();
         #endregion
 
         #region HandlesType
