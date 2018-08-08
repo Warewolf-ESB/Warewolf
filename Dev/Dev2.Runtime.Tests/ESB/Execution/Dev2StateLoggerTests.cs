@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using System.Linq;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -330,7 +331,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
             var str = expectedWorkflowId.ToString();
-            var results = Dev2StateAuditLogger.Query(item => true);
+            var results = Dev2StateAuditLogger.Query(a => a.WorkflowID == str);
             _dev2StateAuditLogger.Dispose();
 
             foreach (var item in results)

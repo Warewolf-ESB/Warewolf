@@ -228,7 +228,7 @@ Returns the response text of the web get request.</value>
     <value>View APIs.json url and content</value>
   </data>
   <data name="ViewExecutionLoggingTooltip" xml:space="preserve">
-    <value>View Execution Logging</value>
+    <value>View Audit</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
     <value>Enter the user name you want to connect with</value>
