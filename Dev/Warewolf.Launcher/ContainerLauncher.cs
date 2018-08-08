@@ -403,6 +403,10 @@ namespace Warewolf.Launcher
                     }
                     catch
                     {
+                        if (retryCount == 9)
+                        {
+                            throw new Exception("Cannot start container. Try executing 'docker system prune' and trying again.");
+                        }
                         Console.WriteLine($"Still waiting for container {serverContainerID.Substring(0, 12)} to start.");
                         Thread.Sleep(1000);
                     }
