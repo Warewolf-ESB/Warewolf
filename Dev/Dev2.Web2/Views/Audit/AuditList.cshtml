@@ -1,103 +1,50 @@
 ﻿@model IEnumerable<Dev2.Runtime.Auditing.AuditLog>
 <div>
-    <table id="auditList" class="tablesorter">
-        <thead>
-            <tr>
-                <th class="auWorkflowID" title="WorkflowID" name="WorkflowID">WorkflowID</th>
-                <th class="auWorkflowName" title="WorkflowName" name="WorkflowName">WorkflowName</th>
-                <th class="auExecutionID" title="ExecutionID" name="ExecutionID">ExecutionID</th>
-                <th class="auAuditType" title="AuditType" name="AuditType">AuditType</th>
-                <th style="display:none;" title="PreviousActivity" name="PreviousActivity">PreviousActivity</th>
-                <th style="display:none;" title="PreviousActivityType"  name="PreviousActivityType">PreviousActivityType</th>
-                <th style="display:none;" title="PreviousActivityID" name="PreviousActivityID">PreviousActivityID</th>
-                <th style="display:none;" title="NextActivity"  name="NextActivity">NextActivity</th>
-                <th style="display:none;" title="NextActivityType" name="NextActivityType">NextActivityType</th>
-                <th style="display:none;" title="NextActivityID" name="NextActivityID">NextActivityID</th>
-                <th class="auServerID" title="ServerID" name="ServerID">ServerID</th>
-                <th class="auParentID" title="ParentID"  name="ParentID">ParentID</th>
-                <th class="auExecutingUser" title="ExecutingUser"  name="ExecutingUser">ExecutingUser</th>
-                <th style="display:none;" title="ExecutionOrigin"  name="ExecutionOrigin">ExecutionOrigin</th>
-                <th style="display:none;" title="ExecutionOriginDescription" name="ExecutionOriginDescription">ExecutionOriginDescription</th>
-                <th style="display:none;" title="AdditionalDetail"  name="AdditionalDetail">AdditionalDetail</th>
-                <th class="auIsSubExecution" title="IsSubExecution"  name="IsSubExecution">Sub Ex</th>
-                <th class="auIsRemoteWorkflow" title="IsRemoteWorkflow" name="IsRemoteWorkflow">Remote WF</th>
-                <th style="display:none;" title="Environment"  name="Environment">Environment</th>
-                <th class="auAuditDate" title="AuditDate" name="AuditDate">AuditDate</th>
-                <th>Env</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="exRow auWorkflowID">
-                        @Html.DisplayFor(modelItem => item.WorkflowID)
-                    </td>
-                    <td class="exRow auWorkflowName">
-                        @Html.DisplayFor(modelItem => item.WorkflowName)
-                    </td>
-                    <td class="exRow auExecutionID">
-                        @Html.DisplayFor(modelItem => item.ExecutionID)
-                    </td>
-                    <td class="exRow auAuditType">
-                        @Html.DisplayFor(modelItem => item.AuditType)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.PreviousActivity)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.PreviousActivityType)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.PreviousActivityId)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.NextActivity)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.NextActivityType)
-                    </td>
-                    <td class="exRow" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.NextActivityId)
-                    </td>
-                    <td class="exRow auServerID">
-                        @Html.DisplayFor(modelItem => item.ServerID)
-                    </td>
-                    <td class="exRow auParentID">
-                        @Html.DisplayFor(modelItem => item.ParentID)
-                    </td>
-                    <td class="exRow auExecutingUser">
-                        @Html.DisplayFor(modelItem => item.ExecutingUser)
-                    </td>
-                    <td class="exRow exStatus" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.ExecutionOrigin)
-                    </td>
-                    <td class="exRow exStatus" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.ExecutionOriginDescription)
-                    </td>
-                    <td class="exRow exStatus" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.ExecutionToken)
-                    </td>
-                    <td class="exRow exStatus" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.AdditionalDetail)
-                    </td>
-                    <td class="exRow auIsSubExecution">
-                        @Html.DisplayFor(modelItem => item.IsSubExecution)
-                    </td>
-                    <td class="exRow auIsRemoteWorkflow">
-                        @Html.DisplayFor(modelItem => item.IsRemoteWorkflow)
-                    </td>
-                    <td class="exRow Environment" style="display:none;">
-                        @Html.DisplayFor(modelItem => item.Environment)
-                    </td>
-                    <td class="exRow auAuditDate">
-                        @Html.DisplayFor(modelItem => item.AuditDate)
-                    </td>
-                    <td>
-                        <a class="details">[...]</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	@if (Model != null)
+	{
+		<table id="auditList" class="table-hover table-condensed table-striped tablesorter">
+			<thead>
+				<tr>
+					<th class="auExecutionID" title="ExecutionID" name="ExecutionID">ExecutionID</th>
+					<th class="auWorkflowID" title="WorkflowID" name="WorkflowID">WorkflowID</th>
+					<th class="auWorkflowName" title="WorkflowName" name="WorkflowName">WorkflowName</th>
+					<th class="auAuditType" title="AuditType" name="AuditType">AuditType</th>
+					<th class="auExecutingUser" title="ExecutingUser" name="ExecutingUser">Executing User</th>
+					<th class="auAuditDate" title="AuditDate" name="AuditDate">AuditDate</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td class="exRow auExecutionID">
+							@Html.DisplayFor(modelItem => item.ExecutionID)
+						</td>
+						<td class="exRow auWorkflowID">
+							@Html.DisplayFor(modelItem => item.WorkflowID)
+						</td>
+						<td class="exRow auWorkflowName">
+							@Html.DisplayFor(modelItem => item.WorkflowName)
+						</td>
+						<td class="exRow auAuditType">
+							@Html.DisplayFor(modelItem => item.AuditType)
+						</td>
+						<td class="exRow auExecutingUser">
+							@Html.DisplayFor(modelItem => item.ExecutingUser)
+						</td>
+						<td class="exRow auAuditDate">
+							@Html.DisplayFor(modelItem => item.AuditDate)
+						</td>
+						<td>
+							<button type="button"  id="openEnvdetails"
+									class="btn btn-default" 
+									data-whatever="@item.Environment">...</button>
+							<button style="display:none;" type="button" class="btn btn-default" id="resume">Resume</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
 </div>

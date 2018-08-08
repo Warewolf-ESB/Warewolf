@@ -1,8 +1,10 @@
-﻿using Dev2.Runtime.Auditing;
+﻿using Dev2.Communication;
+using Dev2.Runtime.Auditing;
 using Dev2.Web2.Models.Auditing;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
 
@@ -22,7 +24,7 @@ namespace Dev2.Web2.Controllers
         }
     }
 
-    [EnableCors("*","*","*",PreflightMaxAge =10000,SupportsCredentials = true)]
+    [EnableCors("*", "*", "*", PreflightMaxAge = 10000, SupportsCredentials = true)]
     public class AuditController : Controller
     {
         // GET: Audit
@@ -50,13 +52,22 @@ namespace Dev2.Web2.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult AuditList(string jsonData)
-        {
-            var logEntries = JsonConvert.DeserializeObject<List<AuditLog>>(jsonData);
+        {            
+            var serializer = new Dev2JsonSerializer();
             var request = CheckRequest(null);
-            var model = new Tuple<List<AuditLog>, AuditingViewModel>(logEntries, request);
-
-            return PartialView("AuditList", model.Item1);
+            if (jsonData != null)
+            {
+                var logEntries = serializer.Deserialize<List<AuditLog>>(jsonData);
+                var model = new Tuple<List<AuditLog>, AuditingViewModel>(logEntries, request);
+                return PartialView("AuditList", model.Item1);
+            }
+            else
+            {
+                var model = new Tuple<List<AuditLog>, AuditingViewModel>(new List<AuditLog>(), request);
+                return PartialView("AuditList", model.Item1);
+            }
         }
 
         AuditingViewModel CheckRequest(AuditingViewModel Request)

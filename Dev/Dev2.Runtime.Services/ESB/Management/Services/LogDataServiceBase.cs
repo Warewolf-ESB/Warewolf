@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -30,13 +31,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public IEnumerable<dynamic> BuildTempObjects(Dictionary<string, StringBuilder> keyValue)
         {
             var startDateTime = GetValue<string>("StartDateTime", keyValue);
-            var startTime = default(DateTime);
+            var startTime = Convert.ToDateTime(DateTime.Now.AddHours(-3));
             if (!string.IsNullOrEmpty(startDateTime))
             {
                 startTime = DateTime.Parse(HttpUtility.UrlDecode(startDateTime));
             }
             var completedDateTime = GetValue<string>("CompletedDateTime", keyValue);
-            var endTime = default(DateTime);
+            var endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
             if (!string.IsNullOrEmpty(startDateTime))
             {
                 endTime = DateTime.Parse(HttpUtility.UrlDecode(completedDateTime));
@@ -50,27 +51,24 @@ namespace Dev2.Runtime.ESB.Management.Services
             var workflowName = GetValue<string>("WorkflowName", keyValue);
             var serverID = GetValue<string>("ServerID", keyValue);
             var parentID = GetValue<string>("ParentID", keyValue);
-            if (startTime == default(DateTime))
-            {
-                startTime = Convert.ToDateTime(DateTime.Now.AddHours(-3));
-            }
-            if (endTime == default(DateTime))
-            {
-                endTime = Convert.ToDateTime(DateTime.Now.AddDays(1));
-            }
-            var results = Dev2StateAuditLogger.Query(entry =>
-                    (entry.AuditDate >= startTime) && (entry.AuditDate <= endTime)
-                    && (string.IsNullOrEmpty(auditType) || entry.AuditType == auditType)
-                    && (string.IsNullOrEmpty(workflowID) || entry.WorkflowID == workflowID)
-                    && (string.IsNullOrEmpty(executionID) || entry.ExecutionID == executionID)
-                    && (entry.IsSubExecution == isSubExecution)
-                    && (entry.IsRemoteWorkflow == isRemoteWorkflow)
-                    && (string.IsNullOrEmpty(workflowName) || entry.WorkflowName == workflowName)
-                    && (string.IsNullOrEmpty(serverID) || entry.ServerID == serverID)
-                    && (string.IsNullOrEmpty(parentID) || entry.ParentID == parentID)
-                    && (string.IsNullOrEmpty(executingUser) || (entry.ExecutingUser == executingUser))
-                    ).ToList();
-            return results;
-        }      
+
+            var predicate = PredicateBuilder.True<AuditLog>();
+           predicate = predicate.And (p => (p.AuditDate >= startTime) && (p.AuditDate <= endTime));
+            predicate = predicate.And (p => (string.IsNullOrEmpty(auditType) || p.AuditType == auditType));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(executingUser) || p.ExecutingUser == executingUser));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(workflowID) || p.WorkflowID == workflowID));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(executionID) || p.ExecutionID == executionID));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(workflowName) || p.WorkflowName == workflowName));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(serverID) || p.ServerID == serverID));
+            predicate = predicate.And(p => (string.IsNullOrEmpty(parentID) || p.ParentID == parentID));
+            predicate = predicate.And(p => (p.IsSubExecution == isSubExecution));
+            predicate = predicate.And(p => (p.IsRemoteWorkflow == isRemoteWorkflow));
+
+
+            var query = from p in Dev2StateAuditLogger.Query(predicate)
+                  select p;
+
+            return query.ToList();
+        }
     }
 }

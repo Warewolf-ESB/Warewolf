@@ -5,6 +5,9 @@ body {
 	line-height: 1.2;
 	color: #333;
 	background-color: #fff;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	background: #f4f3ef;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -40,12 +43,6 @@ body {
 	margin-bottom: 5px;
 }
 
-body {
-	padding-top: 50px;
-	padding-bottom: 20px;
-	background: #f4f3ef;
-}
-
 /* Set padding to keep content from hitting the edges */
 .body-content {
 	padding-top: 29px;
@@ -53,14 +50,10 @@ body {
 	padding-right: 15px;
 }
 
-
-
 #brandLogo {
 	border: 0;
 	margin-top: -17px;
 }
-
-
 
 /*FOOTER*/
 .footerWrap {
@@ -142,138 +135,42 @@ textarea {
 }
 
 .flat-table {
-	display: block;
 	-webkit-font-smoothing: antialiased;
-	font-size: 12px;
-	overflow: auto;
-	width: auto;
 }
 
-th {
-	background-color: rgb(231, 228, 224);
-	color: black;
-	font-weight: normal;
-	font-size: 12px;
-	padding: 8px 12px;
-	text-align: center;
-}
 
-td {
-	padding: 0px;
-}
 
 * {
 	box-sizing: border-box;
 }
 
 /*TABLE*/
-#auditList {
+#auditList table {
 	border-collapse: collapse;
 	width: 100%;
 	border: 1px solid #ddd;
-	font-size: 12px;
-	display: block;
 }
 
-	#auditList thead {
-		display: block;
-	}
+#auditList th {
+	border-right: 1px solid #ddd;
+	font-weight: bold;
+	background-color: rgb(231, 228, 224);
+	color: black;
+	font-size: 12px;
+	text-align: center;
+}
 
-	#auditList tbody {
-		display: block;
-	}
+#auditList tr {
+	border-bottom: 1px solid #ddd;
+}
 
-	#auditList th {
-		cursor: pointer;
-		border-right: 1px solid #ddd;
-		padding: 5px 5px 0px 5px;
-	}
+#auditList td {
+	border-bottom: 1px solid #ddd;
+	overflow: hidden;
+	vertical-align: central;
+	white-space: nowrap;
+}
 
-	#auditList tr {
-		border-bottom: 1px solid #ddd;
-		padding: 0px;
-		display: block;
-	}
-
-	#auditList td {
-		border-bottom: 1px solid #ddd;
-		padding: 2px 9px;
-		overflow: hidden;
-		white-space: nowrap;
-	}
-
-	#auditList .exRow {
-		padding-left: 5px;
-	}
-
-	#auditList .auWorkflowID {
-		min-width: 200px;
-		max-width: 200px;
-	}
-
-	#auditList .auWorkflowName {
-		width: 100%;
-		max-width: 150px;
-	}
-
-	#auditList .auExecutionID {
-		min-width: 200px;
-		max-width: 200px;
-	}
-
-	#auditList .auAuditType {
-		min-width: 62px;
-		max-width: 62px;
-	}
-
-	#auditList .auServerID {
-		min-width: 200px;
-		max-width: 200px;
-	}
-
-	#auditList .auParentID {
-		min-width: 200px;
-		max-width: 200px;
-	}
-
-	#auditList .auExecutingUser {
-		min-width: 150px;
-		max-width: 150px;
-	}
-
-	#auditList .auIsSubExecution {
-		min-width: 62px;
-		max-width: 62px;
-	}
-
-	#auditList .auIsRemoteWorkflow {
-		min-width: 62px;
-		max-width: 62px;
-	}
-
-	#auditList a {
-		cursor: pointer;
-	}
-
-	#auditList .auAuditDate {
-		min-width: 150px;
-		max-width: 150px;
-	}
-
-	#auditList .exStart {
-		min-width: 150px;
-		max-width: 150px;
-	}
-
-	#auditList .exComplete {
-		min-width: 150px;
-		max-width: 150px;
-	}
-
-	#auditList .exResult {
-		min-width: 50px;
-		max-width: 50px;
-	}
 
 #filterTable {
 	width: 50%;
@@ -337,6 +234,8 @@ td {
 }
 
 /*BUTTON*/
+#details,
+#resume,
 #updateServer,
 #FilterButton,
 #ResetButton {
@@ -348,7 +247,8 @@ td {
 	color: white;
 	border: none;
 }
-
+	#details:hover,
+	#resume:hover,
 	#updateServer:hover,
 	#FilterButton:hover,
 	#ResetButton:hover {
@@ -439,8 +339,8 @@ td {
 	}
 
 	#auditFilters .filterWorkflowName {
-		width: 100%;
-		max-width: 150px;
+		min-width: 200px;
+		max-width: 200px;
 	}
 
 	#auditFilters .filterExecutionID {
@@ -449,33 +349,13 @@ td {
 	}
 
 	#auditFilters .filterAuditType {
-		min-width: 62px;
-		max-width: 62px;
-	}
-
-	#auditFilters .filterServerID {
-		min-width: 200px;
-		max-width: 200px;
-	}
-
-	#auditFilters .filterParentID {
 		min-width: 200px;
 		max-width: 200px;
 	}
 
 	#auditFilters .filterExecutingUser {
-		min-width: 150px;
-		max-width: 150px;
-	}
-
-	#auditFilters .filterIsSubExecution {
-		min-width: 62px;
-		max-width: 62px;
-	}
-
-	#auditFilters .filterIsRemoteWorkflow {
-		min-width: 62px;
-		max-width: 62px;
+		min-width: 200px;
+		max-width: 200px;
 	}
 
 	#auditFilters .filterContainStart {
@@ -576,99 +456,11 @@ td {
 
 
 
-/*DIALOG*/
-.ui-widget {
-	font-family: Verdana,Arial,sans-serif;
-	font-size: .8em;
-}
-
-.ui-widget-content {
-	background: #F9F9F9;
-	border: 1px solid black;
-	color: #222222;
-}
-
-.ui-dialog {
-	left: 0;
-	outline: 0 none;
-	padding: 0 !important;
-	position: absolute;
-	top: 0;
-}
 
 #success {
 	padding: 0;
 	margin: 0;
 }
-
-.ui-dialog .ui-dialog-content {
-	background: none repeat scroll 0 0 transparent;
-	border: 0 none;
-	overflow: auto;
-	position: relative;
-	padding: 5px !important;
-}
-
-.ui-widget-header {
-	background: black;
-	border: 0;
-	color: #fff;
-	font-weight: normal;
-	font-size: 14px;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-	padding: 0.1em .5em;
-	position: relative;
-	font-size: 14px;
-}
-
-.ui-dialog .ui-dialog-titlebar-close span {
-	margin: -8px -7px;
-}
-
-.ui-button-icon-only .ui-button-text,
-.ui-button-icons-only .ui-button-text {
-	height: 0px;
-	width: 0px;
-}
-
-.ui-icon {
-	width: 16px;
-	height: 16px;
-	background-image: url("../images/ui-icons_444444_256x240.png");
-}
-
-.ui-widget-content .ui-icon {
-	background-image: url("../images/ui-icons_444444_256x240.png");
-}
-
-.ui-widget-header .ui-icon {
-	background-image: url("../images/ui-icons_444444_256x240.png");
-}
-
-.ui-state-default .ui-icon {
-	background-image: url("../images/ui-icons_777777_256x240.png");
-}
-
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
-	background-image: url("../images/ui-icons_555555_256x240.png");
-}
-
-.ui-state-active .ui-icon {
-	background-image: url("../images/ui-icons_ffffff_256x240.png");
-}
-
-.ui-state-highlight .ui-icon {
-	background-image: url("../images/ui-icons_777620_256x240.png");
-}
-
-.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
-	background-image: url("../images/ui-icons_cc0000_256x240.png");
-}
-/*DIALOG*/
-
-
 
 
 #loader {
