@@ -252,7 +252,7 @@ namespace Warewolf.Launcher
         void InspectContainer()
         {
             int count = 0;
-            while ((Status != "Healthy" || string.IsNullOrEmpty(IP)) && count++ < 7)
+            while ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count++ < 7)
             {
                 Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
                 var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/json";
@@ -603,7 +603,7 @@ namespace Warewolf.Launcher
                 IP = JSONObj.NetworkSettings.Networks["nat"].IPAddress;
             }
             Hostname = JSONObj.Config.Hostname;
-            Status = JSONObj.State.Health?.Status??"Healthy";
+            Status = JSONObj.State.Health?.Status??"healthy";
         }
 
         string ParseForNodeHostname(string responseText)
