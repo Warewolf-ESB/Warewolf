@@ -405,11 +405,12 @@ namespace Warewolf.Launcher
                             }
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         if (retryCount == 9)
                         {
-                            throw new Exception("Cannot start container. Try executing 'docker system prune' and trying again.");
+                            Console.WriteLine("Timed out waiting for start container.");
+                            throw e;
                         }
                         Console.WriteLine($"Still waiting for container {serverContainerID.Substring(0, 12)} to start.");
                         Thread.Sleep(1000);
