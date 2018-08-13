@@ -83,14 +83,11 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 using Dev2.Common;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.ESB.Execution;
-using System.Linq.Expressions;
 using Warewolf.Launcher;
 using System.Reflection;
 using Warewolf.Storage;
@@ -302,6 +299,15 @@ namespace Dev2.Activities.Specs.Composition
             var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
+            if (workflowName == "TestMySqlWFWithMySqlCountries" ||
+                workflowName == "TestMySqlWFWithMySqlLastIndex" ||
+                workflowName == "TestMySqlWFWithMySqlScalar" ||
+                workflowName == "TestMySqlWFWithMySqlStarIndex" ||
+                workflowName == "TestMySqlWFWithMySqlIntIndex")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                environmentModel.LoadExplorer(true);
+            }
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceId,
@@ -748,9 +754,16 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
+
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
+
+            if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                localHostEnv.LoadExplorer(true);
+            }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
@@ -2643,7 +2656,7 @@ namespace Dev2.Activities.Specs.Composition
             repository.DeleteResourceFromWorkspace(resourceModel);
             repository.DeleteResource(resourceModel);
         }
-        
+
         [Then(@"the file ""(.*)"" is deleted from the Sharepoint server as cleanup")]
         public void ThenFileIsDeletedFromSharepointServerAsCleanup(string fileName)
         {
@@ -4030,6 +4043,8 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            environmentModel.LoadExplorer(true);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -4089,6 +4104,19 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+        [Given(@"""(.*)"" contains a mysql database service ""(.*)""")]
+        public void GivenContainsAMysqlDatabaseService(string parentName, string serviceName)
+        {
+            var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = new List<IServiceInput>(),
+                IsEndedOnError = true
+            };
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
+        }
 
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
@@ -4576,7 +4604,7 @@ namespace Dev2.Activities.Specs.Composition
 
         [Given(@"I resume workflow ""(.*)""")]
         public void GivenIResumeWorkflow(string resourceId)
-        {
+       {
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
             Assert.IsNotNull(resourceModel);
@@ -4593,7 +4621,6 @@ namespace Dev2.Activities.Specs.Composition
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel,serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"));
             Add("resumeMessage", msg);
         }
-
         [Then(@"an error ""(.*)""")]
         public void ThenAnError(string message)
         {
@@ -4603,13 +4630,89 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(message, executeMessage.Message.ToString());
         }
 
+        [Then(@"Resume has ""(.*)"" error")]
+        public void WhenResumeHasError(string error)
+        {
+            TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
+            if (error == "AN")
+            {
+                Assert.IsTrue(executeMessage.HasError);
+            }
+            else
+            {
+                Assert.IsFalse(executeMessage.HasError);
+            }            
+        }
+
         [Then(@"Resume message is ""(.*)""")]
         public void ThenResumeMessageIs(string message)
         {
-            ScenarioContext.Current.Pending();
+            TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
+            Assert.IsNotNull(executeMessage);
         }
 
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" has an error")]
+        public void ThenTheInWorkflowHasAnError(string toolName, string workflow)
+        {
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsFalse(string.IsNullOrEmpty(toolSpecificDebug[0].ErrorMessage));
+        }
 
+        [Then(@"execution stopped on error and did not execute ""(.*)""")]
+        public void ThenExecutionForStoppedOnErrorAndDidNotExecute(string toolName)
+        {
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            Assert.IsFalse(debugStates.Any(ds => ds.DisplayName.Equals(toolName)));
+        }
+
+        [When(@"I startup the mysql container")]
+        public void WhenIStartupTheContainer()
+        {
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        }
+
+        [When(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
+        public void WhenIResumeWorkflowAtTool(string workflow, string toolToResumeFrom)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var activity = activities[toolToResumeFrom] as DsfMySqlDatabaseActivity;
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
+            Assert.IsNotNull(resourceModel);
+            var env = new ExecutionEnvironment();            
+            var serEnv = env.ToJson();
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(activity.UniqueID));
+            Add("resumeMessage", msg);
+        }
+
+        [When(@"I select ""(.*)"" Action for ""(.*)"" tool")]
+        public void WhenISelectActionForTool(string action, string toolName)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var activity = activities[toolName] as DsfMySqlDatabaseActivity;
+            activity.ProcedureName = action;
+            activity.Inputs.Add(new ServiceInput("name", "S"));
+        }
+
+        [When(@"I select ""(.*)"" for ""(.*)"" as Source")]
+        public void WhenISelectForAsSource(string source, string toolName)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var activity = activities[toolName] as DsfMySqlDatabaseActivity;
+
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.LoadExplorer(true);
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(s => s.Name == source);
+            activity.SourceId = dbSource.Id;
+        }
 
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
@@ -4750,7 +4853,7 @@ namespace Dev2.Activities.Specs.Composition
                 var index = 0;
                 foreach (var row in table.Rows)
                 {
-                    var currentResult = results.ToArray()[index];                    
+                    var currentResult = results.ToArray()[index];
                     Assert.AreEqual(row["AuditType"], currentResult.AuditType);
                     Assert.AreEqual(row["WorkflowName"], currentResult.WorkflowName);
                     Assert.AreEqual(row["PreviousActivityType"], currentResult.PreviousActivityType ?? "null");
