@@ -42,9 +42,8 @@ namespace Dev2.Services.Sql
         {
             if (!(connection is MySqlConnection))
             {
-                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Mqsql"));
+                throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "MySql"));
             }
-
             return ((MySqlConnection)connection).GetSchema();
         }
 
@@ -59,7 +58,7 @@ namespace Dev2.Services.Sql
         {
             if (!(command is MySqlCommand))
             {
-                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBComman"));
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
             }
 
             var dataSet = new DataSet();

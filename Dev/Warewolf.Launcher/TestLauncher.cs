@@ -41,6 +41,7 @@ namespace Warewolf.Launcher
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
+
         public ITestRunner TestRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
@@ -138,15 +139,29 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
-            containerLauncher.LogOutputDirectory = logDirectory;
+            var containerLauncher = new ContainerLauncher("ciremote", "localhost", "test-remotewarewolf", "latest")
+            {
+                LogOutputDirectory = logDirectory
+            };
             return containerLauncher;
         }
 
-        string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            var startFrom = "AppServerUri=http://";
-            var subStringTo = ":3142/dsf;";
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+            Thread.Sleep(30000);
+            return containerLauncher;
+        }
+
+        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        {
+            var startFrom = "ConnectionString=\"";
+            var subStringTo = "\" ServerVersion=\"";
             int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
             int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
             string oldAddress = serverSourceXML.Substring(startIndex, length);
