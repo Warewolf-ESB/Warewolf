@@ -25,26 +25,24 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public ContainerLauncher(string remoteDockerApi = "localhost", string hostname = "", string version = "latest", bool CIRemoteResources = false)
+        public ContainerLauncher(string imageName, string remoteDockerApi = "localhost", string hostname = "", string version = "latest")
         {
             remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
             Version = version;
-            if (!CIRemoteResources)
-            {
-                ImageName = "warewolfserver";
-            }
-            else
-            {
-                ImageName = "ciremote";
-            }
+            ImageName = imageName;
             if (CheckForSwarm())
             {
                 StartWarewolfServerServiceOnSwarm();
             }
             else
             {
-                StartWarewolfServerContainer();
+                TryRunContainer();
+            }
+            if (ImageName.ToLower() == "warewolfserver" ||
+                ImageName.ToLower() == "ciremote")
+            {
+                WaitForServerInContainer();
             }
         }
 
@@ -62,7 +60,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        void StartWarewolfServerContainer()
+        void TryRunContainer()
         {
             try
             {
@@ -368,10 +366,6 @@ namespace Warewolf.Launcher
                     {
                         throw new HttpRequestException("Error starting server container. " + reader.ReadToEnd());
                     }
-                    else
-                    {
-                        WaitForServerInContainer();
-                    }
                 }
             }
         }
@@ -432,11 +426,11 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-     ""Image"":""" + FullImageID + @""",
-     ""HostConfig"":
-     {
-          ""Memory"": 1000000000
-     }
+    ""Image"":""" + FullImageID + @""",
+    ""HostConfig"":
+    {
+         ""Memory"": 1000000000
+    }
 }
 ");
             }
