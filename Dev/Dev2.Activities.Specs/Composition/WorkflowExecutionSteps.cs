@@ -94,6 +94,7 @@ using System.Linq.Expressions;
 using Warewolf.Launcher;
 using System.Reflection;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -4580,6 +4581,14 @@ namespace Dev2.Activities.Specs.Composition
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
+            env.Assign("[[Name]]", "Bob",0);
+            env.Assign("[[Rec(1).Name]]", "Bob", 0);
+            env.Assign("[[Rec(3).SurName]]", "Bob", 0);
+            env.Assign("[[Rec(4).Name]]", "Bob", 0);
+            env.Assign("[[R(*).FName]]", "Bob", 0);
+            env.Assign("[[RecSet().Field]]", "Bob", 0);
+            env.Assign("[[RecSet().Field]]", "Jane", 0);
+            env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"),0);
             var serEnv = env.ToJson();
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel,serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"));
             Add("resumeMessage", msg);
