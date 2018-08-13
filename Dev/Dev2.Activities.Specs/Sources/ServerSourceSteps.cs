@@ -101,6 +101,22 @@ namespace Dev2.Activities.Specs.Sources
             ScenarioContext.Current.Add("result", "success");
         }
 
+        [When(@"I Test the connection")]
+        public void WhenITestTheConnection()
+        {
+            try
+            {
+                var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
+                var manageNewServerSourceModel = BuildManageNewServerSourceModel().Item1;
+                manageNewServerSourceModel.TestConnection(serverSource);
+                ScenarioContext.Current.Add("result", "success");
+            }
+            catch (Exception ex)
+            {
+                ScenarioContext.Current.Add("result", ex.Message);
+            }
+        }
+
         static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
         {
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
@@ -111,6 +127,7 @@ namespace Dev2.Activities.Specs.Sources
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
             var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
             var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
+            
             var tuple = Tuple.Create(manageNewServerSourceModel, instanceSource, queryManagerProxy);
             return tuple;
         }
