@@ -9,6 +9,7 @@
 					<th class="auWorkflowID" title="WorkflowID" name="WorkflowID">WorkflowID</th>
 					<th class="auPreviousActivityId" title="PreviousActivityId" name="PreviousActivityId">ActivityID</th>
 					<th class="auWorkflowName" title="WorkflowName" name="WorkflowName">WorkflowName</th>
+					<th class="auVersionNumber" title="VersionNumber" name="VersionNumber">Version</th>
 					<th class="auAuditType" title="AuditType" name="AuditType">AuditType</th>
 					<th class="auAuditDate" title="AuditDate" name="AuditDate">AuditDate</th>
 					<th></th>
@@ -29,6 +30,9 @@
 					</td>
 					<td class="exRow auWorkflowName">
 						@Html.DisplayFor(modelItem => item.WorkflowName)
+					</td>
+					<td class="exRow auVersionNumber">
+						@Html.DisplayFor(modelItem => item.VersionNumber)
 					</td>
 					<td class="exRow auAuditType">
 						@Html.DisplayFor(modelItem => item.AuditType)
