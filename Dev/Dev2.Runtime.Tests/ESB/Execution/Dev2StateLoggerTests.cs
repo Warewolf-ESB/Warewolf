@@ -246,10 +246,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogExecuteCompleteState")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList();
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -270,10 +271,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogExecuteException")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList(); 
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -294,10 +296,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogPostExecuteState")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList(); 
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -318,10 +321,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogAdditionalDetail")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
-            _dev2StateAuditLogger.Dispose();
+                || a.AuditType.Equals(""))).ToList();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
+            _dev2StateAuditLogger.Dispose();
         }
 
         [TestMethod]
@@ -336,7 +340,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
             var str = expectedWorkflowId.ToString();
-            var results = Dev2StateAuditLogger.Query(a => a.WorkflowID == str);
+            var results = Dev2StateAuditLogger.Query(a => a.WorkflowID == str).ToList();
             _dev2StateAuditLogger.Dispose();
 
             foreach (var item in results)
@@ -346,6 +350,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var result = results.FirstOrDefault(a => a.WorkflowID == str);
             Assert.IsTrue(result != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
             Assert.AreEqual("{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}",
                             result.Environment);
         }
