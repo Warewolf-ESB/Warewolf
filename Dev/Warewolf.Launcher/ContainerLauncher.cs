@@ -205,17 +205,29 @@ namespace Warewolf.Launcher
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(1, 0, 0);
-                var response = client.PostAsync(url, new StringContent("")).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                try
                 {
-                    if (!response.IsSuccessStatusCode)
+                    var response = client.PostAsync(url, new StringContent("")).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        throw new HttpRequestException("Error pulling image. " + reader.ReadToEnd());
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new HttpRequestException("Error pulling image. " + reader.ReadToEnd());
+                        }
+                        else
+                        {
+                            FullImageID = ParseForImageID(reader.ReadToEnd());
+                        }
                     }
-                    else
+                }
+                catch (SocketException e)
+                {
+                    if (e.Message == $"No connection could be made because the target machine actively refused it {remoteSwarmDockerApi}:2375" ||
+                        e.Message == "No connection could be made because the target machine actively refused it 127.0.0.1:2375" ||
+                        e.Message == "No connection could be made because the target machine actively refused it localhost:2375")
                     {
-                        FullImageID = ParseForImageID(reader.ReadToEnd());
+                        throw new Exception($"Cannot connect to docker remote api at {remoteSwarmDockerApi}. Check this job has the \"Docker\" requirement and that the agent runinng this job is fully Docker capable.");
                     }
                 }
             }
