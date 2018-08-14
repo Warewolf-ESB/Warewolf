@@ -8,8 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Communication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -735,12 +737,7 @@ namespace Warewolf.Storage
 
         public void FromJson(string serializedEnv)
         {
-            using (var helper = new EnvironmentToJsonHelper())
-            {
-                helper.WriteVariables(this._env);
-                helper.WriteErrors(this.Errors, this.AllErrors);
-                helper.FromJson(serializedEnv,this);
-            }
+            EnvironmentToJsonHelper.FromJson(serializedEnv, this);
         }
 
 
@@ -803,21 +800,43 @@ namespace Warewolf.Storage
                 _stream.Dispose();
             }
 
-            internal void FromJson(string serializedEnv, ExecutionEnvironment environment)
+            internal static void FromJson(string serializedEnv, ExecutionEnvironment environment)
             {
-                var serializer = new JsonSerializer();
-                var textReader = new JsonTextReader(new StringReader(serializedEnv));
-                var jsonEnv = serializer.Deserialize<JObject>(textReader);
+                if (string.IsNullOrEmpty(serializedEnv))
+                {
+                    return;
+                }
 
-                var env = (JObject)jsonEnv.Property("Environment").Value;
-                var jsonScalars = env.Property("scalars").Value as JObject;
-                var jsonRecSets = env.Property("record_sets").Value as JObject;
-                var jsonJObjects = env.Property("json_objects").Value as JObject;
+                var jsonEnv = GetEnvironmentJObject(serializedEnv);
+                if (jsonEnv is null)
+                {
+                    return;
+                }
+                var env = (JObject)jsonEnv.Property("Environment")?.Value;
+                var jsonScalars = env?.Property("scalars")?.Value as JObject;
+                var jsonRecSets = env?.Property("record_sets")?.Value as JObject;
+                var jsonJObjects = env?.Property("json_objects")?.Value as JObject;
 
                 AssignScalarData(environment, jsonScalars);
                 AssignRecSetData(environment, jsonRecSets);
                 AssignJsonData(environment, jsonJObjects);
 
+            }
+
+            private static JObject GetEnvironmentJObject(string serializedEnv)
+            {
+                var serializer = new Dev2JsonSerializer();
+                JObject jsonEnv = null;
+                try
+                {
+                    jsonEnv = serializer.Deserialize<JObject>(serializedEnv);
+                }
+                catch (JsonReaderException jre)
+                {
+                    Dev2Logger.Error($"Error Deserializing Environment: {serializedEnv}", jre, GlobalConstants.WarewolfError);
+                }
+
+                return jsonEnv;
             }
 
             private static void AssignJsonData(ExecutionEnvironment environment, JObject jsonJObjects)
@@ -830,7 +849,7 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JObject jsonRecSets)
             {
-                foreach (var recSetObj in jsonRecSets.Properties())
+                foreach (var recSetObj in jsonRecSets?.Properties())
                 {
                     AssignRecSetData(environment, recSetObj);
 
@@ -839,7 +858,7 @@ namespace Warewolf.Storage
 
             private static void AssignScalarData(ExecutionEnvironment environment, JObject jsonScalars)
             {
-                foreach (var scalarObj in jsonScalars.Properties())
+                foreach (var scalarObj in jsonScalars?.Properties())
                 {
                     environment.Assign($"[[{scalarObj.Name}]]", (string)scalarObj.Value, 0);
                 }
@@ -847,9 +866,9 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JProperty recSetObj)
             {
-                var recSetDataObj = recSetObj.Value as JObject;
-                var positionItems = (recSetDataObj.Property("WarewolfPositionColumn").Value as JArray).ToList();
-                foreach (var recSetData in recSetDataObj.Properties())
+                var recSetDataObj = recSetObj?.Value as JObject;
+                var positionItems = (recSetDataObj?.Property("WarewolfPositionColumn")?.Value as JArray).ToList();
+                foreach (var recSetData in recSetDataObj?.Properties())
                 {
                     if (recSetData.Name != "WarewolfPositionColumn")
                     {
@@ -858,7 +877,7 @@ namespace Warewolf.Storage
                         foreach (var dataValue in dataItems)
                         {
                             var index = positionItems[i].ToString();
-                            environment.Assign($"[[{recSetObj.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
+                            environment.Assign($"[[{recSetObj?.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
                             i++;
                         }
                     }
