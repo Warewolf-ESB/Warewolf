@@ -95,6 +95,10 @@ namespace Dev2.Runtime.Auditing
         [JsonProperty("Environment")]
         public string Environment { get; set; }
 
+        [Column(Name = "VersionNumber", CanBeNull = true)]
+        [JsonProperty("VersionNumber")]
+        public string VersionNumber { get; set; }
+
         [Column(Name = "AuditDate",DbType = "string", CanBeNull = true)]
         [JsonProperty("AuditDate")]
         public DateTime AuditDate { get; set; }
@@ -103,8 +107,8 @@ namespace Dev2.Runtime.Auditing
         {
             return p => (string.IsNullOrEmpty(searchTerm) || p.AuditType == searchTerm);
         }
-      
-       
+
+
         public static Expression<Func<AuditLog, bool>> IsAuditDateLessThan(DateTime dateValue)
         {
             return p => (dateValue == null || p.AuditDate <= dateValue);
@@ -125,6 +129,7 @@ namespace Dev2.Runtime.Auditing
             ExecutionOriginDescription = dsfDataObject.ExecutionOriginDescription;
             ExecutionToken = dev2Serializer.Serialize(ExecutionToken);
             Environment = dsfDataObject.Environment.ToJson();
+            VersionNumber = dsfDataObject.VersionNumber;
             AuditDate = DateTime.Now;
             AuditType = auditType;
             AdditionalDetail = detail;

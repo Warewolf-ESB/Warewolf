@@ -193,6 +193,7 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
+        public string VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
@@ -376,6 +377,7 @@ namespace Dev2.DynamicServices
             result.WorkspaceID = WorkspaceID;
             result.ThreadsToDispose = ThreadsToDispose;
             result.ParentID = ParentID;
+            result.VersionNumber = VersionNumber;
             result.RunWorkflowAsync = RunWorkflowAsync;
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
