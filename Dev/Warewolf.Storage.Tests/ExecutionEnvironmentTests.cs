@@ -923,6 +923,36 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual("{"+Environment.NewLine+"  \"Name\": \"B\""+Environment.NewLine+"}", jsonVal);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_Invalid_ShouldNotUpdateEnvironment()
+        {
+            var serializedEnv = "some string";
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_EmptyString_ShouldNotUpdateEnvironment()
+        {
+            var serializedEnv = "";
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_NullString_ShouldNotUpdateEnvironment()
+        {
+            string serializedEnv = null;
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
         #region Private Methods
 
         ExecutionEnvironment CreateEnvironmentWithErrors()
