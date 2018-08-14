@@ -572,8 +572,12 @@ namespace Warewolf.Launcher
             if (JSONObj.NetworkSettings.Networks.ContainsKey("nat"))
             {
                 IP = JSONObj.NetworkSettings.Networks["nat"].IPAddress;
+                Console.WriteLine($"Got IP Address for {serverContainerID.Substring(0, 12)} as {IP}.");
             }
             Hostname = JSONObj.Config.Hostname;
+            Console.WriteLine($"Got Hostname for {serverContainerID.Substring(0, 12)} as {Hostname}.");
+            Status = JSONObj.State.Health?.Status??"healthy";
+            Console.WriteLine($"Got Status for {serverContainerID.Substring(0, 12)} as {Status}.");
         }
 
         string ParseForNodeHostname(string responseText)
