@@ -382,7 +382,7 @@ namespace Warewolf.Launcher
                         {
                             if (!response.IsSuccessStatusCode)
                             {
-                                throw new HttpRequestException("Error starting container. " + reader.ReadToEnd());
+                                throw new HttpRequestException($"Error {(int)response.StatusCode} starting container. " + reader.ReadToEnd());
                             }
                             else
                             {
@@ -651,7 +651,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"Error {response.StatusCode} stopping server container on {remoteSwarmDockerApi}: " + reader.ReadToEnd());
+                        Console.WriteLine($"Error {(int)response.StatusCode} stopping server container on {remoteSwarmDockerApi}: " + reader.ReadToEnd());
                     }
                     else
                     {
