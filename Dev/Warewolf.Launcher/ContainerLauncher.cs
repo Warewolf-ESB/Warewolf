@@ -642,7 +642,7 @@ namespace Warewolf.Launcher
         void StopContainer()
         {
             TimeSpan uptime = DateTime.Now.Subtract(startTime);
-            string formatTimeSpan = uptime.Hours > 0 ? $"{uptime.Hours.ToString()} Hours" : uptime.Minutes > 0 ? $"{uptime.Minutes.ToString()} Minutes" : uptime.Seconds > 0 ? $"{uptime.Seconds.ToString()} Seconds" : $"{uptime.Milliseconds.ToString()} Milliseconds";
+            string formatTimeSpan = uptime.Hours > 0 ? $"{uptime.Hours.ToString()} Hours." : uptime.Minutes > 0 ? $"{uptime.Minutes.ToString()} Minutes." : uptime.Seconds > 0 ? $"{uptime.Seconds.ToString()} Seconds." : $"{uptime.Milliseconds.ToString()} Milliseconds.";
             Console.WriteLine($"Stopping {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi} after {formatTimeSpan}");
             var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/stop";
             HttpContent containerStopContent = new StringContent("");
