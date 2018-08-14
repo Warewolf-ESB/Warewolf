@@ -841,7 +841,7 @@ namespace Warewolf.Storage
 
             private static void AssignJsonData(ExecutionEnvironment environment, JObject jsonJObjects)
             {
-                foreach (var jsonObj in jsonJObjects.Properties())
+                foreach (var jsonObj in jsonJObjects?.Properties())
                 {
                     environment.Assign($"[[@{jsonObj.Name}]]", jsonObj.Value.ToString(), 0);
                 }
