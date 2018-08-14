@@ -55,6 +55,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is not enabled");
                 RabbitMQSourceUIMap.Click_RabbitMQSource_TestConnectionButton();
                 Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.ItemImage.Exists, "Test Connection successful image does not appear.");
+                UIMap.WaitForControlEnabled(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
                 Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
                 UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
                 RabbitMQSourceUIMap.Click_Close_RabbitMQSource_Tab_Button();
