@@ -190,14 +190,6 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
-        { 
-            var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost");
-            Thread.Sleep(30000);
-            containerLauncher.LogOutputDirectory = logDirectory;
-            return containerLauncher;
-        }
-
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
