@@ -4698,6 +4698,7 @@ namespace Dev2.Activities.Specs.Composition
 
             Dev2StateAuditLogger.AddFilter(auditFilter);
         }
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Given(@"the audit database is empty")]
         public void GivenTheAuditDatabaseIsEmpty()
         {
@@ -4752,6 +4753,27 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Then(@"The audit database has ""(.*)"" search results for ""(.*)"" as")]
+        public void ThenTheAuditDatabaseHasSearchResultsForAs(int expectedCount,string workflowName, Table table)
+        {
+            var results = Dev2StateAuditLogger.Query(item =>
+               (workflowName == "" || item.WorkflowName.Equals(workflowName))              
+            );
+            Assert.AreEqual(expectedCount, results.Count());
+            if (results.Count() > 0 && table.Rows.Count > 0)
+            {
+                var index = 0;
+                foreach (var row in table.Rows)
+                {
+                    var currentResult = results.ToArray()[index];
+                    Assert.AreEqual(row["WorkflowName"], currentResult.WorkflowName);
+                    Assert.AreEqual(row["AuditType"], currentResult.AuditType);
+                    Assert.AreEqual(row["VersionNumber"], currentResult.VersionNumber ?? "null");
+                    index++;
+                }
+            }
+        }
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with log type ""(.*)"" for ""(.*)""")]
         public void ThenTheLogFileSearchResultsContainFor(int expectedCount, string activityName, string logType, string workflowName)
