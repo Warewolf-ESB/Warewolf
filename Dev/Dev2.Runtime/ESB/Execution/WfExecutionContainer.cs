@@ -141,11 +141,6 @@ namespace Dev2.Runtime.ESB.Execution
         void SetDataObjectProperties()
         {
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
-            if (string.IsNullOrEmpty(DataObject.VersionNumber))
-            {
-                var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
-                DataObject.VersionNumber = resource.VersionInfo.VersionNumber;
-            }
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
@@ -197,6 +192,12 @@ namespace Dev2.Runtime.ESB.Execution
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var outerStateLogger = dsfDataObject.StateNotifier;
+            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dsfDataObject.ResourceID);
+            var VersionNumber = resourceObject.VersionInfo.VersionNumber;
+            if (string.IsNullOrEmpty(dsfDataObject.VersionNumber))
+            {
+                dsfDataObject.VersionNumber = VersionNumber;
+            }
             try
             {
                 dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
@@ -237,6 +238,10 @@ namespace Dev2.Runtime.ESB.Execution
                 if (outerStateLogger != null)
                 {
                     dsfDataObject.StateNotifier = outerStateLogger;
+                }
+                if (VersionNumber != null)
+                {
+                    dsfDataObject.VersionNumber = VersionNumber;
                 }
             }
         }
@@ -319,8 +324,8 @@ namespace Dev2.Runtime.ESB.Execution
         readonly Guid _resumeActivityId;
         readonly IExecutionEnvironment _resumeEnvironment;
 
-        public ResumableExecutionContainer(Guid resumeActivityId,ServiceAction sa,IDSFDataObject dataObject)
-            : this(resumeActivityId,dataObject.Environment,sa,dataObject,WorkspaceRepository.Instance.ServerWorkspace,new EsbServicesEndpoint())
+        public ResumableExecutionContainer(Guid resumeActivityId, ServiceAction sa, IDSFDataObject dataObject)
+            : this(resumeActivityId, dataObject.Environment, sa, dataObject, WorkspaceRepository.Instance.ServerWorkspace, new EsbServicesEndpoint())
         {
 
         }
@@ -333,7 +338,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         protected override void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
-        {            
+        {
             var startAtActivity = FindActivity(resource) ?? throw new InvalidWorkflowException($"Resume Node not found. UniqueID:{_resumeActivityId}");
             dsfDataObject.Environment = _resumeEnvironment;
             base.EvalInner(dsfDataObject, startAtActivity, update);
