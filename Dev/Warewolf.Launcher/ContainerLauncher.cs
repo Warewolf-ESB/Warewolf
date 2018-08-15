@@ -18,6 +18,7 @@ namespace Warewolf.Launcher
         string serviceID = null;
         string FullImageID = null;
         DateTime startTime;
+        readonly string ProgressFeedbackFilePath = @"%programdata%\Warewolf\Server Log\Container Launcher.log";
         public string Hostname;
         public string IP;
         public string Status;
@@ -247,7 +248,8 @@ namespace Warewolf.Launcher
                         }
                         else
                         {
-                            FullImageID = ParseForImageID(reader.ReadToEnd());
+                            var result = ProgressFeedback(reader);
+                            FullImageID = ParseForImageID(result);
                         }
                     }
                 }
@@ -261,6 +263,19 @@ namespace Warewolf.Launcher
                     }
                 }
             }
+        }
+
+        string ProgressFeedback(StreamReader reader)
+        {
+            var result = "";
+            var fileWriteStream = File.OpenWrite(ProgressFeedbackFilePath);
+            while (!reader.EndOfStream)
+            {
+                var readChar = (char)reader.Read();
+                result += readChar;
+                fileWriteStream.WriteByte((byte)readChar);
+            }
+            return result;
         }
 
         void InspectContainer()
