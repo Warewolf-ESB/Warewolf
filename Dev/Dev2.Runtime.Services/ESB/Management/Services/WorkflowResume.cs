@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
@@ -18,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override string HandlesType() => nameof(WorkflowResume);
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
-        {            
+        {
             values.TryGetValue("environment", out StringBuilder environmentString);
             if (environmentString == null)
             {
@@ -40,15 +41,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
-                Environment = executionEnv
+                Environment = executionEnv,
+                ExecutingUser = Thread.CurrentPrincipal,
+                IsDebug = true
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             var sa = dynamicService.Actions.FirstOrDefault();
-            if(sa is null)
+            if (sa is null)
             {
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
             }
-            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId,sa,dataObject);
+            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
             container.Execute(out ErrorResultTO errors, 0);
             if (errors.HasErrors())
             {
@@ -56,6 +59,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
-       
+
     }
 }

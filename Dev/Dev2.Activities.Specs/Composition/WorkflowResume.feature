@@ -18,9 +18,10 @@ Scenario: Resuming a workflow that had failed to connect
 	When I startup the mysql container
 	And I select "NewMySqlSource" for "ToolUsingContainerAsTheSource" as Source 
 	And I select "Pr_CitiesGetCountries" Action for "ToolUsingContainerAsTheSource" tool
+	And "WorkflowWtithMysqlToolUsingContainer" is Saved
 	And I resume workflow "WorkflowWtithMysqlToolUsingContainer" at "ToolUsingContainerAsTheSource" tool
 	Then Resume has "NO" error
 	And Resume message is "workflow not resumable"
 	And the "IncrementNumber" in Workflow "WorkflowWtithMysqlToolUsingContainer" debug outputs as
-	  |                   |
-	  | [[outnumber]] = 2 |
+	  | # |                    |
+	  | 1 |  [[outnumber]] = 2 |
