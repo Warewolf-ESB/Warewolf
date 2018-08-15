@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -18,6 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
+            
             values.TryGetValue("environment", out StringBuilder environmentString);
             if (environmentString == null)
             {
@@ -32,7 +34,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("startActivityId is not a valid GUID.");
             }
-            var env = serializer.Deserialize<ExecutionEnvironment>(environmentString);
+            var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString())
+            var env = new ExecutionEnvironment().FromJson(decodedEnv);
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,

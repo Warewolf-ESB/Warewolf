@@ -291,14 +291,10 @@
 
 		$.ajax({
 			type: "POST",
-			url: wareWolfUrl,
+            url: "/Audit/PerformResume",
 			cache: false,
 			'Content-Type': "application/json; charset=utf-8",
-			data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID},
-			crossDomain: true,
-			xhrFields: {
-				withCredentials: true
-			},
+			data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID},			
 			success: function (response) {
 				alert('success');
 			},
