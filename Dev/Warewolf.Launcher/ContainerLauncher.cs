@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
+using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {
@@ -16,6 +17,7 @@ namespace Warewolf.Launcher
         string serverContainerID = null;
         string serviceID = null;
         string FullImageID = null;
+        DateTime startTime;
         public string Hostname;
         public string IP;
         public string Status;
@@ -233,17 +235,29 @@ namespace Warewolf.Launcher
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(1, 0, 0);
-                var response = client.PostAsync(url, new StringContent("")).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                try
                 {
-                    if (!response.IsSuccessStatusCode)
+                    var response = client.PostAsync(url, new StringContent("")).Result;
+                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                     {
-                        throw new HttpRequestException("Error pulling image. " + reader.ReadToEnd());
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new HttpRequestException("Error pulling image. " + reader.ReadToEnd());
+                        }
+                        else
+                        {
+                            FullImageID = ParseForImageID(reader.ReadToEnd());
+                        }
                     }
-                    else
+                }
+                catch (SocketException e)
+                {
+                    if (e.Message == $"No connection could be made because the target machine actively refused it {remoteSwarmDockerApi}:2375" ||
+                        e.Message == "No connection could be made because the target machine actively refused it 127.0.0.1:2375" ||
+                        e.Message == "No connection could be made because the target machine actively refused it localhost:2375")
                     {
-                        FullImageID = ParseForImageID(reader.ReadToEnd());
+                        throw new Exception($"Cannot connect to docker remote api at {remoteSwarmDockerApi}. Check this job has the \"Docker\" requirement and that the agent runinng this job is fully Docker capable.");
                     }
                 }
             }
@@ -252,13 +266,13 @@ namespace Warewolf.Launcher
         void InspectContainer()
         {
             int count = 0;
-            while ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count++ < 7)
+            Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
+            while ((Status != "healthy" || string.IsNullOrEmpty(IP)) && ++count < 100)
             {
-                Console.WriteLine($"Inspecting {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}.");
                 var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/json";
                 using (var client = new HttpClient())
                 {
-                    client.Timeout = new TimeSpan(0, 20, 0);
+                    client.Timeout = new TimeSpan(0, 3, 0);
                     var response = client.GetAsync(url).Result;
                     var streamingResult = response.Content.ReadAsStreamAsync().Result;
                     using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
@@ -267,10 +281,10 @@ namespace Warewolf.Launcher
                         {
                             ParseForNetworkID(reader.ReadToEnd());
                         }
-                        else
+                        if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
                         {
                             Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
-                            Thread.Sleep(1000);
+                            Thread.Sleep(3000);
                         }
                     }
                 }
@@ -385,7 +399,7 @@ namespace Warewolf.Launcher
             containerStartContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 1, 30);
+                client.Timeout = new TimeSpan(0, 3, 0);
                 int retryCount = 0;
                 while (++retryCount < 10)
                 {
@@ -397,15 +411,16 @@ namespace Warewolf.Launcher
                         {
                             if (!response.IsSuccessStatusCode)
                             {
-                                throw new HttpRequestException("Error starting container. " + reader.ReadToEnd());
+                                throw new HttpRequestException($"Error {(int)response.StatusCode} starting container. " + reader.ReadToEnd());
                             }
                             else
                             {
+                                startTime = DateTime.Now;
                                 return;
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (TaskCanceledException e)
                     {
                         if (retryCount == 9)
                         {
@@ -413,7 +428,7 @@ namespace Warewolf.Launcher
                             throw e;
                         }
                         Console.WriteLine($"Still waiting for container {serverContainerID.Substring(0, 12)} to start.");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(3000);
                     }
                 }
             }
@@ -604,6 +619,11 @@ namespace Warewolf.Launcher
             }
             Hostname = JSONObj.Config.Hostname;
             Status = JSONObj.State.Health?.Status??"healthy";
+            if (Status == "healthy")
+            {
+                Console.WriteLine($"Got IP Address for {serverContainerID.Substring(0, 12)} as {IP}.");
+                Console.WriteLine($"Got Hostname for {serverContainerID.Substring(0, 12)} as {Hostname}.");
+            }
         }
 
         string ParseForNodeHostname(string responseText)
@@ -651,7 +671,9 @@ namespace Warewolf.Launcher
 
         void StopContainer()
         {
-            Console.WriteLine($"Stopping {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi}");
+            TimeSpan uptime = DateTime.Now.Subtract(startTime);
+            string formatTimeSpan = uptime.Hours > 0 ? $"{uptime.Hours.ToString()} Hours." : uptime.Minutes > 0 ? $"{uptime.Minutes.ToString()} Minutes." : uptime.Seconds > 0 ? $"{uptime.Seconds.ToString()} Seconds." : $"{uptime.Milliseconds.ToString()} Milliseconds.";
+            Console.WriteLine($"Stopping {serverContainerID.Substring(0, 12)} on {remoteSwarmDockerApi} after {formatTimeSpan}");
             var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/stop";
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
@@ -663,7 +685,7 @@ namespace Warewolf.Launcher
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"Error stopping server container on {remoteSwarmDockerApi}: " + reader.ReadToEnd());
+                        Console.WriteLine($"Error {(int)response.StatusCode} stopping server container on {remoteSwarmDockerApi}: " + reader.ReadToEnd());
                     }
                     else
                     {

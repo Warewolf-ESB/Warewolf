@@ -146,6 +146,14 @@ namespace Warewolf.Launcher
             return containerLauncher;
         }
 
+        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost");
+            Thread.Sleep(30000);
+            containerLauncher.LogOutputDirectory = logDirectory;
+            return containerLauncher;
+        }
+
         public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
             var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
@@ -154,6 +162,16 @@ namespace Warewolf.Launcher
             };
             string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
             File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+            Thread.Sleep(30000);
+            return containerLauncher;
+        }
+
+        public static ContainerLauncher StartLocalRabbitMQContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
+            {
+                LogOutputDirectory = logDirectory
+            };
             Thread.Sleep(30000);
             return containerLauncher;
         }
