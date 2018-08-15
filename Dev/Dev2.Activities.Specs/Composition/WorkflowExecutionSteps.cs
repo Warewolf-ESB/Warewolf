@@ -426,7 +426,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStatesDuration = new List<IDebugState>();
                 Add("debugStatesDuration", debugStatesDuration);
             }
-            if (debugState.WorkspaceID == server.Connection.WorkspaceID)
+            if (debugState.WorkspaceID == server.Connection.WorkspaceID || debugState.WorkspaceID==GlobalConstants.ServerWorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
                 {
@@ -4682,9 +4682,13 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
             Assert.IsNotNull(resourceModel);
-            var env = new ExecutionEnvironment();            
-            var serEnv = env.ToJson();
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse(activity.UniqueID));
+
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
+
+            var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, Guid.Parse(activity.UniqueID));
             Add("resumeMessage", msg);
         }
 

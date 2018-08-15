@@ -129,18 +129,22 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("I select \"Pr_CitiesGetCountries\" Action for \"ToolUsingContainerAsTheSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
+ testRunner.And("\"WorkflowWtithMysqlToolUsingContainer\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
  testRunner.And("I resume workflow \"WorkflowWtithMysqlToolUsingContainer\" at \"ToolUsingContainerAs" +
                     "TheSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
- testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
+ testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
  testRunner.And("Resume message is \"workflow not resumable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
                         ""});
             table3.AddRow(new string[] {
+                        "1",
                         "[[outnumber]] = 2"});
-#line 24
+#line 25
  testRunner.And("the \"IncrementNumber\" in Workflow \"WorkflowWtithMysqlToolUsingContainer\" debug ou" +
                     "tputs as", ((string)(null)), table3, "And ");
 #line hidden
