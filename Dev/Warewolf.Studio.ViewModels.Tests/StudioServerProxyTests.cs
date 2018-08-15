@@ -22,6 +22,7 @@ using Moq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Explorer;
+using System.Linq;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -313,20 +314,46 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockVersionManager.Verify(manager => manager.GetVersion(versionInfo, It.IsAny<Guid>()));
         }
 
-        [TestMethod,Timeout(60000)]
-        [Owner("Nkosinathi Sangweni")]
+        [TestMethod, Timeout(60000)]
+        [Owner("Rory McGuire")]
         [TestCategory("StudioServerProxy_GetVersions")]
         public void StudioServerProxy_GetVersions_WhenGivenVersionId_ShouldLoadUsingVersionId()
         {
             //------------Setup for test--------------------------
-            var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(o => o.IsConnected).Returns(true);
+
+            var resourceId = Guid.NewGuid();
+            var mockCommunicationControllerFactory = new Mock<ICommunicationControllerFactory>();
+            var mockGetVersionsController = new Mock<ICommunicationController>();
+            mockGetVersionsController.Setup(o => o.AddPayloadArgument("resourceId", resourceId.ToString())).Verifiable();
+
+
+            var explorerItem = new Mock<IExplorerItem>
+            {
+                Name = "Item1",
+            };
+            var v1 = new VersionInfo
+            {
+                VersionNumber = "v1.0.0"
+            };
+            explorerItem.Setup(o => o.VersionInfo).Returns(v1);
+            var items = new List<IExplorerItem>
+            {
+                explorerItem.Object
+            };
+            mockGetVersionsController.Setup(o => o.ExecuteCommand<IList<IExplorerItem>>(mockEnvironmentConnection.Object, It.IsAny<Guid>())).Returns(items);
+
+            mockCommunicationControllerFactory.Setup(o => o.CreateController("GetVersions")).Returns(mockGetVersionsController.Object);
+            
+
+            var communicationControllerFactory = mockCommunicationControllerFactory.Object;
+            var studioServerProxy = new StudioServerProxy(communicationControllerFactory, mockEnvironmentConnection.Object);
             var mockQueryManager = new Mock<IQueryManager>();
-            var mockVersionManager = new Mock<IVersionManager>();
-            mockVersionManager.Setup(manager => manager.GetVersions(It.IsAny<Guid>()))
-                                .Returns(new List<IExplorerItem>())
-                                .Verifiable();
+            var versionManager = new VersionManagerProxy(communicationControllerFactory, mockEnvironmentConnection.Object);
+            
             studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
-            studioServerProxy.VersionManager = mockVersionManager.Object;
+            studioServerProxy.VersionManager = versionManager;
             var updateManagerProxy = new Mock<IExplorerUpdateManager>();
             updateManagerProxy.Setup(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(ValueFunction(ExecStatus.Fail));
@@ -334,11 +361,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var treeItem = new Mock<IExplorerTreeItem>();
             treeItem.Setup(explorerTreeItem => explorerTreeItem.ResourcePath);
-            var item = studioServerProxy.GetVersions(It.IsAny<Guid>());
+            var item = studioServerProxy.GetVersions(resourceId);
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
-
-            mockVersionManager.Verify(manager => manager.GetVersions(It.IsAny<Guid>()));
+            Assert.AreEqual(v1.VersionNumber, item.FirstOrDefault().VersionNumber);
+            //mockVersionManager.Verify(manager => manager.GetVersions(It.IsAny<Guid>()));
+            mockGetVersionsController.Verify();
         }
 
         [TestMethod,Timeout(60000)]
