@@ -703,6 +703,17 @@ namespace Warewolf.Launcher
     {
         public ServerContainerNetworkSettings NetworkSettings { get; set; }
         public ServerContainerConfig Config { get; set; }
+        public ServerContainerState State { get; set; }
+    }
+
+    public class ServerContainerState
+    {
+        public ServerContainerHealth Health;
+    }
+
+    public class ServerContainerHealth
+    {
+        public string Status;
     }
 
     class ServerContainerConfig
