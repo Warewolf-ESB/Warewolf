@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.ServerSource
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
@@ -69,7 +69,7 @@ namespace Warewolf.UI.Tests.ServerSource
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             const string ExistingSourceName = "ExistingCodedUITestServerSource";
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
@@ -122,7 +122,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             try
             {
-                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 ExplorerUIMap.ConnectToRestrictedRemoteServer();
                 UIMap.WaitForControlVisible(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem);
 
@@ -192,7 +192,7 @@ namespace Warewolf.UI.Tests.ServerSource
         [TestCategory("Server Sources")]
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
