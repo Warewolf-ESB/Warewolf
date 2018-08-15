@@ -500,6 +500,10 @@
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
+      <Project>{9B669D51-14CE-44A3-9407-8251BA3BAD19}</Project>
+      <Name>Warewolf.Launcher</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>Warewolf.Parser.Interop</Name>
