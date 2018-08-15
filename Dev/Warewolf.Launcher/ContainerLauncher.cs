@@ -21,6 +21,7 @@ namespace Warewolf.Launcher
         DateTime startTime;
         public string Hostname;
         public string IP;
+        public string Status;
         public string Version;
         public string ImageName;
         public string LogOutputDirectory = Environment.ExpandEnvironmentVariables("%TEMP%");
