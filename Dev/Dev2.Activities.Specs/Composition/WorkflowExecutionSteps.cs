@@ -759,6 +759,10 @@ namespace Dev2.Activities.Specs.Composition
             {
                 _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
+            else if (remoteWf == "RabbitMQTest")
+            {
+                _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
 
             var localHostEnv = LocalEnvModel;
 
@@ -3778,6 +3782,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
+            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -3791,6 +3796,7 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+
         [Given(@"""(.*)"" is object is set to ""(.*)""")]
         public void GivenIsObjectIsSetTo(string toolName, string isObjectString)
         {
@@ -3806,8 +3812,6 @@ namespace Dev2.Activities.Specs.Composition
             dsfConsumeRabbitMqActivity.ObjectName = Objectname;
         }
 
-
-
         [Given(@"Queue Name as ""(.*)""")]
         public void GivenQueueNameAs(string queueName)
         {
@@ -3819,6 +3823,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
         {
+            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
