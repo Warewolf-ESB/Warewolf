@@ -1490,4 +1490,75 @@ Scenario: Audit Log Query Expect 8 Items from search
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
 	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfDecision                                                         |
-		
+
+Scenario: Audit Log Executing workflow of different versions
+	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
+	 And the audit database is empty
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |	 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "0" Versions in explorer
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the "VarsAssign" in WorkFlow "WorkflowWithVersionAssignExecuted2" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test | 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "2" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "2" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign2" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |
+	  | [[rec().a]] | V1    |
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	 When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	 Then the workflow execution has "NO" error
+	 And the "VarsAssign2" in WorkFlow "WorkflowWithVersionAssignExecuted2" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  | 3 | [[rec().a]] = | V1        |	  
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "4" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.4 DateTime        |
+	  | v.3 DateTime        |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |	
+	  When I rollback "WorkflowWithVersionAssignExecuted2" to version "1"
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test |
+	  And The audit database has "13" search results for "WorkflowWithVersionAssignExecuted2" as 
+	  | WorkflowName                       | AuditType               | VersionNumber |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 6             |
+	  And workflow "WorkflowWithVersionAssignExecuted2" is deleted as cleanup
