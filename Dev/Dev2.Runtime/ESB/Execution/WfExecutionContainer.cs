@@ -141,7 +141,11 @@ namespace Dev2.Runtime.ESB.Execution
         void SetDataObjectProperties()
         {
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
-
+            if (string.IsNullOrEmpty(DataObject.VersionNumber))
+            {
+                var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                DataObject.VersionNumber = resource.VersionInfo.VersionNumber;
+            }
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
