@@ -18,8 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override string HandlesType() => nameof(WorkflowResume);
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
-        {
-            
+        {            
             values.TryGetValue("environment", out StringBuilder environmentString);
             if (environmentString == null)
             {
@@ -34,12 +33,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("startActivityId is not a valid GUID.");
             }
-            var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString())
-            var env = new ExecutionEnvironment().FromJson(decodedEnv);
+            var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
+            var executionEnv = new ExecutionEnvironment();
+            executionEnv.FromJson(decodedEnv);
+
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
-                Environment = env
+                Environment = executionEnv
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             var sa = dynamicService.Actions.FirstOrDefault();
