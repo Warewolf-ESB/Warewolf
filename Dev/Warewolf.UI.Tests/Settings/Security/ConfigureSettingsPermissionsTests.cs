@@ -97,7 +97,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void Edit_Server_Removes_Server_From_Explorer()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists);
             ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();

@@ -137,9 +137,9 @@ namespace Warewolf.Launcher
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
-        public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
+        public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("ciremote", "localhost", "test-remotewarewolf", "latest")
+            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
             {
                 LogOutputDirectory = logDirectory
             };
@@ -156,7 +156,7 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "localhost", "test-mysql", "withnewproc")
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
             {
                 LogOutputDirectory = logDirectory
             };
@@ -740,7 +740,7 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(DotCoverRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -749,7 +749,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     // Run Test Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(TestRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(!ApplyDotCover);
@@ -965,8 +965,9 @@ namespace Warewolf.Launcher
                     }
                 }
             }
-            if (ApplyDotCover && JobName.Split(',').Count() > 1)
+            if (ApplyDotCover)
             {
+                MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
                 MergeDotCoverSnapshots();
             }
         }
