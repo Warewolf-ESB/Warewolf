@@ -91,7 +91,7 @@ namespace Dev2.Activities.Specs.Composition
 #line 5
 this.ScenarioSetup(scenarioInfo);
 #line 6
- testRunner.Given("I have a workflow \"WorkflowWtithMysqlToolUsingContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"WorkflowWithMysqlToolUsingContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -100,10 +100,10 @@ this.ScenarioSetup(scenarioInfo);
                         "[[number]]",
                         "1"});
 #line 7
- testRunner.And("\"WorkflowWtithMysqlToolUsingContainer\" contains an Assign \"AssignNumber\" as", ((string)(null)), table1, "And ");
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains an Assign \"AssignNumber\" as", ((string)(null)), table1, "And ");
 #line 10
- testRunner.And("\"WorkflowWtithMysqlToolUsingContainer\" contains a mysql database service \"ToolUsi" +
-                    "ngContainerAsTheSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains a mysql database service \"ToolUsin" +
+                    "gContainerAsTheSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -112,16 +112,16 @@ this.ScenarioSetup(scenarioInfo);
                         "[[outnumber]]",
                         "=[[number]]+1"});
 #line 11
- testRunner.And("\"WorkflowWtithMysqlToolUsingContainer\" contains an Assign \"IncrementNumber\" as", ((string)(null)), table2, "And ");
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains an Assign \"IncrementNumber\" as", ((string)(null)), table2, "And ");
 #line 14
-    testRunner.When("\"WorkflowWtithMysqlToolUsingContainer\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("\"WorkflowWithMysqlToolUsingContainer\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
     testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
  testRunner.And("execution stopped on error and did not execute \"IncrementNumber\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("the \"ToolUsingContainerAsTheSource\" in Workflow \"WorkflowWtithMysqlToolUsingConta" +
-                    "iner\" has an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the \"ToolUsingContainerAsTheSource\" in Workflow \"WorkflowWithMysqlToolUsingContai" +
+                    "ner\" has an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.When("I startup the mysql container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
@@ -129,10 +129,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("I select \"Pr_CitiesGetCountries\" Action for \"ToolUsingContainerAsTheSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.And("\"WorkflowWtithMysqlToolUsingContainer\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.And("I resume workflow \"WorkflowWtithMysqlToolUsingContainer\" at \"ToolUsingContainerAs" +
-                    "TheSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I resume workflow \"WorkflowWithMysqlToolUsingContainer\" at \"ToolUsingContainerAsT" +
+                    "heSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 24
@@ -145,8 +145,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[outnumber]] = 2"});
 #line 25
- testRunner.And("the \"IncrementNumber\" in Workflow \"WorkflowWtithMysqlToolUsingContainer\" debug ou" +
-                    "tputs as", ((string)(null)), table3, "And ");
+ testRunner.And("the \"IncrementNumber\" in Workflow \"WorkflowWithMysqlToolUsingContainer\" debug out" +
+                    "puts as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
