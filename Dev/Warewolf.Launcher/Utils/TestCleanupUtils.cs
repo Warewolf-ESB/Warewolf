@@ -331,6 +331,10 @@ namespace Warewolf.Launcher
                 WaitForFileUnlock(serverLogFile);
                 MoveFileToTestResults(serverLogFile, $"{build.JobName} Server.log", build.TestRunner.TestsResultsPath);
 
+                string containerLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\Container Launcher.log");
+                WaitForFileUnlock(containerLogFile);
+                MoveFileToTestResults(containerLogFile, $"{build.JobName} Container Launcher.log", build.TestRunner.TestsResultsPath);
+
                 string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
                 WaitForFileUnlock(serverLogFile);
                 MoveFileToTestResults(myWarewolfIoLogFile, $"{build.JobName} my.warewolf.io Server.log", build.TestRunner.TestsResultsPath);
