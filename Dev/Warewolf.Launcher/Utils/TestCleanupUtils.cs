@@ -291,6 +291,13 @@ namespace Warewolf.Launcher
                 }
             }
 
+            string containerLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\Container Launcher.log");
+            if (File.Exists(containerLogFile))
+            {
+                WaitForFileUnlock(containerLogFile);
+                MoveFileToTestResults(containerLogFile, $"{build.JobName} Container Launcher.log", build.TestRunner.TestsResultsPath);
+            }
+
             if (Studio)
             {
                 string studioLogFile = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log");
@@ -330,10 +337,6 @@ namespace Warewolf.Launcher
                 string serverLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log");
                 WaitForFileUnlock(serverLogFile);
                 MoveFileToTestResults(serverLogFile, $"{build.JobName} Server.log", build.TestRunner.TestsResultsPath);
-
-                string containerLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\Container Launcher.log");
-                WaitForFileUnlock(containerLogFile);
-                MoveFileToTestResults(containerLogFile, $"{build.JobName} Container Launcher.log", build.TestRunner.TestsResultsPath);
 
                 string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
                 WaitForFileUnlock(serverLogFile);
