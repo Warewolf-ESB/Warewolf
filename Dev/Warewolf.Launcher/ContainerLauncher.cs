@@ -268,7 +268,7 @@ namespace Warewolf.Launcher
         string ProgressFeedback(StreamReader reader)
         {
             var result = "";
-            var fileWriteStream = File.OpenWrite(ProgressFeedbackFilePath);
+            var fileWriteStream = File.OpenWrite(Environment.ExpandEnvironmentVariables(ProgressFeedbackFilePath));
             while (!reader.EndOfStream)
             {
                 var readChar = (char)reader.Read();
