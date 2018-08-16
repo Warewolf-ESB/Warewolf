@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Threading.Tasks;
 
@@ -28,7 +27,7 @@ namespace Warewolf.Launcher
         public const string Username = "WarewolfAdmin";
         public const string Password = "W@rEw0lf@dm1n";
 
-        public ContainerLauncher(string imageName, string remoteDockerApi = "localhost", string hostname = "", string version = "latest")
+        public ContainerLauncher(string imageName, string hostname = "", string remoteDockerApi = "localhost", string version = "latest")
         {
             remoteSwarmDockerApi = remoteDockerApi;
             Hostname = hostname;
@@ -94,9 +93,38 @@ namespace Warewolf.Launcher
             if (serverContainerID != null)
             {
                 StopContainer();
-                RecoverServerLogFile();
+                if (ImageName.ToLower() == "warewolfserver" || ImageName.ToLower() == "ciremote")
+                {
+                    RecoverServerLogFile();
+                }
+                else
+                {
+                    RecoverLogFile();
+                }
                 DeleteContainer();
                 serverContainerID = null;
+            }
+        }
+
+        void RecoverLogFile()
+        {
+            var url = $"http://{remoteSwarmDockerApi}:2375/containers/{serverContainerID}/logs?stderr=1&stdout=1";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.GetAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Error recoving container log file: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        reader.BaseStream.CopyToAsync(Console.OpenStandardOutput());
+                    }
+                }
             }
         }
 
@@ -115,7 +143,7 @@ namespace Warewolf.Launcher
         {
             ""Limits"": 
             {
-                ""MemoryBytes"": 1500000000
+                ""MemoryBytes"": 700000000
             }
         },
         ""RestartPolicy"": 
@@ -252,7 +280,6 @@ namespace Warewolf.Launcher
                         if (response.IsSuccessStatusCode)
                         {
                             ParseForNetworkID(reader.ReadToEnd());
-                            break;
                         }
                         if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
                         {
@@ -450,9 +477,10 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
      ""Image"":""" + FullImageID + @""",
+     ""AutoRemove"": true,
      ""HostConfig"":
      {
-          ""Memory"": 1000000000
+          ""Memory"": 700000000
      }
 }
 ");
@@ -463,11 +491,12 @@ namespace Warewolf.Launcher
                 containerContent = new StringContent(@"
 {
     ""Hostname"": """ + Hostname + @""",
-    ""Image"":""" + FullImageID + @""",
-    ""HostConfig"":
-    {
-         ""Memory"": 1000000000
-    }
+     ""Image"":""" + FullImageID + @""",
+     ""AutoRemove"": true,
+     ""HostConfig"":
+     {
+          ""Memory"": 700000000
+     }
 }
 ");
             }
@@ -649,7 +678,7 @@ namespace Warewolf.Launcher
             HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(0, 20, 0);
+                client.Timeout = new TimeSpan(0, 3, 0);
                 var response = client.PostAsync(url, containerStopContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
