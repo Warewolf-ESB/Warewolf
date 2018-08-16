@@ -194,7 +194,7 @@ namespace Dev2.Runtime.ESB.Execution
             var outerStateLogger = dsfDataObject.StateNotifier;
             var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dsfDataObject.ResourceID);
             var VersionNumber = "1";
-            if (resourceObject.VersionInfo != null)
+            if (resourceObject != null)
             {
                 VersionNumber = resourceObject.VersionInfo.VersionNumber;
             }
