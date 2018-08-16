@@ -1,12 +1,10 @@
 ﻿using Dev2.Communication;
 using Dev2.Runtime.Auditing;
 using Dev2.Web2.Models.Auditing;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
@@ -57,7 +55,7 @@ namespace Dev2.Web2.Controllers
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult AuditList(string jsonData)
-        {            
+        {
             var serializer = new Dev2JsonSerializer();
             var request = CheckRequest(null);
             if (jsonData != null)
@@ -102,8 +100,8 @@ namespace Dev2.Web2.Controllers
                             { "environment",new StringBuilder(environment).ToString() },
                         };
 
-                        var returnValue = client.UploadValues("http://localhost:3142/secure/WorkflowResume", "POST",nameValueCollection);
                         TempData.Remove("allowLogin");
+                        var returnValue = client.UploadValues("http://localhost:3142/secure/WorkflowResume", "POST", nameValueCollection);
                         return Json(returnValue);
                     }
                 }
