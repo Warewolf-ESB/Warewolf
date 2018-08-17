@@ -192,8 +192,6 @@ namespace Warewolf.Launcher
 
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
-            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
-            TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
             if (ciRemoteContainerLauncher != null)
             {
                 ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
@@ -223,6 +221,8 @@ namespace Warewolf.Launcher
             string TestRunnerPath;
             if (TestFailures.Count > 0)
             {
+                TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+                TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
                 TestRunner.TestList = string.Join(",", TestFailures);
                 TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
             }
