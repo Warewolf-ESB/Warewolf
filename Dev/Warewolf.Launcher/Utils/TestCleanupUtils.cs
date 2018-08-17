@@ -444,6 +444,10 @@ namespace Warewolf.Launcher
 
         public static bool WaitForFileUnlock(string FileSpec)
         {
+            if (!File.Exists(FileSpec))
+            {
+                return false;
+            }
             var locked = true;
             var RetryCount = 0;
             while (locked && RetryCount < 100)
