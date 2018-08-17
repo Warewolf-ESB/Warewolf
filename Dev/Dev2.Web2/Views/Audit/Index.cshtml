@@ -283,8 +283,8 @@
 		$.support.cors = true;
 		var serverUrl = getServerUrl().toLowerCase();
 		var wareWolfUrl = serverUrl + "/services/WorkflowResume";
+        var wareWolfResumeUrl = serverUrl + "/secure/WorkflowResume";
 		var pingUrl = serverUrl + "/secure/ping";
-
 		var Environment = $(this).attr('data-Environment');
 		var WorkflowID = $(this).attr('data-WorkflowID');
 		var ActivityID = $(this).attr('data-ActivityID');
@@ -294,7 +294,7 @@
             url: "/Audit/PerformResume",
 			cache: false,
 			'Content-Type': "application/json; charset=utf-8",
-			data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID},			
+            data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID, 'wareWolfResumeUrl': wareWolfResumeUrl},			
 			success: function (response) {
 				alert('success');
 			},
