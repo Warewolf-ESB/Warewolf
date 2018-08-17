@@ -98,7 +98,6 @@ namespace Dev2.Web2.Controllers
                             { "resourceID",new StringBuilder(resourceID).ToString() },
                             { "startActivityId",new StringBuilder(startActivityId).ToString() },
                             { "environment",new StringBuilder(environment).ToString() },
-                            { "wareWolfResumeUrl",new StringBuilder(wareWolfResumeUrl).ToString() },
                         };
 
                         TempData.Remove("allowLogin");
