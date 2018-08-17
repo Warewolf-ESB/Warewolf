@@ -15,29 +15,6 @@ namespace Dev2.Web.Tests
     public class AuditControllerTests
     {
         [TestMethod]
-        public void Resuming_Workflow_Requires_Authentication()
-        {
-            var request = new Mock<HttpRequestBase>();
-            var response = new Mock<HttpResponseBase>();
-            request.SetupGet(x => x.Headers).Returns(
-                new WebHeaderCollection
-                {
-                    { "X-Requested-With", "XMLHttpRequest"},
-                    { "Authorization", "Basic ZGV2MlxJbnRlcmdyYXRpb25UZXN0ZXI6STczNTczcjA="},
-                });
-
-            var context = new Mock<HttpContextBase>();
-            context.SetupGet(x => x.Request).Returns(request.Object);
-            context.SetupGet(x => x.Response).Returns(response.Object);
-            var controller = new AuditController();
-            controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
-            controller.TempData.Add("allowLogin", true);
-
-            controller.PerformResume(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
-            Assert.AreEqual(HttpStatusCode.Unauthorized, context.Object.Response.StatusCode);
-        }
-
-        [TestMethod]
         public void Resuming_Workflow_Does_Not_Require_Authentication_Given_allowLogIn_Is_False()
         {
             var request = new Mock<HttpRequestBase>();
