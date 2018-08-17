@@ -31,7 +31,7 @@ namespace Dev2.Web.Tests
             var controller = new AuditController();
             controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
             controller.TempData.Add("allowLogin", false);
-            controller.PerformResume(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            controller.PerformResume(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             response.VerifySet(res => res.StatusCode = 401, Times.AtLeastOnce);
             Assert.AreEqual(1, controller.TempData.Count);
         }
