@@ -31,16 +31,10 @@ namespace Dev2.Activities.Specs.Deploy
             _commonSteps = new CommonSteps(_scenarioContext);
         }
 
-        [AfterScenario("Deploy")]
-        public void CleanupRemoteDocker()
-        {
-            WorkflowExecutionSteps._containerOps.Dispose();
-        }
-
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            WorkflowExecutionSteps._containerOps = new ContainerLauncher();
+            WorkflowExecutionSteps._containerOps = new ContainerLauncher("warewolfserver");
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;

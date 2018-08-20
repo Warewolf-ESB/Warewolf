@@ -302,6 +302,15 @@ namespace Dev2.Activities.Specs.Composition
             var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
+            if (workflowName == "TestMySqlWFWithMySqlCountries" ||
+                workflowName == "TestMySqlWFWithMySqlLastIndex" ||
+                workflowName == "TestMySqlWFWithMySqlScalar" ||
+                workflowName == "TestMySqlWFWithMySqlStarIndex" ||
+                workflowName == "TestMySqlWFWithMySqlIntIndex")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                environmentModel.LoadExplorer(true);
+            }
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceId,
@@ -746,11 +755,26 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (server == "Remote Container")
             {
-                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
+            else if (remoteWf == "TestSqlReturningXml" || remoteWf == "TestSqlExecutesOnce")
+            {
+                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
+            else if (remoteWf == "RabbitMQTest")
+            {
+                _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
+
             var localHostEnv = LocalEnvModel;
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
+
+            if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
+            {
+                _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                localHostEnv.LoadExplorer(true);
+            }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
@@ -1467,6 +1491,10 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
+            if (dbSrcName == "NewSqlServerSource" || dbSrcName == "NewSqlBulkInsertSource")
+            {
+                _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
@@ -3756,6 +3784,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
+            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -3769,6 +3798,7 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+
         [Given(@"""(.*)"" is object is set to ""(.*)""")]
         public void GivenIsObjectIsSetTo(string toolName, string isObjectString)
         {
@@ -3784,8 +3814,6 @@ namespace Dev2.Activities.Specs.Composition
             dsfConsumeRabbitMqActivity.ObjectName = Objectname;
         }
 
-
-
         [Given(@"Queue Name as ""(.*)""")]
         public void GivenQueueNameAs(string queueName)
         {
@@ -3797,6 +3825,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
         {
+            _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
@@ -4030,6 +4059,8 @@ namespace Dev2.Activities.Specs.Composition
             //Load Source based on the name
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            environmentModel.LoadExplorer(true);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
@@ -4203,6 +4234,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings for testing as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
@@ -4276,9 +4308,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a sqlserver database service ""(.*)"" with mappings as")]
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
-
+            _containerOps = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
-
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
             {

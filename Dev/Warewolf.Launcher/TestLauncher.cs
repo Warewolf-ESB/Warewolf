@@ -41,6 +41,7 @@ namespace Warewolf.Launcher
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
+
         public ITestRunner TestRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
@@ -136,17 +137,49 @@ namespace Warewolf.Launcher
             return (!string.IsNullOrEmpty(studioPath) && (File.Exists(studioPath)));
         }
 
-        public static ContainerLauncher TryStartLocalCIRemoteContainer(string logDirectory)
+        public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("localhost", "test-remotewarewolf", "latest", true);
+            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            return containerLauncher;
+        }
+
+        public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost");
+            Thread.Sleep(30000);
             containerLauncher.LogOutputDirectory = logDirectory;
             return containerLauncher;
         }
 
-        string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            var startFrom = "AppServerUri=http://";
-            var subStringTo = ":3142/dsf;";
+            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+            Thread.Sleep(30000);
+            return containerLauncher;
+        }
+
+        public static ContainerLauncher StartLocalRabbitMQContainer(string logDirectory)
+        {
+            var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
+            {
+                LogOutputDirectory = logDirectory
+            };
+            Thread.Sleep(30000);
+            return containerLauncher;
+        }
+
+        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        {
+            var startFrom = "ConnectionString=\"";
+            var subStringTo = "\" ServerVersion=\"";
             int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
             int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
             string oldAddress = serverSourceXML.Substring(startIndex, length);
@@ -707,7 +740,7 @@ namespace Warewolf.Launcher
                     string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
 
                     // Run DotCover Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(DotCoverRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -716,7 +749,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     // Run Test Runner Batch File
-                    trxTestResultsFile = ProcessUtils.StartTestRunnerProcess(TestRunnerPath);
+                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(!ApplyDotCover);
@@ -932,8 +965,9 @@ namespace Warewolf.Launcher
                     }
                 }
             }
-            if (ApplyDotCover && JobName.Split(',').Count() > 1)
+            if (ApplyDotCover)
             {
+                MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
                 MergeDotCoverSnapshots();
             }
         }

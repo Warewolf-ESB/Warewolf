@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.Merge
         {
             if (serverName == "Remote Container")
             {
-                WorkflowExecutionSteps._containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                WorkflowExecutionSteps._containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             }
             if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
             {

@@ -75,7 +75,7 @@ Scenario: Creating New DB Source General Testing
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
-    And I type Server as "RSAKLFSVRDEV"
+    And I type Server as "TEST-MSSQL"
     And I Select Authentication Type as "User"
     Then Username field is "Visible"
     And Password field is "Visible"
@@ -141,7 +141,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
       Given I open New Database Source
-      And I type Server as "RSAKLFSVRDEV"
+      And I type Server as "TEST-MSSQL"
       And I Select Authentication Type as "User"
       Then Username field is "Visible"
       And Password field is "Visible"
@@ -193,7 +193,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRDEV"
+    And Server as "TEST-MSSQL"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -224,7 +224,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRDEV"
+    And Server as "TEST-MSSQL"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -250,7 +250,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRDEV"
+   When I type Server as "TEST-MSSQL"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
