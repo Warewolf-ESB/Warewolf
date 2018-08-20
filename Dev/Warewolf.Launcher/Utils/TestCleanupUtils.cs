@@ -277,7 +277,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio)
+        public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio, string JobName)
         {
             foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
             {
@@ -287,7 +287,7 @@ namespace Warewolf.Launcher
                 namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
                 if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
                 {
-                    WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
+                    WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
                 }
             }
 
@@ -295,21 +295,21 @@ namespace Warewolf.Launcher
             {
                 string studioLogFile = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log");
                 WaitForFileUnlock(studioLogFile);
-                MoveFileToTestResults(studioLogFile, $"{build.JobName} Studio.log", build.TestRunner.TestsResultsPath);
+                MoveFileToTestResults(studioLogFile, $"{JobName} Studio.log", build.TestRunner.TestsResultsPath);
             }
             if (Studio && DotCover)
             {
                 var StudioSnapshot = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {build.TestRunner.TestsResultsPath}\\{build.JobName} Studio DotCover.dcvr");
+                Console.WriteLine($"Trying to move Studio coverage snapshot file from {StudioSnapshot} to {build.TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                 var exists = WaitForFileExist(StudioSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(StudioSnapshot);
                     if (!(locked))
                     {
-                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {build.TestRunner.TestsResultsPath}\\{build.JobName} Studio DotCover.dcvr");
-                        CopyOnWrite($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Studio DotCover.dcvr");
-                        File.Move(StudioSnapshot, $"{build.TestRunner.TestsResultsPath}\\{build.JobName} Studio DotCover.dcvr");
+                        Console.WriteLine($"Moving Studio coverage snapshot file from StudioSnapshot to {build.TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                        CopyOnWrite($"{build.TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
+                        File.Move(StudioSnapshot, $"{build.TestRunner.TestsResultsPath}\\{JobName} Studio DotCover.dcvr");
                     }
                     else
                     {
@@ -322,35 +322,35 @@ namespace Warewolf.Launcher
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log"), $"{build.JobName} Studio DotCover.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Warewolf\Studio Logs\dotCover.log"), $"{JobName} Studio DotCover.log", build.TestRunner.TestsResultsPath);
                 }
             }
             if (Server)
             {
                 string serverLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log");
                 WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(serverLogFile, $"{build.JobName} Server.log", build.TestRunner.TestsResultsPath);
+                MoveFileToTestResults(serverLogFile, $"{JobName} Server.log", build.TestRunner.TestsResultsPath);
 
                 string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log");
                 WaitForFileUnlock(serverLogFile);
-                MoveFileToTestResults(myWarewolfIoLogFile, $"{build.JobName} my.warewolf.io Server.log", build.TestRunner.TestsResultsPath);
+                MoveFileToTestResults(myWarewolfIoLogFile, $"{JobName} my.warewolf.io Server.log", build.TestRunner.TestsResultsPath);
 
                 string myWarewolfIoErrorsLogFile = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log");
                 WaitForFileUnlock(myWarewolfIoErrorsLogFile);
-                MoveFileToTestResults(myWarewolfIoErrorsLogFile, $"{build.JobName} my.warewolf.io Server Errors.log", build.TestRunner.TestsResultsPath);
+                MoveFileToTestResults(myWarewolfIoErrorsLogFile, $"{JobName} my.warewolf.io Server Errors.log", build.TestRunner.TestsResultsPath);
             }
             if (Server && DotCover)
             {
                 var ServerSnapshot = Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.dcvr");
-                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {build.TestRunner.TestsResultsPath}\\{build.JobName} Server DotCover.dcvr");
+                Console.WriteLine($"Trying to move Server coverage snapshot file from {ServerSnapshot} to {build.TestRunner.TestsResultsPath}\\{JobName} Server DotCover.dcvr");
                 var exists = WaitForFileExist(ServerSnapshot);
                 if (exists)
                 {
                     var locked = WaitForFileUnlock(ServerSnapshot);
                     if (!locked)
                     {
-                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {build.TestRunner.TestsResultsPath}\\{build.JobName} Server DotCover.dcvr");
-                        MoveFileToTestResults(ServerSnapshot, $"{build.JobName} Server DotCover.dcvr", build.TestRunner.TestsResultsPath);
+                        Console.WriteLine($"Moving Server coverage snapshot file from {ServerSnapshot} to {build.TestRunner.TestsResultsPath}\\{JobName} Server DotCover.dcvr");
+                        MoveFileToTestResults(ServerSnapshot, $"{JobName} Server DotCover.dcvr", build.TestRunner.TestsResultsPath);
                     }
                     else
                     {
@@ -359,20 +359,20 @@ namespace Warewolf.Launcher
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{build.JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{build.JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log")))
                 {
-                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{build.JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
                 }
             }
             if (Server && Studio && DotCover)
             {
-                build.TestCoverageMerger.MergeCoverageSnapshots(new List<string> { Path.Combine(build.TestRunner.TestsResultsPath, $"{build.JobName} Server DotCover.dcvr"), Path.Combine(build.TestRunner.TestsResultsPath, $"{build.JobName} Studio DotCover.dcvr") }, Path.Combine(build.TestRunner.TestsResultsPath, $"{build.JobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"), build.DotCoverPath);
+                build.TestCoverageMerger.MergeCoverageSnapshots(new List<string> { Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"), build.DotCoverPath);
             }
             if (build.RecordScreen != null)
             {

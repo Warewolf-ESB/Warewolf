@@ -755,7 +755,7 @@ namespace Warewolf.Launcher
                         this.CleanupServerStudio(!ApplyDotCover);
                     }
                 }
-                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart));
+                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
             }
             return trxTestResultsFile;
         }
@@ -950,7 +950,7 @@ namespace Warewolf.Launcher
                 if (string.IsNullOrEmpty(RetryFile))
                 {
                     //Run Tests
-                    TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    TrxFile = RunTests(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
                 }
                 else
                 {
