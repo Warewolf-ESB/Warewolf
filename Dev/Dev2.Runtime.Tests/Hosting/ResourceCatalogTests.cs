@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspacePath = EnvironmentVariables.ResourcePath;
             if (Directory.Exists(workspacePath))
             {
-                //Directory.Delete(workspacePath, true);
+                Directory.Delete(workspacePath, true);
             }
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
@@ -2814,7 +2814,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
             var mock = new Mock<IResourceActivityCache>();
 
-            _parsers.AddOrUpdate(workspaceID, mock.Object,(key,cache)=> {
+            _parsers.AddOrUpdate(workspaceID, mock.Object, (key, cache) =>
+            {
                 return cache;
             });
             const string propertyName = "_parsers";
@@ -3339,7 +3340,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
             var allFiles = Directory.GetFiles(sourcesPath);
-            File.SetAttributes(allFiles[0],FileAttributes.ReadOnly);
+            File.SetAttributes(allFiles[0], FileAttributes.ReadOnly);
 
             var attributes = File.GetAttributes(allFiles[0]);
             Assert.AreEqual(FileAttributes.ReadOnly, attributes);
@@ -3349,21 +3350,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
             attributes = File.GetAttributes(allFiles[0]);
             Assert.AreNotEqual(FileAttributes.ReadOnly, attributes);
-        }
-
-        [TestMethod]
-        [TestCategory("ResourceCatalog_Load")]
-        public void ResourceCatalog_ParseTest()
-        {
-            var rc = ResourceCatalog.Instance;
-            var a = rc.Parse(Guid.Empty, Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1"));
-            Assert.AreEqual("a03172cf-7f8f-417e-be86-8821d696ca40", a.UniqueID);
-            var nodes = a.ArmConnectors();
-            Assert.AreEqual(2, nodes.Count);
-            Assert.AreEqual(a.UniqueID, nodes[0].SourceUniqueId);
-            Assert.AreEqual(a.UniqueID, nodes[1].SourceUniqueId);
-            Assert.AreEqual("670132e7-80d4-4e41-94af-ba4a71b28118", nodes[0].DestinationUniqueId);
-            Assert.AreEqual("bd557ca7-113b-4197-afc3-de5d086dfc69", nodes[1].DestinationUniqueId);
         }
 
         [TestMethod]

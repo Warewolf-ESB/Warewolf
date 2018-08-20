@@ -192,13 +192,7 @@ namespace Dev2.Runtime.ESB.Execution
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var outerStateLogger = dsfDataObject.StateNotifier;
-            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dsfDataObject.ResourceID);
-            var versionNumber = "1";
-            if (resourceObject != null)
-            {
-                versionNumber = resourceObject.VersionInfo.VersionNumber;
-            }
-            dsfDataObject.VersionNumber = versionNumber;
+            
             try
             {
                 dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
@@ -239,10 +233,6 @@ namespace Dev2.Runtime.ESB.Execution
                 if (outerStateLogger != null)
                 {
                     dsfDataObject.StateNotifier = outerStateLogger;
-                }
-                if (versionNumber != null)
-                {
-                    dsfDataObject.VersionNumber = versionNumber;
                 }
             }
         }
@@ -314,9 +304,21 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID.ToString(), "WorkflowService", dataObject.VersionNumber);
+            var versionNumber = "1";
+            if (resourceObject != null)
+            {
+                versionNumber = resourceObject.VersionInfo.VersionNumber;
+            }
+            dataObject.VersionNumber = versionNumber;
+
+            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
+            if (versionNumber != null)
+            {
+                dataObject.VersionNumber = versionNumber;
+            }
         }
     }
 
