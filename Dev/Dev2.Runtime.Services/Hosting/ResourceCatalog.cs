@@ -404,8 +404,13 @@ namespace Dev2.Runtime.Hosting
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId)
         {
+            return Parse(workspaceID, resourceID, executionId, null);
+        }
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
+        {
             IResourceActivityCache parser = null;
             Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", string.IsNullOrEmpty(executionId) ? GlobalConstants.WarewolfDebug : executionId);
+            // get workspace cache entries
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
@@ -418,6 +423,7 @@ namespace Dev2.Runtime.Hosting
                     return cache;
                 });
             }
+            // get activity cache entry from workspace cache entry
             if (parser != null && parser.HasActivityInCache(resourceID))
             {
                 var dev2Activity = parser.GetActivity(resourceID);
@@ -427,7 +433,14 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            var resource = GetResource(workspaceID, resourceID);
+            // load resource
+            var resource = resourceOverride;
+            if (resourceOverride is null)
+            {
+                resource = GetResource(workspaceID, resourceID);
+            }
+
+            // get first activity for resource and initialize it
             var service = GetService(workspaceID, resourceID, resource.ResourceName);
             if (service != null)
             {
