@@ -18,6 +18,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         protected override ExecuteMessage ExecuteImpl(Dev2JsonSerializer serializer, Guid resourceId, Dictionary<string, StringBuilder> values)
         {
+            values.TryGetValue("versionNumber", out StringBuilder versionNumber);
+            if (versionNumber == null)
+            {
+                throw new InvalidDataContractException("no version Number passed");
+            }
             values.TryGetValue("environment", out StringBuilder environmentString);
             if (environmentString == null)
             {
@@ -36,7 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
-                Environment = env
+                Environment = env,
+                VersionNumber = versionNumber.ToString()
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             var sa = dynamicService.Actions.FirstOrDefault();
