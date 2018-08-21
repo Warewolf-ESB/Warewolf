@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
@@ -9,6 +11,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Launcher;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
@@ -21,6 +24,7 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
     public class RabbitMqSourceSteps
     {
         string failedNoneOfTheSpecifiedEndpointsWereReachable = "Failed: None of the specified endpoints were reachable";
+        public static ContainerLauncher _containerOps;
 
         [BeforeFeature("RabbitMqSource")]
         public static void SetupForSystem()
@@ -51,6 +55,9 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
             ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<ManageRabbitMQSourceViewModel>(Utils.ViewModelNameKey));
         }
+
+        [AfterScenario]
+        public void CleanUp() => _containerOps?.Dispose();
 
         [Given(@"I open New RabbitMq Source")]
         public void GivenIOpenNewRabbitMqSource()
@@ -91,6 +98,10 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         [Then(@"I type Host as ""(.*)""")]
         public void ThenITypeHostAs(string hostname)
         {
+            if (hostname == "test-rabbitmq")
+            {
+                _containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             manageRabbitMqSourceControl.EnterHostName(hostname);
             var viewModel = ScenarioContext.Current.Get<ManageRabbitMQSourceViewModel>("viewModel");

@@ -11,6 +11,7 @@ using Dev2.DynamicServices;
 using Dev2.Activities;
 using Warewolf.Storage;
 using System.Linq;
+using System.Text;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -24,9 +25,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var helloWolrdId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1");            
             var env = new ExecutionEnvironment();
             var serviceAction = new ServiceAction();
-            var dataObj = new DsfDataObject("<DataList></DataList>", Guid.NewGuid());
-            dataObj.ResourceID = helloWolrdId;
-            dataObj.ExecutingUser = SetupUser();
+            var dataObj = new DsfDataObject("<DataList></DataList>", Guid.NewGuid())
+            {
+                ResourceID = helloWolrdId,
+                ExecutingUser = SetupUser()
+            };
             Mock<IWorkspace> theWorkspace = SetupWorkspace();
             var esbChannel = new Mock<IEsbChannel>();
             var errors = new ErrorResultTO();
@@ -36,12 +39,23 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var resumableExecution = new ResumableExecutionContainer(assingNameTool, dataObj.Environment, serviceAction, dataObj, theWorkspace.Object, esbChannel.Object);
             Assert.IsNotNull(resumableExecution);
             resumableExecution.Execute(out errors, 0);
-            Assert.IsFalse(dataObj.Environment.HasErrors());
+            var hasErrors = dataObj.Environment.HasErrors();
+            Assert.IsFalse(hasErrors, GetAllErrors(dataObj.Environment.Errors));
             var output = dataObj.Environment.Eval("[[Message]]", 0);
             var message = WarewolfDataEvaluationCommon.evalResultToString(output);
             Assert.AreEqual("Hello World.", message);
         }
 
+        private string GetAllErrors(HashSet<string> allErrors)
+        {
+            var errors = new StringBuilder();
+            errors.AppendLine("Expected no errors but found; ");
+            foreach (var item in allErrors)
+            {
+                errors.AppendLine(item);
+            }
+            return errors.ToString();
+        }
 
         [TestMethod]
         public void ResumableExecutionContainer_Given_No_Name_And_Start_From_AssignMessage_Tool()
@@ -63,6 +77,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             resumableExecution.Execute(out errors, 0);
             Assert.IsTrue(dataObj.Environment.HasErrors());
             Assert.AreEqual(1, dataObj.Environment.Errors.Count);
+            Assert.IsNotNull(dataObj.Environment, "The environment is null");
+            Assert.IsNotNull(dataObj.Environment.Errors, "All Errors in the given Environment is Null");
+            Assert.IsTrue(dataObj.Environment.Errors.Count > 0, "There are no Errors in the environmnet");
             Assert.AreEqual("Scalar value { Name } is NULL", dataObj.Environment.Errors.FirstOrDefault());
         }
 
