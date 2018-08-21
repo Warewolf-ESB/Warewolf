@@ -297,7 +297,7 @@ namespace Warewolf.Launcher
                             Console.WriteLine("Timed out waiting for start container.");
                             throw e;
                         }
-                        Console.WriteLine($"Still waiting for container {serverContainerID.Substring(0, 12)} to start.");
+                        Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
                         Thread.Sleep(3000);
                     }
                 }
