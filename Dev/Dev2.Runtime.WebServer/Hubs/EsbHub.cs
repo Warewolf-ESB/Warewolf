@@ -48,11 +48,13 @@ namespace Dev2.Runtime.WebServer.Hubs
         static readonly Dictionary<Guid, string>  ResourceAffectedMessagesCache = new Dictionary<Guid, string>();
         public EsbHub()
         {
+            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
         public EsbHub(Server server)
             : base(server)
         {
+            DebugDispatcher.Instance.Add(GlobalConstants.ServerWorkspaceID, this);
         }
 
         #region Implementation of IDebugWriter
