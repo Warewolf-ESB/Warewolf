@@ -1074,12 +1074,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return lists;
         }
 
-        public ExecuteMessage ResumeWorkflowExecution(IResourceModel resource,string environment,Guid startActivityId)
+        public ExecuteMessage ResumeWorkflowExecution(IResourceModel resource,string environment,Guid startActivityId, string versionNumber)
         {
             var comController = new CommunicationController { ServiceName = "WorkflowResume" };
             comController.AddPayloadArgument("resourceID", resource.ID.ToString());
             comController.AddPayloadArgument("environment", environment);
             comController.AddPayloadArgument("startActivityId", startActivityId.ToString());
+            comController.AddPayloadArgument("versionNumber", versionNumber);
             return comController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
         }
     }

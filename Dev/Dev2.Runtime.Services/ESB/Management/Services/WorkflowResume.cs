@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -42,7 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 ResourceID = resourceId,
                 Environment = env,
-                VersionNumber = versionNumber.ToString()
+                VersionNumber = versionNumber.ToString(),
+                ExecutingUser = Thread.CurrentPrincipal,
+                IsDebug = true
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             var sa = dynamicService.Actions.FirstOrDefault();
