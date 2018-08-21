@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Web.UI.Tests", "Wa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj", "{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Web.Tests", "Dev2.Web.Tests\Dev2.Web.Tests.csproj", "{35A58032-9521-487D-89DC-C521C3845410}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A398A8F3-A7CA-44F4-8A5F-03B2BA7E1C84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35A58032-9521-487D-89DC-C521C3845410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
