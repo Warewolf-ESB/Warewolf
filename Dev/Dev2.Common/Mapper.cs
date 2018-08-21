@@ -9,6 +9,11 @@ namespace Dev2.Common
     {
         static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
 
+        public static void Clear()
+        {
+            Maps.Clear();
+        }
+
         public static void AddMap<TFrom, TTo>()
             where TFrom : class
             where TTo : class
