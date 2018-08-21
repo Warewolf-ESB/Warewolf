@@ -11,6 +11,7 @@ using Dev2.DynamicServices;
 using Dev2.Activities;
 using Warewolf.Storage;
 using System.Linq;
+using System.Text;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -38,10 +39,22 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var resumableExecution = new ResumableExecutionContainer(assingNameTool, dataObj.Environment, serviceAction, dataObj, theWorkspace.Object, esbChannel.Object);
             Assert.IsNotNull(resumableExecution);
             resumableExecution.Execute(out errors, 0);
-            Assert.IsFalse(dataObj.Environment.HasErrors(), "The emvironment has errors after Execution");
+            var hasErrors = dataObj.Environment.HasErrors();
+            Assert.IsFalse(hasErrors, GetAllErrors(dataObj.Environment.Errors));
             var output = dataObj.Environment.Eval("[[Message]]", 0);
             var message = WarewolfDataEvaluationCommon.evalResultToString(output);
             Assert.AreEqual("Hello World.", message);
+        }
+
+        private string GetAllErrors(HashSet<string> allErrors)
+        {
+            var errors = new StringBuilder();
+            errors.AppendLine("Expected no errors but found; ");
+            foreach (var item in allErrors)
+            {
+                errors.AppendLine(item);
+            }
+            return errors.ToString();
         }
 
         [TestMethod]
