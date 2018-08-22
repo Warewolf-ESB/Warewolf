@@ -279,15 +279,19 @@ namespace Warewolf.Launcher
 
         public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio, string JobName)
         {
-            foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
+            string testsResultsPath = build.TestRunner.TestsResultsPath;
+            if (Directory.Exists(testsResultsPath))
             {
-                XmlDocument trxContent = new XmlDocument();
-                trxContent.Load(FullTRXFilePath);
-                var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-                namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
+                foreach (var FullTRXFilePath in Directory.GetFiles(testsResultsPath, "*.trx"))
                 {
-                    WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
+                    XmlDocument trxContent = new XmlDocument();
+                    trxContent.Load(FullTRXFilePath);
+                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
+                    {
+                        WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
+                    }
                 }
             }
 
