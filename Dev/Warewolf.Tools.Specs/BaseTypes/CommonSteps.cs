@@ -129,13 +129,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                         allErrors.Add(errorInfo.Message);
                     }
                 }
-
-                var errorThrown = allErrors.Contains(fetchErrors);
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
             else
             {
-                Assert.IsFalse(actuallyHasErrors, message);
+                Assert.IsFalse(actuallyHasErrors, result.Environment.AllErrors.FirstOrDefault());
             }
         }
 
