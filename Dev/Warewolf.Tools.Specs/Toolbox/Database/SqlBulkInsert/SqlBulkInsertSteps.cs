@@ -250,6 +250,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.Timeout = timeout;
             sqlBulkInsert.Result = "[[result]]";
             var result = ExecuteProcess(isDebug: true, throwException: false);
+            Assert.AreEqual(0, result.Environment.AllErrors.Count, result.Environment.AllErrors.FirstOrDefault());
             scenarioContext.Add("result", result);
         }
 
