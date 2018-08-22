@@ -57,7 +57,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
             sqlBulkInsert.Database = dbSource;
-            sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+           sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
             if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1") {
                 var tableNameUniqueNameGuid = CommonSteps.GetGuid();
                 CreateIsolatedSQLTable(tableNameUniqueNameGuid);

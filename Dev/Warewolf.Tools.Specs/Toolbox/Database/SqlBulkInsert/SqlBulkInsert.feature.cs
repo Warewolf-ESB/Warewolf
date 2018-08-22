@@ -2219,12 +2219,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 30 seconds")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ImportDataIntoTableTimeoutAfter3Second()
+        public virtual void ImportDataIntoTableTimeoutAfter30Seconds()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 30 seconds", ((string[])(null)));
 #line 307
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -2244,15 +2244,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 309
+#line 308
  testRunner.Given("I have this data", ((string)(null)), table37, "Given ");
+#line 313
+ testRunner.And("Timeout in 30 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 314
- testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 315
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 316
+#line 315
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 317
+#line 316
  testRunner.And("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2398,14 +2398,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 318
+#line 317
  testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table39.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 330
+#line 329
  testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2418,7 +2418,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ImportDataIntoTableTimeoutAfter1Second()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
-#line 334
+#line 333
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2437,15 +2437,15 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "TestData",
                         "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-#line 336
+#line 335
  testRunner.Given("I have this data", ((string)(null)), table40, "Given ");
-#line 341
+#line 340
  testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 342
+#line 341
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 343
+#line 342
  testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 344
+#line 343
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2591,14 +2591,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO",
                         "NO"});
-#line 345
+#line 344
   testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table42.AddRow(new string[] {
                         "[[result]] = Failure"});
-#line 357
+#line 356
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2611,25 +2611,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ImportDataIntoTableWithBlankData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with blank data", ((string[])(null)));
-#line 361
+#line 360
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 362
+#line 361
  testRunner.Given("I have this data", ((string)(null)), table43, "Given ");
-#line 364
+#line 363
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "Col1",
                         "Col2",
                         "Col3"});
-#line 365
+#line 364
  testRunner.Then("the new table will have", ((string)(null)), table44, "Then ");
-#line 367
+#line 366
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
