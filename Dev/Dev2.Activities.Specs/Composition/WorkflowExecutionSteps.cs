@@ -159,6 +159,11 @@ namespace Dev2.Activities.Specs.Composition
             _containerOps?.Dispose();
         }
 
+        [AfterScenario("ResumeWorkflowExecution")]
+        public void CleanUpResources()
+        {
+            WorkflowIsDeletedAsCleanup();
+        }
         public void CleanUp_DetailedLogFile()
         {
             WorkflowIsDeletedAsCleanup();
@@ -2719,6 +2724,40 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
             ThenContainsAnAssignAs(parentWorkflowName, assignName, table);
         }
+
+        [Then(@"I update ""(.*)"" by adding ""(.*)"" as")]
+        public void ThenIUpdateByAddingAs(string parentName, string activityName, Table table)
+        {
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = activityName };
+
+            foreach (var tableRow in table.Rows)
+            {
+                var value = tableRow["value"];
+                var variable = tableRow["variable"];
+
+                value = value.Replace('"', ' ').Trim();
+
+                if (value.StartsWith("="))
+                {
+                    value = value.Replace("=", "");
+                    value = $"!~calculation~!{value}!~~calculation~!";
+                }
+                if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
+                {
+                    var serializer = new Dev2JsonSerializer();
+                    var serialize = serializer.Serialize(new Food());
+                    value = serialize;
+                }
+
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
+
+                _commonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+            }
+            _commonSteps.AddActivityToActivityList(parentName, activityName, assignActivity);
+        }
+
 
         [Then(@"I update ""(.*)"" inputs in ""(.*)"" as")]
         public void ThenIUpdateInputsInAs(string assignName, string parentName, Table table)

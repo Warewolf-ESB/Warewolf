@@ -304,7 +304,7 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID.ToString(), "WorkflowService", dataObject.VersionNumber);
+            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ServiceName, "WorkflowService", dataObject.VersionNumber);
             var versionNumber = "1";
             if (resourceObject != null)
             {
