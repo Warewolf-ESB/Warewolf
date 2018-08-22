@@ -291,19 +291,32 @@ namespace Warewolf.Launcher
                 using (var client = new HttpClient())
                 {
                     client.Timeout = new TimeSpan(0, 3, 0);
-                    var response = client.GetAsync(url).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    try
                     {
-                        if (response.IsSuccessStatusCode)
+                        var response = client.GetAsync(url).Result;
+                        var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                        using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                         {
-                            ParseForNetworkID(reader.ReadToEnd());
+                            if (response.IsSuccessStatusCode)
+                            {
+                                ParseForNetworkID(reader.ReadToEnd());
+                            }
+                            if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
+                            {
+                                Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                                Thread.Sleep(3000);
+                            }
                         }
-                        if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count == 99)
                         {
-                            Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine("Timed out waiting for start container.");
+                            throw e;
                         }
+                        Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                        Thread.Sleep(3000);
                     }
                 }
             }
