@@ -41,6 +41,8 @@ using Dev2.Studio.Interfaces.Enums;
 using Dev2.Activities.Specs.BaseTypes;
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Activities.Specs.Composition;
+using Warewolf.Launcher;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
@@ -1742,6 +1744,10 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"the test builder is open with existing service ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWithExistingService(string workflowName)
         {
+            if (workflowName == "RabbitTestWf")
+            {
+                WorkflowExecutionSteps._containerOps = TestLauncher.StartLocalRabbitMQContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            }
             var env = ServerRepository.Instance.Source;
             env.ForceLoadResources();
             var sourceResourceRepository = env.ResourceRepository;

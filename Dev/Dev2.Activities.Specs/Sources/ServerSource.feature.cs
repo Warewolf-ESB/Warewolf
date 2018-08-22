@@ -142,13 +142,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("User details as", ((string)(null)), table3, "And ");
 #line 23
- testRunner.And("I save as \"WinServerSource1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.When("I Test \"WinServerSource1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
- testRunner.And("I delete serversource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -160,7 +156,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreateBadUserServerSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Bad User Server Source", ((string[])(null)));
-#line 28
+#line 26
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -169,7 +165,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "http://localhost:3142",
                         "User"});
-#line 29
+#line 27
  testRunner.Given("I create a server source as", ((string)(null)), table4, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -178,11 +174,11 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "BadUser",
                         "W@rEw0lf@dm1n"});
-#line 32
+#line 30
  testRunner.And("User details as", ((string)(null)), table5, "And ");
-#line 35
- testRunner.And("I save as \"WinServerSource2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 33
+ testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 34
  testRunner.Then("The result is \"Connection Error :Unauthorized\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -195,7 +191,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatePublicServerSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Public Server Source", ((string[])(null)));
-#line 38
+#line 36
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -204,16 +200,12 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "http://wolfs-den:3142",
                         "Public"});
-#line 39
+#line 37
  testRunner.Given("I create a server source as", ((string)(null)), table6, "Given ");
-#line 42
- testRunner.And("I save as \"WinServerSource2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
- testRunner.When("I Test \"WinServerSource2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 40
+ testRunner.When("I Test the connection", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 41
  testRunner.Then("The result is \"success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 45
- testRunner.And("I delete serversource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

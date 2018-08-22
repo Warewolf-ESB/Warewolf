@@ -37,7 +37,7 @@ namespace Warewolf.UI.Tests
         {
             try
             {
-                _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+                _containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
                 ExplorerUIMap.Collapse_Localhost();
                 ExplorerUIMap.Select_RemoteContainer_From_Explorer();
                 Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
