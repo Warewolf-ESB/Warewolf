@@ -18,6 +18,7 @@ namespace Warewolf.Launcher
         string serviceID = null;
         string FullImageID = null;
         DateTime startTime;
+        readonly string ProgressFeedbackFilePath = @"%programdata%\Warewolf\Server Log\Container Launcher.log";
         public string Hostname;
         public string IP;
         public string Status;
@@ -247,7 +248,8 @@ namespace Warewolf.Launcher
                         }
                         else
                         {
-                            FullImageID = ParseForImageID(reader.ReadToEnd());
+                            var result = ProgressFeedback(reader);
+                            FullImageID = ParseForImageID(result);
                         }
                     }
                 }
@@ -263,6 +265,22 @@ namespace Warewolf.Launcher
             }
         }
 
+        string ProgressFeedback(StreamReader reader)
+        {
+            var result = "";
+            string writePath = Environment.ExpandEnvironmentVariables(ProgressFeedbackFilePath);
+            TestCleanupUtils.WaitForFileUnlock(writePath);
+            TestCleanupUtils.CopyOnWrite(writePath);
+            var fileWriteStream = File.OpenWrite(writePath);
+            while (!reader.EndOfStream)
+            {
+                var readChar = (char)reader.Read();
+                result += readChar;
+                fileWriteStream.WriteByte((byte)readChar);
+            }
+            return result;
+        }
+
         void InspectContainer()
         {
             int count = 0;
@@ -273,19 +291,32 @@ namespace Warewolf.Launcher
                 using (var client = new HttpClient())
                 {
                     client.Timeout = new TimeSpan(0, 3, 0);
-                    var response = client.GetAsync(url).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    try
                     {
-                        if (response.IsSuccessStatusCode)
+                        var response = client.GetAsync(url).Result;
+                        var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                        using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                         {
-                            ParseForNetworkID(reader.ReadToEnd());
+                            if (response.IsSuccessStatusCode)
+                            {
+                                ParseForNetworkID(reader.ReadToEnd());
+                            }
+                            if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
+                            {
+                                Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                                Thread.Sleep(3000);
+                            }
                         }
-                        if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count < 100)
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count == 99)
                         {
-                            Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
-                            Thread.Sleep(3000);
+                            Console.WriteLine("Timed out waiting for start container.");
+                            throw e;
                         }
+                        Console.WriteLine($"Still inspecting {serverContainerID.Substring(0, 12)}.");
+                        Thread.Sleep(3000);
                     }
                 }
             }
