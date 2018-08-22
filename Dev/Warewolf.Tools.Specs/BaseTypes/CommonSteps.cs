@@ -131,10 +131,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
-            else
-            {
-                Assert.IsFalse(actuallyHasErrors, result.Environment.AllErrors.FirstOrDefault());
-            }
         }
 
         [Given(@"the debug inputs as")]
