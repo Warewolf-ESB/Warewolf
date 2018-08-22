@@ -1195,7 +1195,9 @@ Scenario Outline: Database MySqlDB Database service inputs and outputs
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
 	  |                                            |
 	  | [[countries(1).id]] = 1                    |
+	  | [[countries(2).id]] = 1                    |
 	  | [[countries(1).description]] = Afghanistan |
+	  | [[countries(2).description]] = Afghanistan |
 Examples: 
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
@@ -1213,7 +1215,7 @@ Scenario Outline: Database SqlDB Database service inputs and outputs
 	  | [[countries(1).id]] = 1                    |
 	  | [[countries(1).description]] = Afghanistan |
 Examples: 
-    | WorkflowName                    | ServiceName           | nameVariable        | emailVariable                | errorOccured |
+    | WorkflowName                    | ServiceName               | nameVariable        | emailVariable                | errorOccured |
     | TestSqlWFWithSqlServerCountries | dbo.Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
 Scenario Outline: Database SqlDB  service DBErrors
