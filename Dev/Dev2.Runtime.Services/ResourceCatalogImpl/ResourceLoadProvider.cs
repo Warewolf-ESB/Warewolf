@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -28,6 +29,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
     class ResourceLoadProvider : IResourceLoadProvider
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
+        readonly IServerVersionRepository _serverVersionRepository;
         ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; } = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
@@ -37,7 +39,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         readonly IPerformanceCounter _perfCounter;
 
 
-        public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IEnumerable<DynamicService> managementServices = null)
+        public ResourceLoadProvider(ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IServerVersionRepository serverVersionRepository, IEnumerable<DynamicService> managementServices = null)
             : this(new FileWrapper())
         {
             try
@@ -48,7 +50,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 Dev2Logger.Warn("Error getting perf counters. " + e.Message, "Warewolf Warn");
             }
-                if (managementServices != null)
+            if (managementServices != null)
             {
                 foreach (var service in managementServices)
                 {
@@ -57,6 +59,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
             _workspaceResources = workspaceResources;
+            _serverVersionRepository = serverVersionRepository;
             LoadFrequentlyUsedServices();
         }
 
@@ -141,7 +144,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-        
+
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)
         {
             var workspaceResources = GetResources(workspaceID);
@@ -338,13 +341,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public int GetResourceCount(Guid workspaceID) => GetResources(workspaceID).Count;
         public IResource GetResource(Guid workspaceID, string resourceName) => GetResource(workspaceID, resourceName, "Unknown", null);
-
+        
 
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
+            var theWorkspaceID = workspaceID;
             if (string.IsNullOrEmpty(resourceName))
             {
                 throw new ArgumentNullException(nameof(resourceName));
+            }
+            var resources = GetResources(theWorkspaceID);
+            if (!string.IsNullOrEmpty(version) && version != "1")
+            {
+                return ResourceFromGivenVersion(resourceName, version, resources);
             }
             var resourceNameToSearchFor = resourceName.Replace("/", "\\");
             var resourcePath = resourceNameToSearchFor;
@@ -354,11 +363,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
             }
             while (true)
-            {
-                var resources = GetResources(workspaceID);
+            {                
                 if (resources != null)
                 {
-                    var id = workspaceID;
+                    var id = theWorkspaceID;
                     var foundResource = resources.AsParallel().FirstOrDefault(r =>
                     {
                         if (r == null)
@@ -367,17 +375,27 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         }
                         return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
                     });
-                    if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                    if (foundResource == null && theWorkspaceID != GlobalConstants.ServerWorkspaceID)
                     {
-                        workspaceID = GlobalConstants.ServerWorkspaceID;
+                        theWorkspaceID = GlobalConstants.ServerWorkspaceID;
                         continue;
                     }
-                   
                     return foundResource;
                 }
             }
         }
-        
+
+        private IResource ResourceFromGivenVersion(string resourceName, string version, List<IResource> resources)
+        {
+            var resource = resources.FirstOrDefault(p => p.ResourceName == resourceName);
+            if (resource is null)
+            {
+                throw new ArgumentNullException(nameof(resourceName));
+            }
+            var xmlBuilder = _serverVersionRepository.GetVersion(new VersionInfo(DateTime.MinValue, string.Empty, string.Empty, version, resource.ResourceID, resource.VersionInfo.VersionId), string.Empty);
+            var xml = xmlBuilder.ToXElement();
+            return new Resource(xml);
+        }
 
         public IResource GetResource(Guid workspaceID, Guid resourceID)
         {

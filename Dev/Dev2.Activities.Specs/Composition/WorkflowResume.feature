@@ -12,6 +12,7 @@ Scenario: Resuming a workflow returns resume message
 	And I resume workflow "acb75027-ddeb-47d7-814e-a54c37247ec1"
 	Then Resume message is "workflow not resumable"
 
+@ResumeWorkflowExecution
 Scenario: Resuming Workflow From a specific Version 
 	Given I have a workflow "ResumeWorkflowFromVersion"
 	And "ResumeWorkflowFromVersion" contains an Assign "VarsAssign" as
@@ -26,13 +27,13 @@ Scenario: Resuming Workflow From a specific Version
 	| # |                     |
 	| 1 | [[rec(1).a]] = New  |
 	| 2 | [[rec(2).a]] = Test |
-	Then I update "VarsAssign" inputs in "ResumeWorkflowFromVersion" as
-	| variable    | value   |
-	| [[rec().a]] | Updated |
-	When workflow "ResumeWorkflowFromVersion" is saved "1" time
-	Then I update "VarsAssign" inputs in "ResumeWorkflowFromVersion" as
-	| variable    | value       |
-	| [[rec().a]] | LastUpdated |
+	Then I update "ResumeWorkflowFromVersion" by adding "AnotherVarsAssign" as
+	| variable     | value              |
+	| [[variable]] | NewlyAddedVariable |
+	When workflow "ResumeWorkflowFromVersion" is saved "1" time	
+	Then I update "ResumeWorkflowFromVersion" by adding "ThirVarAssign" as
+	| variable                | value               |
+	| [[ThirdAssignVariable]] | ThirdAssignVariable |
 	When workflow "ResumeWorkflowFromVersion" is saved "1" time
 	And I reload Server resources
 	And I resume the workflow "ResumeWorkflowFromVersion" at "VarsAssign" from version "2"
@@ -41,4 +42,3 @@ Scenario: Resuming Workflow From a specific Version
 	| # |                        |
 	| 1 | [[rec(1).a]] = New     |
 	| 2 | [[rec(2).a]] = Test    |
-	| 3 | [[rec(3).a]] = Updated |
