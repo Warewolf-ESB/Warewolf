@@ -172,7 +172,7 @@ namespace Warewolf.Launcher
             {
                 LogOutputDirectory = logDirectory
             };
-            Thread.Sleep(30000);
+            Thread.Sleep(120000);
             return containerLauncher;
         }
 
