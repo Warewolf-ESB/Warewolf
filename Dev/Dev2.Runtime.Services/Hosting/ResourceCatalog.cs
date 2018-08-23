@@ -102,6 +102,8 @@ namespace Dev2.Runtime.Hosting
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
             => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, resourceType, version);
+        public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID,resourceID,version);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResourceContents(workspaceID, resourceID);
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType) => _catalogPluginContainer.LoadProvider.GetModels(workspaceID, sourceType);
