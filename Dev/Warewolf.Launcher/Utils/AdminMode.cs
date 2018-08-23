@@ -166,8 +166,8 @@ namespace Warewolf.Launcher.Utils
 
                 var testType = WindowUtils.PromptForUserInput();
 
-                const int NumberOfUnitTestJobs = 36;
-                const int NumberOfServerTestJobs = 30;
+                const int NumberOfUnitTestJobs = 37;
+                const int NumberOfServerTestJobs = 32;
                 const int NumberOfReleaseResourcesTestJobs = 1;
                 const int NumberOfDesktopUITestJobs = 64;
                 const int NumberOfWebUITestJobs = 3;
