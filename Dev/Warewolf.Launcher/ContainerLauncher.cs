@@ -271,12 +271,20 @@ namespace Warewolf.Launcher
             string writePath = Environment.ExpandEnvironmentVariables(ProgressFeedbackFilePath);
             TestCleanupUtils.WaitForFileUnlock(writePath);
             TestCleanupUtils.CopyOnWrite(writePath);
-            var fileWriteStream = File.OpenWrite(writePath);
-            while (!reader.EndOfStream)
+            string startMessageText = $"Starting pull at {DateTime.Now.ToLongTimeString()} on {DateTime.Now.ToLongDateString()}:";
+            var startMessage = Encoding.UTF8.GetBytes(startMessageText);
+            File.WriteAllText(writePath, startMessageText);
+            using (var fileWriteStream = new FileStream(writePath, FileMode.Open, FileAccess.Write, FileShare.Read))
             {
-                var readChar = (char)reader.Read();
-                result += readChar;
-                fileWriteStream.WriteByte((byte)readChar);
+                fileWriteStream.Position = startMessage.Length;
+                while (!reader.EndOfStream)
+                {
+                    var readChar = (char)reader.Read();
+                    result += readChar;
+                    fileWriteStream.WriteByte((byte)readChar);
+                }
+                byte[] finishedMessage = Encoding.UTF8.GetBytes($"Finished pull at {DateTime.Now.ToLongTimeString()} on {DateTime.Now.ToLongDateString()}.");
+                fileWriteStream.Write(finishedMessage, 0, finishedMessage.Length);
             }
             return result;
         }
