@@ -203,70 +203,29 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming Workflow From a specific Version", new string[] {
                         "ResumeWorkflowExecution"});
-#line 16
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line 17
+#line 47
  testRunner.Given("I have a workflow \"ResumeWorkflowFromVersion\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "New"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "Test"});
-#line 18
- testRunner.And("\"ResumeWorkflowFromVersion\" contains an Assign \"VarsAssign\" as", ((string)(null)), table1, "And ");
-#line 22
- testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 23
- testRunner.Then("workflow \"ResumeWorkflowFromVersion\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 24
- testRunner.When("\"WorkflowWithAssignAndCount\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
- testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table2.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).a]] = New"});
-            table2.AddRow(new string[] {
-                        "2",
-                        "[[rec(2).a]] = Test"});
-#line 26
- testRunner.And("the \"VarsAssign\" in Workflow \"ResumeWorkflowFromVersion\" debug outputs as", ((string)(null)), table2, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
-            table3.AddRow(new string[] {
-                        "[[variable]]",
-                        "NewlyAddedVariable"});
-#line 30
- testRunner.Then("I update \"ResumeWorkflowFromVersion\" by adding \"AnotherVarsAssign\" as", ((string)(null)), table3, "Then ");
-#line 33
- testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
             table4.AddRow(new string[] {
-                        "[[ThirdAssignVariable]]",
-                        "ThirdAssignVariable"});
-#line 34
- testRunner.Then("I update \"ResumeWorkflowFromVersion\" by adding \"ThirVarAssign\" as", ((string)(null)), table4, "Then ");
-#line 37
+                        "[[rec().a]]",
+                        "New"});
+            table4.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "Test"});
+#line 48
+ testRunner.And("\"ResumeWorkflowFromVersion\" contains an Assign \"VarsAssign\" as", ((string)(null)), table4, "And ");
+#line 52
  testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.And("I reload Server resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
- testRunner.And("I resume the workflow \"ResumeWorkflowFromVersion\" at \"VarsAssign\" from version \"2" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 53
+ testRunner.Then("workflow \"ResumeWorkflowFromVersion\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 54
+ testRunner.When("\"WorkflowWithAssignAndCount\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 55
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -278,8 +237,49 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = Test"});
-#line 41
+#line 56
  testRunner.And("the \"VarsAssign\" in Workflow \"ResumeWorkflowFromVersion\" debug outputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table6.AddRow(new string[] {
+                        "[[variable]]",
+                        "NewlyAddedVariable"});
+#line 60
+ testRunner.Then("I update \"ResumeWorkflowFromVersion\" by adding \"AnotherVarsAssign\" as", ((string)(null)), table6, "Then ");
+#line 63
+ testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table7.AddRow(new string[] {
+                        "[[ThirdAssignVariable]]",
+                        "ThirdAssignVariable"});
+#line 64
+ testRunner.Then("I update \"ResumeWorkflowFromVersion\" by adding \"ThirVarAssign\" as", ((string)(null)), table7, "Then ");
+#line 67
+ testRunner.When("workflow \"ResumeWorkflowFromVersion\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.And("I reload Server resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And("I resume the workflow \"ResumeWorkflowFromVersion\" at \"VarsAssign\" from version \"2" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+ testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table8.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = New"});
+            table8.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = Test"});
+#line 71
+ testRunner.And("the \"VarsAssign\" in Workflow \"ResumeWorkflowFromVersion\" debug outputs as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
