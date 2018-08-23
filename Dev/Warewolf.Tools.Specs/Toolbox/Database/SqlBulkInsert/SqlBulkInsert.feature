@@ -1,4 +1,4 @@
-﻿@Database
+﻿@SqlBulkInsert
 Feature: SqlBulkInsert
 	In order to quickly insert large amounts of data in a sql server database
 	As a Warewolf user

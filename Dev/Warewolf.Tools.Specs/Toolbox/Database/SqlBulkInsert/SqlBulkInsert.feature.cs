@@ -46,7 +46,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SqlBulkInsert", "\tIn order to quickly insert large amounts of data in a sql server database\r\n\tAs a" +
                     " Warewolf user\r\n\tI want a tool that performs this action", ProgrammingLanguage.CSharp, new string[] {
-                        "Database"});
+                        "SqlBulkInsert"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -87,7 +87,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into table with check contraint disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithCheckContraintDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with check contraint disabled", ((string[])(null)));
@@ -250,7 +250,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check constraint enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithCheckConstraintEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", ((string[])(null)));
@@ -357,7 +357,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithKeepIdentityDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity disabled", ((string[])(null)));
@@ -567,7 +567,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with keep identity enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithKeepIdentityEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with keep identity enabled", ((string[])(null)));
@@ -777,7 +777,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithSkipBlankRowsDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows disabled", ((string[])(null)));
@@ -1000,7 +1000,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with skip blank rows enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithSkipBlankRowsEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with skip blank rows enabled", ((string[])(null)));
@@ -1236,7 +1236,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithFireTriggersDisabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers disabled", ((string[])(null)));
@@ -1446,7 +1446,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with fire triggers enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithFireTriggersEnabled()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with fire triggers enabled", ((string[])(null)));
@@ -1656,7 +1656,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs0()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
@@ -1849,7 +1849,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
@@ -2035,7 +2035,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableBatchSizeIs2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
@@ -2221,7 +2221,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 30 seconds")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableTimeoutAfter30Seconds()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 30 seconds", ((string[])(null)));
@@ -2414,7 +2414,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 1 second")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableTimeoutAfter1Second()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
@@ -2607,7 +2607,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into table with blank data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         public virtual void ImportDataIntoTableWithBlankData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into table with blank data", ((string[])(null)));
