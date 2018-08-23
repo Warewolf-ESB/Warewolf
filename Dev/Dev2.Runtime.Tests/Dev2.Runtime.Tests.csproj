@@ -242,7 +242,6 @@
     <Compile Include="ESB\Execution\ServiceTestExecutionContainerTests.cs" />
     <Compile Include="ESB\Execution\StateNotifierTests.cs" />
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
-    <Compile Include="ESB\Execution\WfExecutionContainerWithResumeTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
