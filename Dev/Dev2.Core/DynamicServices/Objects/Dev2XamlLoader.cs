@@ -10,10 +10,12 @@
 
 using System;
 using System.Activities;
+using System.Activities.Presentation.View;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Util;
@@ -55,7 +57,15 @@ namespace Dev2.DynamicServices.Objects
 
             using (xamlStream = xamlDefinition.EncodeForXmlDocument())
             {
-                workflowActivity = ActivityXamlServices.Load(xamlStream);
+                var settings = new XamlXmlReaderSettings
+                {
+                    LocalAssembly = System.Reflection.Assembly.GetAssembly(typeof(VirtualizedContainerService))
+                };
+                using (var reader = new XamlXmlReader(xamlStream, settings))
+                {
+                    workflowActivity = ActivityXamlServices.Load(reader);
+                }
+
                 xamlStream.Seek(0, SeekOrigin.Begin);
                 workflowPool.Clear();
 
