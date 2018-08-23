@@ -102,7 +102,7 @@ namespace Dev2.DynamicServices
 
         void ExtractXmlValues(XElement xe)
         {
-            bool isDebug;           
+            bool isDebug;
             var debugString = ExtractValue(xe, "IsDebug");
             if (!string.IsNullOrEmpty(debugString))
             {
@@ -114,6 +114,9 @@ namespace Dev2.DynamicServices
                 bool.TryParse(debugString, out isDebug);
             }
             IsDebug = isDebug;
+
+            VersionNumber = ExtractValue(xe, "VersionNumber");
+
 
             Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
             DebugSessionID = debugSessionId;

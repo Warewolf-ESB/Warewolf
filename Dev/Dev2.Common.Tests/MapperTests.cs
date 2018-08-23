@@ -51,6 +51,7 @@ namespace Dev2.Common.Tests
         public void Map_GivenObjects_ShouldMapCorrectly()
         {
             //---------------Set up test pack-------------------
+            Mapper.Clear();
             Mapper.AddMap<Parent, Child>((parent1, child1) =>
             {
                 child1.ParentId = parent1.Id;
@@ -79,6 +80,7 @@ namespace Dev2.Common.Tests
         public void Map_GivenObjectsNoActions_ShouldMapCorrectly()
         {
             //---------------Set up test pack-------------------
+            Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
             var parent = new Parent()
             {
@@ -107,6 +109,7 @@ namespace Dev2.Common.Tests
         public void Map_GivenNullFrom_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
+            Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
             var parent = new Parent()
             {
