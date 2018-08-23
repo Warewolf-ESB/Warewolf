@@ -4815,7 +4815,7 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
 
             var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
-            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId);
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId, "");
             Add("resumeMessage", msg);
         }
 
