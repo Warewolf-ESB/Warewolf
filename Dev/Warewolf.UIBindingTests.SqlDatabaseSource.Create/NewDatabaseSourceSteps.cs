@@ -99,7 +99,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             {
                 Name = name,
                 Id = Guid.NewGuid(),
-                ServerName = "RSAKLFSVRDEV",
+                ServerName = "TEST-MSSQL",
                 AuthenticationType = AuthenticationType.Windows
             };
             FeatureContext.Current["dbsrc"] = dbsrc;

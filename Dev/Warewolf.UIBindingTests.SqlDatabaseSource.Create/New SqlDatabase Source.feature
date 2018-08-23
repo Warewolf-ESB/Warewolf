@@ -30,7 +30,7 @@ Feature: New SqlDatabase Source
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New SQL Server DB Source as Windows Auth
     Given I open New Database Source
-    And I type Server as "RSAKLFSVRDEV"
+    And I type Server as "TEST-MSSQL"
     And I Select Authentication Type as "Windows"
     Then Username field is "Collapsed"
     And Password field is "Collapsed"

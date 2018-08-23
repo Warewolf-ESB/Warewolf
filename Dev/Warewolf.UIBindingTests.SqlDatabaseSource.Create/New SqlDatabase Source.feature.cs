@@ -104,7 +104,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
     testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
-    testRunner.And("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I type Server as \"test-mssql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
     testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
