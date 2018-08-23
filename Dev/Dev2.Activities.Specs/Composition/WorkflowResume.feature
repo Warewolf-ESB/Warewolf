@@ -2,6 +2,7 @@
 	When a workflow execution fails
 	I want to Resume
 	
+@ResumeWorkflowExecution
 Scenario: Resuming a workflow that had failed to connect
 	Given I have a workflow "WorkflowWithMysqlToolUsingContainer"
 	And "WorkflowWithMysqlToolUsingContainer" contains an Assign "AssignNumber" as
