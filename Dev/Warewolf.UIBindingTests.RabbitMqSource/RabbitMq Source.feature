@@ -1,15 +1,17 @@
 ﻿@RabbitMqSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 Feature: RabbitMq Source
 	In order to share settings
 	I want to save my RabbitMq source Settings
 	So that I can reuse them
 
-@RabbitMqSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Create New RabbitMq source
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
@@ -22,16 +24,10 @@ Scenario: Create New RabbitMq source
 	And "Test Connection" is "Disabled"
 	And "Save" is "Disabled"
 
-@RabbitMqSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Enable Send and Enable Save
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
-	And I type Host as "rsaklfsvrdev"
+	And I type Host as "test-rabbitmq"
 	And "Port" input is "5672"
 	And I type Username as "test"
 	And I type Password as "test"
@@ -42,12 +38,6 @@ Scenario: Enable Send and Enable Save
 	When I save as "TestRabbitMq"
 	And the save dialog is opened
 
-@RabbitMqSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Fail Send Shows correct error message
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened

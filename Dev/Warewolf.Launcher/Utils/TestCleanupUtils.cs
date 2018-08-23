@@ -10,6 +10,24 @@ namespace Warewolf.Launcher
 {
     public static class TestCleanupUtils
     {
+        static readonly string[] ToClean = new[]
+        {
+            "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
+            "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
+            "%PROGRAMDATA%\\Warewolf\\Workspaces",
+            "%PROGRAMDATA%\\Warewolf\\Server Settings",
+            "%PROGRAMDATA%\\Warewolf\\VersionControl",
+            "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
+        };
+
+        static readonly string[] ToPublish = new[]
+        {
+            "%PROGRAMDATA%\\Warewolf\\Resources",
+            "%PROGRAMDATA%\\Warewolf\\Tests",
+            "%PROGRAMDATA%\\Warewolf\\VersionControl",
+            "%PROGRAMDATA%\\Warewolf\\DetailedLogs"
+        };
+
         public static void CopyOnWrite(string FileSpec)
         {
             if (File.Exists(FileSpec))
@@ -70,7 +88,14 @@ namespace Warewolf.Launcher
         {
             foreach (string dirPath in Directory.GetDirectories(SourcePath, "*", SearchOption.AllDirectories))
             {
-                Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+                try
+                {
+                    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+                }
+                catch (PathTooLongException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
             foreach (string newPath in Directory.GetFiles(SourcePath, "*.*", SearchOption.AllDirectories))
@@ -81,7 +106,7 @@ namespace Warewolf.Launcher
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    Console.WriteLine(e.Message);
                 }
             }
         }
@@ -217,16 +242,6 @@ namespace Warewolf.Launcher
             process.Start();
 
             //Delete Certain Studio and Server Resources
-            var ToClean = new[]
-            {
-                "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
-                "%LOCALAPPDATA%\\Warewolf\\UserInterfaceLayouts\\WorkspaceLayout.xml",
-                "%PROGRAMDATA%\\Warewolf\\Workspaces",
-                "%PROGRAMDATA%\\Warewolf\\Server Settings",
-                "%PROGRAMDATA%\\Warewolf\\VersionControl",
-                "%PROGRAMDATA%\\Warewolf\\Audits\\auditDB.db"
-            };
-
             foreach (var FileOrFolder in ToClean)
             {
                 var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
@@ -251,25 +266,28 @@ namespace Warewolf.Launcher
                 build.JobName = "Test Run";
             }
 
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Resources"), $"{build.JobName} Server Resources Folder", build.TestRunner.TestsResultsPath);
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\Tests"), $"{build.JobName} Server Tests Folder", build.TestRunner.TestsResultsPath);
-            MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(@"%PROGRAMDATA%\Warewolf\VersionControl"), $"{build.JobName} Server VersionControl Folder", build.TestRunner.TestsResultsPath);
+            //Publish Certain Studio and Server Resources
+            foreach (var FileOrFolder in ToPublish)
+            {
+                var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
+                if (Directory.Exists(ActualPath))
+                {
+                    MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(ActualPath), $"{build.JobName} Server {Path.GetFileName(ActualPath)} Folder", build.TestRunner.TestsResultsPath);
+                }
+            }
         }
 
         public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio)
         {
-            if (build.Cleanup)
+            foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
             {
-                foreach (var FullTRXFilePath in Directory.GetFiles(build.TestRunner.TestsResultsPath, "*.trx"))
+                XmlDocument trxContent = new XmlDocument();
+                trxContent.Load(FullTRXFilePath);
+                var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
                 {
-                    XmlDocument trxContent = new XmlDocument();
-                    trxContent.Load(FullTRXFilePath);
-                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
-                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
-                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
-                    {
-                        WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
-                    }
+                    WriteFailingTestPlaylist($"{build.TestRunner.TestsResultsPath}\\{build.JobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
                 }
             }
 
@@ -341,15 +359,15 @@ namespace Warewolf.Launcher
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{build.JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\dotCover.log"), $"{build.JobName} Server DotCover.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{build.JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.log"), $"{build.JobName} my.warewolf.io.log", build.TestRunner.TestsResultsPath);
                 }
                 if (File.Exists(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log")))
                 {
-                    TestCleanupUtils.MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{build.JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(Environment.ExpandEnvironmentVariables(@"%ProgramData%\Warewolf\Server Log\my.warewolf.io.errors.log"), $"{build.JobName} my.warewolf.io Errors.log", build.TestRunner.TestsResultsPath);
                 }
             }
             if (Server && Studio && DotCover)
@@ -364,7 +382,7 @@ namespace Warewolf.Launcher
             {
                 if (Path.GetFileName(scriptFile).StartsWith("Run ") && Path.GetExtension(scriptFile) == ".bat")
                 {
-                    TestCleanupUtils.MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile), build.TestRunner.TestsResultsPath);
+                    MoveFileToTestResults(scriptFile, Path.GetFileName(scriptFile), build.TestRunner.TestsResultsPath);
                 }
             }
         }
@@ -384,9 +402,9 @@ namespace Warewolf.Launcher
                         {
                             foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
                             {
-                                if (TestResult.Attributes["testName"] != null && TestDefinition.Name == TestResult.Attributes["testName"].InnerText)
+                                if (TestResult.Attributes["testName"] != null && TestDefinition.Attributes["name"].InnerText == TestResult.Attributes["testName"].InnerText)
                                 {
-                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"] + "." + TestDefinition.Name + "\" />";
+                                    PlayList += "<Add Test=\"" + TestDefinition.Attributes["className"].InnerText + "." + TestDefinition.Attributes["name"].InnerText + "\" />";
                                 }
                             }
                         }
@@ -401,7 +419,7 @@ namespace Warewolf.Launcher
             {
                 if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
                 {
-                    PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Name + "\" />";
+                    PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["name"].InnerText + "\" />";
                 }
                 else
                 {

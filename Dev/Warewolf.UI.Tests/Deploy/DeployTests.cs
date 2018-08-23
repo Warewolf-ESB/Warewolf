@@ -164,7 +164,7 @@ namespace Warewolf.UI.Tests
         static ContainerLauncher _containerOps;
 
         [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext) => _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(testContext.ResultsDirectory);
+        public static void MyClassInitialize(TestContext testContext) => _containerOps = TestLauncher.StartLocalCIRemoteContainer(testContext.ResultsDirectory);
 
         [ClassCleanup]
         public static void CleanupContainer() => _containerOps?.Dispose();

@@ -164,6 +164,6 @@ namespace Dev2.Activities.Specs.Sources
         }
 
         [BeforeFeature("ServerSourceTests")]
-        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = TestLauncher.TryStartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        public static void StartRemoteContainer() => WorkflowExecutionSteps._containerOps = TestLauncher.StartLocalCIRemoteContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
     }
 }

@@ -34,7 +34,7 @@ namespace Warewolf.UI.Tests.Tools
         [TestCategory("File Tools")]
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {
-            _containerOps = TestLauncher.TryStartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+            _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = @"\\rsaklfsvrpdc\";
             Assert.IsTrue(UIMap.MainStudioWindow.IntellisenseOptionsList.FirstOption.Exists, "No file system provided intellisense results are showing.");
         }
