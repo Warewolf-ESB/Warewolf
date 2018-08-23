@@ -87,10 +87,13 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Runtime.ESB.Execution;
 using Warewolf.Launcher;
 using System.Reflection;
 using Dev2.Runtime.Auditing;
 using Warewolf.Storage;
+using WarewolfParserInterop;
+using Dev2.Runtime.Hosting;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -429,7 +432,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStatesDuration = new List<IDebugState>();
                 Add("debugStatesDuration", debugStatesDuration);
             }
-            if (debugState.WorkspaceID == server.Connection.WorkspaceID)
+            if (debugState.WorkspaceID == server.Connection.WorkspaceID || debugState.WorkspaceID==GlobalConstants.ServerWorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
                 {
@@ -4180,6 +4183,19 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
+        [Given(@"""(.*)"" contains a mysql database service ""(.*)""")]
+        public void GivenContainsAMysqlDatabaseService(string parentName, string serviceName)
+        {
+            var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
+            {
+                ProcedureName = serviceName,
+                DisplayName = serviceName,
+                Outputs = new List<IServiceOutputMapping>(),
+                Inputs = new List<IServiceInput>(),
+                IsEndedOnError = true
+            };
+            _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
+        }
 
         [Given(@"""(.*)"" contains a mysql database service ""(.*)"" with mappings as")]
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
@@ -4685,16 +4701,23 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I resume workflow ""(.*)""")]
         [Then(@"I resume workflow ""(.*)""")]
         public void GivenIResumeWorkflow(string resourceId)
-        {
+       {
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
+            env.Assign("[[Name]]", "Bob",0);
+            env.Assign("[[Rec(1).Name]]", "Bob", 0);
+            env.Assign("[[Rec(3).SurName]]", "Bob", 0);
+            env.Assign("[[Rec(4).Name]]", "Bob", 0);
+            env.Assign("[[R(*).FName]]", "Bob", 0);
+            env.Assign("[[RecSet().Field]]", "Bob", 0);
+            env.Assign("[[RecSet().Field]]", "Jane", 0);
+            env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"),0);
             var serEnv = env.ToJson();
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null);
             Add("resumeMessage", msg);
         }
-
         [Then(@"an error ""(.*)""")]
         public void ThenAnError(string message)
         {
@@ -4704,13 +4727,136 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(message, executeMessage.Message.ToString());
         }
 
+        [Then(@"Resume has ""(.*)"" error")]
+        public void WhenResumeHasError(string error)
+        {
+            TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
+            if (error == "AN")
+            {
+                Assert.IsTrue(executeMessage.HasError);
+            }
+            else
+            {
+                Assert.IsFalse(executeMessage.HasError);
+            }            
+        }
+
         [Then(@"Resume message is ""(.*)""")]
         public void ThenResumeMessageIs(string message)
         {
-            ScenarioContext.Current.Pending();
+            TryGetValue("resumeMessage", out ExecuteMessage executeMessage);
+            Assert.IsNotNull(executeMessage);
+            Assert.AreEqual(message, executeMessage.Message.ToString());
         }
 
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" has an error")]
+        public void ThenTheInWorkflowHasAnError(string toolName, string workflow)
+        {
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsFalse(string.IsNullOrEmpty(toolSpecificDebug[0].ErrorMessage));
+        }
 
+        [Then(@"execution stopped on error and did not execute ""(.*)""")]
+        public void ThenExecutionForStoppedOnErrorAndDidNotExecute(string toolName)
+        {
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            Assert.IsFalse(debugStates.Any(ds => ds.DisplayName.Equals(toolName)));
+        }
+
+        [When(@"I startup the mysql container")]
+        public void WhenIStartupTheContainer()
+        {
+            _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
+        }
+
+        ResourceCatalog ResourceCat { get; set; }
+        ActivityParser Parser { get; set; }
+
+        [Given(@"Workflow ""(.*)"" has ""(.*)"" activity")]
+        [When(@"Workflow ""(.*)"" has ""(.*)"" activity")]
+        [Then(@"Workflow ""(.*)"" has ""(.*)"" activity")]
+        public void GivenWorkflowHasActivity(string workflow, string activityName)
+        {
+            TryGetValue(workflow, out IResourceModel resourceModel);
+            var selectedActivity = GetActivity(activityName, resourceModel) as Activity;            
+            Assert.IsNotNull(selectedActivity, "The tool does not exist on the surface");
+            _commonSteps.AddActivityToActivityList(workflow, activityName, selectedActivity);
+        }
+
+        private IDev2Activity GetActivity(string activityName, IResourceModel resourceModel)
+        {
+            ResourceCat = ResourceCat ?? new ResourceCatalog();
+            Parser = Parser ?? new ActivityParser();
+
+            var service = ResourceCat.GetService(GlobalConstants.ServerWorkspaceID, resourceModel.ID, resourceModel.ResourceName);
+            var sa = service.Actions.FirstOrDefault();
+            ResourceCat.MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
+            var activity = ResourceCat.GetActivity(sa);
+            var dev2Act = Parser.Parse(activity);
+            var allNodes = Parser.ParseToLinkedFlatList(dev2Act);
+            var selectedActivity = allNodes.FirstOrDefault(p => p.GetDisplayName() == activityName);
+            return selectedActivity;
+        }
+
+        [Given(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
+        [When(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
+        [Then(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
+        public void WhenIResumeWorkflowAtTool(string workflow, string toolToResumeFrom)
+        {
+            var uniqueId = GetActivityUniqueId(toolToResumeFrom);            
+            TryGetValue("environment", out IServer environmentModel);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
+            Assert.IsNotNull(resourceModel);
+
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(debugMsg => Append(debugMsg.DebugState));
+
+            var env = "{\"Environment\":{\"scalars\":{\"number\":1},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[\"Service Execution Error:    at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\DatabaseServiceExecution.cs:line 104\\r\\n   at Dev2.Services.Execution.ServiceExecutionAbstract`2.ExecuteService(ErrorResultTO& errors, Int32 update, IOutputFormatter formater) in C:\\\\Repos\\\\Warewolf\\\\Dev\\\\Dev2.Services.Execution\\\\ServiceExecutionAbstract.cs:line 372\"]}";
+            var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, env, uniqueId);
+            Add("resumeMessage", msg);
+        }
+
+        private Guid GetActivityUniqueId(string toolToResumeFrom)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var abstartActivity = activities[toolToResumeFrom] as DsfActivityAbstract<string>;
+            if (abstartActivity != null)
+            {
+                return Guid.Parse(abstartActivity.UniqueID);                
+            }
+            var activity = activities[toolToResumeFrom] as DsfActivity;
+            return Guid.Parse(activity.UniqueID);
+        }
+
+        [When(@"I select ""(.*)"" Action for ""(.*)"" tool")]
+        public void WhenISelectActionForTool(string action, string toolName)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var activity = activities[toolName] as DsfMySqlDatabaseActivity;
+            activity.ProcedureName = action;
+            activity.Inputs.Add(new ServiceInput("name", "S"));
+        }
+
+        [When(@"I select ""(.*)"" for ""(.*)"" as Source")]
+        public void WhenISelectForAsSource(string source, string toolName)
+        {
+            var activities = _commonSteps.GetActivityList();
+            var activity = activities[toolName] as DsfMySqlDatabaseActivity;
+
+            var environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.LoadExplorer(true);
+            var environmentConnection = environmentModel.Connection;
+            var controllerFactory = new CommunicationControllerFactory();
+            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
+
+            var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
+            var dbSource = dbSources.Single(s => s.Name == source);
+            activity.SourceId = dbSource.Id;
+        }
 
         [Given(@"The detailed log file does not exist for ""(.*)""")]
         public void GivenTheDetailedLogFileDoesNotExistFor(string workflowName)
