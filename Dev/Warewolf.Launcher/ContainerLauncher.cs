@@ -308,7 +308,7 @@ namespace Warewolf.Launcher
                             }
                         }
                     }
-                    catch (TaskCanceledException e)
+                    catch (Exception e) when (e is AggregateException || e is TaskCanceledException)
                     {
                         if ((Status != "healthy" || string.IsNullOrEmpty(IP)) && count == 99)
                         {
@@ -451,7 +451,7 @@ namespace Warewolf.Launcher
                             }
                         }
                     }
-                    catch (TaskCanceledException e)
+                    catch (Exception e) when (e is AggregateException || e is TaskCanceledException)
                     {
                         if (retryCount == 9)
                         {
