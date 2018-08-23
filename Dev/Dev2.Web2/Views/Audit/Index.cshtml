@@ -284,21 +284,16 @@
 		var serverUrl = getServerUrl().toLowerCase();
 		var wareWolfUrl = serverUrl + "/services/WorkflowResume";
 		var pingUrl = serverUrl + "/secure/ping";
-
 		var Environment = $(this).attr('data-Environment');
 		var WorkflowID = $(this).attr('data-WorkflowID');
 		var ActivityID = $(this).attr('data-ActivityID');
 
 		$.ajax({
 			type: "POST",
-			url: wareWolfUrl,
+            url: "/Audit/PerformResume",
 			cache: false,
 			'Content-Type': "application/json; charset=utf-8",
-			data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID},
-			crossDomain: true,
-			xhrFields: {
-				withCredentials: true
-			},
+            data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID, 'wareWolfResumeUrl': wareWolfUrl},			
 			success: function (response) {
 				alert('success');
 			},

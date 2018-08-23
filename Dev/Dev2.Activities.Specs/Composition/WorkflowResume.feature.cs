@@ -83,37 +83,114 @@ namespace Dev2.Activities.Specs.Composition
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a non existent workflow returns error message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow that had failed to connect")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        public virtual void ResumingANonExistentWorkflowReturnsErrorMessage()
+        public virtual void ResumingAWorkflowThatHadFailedToConnect()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a non existent workflow returns error message", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow that had failed to connect", ((string[])(null)));
 #line 5
 this.ScenarioSetup(scenarioInfo);
 #line 6
- testRunner.Given("I have server running at \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"WorkflowWithMysqlToolUsingContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table1.AddRow(new string[] {
+                        "[[number]]",
+                        "1"});
 #line 7
- testRunner.And("I resume workflow \"acb75027-ddeb-47d7-814e-a54c37247ec1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 8
- testRunner.Then("an error \"this workflow is  not resumable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains an Assign \"AssignNumber\" as", ((string)(null)), table1, "And ");
+#line 10
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains a mysql database service \"ToolUsin" +
+                    "gContainerAsTheSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table2.AddRow(new string[] {
+                        "[[outnumber]]",
+                        "=[[number]]+1"});
+#line 11
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" contains an Assign \"IncrementNumber\" as", ((string)(null)), table2, "And ");
+#line 14
+    testRunner.When("\"WorkflowWithMysqlToolUsingContainer\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.And("execution stopped on error and did not execute \"IncrementNumber\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+ testRunner.And("the \"ToolUsingContainerAsTheSource\" in Workflow \"WorkflowWithMysqlToolUsingContai" +
+                    "ner\" has an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+ testRunner.When("I startup the mysql container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.And("I select \"NewMySqlSource\" for \"ToolUsingContainerAsTheSource\" as Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.And("I select \"Pr_CitiesGetCountries\" Action for \"ToolUsingContainerAsTheSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+ testRunner.And("\"WorkflowWithMysqlToolUsingContainer\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
+ testRunner.And("I resume workflow \"WorkflowWithMysqlToolUsingContainer\" at \"ToolUsingContainerAsT" +
+                    "heSource\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+ testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.And("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table3.AddRow(new string[] {
+                        "1",
+                        "[[outnumber]] = 2"});
+#line 25
+ testRunner.And("the \"IncrementNumber\" in Workflow \"WorkflowWithMysqlToolUsingContainer\" debug out" +
+                    "puts as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow returns resume message")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow Given No Name And Resume From SetTheOutputVariable tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
-        public virtual void ResumingAWorkflowReturnsResumeMessage()
+        public virtual void ResumingAWorkflowGivenNoNameAndResumeFromSetTheOutputVariableTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow returns resume message", ((string[])(null)));
-#line 10
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow Given No Name And Resume From SetTheOutputVariable tool", ((string[])(null)));
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 11
- testRunner.Given("I have server running at \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
- testRunner.And("I resume workflow \"acb75027-ddeb-47d7-814e-a54c37247ec1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.Then("Resume message is \"workflow not resumable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+ testRunner.And("Workflow \"Hello World\" has \"Set the output variable (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.And("I resume workflow \"Hello World\" at \"Set the output variable (1)\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.Then("Resume has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
+ testRunner.And("Resume message is \"Scalar value { Name } is NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resuming a workflow Given Resume From AssignValueToNameIfBlank Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowResume")]
+        public virtual void ResumingAWorkflowGivenResumeFromAssignValueToNameIfBlankTool()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resuming a workflow Given Resume From AssignValueToNameIfBlank Tool", ((string[])(null)));
+#line 38
+this.ScenarioSetup(scenarioInfo);
+#line 39
+ testRunner.Given("I have a server at \"localhost\" with workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 40
+ testRunner.And("Workflow \"Hello World\" has \"Assign a value to Name if blank (1)\" activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("I resume workflow \"Hello World\" at \"Assign a value to Name if blank (1)\" tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.Then("Resume has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 43
+ testRunner.And("Resume message is \"Execution Completed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

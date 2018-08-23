@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
+using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.TO;
@@ -38,22 +39,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("startActivityId is not a valid GUID.");
             }
-            var env = serializer.Deserialize<ExecutionEnvironment>(environmentString);
+            var decodedEnv = HttpUtility.UrlDecode(environmentString.ToString());
+            var executionEnv = new ExecutionEnvironment();
+            executionEnv.FromJson(decodedEnv);
+
             var dataObject = new DsfDataObject("", Guid.NewGuid())
             {
                 ResourceID = resourceId,
-                Environment = env,
+                Environment = executionEnv,                                                
                 VersionNumber = versionNumber.ToString(),
                 ExecutingUser = Thread.CurrentPrincipal,
                 IsDebug = true
             };
             var dynamicService = ResourceCatalog.Instance.GetService(GlobalConstants.ServerWorkspaceID, resourceId, "");
             var sa = dynamicService.Actions.FirstOrDefault();
-            if(sa is null)
+            if (sa is null)
             {
                 return new ExecuteMessage { HasError = true, Message = new StringBuilder($"Error resuming. ServiceAction is null for Resource ID:{resourceId}") };
             }
-            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId,sa,dataObject);
+            var container = CustomContainer.CreateInstance<IResumableExecutionContainer>(startActivityId, sa, dataObject);
             container.Execute(out ErrorResultTO errors, 0);
             if (errors.HasErrors())
             {
@@ -61,6 +65,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return new ExecuteMessage { HasError = false, Message = new StringBuilder("Execution Completed.") };
         }
-       
+
     }
 }
