@@ -350,7 +350,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 return ResourceFromGivenVersion(version, resource);
             }
-            return resource;
+            return null;
         }
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
