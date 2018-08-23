@@ -40,6 +40,7 @@ namespace Dev2.Runtime.Interfaces
         int GetResourceCount(Guid workspaceID);
         IResource GetResource(Guid workspaceID, string resourceName);
         IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version);
+        IResource GetResource(Guid workspaceID, Guid resourceID, string version);
         IResource GetResource(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
         StringBuilder GetResourceContents(IResource resource);

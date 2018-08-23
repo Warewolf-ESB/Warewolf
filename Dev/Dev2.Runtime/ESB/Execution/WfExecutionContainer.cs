@@ -16,6 +16,7 @@ using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -192,7 +193,7 @@ namespace Dev2.Runtime.ESB.Execution
         override protected void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var outerStateLogger = dsfDataObject.StateNotifier;
-            
+
             try
             {
                 dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
@@ -304,14 +305,13 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ServiceName, "WorkflowService", dataObject.VersionNumber);
             var versionNumber = "1";
+            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, dataObject.VersionNumber);
             if (resourceObject != null)
             {
                 versionNumber = resourceObject.VersionInfo.VersionNumber;
             }
             dataObject.VersionNumber = versionNumber;
-
             var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
