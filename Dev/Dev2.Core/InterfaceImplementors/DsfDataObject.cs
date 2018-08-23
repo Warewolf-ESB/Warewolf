@@ -175,6 +175,8 @@ namespace Dev2.DynamicServices
 
             // Set incoming service name ;)
             ServiceName = ExtractValue(xe, "Service");
+
+            VersionNumber = ExtractValue(xe, "VersionNumber");
         }
 
         public Guid DebugEnvironmentId { get; set; }

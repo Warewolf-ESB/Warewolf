@@ -341,8 +341,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public int GetResourceCount(Guid workspaceID) => GetResources(workspaceID).Count;
         public IResource GetResource(Guid workspaceID, string resourceName) => GetResource(workspaceID, resourceName, "Unknown", null);
-        
 
+
+        public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
+        {
+            var resource = GetResources(workspaceID).FirstOrDefault(r => r.ResourceID == resourceID);
+            if (!string.IsNullOrEmpty(version) && version != "1")
+            {
+                return ResourceFromGivenVersion(version, resource);
+            }
+            return null;
+        }
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
             var theWorkspaceID = workspaceID;
@@ -351,10 +360,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw new ArgumentNullException(nameof(resourceName));
             }
             var resources = GetResources(theWorkspaceID);
-            if (!string.IsNullOrEmpty(version) && version != "1")
-            {
-                return ResourceFromGivenVersion(resourceName, version, resources);
-            }
             var resourceNameToSearchFor = resourceName.Replace("/", "\\");
             var resourcePath = resourceNameToSearchFor;
             var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
@@ -385,13 +390,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        private IResource ResourceFromGivenVersion(string resourceName, string version, List<IResource> resources)
+        private IResource ResourceFromGivenVersion(string version, IResource resource)
         {
-            var resource = resources.FirstOrDefault(p => p.ResourceName == resourceName);
-            if (resource is null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
             var xmlBuilder = _serverVersionRepository.GetVersion(new VersionInfo(DateTime.MinValue, string.Empty, string.Empty, version, resource.ResourceID, resource.VersionInfo.VersionId), string.Empty);
             var xml = xmlBuilder.ToXElement();
             return new Resource(xml);

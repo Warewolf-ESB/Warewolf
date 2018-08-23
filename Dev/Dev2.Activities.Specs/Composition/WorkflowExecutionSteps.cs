@@ -432,7 +432,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStatesDuration = new List<IDebugState>();
                 Add("debugStatesDuration", debugStatesDuration);
             }
-            if (debugState.WorkspaceID == server.Connection.WorkspaceID || debugState.WorkspaceID==GlobalConstants.ServerWorkspaceID)
+            if (debugState.WorkspaceID == server.Connection.WorkspaceID || debugState.WorkspaceID == GlobalConstants.ServerWorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
                 {
@@ -2773,13 +2773,6 @@ namespace Dev2.Activities.Specs.Composition
                     value = value.Replace("=", "");
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
-                if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
-                {
-                    var serializer = new Dev2JsonSerializer();
-                    var serialize = serializer.Serialize(new Food());
-                    value = serialize;
-                }
-
                 _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
@@ -4688,7 +4681,7 @@ namespace Dev2.Activities.Specs.Composition
                 .Value as DsfMultiAssignActivity;
 
             TryGetValue("environment", out IServer environmentModel);
-            
+
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
@@ -4701,19 +4694,19 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"I resume workflow ""(.*)""")]
         [Then(@"I resume workflow ""(.*)""")]
         public void GivenIResumeWorkflow(string resourceId)
-       {
+        {
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ID.ToString() == resourceId);
             Assert.IsNotNull(resourceModel);
             var env = new ExecutionEnvironment();
-            env.Assign("[[Name]]", "Bob",0);
+            env.Assign("[[Name]]", "Bob", 0);
             env.Assign("[[Rec(1).Name]]", "Bob", 0);
             env.Assign("[[Rec(3).SurName]]", "Bob", 0);
             env.Assign("[[Rec(4).Name]]", "Bob", 0);
             env.Assign("[[R(*).FName]]", "Bob", 0);
             env.Assign("[[RecSet().Field]]", "Bob", 0);
             env.Assign("[[RecSet().Field]]", "Jane", 0);
-            env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"),0);
+            env.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"B\"}"), 0);
             var serEnv = env.ToJson();
             var msg = environmentModel.ResourceRepository.ResumeWorkflowExecution(resourceModel, serEnv, Guid.Parse("670132e7-80d4-4e41-94af-ba4a71b28118"), null);
             Add("resumeMessage", msg);
@@ -4738,7 +4731,7 @@ namespace Dev2.Activities.Specs.Composition
             else
             {
                 Assert.IsFalse(executeMessage.HasError);
-            }            
+            }
         }
 
         [Then(@"Resume message is ""(.*)""")]
@@ -4780,7 +4773,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenWorkflowHasActivity(string workflow, string activityName)
         {
             TryGetValue(workflow, out IResourceModel resourceModel);
-            var selectedActivity = GetActivity(activityName, resourceModel) as Activity;            
+            var selectedActivity = GetActivity(activityName, resourceModel) as Activity;
             Assert.IsNotNull(selectedActivity, "The tool does not exist on the surface");
             _commonSteps.AddActivityToActivityList(workflow, activityName, selectedActivity);
         }
@@ -4805,7 +4798,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"I resume workflow ""(.*)"" at ""(.*)"" tool")]
         public void WhenIResumeWorkflowAtTool(string workflow, string toolToResumeFrom)
         {
-            var uniqueId = GetActivityUniqueId(toolToResumeFrom);            
+            var uniqueId = GetActivityUniqueId(toolToResumeFrom);
             TryGetValue("environment", out IServer environmentModel);
             var resourceModel = environmentModel.ResourceRepository.FindSingle(resource => resource.ResourceName == workflow);
             Assert.IsNotNull(resourceModel);
@@ -4825,7 +4818,7 @@ namespace Dev2.Activities.Specs.Composition
             var abstartActivity = activities[toolToResumeFrom] as DsfActivityAbstract<string>;
             if (abstartActivity != null)
             {
-                return Guid.Parse(abstartActivity.UniqueID);                
+                return Guid.Parse(abstartActivity.UniqueID);
             }
             var activity = activities[toolToResumeFrom] as DsfActivity;
             return Guid.Parse(activity.UniqueID);
