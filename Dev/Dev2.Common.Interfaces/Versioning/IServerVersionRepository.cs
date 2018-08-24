@@ -19,5 +19,7 @@ namespace Dev2.Common.Interfaces.Versioning
         void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath);
         void MoveVersions(Guid resourceId, string newPath, string resourcePath);
         void CleanUpOldVersionControlStructure(IDirectory directory);
+        int GetLatestVersionNumber(Guid resourceId);
+
     }
 }
