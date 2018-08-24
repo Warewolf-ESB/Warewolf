@@ -1428,55 +1428,6 @@ Scenario: Workflow with ForEach and Manual Loop
 		| # |                     |
 		| 1 | [[rec(4).a]] = Test |
 
-@WorkflowExecution
-Scenario: Detailed Log Execute Workflow with error Creates Detailed Log
-	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
-	And The detailed log file does not exist for "StopExecutionOnMySQLTimeoutError"
-	When "localhost" is the active environment used to execute "StopExecutionOnMySQLTimeoutError"
-    Then the workflow execution has "AN" error
-	And The detailed log file is created for "StopExecutionOnMySQLTimeoutError"
-	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
-	And The Log file for "StopExecutionOnMySQLTimeoutError" contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
-	And The Log file contains Logging matching ""Inputs":[],"Outputs":[]"
-	And The Log file contains Logging matching "LogAdditionalDetail"
-	And The Log file contains Logging matching ""$type":"System.Net.Sockets.SocketException, System","NativeErrorCode":10060"
-
-@WorkflowExecution
-Scenario: Detailed Log Executing Hello World Creates Detailed Log
-	Given I have a server at "localhost" with workflow "Hello World"
-	And The detailed log file does not exist for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
-	
-@WorkflowExecution
-Scenario: Detailed Log Executing Hello World Creates Detailed Log And Appends Logging For Each Execution
-	Given I have a server at "localhost" with workflow "Hello World"
-	And The detailed log file does not exist for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
-	And The Log file contains Logging for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The Log file for "Hello World" contains additional Logging
-
-@WorkflowExecution
-Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed Log for inner and outer workflows
-	Given I have a server at "localhost" with workflow "TestPowerOfTwo"
-	And The detailed log file does not exist for "TestPowerOfTwo"
-	And The detailed log file does not exist for id "80225a8b-9711-4e0a-93e9-ed25e5e02e95" - "PowerOfTwo"
-	When "localhost" is the active environment used to execute "TestPowerOfTwo"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "TestPowerOfTwo"
-	And The detailed log file is created for "PowerOfTwo"
-	And The Log file contains Logging for "TestPowerOfTwo"
-	And The Log file contains Logging for "PowerOfTwo"
-	When "localhost" is the active environment used to execute "TestPowerOfTwo"
-    Then the workflow execution has "No" error
-	And The Log file for "PowerOfTwo" contains additional Logging
-	And The Log file for "TestPowerOfTwo" contains additional Logging
-
 	
 @WorkflowExecution
 Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
