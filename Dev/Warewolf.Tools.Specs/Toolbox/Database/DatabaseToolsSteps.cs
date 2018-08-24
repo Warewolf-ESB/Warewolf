@@ -217,22 +217,27 @@ namespace Warewolf.Tools.Specs.Toolbox.Database
 
         void EnsureEnvironmentConnected(IServer server, int timeout)
         {
-            if (timeout <= 0)
+            var startTime = DateTime.UtcNow;
+            server.Connect();
+
+
+            while (!server.IsConnected && !server.Connection.IsConnected)
+            {
+                Assert.AreEqual(server.IsConnected, server.Connection.IsConnected);
+
+                var now = DateTime.UtcNow;
+                if (now.Subtract(startTime).TotalSeconds > timeout)
+                {
+                    break;
+                }
+                Thread.Sleep(GlobalConstants.NetworkTimeOut);
+            }
+
+
+            if (!server.IsConnected && !server.Connection.IsConnected)
             {
                 _scenarioContext.Add("ConnectTimeoutCountdown", timeout);
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
-            }
-
-            if (!server.IsConnected && !server.Connection.IsConnected)
-            {
-                server.Connect();
-            }
-
-            if (!server.IsConnected && !server.Connection.IsConnected)
-            {
-                Thread.Sleep(GlobalConstants.NetworkTimeOut);
-                timeout--;
-                EnsureEnvironmentConnected(server, timeout);
             }
         }
         public void DebugWriterSubscribe(IServer environmentModel)
