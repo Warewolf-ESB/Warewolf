@@ -18,7 +18,6 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    // BUG 9710 - 2013.06.20 - TWR - Created
     [TestClass]
     public class DatabaseServiceContainerTests
     {
@@ -32,7 +31,9 @@ namespace Dev2.Tests.Runtime.ESB
         #endregion
 
         #region Execute
+
         [TestMethod]
+        [TestCategory("MSSql")]
         public void DatabaseServiceContainer_UnitTest_ExecuteWhereHasDatabaseServiceExecution_Guid()
         {
             //------------Setup for test--------------------------
