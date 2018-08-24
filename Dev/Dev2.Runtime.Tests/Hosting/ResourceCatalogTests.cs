@@ -1427,17 +1427,15 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
-
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("ResourceCatalog_GetModels")]
+        [TestCategory("MSSql")]
         public void ResourceCatalog_GetModels_WhenEnumSqlDatabase_ExpectDbSourceObjects()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-
+            
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "DbSource" }, new[] { Guid.NewGuid() });
