@@ -140,7 +140,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("MSSql")]
         public void Executing_Sql_Procedure_With_Errors()
         {
             using (ContainerLauncher MSSQLContainer = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))

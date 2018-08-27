@@ -10,14 +10,13 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
 {
-    
     [CodedUITest]
     public class SqlServerTests
     {
         const string SourceName = "SQLServerSourceFromTool";
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("MSSql")]
         public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             using (ContainerLauncher MSSQLContainer = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))
@@ -69,7 +68,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("MSSql")]
         public void Open_SqlServer_Contains_Outputs()
         {
             ExplorerUIMap.Filter_Explorer("UITestingSqlServerOutputs");
