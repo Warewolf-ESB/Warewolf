@@ -169,7 +169,7 @@ namespace Warewolf.Launcher.Utils
                 const int NumberOfUnitTestJobs = 37;
                 const int NumberOfServerTestJobs = 32;
                 const int NumberOfReleaseResourcesTestJobs = 1;
-                const int NumberOfDesktopUITestJobs = 64;
+                const int NumberOfDesktopUITestJobs = 65;
                 const int NumberOfWebUITestJobs = 3;
                 const int NumberOfLoadTestJobs = 3;
                 if (testType == "" || testType == "1")
