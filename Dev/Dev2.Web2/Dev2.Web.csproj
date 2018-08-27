@@ -39,7 +39,7 @@
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <CodeAnalysisRuleSet>Dev2.Web.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	<WarningsAsErrors>S2306,S2930,S3237,S2387,S2931,S3427,S2953,S2278,S2368,S2190,S3447,S3217,S3600,S3216,S131,S2330,S2290,S2346,S3218,S1006,S3265,S3449,S2070,S2551,S2757,S3451,S3442,S1994,S907,S2688,S2995,S3262,S3597,S1479,S2996,S3005,S3244,S3249,S3453,S2275,S1854,S3172,S2761,S3655,S3264,S3445,S1163,S1244,S3246,CC0056,S1117,S3603,S2681,S3610,S3598,S2178,S1697,S2437,S3263,S2758,S1134,S3443,S2326,S1145,S2123,S1656,CC0064,CC0054,CC0010,CC0063,S1698,S2225,S1313,S1172,S125,S2360,S927,S127,S2997,S1121,S2583,S2372,S2357,S2933,S1764,S1117,S108,S2259,S1848,S3466,S2234,S1862,S2201,S122,S3010,S2743,S1144,S1118,S2376,S126,S134,S3215</WarningsAsErrors>
+    <WarningsAsErrors>S2306,S2930,S3237,S2387,S2931,S3427,S2953,S2278,S2368,S2190,S3447,S3217,S3600,S3216,S131,S2330,S2290,S2346,S3218,S1006,S3265,S3449,S2070,S2551,S2757,S3451,S3442,S1994,S907,S2688,S2995,S3262,S3597,S1479,S2996,S3005,S3244,S3249,S3453,S2275,S1854,S3172,S2761,S3655,S3264,S3445,S1163,S1244,S3246,CC0056,S1117,S3603,S2681,S3610,S3598,S2178,S1697,S2437,S3263,S2758,S1134,S3443,S2326,S1145,S2123,S1656,CC0064,CC0054,CC0010,CC0063,S1698,S2225,S1313,S1172,S125,S2360,S927,S127,S2997,S1121,S2583,S2372,S2357,S2933,S1764,S1117,S108,S2259,S1848,S3466,S2234,S1862,S2201,S122,S3010,S2743,S1144,S1118,S2376,S126,S134,S3215</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,11 +51,15 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>Dev2.Web.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	<WarningsAsErrors>S2306,S2930,S3237,S2387,S2931,S3427,S2953,S2278,S2368,S2190,S3447,S3217,S3600,S3216,S131,S2330,S2290,S2346,S3218,S1006,S3265,S3449,S2070,S2551,S2757,S3451,S3442,S1994,S907,S2688,S2995,S3262,S3597,S1479,S2996,S3005,S3244,S3249,S3453,S2275,S1854,S3172,S2761,S3655,S3264,S3445,S1163,S1244,S3246,CC0056,S1117,S3603,S2681,S3610,S3598,S2178,S1697,S2437,S3263,S2758,S1134,S3443,S2326,S1145,S2123,S1656,CC0064,CC0054,CC0010,CC0063,S1698,S2225,S1313,S1172,S125,S2360,S927,S127,S2997,S1121,S2583,S2372,S2357,S2933,S1764,S1117,S108,S2259,S1848,S3466,S2234,S1862,S2201,S122,S3010,S2743,S1144,S1118,S2376,S126,S134,S3215</WarningsAsErrors>
+    <WarningsAsErrors>S2306,S2930,S3237,S2387,S2931,S3427,S2953,S2278,S2368,S2190,S3447,S3217,S3600,S3216,S131,S2330,S2290,S2346,S3218,S1006,S3265,S3449,S2070,S2551,S2757,S3451,S3442,S1994,S907,S2688,S2995,S3262,S3597,S1479,S2996,S3005,S3244,S3249,S3453,S2275,S1854,S3172,S2761,S3655,S3264,S3445,S1163,S1244,S3246,CC0056,S1117,S3603,S2681,S3610,S3598,S2178,S1697,S2437,S3263,S2758,S1134,S3443,S2326,S1145,S2123,S1656,CC0064,CC0054,CC0010,CC0063,S1698,S2225,S1313,S1172,S125,S2360,S927,S127,S2997,S1121,S2583,S2372,S2357,S2933,S1764,S1117,S108,S2259,S1848,S3466,S2234,S1862,S2201,S122,S3010,S2743,S1144,S1118,S2376,S126,S134,S3215</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Dev2.Infrastructure, Version=0.0.6793.15372, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Infrastructure\bin\Debug\Dev2.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -157,12 +161,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ExecutionLoggingController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ExecutionLogging\ExecutionLoggingRequestViewModel.cs" />
+    <Compile Include="Models\Auditing\AuditingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -171,10 +175,55 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DetailsModal.css" />
     <Content Include="Content\dropDownStyling.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\jquery-ui-1.9.2.custom.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\jquery.datetimepicker.min.css" />
+    <Content Include="Content\images\accordion.css" />
+    <Content Include="Content\images\all.css" />
+    <Content Include="Content\images\autocomplete.css" />
+    <Content Include="Content\images\base.css" />
+    <Content Include="Content\images\button.css" />
+    <Content Include="Content\images\core.css" />
+    <Content Include="Content\images\datepicker.css" />
+    <Content Include="Content\images\dialog.css" />
+    <Content Include="Content\images\draggable.css" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\images\jquery-ui.css" />
+    <Content Include="Content\images\jquery-ui.min.css" />
+    <Content Include="Content\images\menu.css" />
+    <Content Include="Content\images\progressbar.css" />
+    <Content Include="Content\images\resizable.css" />
+    <Content Include="Content\images\selectable.css" />
+    <Content Include="Content\images\selectmenu.css" />
+    <Content Include="Content\images\slider.css" />
+    <Content Include="Content\images\sortable.css" />
+    <Content Include="Content\images\spinner.css" />
+    <Content Include="Content\images\tabs.css" />
+    <Content Include="Content\images\theme.css" />
+    <Content Include="Content\images\tooltip.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -190,8 +239,12 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Dev2.Web.ruleset" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="images\calendar-icon.png" />
     <Content Include="images\Favicon.png" />
     <Content Include="images\logo.png" />
@@ -206,24 +259,33 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\filterScript.js" />
     <Content Include="Scripts\getBrowser.js" />
-    <Content Include="Scripts\jquery-1.8.3.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Scripts\jquery-ui-1.9.2.custom.min.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.datetimepicker.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\multifilter.js" />
     <Content Include="Scripts\multifilter.min.js" />
     <Content Include="Scripts\respond.js" />
@@ -249,8 +311,8 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\ExecutionLogging\Index.cshtml" />
-    <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
+    <Content Include="Views\Audit\Index.cshtml" />
+    <Content Include="Views\Audit\AuditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,6 +329,10 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Auditing\Dev2.Runtime.Auditing.csproj">
+      <Project>{a398a8f3-a7ca-44f4-8a5f-03b2ba7e1c84}</Project>
+      <Name>Dev2.Runtime.Auditing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
@@ -275,12 +341,6 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />

@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using System.Linq;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -234,8 +235,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
+            var versionNumber = "Version1.1";
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, versionNumber, out _dev2StateAuditLogger, out _activity);
             // test
             _dev2StateAuditLogger.LogExecuteCompleteState(nextActivity.Object);
 
@@ -244,10 +246,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogExecuteCompleteState")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList();
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -256,7 +259,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
             var expectedWorkflowName = "LogExecuteException_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            var versionNumber = "Version1.1";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, versionNumber,out _dev2StateAuditLogger, out _activity);
             // test
             var activity = new Mock<IDev2Activity>();
             var exception = new Mock<Exception>();
@@ -267,10 +271,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogExecuteException")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList(); 
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -279,7 +284,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
             var expectedWorkflowName = "LogPostExecuteState_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            var versionNumber = "Version1.1";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, versionNumber, out _dev2StateAuditLogger, out _activity);
             // test
             var previousActivity = new Mock<IDev2Activity>();
             var nextActivity = new Mock<IDev2Activity>();
@@ -290,10 +296,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogPostExecuteState")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
+                || a.AuditType.Equals(""))).ToList(); 
             _dev2StateAuditLogger.Dispose();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
         [TestMethod]
@@ -302,7 +309,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
             var expectedWorkflowName = "LogAdditionalDetail_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            var versionNumber = "Version1.1";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, versionNumber, out _dev2StateAuditLogger, out _activity);
             // test
             var additionalDetailObject = new { Message = "Some Message" };
             _dev2StateAuditLogger.LogAdditionalDetail(additionalDetailObject, "");
@@ -313,10 +321,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var results = Dev2StateAuditLogger.Query(a => (a.WorkflowID.Equals(str)
                 || a.WorkflowName.Equals("LogAdditionalDetail")
                 || a.ExecutionID.Equals("")
-                || a.AuditType.Equals("")));
-            _dev2StateAuditLogger.Dispose();
+                || a.AuditType.Equals(""))).ToList();
 
-            Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
+            _dev2StateAuditLogger.Dispose();
         }
 
         [TestMethod]
@@ -325,12 +334,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowId = Guid.NewGuid();
             var expectedExecutionId = Guid.NewGuid();
             var expectedWorkflowName = "LogPreExecuteState_Workflow";
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, out _dev2StateAuditLogger, out _activity);
+            var versionNumber = "Version1.1";
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, expectedExecutionId, versionNumber, out _dev2StateAuditLogger, out _activity);
             // test
             _dev2StateAuditLogger.LogPreExecuteState(_activity.Object);
             // verify
             var str = expectedWorkflowId.ToString();
-            var results = Dev2StateAuditLogger.Query(item => true);
+            var results = Dev2StateAuditLogger.Query(a => a.WorkflowID == str).ToList();
             _dev2StateAuditLogger.Dispose();
 
             foreach (var item in results)
@@ -340,6 +350,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             var result = results.FirstOrDefault(a => a.WorkflowID == str);
             Assert.IsTrue(result != null);
+            Assert.AreEqual(results[0].WorkflowID, str);
+            Assert.AreEqual(results[0].VersionNumber, versionNumber);
             Assert.AreEqual("{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}",
                             result.Environment);
         }
@@ -364,16 +376,16 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             return new Dev2StateAuditLogger(mockedDataObject.Object);
         }
 
-        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId, string versionNumber, out Dev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             // setup
-            Mock<IDSFDataObject> mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
+            Mock<IDSFDataObject> mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId, versionNumber);
 
             activity = new Mock<IDev2Activity>();
             dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
         }
 
-        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId,string versionNumber)
         {
             // mocks
             var mockedDataObject = new Mock<IDSFDataObject>();
@@ -381,6 +393,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
             mockedDataObject.Setup(o => o.ResourceID).Returns(() => resourceId);
             mockedDataObject.Setup(o => o.ExecutionID).Returns(() => executionId);
+            mockedDataObject.Setup(o => o.VersionNumber).Returns(() => versionNumber);
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);

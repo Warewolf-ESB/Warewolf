@@ -1,5 +1,4 @@
-﻿@WorkflowExecution
-Feature: WorkflowExecution
+﻿Feature: WorkflowExecution
 	In order to execute a workflow
 	As a Warewolf user
 	I want to be able to build workflows and execute them against the server
@@ -8,6 +7,7 @@ Background: Setup for workflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
+@WorkflowExecution
 Scenario: Workflow with multiple tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignAndCount"
 	  And "WorkflowWithAssignAndCount" contains an Assign "Rec To Convert" as
@@ -33,6 +33,7 @@ Scenario: Workflow with multiple tools executing against the server
 	  |               |
 	  | [[count]] = 2 |
 
+@WorkflowExecution
 Scenario: Workflow with ForEach InRecordset Not entered
 Given I have a workflow "WFWithForEachRecordsetNotentered"
 And "WFWithForEachRecordsetNotentered" contains a Foreach "ForEachTest1" as "InRecordset" executions ""
@@ -43,6 +44,7 @@ And Workflow "WFWithForEachRecordsetNotentered" has errors
 		| The Recordset Field is Required           |
 		| Cannot execute a For Each with no content |
 	
+@WorkflowExecution
 Scenario: Workflow with ForEach InRange Not entered
 	Given I have a workflow "WFWithForEachInRangeNotentered"
 	And "WFWithForEachInRangeNotentered" contains a Foreach "ForEachTest1" as "InRange" executions ""
@@ -53,6 +55,7 @@ Scenario: Workflow with ForEach InRange Not entered
 			| The FROM field is Required                |
 			| Cannot execute a For Each with no content |				
 
+@WorkflowExecution
 Scenario: Workflow with ForEach NumberOfExecutes Not entered
 	Given I have a workflow "WFWithForEachNumberOfExecutesNotentered"
 	And "WFWithForEachNumberOfExecutesNotentered" contains a Foreach "ForEachTest1" as "NumOfExecution" executions ""
@@ -63,6 +66,7 @@ Scenario: Workflow with ForEach NumberOfExecutes Not entered
 			| Number of executes must be a whole number from 1 onwards. |
 			| Cannot execute a For Each with no content                 |
 
+@WorkflowExecution
 Scenario: Workflow with ForEach InCsv Not entered
 	Given I have a workflow "WFWithForEachInCsvNotentered"
 	And "WFWithForEachInCsvNotentered" contains a Foreach "ForEachTest1" as "InCSV" executions ""
@@ -73,6 +77,7 @@ Scenario: Workflow with ForEach InCsv Not entered
 			| The CSV Field is Required               |
 			| Cannot execute a For Each with no content |
 	          
+@WorkflowExecution
 Scenario: Workflow with ForEach which contains assign
       Given I have a workflow "WFWithForEachContainingAssign"
 	  And "WFWithForEachContainingAssign" contains an Assign "Rec To Convert" as
@@ -101,6 +106,7 @@ Scenario: Workflow with ForEach which contains assign
 		| # |                     |
 		| 1 | [[rec(2).a]] = Test |
 		
+@WorkflowExecution
 Scenario: Gather System Info returns values
 	Given I have a workflow "WorkflowWithGatherSystemInfo"
 	And "WorkflowWithGatherSystemInfo" contains Gather System Info "System info" as
@@ -149,6 +155,7 @@ Scenario: Gather System Info returns values
 	  | 12 | [[WarewolfServerVersion]] = String  |
 
 
+@WorkflowExecution
 Scenario: Workflow with ForEach which contains Sequence
       Given I have a workflow "WorkflowWithForEachContainingSeq"
 	  And "WorkflowWithForEachContainingSeq" contains an Assign "RecVal" as
@@ -206,6 +213,7 @@ Scenario: Workflow with ForEach which contains Sequence
 	  | 1 | [[rec(1).d]] = String |	
 
 
+@WorkflowExecution
 Scenario: Executing ForEach in Rec with star which contains Sequence
       Given I have a workflow "WorkFWithForEachwithRecContainingSequence"
 	  And "WorkFWithForEachwithRecContainingSequence" contains an Assign "RecVal" as
@@ -336,6 +344,7 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	
 		
 
+@WorkflowExecution
 Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
       Given I have a workflow "WFContainsForEachInsideforEach"
 	  And "WFContainsForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
@@ -440,6 +449,7 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  | 14 | [[rec(50).n]] = aasdd222      |
 	  | 15 | [[rec(50).o]] = 22323asda     |
 		
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
       Given I have a workflow "WFWithAssignandFindRecordindexy"
 	  And "WFWithAssignandFindRecordindexy" contains an Assign "Record" as
@@ -458,6 +468,7 @@ Scenario: Workflow Assign and Find Record index tool with two variables in reult
 	  | 1 | [[rec(1).a]]         =  Warewolf |
 
 
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record index
       Given I have a workflow "WFWithAssignandFindRecordindexTool"
 	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
@@ -475,6 +486,7 @@ Scenario: Workflow Assign and Find Record index
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 	  
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record index expected not greater than
       Given I have a workflow "WFWithAssignandFindRecordindexTool"
 	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
@@ -495,6 +507,7 @@ Scenario: Workflow Assign and Find Record index expected not greater than
 	  |                        |
 	  | [[asdf]]         =  -1 |
 	  
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record index expected not less than
       Given I have a workflow "WFWithAssignandFindRecordindexTool"
 	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
@@ -515,6 +528,7 @@ Scenario: Workflow Assign and Find Record index expected not less than
 	  |                        |
 	  | [[asdf]]         =  -1 |
 
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record index expected is greater than
       Given I have a workflow "WFWithAssignandFindRecordindexTool"
 	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
@@ -532,6 +546,7 @@ Scenario: Workflow Assign and Find Record index expected is greater than
 	  |                       |
 	  | [[expectedResult]]         =  2 |
 
+@WorkflowExecution
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as
@@ -573,6 +588,7 @@ Examples:
       | 13 | [[rec([[[[b]]]]).a]]   |
 
 
+@WorkflowExecution
 Scenario: Testing Data Split with two variables in Result field
       Given I have a workflow "WorkflowforDatasplit"
       And "WorkflowforDatasplit" contains an Assign "Rec To Convert" as
@@ -600,6 +616,7 @@ Scenario: Testing Data Split with two variables in Result field
 	  And the "Data Split" in Workflow "WorkflowforDatasplit" debug outputs as  
 	  | # |                    |
 
+@WorkflowExecution
 Scenario Outline: Testing Format Numbers with two variables in Result
      Given I have a workflow "Workflowforfn"
 	  And "Workflowforfn" contains an Assign "Values" as
@@ -618,6 +635,7 @@ Examples:
        | No | Variable               |
        | 1  | [[a]][[Result]]        |
 
+@WorkflowExecution
 Scenario Outline: Testing Random Numbers with two variables in Result
       Given I have a workflow "Workflowforrandom123"
 	  And "Workflowforrandom123" contains an Assign "Values" as
@@ -647,6 +665,7 @@ Examples:
       | No | Variable               |
       | 1  | [[a]][[Result]]        |
 
+@WorkflowExecution
 Scenario Outline: Testing Date and Time with two variables in Result field
       Given I have a workflow "WorkflowforDT"
       And "WorkflowforDT" contains an Assign "Convert2" as
@@ -673,6 +692,7 @@ Examples:
       | No | Variable               |
       | 1  | [[a]][[Result]]        |      
 
+@WorkflowExecution
 Scenario: Convert an recordset to Upper by using index as scalar
 	Given I have a workflow "ConvertUsingScalarWithRecursiveEvalution"
 	And "ConvertUsingScalarWithRecursiveEvalution" contains an Assign "Records" as
@@ -699,6 +719,7 @@ Scenario: Convert an recordset to Upper by using index as scalar
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
+@WorkflowExecution
 Scenario: Convert an recordset to Upper by using index as recordset
 	Given I have a workflow "ConvertUsingRecSetInRecursiveEvalution"
 	And "ConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
@@ -725,6 +746,7 @@ Scenario: Convert an recordset to Upper by using index as recordset
 	  | # |                          |
 	  | 1 | [[rs(1).row]] = WAREWOLF |
 
+@WorkflowExecution
 Scenario: Base Convert two varibles on one row 
 	Given I have a workflow "BaseConvertUsingRecSetInRecursiveEvalution"
 	And "BaseConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
@@ -751,6 +773,7 @@ Scenario: Base Convert two varibles on one row
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = Mg== |
 
+@WorkflowExecution
 Scenario: Workflow by using For Each with Random in it
       Given I have a workflow "WFWithForEachContainsRandom"
 	  And "WFWithForEachContainsRandom" contains a Foreach "ForEachTest123" as "NumOfExecution" executions "5"
@@ -794,6 +817,7 @@ Scenario: Workflow by using For Each with Random in it
          |                      |
          | [[rec(1).a]] = Int32 |
 
+@WorkflowExecution
 Scenario: Workflow with Calculation using Star notation
       Given I have a workflow "WorkflowWithAssignCalculationUsingStar"
       And "WorkflowWithAssignCalculationUsingStar" contains an Assign "Records" as
@@ -825,6 +849,7 @@ Scenario: Workflow with Calculation using Star notation
 	  | # |                     |
 	  | 1 | [[rec(3).sum]] = 41 |
 
+@WorkflowExecution
 Scenario: Workflow Saving with Different Versions 
 	 Given I have a workflow "WorkflowWithVersionAssignTest"
 	 And "WorkflowWithVersionAssignTest" contains an Assign "VarsAssign" as
@@ -852,6 +877,7 @@ Scenario: Workflow Saving with Different Versions
 	  | v.1 DateTime Save   |
 	  And workflow "WorkflowWithVersionAssignTest" is deleted as cleanup
 
+@WorkflowExecution
 Scenario: Executing workflow of different versions
 	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
 	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
@@ -908,6 +934,7 @@ Scenario: Executing workflow of different versions
 	  | 2 | [[rec(2).a]] = Test |
 	  And workflow "WorkflowWithVersionAssignExecuted2" is deleted as cleanup
 
+@WorkflowExecution
 Scenario: Calculate testing variable values that hasn"t been assigned
       Given I have a workflow "WorkflowforCalTestingUnassignedvariablevalue"
       And "WorkflowforCalTestingUnassignedvariablevalue" contains an Assign "Values34" as
@@ -930,6 +957,7 @@ Scenario: Calculate testing variable values that hasn"t been assigned
 	  | [[res]] = |
 
 
+@WorkflowExecution
 Scenario: Calculate testing variable values that hasn"t been assigned2
       Given I have a workflow "WorkflowforCalTestingUnassignedvariablevalue2"
       And "WorkflowforCalTestingUnassignedvariablevalue2" contains an Assign "Values34" as
@@ -951,6 +979,7 @@ Scenario: Calculate testing variable values that hasn"t been assigned2
 	  |           |
 	  | [[res]] = |
 
+@WorkflowExecution
 Scenario: Gather System tool throws error when debug with 2 variables in one row 
 	  Given I have a workflow "WorkflowW"
 	  And "WorkflowW" contains an Assign "IndexVal" as
@@ -976,6 +1005,7 @@ Scenario: Gather System tool throws error when debug with 2 variables in one row
 	   
 	  
 	   
+@WorkflowExecution
 Scenario: Gather System tool throws error when debug with invalid variableb
 	  Given I have a workflow "WorkflowW1"
 	  And "WorkflowW1" contains an Assign "IndexVal" as
@@ -998,6 +1028,7 @@ Scenario: Gather System tool throws error when debug with invalid variableb
 	  | # |                      |
 	  | 1 | [[a]][[rec().a]] = |
 
+@WorkflowExecution
 Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
 	  Given I have a workflow "WorkflowWithBaseCase1"
 	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
@@ -1037,6 +1068,7 @@ Scenario: Workflow Base Convert and Case Convert passing invalid variable throug
       And the "Base1" in Workflow "WorkflowWithBaseCase1" debug outputs as  
 	  | # |                     |
 
+@WorkflowExecution
 Scenario: Workflow Base Convert coverting same variable multiple times
 	 Given I have a workflow "WorkflowWithBaseConvertUsingSameVariable"
 	 And "WorkflowWithBaseConvertUsingSameVariable" contains an Assign "Assign1" as
@@ -1063,6 +1095,7 @@ Scenario: Workflow Base Convert coverting same variable multiple times
 	 | 1 | [[test]] = ZGF0YQ== |
 	 | 2 | [[test]] = data     |
 
+@WorkflowExecution
 Scenario: Workflow Assign and Find Record Index executing with incorrect format of Inputs 
       Given I have a workflow "WFWithAssignandFindRecordindexs"
 	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
@@ -1076,6 +1109,7 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
 	  When "WFWithAssignandFindRecordindexs" is executed
 	  Then the workflow execution has "AN" error
 	  
+@WorkflowExecution
 Scenario: Database PostgreSql Database service inputs and outputs
      Given I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
@@ -1091,6 +1125,7 @@ Scenario: Database PostgreSql Database service inputs and outputs
 	  | [[countries(1).Name]] = United States |
 	  | [[countries(2).Name]] = South Africa  |
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -1107,6 +1142,7 @@ Examples:
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlStarIndex | MySqlEmail  | [[rec(*).name]] | [[rec(*).email]] | NO           |
 
+@WorkflowExecution
 Scenario: Database MySqlDB Database service using char in param name
      Given I have a workflow "TestMySqlWFWithMySqlCharParamName"
 	 And "TestMySqlWFWithMySqlCharParamName" contains a mysql database service "procWithCharNoOutput" with mappings as
@@ -1117,6 +1153,7 @@ Scenario: Database MySqlDB Database service using char in param name
      Then the workflow execution has "NO" error
 
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -1133,9 +1170,9 @@ Examples:
     | WorkflowName                 | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestMySqlWFWithMySqlIntIndex | MySqlEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service last  indexes
      Given I have a workflow "<WorkflowName>"
-	  And The detailed log file does not exist for "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  |                  |               | name                | <nameVariable>  |
@@ -1146,14 +1183,11 @@ Scenario Outline: Database MySqlDB Database service last  indexes
 	  |                                       |
 	  | [[rec(1).name]] = Monk                |
 	  | [[rec(1).email]] = dora@explorers.com |
-      And The detailed log file is created for "<WorkflowName>"
-	  And The Log file contains Logging matching ""MappedFrom":"email""
-	  And The Log file contains Logging matching ""MappedTo":"[[rec().email]]""
-	  And The Log file contains Logging matching ""RecordSetName":"rec""
 Examples: 
     | WorkflowName                  | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestMySqlWFWithMySqlLastIndex | MySqlEmail  | [[rec().name]] | [[rec().email]] | NO           |
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -1170,6 +1204,7 @@ Examples:
     | WorkflowName               | ServiceName | nameVariable | emailVariable | errorOccured |
     | TestMySqlWFWithMySqlScalar | MySqlEmail  | [[name]]     | [[email]]     | NO           |
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service Error outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -1184,6 +1219,7 @@ Examples:
     | TestMySqlWFWithMySqlMailsInvalidVar          | MySqlEmail  | [[123]]              | [[email]]     | YES          |
     | TestMySqlWFWithMySqlMailsInvalidVarWithIndex | MySqlEmail  | [[rec(-1).name.bob]] | [[email]]     | YES          |
 
+@WorkflowExecution
 Scenario Outline: Database MySqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a mysql database service "<ServiceName>" with mappings as
@@ -1202,6 +1238,7 @@ Examples:
     | WorkflowName                  | ServiceName           | nameVariable        | emailVariable                | errorOccured |
     | TestMySqlWFWithMySqlCountries | Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
+@MSSql
 Scenario Outline: Database SqlDB Database service inputs and outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -1218,6 +1255,7 @@ Examples:
     | WorkflowName                    | ServiceName               | nameVariable        | emailVariable                | errorOccured |
     | TestSqlWFWithSqlServerCountries | dbo.Pr_CitiesGetCountries | [[countries(*).id]] | [[countries(*).description]] | NO           |
 
+@MSSql
 Scenario Outline: Database SqlDB  service DBErrors
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -1228,6 +1266,7 @@ Examples:
      | WorkflowName                      | ServiceName     | nameVariable | emailVariable | errorOccured |
      | TestWFWithDBSqlServerErrorProcSql | dbo.willalwayserror | [[name]]     | [[email]]     | YES          |
 
+@MSSql
 Scenario Outline: Database SqlDB  service using int indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -1244,6 +1283,7 @@ Examples:
     | WorkflowName                  | ServiceName | nameVariable    | emailVariable    | errorOccured |
     | TestWFWithDBSqlServerIntIndex | dbo.SQLEmail    | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
+@MSSql
 Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -1260,6 +1300,7 @@ Examples:
     | WorkflowName              | ServiceName | nameVariable   | emailVariable   | errorOccured |
     | TestWFWithDBSqlServerLastIndex | dbo.SQLEmail    | [[rec().name]] | [[rec().email]] | NO           |
 
+@MSSql
 Scenario Outline: Database SqlDB  service using scalar outputs 
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
@@ -1276,6 +1317,7 @@ Examples:
     | WorkflowName                | ServiceName  | nameVariable | emailVariable | errorOccured |
     | TestWFWithDBSqlServerScalar | dbo.SQLEmail | [[name]]     | [[email]]     | NO           |
 
+@WorkflowExecution
 Scenario: Executing unsaved workflow should execute by ID
 	Given I create a new unsaved workflow with name "Unsaved 1"
 	And "Unsaved 1" contains an Assign "Rec To Convert" as
@@ -1299,6 +1341,7 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | 1 | [[rec(1).a]] = 1 |
 	  | 2 | [[rec(2).a]] = 2  |
 
+@WorkflowExecution
 Scenario:WF with RabbitMq Consume timeout 5
 	Given I have a workflow "RabbitMqConsume5mintimeout"
 	And "RabbitMqConsume5mintimeout" contains RabbitMQPublish and Queue1 "DsfPublishRabbitMQActivity" into "[[result1]]"
@@ -1308,6 +1351,7 @@ Scenario:WF with RabbitMq Consume timeout 5
 	And the "RabbitMqConsume5mintimeout" has a start and end duration
 	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
 	
+@WorkflowExecution
 Scenario:WF with RabbitMq Consume with no timeout 
 	Given I have a workflow "RabbitMqConsumeNotimeout"
 	And "RabbitMqConsumeNotimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout -1 seconds into "[[result]]"
@@ -1316,6 +1360,7 @@ Scenario:WF with RabbitMq Consume with no timeout
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 60 seconds
 
+@WorkflowExecution
 Scenario: COM DLL service execute
 	Given I have a server at "localhost" with workflow "Testing COM DLL Activity Execute"
 	When "localhost" is the active environment used to execute "Testing COM DLL Activity Execute"
@@ -1324,6 +1369,7 @@ Scenario: COM DLL service execute
 	|                                |
 	| [[PrimitiveReturnValue]] = 0   |
 
+@WorkflowExecution
 Scenario: Workflow with ForEach and Manual Loop
       Given I have a workflow "WFWithForEachWithManualLoop"
 	  And "WFWithForEachWithManualLoop" contains an Assign "Setup Counter" as
@@ -1377,56 +1423,11 @@ Scenario: Workflow with ForEach and Manual Loop
 		| # |                     |
 		| 1 | [[rec(4).a]] = Test |
 
-Scenario: Detailed Log Execute Workflow with error Creates Detailed Log
-	Given I have a server at "localhost" with workflow "StopExecutionOnMySQLTimeoutError"
-	And The detailed log file does not exist for "StopExecutionOnMySQLTimeoutError"
-	When "localhost" is the active environment used to execute "StopExecutionOnMySQLTimeoutError"
-    Then the workflow execution has "AN" error
-	And The detailed log file is created for "StopExecutionOnMySQLTimeoutError"
-	And The Log file contains Logging for stopped "StopExecutionOnMySQLTimeoutError"
-	And The Log file for "StopExecutionOnMySQLTimeoutError" contains Logging matching "Dev2.Services.Sql\\MySqlServer.cs:line "
-	And The Log file contains Logging matching ""Inputs":[],"Outputs":[]"
-	And The Log file contains Logging matching "LogAdditionalDetail"
-	And The Log file contains Logging matching ""$type":"System.Net.Sockets.SocketException, System","NativeErrorCode":10060"
-
-Scenario: Detailed Log Executing Hello World Creates Detailed Log
-	Given I have a server at "localhost" with workflow "Hello World"
-	And The detailed log file does not exist for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
 	
-Scenario: Detailed Log Executing Hello World Creates Detailed Log And Appends Logging For Each Execution
-	Given I have a server at "localhost" with workflow "Hello World"
-	And The detailed log file does not exist for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
-	And The Log file contains Logging for "Hello World"
-	When "localhost" is the active environment used to execute "Hello World"
-    Then the workflow execution has "No" error
-	And The Log file for "Hello World" contains additional Logging
-
-Scenario: Detailed Log Executing TestPowerOfTwo Creates and appends to Detailed Log for inner and outer workflows
-	Given I have a server at "localhost" with workflow "TestPowerOfTwo"
-	And The detailed log file does not exist for "TestPowerOfTwo"
-	And The detailed log file does not exist for id "80225a8b-9711-4e0a-93e9-ed25e5e02e95" - "PowerOfTwo"
-	When "localhost" is the active environment used to execute "TestPowerOfTwo"
-    Then the workflow execution has "No" error
-	And The detailed log file is created for "TestPowerOfTwo"
-	And The detailed log file is created for "PowerOfTwo"
-	And The Log file contains Logging for "TestPowerOfTwo"
-	And The Log file contains Logging for "PowerOfTwo"
-	When "localhost" is the active environment used to execute "TestPowerOfTwo"
-    Then the workflow execution has "No" error
-	And The Log file for "PowerOfTwo" contains additional Logging
-	And The Log file for "TestPowerOfTwo" contains additional Logging
-
-	
+@WorkflowExecution
 Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
-	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
@@ -1435,10 +1436,10 @@ Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
 	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
 	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
 
+@WorkflowExecution
 Scenario: Audit Log Query Expect 3 Items Search on Activity Type
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
-	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
 	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
@@ -1447,19 +1448,18 @@ Scenario: Audit Log Query Expect 3 Items Search on Activity Type
 	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
 	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
 
+@WorkflowExecution
 Scenario: Audit Log Query Expect No Results
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
-	And The detailed log file does not exist for "Hello World"
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The detailed log file is created for "Hello World"
 	And The audit database has "0" search results containing "Something that doesn't exist" with log type "Dev2.Activities.DsfDecision" for "Hello World"
 
+@WorkflowExecution
 Scenario: Audit Log Query Expect 8 Items
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
-	And The detailed log file does not exist for "TestSqlExecutesOnce"
 	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
@@ -1474,14 +1474,13 @@ Scenario: Audit Log Query Expect 8 Items
 	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfDecision                                                         |
 	
+@WorkflowExecution
 Scenario: Audit Log Query Expect 8 Items from search
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
-	And The detailed log file does not exist for "TestSqlExecutesOnce"
 	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
-	And The detailed log file is created for "TestSqlExecutesOnce"
 	And The audit database has "8" search results containing "SQL Server Database" with type "" for "TestSqlExecutesOnce" as 
 	| AuditType           | WorkflowName        | PreviousActivityType                                                                | NextActivityType                                                                    |
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfRandomActivity                                                   | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
@@ -1492,4 +1491,75 @@ Scenario: Audit Log Query Expect 8 Items from search
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
 	| LogPreExecuteState  | TestSqlExecutesOnce | null                                                                                | Dev2.Activities.DsfSqlServerDatabaseActivity                                        |
 	| LogPostExecuteState | TestSqlExecutesOnce | Dev2.Activities.DsfSqlServerDatabaseActivity                                        | Dev2.Activities.DsfDecision                                                         |
-		
+
+Scenario: Audit Log Executing workflow of different versions
+	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
+	 And the audit database is empty
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |	 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "0" Versions in explorer
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the "VarsAssign" in WorkFlow "WorkflowWithVersionAssignExecuted2" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test | 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "2" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "2" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign2" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |
+	  | [[rec().a]] | V1    |
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	 When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	 Then the workflow execution has "NO" error
+	 And the "VarsAssign2" in WorkFlow "WorkflowWithVersionAssignExecuted2" debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  | 3 | [[rec().a]] = | V1        |	  
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "4" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.4 DateTime        |
+	  | v.3 DateTime        |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |	
+	  When I rollback "WorkflowWithVersionAssignExecuted2" to version "1"
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the "VarsAssign" in Workflow "WorkflowWithVersionAssignExecuted2" debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test |
+	  And The audit database has "13" search results for "WorkflowWithVersionAssignExecuted2" as 
+	  | WorkflowName                       | AuditType               | VersionNumber |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 1             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 4             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPreExecuteState      | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogPostExecuteState     | 6             |
+	  | WorkflowWithVersionAssignExecuted2 | LogExecuteCompleteState | 6             |
+	  And workflow "WorkflowWithVersionAssignExecuted2" is deleted as cleanup

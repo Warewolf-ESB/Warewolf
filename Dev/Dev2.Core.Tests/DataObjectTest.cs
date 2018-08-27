@@ -205,6 +205,7 @@ namespace Dev2.Tests
             dataObject.DatalistOutMergeType = enDataListMergeTypes.Union;
             dataObject.DebugSessionID = Guid.NewGuid();
             dataObject.EnvironmentID = Guid.NewGuid();
+            dataObject.VersionNumber = "Version2.3";
             dataObject.ExecutionCallbackID = Guid.NewGuid();
             dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             dataObject.ExecutingUser = executingUser;
@@ -259,7 +260,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(69, properties.Length);
+            Assert.AreEqual(70, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -275,6 +276,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.DatalistOutMergeType, clonedObject.DatalistOutMergeType);
             Assert.AreEqual(dataObject.DebugSessionID, clonedObject.DebugSessionID);
             Assert.AreEqual(dataObject.EnvironmentID, clonedObject.EnvironmentID);
+            Assert.AreEqual(dataObject.VersionNumber, clonedObject.VersionNumber);
             Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
             Assert.AreEqual(dataObject.ExecutionCallbackID, clonedObject.ExecutionCallbackID);
             Assert.AreEqual(dataObject.ExecutionOrigin, clonedObject.ExecutionOrigin);
@@ -439,11 +441,13 @@ namespace Dev2.Tests
             var bookmarkID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
+            var versionNumber = "Version 2.1";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
                          "<DebugSessionID>" + debugID + "</DebugSessionID>" +
                          "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<VersionNumber>" + versionNumber + "</VersionNumber>" +
                          "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
                          "<ParentServiceName>TestParentService</ParentServiceName>" +
                          "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
@@ -464,6 +468,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -500,11 +505,13 @@ namespace Dev2.Tests
             var bookmarkID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
+            var versionNumber = "version2.3";
 
             var xmlStr = "<Payload>" +
                          "<BDSDebugMode>true</BDSDebugMode>" +
                          "<DebugSessionID>" + debugID + "</DebugSessionID>" +
                          "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<VersionNumber>" + versionNumber + "</VersionNumber>" +
                          "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
                          "<ParentServiceName>TestParentService</ParentServiceName>" +
                          "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
@@ -525,6 +532,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -560,11 +568,13 @@ namespace Dev2.Tests
             var exeID = Guid.NewGuid();
             var parentID = Guid.NewGuid();
             var instID = Guid.NewGuid();
+            var versionNumber = "ver2.3";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
                          "<DebugSessionID>" + debugID + "</DebugSessionID>" +
                          "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<VersionNumber>" + versionNumber + "</VersionNumber>" +
                          "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
                          "<ParentServiceName>TestParentService</ParentServiceName>" +
                          "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
@@ -584,6 +594,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
@@ -622,11 +633,13 @@ namespace Dev2.Tests
             var instID = Guid.NewGuid();
             var mergeIDOut = Guid.NewGuid();
             var mergeIDIn = Guid.NewGuid();
+            var versionNumber = "Ver2.3";
 
             var xmlStr = "<Payload>" +
                          "<IsDebug>true</IsDebug>" +
                          "<DebugSessionID>" + debugID + "</DebugSessionID>" +
                          "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<VersionNumber>" + versionNumber + "</VersionNumber>" +
                          "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
                          "<ParentServiceName>TestParentService</ParentServiceName>" +
                          "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
@@ -654,6 +667,7 @@ namespace Dev2.Tests
             Assert.IsTrue(dataObjct.IsDebug);
             StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
             StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            StringAssert.Contains(dataObjct.VersionNumber.ToString(), versionNumber.ToString());
             Assert.IsTrue(dataObjct.IsOnDemandSimulation);
             StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
             StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());

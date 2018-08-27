@@ -172,7 +172,7 @@ namespace Warewolf.Launcher
             {
                 LogOutputDirectory = logDirectory
             };
-            Thread.Sleep(30000);
+            Thread.Sleep(120000);
             return containerLauncher;
         }
 
@@ -192,8 +192,6 @@ namespace Warewolf.Launcher
 
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
-            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
-            TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
             if (ciRemoteContainerLauncher != null)
             {
                 ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
@@ -223,6 +221,8 @@ namespace Warewolf.Launcher
             string TestRunnerPath;
             if (TestFailures.Count > 0)
             {
+                TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+                TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
                 TestRunner.TestList = string.Join(",", TestFailures);
                 TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
             }
@@ -755,7 +755,7 @@ namespace Warewolf.Launcher
                         this.CleanupServerStudio(!ApplyDotCover);
                     }
                 }
-                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart));
+                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
             }
             return trxTestResultsFile;
         }
@@ -950,7 +950,7 @@ namespace Warewolf.Launcher
                 if (string.IsNullOrEmpty(RetryFile))
                 {
                     //Run Tests
-                    TrxFile = RunTests(JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    TrxFile = RunTests(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
                 }
                 else
                 {
