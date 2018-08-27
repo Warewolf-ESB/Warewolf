@@ -16,7 +16,7 @@ namespace Warewolf.UI.Tests
         const string SourceName = "CodedUITestSQLServerSource";
 
         [TestMethod]
-        [TestCategory("Database Sources")]
+        [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
         {
@@ -55,7 +55,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [TestCategory("Database Sources")]
+        [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Test_SQLServerSource_From_ExplorerContextMenu_UITests()
         {

@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     public class SQL_Bulk_Insert
     {
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("MSSql")]
         public void SQLBulkInsertTool_Small_And_Large_Then_QVIView_UITest()
         {
             Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "SQLBulkInsert tool does not exist after dragging in from the toolbox");
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("MSSql")]
         public void Confirm_ErrorMessage_On_NoDB_Or_TableSelection_Then_NewSource_UITest()
         {
             using (ContainerLauncher MSSQLContainer = TestLauncher.StartLocalMSSQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults")))
