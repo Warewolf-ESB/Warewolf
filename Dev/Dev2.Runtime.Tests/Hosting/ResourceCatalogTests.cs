@@ -1427,17 +1427,15 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
-
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("ResourceCatalog_GetModels")]
+        [TestCategory("MSSql")]
         public void ResourceCatalog_GetModels_WhenEnumSqlDatabase_ExpectDbSourceObjects()
         {
             //------------Setup for test--------------------------
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-
+            
             var sourcesPath = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "DbSource" }, new[] { Guid.NewGuid() });
@@ -2814,7 +2812,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
             var mock = new Mock<IResourceActivityCache>();
 
-            _parsers.AddOrUpdate(workspaceID, mock.Object,(key,cache)=> {
+            _parsers.AddOrUpdate(workspaceID, mock.Object, (key, cache) =>
+            {
                 return cache;
             });
             const string propertyName = "_parsers";
@@ -3339,7 +3338,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(sourcesPath);
             SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
             var allFiles = Directory.GetFiles(sourcesPath);
-            File.SetAttributes(allFiles[0],FileAttributes.ReadOnly);
+            File.SetAttributes(allFiles[0], FileAttributes.ReadOnly);
 
             var attributes = File.GetAttributes(allFiles[0]);
             Assert.AreEqual(FileAttributes.ReadOnly, attributes);

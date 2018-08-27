@@ -13,6 +13,7 @@ namespace Warewolf.Launcher
                 ["Other Unit Tests"] = new Tuple<string, string>("Dev2.*.Tests,Warewolf.*.Tests", null),
                 ["Infrastructure Unit Tests"] = new Tuple<string, string>("Dev2.Infrastructure.Tests", null),
                 ["Runtime Unit Tests"] = new Tuple<string, string>("Dev2.Runtime.Tests", null),
+                ["MS SQL Server Unit Tests"] = new Tuple<string, string>("Dev2.Runtime.Tests", "MSSql"),
                 ["Core Unit Tests"] = new Tuple<string, string>("Dev2.Core.Tests", null),
                 ["Data Unit Tests"] = new Tuple<string, string>("Dev2.Data.Tests", null),
                 ["Parsing Unit Tests"] = new Tuple<string, string>("Warewolf.Parsing.Tests", null),
@@ -47,6 +48,7 @@ namespace Warewolf.Launcher
                 ["UI Binding Tests"] = new Tuple<string, string>("Warewolf.UIBindingTests.*", null),
                 //Server Tests
                 ["Database Tools Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "Database"),
+                ["SQL Bulk Insert Tool Specs"] = new Tuple<string, string>("Warewolf.Tools.Specs", "SqlBulkInsert"),
                 ["Integration Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests"),
                 ["Other Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
@@ -56,6 +58,7 @@ namespace Warewolf.Launcher
                 ["Workflow Merging Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowMerging"),
                 ["Subworkflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "SubworkflowExecution"),
                 ["Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "WorkflowExecution"),
+                ["MS SQL Server Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "MSSql"),
                 ["Assign Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "AssignWorkflowExecution"),
                 ["Studio Test Framework Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFramework"),
                 ["Studio Test Framework With Data Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithDataTools"),

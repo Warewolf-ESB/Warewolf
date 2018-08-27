@@ -102,8 +102,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
         } 
-
-
+        
         [Then(@"the execution has ""(.*)"" error")]
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
@@ -131,8 +130,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                         allErrors.Add(errorInfo.Message);
                     }
                 }
-
-                var errorThrown = allErrors.Contains(fetchErrors);
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
         }
