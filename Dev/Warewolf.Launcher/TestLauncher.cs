@@ -58,7 +58,7 @@ namespace Warewolf.Launcher
         string RunServerWithDotcoverScript;
 
         public ContainerLauncher StartContainer;
-        public void Dispose() => StartContainer.Dispose();
+        public void Dispose() => StartContainer?.Dispose();
 
         public TestLauncher() => TestResultsMerger = new TRXMerger();
 
