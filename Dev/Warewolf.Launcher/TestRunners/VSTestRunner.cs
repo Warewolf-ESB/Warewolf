@@ -53,13 +53,18 @@ namespace Warewolf.Launcher.TestRunners
             {
                 TestSettings = $" /Settings:\"{TestSettingsFile}\"";
             }
+            string ParallelizeSwitch = "";
+            if (RecordScreen)
+            {
+                ParallelizeSwitch = " /Parallel";
+            }
             if (string.IsNullOrEmpty(TestList))
             {
-                FullArgsList = $"{TestAssembliesList}{TestSettings} /logger:trx{this.TestCategories(ProjectSpec, TestCategories, JobSpecs)}";
+                FullArgsList = $"{TestAssembliesList}{TestSettings}{ParallelizeSwitch} /logger:trx{this.TestCategories(ProjectSpec, TestCategories, JobSpecs)}";
             }
             else
             {
-                FullArgsList = $"{TestAssembliesList}{TestSettings} /logger:trx{TestList}";
+                FullArgsList = $"{TestAssembliesList}{TestSettings}{ParallelizeSwitch} /logger:trx{TestList}";
             }
 
             // Write full command including full argument string.
