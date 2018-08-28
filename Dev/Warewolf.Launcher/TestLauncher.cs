@@ -218,7 +218,7 @@ namespace Warewolf.Launcher
                 TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
                 TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
                 TestRunner.TestList = string.Join(",", TestFailures);
-                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
+                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
             }
             else
             {
@@ -938,7 +938,7 @@ namespace Warewolf.Launcher
                 // Setup for screen recording
                 var TestSettingsFile = ScreenRecordingTestSettingsFile(ThisJobName);
 
-                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
+                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, Parallelize, JobSpecs);
 
                 string TrxFile;
                 if (string.IsNullOrEmpty(RetryFile))
