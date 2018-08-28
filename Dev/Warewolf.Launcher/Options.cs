@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using System.Threading;
 using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
@@ -107,6 +108,12 @@ namespace Warewolf.Launcher
 
         [Option("AdminMode")]
         public bool AdminMode { get; private set; }
+
+        [Option("Parallelize")]
+        public bool Parallelize { get; set; }
+
+        [Option("StartContainer")]
+        public string StartContainer { get; set; }
 
         public static TestLauncher PargeArgs(string[] args)
         {
@@ -297,6 +304,18 @@ namespace Warewolf.Launcher
                 if (options.AdminMode)
                 {
                     testLauncher.AdminMode = true;
+                }
+                if (options.Parallelize)
+                {
+                    testLauncher.Parallelize = true;
+                }
+                if (options.StartContainer != null)
+                {
+                    Console.WriteLine("Starting Container: " + options.StartContainer);
+                    var containerLauncher = new ContainerLauncher(options.StartContainer, $"test-{options.StartContainer.Split('-')[0]}", "localhost");
+                    Thread.Sleep(30000);
+                    containerLauncher.LogOutputDirectory = testLauncher.TestRunner.TestsResultsPath;
+                    testLauncher.StartContainer = containerLauncher;
                 }
                 testLauncher.TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
             }).WithNotParsed(errs =>

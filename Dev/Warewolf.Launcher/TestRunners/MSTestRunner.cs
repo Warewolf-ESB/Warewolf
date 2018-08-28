@@ -39,7 +39,7 @@ namespace Warewolf.Launcher.TestRunners
         public string TestList { get; set; }
         public string TestsPath { get; set; } = Environment.CurrentDirectory;
         public string TestsResultsPath { get; set; } = System.IO.Path.Combine(Environment.CurrentDirectory, "TestResults");
-        public string WriteTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath, bool RecordScreen, Dictionary<string, Tuple<string, string>> JobSpecs)
+        public string WriteTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath, bool RecordScreen, bool Parallelize, Dictionary<string, Tuple<string, string>> JobSpecs)
         {
             if (!string.IsNullOrEmpty(TestList) && !TestList.StartsWith(" /test:"))
             {
