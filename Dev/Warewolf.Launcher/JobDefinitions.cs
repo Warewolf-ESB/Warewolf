@@ -89,6 +89,7 @@ namespace Warewolf.Launcher
                 ["Control Flow Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Control Flow Tools"),
                 ["Database Sources UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Database Sources"),
                 ["Database Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Database Tools"),
+                ["MS SQL Server UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "MSSql"),
                 ["Data Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Data Tools"),
                 ["DB Connector UI Specs"] = new Tuple<string, string>("Warewolf.UI.Specs", "DBConnector"),
                 ["Debug Input UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Debug Input"),

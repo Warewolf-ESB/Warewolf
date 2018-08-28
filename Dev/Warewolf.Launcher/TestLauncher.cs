@@ -11,7 +11,7 @@ using Warewolf.Launcher.TestResultsMergers;
 
 namespace Warewolf.Launcher
 {
-    public class TestLauncher
+    public class TestLauncher : IDisposable
     {
         public string DoServerStart { get; set; }
         public string DoStudioStart { get; set; }
@@ -25,7 +25,7 @@ namespace Warewolf.Launcher
         public bool Cleanup { get; set; }
         public string AssemblyFileVersionsTest { get; set; }
         public string RecordScreen { get; set; }
-        string Parallelize { get; set; }
+        public bool Parallelize { get; set; }
         public string Category { get; set; }
         public string ProjectName { get; set; }
         public string RunAllUnitTests { get; set; }
@@ -54,14 +54,13 @@ namespace Warewolf.Launcher
         public bool ApplyDotCover;
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
-        public ContainerLauncher ciRemoteContainerLauncher;
 
         string RunServerWithDotcoverScript;
 
-        public TestLauncher()
-        {
-            TestResultsMerger = new TRXMerger();
-        }
+        public ContainerLauncher StartContainer;
+        public void Dispose() => StartContainer?.Dispose();
+
+        public TestLauncher() => TestResultsMerger = new TRXMerger();
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
@@ -192,11 +191,6 @@ namespace Warewolf.Launcher
 
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
-            if (ciRemoteContainerLauncher != null)
-            {
-                ciRemoteContainerLauncher.LogOutputDirectory = TestRunner.TestsResultsPath;
-            }
-
             TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
             TestRunner.TestList = "";
             var TestFailures = new List<string>();
@@ -224,7 +218,7 @@ namespace Warewolf.Launcher
                 TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
                 TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
                 TestRunner.TestList = string.Join(",", TestFailures);
-                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, JobSpecs);
+                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
             }
             else
             {
@@ -944,7 +938,7 @@ namespace Warewolf.Launcher
                 // Setup for screen recording
                 var TestSettingsFile = ScreenRecordingTestSettingsFile(ThisJobName);
 
-                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, JobSpecs);
+                string TestRunnerPath = TestRunner.WriteTestRunner(ThisJobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, TestRunner.TestsResultsPath, RecordScreen != null, Parallelize, JobSpecs);
 
                 string TrxFile;
                 if (string.IsNullOrEmpty(RetryFile))
