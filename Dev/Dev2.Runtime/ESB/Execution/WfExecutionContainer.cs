@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
@@ -196,6 +197,13 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
+                dsfDataObject.Settings = new Dev2WorkflowSettingsTO
+                {
+                    EnableDetailedLogging = false,
+                    LoggerType = LoggerType.JSON,
+                    KeepLogsForDays = 2,
+                    CompressOldLogFiles = true
+                };
                 dsfDataObject.StateNotifier = LogManager.CreateStateNotifier(dsfDataObject);
 
                 AddExecutionToExecutionManager(dsfDataObject, resource);
