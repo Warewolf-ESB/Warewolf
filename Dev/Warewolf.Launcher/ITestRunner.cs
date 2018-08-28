@@ -12,7 +12,7 @@ namespace Warewolf.Launcher
         string TestList { get; set; }
         string TestsPath { get; set; }
         string TestsResultsPath { get; set; }
-        string WriteTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath, bool RecordScreen, Dictionary<string, Tuple<string, string>> JobSpecs);
+        string WriteTestRunner(string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath, bool RecordScreen, bool Parallelize, Dictionary<string, Tuple<string, string>> JobSpecs);
         string AppendTestAssembly(string TestAssembliesList, string file);
         string TestCategories(string ProjectSpec, string TestCategories, Dictionary<string, Tuple<string, string>> JobSpecs);
         void ReadPlaylist();
