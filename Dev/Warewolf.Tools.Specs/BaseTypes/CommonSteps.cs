@@ -108,6 +108,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheExecutionHasError(string anError)
         {
             var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedNoError = anError.Equals("NO", StringComparison.OrdinalIgnoreCase);
             var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             var fetchErrors = result.Environment.FetchErrors();
