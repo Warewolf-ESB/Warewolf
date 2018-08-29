@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Execution
             var result = new Guid();
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
-            ErrorResultTO invokeErrors;
+            ErrorResultTO invokeErrors; 
             try
             {
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
@@ -313,11 +313,9 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
+          
             var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, dataObject.VersionNumber);
-            if (resourceObject != null)
-            {
-                dataObject.VersionNumber = resourceObject.VersionInfo.VersionNumber;
-            }
+
             dataObject.VersionNumber = ServerVersionRepository.Instance.GetLatestVersionNumber(resourceId: dataObject.ResourceID).ToString();
             var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());

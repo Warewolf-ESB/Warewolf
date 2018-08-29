@@ -346,11 +346,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
         {
             var resource = GetResources(workspaceID).FirstOrDefault(r => r.ResourceID == resourceID);
+
             if (!string.IsNullOrEmpty(version) && version != "1")
             {
                 return ResourceFromGivenVersion(version, resource);
             }
-            return null;
+            return resource;
         }
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
