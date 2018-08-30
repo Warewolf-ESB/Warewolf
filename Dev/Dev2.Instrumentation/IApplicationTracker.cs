@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RUISDK_5_1_0;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,11 @@ namespace Dev2.Instrumentation
 
         //Track the custom events in the application
         void TrackCustomEvent(string category, string eventName, string customValues);
-        
+
         //Disable  appplication tracking in the studio 
         void DisableAppplicationTracker();
+
+        RUIResult EnableApplicationResultStatus { get; set; }
 
     }
 }
