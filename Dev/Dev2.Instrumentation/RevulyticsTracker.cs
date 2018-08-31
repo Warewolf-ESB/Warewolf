@@ -229,6 +229,7 @@ namespace Dev2.Instrumentation
             var result = RUIResult.sdkSuspended; ///The RUI Server has instructed a temporary back-off.
             try
             {
+		Dev2Logger.Warn($"Revulytics.SetProductVersion: {ProductVersion}", "");
                 result = RuiSdk.SetProductVersion(ProductVersion);
                 return result;
             }
