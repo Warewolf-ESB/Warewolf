@@ -114,7 +114,7 @@ namespace Dev2.Studio
             //Create configuration for action tracker and start
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
-            applicationTracker?.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
@@ -365,7 +365,7 @@ namespace Dev2.Studio
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
             //Stop the action tracking
-            applicationTracker?.DisableAppplicationTracker();
+            applicationTracker?.DisableApplicationTracker();
 
             SplashView.CloseSplash(true);
 

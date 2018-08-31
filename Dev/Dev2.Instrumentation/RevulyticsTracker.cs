@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Util;
 using RUISDK_5_3_1;
 using Warewolf.Studio.Resources.Languages;
+
 namespace Dev2.Instrumentation
 {
     public class RevulyticsTracker : IApplicationTracker
@@ -48,7 +49,7 @@ namespace Dev2.Instrumentation
             AesHexKey = AppUsageStats.AesHexKey;
         }
 
-        public void EnableAppplicationTracker(string productVersion, string username)
+        public void EnableApplicationTracker(string productVersion, string username)
         {
             ProductVersion = productVersion;
             Username = username;
@@ -64,8 +65,8 @@ namespace Dev2.Instrumentation
                     var sdkResult = StartSdk();
                     if (sdkResult == RUIResult.ok)
                     {
-                        LogErrorResult("EnableAppplicationTracker",SetProductVersion());
-                        LogErrorResult("EnableAppplicationTracker",StartSession());
+                        LogErrorResult("EnableApplicationTracker",SetProductVersion());
+                        LogErrorResult("EnableApplicationTracker",StartSession());
                     }
                     else
                     {
@@ -81,24 +82,22 @@ namespace Dev2.Instrumentation
             {
                 Dev2Logger.Error("Error in config settings", e, Core.RevulyticsSdkError);
             }
-
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in EnableAppplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
-        public void DisableAppplicationTracker()
+        public void DisableApplicationTracker()
         {
             try
             {
                 var result = StopSession();
-                LogErrorResult("DisableAppplicationTracker", result);
+                LogErrorResult("DisableApplicationTracker", result);
             }
-
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in DisableAppplicationTracker method", e, Core.RevulyticsSdkError);
+                Dev2Logger.Error("Error in DisableApplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
@@ -165,7 +164,6 @@ namespace Dev2.Instrumentation
                 Dev2Logger.Error("Error in CreateRevulyticsConfig Method", e, Core.RevulyticsSdkError);
                 return result;
             }
-
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in CreateRevulyticsConfig method", e, Core.RevulyticsSdkError);
@@ -191,7 +189,6 @@ namespace Dev2.Instrumentation
                 Dev2Logger.Error("Error in StartSdk method (ArgumentNullException)", e, Core.RevulyticsSdkError);
                 return result;
             }
-
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in StartSdk method", e, Core.RevulyticsSdkError);
@@ -216,7 +213,6 @@ namespace Dev2.Instrumentation
                 Dev2Logger.Error("Error in StartSdk method (ArgumentNullException)", e, Core.RevulyticsSdkError);
                 return result;
             }
-
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in StartSdk method", e, Core.RevulyticsSdkError);
@@ -229,7 +225,7 @@ namespace Dev2.Instrumentation
             var result = RUIResult.sdkSuspended; ///The RUI Server has instructed a temporary back-off.
             try
             {
-		Dev2Logger.Warn($"Revulytics.SetProductVersion: {ProductVersion}", "");
+                Dev2Logger.Warn($"Revulytics.SetProductVersion: {ProductVersion}", "");
                 result = RuiSdk.SetProductVersion(ProductVersion);
                 return result;
             }
@@ -260,17 +256,17 @@ namespace Dev2.Instrumentation
             }
             catch (RUISDKCreationException ex)
             {
-                Dev2Logger.Error("Error in StartSdk method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                Dev2Logger.Error("Error in StartSession method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
                 return result;
             }
             catch (ArgumentNullException e)
             {
-                Dev2Logger.Error("Error in StartSdk method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                Dev2Logger.Error("Error in StartSession method (ArgumentNullException)", e, Core.RevulyticsSdkError);
                 return result;
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in StartSdk method", e, Core.RevulyticsSdkError);
+                Dev2Logger.Error("Error in StartSession method", e, Core.RevulyticsSdkError);
                 return result;
             }
         }

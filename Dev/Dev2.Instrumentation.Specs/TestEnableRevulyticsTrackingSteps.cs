@@ -17,9 +17,9 @@ namespace Dev2.Instrumentation.SpecflowTests
         [Given(@"I will call the EnableAppplicationTracker method")]
         public void GivenIWillCallTheEnableAppplicationTrackerMethod()
         {
-            string productVersion = "1.0.0.0";
-            string username = "windows\\raju";
-            _tracker.EnableAppplicationTracker(productVersion, username);
+            const string productVersion = "1.0.0.0";
+            const string username = "windows\\raju";
+            _tracker.EnableApplicationTracker(productVersion, username);
         }
 
         [Then(@"I will check the status of revulytics tracker")]
