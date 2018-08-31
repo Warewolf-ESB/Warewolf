@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Util;
-using RUISDK_5_1_0;
+using RUISDK_5_3_1;
 using Warewolf.Studio.Resources.Languages;
 namespace Dev2.Instrumentation
 {
@@ -148,7 +148,7 @@ namespace Dev2.Instrumentation
                     LogErrorResult("Error in CreateRevulyticsConfig: Sdk File Path is missing", result);
                     return result;
                 }
-                RuiSdk = new RUISDK(true, SdkFilePath);
+                RuiSdk = new RUISDK(true, SdkFilePath,"RUISDK_5_3_1");
                 if (RuiSdk != null)
                 {
                     result = RuiSdk.CreateConfig(ConfigFilePath, ProductId, AppName, ProductUrl, Protocol, AesHexKey, MultiSessionEnabled, ReachOutOnAutoSync);
