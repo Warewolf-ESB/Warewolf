@@ -45,9 +45,8 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ruiSDKDotNet_5.1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\ruiSDKDotNet_5.1.0.dll</HintPath>
+    <Reference Include="ruiSDKDotNet_5.3.1">
+      <HintPath>..\Binaries\ruiSDKDotNet_5.3.1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -81,12 +80,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Binaries\ruiSDK_5.1.0.x64.dll">
-      <Link>ruiSDK_5.1.0.x64.dll</Link>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RUISDK_5_3_1.x64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\Binaries\ruiSDK_5.1.0.x86.dll">
-      <Link>ruiSDK_5.1.0.x86.dll</Link>
+    <Content Include="RUISDK_5_3_1.x86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

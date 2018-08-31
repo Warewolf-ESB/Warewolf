@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using RUISDK_5_1_0;
+using RUISDK_5_3_1;
 using System.Configuration;
 
 namespace Dev2.Instrumentation.Tests

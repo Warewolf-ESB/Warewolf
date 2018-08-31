@@ -54,9 +54,8 @@
     <Reference Include="nunit.framework, Version=3.0.5797.27534, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.0.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="ruiSDKDotNet_5.1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\ruiSDKDotNet_5.1.0.dll</HintPath>
+    <Reference Include="ruiSDKDotNet_5.3.1">
+      <HintPath>..\Binaries\ruiSDKDotNet_5.3.1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -116,6 +115,14 @@
       <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
       <Name>Dev2.Instrumentation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RUISDK_5_3_1.x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RUISDK_5_3_1.x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
