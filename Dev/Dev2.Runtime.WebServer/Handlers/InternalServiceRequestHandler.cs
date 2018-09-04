@@ -196,14 +196,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             try
             {
-                var t = new Thread(() =>
-                {
-                    TryExecuteRequest(request, workspaceId, channel, dataObject, isManagementResource);
-                });
-
-                t.Start();
-
-                t.Join();
+                TryExecuteRequest(request, workspaceId, channel, dataObject, isManagementResource);
             }
             catch (Exception e)
             {
