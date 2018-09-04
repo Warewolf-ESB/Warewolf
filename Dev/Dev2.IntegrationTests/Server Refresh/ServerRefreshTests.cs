@@ -26,6 +26,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+
         public void Run_a_workflow_to_test_server_refresh()
         {
             Assert.IsTrue(File.Exists(PassResult));
@@ -37,27 +38,23 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
             var url1 = $"http://localhost:3142/secure/RefreshWorkflow1.json";
             var passRequest1 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(passRequest1);
+            passRequest1.Wait();
             //Delete this workflow and continue making requests to it
             MoveFileTemporarily(PassResult);
             // Execute workflow from the resource cache
             var passRequest2 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(passRequest2);
             var passRequest3 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(passRequest3);
             var passRequest4 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(passRequest4);
+
+            Task.WaitAll(passRequest2, passRequest3, passRequest4);
 
             //refresh the server and wait fot it to finish
             explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
             explorerRefresh.Wait();
             //execute this workflow after the refresh, we should get failures based on the fact that the refresh has finish executing
             var failRequest1 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(failRequest1);
             var failRequest2 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(failRequest2);
             var failRequest3 = ExecuteRequest(new Uri(url1));
-            Task.WaitAll(failRequest3);
             var failRequest1Result = failRequest1.Result;
             var failRequest2Result = failRequest2.Result;
             var failRequest3Result = failRequest3.Result;
@@ -72,6 +69,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             StringAssert.Contains(passRequest2Result, "Pass");
             StringAssert.Contains(passRequest3Result, "Pass");
             StringAssert.Contains(passRequest4Result, "Pass");
+            explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
         }
 
         class PatientWebClient : WebClient

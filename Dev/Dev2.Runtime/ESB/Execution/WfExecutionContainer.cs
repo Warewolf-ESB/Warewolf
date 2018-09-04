@@ -210,9 +210,6 @@ namespace Dev2.Runtime.ESB.Execution
 
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
 
-                // TODO: if we wanted to skip to a particular part of the execution we need to
-                //       arrange for "resource" to be set to the correct activity and load the
-                //       old environment
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
                 dsfDataObject.StateNotifier.LogPreExecuteState(resource);
 
@@ -313,13 +310,23 @@ namespace Dev2.Runtime.ESB.Execution
         protected override void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-          
-            var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, dataObject.VersionNumber);
 
+            var resumeVersionNumber = dataObject.VersionNumber;
             dataObject.VersionNumber = ServerVersionRepository.Instance.GetLatestVersionNumber(resourceId: dataObject.ResourceID).ToString();
-            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
+
+            IDev2Activity startActivity;
+            var isDefaultVersion = resumeVersionNumber != null && resumeVersionNumber != "1";
+            if (isDefaultVersion)
+            {
+                var resourceObject = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID, resumeVersionNumber);
+                startActivity = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString(), resourceObject);
+            } else
+            {
+                startActivity = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            }
+
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
-            EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
+            EvalInner(dataObject, startActivity, dataObject.ForEachUpdateValue);
         }
     }
 

@@ -102,6 +102,8 @@ namespace Dev2.Runtime.Hosting
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
             => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, resourceType, version);
+        public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceId, resourceType, version);
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
             => _catalogPluginContainer.LoadProvider.GetResource(workspaceID,resourceID,version);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
@@ -428,7 +430,7 @@ namespace Dev2.Runtime.Hosting
                 });
             }
             // get activity cache entry from workspace cache entry
-            if (parser != null && parser.HasActivityInCache(resourceID) && resourceOverride != null)
+            if (parser != null && parser.HasActivityInCache(resourceID) && resourceOverride == null)
             {
                 var dev2Activity = parser.GetActivity(resourceID);
                 if (dev2Activity != null)

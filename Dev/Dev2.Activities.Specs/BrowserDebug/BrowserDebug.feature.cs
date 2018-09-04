@@ -468,13 +468,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 118
 this.ScenarioSetup(scenarioInfo);
 #line 119
- testRunner.Given("I have a workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I Debug \"http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-" +
+                    "4f87-869f-7c03d86f330b\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 120
- testRunner.And("Public \"has\" Permissions to Execute \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
- testRunner.Given("I Debug \"http://localhost:3142/secure/Hello%20World.xml?Name=&wid=992506a8-546d-4" +
-                    "cda-b58e-358496ccf8dd\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
  testRunner.Then("Browser content is \"Hello World.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -486,12 +482,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingWorkflowWithEmptyJsonAssignInBrowser()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with empty Json Assign in browser", ((string[])(null)));
-#line 124
+#line 122
 this.ScenarioSetup(scenarioInfo);
-#line 125
+#line 123
  testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
                     "ut.json\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 124
  testRunner.Then("Browser content is \"{}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -503,12 +499,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingWorkflowWithEmptyXmlAssignInBrowser()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with empty Xml Assign in browser", ((string[])(null)));
-#line 128
+#line 126
 this.ScenarioSetup(scenarioInfo);
-#line 129
+#line 127
  testRunner.Given("I Debug \"http://localhost:3142/secure/Merge Acceptance Tests/AssignOnlyWithNoOutp" +
                     "ut.xml\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 130
+#line 128
  testRunner.Then("Browser content is \"<DataList />\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -522,15 +518,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with Execute Permissions and Nested Workflow With No Execute P" +
                     "ermissions", ((string[])(null)));
-#line 132
+#line 130
 this.ScenarioSetup(scenarioInfo);
-#line 133
+#line 131
  testRunner.Given("I have a workflow \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 132
  testRunner.And("Public \"Has\" Permissions to Execute \"OuterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 133
  testRunner.And("I Debug \"http://localhost:3142/public/OuterWorkflow.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 134
  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Out" +
                     "erWorkflow.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -543,15 +539,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingWorkflowWithNoExecutePermissions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow with No Execute Permissions", ((string[])(null)));
-#line 138
+#line 136
 this.ScenarioSetup(scenarioInfo);
-#line 139
+#line 137
  testRunner.Given("I have a workflow \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 140
+#line 138
  testRunner.And("Public \"\" Permissions to Execute \"Nested\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 139
  testRunner.And("I Debug \"http://localhost:3142/public/Nested.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 140
  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Nes" +
                     "ted.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -564,9 +560,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAWorkflowShouldNotErrorForLogging()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a workflow should not error for logging", ((string[])(null)));
-#line 144
+#line 142
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 143
   testRunner.Given("I have a workflow \"AssignedWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -575,14 +571,14 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "[[dateMonth]]",
                         "February"});
-#line 146
+#line 144
   testRunner.And("\"AssignedWF\" contains an Assign \"AssignVar\" as", ((string)(null)), table13, "And ");
-#line 149
+#line 147
   testRunner.When("workflow \"AssignedWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 148
   testRunner.And("I Execute \"http://localhost:3142/secure/Acceptance%20Tests/AssignedWF.json\" in Br" +
                     "owser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 149
   testRunner.Then("Browser content is not \"FatalError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

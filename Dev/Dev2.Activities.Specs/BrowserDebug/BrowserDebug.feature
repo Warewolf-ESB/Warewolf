@@ -116,9 +116,7 @@ Scenario: Executing a Forward Sort Recordset workflow
 			| 2015   |
 
 Scenario: Executing Hello world in browser 
-	Given I have a workflow "Hello World"
-	And Public "has" Permissions to Execute "Hello World"
-	Given I Debug "http://localhost:3142/secure/Hello%20World.xml?Name=&wid=992506a8-546d-4cda-b58e-358496ccf8dd" in Browser
+	Given I Debug "http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-4f87-869f-7c03d86f330b" in Browser
 	Then Browser content is "Hello World."
 
 Scenario: Executing Workflow with empty Json Assign in browser 
