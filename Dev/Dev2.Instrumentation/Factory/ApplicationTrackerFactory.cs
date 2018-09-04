@@ -1,4 +1,6 @@
-﻿namespace Dev2.Instrumentation.Factory
+﻿using RUISDK_5_3_1;
+
+namespace Dev2.Instrumentation.Factory
 {
     /// <summary>
     /// Factory class to create instance of action tracking provider
@@ -14,11 +16,36 @@
         /// <returns> IApplicationTracker object</returns>
         public static IApplicationTracker  GetApplicationTrackerProvider()
         {
+            // TODO: this should return a fake during debug and testing
+
             ApplicationTracker = null;
+#if DEBUG
+            ApplicationTracker = new DummyApplicationTracker();
+#else
             ApplicationTracker = RevulyticsTracker.GetTrackerInstance();
+#endif
             return ApplicationTracker;
         }
 
+        class DummyApplicationTracker : IApplicationTracker
+        {
+            public RUIResult EnableApplicationResultStatus { get; set; }
 
+            public void DisableApplicationTracker()
+            {
+            }
+
+            public void EnableApplicationTracker(string productVersion, string username)
+            {
+            }
+
+            public void TrackCustomEvent(string category, string eventName, string customValues)
+            {
+            }
+
+            public void TrackEvent(string category, string eventName)
+            {
+            }
+        }
     }
 }
