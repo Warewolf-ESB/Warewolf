@@ -345,7 +345,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
         {
-            var resource = GetResources(workspaceID).FirstOrDefault(r => r.ResourceID == resourceID);
+            var resource = GetResource(workspaceID, resourceID, "Unknown", version);
 
             if (!string.IsNullOrEmpty(version) && version != "1")
             {
@@ -353,14 +353,16 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return resource;
         }
+
+        public delegate bool MyDelegate(IResource r);
+
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
-            var theWorkspaceID = workspaceID;
             if (string.IsNullOrEmpty(resourceName))
             {
                 throw new ArgumentNullException(nameof(resourceName));
             }
-            var resources = GetResources(theWorkspaceID);
+
             var resourceNameToSearchFor = resourceName.Replace("/", "\\");
             var resourcePath = resourceNameToSearchFor;
             var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
@@ -368,27 +370,62 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
             }
+
+            Func<Guid, Func<IResource, bool>> getfilter = id =>
+            {
+                Func<IResource, bool> result = r =>
+                {
+                    if (r == null)
+                    {
+                        return false;
+                    }
+                    return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
+                };
+                return result;
+            };
+
+            return GetResource(ref workspaceID, getfilter);
+        }
+        public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
+        {
+            Func<Guid, Func<IResource, bool>> getfilter = id =>
+            {
+                Func<IResource, bool> result = r =>
+                {
+                    if (r == null)
+                    {
+                        return false;
+                    }
+                    return r.ResourceID.Equals(resourceId);
+                };
+                return result;
+            };
+
+            return GetResource(ref workspaceID, getfilter);
+        }
+
+        private IResource GetResource(ref Guid workspaceID, Func<Guid, Func<IResource, bool>> getfilter)
+        {
             while (true)
-            {                
+            {
+                var resources = GetResources(workspaceID);
+
                 if (resources != null)
                 {
-                    var id = theWorkspaceID;
-                    var foundResource = resources.AsParallel().FirstOrDefault(r =>
+                    var id = workspaceID;
+                    var foundResource = resources.AsParallel().FirstOrDefault(getfilter(id));
+                    if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
-                        if (r == null)
-                        {
-                            return false;
-                        }
-                        return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
-                    });
-                    if (foundResource == null && theWorkspaceID != GlobalConstants.ServerWorkspaceID)
-                    {
-                        theWorkspaceID = GlobalConstants.ServerWorkspaceID;
+                        workspaceID = GlobalConstants.ServerWorkspaceID;
                         continue;
                     }
                     return foundResource;
+                } else
+                {
+                    break;
                 }
             }
+            throw new Exception("should not reach here");
         }
 
         private IResource ResourceFromGivenVersion(string version, IResource resource)

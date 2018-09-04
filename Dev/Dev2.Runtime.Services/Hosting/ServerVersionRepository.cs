@@ -317,7 +317,10 @@ namespace Dev2.Runtime.Hosting
 
         public int GetLatestVersionNumber(Guid resourceId)
         {
-            return _directory.GetFiles(GetVersionFolderPath(resourceId.ToString())).Count() + 1;
+            // TODO: bugfix: version number can not be defined by the total count of version files in a directory
+            var path = GetVersionFolderPath(resourceId.ToString());
+            var files = _directory.GetFiles(path);
+            return files.Count() + 1;
         }
     }
 }
