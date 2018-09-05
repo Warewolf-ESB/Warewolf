@@ -19,6 +19,7 @@ namespace Warewolf.Launcher
                     if (!(JobDefintionsLine.StartsWith("//")))
                     {
                         var SplitCSV = JobDefintionsLine.Split(',');
+                        Console.WriteLine(SplitCSV[0]);
                         JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
                     }
                 }
@@ -174,8 +175,7 @@ namespace Warewolf.Launcher
                 ["No Warewolf Server Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "NoWarewolfServer"),
                 //Load Tests
                 ["Composition Load Tests"] = new Tuple<string, string>("Dev2.Activities.Specs", "CompositionLoadTests"),
-                ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
-                ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
+                ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null)
             };
         }
 
