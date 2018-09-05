@@ -13,23 +13,7 @@ namespace Warewolf.Launcher
             var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
             using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
             {
-                if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
-                {
-                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
-                }
-                else
-                {
-                    throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
-                }
-                var commit = repo.Head.Tip;
-                var treeEntry = commit["JobSpecs.csv"];
-                var blob = (Blob)treeEntry.Target;
-                var contentStream = blob.GetContentStream();
-                string JobDefinitionsCSV;
-                using (var tr = new StreamReader(contentStream, Encoding.UTF8))
-                {
-                    JobDefinitionsCSV = tr.ReadToEnd();
-                }
+                string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
                 foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
                 {
                     if (!(JobDefintionsLine.StartsWith("//")))
@@ -193,6 +177,43 @@ namespace Warewolf.Launcher
                 ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
             };
+        }
+
+        private static string ReadFileFromRepo(Repository repo, string fileName)
+        {
+            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            {
+                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                {
+                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs[Properties.Settings.Default.BuildDefinitionGitBranch]);
+                }
+                Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
+            }
+            else
+            {
+                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+            }
+            var commit = repo.Head.Tip;
+            var treeEntry = commit[fileName];
+            var blob = (Blob)treeEntry.Target;
+            var contentStream = blob.GetContentStream();
+            string JobDefinitionsCSV;
+            using (var tr = new StreamReader(contentStream, Encoding.UTF8))
+            {
+                JobDefinitionsCSV = tr.ReadToEnd();
+            }
+
+            return JobDefinitionsCSV;
+        }
+
+        internal static bool GetDisableDockerValue()
+        {
+            string JobDefinitionsCSV = "";
+            using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+            {
+                JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+            }
+            return JobDefinitionsCSV == "False";
         }
     }
 }
