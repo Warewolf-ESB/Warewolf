@@ -1,5 +1,8 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Warewolf.Launcher
 {
@@ -7,6 +10,31 @@ namespace Warewolf.Launcher
     {
         public static Dictionary<string, Tuple<string, string>> GetJobDefinitions()
         {
+            var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
+            using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+            {
+                var commit = repo.Head.Tip;
+                var treeEntry = commit["JobSpecs.csv"];
+                var blob = (Blob)treeEntry.Target;
+                var contentStream = blob.GetContentStream();
+                string JobDefinitionsCSV;
+                using (var tr = new StreamReader(contentStream, Encoding.UTF8))
+                {
+                    JobDefinitionsCSV = tr.ReadToEnd();
+                }
+                foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
+                {
+                    if (!(JobDefintionsLine.StartsWith("//")))
+                    {
+                        var SplitCSV = JobDefintionsLine.Split(',');
+                        JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
+                    }
+                }
+            }
+            if (JobDefinitions.Count > 0)
+            {
+                return JobDefinitions;
+            }
             return new Dictionary<string, Tuple<string, string>>
             {
                 //Unit Tests
