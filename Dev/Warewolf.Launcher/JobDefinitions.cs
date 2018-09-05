@@ -13,6 +13,14 @@ namespace Warewolf.Launcher
             var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
             using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
             {
+                if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+                {
+                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
+                }
+                else
+                {
+                    throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+                }
                 var commit = repo.Head.Tip;
                 var treeEntry = commit["JobSpecs.csv"];
                 var blob = (Blob)treeEntry.Target;
