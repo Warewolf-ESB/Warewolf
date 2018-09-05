@@ -5511,17 +5511,16 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Audit Log Executing workflow of different versions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         public virtual void AuditLogExecutingWorkflowOfDifferentVersions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Executing workflow of different versions", ((string[])(null)));
-#line 1496
+#line 1495
 this.ScenarioSetup(scenarioInfo);
-#line 7
+#line 6
 this.FeatureBackground();
-#line 1497
+#line 1496
   testRunner.Given("I have a workflow \"WorkflowWithVersionAssignExecuted2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1498
+#line 1497
   testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table253 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5533,15 +5532,15 @@ this.FeatureBackground();
             table253.AddRow(new string[] {
                         "[[rec().a]]",
                         "Test"});
-#line 1499
+#line 1498
   testRunner.And("\"WorkflowWithVersionAssignExecuted2\" contains an Assign \"VarsAssign\" as", ((string)(null)), table253, "And ");
-#line 1503
+#line 1502
    testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1504
+#line 1503
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1505
+#line 1504
    testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1506
+#line 1505
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table254 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5556,7 +5555,7 @@ this.FeatureBackground();
                         "2",
                         "[[rec().a]] =",
                         "Test"});
-#line 1507
+#line 1506
    testRunner.And("the \"VarsAssign\" in WorkFlow \"WorkflowWithVersionAssignExecuted2\" debug inputs as" +
                     "", ((string)(null)), table254, "And ");
 #line hidden
@@ -5569,12 +5568,12 @@ this.FeatureBackground();
             table255.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = Test"});
-#line 1511
+#line 1510
    testRunner.And("the \"VarsAssign\" in Workflow \"WorkflowWithVersionAssignExecuted2\" debug outputs a" +
                     "s", ((string)(null)), table255, "And ");
-#line 1515
+#line 1514
    testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"2\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1516
+#line 1515
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"2\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table256 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5585,7 +5584,7 @@ this.FeatureBackground();
                         "v.2 DateTime"});
             table256.AddRow(new string[] {
                         "v.1 DateTime"});
-#line 1517
+#line 1516
    testRunner.And("explorer as", ((string)(null)), table256, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table257 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5600,13 +5599,13 @@ this.FeatureBackground();
             table257.AddRow(new string[] {
                         "[[rec().a]]",
                         "V1"});
-#line 1522
+#line 1521
   testRunner.And("\"WorkflowWithVersionAssignExecuted2\" contains an Assign \"VarsAssign2\" as", ((string)(null)), table257, "And ");
-#line 1527
+#line 1526
   testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1528
+#line 1527
   testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1529
+#line 1528
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table258 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5625,12 +5624,12 @@ this.FeatureBackground();
                         "3",
                         "[[rec().a]] =",
                         "V1"});
-#line 1530
+#line 1529
   testRunner.And("the \"VarsAssign2\" in WorkFlow \"WorkflowWithVersionAssignExecuted2\" debug inputs a" +
                     "s", ((string)(null)), table258, "And ");
-#line 1535
+#line 1534
   testRunner.When("workflow \"WorkflowWithVersionAssignExecuted2\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1536
+#line 1535
    testRunner.Then("workflow \"WorkflowWithVersionAssignExecuted2\" has \"4\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table259 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5645,13 +5644,13 @@ this.FeatureBackground();
                         "v.2 DateTime"});
             table259.AddRow(new string[] {
                         "v.1 DateTime"});
-#line 1537
+#line 1536
    testRunner.And("explorer as", ((string)(null)), table259, "And ");
-#line 1544
+#line 1543
    testRunner.When("I rollback \"WorkflowWithVersionAssignExecuted2\" to version \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1545
+#line 1544
    testRunner.When("\"WorkflowWithVersionAssignExecuted2\" is executed without saving", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1546
+#line 1545
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table260 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5663,7 +5662,7 @@ this.FeatureBackground();
             table260.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = Test"});
-#line 1547
+#line 1546
    testRunner.And("the \"VarsAssign\" in Workflow \"WorkflowWithVersionAssignExecuted2\" debug outputs a" +
                     "s", ((string)(null)), table260, "And ");
 #line hidden
@@ -5723,10 +5722,10 @@ this.FeatureBackground();
                         "WorkflowWithVersionAssignExecuted2",
                         "LogExecuteCompleteState",
                         "6"});
-#line 1551
+#line 1550
    testRunner.And("The audit database has \"13\" search results for \"WorkflowWithVersionAssignExecuted" +
                     "2\" as", ((string)(null)), table261, "And ");
-#line 1566
+#line 1565
    testRunner.And("workflow \"WorkflowWithVersionAssignExecuted2\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
