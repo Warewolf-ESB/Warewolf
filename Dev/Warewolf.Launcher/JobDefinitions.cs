@@ -186,8 +186,8 @@ namespace Warewolf.Launcher
                 if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
                 {
                     repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs[Properties.Settings.Default.BuildDefinitionGitBranch]);
+                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
                 }
-                Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
             }
             else
             {
