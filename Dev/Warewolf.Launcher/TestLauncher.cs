@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Dev2.SignalR.Wrappers;
+using Microsoft.AspNet.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
@@ -46,7 +49,7 @@ namespace Warewolf.Launcher
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
-        public bool DisableDocker { get; internal set; }
+        public static bool DisableDocker { get; internal set; }
 
         public string ServerExeName;
         public string StudioExeName;
@@ -139,47 +142,147 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
+            if (!DisableDocker)
             {
-                LogOutputDirectory = logDirectory
-            };
-            return containerLauncher;
+                var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
+                {
+                    LogOutputDirectory = logDirectory
+                };
+                var knownServerSources = new List<string>()
+                {
+                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.xml",
+                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml",
+                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.xml",
+                    @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.xml",
+                    @"%programdata%\Warewolf\Resources\Remote Container.bite",
+                    @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
+                    @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
+                };
+                UpdateSourcesConnectionStrings(containerLauncher.IP, knownServerSources);
+                return containerLauncher;
+            }
+            return null;
         }
 
         public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost");
-            Thread.Sleep(30000);
-            containerLauncher.LogOutputDirectory = logDirectory;
-            return containerLauncher;
-        }
-
-        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
-        {
-            var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
+            if (!DisableDocker)
             {
-                LogOutputDirectory = logDirectory
-            };
-            string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
-            Thread.Sleep(30000);
-            return containerLauncher;
+                var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost")
+                {
+                    LogOutputDirectory = logDirectory
+                };
+                var knownMssqlServerSources = new List<string>()
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
+                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
+                };
+                UpdateSourcesConnectionStrings(containerLauncher.IP, knownMssqlServerSources);
+                Thread.Sleep(30000);
+                return containerLauncher;
+            }
+            return null;
         }
 
         public static ContainerLauncher StartLocalRabbitMQContainer(string logDirectory)
         {
-            var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
+            if (!DisableDocker)
             {
-                LogOutputDirectory = logDirectory
-            };
-            Thread.Sleep(120000);
-            return containerLauncher;
+                var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
+                {
+                    LogOutputDirectory = logDirectory
+                };
+                var knownMssqlServerSources = new List<string>()
+                {
+                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
+                    @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite"
+                };
+                UpdateSourcesConnectionStrings(containerLauncher.IP, knownMssqlServerSources);
+                Thread.Sleep(120000);
+                return containerLauncher;
+            }
+            return null;
         }
 
-        static string InsertServerSourceAddress(string serverSourceXML, string newAddress)
+        public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
+        {
+            if (!DisableDocker)
+            {
+                var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
+                {
+                    LogOutputDirectory = logDirectory
+                };
+                string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+                File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
+                RefreshServer();
+                Thread.Sleep(30000);
+                return containerLauncher;
+            }
+            return null;
+        }
+
+        static void UpdateSourcesConnectionStrings(string containerLauncherIP, List<string> knownMssqlServerSources)
+        {
+            foreach (var source in knownMssqlServerSources)
+            {
+                string sourcePath = Environment.ExpandEnvironmentVariables(source);
+                if (File.Exists(sourcePath))
+                {
+                    File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Data Source={containerLauncherIP},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"));
+                }
+            }
+            RefreshServer();
+        }
+
+        static void RefreshServer()
+        {
+            const string hubName = "http://localhost:3142/dsf";
+            var EsbProxy = new HubConnection(hubName).CreateHubProxy(hubName);
+            var messageId = Guid.NewGuid();
+            var envelope = new Envelope
+            {
+                PartID = 0,
+                Type = typeof(Envelope),
+                Content = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.EsbExecuteRequest, Dev2.Infrastructure\",\"ServiceName\":\"FetchExplorerItemsService\",\"TestName\":null,\"Args\":{\"$id\":\"2\",\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Text.StringBuilder, mscorlib]], mscorlib\",\"ReloadResourceCatalogue\":{\"$id\":\"3\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"True\",\"m_currentThread\":0}},\"ResourceID\":\"00000000-0000-0000-0000-000000000000\",\"ExecuteResult\":{\"$id\":\"4\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0},\"WasInternalService\":false}"
+            };
+            EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId);
+        }
+
+        class Envelope
+        {
+            public Type Type { get; set; }
+
+            public string Content { get; set; }
+
+            public int PartID { get; set; }
+        }
+
+        class Receipt
+        {
+            public int PartID { get; set; }
+
+            public int ResultParts { get; set; }
+        }
+
+        static string InsertServerSourceAddress(string serverSourceXML, string newConnectionString)
         {
             var startFrom = "ConnectionString=\"";
-            var subStringTo = "\" ServerVersion=\"";
+            string subStringTo;
+            const string serverSourceSubStringEnd = "\" Type=\"Connection\" ";
+            const string altServerSourceSubStringEnd = "\" Type=\"Dev2Server\" ";
+            if (serverSourceXML.Contains(serverSourceSubStringEnd))
+            {
+                subStringTo = serverSourceSubStringEnd;
+            }
+            else if (serverSourceXML.Contains(altServerSourceSubStringEnd))
+            {
+                subStringTo = altServerSourceSubStringEnd;
+            }
+            else
+            {
+                subStringTo = "\" ServerVersion=\"";
+            }
             int startIndex = serverSourceXML.IndexOf(startFrom) + startFrom.Length;
             int length = serverSourceXML.IndexOf(subStringTo) - startIndex;
             string oldAddress = serverSourceXML.Substring(startIndex, length);
@@ -187,7 +290,7 @@ namespace Warewolf.Launcher
             {
                 serverSourceXML = serverSourceXML.Replace(oldAddress, "");
             }
-            return serverSourceXML.Substring(0, startIndex) + newAddress + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
+            return serverSourceXML.Substring(0, startIndex) + newConnectionString + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
         public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
