@@ -46,6 +46,7 @@ namespace Warewolf.Launcher
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
+        public bool DisableDocker { get; internal set; }
 
         public string ServerExeName;
         public string StudioExeName;

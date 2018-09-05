@@ -32,6 +32,7 @@ namespace Warewolf.Launcher
             {
                 build = Options.PargeArgs(args);
                 build.JobSpecs = Job_Definitions.GetJobDefinitions();
+                build.DisableDocker = Job_Definitions.GetDisableDockerValue();
 
                 build.ServerExeName = "Warewolf Server.exe";
                 build.ServerPathSpecs = new List<string>
