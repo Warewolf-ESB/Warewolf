@@ -1724,15 +1724,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 416
     testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 417
-    testRunner.And("call the web service \"http://test-remotewarewolf:3142/services/ONERROR/OnError_Wr" +
-                    "iteToFile.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("call the web service \"http://tst-ci-remote:3142/services/ONERROR/OnError_WriteToF" +
+                    "ile.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 418
     testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 419
     testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 420
-    testRunner.And("the result from the web service \"http://test-remotewarewolf:3142/services/ONERROR" +
-                    "/OnError_ReadFromFile.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the result from the web service \"http://tst-ci-remote:3142/services/ONERROR/OnErr" +
+                    "or_ReadFromFile.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "String to Split",
