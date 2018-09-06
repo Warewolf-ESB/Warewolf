@@ -12,6 +12,9 @@ using System.Threading;
 using System.Xml;
 using Warewolf.Launcher.TestResultsMergers;
 
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
+
 namespace Warewolf.Launcher
 {
     public class TestLauncher : IDisposable
@@ -49,7 +52,7 @@ namespace Warewolf.Launcher
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
-        public static bool DisableDocker { get; internal set; }
+        public static bool DisableDocker { get; set; }
 
         public string ServerExeName;
         public string StudioExeName;
@@ -142,65 +145,92 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalCIRemoteContainer(string logDirectory)
         {
+            var knownServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.xml",
+                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml",
+                @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.xml",
+                @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.xml",
+                @"%programdata%\Warewolf\Resources\Remote Container.bite",
+                @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
+                @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
+            };
             if (!DisableDocker)
             {
                 var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
                 {
                     LogOutputDirectory = logDirectory
                 };
-                var knownServerSources = new List<string>()
-                {
-                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\ChangingServerAuthUITest.xml",
-                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Remote Connection Integration.xml",
-                    @"%programdata%\Warewolf\Resources\Acceptance Testing Resources\Restricted Remote Connection.xml",
-                    @"%programdata%\Warewolf\Resources\ExistingCodedUITestServerSource.xml",
-                    @"%programdata%\Warewolf\Resources\Remote Container.bite",
-                    @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
-                    @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
-                };
-                UpdateSourcesConnectionStrings(containerLauncher.IP, knownServerSources);
+                UpdateSourcesConnectionStrings($"AppServerUri=http://{containerLauncher.IP}:3142/dsf;WebServerPort=3142;AuthenticationType=Windows", knownServerSources);
                 return containerLauncher;
+            }
+            else
+            {
+                var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+                if (defaultServer != null)
+                {
+                    UpdateSourcesConnectionStrings($"AppServerUri=http://{defaultServer}:3142/dsf;WebServerPort=3142;AuthenticationType=Windows", knownServerSources);
+                    Thread.Sleep(30000);
+                }
             }
             return null;
         }
 
         public static ContainerLauncher StartLocalMSSQLContainer(string logDirectory)
         {
+            var knownMssqlServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
+                @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
+            };
             if (!DisableDocker)
             {
                 var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost")
                 {
                     LogOutputDirectory = logDirectory
                 };
-                var knownMssqlServerSources = new List<string>()
-                {
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
-                    @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
-                };
-                UpdateSourcesConnectionStrings(containerLauncher.IP, knownMssqlServerSources);
+                UpdateSourcesConnectionStrings($"Data Source={containerLauncher.IP},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
                 Thread.Sleep(30000);
                 return containerLauncher;
+            }
+            else
+            {
+                var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+                if (defaultServer != null)
+                {
+                    UpdateSourcesConnectionStrings($"Data Source={defaultServer},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;", knownMssqlServerSources);
+                    Thread.Sleep(30000);
+                }
             }
             return null;
         }
 
         public static ContainerLauncher StartLocalRabbitMQContainer(string logDirectory)
         {
+            var knownServerSources = new List<string>()
+            {
+                @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
+                @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite"
+            };
             if (!DisableDocker)
             {
                 var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
                 {
                     LogOutputDirectory = logDirectory
                 };
-                var knownMssqlServerSources = new List<string>()
-                {
-                    @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
-                    @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite"
-                };
-                UpdateSourcesConnectionStrings(containerLauncher.IP, knownMssqlServerSources);
+                UpdateSourcesConnectionStrings($"HostName={containerLauncher.IP};Port=5672;UserName=guest;Password=guest;VirtualHost=/", knownServerSources);
                 Thread.Sleep(120000);
                 return containerLauncher;
+            }
+            else
+            {
+                var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+                if (defaultServer != null)
+                {
+                    UpdateSourcesConnectionStrings($"HostName={defaultServer};Port=5672;UserName=test;Password=test;VirtualHost=/", knownServerSources);
+                    Thread.Sleep(30000);
+                }
             }
             return null;
         }
@@ -213,23 +243,63 @@ namespace Warewolf.Launcher
                 {
                     LogOutputDirectory = logDirectory
                 };
-                string sourcePath = Environment.ExpandEnvironmentVariables(@"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
-                File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={containerLauncher.IP};Database=test;Uid=root;Pwd=admin;"));
-                RefreshServer();
+                UpdateSourcesConnectionString(containerLauncher.IP, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
                 Thread.Sleep(30000);
                 return containerLauncher;
+            }
+            else
+            {
+                var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+                if (defaultServer != null)
+                {
+                    UpdateSourcesConnectionString(defaultServer, @"%programdata%\Warewolf\Resources\Sources\Database\NewMySqlSource.bite");
+                    Thread.Sleep(30000);
+                }
             }
             return null;
         }
 
-        static void UpdateSourcesConnectionStrings(string containerLauncherIP, List<string> knownMssqlServerSources)
+        static void UpdateSourcesConnectionString(string defaultServer, string knownServerSource)
         {
-            foreach (var source in knownMssqlServerSources)
+            string sourcePath = Environment.ExpandEnvironmentVariables(knownServerSource);
+            File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Server={defaultServer};Database=test;Uid=root;Pwd=admin;"));
+            RefreshServer();
+        }
+
+        public static string GetIPAddress(string nameOrAddress)
+        {
+            string ipAddress = null;
+            Ping pinger = null;
+
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send(nameOrAddress);
+                ipAddress = reply.Address.ToString();
+            }
+            catch (PingException)
+            {
+                // Discard PingExceptions and return false;
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+
+            return ipAddress;
+        }
+
+        static void UpdateSourcesConnectionStrings(string NewConnectionString, List<string> knownServerSources)
+        {
+            foreach (var source in knownServerSources)
             {
                 string sourcePath = Environment.ExpandEnvironmentVariables(source);
                 if (File.Exists(sourcePath))
                 {
-                    File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), $"Data Source={containerLauncherIP},1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"));
+                    File.WriteAllText(sourcePath, InsertServerSourceAddress(File.ReadAllText(sourcePath), NewConnectionString));
                 }
             }
             RefreshServer();
@@ -237,16 +307,11 @@ namespace Warewolf.Launcher
 
         static void RefreshServer()
         {
-            const string hubName = "http://localhost:3142/dsf";
-            var EsbProxy = new HubConnection(hubName).CreateHubProxy(hubName);
-            var messageId = Guid.NewGuid();
-            var envelope = new Envelope
+            using (WebClient client = new WebClient())
             {
-                PartID = 0,
-                Type = typeof(Envelope),
-                Content = "{\"$id\":\"1\",\"$type\":\"Dev2.Communication.EsbExecuteRequest, Dev2.Infrastructure\",\"ServiceName\":\"FetchExplorerItemsService\",\"TestName\":null,\"Args\":{\"$id\":\"2\",\"$type\":\"System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Text.StringBuilder, mscorlib]], mscorlib\",\"ReloadResourceCatalogue\":{\"$id\":\"3\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"True\",\"m_currentThread\":0}},\"ResourceID\":\"00000000-0000-0000-0000-000000000000\",\"ExecuteResult\":{\"$id\":\"4\",\"$type\":\"System.Text.StringBuilder, mscorlib\",\"m_MaxCapacity\":2147483647,\"Capacity\":16,\"m_StringValue\":\"\",\"m_currentThread\":0},\"WasInternalService\":false}"
-            };
-            EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId);
+                client.Credentials = CredentialCache.DefaultNetworkCredentials;
+                client.DownloadString("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true");
+            }
         }
 
         class Envelope

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Warewolf.Launcher
 {
-    class Job_Definitions
+    public static class Job_Definitions
     {
         public static Dictionary<string, Tuple<string, string>> GetJobDefinitions()
         {
@@ -206,7 +206,7 @@ namespace Warewolf.Launcher
             return JobDefinitionsCSV;
         }
 
-        internal static bool GetDisableDockerValue()
+        public static bool GetDisableDockerValue()
         {
             //string JobDefinitionsCSV = "";
             //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
