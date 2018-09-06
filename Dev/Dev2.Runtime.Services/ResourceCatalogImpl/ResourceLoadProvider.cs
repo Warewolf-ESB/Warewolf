@@ -23,7 +23,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
     class ResourceLoadProvider : IResourceLoadProvider
@@ -71,7 +70,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         void LoadFrequentlyUsedServices()
         {
             // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES WHEN LOADING FROM FRESH ;)
-
             var serviceNames = new[]
             {
                 "XXX"
@@ -83,11 +81,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
                 var objects = GenerateObjectGraph(resource);
                 FrequentlyUsedServices.TryAdd(resourceName, objects);
-
             }
-
         }
-        #region Implementation of IResourceLoadProvider
 
         public T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
@@ -199,7 +194,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return resourcesMatchingType.ToList();
         }
 
-
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName) where TServiceType : DynamicServiceObjectBase=> GetDynamicObjects<TServiceType>(workspaceID, resourceName, false);
 
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains) where TServiceType : DynamicServiceObjectBase
@@ -301,8 +295,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         public IList<IResource> GetResourceList(Guid workspaceId)
         {
             var workspaceResources = GetResources(workspaceId);
-
-
             return workspaceResources.ToList();
         }
 
@@ -335,13 +327,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 var resources = GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Contains(resourceName));
                 return resources.Cast<Resource>().ToList();
-
             }
         }
 
         public int GetResourceCount(Guid workspaceID) => GetResources(workspaceID).Count;
         public IResource GetResource(Guid workspaceID, string resourceName) => GetResource(workspaceID, resourceName, "Unknown", null);
-
 
         public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
         {
@@ -353,8 +343,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return resource;
         }
-
-        public delegate bool MyDelegate(IResource r);
 
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
         {
@@ -379,7 +367,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     {
                         return false;
                     }
-                    return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
+                    return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType);
                 };
                 return result;
             };
@@ -420,10 +408,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         continue;
                     }
                     return foundResource;
-                } else
-                {
-                    break;
-                }
+                } 
+                break;
             }
             throw new Exception("should not reach here");
         }
@@ -449,7 +435,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 {
                     foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
-
             }
             catch (Exception e)
             {
@@ -503,14 +488,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         }
                     }
                 }
-
             }
             return contents;
         }
 
-        #endregion
-
-        #region Private methods
         StringBuilder ResourceContents<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
             var resource = GetResource(workspaceID, resourceName);
@@ -615,7 +596,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             else
             {
-                var commands = new Dictionary<string, List<IResource>>()
+                var commands = new Dictionary<string, List<IResource>>
                 {
                     {"WorkflowService", workspaceResources.FindAll(r => func.Invoke(r) && r.IsService)},
                     {"Source", workspaceResources.FindAll(r => func.Invoke(r) && r.IsSource)},
@@ -707,8 +688,5 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             return result;
         }
-
-        #endregion
-
     }
 }
