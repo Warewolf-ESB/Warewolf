@@ -463,7 +463,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var onErrorWebserviceToCall = _scenarioContext.Get<string>("webserviceToCall").Replace("[[error]]", errorValue);
             using (var webClient = new WebClient())
             {
-                webClient.Credentials = new NetworkCredential(ContainerLauncher.Username, ContainerLauncher.Password);
+                webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
                 webClient.DownloadString(onErrorWebserviceToCall);
             }
 
