@@ -166,7 +166,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                var defaultServer = GetIPAddress("rsaklfsvrdev.dev2.local");
+                var defaultServer = GetIPAddress("tst-ci-remote.dev2.local");
                 if (defaultServer != null)
                 {
                     UpdateSourcesConnectionStrings($"AppServerUri=http://{defaultServer}:3142/dsf;WebServerPort=3142;AuthenticationType=Windows", knownServerSources);
