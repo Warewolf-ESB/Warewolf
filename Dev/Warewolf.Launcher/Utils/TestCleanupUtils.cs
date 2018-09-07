@@ -111,7 +111,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public static void CleanupServerStudio(this TestLauncher build, bool Force = true)
+        public static void CleanupServerStudio(this TestLauncher build, bool Force = true, string JobName = "")
         {
             if (!string.IsNullOrEmpty(build.ServerPath) && File.Exists(build.ServerPath))
             {
@@ -261,9 +261,9 @@ namespace Warewolf.Launcher
                 }
             }
 
-            if (String.IsNullOrEmpty(build.JobName))
+            if (String.IsNullOrEmpty(JobName))
             {
-                build.JobName = "Test Run";
+                JobName = "Test Run";
             }
 
             //Publish Certain Studio and Server Resources
@@ -272,7 +272,7 @@ namespace Warewolf.Launcher
                 var ActualPath = Environment.ExpandEnvironmentVariables(FileOrFolder);
                 if (Directory.Exists(ActualPath))
                 {
-                    MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(ActualPath), $"{build.JobName} Server {Path.GetFileName(ActualPath)} Folder", build.TestRunner.TestsResultsPath);
+                    MoveFolderToTestResults(Environment.ExpandEnvironmentVariables(ActualPath), $"{JobName} Server {Path.GetFileName(ActualPath)} Folder", build.TestRunner.TestsResultsPath);
                 }
             }
         }

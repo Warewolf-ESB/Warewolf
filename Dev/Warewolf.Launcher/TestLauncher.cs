@@ -885,7 +885,7 @@ namespace Warewolf.Launcher
             {
                 if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                 {
-                    this.CleanupServerStudio();
+                    this.CleanupServerStudio(true, JobName);
                     Startmywarewolfio();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
                     {
