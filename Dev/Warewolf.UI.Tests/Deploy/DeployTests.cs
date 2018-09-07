@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class DeployTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy")]
         public void Deploy_Tab_Default_View()
         {
@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButtonMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Destination_Server()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteContainerText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy")]
         public void Deploy_Select_Server_AutoConnects_Source_Server()
         {
@@ -54,7 +54,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("Remote Container (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.DisplayText);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy Hello World")]
         public void Deploy_Hello_World()
         {
@@ -62,7 +62,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.Deploy_Service_From_Deploy_View("Hello World");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy Select Dependencies")]
         public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
         {
@@ -77,7 +77,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("2", displayText);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy")]
         public void Deploy_EditingServer_KeepsSelectedServer()
         {
@@ -87,7 +87,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteContainerText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy")]
         public void Deploy_Button_Is_Enabling_When_Selecting_Resource_In_Source_Side()
         {
@@ -97,7 +97,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenDeployButtonIsEnabled("true");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy Filtering")]
         public void Filtering_And_Clearing_Filter_On_Source_Side()
         {
@@ -107,7 +107,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenDeployButtonIsEnabled("false");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy Filtering")]
         public void Deploying_With_Filter_Enabled()
         {
@@ -118,7 +118,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenIClickDeployButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection()
         {
@@ -128,7 +128,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenIClickDeployButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Remote")]
         public void Open_Deploy_Tab_And_Change_Source_Loads_Resources()
         {
@@ -140,7 +140,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Remote")]
         public void Deploy_From_RemoteConnection_CreateNewWorkflow()
         {

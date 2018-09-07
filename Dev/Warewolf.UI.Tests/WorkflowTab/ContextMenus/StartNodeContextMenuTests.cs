@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.ContextMenu
     [CodedUITest]
     public class StartNodeContextMenuTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CodedUIShowStartNodeContextMenuItems()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
@@ -28,7 +28,7 @@ namespace Warewolf.UI.Tests.ContextMenu
             Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem.Enabled, "Copy Url to Clipboard must be disabled on a new workflow");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CodedUIShowStartNodeContextMenuItems_For_Version()
         {
             ExplorerUIMap.Filter_Explorer("ContextMenuVersion");

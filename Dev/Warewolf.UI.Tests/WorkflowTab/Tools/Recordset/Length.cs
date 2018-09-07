@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
     [CodedUITest]
     public class Length
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Recordset Tools")]
         public void LengthTool_Small_And_LargeView_UITest()
         {

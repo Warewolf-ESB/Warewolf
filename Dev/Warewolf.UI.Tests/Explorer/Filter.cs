@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class Filter
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Search_ExplorerResource()
         {
@@ -18,7 +18,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second Item exists in the Explorer Exists");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Search_ExplorerFolder()
         {
@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second Item exists in the Explorer Exists");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Clear_Filter_With_Esc_Key()
         {

@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     {
         const string SourceName = "CodedUITestMySQLSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Sources")]
         public void Create_Save_And_Edit_MySQLSource_From_ExplorerContextMenu_UITests()
         {
@@ -47,7 +47,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("test", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Test_MySQLSource_From_ExplorerContextMenu_UITests()
@@ -65,7 +65,7 @@ namespace Warewolf.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Test_MySQLSource_ConnectionTimeout_UITests()
