@@ -476,7 +476,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 //Call the service and get the error back
                 using (var webClient = new WebClient())
                 {
-                    webClient.Credentials = new NetworkCredential(ContainerLauncher.Username, ContainerLauncher.Password);
+                    webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
                     webCallResult = webClient.DownloadString(webservice);
                 }
             }
