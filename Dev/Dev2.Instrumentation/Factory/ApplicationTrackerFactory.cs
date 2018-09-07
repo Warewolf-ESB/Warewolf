@@ -27,7 +27,8 @@ namespace Dev2.Instrumentation.Factory
             return ApplicationTracker;
         }
 
-        class DummyApplicationTracker : IApplicationTracker
+#if DEBUG
+	class DummyApplicationTracker : IApplicationTracker
         {
             public RUIResult EnableApplicationResultStatus { get; set; }
 
@@ -47,5 +48,6 @@ namespace Dev2.Instrumentation.Factory
             {
             }
         }
+#endif
     }
 }
