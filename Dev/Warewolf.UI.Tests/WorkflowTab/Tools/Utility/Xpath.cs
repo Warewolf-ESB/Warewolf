@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class Xpath
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Utility Tools")]
         public void XPathTool_Small_And_LargeView_Then_QVIView_UITest()
         {

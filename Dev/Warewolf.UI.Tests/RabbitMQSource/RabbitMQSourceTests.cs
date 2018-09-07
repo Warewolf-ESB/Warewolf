@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.RabbitMQSource
     {
         const string SourceName = "CodedUITestRabbitMQSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Open_RabbitMQSource_From_ExplorerContextMenu_UITests()
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.RabbitMQSource
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("RabbitMQ Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateRabbitMQSource_GivenTabHasChanges_ClosingStudioPromptsChanges()

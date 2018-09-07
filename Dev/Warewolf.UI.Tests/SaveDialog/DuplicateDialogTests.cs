@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class DuplicateDialogTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void DuplicateResource_ThenAddsNewItemItem()
         {
@@ -21,7 +21,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void DuplicateFolder_ThenAddsNewFolderItem()
         {
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void DuplicateFolder_And_Use_Same_Name_Shows_Error()
         {
@@ -41,7 +41,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void DuplicateWorkflow_Updates_The_Workflow_Display_Name()
         {
@@ -55,7 +55,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void PressEnterSavesResourceAndClosesSaveDialog()
         {

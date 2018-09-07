@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests
     {
         const string WorkflowName = "RefreshExplorerAfterDeletingResourceFromDiskUITest";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem) ? ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text.Contains(WorkflowName) : UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Workflow exists in explorer tree after deleting from disk.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void RefreshExplorerAfterConnectingToRemoteDoesNotRefreshLocalhost()
         {

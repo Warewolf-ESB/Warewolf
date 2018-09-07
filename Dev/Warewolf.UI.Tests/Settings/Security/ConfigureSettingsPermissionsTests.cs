@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class ConfigureSettingsPermissionsTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Settings")]
         public void Check_SettingsView_Then_SetPublicPermissions_And_SaveEnabled()
         {
@@ -81,7 +81,7 @@ namespace Warewolf.UI.Tests
             Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Settings")]
         public void AddRemoveResourcePermission()
         {
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Edit_Server_Removes_Server_From_Explorer()
         {
@@ -107,7 +107,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer), "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Save_With_Duplicate_Server_Permission()
         {
@@ -117,7 +117,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.UITosavearesourcepersmText.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void PublicApisJson_Requires_ExecutePermission()
         {

@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class WorkflowContainingGridedToolsTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Can_Save_Tests_With_Grided_Tools()
         {

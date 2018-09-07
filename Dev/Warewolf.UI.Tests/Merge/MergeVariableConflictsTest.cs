@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
     {
         public const string MergeVariables = "MergeVariables";
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Has_Variable_Conflicts()
         {
@@ -22,7 +22,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Current_Has_5TH_Variable()
         {
