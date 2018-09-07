@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             using (var trans = new TransactionScope())
             {
-                using (var con = new SqlConnection("Data Source=test-mssql,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"))
+                using (var con = new SqlConnection("Data Source=rsaklfsvrdev,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"))
                 {
                     var cmd = con.CreateCommand();
                     cmd.CommandText = command;
@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             using (var trans = new TransactionScope())
             {
-                var conStr1 = "User Id=Testuser;Password=test123;Data Source=test-mssql;";
+                var conStr1 = "User Id=Testuser;Password=test123;Data Source=rsaklfsvrdev;";
                 using (var con = new OracleConnection(conStr1))
                 {
                     var cmd = con.CreateCommand();
