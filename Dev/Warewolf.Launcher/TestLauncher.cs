@@ -1,6 +1,4 @@
-﻿using Dev2.SignalR.Wrappers;
-using Microsoft.AspNet.SignalR.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
