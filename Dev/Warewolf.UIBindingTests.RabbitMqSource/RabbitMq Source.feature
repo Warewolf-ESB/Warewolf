@@ -7,6 +7,7 @@
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
 @MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
+@MSTest:DeploymentItem:EnableDocker.txt
 Feature: RabbitMq Source
 	In order to share settings
 	I want to save my RabbitMq source Settings
