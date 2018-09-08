@@ -50,7 +50,7 @@ namespace Warewolf.Launcher
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
-        public static bool DisableDocker { get; set; }
+        public static bool EnableDocker { get; set; }
 
         public string ServerExeName;
         public string StudioExeName;
@@ -153,7 +153,7 @@ namespace Warewolf.Launcher
                 @"%programdata%\Warewolf\Resources\RemoteServerToDelete.xml",
                 @"%programdata%\Warewolf\Resources\Remote Connection Integration.xml"
             };
-            if (!DisableDocker)
+            if (EnableDocker)
             {
                 var containerLauncher = new ContainerLauncher("ciremote", "test-remotewarewolf")
                 {
@@ -182,7 +182,7 @@ namespace Warewolf.Launcher
                 @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite",
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlBulkInsertSource.xml"
             };
-            if (!DisableDocker)
+            if (EnableDocker)
             {
                 var containerLauncher = new ContainerLauncher("mssql-connector-testing", "test-mssql", "localhost")
                 {
@@ -211,7 +211,7 @@ namespace Warewolf.Launcher
                 @"%programdata%\Warewolf\Resources\Sources\Database\NewSqlServerSource.xml",
                 @"%programdata%\Warewolf\Resources\Sources\Database\TestDb.bite"
             };
-            if (!DisableDocker)
+            if (EnableDocker)
             {
                 var containerLauncher = new ContainerLauncher("rabbitmq-connector-testing", "test-rabbitmq", "localhost")
                 {
@@ -235,7 +235,7 @@ namespace Warewolf.Launcher
 
         public static ContainerLauncher StartLocalMySQLContainer(string logDirectory)
         {
-            if (!DisableDocker)
+            if (EnableDocker)
             {
                 var containerLauncher = new ContainerLauncher("mysql-connector-testing", "test-mysql", "localhost", "withnewproc")
                 {
