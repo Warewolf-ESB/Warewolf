@@ -1,4 +1,5 @@
 ﻿@Data
+@MSTest:DeploymentItem:EnableDocker.txt
 Feature: DataSplit
 	In order to split data
 	As a Warewolf user
