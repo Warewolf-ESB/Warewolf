@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.WebServer
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("WebPostRequestHandler_ProcessRequest")]
         public void WebPostRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()

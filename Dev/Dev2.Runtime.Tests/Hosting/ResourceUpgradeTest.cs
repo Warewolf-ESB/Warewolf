@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.Hosting
     public class ResourceUpgradeTest
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrade_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrade_Ctor")]
         public void ResourceUpgrade_Properties()

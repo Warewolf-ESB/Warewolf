@@ -70,7 +70,7 @@
 
 //        #endregion
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Description("Test Constructor")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ConstructorWhereParametersPassed_ObjectHasProperties()
@@ -88,7 +88,7 @@
 //            Assert.AreEqual(environmentID, workspaceItem.EnvironmentID);
 //        }
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Description("Test Constructor")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ConstructorWhereParametersXML_ObjectHasProperties()
@@ -109,7 +109,7 @@
 //            Assert.IsTrue(newWorkspaceItem.IsWorkflowSaved);
 //        }
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Description("Test ToXML")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ToXMLWhereParametersXML_HasElementWithAttributes()

@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         public TestContext TestContext { get; set; }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         public void PluginRuntimeHandler_GetNamespaces_WhenValidDll_ExpectNamespaces()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("Warewolf.COMIPC.exe")]
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()

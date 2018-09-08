@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class GetLogDataServiceTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_ServerLogFilePath")]
         public void GetLogDataService_ServerLogFilePath_NotSet_ShouldReturnStandardValue()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(EnvironmentVariables.ServerLogFile, logFilePath);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_ServerLogFilePath")]
         public void GetLogDataService_ServerLogFilePath_WhenSet_ShouldReturnSetValue()
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_WithLogData_ShouldReturnLogDataObject()
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_WithLogDataContainingURl_ShouldReturnLogDataObjectWithUrl()
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist>", value);
 
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt", "TextFiles")]
@@ -134,7 +134,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(logEntriesObject);
             Assert.AreEqual("ERROR", logEntriesObject[0].Status);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -186,7 +186,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -256,7 +256,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -280,7 +280,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GetLogDataService_HandlesType")]
         public void GetLogDataService_HandlesType_ExpectName()
@@ -296,7 +296,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GetLogDataService_HandlesType")]
         public void GetLogDataService_CreateServiceEntry_ExpectProperlyFormedDynamicService()
