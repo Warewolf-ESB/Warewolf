@@ -206,7 +206,7 @@ namespace Warewolf.Launcher
             return JobDefinitionsCSV;
         }
 
-        public static bool GetDisableDockerValue()
+        public static bool GetEnableDockerValue()
         {
             //string JobDefinitionsCSV = "";
             //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
@@ -214,7 +214,7 @@ namespace Warewolf.Launcher
             //    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
             //}
             //return JobDefinitionsCSV == "False";
-            return File.ReadAllText("EnableDocker.txt") == "False";
+            return File.ReadAllText("EnableDocker.txt") == "True";
         }
     }
 }

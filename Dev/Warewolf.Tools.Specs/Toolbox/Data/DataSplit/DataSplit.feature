@@ -1,5 +1,6 @@
 ﻿@Data
 @MSTest:DeploymentItem:EnableDocker.txt
+@MSTest:DeploymentItem:x86\SQLite.Interop.dll
 Feature: DataSplit
 	In order to split data
 	As a Warewolf user
