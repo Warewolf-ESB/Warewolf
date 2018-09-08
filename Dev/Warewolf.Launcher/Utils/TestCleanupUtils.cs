@@ -299,7 +299,7 @@ namespace Warewolf.Launcher
             if (File.Exists(containerLogFile))
             {
                 WaitForFileUnlock(containerLogFile);
-                MoveFileToTestResults(containerLogFile, $"{build.JobName} Container Launcher.log", build.TestRunner.TestsResultsPath);
+                MoveFileToTestResults(containerLogFile, $"{JobName} Container Launcher.log", build.TestRunner.TestsResultsPath);
             }
 
             if (Studio)
