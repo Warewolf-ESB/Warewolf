@@ -47,7 +47,8 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DataSplit", "\tIn order to split data\r\n\tAs a Warewolf user\r\n\tI want a tool that splits two or m" +
                     "ore pieces of data", ProgrammingLanguage.CSharp, new string[] {
                         "Data",
-                        "MSTest:DeploymentItem:EnableDocker.txt"});
+                        "MSTest:DeploymentItem:EnableDocker.txt",
+                        "MSTest:DeploymentItem:x86\\SQLite.Interop.dll"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -90,17 +91,18 @@ namespace Warewolf.Tools.Specs.Toolbox.Data.DataSplit
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextToARecordsetUsingIndexUsingStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Star notation", ((string[])(null)));
-#line 8
-this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 10
+ testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 11
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\" and Include " +
                     "\"unselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 12
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -121,9 +123,9 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "vowels().row",
                         "e"});
-#line 12
+#line 13
  testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table1, "Then ");
-#line 19
+#line 20
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -146,7 +148,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "No",
                         ""});
-#line 20
+#line 21
  testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -167,7 +169,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         "[[vowels(5).letters]] = e"});
-#line 23
+#line 24
     testRunner.And("the debug output as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -178,17 +180,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextToAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a scalar", ((string[])(null)));
-#line 31
-this.ScenarioSetup(scenarioInfo);
 #line 32
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 33
+ testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
  testRunner.And("assign to variable \"[[a]]\" split type \"Index\" at \"1\" and Include \"unselected\" wit" +
                     "hout escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 35
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -197,9 +200,9 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "a",
                         "a"});
-#line 35
+#line 36
  testRunner.Then("the split recordset \"[[a]]\" will be", ((string)(null)), table4, "Then ");
-#line 38
+#line 39
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -210,17 +213,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextToARecordsetUsingIndexUsingAppendNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using Index using Append notation", ((string[])(null)));
-#line 41
-this.ScenarioSetup(scenarioInfo);
 #line 42
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 43
+ testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 44
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"1\" and Include \"" +
                     "unselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 45
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -241,9 +245,9 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "vowels().row",
                         "e"});
-#line 45
+#line 46
  testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table5, "Then ");
-#line 52
+#line 53
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -266,7 +270,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "No",
                         ""});
-#line 53
+#line 54
  testRunner.And("the debug inputs as", ((string)(null)), table6, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -287,7 +291,7 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "",
                         "[[vowels(5).letters]] = e"});
-#line 56
+#line 57
     testRunner.And("the debug output as", ((string)(null)), table7, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -298,19 +302,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCharactersUsingIndexGoingBackwardsUsingStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Star notation", ((string[])(null)));
-#line 64
-this.ScenarioSetup(scenarioInfo);
 #line 65
- testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 66
+ testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 67
  testRunner.And("assign to variable \"[[vowels(*).chars]]\" split type \"Index\" at \"7\" and Include \"u" +
                     "nselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 67
- testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
+ testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -325,9 +330,9 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "vowels().row",
                         "@!?"});
-#line 69
+#line 70
  testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table8, "Then ");
-#line 74
+#line 75
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -350,7 +355,7 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "No",
                         ""});
-#line 75
+#line 76
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -365,7 +370,7 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "",
                         "[[vowels(3).chars]] = @!?"});
-#line 78
+#line 79
  testRunner.And("the debug output as", ((string)(null)), table10, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -376,19 +381,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCharactersUsingIndexGoingBackwardsUsingAppendNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Backwards Using Append notation", ((string[])(null)));
-#line 84
-this.ScenarioSetup(scenarioInfo);
 #line 85
- testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 86
+ testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 87
  testRunner.And("assign to variable \"[[vowels().chars]]\" split type \"Index\" at \"7\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
- testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
+ testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -403,9 +409,9 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "vowels().chars",
                         "@!?"});
-#line 89
+#line 90
  testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table11, "Then ");
-#line 94
+#line 95
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -428,7 +434,7 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "No",
                         ""});
-#line 95
+#line 96
  testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -443,7 +449,7 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "",
                         "[[vowels(3).chars]] = @!?"});
-#line 98
+#line 99
  testRunner.And("the debug output as", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -454,19 +460,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCharactersUsingIndexGoingForwardUsingStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Star notation", ((string[])(null)));
-#line 104
-this.ScenarioSetup(scenarioInfo);
 #line 105
- testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 106
+ testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 107
  testRunner.And("assign to variable \"[[vowels(*).chars]]\" split type \"Index\" at \"7\" and Include \"u" +
                     "nselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
+ testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -481,9 +488,9 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "vowels().chars",
                         "&^~"});
-#line 109
+#line 110
  testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table14, "Then ");
-#line 114
+#line 115
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -506,7 +513,7 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "No",
                         ""});
-#line 115
+#line 116
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -521,7 +528,7 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         "[[vowels(3).chars]] = &^~"});
-#line 118
+#line 119
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -532,19 +539,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCharactersUsingIndexGoingForwardUsingAppendNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split characters using Index Going Forward using Append Notation", ((string[])(null)));
-#line 124
-this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 126
+ testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 127
  testRunner.And("assign to variable \"[[vowels().chars]]\" split type \"Index\" at \"7\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
- testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
+ testRunner.And("the direction is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -559,9 +567,9 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "vowels().chars",
                         "&^~"});
-#line 129
+#line 130
  testRunner.Then("the split recordset \"[[vowels(*).chars]]\" will be", ((string)(null)), table17, "Then ");
-#line 134
+#line 135
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -584,7 +592,7 @@ this.ScenarioSetup(scenarioInfo);
                         "7",
                         "No",
                         ""});
-#line 135
+#line 136
  testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -599,7 +607,7 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "",
                         "[[vowels(3).chars]] = &^~"});
-#line 138
+#line 139
  testRunner.And("the debug output as", ((string)(null)), table19, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -610,29 +618,30 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingAllSplitTypes_SomeWithIncludeSelected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected", ((string[])(null)));
-#line 144
-this.ScenarioSetup(scenarioInfo);
 #line 145
- testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 146
+ testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 147
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
                     "\"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 148
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 149
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
                     "de \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 150
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
                     "\"unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 151
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 152
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -653,9 +662,9 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "vowels().chars",
                         "end"});
-#line 152
+#line 153
  testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table20, "Then ");
-#line 160
+#line 161
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -718,7 +727,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "No",
                         ""});
-#line 161
+#line 162
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -739,7 +748,7 @@ this.ScenarioSetup(scenarioInfo);
             table22.AddRow(new string[] {
                         "",
                         "[[vowels(5).letters]] = end"});
-#line 168
+#line 169
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -751,30 +760,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingAllSplitTypes_SomeWithIncludeSelectedUsingAStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using All split types - Some with Include selected using a Star Notati" +
                     "on", ((string[])(null)));
-#line 177
-this.ScenarioSetup(scenarioInfo);
 #line 178
- testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 179
+ testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 180
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
                     "\"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 181
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 182
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
                     "de \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 183
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
                     "\"unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 184
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 185
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -795,9 +805,9 @@ this.ScenarioSetup(scenarioInfo);
             table23.AddRow(new string[] {
                         "vowels().chars",
                         "end"});
-#line 185
+#line 186
  testRunner.Then("the split recordset \"[[vowels(*).letters]]\" will be", ((string)(null)), table23, "Then ");
-#line 192
+#line 193
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -860,7 +870,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "No",
                         ""});
-#line 193
+#line 194
  testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -881,7 +891,7 @@ this.ScenarioSetup(scenarioInfo);
             table25.AddRow(new string[] {
                         "",
                         "[[vowels(5).letters]] = end"});
-#line 200
+#line 201
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -892,26 +902,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCSVFileFormatIntoRecordset_SomeFieldsBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - some fields blank", ((string[])(null)));
-#line 209
-this.ScenarioSetup(scenarioInfo);
 #line 210
- testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 211
+ testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 212
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
                     "ed\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 212
+#line 213
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
                     "cted\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 213
+#line 214
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
                     "pe \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
+#line 215
  testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
+#line 216
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -929,7 +940,7 @@ this.ScenarioSetup(scenarioInfo);
             table26.AddRow(new string[] {
                         "vowels().name",
                         "Mo"});
-#line 216
+#line 217
  testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table26, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -947,7 +958,7 @@ this.ScenarioSetup(scenarioInfo);
             table27.AddRow(new string[] {
                         "vowels().phone",
                         ""});
-#line 222
+#line 223
  testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table27, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -965,9 +976,9 @@ this.ScenarioSetup(scenarioInfo);
             table28.AddRow(new string[] {
                         "vowels().id",
                         "3"});
-#line 228
+#line 229
  testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table28, "Then ");
-#line 234
+#line 235
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1020,7 +1031,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "No",
                         ""});
-#line 235
+#line 236
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1065,7 +1076,7 @@ this.ScenarioSetup(scenarioInfo);
             table30.AddRow(new string[] {
                         "",
                         "[[rec(4).phone]] ="});
-#line 241
+#line 242
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1076,28 +1087,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitCSVFileFormatIntoRecordset_SkipBlankRowsSelected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split CSV file format into recordset - Skip blank rows selected", ((string[])(null)));
-#line 257
-this.ScenarioSetup(scenarioInfo);
 #line 258
- testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 259
+ testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 260
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
                     "ed\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 260
+#line 261
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
                     "cted\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
+#line 262
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
                     "pe \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 262
+#line 263
  testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
- testRunner.And("Skip Blanks rows is \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 264
+ testRunner.And("Skip Blanks rows is \"enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 265
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1115,7 +1127,7 @@ this.ScenarioSetup(scenarioInfo);
             table31.AddRow(new string[] {
                         "rec().name",
                         "Mo"});
-#line 265
+#line 266
  testRunner.Then("the split recordset \"[[rec(*).name]]\" will be", ((string)(null)), table31, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1133,7 +1145,7 @@ this.ScenarioSetup(scenarioInfo);
             table32.AddRow(new string[] {
                         "rec().phone",
                         ""});
-#line 271
+#line 272
  testRunner.Then("the split recordset \"[[rec(*).phone]]\" will be", ((string)(null)), table32, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1151,9 +1163,9 @@ this.ScenarioSetup(scenarioInfo);
             table33.AddRow(new string[] {
                         "rec().id",
                         "3"});
-#line 277
+#line 278
  testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table33, "Then ");
-#line 283
+#line 284
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1206,7 +1218,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "No",
                         ""});
-#line 284
+#line 285
  testRunner.And("the debug inputs as", ((string)(null)), table34, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1251,7 +1263,7 @@ this.ScenarioSetup(scenarioInfo);
             table35.AddRow(new string[] {
                         "",
                         "[[rec(4).phone]] ="});
-#line 290
+#line 291
  testRunner.And("the debug output as", ((string)(null)), table35, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1262,34 +1274,35 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitBlankTextUsingAllSplitTypes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text using All split types", ((string[])(null)));
-#line 306
-this.ScenarioSetup(scenarioInfo);
 #line 307
- testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 308
+ testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 309
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 309
+#line 310
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\" at \"\" and Include \"uns" +
                     "elected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 310
+#line 311
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Chars\" at \"ars,\" and Includ" +
                     "e \"selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 312
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
                     "nselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 312
+#line 313
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\" at \"\" and Include \"uns" +
                     "elected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 313
+#line 314
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"NewLine\" at \"\" and Include " +
                     "\"unselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 314
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 315
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 316
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1362,13 +1375,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 316
+#line 317
  testRunner.And("the debug inputs as", ((string)(null)), table36, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 324
+#line 325
  testRunner.And("the debug output as", ((string)(null)), table37, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1379,24 +1392,25 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingIndexWhereAndSpace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where and Space >", ((string[])(null)));
-#line 327
-this.ScenarioSetup(scenarioInfo);
 #line 328
- testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 329
+ testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 330
  testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \",\" and Include \"Selected\" wit" +
                     "hout escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 330
+#line 331
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
                     "nselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 331
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 332
-    testRunner.Then("the split result for \"[[var]]\" will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 333
+    testRunner.Then("the split result for \"[[var]]\" will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 334
     testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1429,13 +1443,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "No",
                         ""});
-#line 334
+#line 335
     testRunner.And("the debug inputs as", ((string)(null)), table38, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 338
+#line 339
  testRunner.And("the debug output as", ((string)(null)), table39, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1446,17 +1460,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingCharAndEscapeCharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Char and Escape character", ((string[])(null)));
-#line 341
-this.ScenarioSetup(scenarioInfo);
 #line 342
- testRunner.Given("A string to split with value \"123\\,45,1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 343
+ testRunner.Given("A string to split with value \"123\\,45,1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 344
  testRunner.And("assign to variable \"[[var]]\" split type \"Chars\" at \",\" and Include \"Unselected\" a" +
                     "nd Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 344
+#line 345
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1465,9 +1480,9 @@ this.ScenarioSetup(scenarioInfo);
             table40.AddRow(new string[] {
                         "[[var]]",
                         "123\\,45"});
-#line 345
+#line 346
  testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table40, "Then ");
-#line 349
+#line 350
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1490,7 +1505,7 @@ this.ScenarioSetup(scenarioInfo);
                         ",",
                         "No",
                         "\\"});
-#line 351
+#line 352
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1499,7 +1514,7 @@ this.ScenarioSetup(scenarioInfo);
             table42.AddRow(new string[] {
                         "1",
                         "[[var]] = 123\\,45"});
-#line 354
+#line 355
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1510,19 +1525,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitBlankText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split blank text", ((string[])(null)));
-#line 358
-this.ScenarioSetup(scenarioInfo);
 #line 359
- testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 360
+ testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 361
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\" and Include " +
                     "\"Unselected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 361
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 362
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 363
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1545,13 +1561,13 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "No",
                         ""});
-#line 363
+#line 364
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 366
+#line 367
  testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1562,19 +1578,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextToARecordsetUsingANegativeIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text to a recordset using a negative Index", ((string[])(null)));
-#line 369
-this.ScenarioSetup(scenarioInfo);
 #line 370
- testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 371
+ testRunner.Given("A string to split with value \"abcde\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 372
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"-1\" and Include" +
                     " \"unselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 372
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 373
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 374
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1597,13 +1614,13 @@ this.ScenarioSetup(scenarioInfo);
                         "-1",
                         "No",
                         ""});
-#line 374
+#line 375
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 377
+#line 378
  testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1614,19 +1631,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextIntoNegativeRecordsetIndexAsTheIndexToSplitAt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index as the index to split at", ((string[])(null)));
-#line 380
-this.ScenarioSetup(scenarioInfo);
 #line 381
- testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 382
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 383
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"[[my(-1).index]]" +
                     "\" and Include \"Selected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 384
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 385
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1637,22 +1655,23 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingAIndexWithAndSpace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using a index with \",\" and space", ((string[])(null)));
-#line 386
-this.ScenarioSetup(scenarioInfo);
 #line 387
-     testRunner.Given("A string to split with value \"a bc, def\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 388
+     testRunner.Given("A string to split with value \"a bc, def\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 389
   testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \",\" and Include " +
                     "\"UnSelected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 389
+#line 390
   testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"\" and Include \"" +
                     "unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 390
-  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 391
+  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 392
   testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1663,19 +1682,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingIndexWhereIndexIsNotNumeric_Variable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index is not numeric - variable", ((string[])(null)));
-#line 393
-this.ScenarioSetup(scenarioInfo);
 #line 394
-     testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 395
-  testRunner.And("I have a variable \"[[idx]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+     testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 396
+  testRunner.And("I have a variable \"[[idx]]\" with a value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 397
      testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \"[[idx]]\" and Include \"unselec" +
                     "ted\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 398
      testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1684,9 +1704,9 @@ this.ScenarioSetup(scenarioInfo);
             table47.AddRow(new string[] {
                         "[[var]]",
                         "12"});
-#line 398
+#line 399
      testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table47, "Then ");
-#line 401
+#line 402
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1697,17 +1717,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextUsingIndexWhereIndexProvided()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index > provided", ((string[])(null)));
-#line 403
-this.ScenarioSetup(scenarioInfo);
 #line 404
-     testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 405
+     testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 406
      testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \"7\" and Include \"Selected\" and" +
                     " Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 406
+#line 407
      testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1716,9 +1737,9 @@ this.ScenarioSetup(scenarioInfo);
             table48.AddRow(new string[] {
                         "[[var]]",
                         "123"});
-#line 407
+#line 408
      testRunner.Then("the split recordset \"[[var]]\" will be", ((string)(null)), table48, "Then ");
-#line 410
+#line 411
      testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1729,30 +1750,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SendingErrorInErrorVariableAndCallingWebservice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", ((string[])(null)));
-#line 412
-this.ScenarioSetup(scenarioInfo);
 #line 413
-    testRunner.Given("remote server container has started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 414
-    testRunner.And("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.Given("remote server container has started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 415
+    testRunner.And("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 416
  testRunner.And("assign to variable \"[[vowels(*).chars]]\" split type \"Index\" at \"*\" and Include \"u" +
                     "nselected\" without escaping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 416
- testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 417
-    testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the direction is \"Backward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 418
+    testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 419
     testRunner.And("call the web service \"http://tst-ci-remote:3142/services/ONERROR/OnError_WriteToF" +
                     "ile.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 419
-    testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 420
-    testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 421
+    testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 422
     testRunner.And("the result from the web service \"http://tst-ci-remote:3142/services/ONERROR/OnErr" +
                     "or_ReadFromFile.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1776,13 +1798,13 @@ this.ScenarioSetup(scenarioInfo);
                         "*",
                         "No",
                         ""});
-#line 422
+#line 423
     testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 425
+#line 426
     testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1793,19 +1815,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitNegativeRecordIndexAsInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split negative record index as Input", ((string[])(null)));
-#line 428
-this.ScenarioSetup(scenarioInfo);
 #line 429
- testRunner.Given("A string to split with value \"[[my(-1).var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 430
+ testRunner.Given("A string to split with value \"[[my(-1).var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 431
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 431
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 432
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 433
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1828,13 +1851,13 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "Yes",
                         ""});
-#line 433
+#line 434
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 436
+#line 437
  testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1845,19 +1868,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextIntoNegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text into negative recordset index", ((string[])(null)));
-#line 439
-this.ScenarioSetup(scenarioInfo);
 #line 440
- testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 441
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 442
  testRunner.And("assign to variable \"[[vowels(-1).letters]]\" split type \"Index\" at \"5\" and Include" +
                     " \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 442
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 443
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 444
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1880,13 +1904,13 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "Yes",
                         ""});
-#line 444
+#line 445
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 447
+#line 448
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1895,16 +1919,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SplitTextUsingTypeIndexButIndexIsInvalid(string no, string type, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text using type Index but Index is invalid", exampleTags);
-#line 451
-this.ScenarioSetup(scenarioInfo);
 #line 452
- testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 453
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 454
  testRunner.And(string.Format("assign to variable \"[[rec().a]]\" split type \"Index\" at \"{0}\" and Include \"Selecte" +
                         "d\" and Escape \"\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 454
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 455
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 456
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1927,13 +1951,13 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = \"\"", type),
                         "Yes",
                         ""});
-#line 456
+#line 457
  testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 459
+#line 460
  testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1944,12 +1968,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "")]
         public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_1()
         {
-#line 451
+#line 452
 this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
 #line hidden
         }
@@ -1959,12 +1984,13 @@ this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%$]]")]
         public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_2()
         {
-#line 451
+#line 452
 this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%$]]", ((string[])(null)));
 #line hidden
         }
@@ -1972,16 +1998,16 @@ this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%$]]", ((string[])(null)))
         public virtual void DebugOutputValidationErrors(string no, string variable, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors", exampleTags);
-#line 466
-this.ScenarioSetup(scenarioInfo);
 #line 467
- testRunner.Given("A string to split with value \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 468
+ testRunner.Given("A string to split with value \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 469
  testRunner.And(string.Format("assign to variable \"{0}\" split type \"Index\" at \"5\" and Include \"Selected\" and Esc" +
                         "ape \"\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 469
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 470
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 471
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2004,13 +2030,13 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "Yes",
                         ""});
-#line 471
+#line 472
  testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 474
+#line 475
  testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2021,12 +2047,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
         public virtual void DebugOutputValidationErrors_Variant0()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("1", "[[rec().a]]=]]", ((string[])(null)));
 #line hidden
         }
@@ -2036,12 +2063,13 @@ this.DebugOutputValidationErrors("1", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant1()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
 #line hidden
         }
@@ -2051,12 +2079,13 @@ this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant2()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("3", "[[rec\"()\".a]]", ((string[])(null)));
 #line hidden
         }
@@ -2066,12 +2095,13 @@ this.DebugOutputValidationErrors("3", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant3()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("4", "[[rec\".a]]", ((string[])(null)));
 #line hidden
         }
@@ -2081,12 +2111,13 @@ this.DebugOutputValidationErrors("4", "[[rec\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec.a]]")]
         public virtual void DebugOutputValidationErrors_Variant4()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("5", "[[rec.a]]", ((string[])(null)));
 #line hidden
         }
@@ -2096,12 +2127,13 @@ this.DebugOutputValidationErrors("5", "[[rec.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
         public virtual void DebugOutputValidationErrors_Variant5()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("6", "[[rec()*.a]]", ((string[])(null)));
 #line hidden
         }
@@ -2111,12 +2143,13 @@ this.DebugOutputValidationErrors("6", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]*")]
         public virtual void DebugOutputValidationErrors_Variant6()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("9", "[[rec().a]]*", ((string[])(null)));
 #line hidden
         }
@@ -2126,12 +2159,13 @@ this.DebugOutputValidationErrors("9", "[[rec().a]]*", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1]]")]
         public virtual void DebugOutputValidationErrors_Variant7()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("10", "[[1]]", ((string[])(null)));
 #line hidden
         }
@@ -2141,12 +2175,13 @@ this.DebugOutputValidationErrors("10", "[[1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@]]")]
         public virtual void DebugOutputValidationErrors_Variant8()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("11", "[[@]]", ((string[])(null)));
 #line hidden
         }
@@ -2156,12 +2191,13 @@ this.DebugOutputValidationErrors("11", "[[@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]00]]")]
         public virtual void DebugOutputValidationErrors_Variant9()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
 #line hidden
         }
@@ -2171,12 +2207,13 @@ this.DebugOutputValidationErrors("13", "[[var]]00]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]@]]")]
         public virtual void DebugOutputValidationErrors_Variant10()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
 #line hidden
         }
@@ -2186,12 +2223,13 @@ this.DebugOutputValidationErrors("14", "[[var]]@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
         public virtual void DebugOutputValidationErrors_Variant11()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
 #line hidden
         }
@@ -2201,12 +2239,13 @@ this.DebugOutputValidationErrors("15", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[]]")]
         public virtual void DebugOutputValidationErrors_Variant12()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
 #line hidden
         }
@@ -2216,12 +2255,13 @@ this.DebugOutputValidationErrors("16", "[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[()]]")]
         public virtual void DebugOutputValidationErrors_Variant13()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
 #line hidden
         }
@@ -2231,12 +2271,13 @@ this.DebugOutputValidationErrors("17", "[[()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
         public virtual void DebugOutputValidationErrors_Variant14()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
 #line hidden
         }
@@ -2246,12 +2287,13 @@ this.DebugOutputValidationErrors("28", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
         public virtual void DebugOutputValidationErrors_Variant15()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
 #line hidden
         }
@@ -2261,12 +2303,13 @@ this.DebugOutputValidationErrors("29", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()!a]]")]
         public virtual void DebugOutputValidationErrors_Variant16()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
 #line hidden
         }
@@ -2276,12 +2319,13 @@ this.DebugOutputValidationErrors("20", "[[rec()!a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
         public virtual void DebugOutputValidationErrors_Variant17()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null)));
 #line hidden
         }
@@ -2291,12 +2335,13 @@ this.DebugOutputValidationErrors("21", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
         public virtual void DebugOutputValidationErrors_Variant18()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
 #line hidden
         }
@@ -2306,12 +2351,13 @@ this.DebugOutputValidationErrors("22", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
         public virtual void DebugOutputValidationErrors_Variant19()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2321,12 +2367,13 @@ this.DebugOutputValidationErrors("23", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()")]
         public virtual void DebugOutputValidationErrors_Variant20()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
 #line hidden
         }
@@ -2336,12 +2383,13 @@ this.DebugOutputValidationErrors("24", "[[rec()", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "a[[rec([[[[b]]]]).a]]@")]
         public virtual void DebugOutputValidationErrors_Variant21()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(null)));
 #line hidden
         }
@@ -2351,12 +2399,13 @@ this.DebugOutputValidationErrors("25", "a[[rec([[[[b]]]]).a]]@", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
         public virtual void DebugOutputValidationErrors_Variant22()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
 #line hidden
         }
@@ -2366,12 +2415,13 @@ this.DebugOutputValidationErrors("26", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var@]]")]
         public virtual void DebugOutputValidationErrors_Variant23()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
 #line hidden
         }
@@ -2381,12 +2431,13 @@ this.DebugOutputValidationErrors("27", "[[var@]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]]]")]
         public virtual void DebugOutputValidationErrors_Variant24()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2396,12 +2447,13 @@ this.DebugOutputValidationErrors("29", "[[var]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[(1var)]]")]
         public virtual void DebugOutputValidationErrors_Variant25()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
 #line hidden
         }
@@ -2411,12 +2463,13 @@ this.DebugOutputValidationErrors("30", "[[(1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[1var)]]")]
         public virtual void DebugOutputValidationErrors_Variant26()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
 #line hidden
         }
@@ -2426,12 +2479,13 @@ this.DebugOutputValidationErrors("31", "[[1var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.()]]")]
         public virtual void DebugOutputValidationErrors_Variant27()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
 #line hidden
         }
@@ -2441,12 +2495,13 @@ this.DebugOutputValidationErrors("32", "[[var.()]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var  ]]")]
         public virtual void DebugOutputValidationErrors_Variant28()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
 #line hidden
         }
@@ -2456,12 +2511,13 @@ this.DebugOutputValidationErrors("33", "[[var  ]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var~]]")]
         public virtual void DebugOutputValidationErrors_Variant29()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
 #line hidden
         }
@@ -2471,12 +2527,13 @@ this.DebugOutputValidationErrors("34", "[[var~]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var+]]")]
         public virtual void DebugOutputValidationErrors_Variant30()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
 #line hidden
         }
@@ -2486,12 +2543,13 @@ this.DebugOutputValidationErrors("35", "[[var+]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]a]]")]
         public virtual void DebugOutputValidationErrors_Variant31()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
 #line hidden
         }
@@ -2501,12 +2559,13 @@ this.DebugOutputValidationErrors("36", "[[var]a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[a]]")]
         public virtual void DebugOutputValidationErrors_Variant32()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
 #line hidden
         }
@@ -2516,12 +2575,13 @@ this.DebugOutputValidationErrors("37", "[[var[a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var 1]]")]
         public virtual void DebugOutputValidationErrors_Variant33()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
 #line hidden
         }
@@ -2531,12 +2591,13 @@ this.DebugOutputValidationErrors("38", "[[var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[]]")]
         public virtual void DebugOutputValidationErrors_Variant34()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
 #line hidden
         }
@@ -2546,12 +2607,13 @@ this.DebugOutputValidationErrors("39", "[[var[[]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var[[1]]]]")]
         public virtual void DebugOutputValidationErrors_Variant35()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2561,12 +2623,13 @@ this.DebugOutputValidationErrors("40", "[[var[[1]]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var.a]]")]
         public virtual void DebugOutputValidationErrors_Variant36()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
 #line hidden
         }
@@ -2576,12 +2639,13 @@ this.DebugOutputValidationErrors("41", "[[var.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var1.a]]")]
         public virtual void DebugOutputValidationErrors_Variant37()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
 #line hidden
         }
@@ -2591,12 +2655,13 @@ this.DebugOutputValidationErrors("42", "[[var1.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[[[a]].[[b]]]]cd]]")]
         public virtual void DebugOutputValidationErrors_Variant38()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null)));
 #line hidden
         }
@@ -2606,12 +2671,13 @@ this.DebugOutputValidationErrors("43", "[[[[a]].[[b]]]]cd]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var*]]")]
         public virtual void DebugOutputValidationErrors_Variant39()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
 #line hidden
         }
@@ -2621,12 +2687,13 @@ this.DebugOutputValidationErrors("44", "[[var*]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[#var]]")]
         public virtual void DebugOutputValidationErrors_Variant40()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
 #line hidden
         }
@@ -2636,12 +2703,13 @@ this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]](var)]]")]
         public virtual void DebugOutputValidationErrors_Variant41()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
 #line hidden
         }
@@ -2651,12 +2719,13 @@ this.DebugOutputValidationErrors("47", "[[var]](var)]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var,]]")]
         public virtual void DebugOutputValidationErrors_Variant42()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
 #line hidden
         }
@@ -2666,12 +2735,13 @@ this.DebugOutputValidationErrors("48", "[[var,]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[:var 1]]")]
         public virtual void DebugOutputValidationErrors_Variant43()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
 #line hidden
         }
@@ -2681,12 +2751,13 @@ this.DebugOutputValidationErrors("49", "[[:var 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[,var]]")]
         public virtual void DebugOutputValidationErrors_Variant44()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
 #line hidden
         }
@@ -2696,12 +2767,13 @@ this.DebugOutputValidationErrors("50", "[[,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test,var]]")]
         public virtual void DebugOutputValidationErrors_Variant45()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
 #line hidden
         }
@@ -2711,12 +2783,13 @@ this.DebugOutputValidationErrors("51", "[[test,var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. var]]")]
         public virtual void DebugOutputValidationErrors_Variant46()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
 #line hidden
         }
@@ -2726,12 +2799,13 @@ this.DebugOutputValidationErrors("52", "[[test. var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test.var]]")]
         public virtual void DebugOutputValidationErrors_Variant47()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
 #line hidden
         }
@@ -2741,12 +2815,13 @@ this.DebugOutputValidationErrors("53", "[[test.var]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[test. 1]]")]
         public virtual void DebugOutputValidationErrors_Variant48()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
 #line hidden
         }
@@ -2756,12 +2831,13 @@ this.DebugOutputValidationErrors("54", "[[test. 1]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(*).&]]")]
         public virtual void DebugOutputValidationErrors_Variant49()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
 #line hidden
         }
@@ -2771,12 +2847,13 @@ this.DebugOutputValidationErrors("55", "[[rec(*).&]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(),a]]")]
         public virtual void DebugOutputValidationErrors_Variant50()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
 #line hidden
         }
@@ -2786,12 +2863,13 @@ this.DebugOutputValidationErrors("56", "[[rec(),a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()         a]]")]
         public virtual void DebugOutputValidationErrors_Variant51()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null)));
 #line hidden
         }
@@ -2801,12 +2879,13 @@ this.DebugOutputValidationErrors("57", "[[rec()         a]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(1).[[rec().1]]]]")]
         public virtual void DebugOutputValidationErrors_Variant52()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2816,12 +2895,13 @@ this.DebugOutputValidationErrors("58", "[[rec(1).[[rec().1]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(a).[[rec().a]]]]")]
         public virtual void DebugOutputValidationErrors_Variant53()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2831,12 +2911,13 @@ this.DebugOutputValidationErrors("59", "[[rec(a).[[rec().a]]]]", ((string[])(nul
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[{{rec(_).a}}]]]")]
         public virtual void DebugOutputValidationErrors_Variant54()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
 #line hidden
         }
@@ -2846,12 +2927,13 @@ this.DebugOutputValidationErrors("60", "[[{{rec(_).a}}]]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[*[{{rec(_).a}}]]]")]
         public virtual void DebugOutputValidationErrors_Variant55()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null)));
 #line hidden
         }
@@ -2861,12 +2943,13 @@ this.DebugOutputValidationErrors("61", "[[*[{{rec(_).a}}]]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var}]]]]")]
         public virtual void DebugOutputValidationErrors_Variant56()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2876,12 +2959,13 @@ this.DebugOutputValidationErrors("62", "[[rec(23).[[var}]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var*]]]]")]
         public virtual void DebugOutputValidationErrors_Variant57()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2891,12 +2975,13 @@ this.DebugOutputValidationErrors("63", "[[rec(23).[[var*]]]]", ((string[])(null)
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(23).[[var%^&%]]]]")]
         public virtual void DebugOutputValidationErrors_Variant58()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(null)));
 #line hidden
         }
@@ -2906,12 +2991,13 @@ this.DebugOutputValidationErrors("64", "[[rec(23).[[var%^&%]]]]", ((string[])(nu
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]234234]]")]
         public virtual void DebugOutputValidationErrors_Variant59()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null)));
 #line hidden
         }
@@ -2921,12 +3007,13 @@ this.DebugOutputValidationErrors("65", "[[rec().a]]234234]]", ((string[])(null))
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]=]]")]
         public virtual void DebugOutputValidationErrors_Variant60()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
 #line hidden
         }
@@ -2936,12 +3023,13 @@ this.DebugOutputValidationErrors("66", "[[rec().a]]=]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()..]]")]
         public virtual void DebugOutputValidationErrors_Variant61()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
 #line hidden
         }
@@ -2951,12 +3039,13 @@ this.DebugOutputValidationErrors("67", "[[rec()..]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a.b]]")]
         public virtual void DebugOutputValidationErrors_Variant62()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
 #line hidden
         }
@@ -2966,12 +3055,13 @@ this.DebugOutputValidationErrors("68", "[[rec().a.b]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]].a]]")]
         public virtual void DebugOutputValidationErrors_Variant63()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
 #line hidden
         }
@@ -2981,12 +3071,13 @@ this.DebugOutputValidationErrors("69", "[[rec().a]].a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(@).a]]")]
         public virtual void DebugOutputValidationErrors_Variant64()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
 #line hidden
         }
@@ -2996,12 +3087,13 @@ this.DebugOutputValidationErrors("70", "[[rec(@).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(().a]]")]
         public virtual void DebugOutputValidationErrors_Variant65()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
 #line hidden
         }
@@ -3011,12 +3103,13 @@ this.DebugOutputValidationErrors("71", "[[rec(().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()).a]]")]
         public virtual void DebugOutputValidationErrors_Variant66()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3026,12 +3119,13 @@ this.DebugOutputValidationErrors("72", "[[rec()).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(+).a]]")]
         public virtual void DebugOutputValidationErrors_Variant67()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3041,12 +3135,13 @@ this.DebugOutputValidationErrors("73", "[[rec(+).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-).a]]")]
         public virtual void DebugOutputValidationErrors_Variant68()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3056,12 +3151,13 @@ this.DebugOutputValidationErrors("74", "[[rec(-).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(!).a]]")]
         public virtual void DebugOutputValidationErrors_Variant69()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3071,12 +3167,13 @@ this.DebugOutputValidationErrors("75", "[[rec(!).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(q).a]]")]
         public virtual void DebugOutputValidationErrors_Variant70()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3086,12 +3183,13 @@ this.DebugOutputValidationErrors("76", "[[rec(q).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(w).a]]")]
         public virtual void DebugOutputValidationErrors_Variant71()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3101,12 +3199,13 @@ this.DebugOutputValidationErrors("77", "[[rec(w).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(.).a]]")]
         public virtual void DebugOutputValidationErrors_Variant72()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3116,12 +3215,13 @@ this.DebugOutputValidationErrors("78", "[[rec(.).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(:).a]]")]
         public virtual void DebugOutputValidationErrors_Variant73()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3131,12 +3231,13 @@ this.DebugOutputValidationErrors("79", "[[rec(:).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(,).a]]")]
         public virtual void DebugOutputValidationErrors_Variant74()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
 #line hidden
         }
@@ -3146,12 +3247,13 @@ this.DebugOutputValidationErrors("80", "[[rec(,).a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant75()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
 #line hidden
         }
@@ -3161,12 +3263,13 @@ this.DebugOutputValidationErrors("81", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant76()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
 #line hidden
         }
@@ -3176,12 +3279,13 @@ this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\").a]]")]
         public virtual void DebugOutputValidationErrors_Variant77()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
 #line hidden
         }
@@ -3191,12 +3295,13 @@ this.DebugOutputValidationErrors("83", "[[rec\").a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a]]")]
         public virtual void DebugOutputValidationErrors_Variant78()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
 #line hidden
         }
@@ -3206,12 +3311,13 @@ this.DebugOutputValidationErrors("84", "[[rec{a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec{a}]]")]
         public virtual void DebugOutputValidationErrors_Variant79()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
 #line hidden
         }
@@ -3221,12 +3327,13 @@ this.DebugOutputValidationErrors("85", "[[rec{a}]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec()*.a]]")]
         public virtual void DebugOutputValidationErrors_Variant80()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
 #line hidden
         }
@@ -3236,12 +3343,13 @@ this.DebugOutputValidationErrors("86", "[[rec()*.a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec(-1).a")]
         public virtual void DebugOutputValidationErrors_Variant81()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
 #line hidden
         }
@@ -3251,12 +3359,13 @@ this.DebugOutputValidationErrors("89", "[[rec(-1).a", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
         public virtual void DebugOutputValidationErrors_Variant82()
         {
-#line 466
+#line 467
 this.DebugOutputValidationErrors("90", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", ((string[])(null)));
 #line hidden
         }
@@ -3264,16 +3373,16 @@ this.DebugOutputValidationErrors("90", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1
         public virtual void SplitDataUsingScalarsAndRecordsets(string no, string @string, string variable, string type, string @using, string escape, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split data using scalars and recordsets", exampleTags);
-#line 562
-this.ScenarioSetup(scenarioInfo);
 #line 563
- testRunner.Given(string.Format("A string to split with value \"{0}\"", @string), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 564
+ testRunner.Given(string.Format("A string to split with value \"{0}\"", @string), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 565
  testRunner.And(string.Format("assign to variable \"{0}\" split type \"{1}\" at \"{2}\" and Include \"Selected\" and Esc" +
                         "ape \"\"", variable, type, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 565
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 566
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 567
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3296,13 +3405,13 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", @using),
                         "Yes",
                         ""});
-#line 567
+#line 568
  testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 570
+#line 571
  testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3313,6 +3422,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "[[var]]")]
@@ -3323,7 +3433,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
         public virtual void SplitDataUsingScalarsAndRecordsets_1()
         {
-#line 562
+#line 563
 this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", "", "AN", ((string[])(null)));
 #line hidden
         }
@@ -3333,6 +3443,7 @@ this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "Warewolf")]
@@ -3343,7 +3454,7 @@ this.SplitDataUsingScalarsAndRecordsets("1", "[[var]]", "\"\"", "Index", "1", ""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
         public virtual void SplitDataUsingScalarsAndRecordsets_2()
         {
-#line 562
+#line 563
 this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "", "AN", ((string[])(null)));
 #line hidden
         }
@@ -3353,6 +3464,7 @@ this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:String", "Warewolf")]
@@ -3363,7 +3475,7 @@ this.SplitDataUsingScalarsAndRecordsets("2", "Warewolf", "[[var]]", "", "1", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "AN")]
         public virtual void SplitDataUsingScalarsAndRecordsets_3()
         {
-#line 562
+#line 563
 this.SplitDataUsingScalarsAndRecordsets("3", "Warewolf", "[[a]] = \"\"", "", "1", "", "AN", ((string[])(null)));
 #line hidden
         }
@@ -3371,16 +3483,16 @@ this.SplitDataUsingScalarsAndRecordsets("3", "Warewolf", "[[a]] = \"\"", "", "1"
         public virtual void DebugOutputValidationErrorsX(string no, string variable, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug output Validation errors x", exampleTags);
-#line 578
-this.ScenarioSetup(scenarioInfo);
 #line 579
- testRunner.Given("A string to split with value \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 580
+ testRunner.Given("A string to split with value \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 581
  testRunner.And(string.Format("assign to variable \"{0}\" split type \"Index\" at \"5\" and Include \"Selected\" and Esc" +
                         "ape \"\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 581
- testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 582
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 583
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3391,12 +3503,13 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec().a]]")]
         public virtual void DebugOutputValidationErrorsX_1()
         {
-#line 578
+#line 579
 this.DebugOutputValidationErrorsX("1", "[[rec().a]]", ((string[])(null)));
 #line hidden
         }
@@ -3406,17 +3519,18 @@ this.DebugOutputValidationErrorsX("1", "[[rec().a]]", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextFormatIntoRecordset_WithEscapeValue()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With Escape value", ((string[])(null)));
-#line 587
-this.ScenarioSetup(scenarioInfo);
 #line 588
- testRunner.Given("A string to split with value \"a,b,bob\\\',c,d\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 589
+ testRunner.Given("A string to split with value \"a,b,bob\\\',c,d\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 590
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
                     "ed\" and Escape \"\\\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 590
+#line 591
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3434,9 +3548,9 @@ this.ScenarioSetup(scenarioInfo);
             table61.AddRow(new string[] {
                         "rec().id",
                         "d"});
-#line 591
+#line 592
  testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table61, "Then ");
-#line 597
+#line 598
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3459,7 +3573,7 @@ this.ScenarioSetup(scenarioInfo);
                         ",",
                         "No",
                         "\"\\\'\""});
-#line 598
+#line 599
  testRunner.And("the debug inputs as", ((string)(null)), table62, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3477,7 +3591,7 @@ this.ScenarioSetup(scenarioInfo);
             table63.AddRow(new string[] {
                         "",
                         "[[rec(4).id]] = d"});
-#line 601
+#line 602
  testRunner.And("the debug output as", ((string)(null)), table63, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3488,17 +3602,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("x86\\SQLite.Interop.dll")]
         public virtual void SplitTextFormatIntoRecordset_WithNewLineValue()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text format into recordset - With NewLine value", ((string[])(null)));
-#line 608
-this.ScenarioSetup(scenarioInfo);
 #line 609
- testRunner.Given("A string to split with new line value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 610
+ testRunner.Given("A string to split with new line value", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 611
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \"\\r\\n2\" and Include \"unse" +
                     "lected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 611
+#line 612
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3510,9 +3625,9 @@ this.ScenarioSetup(scenarioInfo);
             table64.AddRow(new string[] {
                         "rec().id",
                         "ff"});
-#line 612
+#line 613
  testRunner.Then("the split recordset \"[[rec(*).id]]\" will be", ((string)(null)), table64, "Then ");
-#line 616
+#line 617
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3535,7 +3650,7 @@ this.ScenarioSetup(scenarioInfo);
                         "\\r\n2",
                         "No",
                         "\"\""});
-#line 617
+#line 618
  testRunner.And("the debug inputs as", ((string)(null)), table65, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3547,7 +3662,7 @@ this.ScenarioSetup(scenarioInfo);
             table66.AddRow(new string[] {
                         "",
                         "[[rec(2).id]] = ff"});
-#line 620
+#line 621
  testRunner.And("the debug output as", ((string)(null)), table66, "And ");
 #line hidden
             this.ScenarioCleanup();
