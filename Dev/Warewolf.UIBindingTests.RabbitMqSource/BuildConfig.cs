@@ -4,7 +4,7 @@ using Warewolf.Launcher;
 namespace Dev2.Activities.Specs
 {
     [TestClass]
-    class BuildConfig
+    public class BuildConfig
     {
         [AssemblyInitialize]
         public static void Apply(TestContext context)
