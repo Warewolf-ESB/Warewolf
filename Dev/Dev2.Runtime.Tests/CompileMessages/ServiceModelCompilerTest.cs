@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.CompileMessages
     public class ServiceModelCompilerTest
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CanCompileWorkflowAndDetectMappingCountChange()
         {
             var smc = new ServiceModelCompiler();
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.CompileMessages
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CanCompileWorkflowAndDetectMappingNameChange()
         {
             var smc = new ServiceModelCompiler();
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.CompileMessages
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CanCompileWorkflowAndDetectMappingChangeWhenIODirectionChanges()
         {
             var smc = new ServiceModelCompiler();

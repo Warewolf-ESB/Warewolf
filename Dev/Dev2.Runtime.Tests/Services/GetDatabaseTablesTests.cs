@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]    
     public class GetDatabaseTablesTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("No database set.", result.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Invalid JSON data for Database parameter. Exception: Unexpected character encountered while parsing value: T. Path '', line 0, position 0.", result.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Invalid Database source", result.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("MSSql")]
         public void GetDatabaseTables_Execute_ValidDatabaseSource()
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Warewolf", warewolfCityTable.Schema);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MSSql")]
         public void GetDatabaseTables_Execute_InValidDatabaseName()
@@ -214,7 +214,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]
         public void GetDatabaseTables_UnitTest_HandlesType_ExpectedReturnsGetDatabaseTablesService()
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         [TestCategory("MSSql")]

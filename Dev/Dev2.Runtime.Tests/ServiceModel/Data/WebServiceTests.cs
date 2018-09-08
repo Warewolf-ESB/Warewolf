@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         #region CTOR
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceConstructorExpectedCorrectWebService()
         {
             //------------Setup for test--------------------------
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceContructorWithDefaultExpectedInitializesProperties()
         {
             var service = new WebService();
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebService", service.ResourceType);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServiceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebService", service.ResourceType);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceContructorWithValidXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("WebService");
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceToXmlExpectedSerializesProperties()
         {
             var expected = new WebService
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ToXml")]
         public void WebService_ToXml_WhenRequestValuesHaveEnter_ShouldBeRespectedWhenReHydrated()
@@ -267,7 +267,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region Dispose
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServiceDisposeExpectedDisposesAndNullsSource()
         {
             var service = new WebService { Source = new WebSource() };
@@ -304,7 +304,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ApplyPath")]
         public void WebService_ApplyPath_WhenResponseDataNull_NothingHappens()
@@ -317,7 +317,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(webService.RequestResponse);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ApplyPath")]
         public void WebService_ApplyPath_WhenResponseDataEmpty_NothingHappens()
@@ -330,7 +330,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("", webService.RequestResponse);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ApplyPath")]
         public void WebService_ApplyPath_WhenJsonPathNull_NothingHappens()
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expected, webService.RequestResponse);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ApplyPath")]
         public void WebService_ApplyPath_WhenJsonPathEmpty_NothingHappens()
@@ -362,7 +362,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expected, webService.RequestResponse);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebService_ApplyPath")]
         public void WebService_ApplyPath_ResponseDataNotJsonData_ExceptionThrown()

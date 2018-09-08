@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class GetFilesTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void HandlesType_Returns_GetFiles()
         {
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("GetFiles", getFiles.HandlesType());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_Returns_EmptyGuid()
         {
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetAuthorizationContextForService_Returns_Any()
         {
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, authorizationContextForService);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void BuildFileListing_Given_FileInfo_Returns_NewFileListing()
         {

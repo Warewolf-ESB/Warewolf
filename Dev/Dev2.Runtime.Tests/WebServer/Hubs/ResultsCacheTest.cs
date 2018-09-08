@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
     {
         
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_ContainsPendingRequestForUser")]
         public void ResultsCache_ContainsPendingRequestForUser_WhenValidKey_ExpectTrue()
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_ContainsPendingRequestForUser")]
         public void ResultsCache_ContainsPendingRequestForUser_WhenValidKeyNotExist_ExpectFalce()
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_ContainsPendingRequestForUser")]
         public void ResultsCache_ContainsPendingRequestForUser_WhenValidKeyPartialMatch_ExpectFalce()
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_ContainsPendingRequestForUser")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             ResultsCache.Instance.ContainsPendingRequestForUser(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_ContainsPendingRequestForUser")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             ResultsCache.Instance.ContainsPendingRequestForUser(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_AddResult")]
         public void ResultsCache_AddResult_WhenValidKey_ExpectAdded()
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_AddResult")]
         [ExpectedException(typeof(Exception))]
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_AddResult")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_AddResult")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_AddResult")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_FetchResult")]
         public void ResultsCache_FetchResult_WhenValidKey_ExpectResult()
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_FetchResult")]
         public void ResultsCache_FetchResult_WhenKeyNotPresent_ExpectEmptyString()
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.AreEqual(string.Empty, result, "Non-empty string on invalid key");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_FetchResult")]
         [ExpectedException(typeof(Exception))]
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             ResultsCache.Instance.FetchResult(reciept);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ResultsCache_FetchResult")]
         [ExpectedException(typeof(ArgumentNullException))]
