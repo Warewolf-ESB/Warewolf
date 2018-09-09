@@ -4,12 +4,9 @@ using Warewolf.Launcher;
 namespace Dev2.Activities.Specs
 {
     [TestClass]
-    public class BuildConfig
+    public static class BuildConfig
     {
         [AssemblyInitialize]
-        public static void Apply(TestContext context)
-        {
-            TestLauncher.DisableDocker = Job_Definitions.GetDisableDockerValue();
-        }
+        public static void Apply(TestContext context) => TestLauncher.EnableDocker = Job_Definitions.GetDisableDockerValue();
     }
 }
