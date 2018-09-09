@@ -2231,13 +2231,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 30 seconds")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 seconds")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SqlBulkInsert")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute("EnableDocker.txt")]
-        public virtual void ImportDataIntoTableTimeoutAfter30Seconds()
+        public virtual void ImportDataIntoTableTimeoutAfter3Seconds()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 30 seconds", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 seconds", ((string[])(null)));
 #line 308
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -2260,7 +2260,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 309
  testRunner.Given("I have this data", ((string)(null)), table37, "Given ");
 #line 314
- testRunner.And("Timeout in 30 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 315
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 316
