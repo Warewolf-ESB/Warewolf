@@ -214,7 +214,14 @@ namespace Warewolf.Launcher
             //    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
             //}
             //return JobDefinitionsCSV == "False";
-            return File.ReadAllText("EnableDocker.txt") == "True";
+            if (File.Exists("EnableDocker.txt"))
+            {
+                return File.ReadAllText("EnableDocker.txt") == "True";
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
