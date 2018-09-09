@@ -99,7 +99,7 @@ namespace Warewolf.UI.Tests
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
             ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists, "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();

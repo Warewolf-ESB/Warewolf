@@ -87,6 +87,18 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             }
         }
         
+        public ComboboxItemAsRemoteConnectionIntegration ComboboxItemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxItemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxItemAsRemoteConnectionIntegration = new ComboboxItemAsRemoteConnectionIntegration(this);
+                }
+                return this.mComboboxItemAsRemoteConnectionIntegration;
+            }
+        }
+        
         public CodedUITestServerSourceDuplicated CodedUITestServerSourceDuplicated
         {
             get
@@ -104,6 +116,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         private DockManager mDockManager;
         
         private ComboboxItemAsRemoteContainer mComboboxItemAsRemoteContainer;
+        
+        private ComboboxItemAsRemoteConnectionIntegration mComboboxItemAsRemoteConnectionIntegration;
         
         private CodedUITestServerSourceDuplicated mCodedUITestServerSourceDuplicated;
         #endregion
@@ -2467,7 +2481,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
                 {
                     this.mRemoteConnectionItemText = new WpfText(this);
                     #region Search Criteria
-                    this.mRemoteConnectionItemText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionItemText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Container";
                     this.mRemoteConnectionItemText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -2478,6 +2492,43 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         
         #region Fields
         private WpfText mRemoteConnectionItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ComboboxItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RemoteConnectionIntegrationItemText
+        {
+            get
+            {
+                if ((this.mRemoteConnectionIntegrationItemText == null))
+                {
+                    this.mRemoteConnectionIntegrationItemText = new WpfText(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionIntegrationItemText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionIntegrationItemText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRemoteConnectionIntegrationItemText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRemoteConnectionIntegrationItemText;
         #endregion
     }
     
