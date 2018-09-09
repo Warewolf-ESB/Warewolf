@@ -697,6 +697,18 @@ namespace Warewolf.UI.Tests
             }
         }
         
+        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
+                }
+                return this.mComboboxListItemAsRemoteConnectionIntegration;
+            }
+        }
+        
         public ComboboxListItemAsRestrictedRemoteConnection ComboboxListItemAsRestrictedRemoteConnection
         {
             get
@@ -1169,6 +1181,8 @@ namespace Warewolf.UI.Tests
         private UnpinnedTabContextMenu mUnpinnedTabContextMenu;
         
         private ComboboxListItemAsRemoteContainer mComboboxListItemAsRemoteContainer;
+        
+        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         
         private ComboboxListItemAsRestrictedRemoteConnection mComboboxListItemAsRestrictedRemoteConnection;
         
@@ -19629,6 +19643,43 @@ namespace Warewolf.UI.Tests
                     this.mText = new WpfText(this);
                     #region Search Criteria
                     this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Container", PropertyExpressionOperator.Contains));
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
