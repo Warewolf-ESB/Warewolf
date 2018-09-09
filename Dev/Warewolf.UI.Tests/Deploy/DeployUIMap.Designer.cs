@@ -768,6 +768,22 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             }
         }
         
+        public WpfText RemoteConnectionIntegrationText
+        {
+            get
+            {
+                if ((this.mRemoteConnectionIntegrationText == null))
+                {
+                    this.mRemoteConnectionIntegrationText = new WpfText(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionIntegrationText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+                    this.mRemoteConnectionIntegrationText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mRemoteConnectionIntegrationText;
+            }
+        }
+        
         public WpfText ConnectedLocalhostText
         {
             get
@@ -805,6 +821,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         private WpfButton mToggleButton;
         
         private WpfText mRemoteContainerText;
+        
+        private WpfText mRemoteConnectionIntegrationText;
         
         private WpfText mConnectedLocalhostText;
         
