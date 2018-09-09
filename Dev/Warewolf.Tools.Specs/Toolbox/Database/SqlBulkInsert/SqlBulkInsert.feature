@@ -305,7 +305,7 @@ Scenario: Import data into Table Batch size is 2
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        | 2          |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 
-Scenario: Import data into Table timeout after 3 seconds
+Scenario: Import data into Table timeout after 3 second
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
