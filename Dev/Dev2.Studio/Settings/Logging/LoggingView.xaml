@@ -12,6 +12,8 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+             xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+             xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              d:DesignHeight="1000"
              d:DesignWidth="1000"
              mc:Ignorable="d"
@@ -71,6 +73,12 @@
                                                 ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}"
                                                 Style="{StaticResource AutoCompleteBoxStyle}"
                                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                    <interfaceImplementors:DefaultIntellisenseProvider />
+                                    <provider:FileSystemIntellisenseProvider />
+                                </interfaceImplementors:CompositeIntellisenseProvider>
+                            </ui:IntellisenseTextBox.IntellisenseProvider>
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewAuditsFilePathHelpText}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
