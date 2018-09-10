@@ -150,7 +150,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I setup Public Permissions for \"ResourceWithViewAndExecutePerm\" for Remote Server" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.When("I Select Remote Container From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Select RemoteConnectionIntegration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
  testRunner.And("I Click Edit Server Button From Explorer Connect Control", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25

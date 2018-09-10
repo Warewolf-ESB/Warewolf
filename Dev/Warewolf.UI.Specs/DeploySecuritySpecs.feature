@@ -20,7 +20,7 @@ Scenario: Changing Resource Permissions From Explorer Deploy Shows Changes
 	When I Click Deploy Ribbon Button
 	Given I setup Public Permissions for "ResourceWithViewAndExecutePerm" for localhost
 	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
-	When I Select Remote Container From Explorer
+	When I Select RemoteConnectionIntegration From Explorer
 	And I Click Edit Server Button From Explorer Connect Control
 	And I Change Permissions For Resource "ResourceWithViewAndExecutePerm" and Validate
 

@@ -40,7 +40,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And I Enter "ResourceToDeployInADifferentPath" Into Deploy Source Filter
 	And I Select Deploy First Source Item
 	And I Click Deploy Tab Deploy Button
-	And I Select Remote Container From Explorer
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	And I Refresh Explorer
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
@@ -49,6 +49,6 @@ Scenario: Changing Selected Server On Deploy Source While Connected To Remote Se
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Select Remote Container From Explorer
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 
