@@ -1633,6 +1633,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Path to stored the audit database. The default will be stored at C:\ProgramData\Warewolf\Audits.
+        /// </summary>
+        public static string LoggingViewAuditsFilePathHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewAuditsFilePathHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;	Server Fatal Events&lt;br /&gt;	Server Error Events&lt;br /&gt;	Server Warning Events&lt;br /&gt;	Server Pulse Data&lt;br /&gt;	Server System Activity.
         /// </summary>
         public static string LoggingViewServerEventLogDebugHelpText {
