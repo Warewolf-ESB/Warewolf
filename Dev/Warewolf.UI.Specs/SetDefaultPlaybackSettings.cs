@@ -26,6 +26,6 @@ namespace Warewolf.UISpecs
 
         [AfterFeature("Deploy")]
         [AfterFeature("Explorer")]
-        public static void StopRemoteContainer() => _containerOps.Dispose();
+        public static void StopRemoteContainer() => _containerOps?.Dispose();
     }
 }

@@ -28,7 +28,7 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I RightClick Explorer Localhost First Item
 	And I Select Deploy From Explorer Context Menu
 	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server Remote Container Item
+	And I Click Deploy Tab Destination Server Remote Connection Integration Item
 	Then Deploy Button Is Enabled
 	When I Click Deploy Tab Deploy Button And Cancel
 	Then The Deploy Tab is visible
