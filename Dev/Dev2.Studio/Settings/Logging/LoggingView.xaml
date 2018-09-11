@@ -32,9 +32,9 @@
             <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="33*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="46*"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" 

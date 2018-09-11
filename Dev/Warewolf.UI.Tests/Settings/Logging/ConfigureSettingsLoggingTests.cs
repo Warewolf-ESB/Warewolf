@@ -17,7 +17,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.Enabled, "Logging tab is disabled after the Configure/Setting Menu button is clicked");
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.Exists, "Current selected tab page is not Security after Configure/Setting Menu button is clicked");
             SettingsUIMap.Select_LoggingTab();
-            Assert.IsTrue(UIMap.ControlExistsNow(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.LoggingTypesComboBox));
+            Assert.IsTrue(UIMap.ControlExistsNow(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.LoggingTypesComboBox));
             SettingsUIMap.Click_Server_Log_File_Button();
             SettingsUIMap.Click_Studio_Log_File();
         }
@@ -30,11 +30,31 @@ namespace Warewolf.UI.Tests
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Select_Fatal_Event_Log();
             UIMap.Click_Save_RibbonButton();
+            SettingsUIMap.Click_Close_Settings_Tab_Button();
+            UIMap.Click_ConfigureSetting_From_Menu();
+            SettingsUIMap.Select_LoggingTab();
+            Assert.IsTrue(UIMap.ControlExistsNow(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.LoggingTypesComboBox.FatalOnlylogeventsthText));
+        }
+
+        [TestMethod]
+        [TestCategory("Settings")]
+        public void ChangeAuditsFilePath_ThenSave_PersistsChanges_UITest()
+        {
+            const string defaultPath = @"C:\ProgramData\Warewolf\Audits";
+            const string changedPath = @"C:\ProgramData\Warewolf\NewAudits";
+
+            UIMap.Click_ConfigureSetting_From_Menu();
+            SettingsUIMap.Select_LoggingTab();
+            SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+            SettingsUIMap.Update_Audits_File_Path(changedPath);
             UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
-            UIMap.Click_ConfigureSetting_From_Menu();            
+            UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
-            Assert.IsTrue(UIMap.ControlExistsNow(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.LoggingTypesComboBox.FatalOnlylogeventsthText));
+            // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
+            SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+            // RESET TO DEFAULT
+            SettingsUIMap.Update_Audits_File_Path(changedPath);
         }
 
         #region Additional test attributes
