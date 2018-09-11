@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests
     {
         const string SourceName = "CodedUITestEmailSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Source Wizards")]
         public void Create_Save_And_Edit_EmailSource_From_ExplorerContextMenu_UITests()
         {

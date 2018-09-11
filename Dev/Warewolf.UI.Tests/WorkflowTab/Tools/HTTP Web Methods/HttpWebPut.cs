@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class HttpWebPut
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_Small_And_LargeView_UITest()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Enabled, "Default Query Textbox is not enabled");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_GenerateOutputs_And_TestInputs_UITest()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_PUTWebTool_Outputs_DoneButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_Intellisense_UITest()
         {

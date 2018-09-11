@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using RUISDK_5_1_0;
+using RUISDK_5_3_1;
 using TechTalk.SpecFlow;
-using System.Configuration;
 
 namespace Dev2.Instrumentation.SpecflowTests
 {
@@ -13,25 +11,17 @@ namespace Dev2.Instrumentation.SpecflowTests
         [Given(@"I have revulytics instance")]
         public void GivenIHaveRevulyticsInstance()
         {
-            _tracker = new RevulyticsTracker
-            {
-                SdkFilePath = "C:\\",
-                ConfigFilePath = ConfigurationManager.AppSettings["ConfigFilePath"],
-                ProductId = ConfigurationManager.AppSettings["ProductID"],
-                AppName = ConfigurationManager.AppSettings["AppName"],
-                ProductUrl = ConfigurationManager.AppSettings["ProductUrl"],
-                AesHexKey = ConfigurationManager.AppSettings["AesHexKey"]
-            };
+             _tracker = RevulyticsTracker.GetTrackerInstance();
         }
-        
+
         [Given(@"I will call the EnableAppplicationTracker method")]
         public void GivenIWillCallTheEnableAppplicationTrackerMethod()
         {
-            string productVersion = "1.0.0.0";
-            string username = "windows\\raju";
-            _tracker.EnableAppplicationTracker(productVersion,username);
+            const string productVersion = "1.0.0.0";
+            const string username = "windows\\raju";
+            _tracker.EnableApplicationTracker(productVersion, username);
         }
-        
+
         [Then(@"I will check the status of revulytics tracker")]
         public void ThenIWillCheckTheStatusOfRevulyticsTracker()
         {

@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
             CustomContainer.Register(pCounter.Object);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("WebGetRequestHandler_ProcessRequest")]
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("WebGetRequestHandler_ProcessRequest")]
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContextWhenNullDataListID_ExpectExecution()

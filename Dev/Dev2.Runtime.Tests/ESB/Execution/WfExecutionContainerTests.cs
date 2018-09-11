@@ -13,7 +13,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     [TestClass]
     public class WfExecutionContainerTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_ShouldNotThrowException()
         {

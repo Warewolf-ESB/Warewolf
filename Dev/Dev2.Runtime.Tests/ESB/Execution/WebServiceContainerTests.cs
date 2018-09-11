@@ -12,7 +12,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     [TestClass]
     public class WebServiceContainerTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void WebServiceContainer_GivenGivenServiceExec_ShouldConstruct()
         {
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Test Result -----------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenValidArgs_ShouldExecuteCorrectly()
         {

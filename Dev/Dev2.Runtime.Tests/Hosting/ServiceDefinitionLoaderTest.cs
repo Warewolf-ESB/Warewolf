@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         // GenerateServiceGraph
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingSource_SourceIsLoaded()
@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkflow_WorkflowIsLoaded()
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkerService_ServiceIsLoaded()

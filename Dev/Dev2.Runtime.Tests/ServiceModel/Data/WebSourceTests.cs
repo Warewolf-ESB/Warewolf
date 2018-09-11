@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     {
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceContructorWithDefaultExpectedInitializesProperties()
         {
             var source = new WebSource();
@@ -31,14 +31,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebSource", source.ResourceType);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             var source = new WebSource(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebSource", source.ResourceType);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceContructorWithValidXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("WebSource");
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceToXmlExpectedSerializesProperties()
         {
             var expected = new WebSource
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region Dispose
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceDisposeClientExpectedDisposesAndNullsClient()
         {
             var source = new WebSource { Client = new WebClient() };
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(source.Client);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourceDisposeExpectedDisposesAndNullsClient()
         {
             var source = new WebSource { Client = new WebClient() };

@@ -109,16 +109,15 @@ namespace Dev2.Studio
 
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(System.Windows.StartupEventArgs e)
-        {      
+        {
             CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             //Create configuration for action tracker and start
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (applicationTracker != null)
-            {
-                applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
-            }            
+
+            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
-            
+
             Task.Factory.StartNew(() =>
             {
                 var dir = new DirectoryHelper();
@@ -170,7 +169,7 @@ namespace Dev2.Studio
             if (_hasDotNetFramweworkError)
             {
                 SplashView.CloseSplash(false);
-                var popupController = CustomContainer.Get<IPopupController>();                
+                var popupController = CustomContainer.Get<IPopupController>();
                 popupController.ShowInstallationErrorOccurred();
                 Shutdown();
             }
@@ -198,7 +197,7 @@ namespace Dev2.Studio
 #if DEBUG
             SetAsStarted();
         }
-        
+
         static void SetAsStarted()
         {
             try
@@ -216,7 +215,7 @@ namespace Dev2.Studio
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 #endif
-        } 
+        }
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
         {
@@ -363,15 +362,10 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
-            if (applicationTracker!=null)
-            {
-                //Stop the action tracking
-                applicationTracker.DisableAppplicationTracker();
-            }
-        
+            //Stop the action tracking
+            applicationTracker?.DisableApplicationTracker();
 
             SplashView.CloseSplash(true);
 

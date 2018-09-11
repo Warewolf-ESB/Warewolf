@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var pCounter = new Mock<IWarewolfPerformanceCounterLocater>();
             CustomContainer.Register(pCounter.Object);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Construnct_ShouldNotThrowException()
         {
@@ -39,7 +39,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(locator, "Cannot create new ServiceLocator object.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenNullServiceName_ShouldThrowExpection()
         {
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Assert.AreEqual(ErrorResource.ServiceIsNull, e.Message);
             }
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenEmptyServiceName_ShouldThrowExpection()
         {
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         public void FindService_GivenServiceName_ReturnsNull_ShouldUpdatePerfCounter()
         {
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNull(dynamicService);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenServiceName_ShouldReturnsCorreclty()
         {
@@ -133,7 +133,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenServiceName_InCache_ShouldReturnFromCache()
         {
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(dynamicService);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenServiceID_InCache_ShouldReturnFromCache()
         {
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Assert.Fail(e.Message);
             }
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         public void FindService_GivenResourceID_ReturnsNull_ShouldUpdatePerfCounter()
         {
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 Assert.Fail(e.Message);
             }
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenNullserviceID_ShouldThrowExpection_serviceID()
         {
@@ -240,7 +240,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
       
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenServiceName_ShouldReturnsCorreclty_serviceID()
         {
@@ -270,7 +270,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                Assert.Fail(e.Message);
             }
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindSourceByName_GivenNullServicename_ShouldThrowExpection()
         {
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
       
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void FindSourceByName_GivenServiceName_ShouldReturnsCorreclty_serviceID()
         {

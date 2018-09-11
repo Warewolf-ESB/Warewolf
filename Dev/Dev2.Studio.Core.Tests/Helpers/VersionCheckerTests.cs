@@ -51,26 +51,12 @@ namespace Dev2.Core.Tests.Helpers
             Assert.AreEqual(StringResources.Uri_Community_HomePage, startPage);
         }
 
-
-        #region IsLastest Tests
-
-        
-        #endregion
-
-
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionChecker_Ctor")]
         public void VersionChecker_Currentr_NullVersionChecker_ExpectException()
         {
-            //------------Setup for test--------------------------
-            
             new VersionChecker(new WarewolfWebClient(new WebClient()), null);
-
-
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]

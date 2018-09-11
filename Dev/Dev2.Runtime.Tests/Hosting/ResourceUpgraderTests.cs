@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
    public class ResourceUpgraderTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [ExpectedException(typeof(ArgumentNullException ))]
         [TestCategory("ResourceUpgrader_Ctor")]
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Properties")]
         public void ResourceUpgrader_Properties()
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
         }
-         [TestMethod]
+         [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_NoDictionary()
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Hosting
            Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
 
-               [TestMethod]
+               [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_EmptyDictionary()
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionaryDictionary()
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<b ServerVersion=\"" +upgrader.GetType().Assembly.GetName().Version + "\"></b>");
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionary_TwoUpgrades()
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<c ServerVersion=\"" + upgrader.GetType().Assembly.GetName().Version + "\"></c>");
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionary_TwoUpgrades_Only1Matches()

@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class WebServerRequestTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Rory McGuire")]
         [TestCategory("WebServerRequest")]
         public void WebServerRequest_CreateResponseWriter()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerRequest")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerRequest")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerRequest")]
         public void WebServerRequest_Constructor_PropertiesInitialized()
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.WebServer
             VerifyProperties(request, webServerRequest, content, queryStr, boundVars);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         [TestCategory("WebServerRequest")]
         public void WebServerRequest_GetContentEncoding_ParseSimpleEncoding()

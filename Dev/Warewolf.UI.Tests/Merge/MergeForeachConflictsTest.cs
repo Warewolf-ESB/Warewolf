@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
     {
         public const string MergeForeach = "MergeForeach";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_With_Foreach_Has_Conflicts()
         {
@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Choosing_CreateExampleData_And_OrganizeCustomers_Enabled_The_Connector()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem4.Difference.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Expanding_Foreach_Has_Convert_Tool_Inside()
         {
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.ConvertCase.Exists, "Current Foreach does not contain any tools inside it.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Conflicts_On_Start_Node_Arm()
         {
@@ -54,7 +54,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.Difference.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Current_And_Difference_Selected_Has_Foreach_And_CreatExampleData_On_Design_Surface()
         {
@@ -67,7 +67,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.CreaqteExampleDataAssign.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Has_Foreach_On_Design_Surface()
         {
