@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
     [TestClass]
     public class AuthorizationRequestHelperTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_HttpActionContext_RequestTypeIsParsedCorrectly()
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             });
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_HubDescriptor_RequestTypeIsParsedCorrectly()
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             }, WebServerRequestType.HubConnect);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_IHubIncomingInvokerContext_RequestTypeIsParsedCorrectly()

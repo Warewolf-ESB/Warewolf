@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     [CodedUITest]
     public class Service
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Resource Tools")]
         public void ServiceTool_UIBehaviourCheck_UITest()
         {

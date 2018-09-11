@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Storage_Dropbox
     [CodedUITest]
     public class List_Contents
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dropbox Tools")]
         public void DropboxListContentsTool_Small_And_LargeView_Then_NewSource_UITest()
         {

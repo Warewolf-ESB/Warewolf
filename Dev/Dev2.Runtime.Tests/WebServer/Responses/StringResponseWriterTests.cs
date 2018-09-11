@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
     [TestClass]
     public class StringResponseWriterTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(FormatException))]
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Write")]
         public void StringResponseWriter_Write_WebServerContext_WritesContent()
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             Assert.AreEqual(NewContent, task.Result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Write")]
         public void StringResponseWriter_Write_LargeContentWebServerContext_WritesContentAndUpdateContentDisposition()

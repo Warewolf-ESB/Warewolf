@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
     [CodedUITest]
     public class Read_Folder
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointReadFolderTool_Small_And_LargeView_Then_NewSource_UITest()
         {

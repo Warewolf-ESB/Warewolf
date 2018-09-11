@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     [TestClass]
     public class StateNotifierTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void StateNotifier_SubscribeToEventNotifications_Test()
         {
             var activityMock = new Mock<IDev2Activity>();

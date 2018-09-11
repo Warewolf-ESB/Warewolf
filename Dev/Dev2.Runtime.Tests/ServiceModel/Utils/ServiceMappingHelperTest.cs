@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceMappingHelper_MapDbOutputs")]
         public void ServiceMappingHelper_MapDbOutputs_WhenOutputsWithPaths_ExpectTwoOutputMappings()
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
             Assert.AreEqual(2, theService.Recordset.Fields.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceMappingHelper_MapDbOutputs")]
         public void ServiceMappingHelper_MapDbOutputs_WhenNoOutputsWithPaths_ExpectNoOutputMappings()
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
             Assert.AreEqual(0, theService.Recordset.Fields.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceMappingHelper_MapDbOutputs")]
         public void ServiceMappingHelper_MapDbOutputs_WhenNoOutputsContainNameWithDot_ExpectDotRemainsInNameReplacedInAlias()
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
             Assert.AreEqual("foobar", theService.Recordset.Fields[0].Alias);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceMappingHelper_MapDbOutputs")]
         public void ServiceMappingHelper_MapDbOutputs_WhenSampleDataContainsCommaReplacement_Expect10SampleItems()

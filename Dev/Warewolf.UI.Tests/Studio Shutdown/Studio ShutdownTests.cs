@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.Workflow
     [CodedUITest]
     public class Studio_ShutdownTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Studio Shutdown")]
         public void Studio_Close_KillsProcess_UITest()
         {

@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     [CodedUITest]
     public class Replace
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Data Tools")]
         public void ReplaceTool_OpenLargeViewUITest()
         {

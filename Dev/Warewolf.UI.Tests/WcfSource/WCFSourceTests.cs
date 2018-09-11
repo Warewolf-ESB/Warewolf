@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests
             host.Close();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Source Wizards")]
         public void Create_WcfSource_From_ExplorerContextMenu_UITests()
         {

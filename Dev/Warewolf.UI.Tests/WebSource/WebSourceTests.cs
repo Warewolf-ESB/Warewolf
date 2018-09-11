@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.WebSource
     {
         const string SourceName = "CodedUITestWebServiceSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Web Sources")]
         public void Create_Save_And_Edit_WebServiceSource_From_ExplorerContextMenu_UITests()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.WebSource
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Web Sources")]     
         public void Test_WebServiceSource_DefaulQuery_UITests()
         {
@@ -61,7 +61,7 @@ namespace Warewolf.UI.Tests.WebSource
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.TestPassedImage.Exists, "Expected Test to Pass, but got different results after clicking test button.");
         }
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Web Sources")]       
         public void Test_WebServiceSource_ValidateDefaultHttps_AddedOnMissingText_UITests()
         {

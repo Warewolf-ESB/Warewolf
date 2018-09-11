@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class WebServerResponseTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         public void WebServerResponse_Constructor_ResponseIsNotNull_PropertiesInitialized()
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("true",accessControlList[0]);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         public void WebServerResponse_Constructor_ResponseWithOrigin_PropertiesInitialized()

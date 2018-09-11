@@ -12,7 +12,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class DataObjectExtentionsTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         //SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         public void SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()

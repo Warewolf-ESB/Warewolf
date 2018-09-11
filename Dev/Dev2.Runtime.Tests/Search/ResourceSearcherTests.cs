@@ -12,21 +12,21 @@ namespace Dev2.Tests.Runtime.Search
     [TestClass]
     public class ResourceSearcherTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullResourceCatalog_ShouldThrowException()
         {
             var searcher = new ResourceSearcher(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Constructor_ResourceCatalogTestCatalog_ExpectNoException()
         {
             var searcher = new ResourceSearcher(new Mock<IResourceCatalog>().Object);
             Assert.IsNotNull(searcher);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GetSearchResults_WhenResourceNameHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();

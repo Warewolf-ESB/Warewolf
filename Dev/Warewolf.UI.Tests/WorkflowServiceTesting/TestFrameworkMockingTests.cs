@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
     public class TestFrameworkMockingTests
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
         {
@@ -29,7 +29,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowWithSequenceToolLoadsAllContainedTools()
         {
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.SequenceItem.SplitNamesItem.SplitNamesExpandar.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
         {
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
         {
@@ -67,7 +67,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DiceRollExpander.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowTesting_AddDecisionStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
         {
@@ -83,7 +83,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DecisionAssert.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateNewTestThenCreateTestFromDebugOutput()
         {
@@ -99,7 +99,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
         {
@@ -120,7 +120,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.RandomTreeItem.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
         {
@@ -136,7 +136,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after creating two new unsaved tests.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void SettingTestStepToMockDoesNotAffectTestOutput()
         {
@@ -152,7 +152,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowWithObjectoutPutTests()
         {
@@ -167,7 +167,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Cant_Delete_Off_Design_Surface_When_Editting_Tests()
         {

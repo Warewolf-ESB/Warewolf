@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     {
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EmailSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesTestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new EmailSources();
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesTestWithInvalidHostExpectedInvalidValidationResult()
         {
             var source = new EmailSource { Host = "smtp.foobar.com", Port = 25 }.ToString();
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Get
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesGetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new EmailSources();
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesGetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new EmailSources();

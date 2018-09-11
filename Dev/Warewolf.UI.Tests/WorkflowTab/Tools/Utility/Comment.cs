@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
         private const string TestingCommentToolForHeightResize = "TestingCommentToolForHeightResize";
         private const string TestingCommentToolForWidthResize = "TestingCommentToolForWidthResize";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Utility Tools")]
         public void CommentTool_EnterText_Save_And_Resize_Height_Then_Debug_UITest()
         {
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             Assert.AreEqual("Comment", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Utility Tools")]
         public void CommentTool_EnterText_Save_And_Resize_Width_Then_Debug_UITest()
         {
