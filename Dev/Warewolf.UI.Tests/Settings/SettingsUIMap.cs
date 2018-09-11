@@ -541,13 +541,13 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
         }
 
         [When(@"I Click Studio Log File")]
         public void Click_Studio_Log_File()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
         }
 
         [Given(@"I Click Close Settings Tab Button")]
@@ -620,8 +620,18 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
 
         public void Select_Fatal_Event_Log()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.LoggingTypesComboBox.ToggleButtonButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.LoggingTypesComboBox.ToggleButtonButton);
             Mouse.Click(MainStudioWindow.FatalOnlylogeventsthCustom);
+        }
+
+        public void Assert_Audits_File_Path(string expectedPath)
+        {
+            Assert.AreEqual(expectedPath, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.Audits.AuditsFilePathComboBox.AuditsFilePathTextbox.Text);
+        }
+
+        public void Update_Audits_File_Path(string changedPath)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.Audits.AuditsFilePathComboBox.AuditsFilePathTextbox.Text = changedPath;
         }
     }
 }
