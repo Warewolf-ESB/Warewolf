@@ -228,6 +228,15 @@ namespace Dev2.Common
                 {
                     ConfigureAuditsAppender(auditsFilePath, rootElement);
                 }
+                else
+                {
+                    var fileElement = auditsEventAppender.Element("file");
+                    var valueAttrib = fileElement.Attribute("value");
+                    if (valueAttrib != null)
+                    {
+                        valueAttrib.SetValue(auditsFilePath);
+                    }
+                }
                 settingsDocument.Save(settingsConfigFile);
             }
         }

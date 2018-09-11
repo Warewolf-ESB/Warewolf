@@ -35,10 +35,14 @@ namespace Dev2.Runtime.ESB.Execution
         {
             new AllPassFilter()
         };
-        public string AuditFilePath { get; set; }
+        private static string AuditsFilePath { get; set; }
         public Dev2StateAuditLogger(IDSFDataObject dsfDataObject)
         {
-            
+            if (string.IsNullOrEmpty(AuditsFilePath))
+            {
+                AuditsFilePath = @"C:\ProgramData\Warewolf\Audits";
+            }
+
             _dsfDataObject = dsfDataObject;
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
@@ -57,7 +61,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static DatabaseContext GetDatabase()
         {
-            var databaseContext = new DatabaseContext();
+            var databaseContext = new DatabaseContext(AuditsFilePath);
             return databaseContext;
         }
 
@@ -227,17 +231,20 @@ namespace Dev2.Runtime.ESB.Execution
     [Database]
     class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base(new SQLiteConnection {
-                ConnectionString = new SQLiteConnectionStringBuilder {
-                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "\\auditDB.db"), ForeignKeys = true
-                }.ConnectionString
-               }, true)
+        public DatabaseContext(string auditPath) : base(new SQLiteConnection
+        {
+            ConnectionString = new SQLiteConnectionStringBuilder
+            {
+                DataSource = Path.Combine(auditPath, "\\auditDB.db"),
+                ForeignKeys = true
+            }.ConnectionString
+        }, true)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "\\auditDB.db"));
-                DbConfiguration.SetConfiguration(new SQLiteConfiguration());            
+                directoryWrapper.CreateIfNotExists(Path.Combine(auditPath, "\\auditDB.db"));
+                DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
                 this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
