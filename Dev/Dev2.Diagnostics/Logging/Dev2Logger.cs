@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -133,6 +134,18 @@ namespace Dev2.Common
             return 0;
         }
 
+        public static string GetAuditsFilePath()
+        {
+            var h = (Hierarchy)LogManager.GetRepository();
+            var rootLogger = h.Root;
+
+            if (rootLogger?.GetAppender("Audits") is FileAppender appender)
+            {
+                return appender.File;
+            }
+            return "";
+        }
+
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
@@ -163,6 +176,17 @@ namespace Dev2.Common
                 {
                     UpdateConversionPattern(settingsConfigFile, settingsDocument, eventLayoutElement);
                 }
+
+                var auditLogAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
+
+                var auditsElement = auditLogAppender?.Element("file");
+                var valuesAttrib = auditsElement?.Attribute("value");
+                if (valuesAttrib != null)
+                {
+                    valuesAttrib.SetValue(Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\"));
+                    settingsDocument.Save(settingsConfigFile);
+                }
+
             }
         }
 
@@ -180,7 +204,7 @@ namespace Dev2.Common
             }
         }
 
-        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile, string applicationNameForEventLog, string auditsFilePath)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
@@ -196,14 +220,20 @@ namespace Dev2.Common
                 {
                     ConfigureEventLoggerAppender(applicationNameForEventLog, eventLogLevel, rootElement);
                 }
-
                 SetupLogLevels(fileLogLevel, eventLogLevel, rootElement, eventAppender);
+
+                var auditsEventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.FileAppender");
+                rootElement = log4netElement.Element("root");
+                if (auditsEventAppender == null)
+                {
+                    ConfigureAuditsAppender(auditsFilePath, rootElement);
+                }
                 settingsDocument.Save(settingsConfigFile);
             }
         }
 
 
-        public static void AddEventLogging(string settingsConfigFile,string applicationNameForEventLog)
+        public static void AddEventLogging(string settingsConfigFile, string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
@@ -222,10 +252,21 @@ namespace Dev2.Common
                     AddEventLogLogger(rootElement);
                     settingsDocument.Save(settingsConfigFile);
                 }
+                var auditsAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.FileAppender");
+                if (auditsAppender == null)
+                {
+                    var faAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
+                    var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
+                    if (fileAppender == null)
+                    {
+                        ConfigureAuditsAppender(Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\"), faAppender);
+                        var rootElement = log4netElement.Element("root");
+                        AddAuditLogger(rootElement);
+                        settingsDocument.Save(settingsConfigFile);
+                    }
+                }
             }
         }
-
-
 
         static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
@@ -277,6 +318,10 @@ namespace Dev2.Common
         {
             rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "EventLogLogger")));
         }
+        static void AddAuditLogger(XElement rootElement)
+        {
+            rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "Audits")));
+        }
 
         static void ConfigureEventLoggerAppender(string applicationNameForEventLog, string logLevel, XElement element)
         {
@@ -301,6 +346,20 @@ namespace Dev2.Common
             conversionPattenElement.SetAttributeValue("value", "%date [%thread] %-5level - %message%newline");
             layoutElement.Add(conversionPattenElement);
             eventAppenderElement.Add(layoutElement);
+            element.AddAfterSelf(eventAppenderElement);
+        }
+
+        static void ConfigureAuditsAppender(string auditsFilePath, XElement element)
+        {
+            var eventAppenderElement = new XElement("appender");
+            eventAppenderElement.SetAttributeValue("name", "Audits");
+            eventAppenderElement.SetAttributeValue("type", "log4net.Appender.FileAppender");
+
+
+            var auditsFilePathElement = new XElement("file");
+            auditsFilePathElement.SetAttributeValue("value", auditsFilePath);
+            eventAppenderElement.Add(auditsFilePathElement);
+
             element.AddAfterSelf(eventAppenderElement);
         }
 

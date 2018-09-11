@@ -35,9 +35,10 @@ namespace Dev2.Runtime.ESB.Execution
         {
             new AllPassFilter()
         };
-
+        public string AuditFilePath { get; set; }
         public Dev2StateAuditLogger(IDSFDataObject dsfDataObject)
         {
+            
             _dsfDataObject = dsfDataObject;
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
@@ -228,14 +229,14 @@ namespace Dev2.Runtime.ESB.Execution
     {
         public DatabaseContext() : base(new SQLiteConnection {
                 ConnectionString = new SQLiteConnectionStringBuilder {
-                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\auditDB.db"), ForeignKeys = true
+                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "\\auditDB.db"), ForeignKeys = true
                 }.ConnectionString
                }, true)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
+                directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "\\auditDB.db"));
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());            
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);

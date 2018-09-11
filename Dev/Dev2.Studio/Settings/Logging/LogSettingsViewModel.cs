@@ -83,6 +83,12 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+
+            if (string.IsNullOrEmpty(logging.AuditsFilePath))
+            {
+                logging.AuditsFilePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\");
+            }
+            AuditsFilePath = logging.AuditsFilePath;
         }
 
         [ExcludeFromCodeCoverage]
@@ -145,10 +151,8 @@ namespace Dev2.Settings.Logging
         
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
-            logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio", AuditsFilePath);
             SetItem(this);
         }
 
