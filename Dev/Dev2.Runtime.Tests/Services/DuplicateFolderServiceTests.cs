@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DuplicateFolderServiceTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("DuplicateFolderService", handlesType);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Test Result -----------------------
             Assert.AreEqual(1, handlesType.Actions.Count);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNullSourcePath_ReturnsException()
         {
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(executeMessage);
             Assert.IsTrue(executeMessage.HasError);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourcePayLoad_ShouldExctactPayLoad()
         {
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Runtime.Services
             CollectionAssert.AreEqual(duplicatedItems,executeMessage.DuplicatedItems);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourcePayLoad_ShouldDuplicateTests()
         {
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             CollectionAssert.AreEqual(duplicatedItems, executeMessage.DuplicatedItems);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenMissingDestinationPath_ShouldReturnFailure()
         {
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Runtime.Services
         }
        
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenCatalogThrowsException_ShouldReturnFailureAndCatalogException()
         {

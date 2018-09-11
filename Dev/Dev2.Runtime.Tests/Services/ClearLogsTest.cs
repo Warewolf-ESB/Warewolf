@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ClearLogNonValidDirectoryExpectsNoDelete()
         {
             //setup
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.Contains("Error clearing"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ClearLogNoDirectoryPassedExpectsNoDelete()
         {
             //execute
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.Contains("Can't delete a file if no directory is passed."));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ClearLogDirectoryExpectsFilesDeleted()
         {
             lock(SyncRoot)
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ClearLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
             var serializer = new Dev2JsonSerializer();
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogHandlesTypeExpectedReturnsDeleteLogService()
         {
             var esb = new ClearLog();
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new ClearLog();
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty,resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()

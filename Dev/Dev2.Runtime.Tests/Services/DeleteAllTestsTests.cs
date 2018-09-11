@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DeleteAllTestsTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetAuthorizationContextForService_Returns_Contribute()
         {
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, authorizationContextForService);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void CreateServiceEntry_Returns_New_Dynamic_Service_DeleteAllTestsService()
         {
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(handleType));
             Assert.AreEqual(handleType, dynamicService.Name);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenEmptyArgs_Returns_EmptyGuid()
         {
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(Guid.Empty, resourceID);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenSomeArgs_Returns_Id()
         {
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(resId, resourceID);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void Execute_GivenNoArgs_Exception()
         {
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(deserializedResults.HasError);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void Execute_GivenSomeArgs_Returns_Id()
         {

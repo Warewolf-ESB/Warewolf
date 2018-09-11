@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     {
         const string SourceName = "SQLServerSourceFromTool";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("MSSql")]
         public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             DBSourceUIMap.Click_UserButton_On_DatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("TEST-MSSQL");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("rsaklfsvrdev.dev2.local");
             DBSourceUIMap.IEnterRunAsUserTestUserOnDatabaseSource("testuser", "test123");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
@@ -64,7 +64,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("MSSql")]
         public void Open_SqlServer_Contains_Outputs()
         {

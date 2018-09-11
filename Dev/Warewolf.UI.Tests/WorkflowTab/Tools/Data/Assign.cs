@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     [CodedUITest]
     public class Assign
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_Small_And_LargeView_Resize_UITest()
         {
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Height > heightBefore);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickDoneButton_Then_DeleteTool_UITest()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Delete_Assign_With_Context_Menu();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickTextboxTwice_Then_HelpText_DoesNotChanging_UITest()
         {
@@ -59,14 +59,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Delete_Assign_With_Context_Menu();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_Url_UITest()
         {
             DialogsUIMap.Click_Assign_Tool_url();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_QuickVariableInput_FromList_UITest()
         {
@@ -78,7 +78,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit.HasFocus);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_DebugOutput_UITest()
         {
@@ -88,7 +88,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             WorkflowTabUIMap.Click_Debug_Output_Assign_Cell();             
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddRemoveVariables_UITest()
         {
@@ -103,7 +103,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddVariablesInsertRow_UITest()
         {
@@ -118,7 +118,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Insert_Assign_Row_2_With_Context_Menu();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Assign Tool")]
         public void AssignTool_PasteTabValue_ShowTabInsertDialog_UITest()
         {

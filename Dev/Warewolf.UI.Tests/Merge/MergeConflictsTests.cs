@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
     {
         public const string MergeForeach = "MergeForeach";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Current_Radio_Buttons_Has_Tools_On_The_Surface()
         {
@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Difference_Radio_Buttons_Has_Tools_On_The_Surface()
         {

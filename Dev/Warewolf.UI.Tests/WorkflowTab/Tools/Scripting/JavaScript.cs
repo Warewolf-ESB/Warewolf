@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
     [CodedUITest]
     public class JavaScript
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Tools")]
         public void JavaScriptTool_Small_And_LargeView_UITest()
         {

@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Search
     [CodedUITest]
     public class RecordsetSearchTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Recordset_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Variable search did not expected Result.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Lower_Case_And_Match_Case_Is_False()
         {
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Upper_Case_And_Match_Case_Is_False()
         {
@@ -44,7 +44,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Lower_Case_And_Match_Case_Is_True()
         {
@@ -56,7 +56,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Upper_Case_And_Match_Case_Is_True()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Partial_Existing_Recordset_And_Match_WholeWord_Is_False()
         {
@@ -81,7 +81,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_Partial_Existing_Recordset_And_Match_WholeWord_Is_True()
         {
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset Search")]
         public void Given_UnExisting_Recordset_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {

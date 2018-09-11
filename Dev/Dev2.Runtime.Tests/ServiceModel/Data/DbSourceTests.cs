@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     {
         #region ToString Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
         {
             var testDbSource = SetupDefaultDbSource();
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, actualDbSourceToString);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToStringEmptyObjectExpected()
         {
             var testDbSource = new DbSource();
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion ToString Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NotNamedInstance_ShouldUsePortNumber()
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(connectionString,",1433");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NamedInstanceDefaultPort_ShouldNotUsePort()
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(contains);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NamedInstanceNotDefaultPort_ShouldUsePort()
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region ToXml Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToXmlAllPropertiesSetupExpectedXElementContainingAllObjectInformation()
         {
             var testDbSource = SetupDefaultDbSource();
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNull(workflowXamlDefintion);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
         {
             var testDbSource = new DbSource();

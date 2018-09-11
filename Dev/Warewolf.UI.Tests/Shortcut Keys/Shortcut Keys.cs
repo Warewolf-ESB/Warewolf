@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Workflow
         private const string Folder = "Acceptance Tests";
         private const string HelloWorld = "Hello World";
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Open_And_Save_Workflow_With_ShortcutKeys()
         {
@@ -29,7 +29,7 @@ namespace Warewolf.UI.Tests.Workflow
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
         {
@@ -40,7 +40,7 @@ namespace Warewolf.UI.Tests.Workflow
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_Shift_S_Saves_All_Workflows_Without_Closing()
         {
@@ -56,7 +56,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs1.Exists);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs2.Exists);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
         {
@@ -71,7 +71,7 @@ namespace Warewolf.UI.Tests.Workflow
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
         {
@@ -83,7 +83,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployWizardTab()
         {

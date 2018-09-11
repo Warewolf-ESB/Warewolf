@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     {
         const string SourceName = "ODBCSourceFromTool";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Tools")]
         public void ODBCDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -47,7 +47,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Tools")]
         public void ODBCDatabaseConnectorTool_Test_Connection_From_Design_Surface_UITest()
         {

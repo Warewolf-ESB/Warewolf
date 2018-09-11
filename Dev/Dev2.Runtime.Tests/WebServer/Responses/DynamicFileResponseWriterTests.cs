@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
     [TestClass]
     public class DynamicFileResponseWriterTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Write")]
         public void DynamicFileResponseWriter_Write_WebServerContext_WritesContent()
