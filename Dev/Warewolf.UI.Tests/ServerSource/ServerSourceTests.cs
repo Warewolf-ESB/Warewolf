@@ -53,6 +53,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
@@ -74,12 +75,13 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
-            ServerSourceUIMap.Select_Server_Authentication_Windows();
+            ServerSourceUIMap.Select_Server_Authentication_User();
+            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Windows auth is not selected.");
+            Assert.AreEqual("WarewolfAdmin", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
@@ -150,7 +152,7 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
@@ -165,7 +167,8 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
@@ -179,6 +182,7 @@ namespace Warewolf.UI.Tests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
@@ -195,6 +199,7 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
