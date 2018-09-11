@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
     public class DotnetTestingTests
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesDotnetTestStepsExpandedFalse()
         {
@@ -24,7 +24,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.CreateTest.Exists, "Create New Test Button does not exist on service test tab after openning it by clicking the button in DotnetWorkflowForTesting debug output.");            
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ExpandingDotnetDllShowsChildStepsExpandedTrue()
         {
@@ -40,7 +40,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.CtorFavouriteFood.FavouriteFoodsExpander.WarewolfStudioViewMoButton.DeleteButton.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingConstructorRemovesTheStep()
         {
@@ -50,7 +50,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsFalse(controlExistsNow);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingFavouriteRemovesTheStep()
         {
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsFalse(controlExistsNow);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ConstructorValuesAreLoadedCorrectly()
         {           
@@ -73,7 +73,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             StringAssert.Contains(variableValueFromDebug, "SurName");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
         {
@@ -85,7 +85,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
@@ -100,7 +100,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             StringAssert.Contains(variableValueFromDebug, "FoodName\": \"Pizza");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsHasTheTestPassing()
         {
@@ -111,7 +111,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -125,7 +125,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestPassing()
         {
@@ -138,7 +138,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -152,7 +152,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestPassing()
         {

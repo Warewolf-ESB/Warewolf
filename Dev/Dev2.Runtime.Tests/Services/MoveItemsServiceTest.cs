@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
     
     public class MoveItemsServiceTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItem_HandlesType")]
         public void MoveItem_HandlesType_ExpectName()
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItemService_Execute")]
         public void MoveItem_Execute_NullValues_ErrorResult()
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItemService_Execute")]
         public void MoveItem_Execute_ItemToRenameNotInValues_ErrorResult()
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItemService_Execute")]
         public void MoveItem_Execute_NewNameNotInDictionary_ErrorResult()
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItemervice_Execute")]
         public void MoveItem_Execute_ItemToRenameNotServerExplorerItem_ErrorResult()
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItem_Execute")]
         public void MoveItem_Execute_ExpectRename()
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItem_HandlesType")]
         public void MoveItem_CreateServiceEntry_ExpectProperlyFormedDynamicService()

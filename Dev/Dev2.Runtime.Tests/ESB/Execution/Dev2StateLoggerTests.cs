@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             }
             _directoryWrapper.Delete(EnvironmentVariables.DetailLogPath, true);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_SubscribeToEventNotifications_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 notifier.Dispose();
             }
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_LogPreExecuteState_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("json_objects"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_LogPostExecuteState_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("json_objects"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_LogExecuteException_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("json_objects"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_LogExecuteCompleteState_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("timestamp"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_LogStopExecutionState_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
@@ -163,7 +163,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(text.Contains("timestamp"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists()
         {
             var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
@@ -183,7 +183,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_2_Days_Old()
         {
             var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_30_Days_Old()
         {            
             var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockedFileWrapper.Verify(p => p.Delete(It.IsAny<string>()), Times.AtLeastOnce());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogExecuteCompleteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogExecuteException_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -278,7 +278,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogPostExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -303,7 +303,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(results[0].VersionNumber, versionNumber);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogAdditionalDetail_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             _dev2StateAuditLogger.Dispose();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogPreExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();

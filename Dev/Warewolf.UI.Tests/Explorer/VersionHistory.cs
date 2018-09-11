@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class VersionHistory
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void ShowVersionHistory_ForResource()
         {
@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void OpenVersionHistory_ForResource()
         {
@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void SetVersionHistory_ForResource()
         {
@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.Select_Delete_Version();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Updating_Resource_With_Dependencies_Should_Show_Dependency_Popup()
         {
@@ -85,7 +85,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window is showing multiple times.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void Delete_A_Version_Should_Remove_Version()
         {

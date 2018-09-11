@@ -27,7 +27,7 @@ Scenario: Opening Workflow local and remote using right click
    And I Filter the Explorer with "Hello World"
    And I RightClick Explorer First Remote Server First Item
    And I Select Open From Explorer Context Menu
-   Then Remote "Hello World - Remote Container" is open
+   Then Remote "Hello World - Remote Connection Integration" is open
    When I RightClick Explorer Localhost First Item
    And I Select Open From Explorer Context Menu
    Then Local "Hello World" is open

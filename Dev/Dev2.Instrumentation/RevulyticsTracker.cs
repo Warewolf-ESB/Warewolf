@@ -3,8 +3,9 @@ using System.IO;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Util;
-using RUISDK_5_1_0;
+using RUISDK_5_3_1;
 using Warewolf.Studio.Resources.Languages;
+
 namespace Dev2.Instrumentation
 {
     public class RevulyticsTracker : IApplicationTracker
@@ -37,7 +38,7 @@ namespace Dev2.Instrumentation
         public string ProductVersion { get; set; }
 
         public RUIResult EnableApplicationResultStatus { get; set; }
-        
+
         public RevulyticsTracker()
         {
             SdkFilePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(RUISDK)).Location);
@@ -48,7 +49,7 @@ namespace Dev2.Instrumentation
             AesHexKey = AppUsageStats.AesHexKey;
         }
 
-        public void EnableAppplicationTracker(string productVersion, string username)
+        public void EnableApplicationTracker(string productVersion, string username)
         {
             ProductVersion = productVersion;
             Username = username;
@@ -64,8 +65,8 @@ namespace Dev2.Instrumentation
                     var sdkResult = StartSdk();
                     if (sdkResult == RUIResult.ok)
                     {
-                        LogErrorResult(SetProductVersion());
-                        LogErrorResult(StartSession());
+                        LogErrorResult("EnableApplicationTracker",SetProductVersion());
+                        LogErrorResult("EnableApplicationTracker",StartSession());
                     }
                     else
                     {
@@ -81,24 +82,22 @@ namespace Dev2.Instrumentation
             {
                 Dev2Logger.Error("Error in config settings", e, Core.RevulyticsSdkError);
             }
-
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in EnableAppplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
-        public void DisableAppplicationTracker()
+        public void DisableApplicationTracker()
         {
             try
             {
-                LogErrorResult(StopSession());
-                LogErrorResult(StopSdk());
+                var result = StopSession();
+                LogErrorResult("DisableApplicationTracker", result);
             }
-
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in DisableAppplicationTracker method", e, Core.RevulyticsSdkError);
+                Dev2Logger.Error("Error in DisableApplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
@@ -107,7 +106,7 @@ namespace Dev2.Instrumentation
             if (AppUsageStats.CollectUsageStats && RuiSdk != null)
             {
                 var result = RuiSdk.TrackEvent(category, eventName, Username);
-                LogErrorResult(result);
+                LogErrorResult("TrackEvent",result);
             }
         }
 
@@ -116,9 +115,8 @@ namespace Dev2.Instrumentation
             if (AppUsageStats.CollectUsageStats && RuiSdk != null)
             {
                 var result = RuiSdk.TrackEventText(category, eventName, customValues, Username);
-                LogErrorResult(result);
+                LogErrorResult("TrackCustomEvent",result);
             }
-
         }
 
         public static RevulyticsTracker GetTrackerInstance()
@@ -128,7 +126,9 @@ namespace Dev2.Instrumentation
                 lock (SyncLock)
                 {
                     if (_revulyticsTrackerInstance == null)
+                    {
                         _revulyticsTrackerInstance = new RevulyticsTracker();
+                    }
                 }
 
                 return _revulyticsTrackerInstance;
@@ -139,43 +139,162 @@ namespace Dev2.Instrumentation
         public RUIResult CreateRevulyticsConfig()
         {
             var result = RUIResult.configNotCreated;
-            if (string.IsNullOrEmpty(SdkFilePath))
+            try
             {
-                throw new ArgumentNullException($"Sdk File Path is missing");
+                if (string.IsNullOrEmpty(SdkFilePath))
+                {
+                    result = RUIResult.invalidConfigPath;
+                    LogErrorResult("Error in CreateRevulyticsConfig: Sdk File Path is missing", result);
+                    return result;
+                }
+                RuiSdk = new RUISDK(true, SdkFilePath,"RUISDK_5_3_1");
+                if (RuiSdk != null)
+                {
+                    result = RuiSdk.CreateConfig(ConfigFilePath, ProductId, AppName, ProductUrl, Protocol, AesHexKey, MultiSessionEnabled, ReachOutOnAutoSync);
+                }
+                return result;
             }
-            RuiSdk = new RUISDK(true, SdkFilePath);
-            if (RuiSdk != null)
+            catch (RUISDKCreationException ex)
             {
-                result = RuiSdk.CreateConfig(ConfigFilePath, ProductId, AppName, ProductUrl, Protocol, AesHexKey,
-                    MultiSessionEnabled, ReachOutOnAutoSync);
-               
+                Dev2Logger.Error("Error in CreateRevulyticsConfig method initializing rui sdk", ex, Core.RevulyticsSdkError);
+                return result;
             }
-            return result;
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in CreateRevulyticsConfig Method", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in CreateRevulyticsConfig method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
 
         public RUIResult StartSdk()
         {
-            return RuiSdk.StartSDK();
+            var result = RUIResult.sdkNotStarted;
+            try
+            {
+                result = RuiSdk.StartSDK();
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in StartSdk method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in StartSdk method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in StartSdk method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
         public RUIResult StopSdk()
         {
-            return RuiSdk.StopSDK(10);
-
+            var result = RUIResult.sdkAlreadyStopped;
+            try
+            {
+                result = RuiSdk.StopSDK(10);
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in StartSdk method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in StartSdk method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in StartSdk method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
 
         public RUIResult SetProductVersion()
         {
-            return RuiSdk.SetProductVersion(ProductVersion);
+            var result = RUIResult.sdkSuspended; ///The RUI Server has instructed a temporary back-off.
+            try
+            {
+                Dev2Logger.Warn($"Revulytics.SetProductVersion: {ProductVersion}", "");
+                result = RuiSdk.SetProductVersion(ProductVersion);
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in SetProductVersion method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in SetProductVersion method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in SetProductVersion method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
 
         public RUIResult StartSession()
         {
-            return RuiSdk.StartSession(Username);
+            var result = RUIResult.sdkSuspended;
+            try
+            {
+                result = RuiSdk.StartSession(Username);
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in StartSession method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in StartSession method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in StartSession method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
 
         public RUIResult StopSession()
         {
-            return RuiSdk.StopSession(Username);
+            var result = RUIResult.sdkAlreadyStopped;
+            try
+            {
+                result = RuiSdk.StopSession(Username);
+                RuiSdk.StopSDK(0);
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in StopSession method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in StopSession method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in StopSession method", e, Core.RevulyticsSdkError);
+                return result;
+            }
         }
 
         static void LogResult(RUIResult result)
@@ -185,11 +304,11 @@ namespace Dev2.Instrumentation
             Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
         }
 
-        static void LogErrorResult(RUIResult result)
+        static void LogErrorResult(string method,RUIResult result)
         {
             if (result != RUIResult.ok)
             {
-                var errormMessage = $"{DateTime.Now:g} :: Tracker Error -> {result}";
+                var errormMessage = $"{DateTime.Now:g} :{method}: Tracker Error -> {result}";
                 Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
             }
         }

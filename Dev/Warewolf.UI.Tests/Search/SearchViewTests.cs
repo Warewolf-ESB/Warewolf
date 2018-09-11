@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Search
     [CodedUITest]
     public class SearchViewTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Shortcut_Cntr_Shift_F_Opens_Search_View()
         {
@@ -21,7 +21,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Clicking_Search_Menu_Item_Opens_Search_View()
         {
@@ -29,7 +29,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Clicking_New_Server_Button_Opens_Server_Source_Tab()
         {
@@ -38,19 +38,19 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source tab did not open after clicking New Server Source Button.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.ServerComboBox.ServersToggleButton);
-            Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteContainer);
+            Mouse.Click(SearchUIMap.MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchConnectControlCustom.EditServerSource);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source tab did not open after clicking Edit Server Source Button.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Open_Search_Window_Has_All_Options_UnSelected()
         {
@@ -67,7 +67,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Click_Search_Button_With_All_Selected_And_Nothing_Filtered()
         {
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests.Search
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1));
         }  
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Click_Search_Button_With_Nothing_Filtered()
         {
@@ -86,7 +86,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1));
         }        
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void UnChecking_Service_CheckBox_Then_AllCheckBox_Checkes_AllCheckBox()
         {
@@ -106,7 +106,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void UnChecking_AllCheckBox_UnCheckesAll_Check_Boxes()
         {
@@ -141,7 +141,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Search")]
         public void Checking_AllCheckBox_CheckesAll_Check_Boxes()
         {

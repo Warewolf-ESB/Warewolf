@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class CreateFolderTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CreateFolder_HandlesType")]
         public void CreateFolder_HandlesType_ExpectName()
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CreateFolder_Execute")]
         public void CreateFolder_Execute_ExpectCreateCalled()
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CreateFolder_HandlesType")]
         public void CreateFolder_CreateServiceEntry_ExpectProperlyFormedDynamicService()

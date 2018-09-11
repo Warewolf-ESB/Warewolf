@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     [CodedUITest]
     public class DotNet_DLL_UITests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Resource Tools")]
         public void DotNetDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -50,7 +50,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             DialogsUIMap.Click_MessageBox_Yes();
         }
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Resource Tools")]
         public void Selecting_Source_Enables_ClassName_UITests()
         {
@@ -58,7 +58,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Enabled_Constructor_And_Actions_UITests()
         {
@@ -69,7 +69,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Enabled);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Loads_Class_Constructors_UITests()
         {
@@ -83,7 +83,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringSystListItem.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void DotNetDLLTool_EditSource_UITest()
         {
@@ -101,7 +101,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
         }
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
         {
@@ -112,7 +112,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_Loads_Actions_UITests()
         {
@@ -124,7 +124,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_AndCtor_With_Parameters_Shows_Inputs_Grid_UITests()
         {
@@ -139,7 +139,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
         {
@@ -154,7 +154,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.SetActivitiesExpander.ActionOneLargeDataGridTable.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
         {
@@ -171,7 +171,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsFalse(UIMap.ControlExistsNow(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem2.SetActivitiesExpander));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_And_Action_Creates_New_Blank_Action_Dropbox_UITests()
         {

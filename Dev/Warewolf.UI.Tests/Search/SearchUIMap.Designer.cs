@@ -147,12 +147,31 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                 return this.mComboboxItemAsRemoteContainer;
             }
         }
+        
+        public WpfCustom ComboboxItemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxItemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxItemAsRemoteConnectionIntegration = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mComboboxItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mComboboxItemAsRemoteConnectionIntegration.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mComboboxItemAsRemoteConnectionIntegration.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mComboboxItemAsRemoteConnectionIntegration;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
         
         private WpfCustom mComboboxItemAsRemoteContainer;
+        
+        private WpfCustom mComboboxItemAsRemoteConnectionIntegration;
         #endregion
     }
     

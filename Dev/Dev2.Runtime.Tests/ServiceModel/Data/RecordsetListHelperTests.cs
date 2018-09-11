@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class RecordsetListHelperTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingRecordset_SingleLevel_ShouldConvertToField()
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
         }  
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingField_SingleLevel_ShouldConvertToField()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
         }        
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingRecordset_MultiLevel_ShouldConvertToField()
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingField_MultiLevel_ShouldConvertToField()
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsScalar_SingleLevel_ShouldConvertToField()

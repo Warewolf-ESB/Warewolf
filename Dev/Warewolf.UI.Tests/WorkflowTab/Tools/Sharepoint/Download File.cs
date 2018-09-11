@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
     [CodedUITest]
     public class Download_File
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointDownloadFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {

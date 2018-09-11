@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
     [CodedUITest]
     public class CMD_Script
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Tools")]
         public void CMDScriptTool_Small_And_LargeView_UITest()
         {
