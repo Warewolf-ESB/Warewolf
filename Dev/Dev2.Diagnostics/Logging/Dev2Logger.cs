@@ -145,7 +145,7 @@ namespace Dev2.Common
             {
                 return appender.File;
             }
-            return "";
+            return Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
         }
 
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
@@ -178,8 +178,6 @@ namespace Dev2.Common
                 {
                     UpdateConversionPattern(settingsConfigFile, settingsDocument, eventLayoutElement);
                 }
-
-
             }
         }
 
