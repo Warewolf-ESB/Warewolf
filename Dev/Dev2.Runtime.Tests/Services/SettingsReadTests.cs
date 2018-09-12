@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
         public void SettingsRead_Execute_SecurityReadDoesNotThrowException_HasErrorsIsFalseAndSecurityPermissionsAreAssigned()
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
         public void SettingsRead_Execute_SecurityReadDoesThrowException_HasErrorsIsTrueAndDefaultPermissionsAreAssigned()
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
         
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_CreateSecurityReadEndPoint")]
         public void SettingsRead_CreateSecurityReadEndPoint_IsInstanceOfSecurityRead()
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void SettingsRead_HandlesType_ReturnsSettingsReadService()
         {
             var esb = new SettingsRead();
@@ -154,7 +154,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void SettingsRead_CreateServiceEntry_ReturnsDynamicService()
         {
             var esb = new SettingsRead();

@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests
         const string ChangeDeclareVarUpdatesOutput = "ChangeDeclareVarUpdatesOutput";
         const string CopyPasteADNameChange = "CopyPasteADNameChange";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset")]
         public void F6_Execute_OnFocustLost_Thus_Persisting_Textbox_Changes()
         {
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset")]
         public void Assigning_Declared_Variable_To_A_Recordset_Shows_The_Equal_Sign()
         {
@@ -57,7 +57,7 @@ namespace Warewolf.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Recordset")]
         public void Change_Declared_Value_Updates_Output()
         {
@@ -79,7 +79,7 @@ namespace Warewolf.UI.Tests
             
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Declare_Value_Change_Debug_Should_Update()
         {

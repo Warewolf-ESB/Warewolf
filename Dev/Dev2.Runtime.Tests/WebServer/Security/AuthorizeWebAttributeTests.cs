@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
     [TestClass]
     public class AuthorizeWebAttributeTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_Constructor")]
         public void AuthorizeWebAttribute_Constructor_Default_ProviderIsAuthorizationProviderInstance()
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreSame(ServerAuthorizationService.Instance, attribute.Service);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsNotAuthenticated_ResponseIsUnauthorized()
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_OnAuthorization_Response(false, null, false, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsAuthenticatedAndNotAuthorized_ResponseIsAccessDenied()
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_OnAuthorization_Response(true, null, false, HttpStatusCode.Forbidden, "Access has been denied for this request.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_UserIsAuthenticatedAndAuthorized_ResponseIsNull()
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_WhenInternalService_UserIsAuthenticated()
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_WhenInternalService_UserIsNotAuthenticated()
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_WhenNotInternalService_UserIsNotAuthenticated()
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
         public void AuthorizeWebAttribute_OnAuthorization_WhenNotInternalService_UserIsAuthenticated()

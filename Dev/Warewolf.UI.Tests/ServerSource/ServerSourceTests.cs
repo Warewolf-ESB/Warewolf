@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServer_GivenTabIsOpened_ShouldHaveDefaultControls()
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button is enabled");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServerSource_GivenTabIsOpenedUserButtonSelected_ShouldHaveCredentialsControls()
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
@@ -52,7 +52,8 @@ namespace Warewolf.UI.Tests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
@@ -64,7 +65,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
@@ -83,7 +84,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.AreEqual("WarewolfAdmin", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
@@ -99,7 +100,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
         {
@@ -116,7 +117,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated), "Server exists in connect control dropdown list after it was deleted from the explorer.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         public void Try_Create_Server_Source_On_Restricted_Server()
         {
@@ -144,20 +145,20 @@ namespace Warewolf.UI.Tests.ServerSource
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenTabHasChanges_ClosingStudioPromptsChanges()
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenExistingOpenTabHasNoChanges_ClosingStudioPromptsChanges()
@@ -166,20 +167,22 @@ namespace Warewolf.UI.Tests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote-obsolete");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             DialogsUIMap.Click_MessageBox_Cancel();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_CreateNewWorkflow_ClosingWorkflowDoesNotError()
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
@@ -188,14 +191,15 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
             _containerOps = TestLauncher.StartLocalCIRemoteContainer(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("test-remotewarewolf");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            Keyboard.SendKeys("{ESC}");
             ServerSourceUIMap.Select_Server_Authentication_User();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("WarewolfAdmin", "W@rEw0lf@dm1n");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
@@ -209,7 +213,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Server Sources")]
         public void DoubleClicking_ErrorMessage_SelectsWholeMessage()
         {

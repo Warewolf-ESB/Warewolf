@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class Read_Folder
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("File Tools")]
         public void ReadFolderTool_Small_And_LargeView_UITest()
         {

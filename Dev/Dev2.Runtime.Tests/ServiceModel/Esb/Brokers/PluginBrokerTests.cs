@@ -27,7 +27,7 @@
 //        #region ApplyMappings
 
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        public void PluginBrokerApplyMappingsWithNullResultExpectedNoException()
 //        {
 //            //Initialization
@@ -46,7 +46,7 @@
 //        #region TestPluginResult
 
 //        // BUG 9626 - 2013.06.11 - TWR: added
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        public void PluginServicesTestPluginResultWithValidPocoExpectedAddsRecordsetFields()
 //        {
 //            var broker = new PluginBroker();
@@ -101,7 +101,7 @@
 //        }
 
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Owner("Travis Frisinger")]
 //        [TestCategory("PluginBroker_TestPlugin")]
 //        public void PluginBroker_TestPlugin_WhenPocoInput_ValidUserPaths()
@@ -138,7 +138,7 @@
 
 //        }
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Owner("Travis Frisinger")]
 //        [TestCategory("PluginBroker_TestPlugin")]
 //        public void PluginBroker_TestPlugin_WhenXmlInput_ValidXmlPaths()
@@ -224,7 +224,7 @@
 //            CollectionAssert.AreEqual(expectedUserVisiblePaths, resultUserVisiblePaths);
 //        }
 
-//        [TestMethod]
+//        [TestMethod, DeploymentItem("EnableDocker.txt")]
 //        [Owner("Travis Frisinger")]
 //        [TestCategory("PluginBroker_TestPlugin")]
 //        public void PluginBroker_TestPlugin_WhenJsonInput_ValidJsonPaths()

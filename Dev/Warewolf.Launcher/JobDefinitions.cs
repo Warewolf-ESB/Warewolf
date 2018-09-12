@@ -1,12 +1,33 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Warewolf.Launcher
 {
-    class Job_Definitions
+    public static class Job_Definitions
     {
         public static Dictionary<string, Tuple<string, string>> GetJobDefinitions()
         {
+            var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
+            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+            //{
+            //    string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
+            //    foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
+            //    {
+            //        if (!(JobDefintionsLine.StartsWith("//")))
+            //        {
+            //            var SplitCSV = JobDefintionsLine.Split(',');
+            //            Console.WriteLine(SplitCSV[0]);
+            //            JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
+            //        }
+            //    }
+            //}
+            if (JobDefinitions.Count > 0)
+            {
+                return JobDefinitions;
+            }
             return new Dictionary<string, Tuple<string, string>>
             {
                 //Unit Tests
@@ -154,9 +175,53 @@ namespace Warewolf.Launcher
                 ["No Warewolf Server Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "NoWarewolfServer"),
                 //Load Tests
                 ["Composition Load Tests"] = new Tuple<string, string>("Dev2.Activities.Specs", "CompositionLoadTests"),
-                ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
-                ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
+                ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null)
             };
+        }
+
+        static string ReadFileFromRepo(Repository repo, string fileName)
+        {
+            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            {
+                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                {
+                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs[Properties.Settings.Default.BuildDefinitionGitBranch]);
+                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+            }
+            var commit = repo.Head.Tip;
+            var treeEntry = commit[fileName];
+            var blob = (Blob)treeEntry.Target;
+            var contentStream = blob.GetContentStream();
+            string JobDefinitionsCSV;
+            using (var tr = new StreamReader(contentStream, Encoding.UTF8))
+            {
+                JobDefinitionsCSV = tr.ReadToEnd();
+            }
+
+            return JobDefinitionsCSV;
+        }
+
+        public static bool GetEnableDockerValue()
+        {
+            //string JobDefinitionsCSV = "";
+            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+            //{
+            //    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+            //}
+            //return JobDefinitionsCSV == "False";
+            if (File.Exists("EnableDocker.txt"))
+            {
+                return File.ReadAllText("EnableDocker.txt") == "True";
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

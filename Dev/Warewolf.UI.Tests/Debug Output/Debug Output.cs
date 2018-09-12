@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
     [CodedUITest]
     public class Debug_Output
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Debug Input")]
         public void DebugOutput_MoreLink_UITest()
         {

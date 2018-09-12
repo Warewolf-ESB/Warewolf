@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GiveNoPathAndNonPublicRequest()
         {
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GivePublicRequest()
         {

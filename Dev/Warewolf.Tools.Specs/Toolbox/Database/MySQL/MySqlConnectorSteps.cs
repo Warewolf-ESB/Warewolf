@@ -527,7 +527,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var environmentModel = _scenarioContext.Get<IServer>("server");
             environmentModel.Connect();
             _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            environmentModel.LoadExplorer(true);
             CreateNewResourceModel(workflowName, environmentModel);
             CreateDBServiceModel(environmentModel);
 

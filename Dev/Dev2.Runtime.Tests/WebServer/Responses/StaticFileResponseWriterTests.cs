@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
     [TestClass]
     public class StaticFileResponseWriterTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StaticFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StaticFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StaticFileResponseWriter_Write")]
         public void StaticFileResponseWriter_Write_WebServerContext_WritesContent()

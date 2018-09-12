@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
     [TestClass]
     public class BaseUpgradeConvertorTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         public void BaseResourceUpgrader_Upgrade_HasMatchin_ExpectReplaceAlt()
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         public void BaseResourceUpgrader_Upgrade_NoMatch_NoReplace()
