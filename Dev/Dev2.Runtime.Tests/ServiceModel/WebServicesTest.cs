@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         string _requestBodyEvaluated;
         string[] _requestHeadersEvaluated;
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("Webservice_Test")]
         public void Webservice_Test_WhenRequestShouldTimeout_ExpectTimeoutMessage()
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(GlobalConstants.WebServiceTimeoutMessage, result.RequestMessage);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("Webservice_Test")]
         public void Webservice_Test_WhenRequestShouldNotTimeout_ExpectNoMessage()
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(string.Empty, result.RequestMessage);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("Webservice_ApplyPath")]
         public void Webservice_Test_WhenJsonPathSet_ExpectShapedData()
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, result.JsonPathResult);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("Webservice_ApplyPath")]
         public void Webservice_Test_WhenJsonPathNotSet_ExpectNoShapedData()
@@ -152,7 +152,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsAndEmptyResponseExpectedExecutesRequestAndFetchesRecordset()
         {
             var serviceXml = XmlResource.Fetch("WebService");
@@ -186,7 +186,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -195,7 +195,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullWebExectueExpectedThrowsArgumentNullException()
         {
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region DeserializeService
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
@@ -216,7 +216,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             services.DeserializeService(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesDeserializeServiceWithInvalidJsonExpectedReturnsNewWebService()
         {
             var services = new WebServicesMock();
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesDeserializeServiceWithValidJsonExpectedReturnsWebService()
         {
             var xml = XmlResource.Fetch("WebService");
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebServiceTests.VerifyEmbeddedWebService(result as WebService);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesDeserializeServiceWithNullXmlExpectedReturnsNewWebService()
         {
             var services = new WebServicesMock();
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesDeserializeServiceWithValidXmlExpectedReturnsWebService()
         {
             var xml = XmlResource.Fetch("WebService");
@@ -260,7 +260,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsAndNonEmptyResponseExpectedFetchesRecordsetOnly()
         {
             var serviceXml = XmlResource.Fetch("WebService");
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithInValidArgsExpectedReturnsResponseWithErrorMessage()
         {
             var serviceXml = XmlResource.Fetch("WebService");
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsAndRecordsetFieldsExpectedDoesNotAddRecordsetFields()
         {
             //------------Setup for test--------------------------
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(services.FetchRecordsetAddFields);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsAndNoRecordsetFieldsExpectedAddsRecordsetFields()
         {
             //------------Setup for test--------------------------
@@ -341,7 +341,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(services.FetchRecordsetAddFields);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsExpectedFetchesRecordset()
         {
             //------------Setup for test--------------------------
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebServicesTestWithValidArgsExpectedClearsRecordsFirst()
         {
             //------------Setup for test--------------------------
@@ -365,7 +365,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void OuputDescriptionWhereRequestResponseJSONExpectValidOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -381,7 +381,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void OuputDescriptionWhereRequestResponseHasXMLWithElementValuesAndAttributeValues()
         {
             //------------Setup for test--------------------------
@@ -395,7 +395,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_FetchRecordsetList")]
         public void Services_FetchRecordsetList_WhenWebserviceWithJsonDataAndPrimitiveArrayType_ShouldNotIncludeInFieldsList()
@@ -410,7 +410,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(2, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Execute")]
         public void Services_Execute_WhenHasJsonPath_ShouldReturnValid()
@@ -433,7 +433,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.JsonPathResult);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Massimo Guerrera")]
         [TestCategory("Services_Execute")]
         public void Services_Execute_WithVariablesInAllField_ShouldUseEvaluatedValues()
@@ -465,7 +465,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return _requestResponse;
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FetchRecordsetWhereRequestResponseJSONExpectValidOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -481,7 +481,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(1, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FetchRecordsetWhereRequestResponseXml2ExpectValidOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FetchRecordsetWhereRequestResponseXMLExpectValidOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -533,7 +533,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void OuputDescriptionWhereRequestResponseXMLExpectValidOutputDescription()
         {
             //------------Setup for test--------------------------

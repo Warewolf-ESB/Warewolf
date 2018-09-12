@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class GetDirectoriesRelativeToServerTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void GetDirectoriesRelativeToServer_UnitTest_ExecuteWithNullValues_ExpectedInvalidDataContractException()
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void GetDirectoriesRelativeToServer_UnitTest_ExecuteWithNoDirectoryInValues_ExpectedInvalidDataContractException()
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Runtime.Services
         }
        
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void GetDirectoriesRelativeToServer_UnitTest_ExecuteWithBlankDirectory_ExpectInvalidDataContractException()
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         public void GetDirectoriesRelativeToServer_UnitTest_ExecuteWithDirectory_ExpectDirectoryStructure()
         {
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         public void GetDirectoriesRelativeToServer_UnitTest_HandlesType_ExpectedGetDirectoriesRelativeToServerService()
         {
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Huggs")]
         public void GetDirectoriesRelativeToServer_UnitTest_CreateServiceEntry_ExpectedReturnsDynamicService()
         {

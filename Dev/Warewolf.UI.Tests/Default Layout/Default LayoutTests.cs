@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.Workflow
     [CodedUITest]
     public class Default_LayoutTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Default Layout")]
         public void Studio_Default_Layout_UITest()
         {

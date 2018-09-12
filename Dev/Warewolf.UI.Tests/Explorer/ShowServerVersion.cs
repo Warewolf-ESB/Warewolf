@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class ShowServerVersion
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Explorer")]
         public void ShowServerVersion_CloseDialogWithEscapeKey()
         {

@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class Create
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("File Tools")]
         public void PathCreateTool_Small_And_LargeView_UITest()
         {
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton.Exists, "Done Button on the design surface does not exist");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("File Tools")]
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {

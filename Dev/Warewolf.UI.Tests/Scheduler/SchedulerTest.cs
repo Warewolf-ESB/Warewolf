@@ -16,7 +16,7 @@ namespace Warewolf.UI.Tests.Scheduler
         const string newassignwf = "NewAssignWf";
         const string taskFolderName = "Warewolf";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.Scheduler
             SchedulerUIMap.Click_SchedulerTab_CloseButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Button_Enables_When_Task_IsDisabled_UITests()
         {
@@ -65,7 +65,7 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
         {
@@ -79,7 +79,7 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem), "A new item was not deleted correctly.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Scheduler")]
         [DeploymentItem("Microsoft.Win32.TaskScheduler.dll")]
         public void Open_SchedulerTask_For_New_Workflow_Schedule_UITests()

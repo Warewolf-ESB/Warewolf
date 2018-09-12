@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class Deploy_From_Explorer
     {        
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_Resource_Already_Checked()
         {
@@ -24,7 +24,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_All_Resources_In_Folder_Already_Checked()
         {
@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_The_Resource_In_Folder_Already_Checked_And_Refresh_Keeps_Selected()
         {

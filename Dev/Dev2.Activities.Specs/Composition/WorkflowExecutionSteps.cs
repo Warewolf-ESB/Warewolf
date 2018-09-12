@@ -307,7 +307,6 @@ namespace Dev2.Activities.Specs.Composition
                 workflowName == "TestMySqlWFWithMySqlIntIndex")
             {
                 _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-                environmentModel.LoadExplorer(true);
             }
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -771,7 +770,6 @@ namespace Dev2.Activities.Specs.Composition
             if (server == "localhost" && remoteWf == "TestmySqlReturningXml")
             {
                 _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-                localHostEnv.LoadExplorer(true);
             }
 
             var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
@@ -4058,7 +4056,6 @@ namespace Dev2.Activities.Specs.Composition
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             _containerOps = TestLauncher.StartLocalMySQLContainer(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "TestResults"));
-            environmentModel.LoadExplorer(true);
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);

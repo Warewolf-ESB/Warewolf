@@ -241,8 +241,18 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
             UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Text.WaitForControlExist(60000);
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Text.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Text.Exists, "Remote Container does not appear in the explorer connect control.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Text, new Point(138, 6));
+        }
+
+        [When(@"I Select RemoteConnectionIntegration From Explorer")]
+        public void Select_RemoteConnectionIntegration_From_Explorer()
+        {
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.WaitForControlExist(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text.Exists, "Remote Connection Integration does not appear in the explorer connect control.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
         [When(@"I Select Local Server Source From Explorer")]
@@ -467,7 +477,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"I Select Explorer Remote Server Dropdown List")]
         public void Select_Explorer_Remote_Server_Dropdown_List()
         {
-            Mouse.Click(MainStudioWindow.ComboboxItemAsRemoteContainer);
+            Mouse.Click(MainStudioWindow.ComboboxItemAsRemoteConnectionIntegration);
         }
 
         [Given(@"I Click Explorer ServerCombobox ToggleButton")]
@@ -721,8 +731,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         public void ConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteContainer.Text, new Point(226, 13));
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner, 180000);
             Point point;
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner.TryGetClickablePoint(out point), "Timed out waiting for remote server resources to load after 3 minutes.");

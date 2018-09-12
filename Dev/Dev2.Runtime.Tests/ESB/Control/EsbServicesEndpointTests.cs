@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
             CustomContainer.Register(pCounter.Object);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_ShouldNotThrowException()
         {
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Test Result -----------------------
             Assert.IsNotNull(esbServicesEndpoint, "Cannot create new EsbServicesEndpoint object.");
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void SetRemoteExecutionDataList_GivenDataObject_ShouldSetValuesCorreclty()
         {
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewEnvironmentFromInputMappings_GivenInputsDefs_ShouldCreateNewEnvWithMappings()
         {
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Verify(o => o.PushEnvironment(It.IsAny<IExecutionEnvironment>()), Times.Once);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenOutPuts_ShouldReturnCorrectly()
         {
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow2()
         {
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsTrue(errors.Any(p => p.Contains("Asynchronous execution failed: Remote server unreachable")));
             Assert.IsTrue(errors.Any(p => p.Contains("Service not found")));
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteSubRequest_GivenValidArgs_ShouldCheckIsRemoteWorkflow()
         {
@@ -188,7 +188,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteSubRequest_GivenExecuteWorkflowAsync_ShouldCheckIsRemoteWorkflow()
         {
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsTrue(contains);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteLogErrorRequest_GivenCorrectUri_ShouldNoThrowException()
         {

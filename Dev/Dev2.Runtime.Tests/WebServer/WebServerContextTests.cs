@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class WebServerContextTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Constructor_PropertiesInitialized()
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.WebServer
             WebServerRequestTests.VerifyProperties(request, (WebServerRequest)context.Request, content, queryStr, boundVars);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Send_ResponseIsNotNull_InvokesWriteOnResponse()
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.WebServer
             response.Verify(r => r.Write(It.IsAny<WebServerContext>()));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Dispose_InputStreamIsClosed()

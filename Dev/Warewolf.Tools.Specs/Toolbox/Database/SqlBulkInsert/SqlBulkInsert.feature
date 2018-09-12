@@ -1,4 +1,5 @@
 ﻿@SqlBulkInsert
+@MSTest:DeploymentItem:EnableDocker.txt
 Feature: SqlBulkInsert
 	In order to quickly insert large amounts of data in a sql server database
 	As a Warewolf user
@@ -304,13 +305,13 @@ Scenario: Import data into Table Batch size is 2
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        | 2          |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 
-Scenario: Import data into Table timeout after 30 seconds
+Scenario: Import data into Table timeout after 3 second
 	Given I have this data
 	| Col1 | Col2     | Col3                                 |
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Timeout in 30 seconds
+	And Timeout in 3 seconds
 	When the tool is executed
 	Then the execution has "NO" error
 	And  number of inserts is 1

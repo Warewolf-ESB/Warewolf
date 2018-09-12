@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class RabbitMQPublish
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Utility Tools")]
         public void RabbitMQPublishTool_Small_And_LargeView_Then_NewSource_UITest()
         {

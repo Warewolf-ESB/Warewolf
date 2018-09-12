@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     {
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ConstructorWithNoParametersExpectedInitializesListProperties()
         {
             var rs = new Recordset();
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region NewRecord Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void NewRecordExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region SetValue Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void SetValueExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -64,14 +64,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("MyTestData", rs.Records[0][0].Value);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void RecordSet_AddColumn_ShouldAddColumnOnTheRecSet()
         {
             var recordset = new RecordSet { Name = "MyRec" };
             Assert.IsNotNull(recordset);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void SetValueWithRecordNotExistiongExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("MyTestData", rs.Records[0][0].Value);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void SetValueSecondMethodExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };

@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region Ctor Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("DbService_Constructor")]
         
         public void DbService_Constructor_CorrectDbService()
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("af8d2d38-22b5-4599-8357-adce196beb83", dbService.ResourceID.ToString());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DbService_Constructor")]
         
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(ExpectedName, actual.Recordset.Name);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DbService_Create")]
         
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbService_ToXml")]
         
@@ -177,7 +177,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expectedResult, actual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         
         public void DbService_ToXml_CorrectXml()
 

@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.OracleSource
     {
         const string SourceName = "CodedUITestOracleSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Database Sources")]
         public void Create_Save_And_Open_OracleSource_From_ExplorerContextMenu_UITests()
         {
