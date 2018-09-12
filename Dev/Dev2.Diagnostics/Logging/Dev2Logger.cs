@@ -238,7 +238,7 @@ namespace Dev2.Common
                 IFile _file = new FileWrapper();
                 var source = Path.Combine(sourceFilePath, "auditDB.db");
                 var destination = Path.Combine(auditsFilePath, "auditDB.db");
-                if (_file.Exists(source) && _file.Exists(destination))
+                if (_file.Exists(source))
                 {
                     _file.Move(source, destination);
                 }
