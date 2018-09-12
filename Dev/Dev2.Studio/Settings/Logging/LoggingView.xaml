@@ -27,7 +27,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
             
-            <Grid IsEnabled="{Binding CanEditLogSettings, Mode=OneWay}" Margin="{StaticResource ElementBorderTop}">
+    <Grid IsEnabled="{Binding CanEditLogSettings, Mode=OneWay}" Margin="{StaticResource ElementBorderTop}">
         <Grid.Resources>
             <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
@@ -71,8 +71,7 @@
                                                 WrapInBrackets="False"
                                                 Text="{Binding AuditsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}"
-                                                Style="{StaticResource AutoCompleteBoxStyle}"
-                                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+                                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
                             <ui:IntellisenseTextBox.IntellisenseProvider>
                                 <interfaceImplementors:CompositeIntellisenseProvider>
                                     <interfaceImplementors:DefaultIntellisenseProvider />

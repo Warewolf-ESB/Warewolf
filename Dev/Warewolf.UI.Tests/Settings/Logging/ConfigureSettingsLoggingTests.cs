@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 
 namespace Warewolf.UI.Tests
@@ -40,8 +42,10 @@ namespace Warewolf.UI.Tests
         [TestCategory("Settings")]
         public void ChangeAuditsFilePath_ThenSave_PersistsChanges_UITest()
         {
-            const string defaultPath = @"C:\ProgramData\Warewolf\Audits";
-            const string changedPath = @"C:\ProgramData\Warewolf\NewAudits";
+            var DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+
+            var defaultPath = Path.Combine(DataPath, @"Audits\");
+            var changedPath = Path.Combine(DataPath, @"NewAudits\");
 
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
@@ -52,9 +56,10 @@ namespace Warewolf.UI.Tests
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
-            SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+            SettingsUIMap.Assert_Audits_File_Path(changedPath);
             // RESET TO DEFAULT
-            SettingsUIMap.Update_Audits_File_Path(changedPath);
+            SettingsUIMap.Update_Audits_File_Path(defaultPath);
+            UIMap.Click_Save_RibbonButton();
         }
 
         #region Additional test attributes
