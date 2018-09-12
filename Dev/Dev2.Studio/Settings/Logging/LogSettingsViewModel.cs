@@ -147,6 +147,8 @@ namespace Dev2.Settings.Logging
 
         public virtual void Save(LoggingSettingsTo logSettings)
         {
+            logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
+            logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
             Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio", AuditsFilePath);
             SetItem(this);
