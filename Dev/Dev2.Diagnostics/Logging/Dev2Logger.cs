@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
@@ -177,15 +179,6 @@ namespace Dev2.Common
                     UpdateConversionPattern(settingsConfigFile, settingsDocument, eventLayoutElement);
                 }
 
-                var auditLogAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
-
-                var auditsElement = auditLogAppender?.Element("file");
-                var valuesAttrib = auditsElement?.Attribute("value");
-                if (valuesAttrib != null)
-                {
-                    valuesAttrib.SetValue(Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\"));
-                    settingsDocument.Save(settingsConfigFile);
-                }
 
             }
         }
@@ -232,15 +225,25 @@ namespace Dev2.Common
                 {
                     var fileElement = auditsEventAppender.Element("file");
                     var valueAttrib = fileElement.Attribute("value");
-                    if (valueAttrib != null)
-                    {
-                        valueAttrib.SetValue(auditsFilePath);
-                    }
+                    UpdateauditsEvent(valueAttrib.Value, auditsFilePath);
+                    valueAttrib.SetValue(auditsFilePath);
                 }
                 settingsDocument.Save(settingsConfigFile);
             }
         }
-
+        static void UpdateauditsEvent(string sourceFilePath,string auditsFilePath)
+        {
+            if (sourceFilePath != auditsFilePath)
+            {
+                IFile _file = new FileWrapper();
+                var source = Path.Combine(sourceFilePath, "auditDB.db");
+                var destination = Path.Combine(auditsFilePath, "auditDB.db");
+                if (_file.Exists(source) && _file.Exists(destination))
+                {
+                    _file.Move(source, destination);
+                }
+            }
+        }
 
         public static void AddEventLogging(string settingsConfigFile, string applicationNameForEventLog)
         {
@@ -268,7 +271,7 @@ namespace Dev2.Common
                     var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
                     if (fileAppender == null)
                     {
-                        ConfigureAuditsAppender(Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\"), faAppender);
+                        ConfigureAuditsAppender(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"), faAppender);
                         var rootElement = log4netElement.Element("root");
                         AddAuditLogger(rootElement);
                         settingsDocument.Save(settingsConfigFile);
@@ -363,7 +366,6 @@ namespace Dev2.Common
             var eventAppenderElement = new XElement("appender");
             eventAppenderElement.SetAttributeValue("name", "Audits");
             eventAppenderElement.SetAttributeValue("type", "log4net.Appender.FileAppender");
-
 
             var auditsFilePathElement = new XElement("file");
             auditsFilePathElement.SetAttributeValue("value", auditsFilePath);
