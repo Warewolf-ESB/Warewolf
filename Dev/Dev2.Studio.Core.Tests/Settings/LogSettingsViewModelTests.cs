@@ -8,7 +8,6 @@ using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
@@ -21,13 +20,13 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_Constructor_NullValueLoggingSettingTo_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
-            
+
+
             //------------Execute Test---------------------------
             new LogSettingsViewModel(null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("LogSettingsViewModel_Constructor")]
@@ -35,8 +34,8 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_Constructor_NullValueEnvironment_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            
-            
+
+
             //------------Execute Test---------------------------
             new LogSettingsViewModel(new LoggingSettingsTo(), null);
             //------------Assert Results-------------------------
@@ -61,7 +60,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             logSettingsViewModel.ServerEventLogLevel = LogLevel.FATAL;
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.FATAL,logSettingsViewModel.ServerEventLogLevel);
+            Assert.AreEqual(LogLevel.FATAL, logSettingsViewModel.ServerEventLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -71,7 +70,7 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("LogSettingsViewModel_Handle")]
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
@@ -90,7 +89,7 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("LogSettingsViewModel_Handle")]
         public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
             var viewModel = CreateLogSettingViewModel();
@@ -106,7 +105,7 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("LogSettingsViewModel_Handle")]
         public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
             var viewModel = CreateLogSettingViewModel();
@@ -121,7 +120,7 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("LogSettingsViewModel_Handle")]
         public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             CustomContainer.Register(mockMainViewModel.Object);
             var viewModel = CreateLogSettingViewModel();
@@ -236,7 +235,7 @@ namespace Dev2.Core.Tests.Settings
             var logSettingsViewModel = CreateLogSettingViewModel();
 
             //------------Execute Test---------------------------
-            
+
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.DEBUG, logSettingsViewModel.StudioFileLogLevel);
         }
@@ -255,7 +254,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioFileLogLevel);
         }
-                
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("LogSettingsViewModel_CanEdit")]
@@ -290,7 +289,6 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(logSettingsViewModel.CanEditStudioLogSettings);
         }
 
-  
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("LogSettingsViewModel_StudioLogMaxSize")]
@@ -313,6 +311,31 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.IsFalse(hasPropertyChanged);
             Assert.IsFalse(logSettingsViewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_AuditsFilePath")]
+        public void LogSettingsViewModel_AuditsFilePath_PropertyChangeFired()
+        {
+            //------------Setup for test--------------------------
+            var logSettingsViewModel = CreateLogSettingViewModel();
+            var hasPropertyChanged = false;
+            logSettingsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "AuditsFilePath")
+                {
+                    hasPropertyChanged = true;
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(logSettingsViewModel.IsDirty);
+            //------------Execute Test---------------------------
+            logSettingsViewModel.AuditsFilePath = @"D:\Audits";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"D:\Audits", logSettingsViewModel.AuditsFilePath);
+            Assert.IsTrue(hasPropertyChanged);
+            Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
 
         static LogSettingsViewModel CreateLogSettingViewModel()

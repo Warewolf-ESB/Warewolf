@@ -15,8 +15,8 @@ Scenario: Create Windows Server Source
 
 Scenario: Create User Server Source
 	Given I create a server source as
-	| Address                         | AuthenticationType |
-	| http://test-remotewarewolf:3142 | User               |
+	| Address               | AuthenticationType |
+	| http://localhost:3142 | User               |
 	And User details as 
 	| username        | Password      |
 	| .\WarewolfAdmin | W@rEw0lf@dm1n |
@@ -39,5 +39,3 @@ Scenario: Create Public Server Source
 	| http://wolfs-den:3142 | Public             |
 	When I Test the connection
 	Then The result is "success"
-
-

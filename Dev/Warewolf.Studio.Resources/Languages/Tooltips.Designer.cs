@@ -1699,6 +1699,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audits File Path.
+        /// </summary>
+        public static string LoggingViewAuditsFilePathToolTip {
+            get {
+                return ResourceManager.GetString("LoggingViewAuditsFilePathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogDebugTooltip {

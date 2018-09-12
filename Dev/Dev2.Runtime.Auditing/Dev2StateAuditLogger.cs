@@ -232,17 +232,20 @@ namespace Dev2.Runtime.Auditing
     [Database]
     class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base(new SQLiteConnection {
-                ConnectionString = new SQLiteConnectionStringBuilder {
-                    DataSource = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\auditDB.db"), ForeignKeys = true
-                }.ConnectionString
-               }, true)
+        public DatabaseContext() : base(new SQLiteConnection
+        {
+            ConnectionString = new SQLiteConnectionStringBuilder
+            {
+                DataSource = Path.Combine(Dev2Logger.GetAuditsFilePath(), "auditDB.db"),
+                ForeignKeys = true
+            }.ConnectionString
+        }, true)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
-                DbConfiguration.SetConfiguration(new SQLiteConfiguration());            
+                directoryWrapper.CreateIfNotExists(Path.Combine(Dev2Logger.GetAuditsFilePath()));
+                DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
                 this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT,`VersionNumber` TEXT , `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT)");
