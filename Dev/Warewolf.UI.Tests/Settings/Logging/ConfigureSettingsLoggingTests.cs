@@ -44,13 +44,18 @@ namespace Warewolf.UI.Tests
         {
             var DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
-            var defaultPath = Path.Combine(DataPath, @"Audits\");
-            var changedPath = Path.Combine(DataPath, @"NewAudits\");
+            var defaultPath = Path.Combine(DataPath, @"Audits");
+            var changedPath = Path.Combine(DataPath, @"NewAudits");
+
+            if (!Directory.Exists(changedPath))
+            {
+                Directory.CreateDirectory(changedPath);
+                Assert.IsTrue(Directory.Exists(changedPath));
+            }
 
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Assert_Audits_File_Path(defaultPath);
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is expected to be disabled on Settings Logging view load.");
             SettingsUIMap.Update_Audits_File_Path(changedPath);
             UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
@@ -61,6 +66,12 @@ namespace Warewolf.UI.Tests
             // RESET TO DEFAULT
             SettingsUIMap.Update_Audits_File_Path(defaultPath);
             UIMap.Click_Save_RibbonButton();
+
+            if (Directory.Exists(changedPath))
+            {
+                Directory.Delete(changedPath);
+                Assert.IsFalse(Directory.Exists(changedPath));
+            }
         }
 
         #region Additional test attributes
