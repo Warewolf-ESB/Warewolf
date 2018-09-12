@@ -52,9 +52,10 @@ namespace Warewolf.UI.Tests
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
-            SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+            SettingsUIMap.Assert_Audits_File_Path(changedPath);
             // RESET TO DEFAULT
-            SettingsUIMap.Update_Audits_File_Path(changedPath);
+            SettingsUIMap.Update_Audits_File_Path(defaultPath);
+            UIMap.Click_Save_RibbonButton();
         }
 
         #region Additional test attributes
