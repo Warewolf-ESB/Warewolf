@@ -55,8 +55,8 @@
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="5"/>
@@ -74,7 +74,6 @@
                                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
                             <ui:IntellisenseTextBox.IntellisenseProvider>
                                 <interfaceImplementors:CompositeIntellisenseProvider>
-                                    <interfaceImplementors:DefaultIntellisenseProvider />
                                     <provider:FileSystemIntellisenseProvider />
                                 </interfaceImplementors:CompositeIntellisenseProvider>
                             </ui:IntellisenseTextBox.IntellisenseProvider>
@@ -104,13 +103,13 @@
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="5"></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ig:XamComboEditor x:Name="LoggingTypesComboBox"
                                             Margin="{StaticResource ControlBorderRight}"
@@ -138,9 +137,10 @@
                         </StackPanel>
                         <TextBlock Grid.Row="2"  Grid.Column="0">
                             <Hyperlink Command="{Binding Path=GetServerLogFileCommand}" Style="{StaticResource HyperLinkStyle}">
-                                <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
-                                <TextBlock Text="Server Log File" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
-                            </Hyperlink></TextBlock>
+                                <fa:FontAwesome Icon="Eye" FontSize="16"/>
+                                <TextBlock Text="Server Log File" Style="{StaticResource HoverUnderlineStyle}"/>
+                            </Hyperlink>
+                        </TextBlock>
                     </Grid>
                 </Grid>
             </StackPanel>
@@ -165,10 +165,10 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
-                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                            Background="{StaticResource WareWolfMenuBrush}" 
-                            HorizontalAlignment="Stretch" 
-                            Orientation="Horizontal">
+                                Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
                         <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Studio Logs</TextBlock>
                     </StackPanel>
                     <Grid Grid.Row="1">
@@ -317,9 +317,10 @@
                     </StackPanel>
                     <TextBlock Grid.Row="9" Margin="{StaticResource ControlBorderTop}">
                         <Hyperlink Command="{Binding Path=GetStudioLogFileCommand}" Style="{StaticResource HyperLinkStyle}">
-                            <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
-                            <TextBlock Text="Studio Log File" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
-                </Hyperlink></TextBlock>
+                            <fa:FontAwesome Icon="Eye" FontSize="16"/>
+                            <TextBlock Text="Studio Log File" Style="{StaticResource HoverUnderlineStyle}"/>
+                        </Hyperlink>
+                    </TextBlock>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

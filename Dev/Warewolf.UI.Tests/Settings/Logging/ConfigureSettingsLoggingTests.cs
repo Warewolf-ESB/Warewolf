@@ -50,6 +50,7 @@ namespace Warewolf.UI.Tests
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is expected to be disabled on Settings Logging view load.");
             SettingsUIMap.Update_Audits_File_Path(changedPath);
             UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
