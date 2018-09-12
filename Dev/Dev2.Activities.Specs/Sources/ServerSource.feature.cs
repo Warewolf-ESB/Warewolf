@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table2.AddRow(new string[] {
-                        "http://test-remotewarewolf:3142",
+                        "http://localhost:3142",
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
