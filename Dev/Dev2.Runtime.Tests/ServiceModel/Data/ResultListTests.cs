@@ -18,7 +18,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class ResultListTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_Default_HasErrorsIsFalse()
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithNoArgs_HasErrorsIsTrue()
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithArgs_HasErrorsIsTrue()
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello world", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNull_HasErrorsIsTrue()
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNotNull_HasErrorsIsTrue()
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_ToString")]
         public void ResultList_ToString_Json()

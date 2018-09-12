@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.Hosting
     [TestClass]
     public class ServiceActionRepoTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
         public void ServiceActionRepo_AddToCache_WhenNotExisting_ShouldAdd()
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Ds 1",readDs.DisplayName);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
         public void ServiceActionRepo_AddToCache_WhenIdExists_ShouldReplace()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
         public void ServiceActionRepo_ReadFromCache_WhenNotExisting_ShouldReturnNull()
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(readDs);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_AddToCache")]
         public void ServiceActionRepo_ReadFromCache_WhenExisting_ShouldReturnDynamicService()
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Ds 1", readDs.DisplayName);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceActionRepo_RemoveFromCache")]
         public void ServiceActionRepo_RemoveFromCache_WhenIdExists_ShouldRemove()

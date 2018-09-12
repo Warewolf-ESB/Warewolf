@@ -46,3 +46,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
+

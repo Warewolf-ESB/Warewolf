@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.Plugins
     [TestClass]
     public class ServiceConstructorListTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void ToString_GivenIsNotNull_ShouldJsonFormat()
         {

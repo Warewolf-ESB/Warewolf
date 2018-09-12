@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.SharepointSource
     {
         const string SourceName = "CodedUITestSharepointSource";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Source Wizards")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SharepointSource_From_ExplorerContextMenu_UITests()

@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     [CodedUITest]
     public class Base_Convert
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Data Tools")]
         public void BaseConvertTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -23,7 +23,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             DataToolsUIMap.Open_BaseConvertTool_QVIView();
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "Base Conversion QVI Window does not exist on the design surface");
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Data Tools")]
         public void BaseConvertTool_EnterData_Then_Debug_UITest()
         {
@@ -34,7 +34,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             WorkflowTabUIMap.Click_Debug_Output_BaseConvert_Cell();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Data Tools")]
         public void BaseConvertTool_Small_And_Large_Then_ShowErrorBox_UITest()
         {

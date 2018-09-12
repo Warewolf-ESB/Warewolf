@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ComPluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ComPluginServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             services.DeserializeService(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesDeserializeServiceWithInvalidJsonExpectedReturnsNewPluginService()
         {
             var services = new ComPluginServicesMock();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesDeserializeServiceWithValidJsonExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("ComPluginService");
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("reverb", service.Recordsets[0].Fields.First(f => f.Name == "echo").Alias);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
             var services = new ComPluginServicesMock();
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesDeserializeServiceWithValidXmlExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("ComPluginService");
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Namespaces
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesNamespacesWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesNamespacesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -126,7 +126,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesNamespacesWithValidArgsExpectedReturnsList()
         {
             var source = CreatePluginSource();
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Methods
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesMethodsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new ComPluginServices();
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ComPluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #region Test
        
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginServices_Test")]
         public void ComPluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
@@ -203,7 +203,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
           
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------
@@ -214,7 +214,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(result[0].HasErrors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void PluginServicesTestWithInvalidArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------

@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.Toolbox
     [CodedUITest]
     public class ToolboxTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Tools")]
         public void ToolboxBehaviourCheck_ClearFilter_Then_PopUp_Then_UpdateHelpText_UITest()
         {

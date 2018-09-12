@@ -7,7 +7,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class ConfigureSettingsLoggingTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Settings")]
         public void Open_SettingsTab_Then_ConfigureLogging_UITest()
         {
@@ -22,7 +22,7 @@ namespace Warewolf.UI.Tests
             SettingsUIMap.Click_Studio_Log_File();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Settings")]
         public void ChangeServerLoggingType_ThenSave_PersistsChanges_UITest()
         {

@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FindResourceTestsTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetAuthorizationContextForService_Returns_Any()
         {
@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, authorizationContextForService);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void CreateServiceEntry_Returns_New_Dynamic_Service_DeleteAllTestsService()
         {
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(handleType));
             Assert.AreEqual(handleType, dynamicService.Name);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenEmptyArgs_Returns_EmptyGuid()
         {
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(Guid.Empty, resourceID);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void Execute_GivenNoArgs_Exception()
         {

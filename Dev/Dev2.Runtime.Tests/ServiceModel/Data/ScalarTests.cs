@@ -6,7 +6,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class ScalarTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ConstructorWithNoParametersExpectedInitializesListProperties()
         {
             var scalar = new Scalar();
@@ -14,7 +14,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(scalar.IsEditable);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Scalar_GetHashCode_ShouldReturnHashCode()
         {
             var scalar = new Scalar {Name = "MyScalar"};
@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GivenDifferemtScalar_Scalar_Equals_ShouldReturnFalse()
         {
             var scalar = new Scalar {Name = "MyScalar"};
@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(scalarEqual);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GivenDifferemtScalar_Scalar_EqualsOperator_ShouldReturnFalse()
         {
             var scalar = new Scalar {Name = "MyScalar"};
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(scalar == other);
             Assert.IsTrue(scalar != other);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GivenNullScalar_Scalar_EqualsOperator_ShouldReturnFalse()
         {
             var scalar = new Scalar { Name = "MyScalar" };

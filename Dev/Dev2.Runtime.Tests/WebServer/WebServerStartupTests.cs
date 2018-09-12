@@ -18,7 +18,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class WebServerStartupTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerStartup_Configuration")]
         public void WebServerStartup_Configuration_HttpListener_InitializedCorrectly()

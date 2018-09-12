@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Settings.Performance_Counters
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Settings")]
         public void Reset_Then_Configure_PerfomanceCounter_UITest()
         {
