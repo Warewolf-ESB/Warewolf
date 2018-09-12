@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -11,20 +12,34 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+             xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+             xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
              d:DesignHeight="1000"
              d:DesignWidth="1000"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance logging:ILogSettings}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+            
     <Grid IsEnabled="{Binding CanEditLogSettings, Mode=OneWay}" Margin="{StaticResource ElementBorderTop}">
         <Grid.Resources>
             <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="46*"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="0" 
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -32,37 +47,85 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
-                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                            Background="{StaticResource WareWolfMenuBrush}" 
-                            HorizontalAlignment="Stretch" 
-                            Orientation="Horizontal">
+                                Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
+                            <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Audits</TextBlock>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="1">File Path</TextBlock>
+                        <ui:IntellisenseTextBox x:Name="AuditsFilePathTextBox"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                FilterType="All"
+                                                DefaultText="File Path"
+                                                WrapInBrackets="False"
+                                                Text="{Binding AuditsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}"
+                                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
+                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                    <provider:FileSystemIntellisenseProvider />
+                                </interfaceImplementors:CompositeIntellisenseProvider>
+                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                            <i:Interaction.Behaviors>
+                                <core:HelpSetter Text="{x:Static languages:HelpText.LoggingViewAuditsFilePathHelpText}" DataContext="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </ui:IntellisenseTextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="1" 
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" 
+                                Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
                         <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server System Logs</TextBlock>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="5"></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ig:XamComboEditor x:Name="LoggingTypesComboBox"
-                            Margin="{StaticResource ControlBorderRight}"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            ItemsSource="{Binding LoggingTypes}"
-                            SelectedItem="{Binding SelectedLoggingType}"
-                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                            IsEditable="False"
-                            AllowDrop="False"
-                            MaxDropDownHeight="200"
-                            CustomValueEnteredAction="Allow" 
-                            Focusable="False"
-                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
-                            AutomationProperties.AutomationId="UI_LoggingType_AutoID"
-                            views:FocusExtension.IsFocused="False">
+                                            Margin="{StaticResource ControlBorderRight}"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            ItemsSource="{Binding LoggingTypes}"
+                                            SelectedItem="{Binding SelectedLoggingType}"
+                                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                            IsEditable="False"
+                                            AllowDrop="False"
+                                            MaxDropDownHeight="200"
+                                            CustomValueEnteredAction="Allow" 
+                                            Focusable="False"
+                                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
+                                            AutomationProperties.AutomationId="UI_LoggingType_AutoID"
+                                            views:FocusExtension.IsFocused="False">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
@@ -74,15 +137,16 @@
                         </StackPanel>
                         <TextBlock Grid.Row="2"  Grid.Column="0">
                             <Hyperlink Command="{Binding Path=GetServerLogFileCommand}" Style="{StaticResource HyperLinkStyle}">
-                                <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
-                                <TextBlock Text="Server Log File" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
-                            </Hyperlink></TextBlock>
+                                <fa:FontAwesome Icon="Eye" FontSize="16"/>
+                                <TextBlock Text="Server Log File" Style="{StaticResource HoverUnderlineStyle}"/>
+                            </Hyperlink>
+                        </TextBlock>
                     </Grid>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
         <ScrollViewer IsEnabled="{Binding CanEditStudioLogSettings, Mode=OneWay}" 
-                      Grid.Row="1" 
+                      Grid.Row="2" 
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True" >
@@ -101,10 +165,10 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
-                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
-                            Background="{StaticResource WareWolfMenuBrush}" 
-                            HorizontalAlignment="Stretch" 
-                            Orientation="Horizontal">
+                                Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                                Background="{StaticResource WareWolfMenuBrush}" 
+                                HorizontalAlignment="Stretch" 
+                                Orientation="Horizontal">
                         <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Studio Logs</TextBlock>
                     </StackPanel>
                     <Grid Grid.Row="1">
@@ -253,9 +317,10 @@
                     </StackPanel>
                     <TextBlock Grid.Row="9" Margin="{StaticResource ControlBorderTop}">
                         <Hyperlink Command="{Binding Path=GetStudioLogFileCommand}" Style="{StaticResource HyperLinkStyle}">
-                            <fa:FontAwesome Icon="Eye" FontSize="16"></fa:FontAwesome>
-                            <TextBlock Text="Studio Log File" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
-                </Hyperlink></TextBlock>
+                            <fa:FontAwesome Icon="Eye" FontSize="16"/>
+                            <TextBlock Text="Studio Log File" Style="{StaticResource HoverUnderlineStyle}"/>
+                        </Hyperlink>
+                    </TextBlock>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

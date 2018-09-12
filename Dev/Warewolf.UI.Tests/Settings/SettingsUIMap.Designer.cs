@@ -53,12 +53,26 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
                 return this.mUIWarewolfDEV2SANELEMTWindow;
             }
         }
+        
+        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
+                {
+                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
+                }
+                return this.mUIWarewolfDEV2PIETERTEWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        
+        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         #endregion
     }
     
@@ -1918,29 +1932,29 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         }
         
         #region Properties
-        public LogSettingsViewConte LogSettingsViewConte
+        public LogSettingsView LogSettingsView
         {
             get
             {
-                if ((this.mLogSettingsViewConte == null))
+                if ((this.mLogSettingsView == null))
                 {
-                    this.mLogSettingsViewConte = new LogSettingsViewConte(this);
+                    this.mLogSettingsView = new LogSettingsView(this);
                 }
-                return this.mLogSettingsViewConte;
+                return this.mLogSettingsView;
             }
         }
         #endregion
         
         #region Fields
-        private LogSettingsViewConte mLogSettingsViewConte;
+        private LogSettingsView mLogSettingsView;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class LogSettingsViewConte : WpfCustom
+    public class LogSettingsView : WpfCustom
     {
         
-        public LogSettingsViewConte(UITestControl searchLimitContainer) : 
+        public LogSettingsView(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -1986,6 +2000,18 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
                 return this.mLoggingTypesComboBox;
             }
         }
+        
+        public Audits Audits
+        {
+            get
+            {
+                if ((this.mAudits == null))
+                {
+                    this.mAudits = new Audits(this);
+                }
+                return this.mAudits;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1994,6 +2020,8 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         private ServerLogs mServerLogs;
         
         private LoggingTypesComboBox mLoggingTypesComboBox;
+        
+        private Audits mAudits;
         #endregion
     }
     
@@ -2204,6 +2232,74 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         private WpfText mNoneNologgingText;
         
         private WpfText mFatalOnlylogeventsthText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Audits : WpfPane
+    {
+        
+        public Audits(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public AuditsFilePathComboBox AuditsFilePathComboBox
+        {
+            get
+            {
+                if ((this.mAuditsFilePathComboBox == null))
+                {
+                    this.mAuditsFilePathComboBox = new AuditsFilePathComboBox(this);
+                }
+                return this.mAuditsFilePathComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private AuditsFilePathComboBox mAuditsFilePathComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class AuditsFilePathComboBox : WpfComboBox
+    {
+        
+        public AuditsFilePathComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "AuditsFilePathTextBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit AuditsFilePathTextbox
+        {
+            get
+            {
+                if ((this.mAuditsFilePathTextbox == null))
+                {
+                    this.mAuditsFilePathTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mAuditsFilePathTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mAuditsFilePathTextbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mAuditsFilePathTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mAuditsFilePathTextbox;
         #endregion
     }
     
@@ -3096,6 +3192,159 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         
         #region Fields
         private WpfTable mUIServerPermissionsDatTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2PIETERTEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SettingsView_AutoCustom UIUI_SettingsView_AutoCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SettingsView_AutoCustom == null))
+                {
+                    this.mUIUI_SettingsView_AutoCustom = new UIUI_SettingsView_AutoCustom(this);
+                }
+                return this.mUIUI_SettingsView_AutoCustom;
+            }
+        }
+        
+        public WpfCustom UILogSettingsViewConteCustom
+        {
+            get
+            {
+                if ((this.mUILogSettingsViewConteCustom == null))
+                {
+                    this.mUILogSettingsViewConteCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.LoggingView";
+                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LogSettingsViewContent";
+                    this.mUILogSettingsViewConteCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mUILogSettingsViewConteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SettingsView_AutoCustom mUIUI_SettingsView_AutoCustom;
+        
+        private WpfCustom mUILogSettingsViewConteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_SettingsView_AutoCustom : WpfCustom
+    {
+        
+        public UIUI_SettingsView_AutoCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SettingsView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SettingsView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemTabList UIItemTabList
+        {
+            get
+            {
+                if ((this.mUIItemTabList == null))
+                {
+                    this.mUIItemTabList = new UIItemTabList(this);
+                }
+                return this.mUIItemTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemTabList mUIItemTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIItemTabList : WpfTabList
+    {
+        
+        public UIItemTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISystemWindowsControlTabPage UISystemWindowsControlTabPage
+        {
+            get
+            {
+                if ((this.mUISystemWindowsControlTabPage == null))
+                {
+                    this.mUISystemWindowsControlTabPage = new UISystemWindowsControlTabPage(this);
+                }
+                return this.mUISystemWindowsControlTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISystemWindowsControlTabPage mUISystemWindowsControlTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UISystemWindowsControlTabPage : WpfTabPage
+    {
+        
+        public UISystemWindowsControlTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "System.Windows.Controls.TabItem Header: Content:";
+            this.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UILogSettingsViewConteCustom
+        {
+            get
+            {
+                if ((this.mUILogSettingsViewConteCustom == null))
+                {
+                    this.mUILogSettingsViewConteCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.LoggingView";
+                    this.mUILogSettingsViewConteCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LogSettingsViewContent";
+                    this.mUILogSettingsViewConteCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mUILogSettingsViewConteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUILogSettingsViewConteCustom;
         #endregion
     }
 }

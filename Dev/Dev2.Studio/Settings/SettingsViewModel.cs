@@ -567,6 +567,7 @@ namespace Dev2.Settings
                     SecurityViewModel.Save(Settings.Security);
                     if (LogSettingsViewModel.IsDirty)
                     {
+                        Settings.Logging.AuditsFilePath = LogSettingsViewModel.AuditsFilePath;
                         LogSettingsViewModel.Save(Settings.Logging);
                     }
                     if (PerfmonViewModel.IsDirty)

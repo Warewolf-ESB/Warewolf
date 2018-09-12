@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
@@ -27,16 +28,13 @@ namespace Dev2.Settings.Logging
     {
         public IServer CurrentEnvironment
         {
-            private get
-            {
-                return _currentEnvironment;
-            }
+            private get => _currentEnvironment;
             set
             {
                 _currentEnvironment = value;
-                
+
                 OnPropertyChanged("CanEditStudioLogSettings");
-                
+
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -51,7 +49,7 @@ namespace Dev2.Settings.Logging
         readonly LogLevel _serverFileLogLevel;
         LogLevel _studioFileLogLevel;
         LogSettingsViewModel _item;
-
+        string _auditsFilePath;
 
         public LogSettingsViewModel()
         {
@@ -86,6 +84,7 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+            
         }
 
         [ExcludeFromCodeCoverage]
@@ -145,20 +144,20 @@ namespace Dev2.Settings.Logging
         public bool CanEditLogSettings => CurrentEnvironment.IsConnected;
 
         public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
-        
+
         public virtual void Save(LoggingSettingsTo logSettings)
         {
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio", AuditsFilePath);
             SetItem(this);
         }
 
         [JsonIgnore]
         public LogSettingsViewModel Item
         {
-            private get { return _item; }
+            private get => _item;
             set
             {
                 _item = value;
@@ -183,10 +182,7 @@ namespace Dev2.Settings.Logging
         public ICommand GetStudioLogFileCommand { get; }
         public LogLevel ServerEventLogLevel
         {
-            get
-            {
-                return _serverEventLogLevel;
-            }
+            get => _serverEventLogLevel;
             set
             {
                 _serverEventLogLevel = value;
@@ -196,10 +192,7 @@ namespace Dev2.Settings.Logging
         }
         public LogLevel StudioEventLogLevel
         {
-            get
-            {
-                return _studioEventLogLevel;
-            }
+            get => _studioEventLogLevel;
             set
             {
                 _studioEventLogLevel = value;
@@ -209,10 +202,7 @@ namespace Dev2.Settings.Logging
         }
         public LogLevel StudioFileLogLevel
         {
-            get
-            {
-                return _studioFileLogLevel;
-            }
+            get => _studioFileLogLevel;
             set
             {
                 _studioFileLogLevel = value;
@@ -225,10 +215,7 @@ namespace Dev2.Settings.Logging
 
         public string SelectedLoggingType
         {
-            get
-            {
-                return EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
-            }
+            get => EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
@@ -246,7 +233,7 @@ namespace Dev2.Settings.Logging
 
         public string ServerLogMaxSize
         {
-            get { return _serverLogMaxSize; }
+            get => _serverLogMaxSize;
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_serverLogMaxSize))
@@ -262,13 +249,12 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
         public string StudioLogMaxSize
         {
-            get { return _studioLogMaxSize; }
+            get => _studioLogMaxSize;
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_studioLogMaxSize))
@@ -284,7 +270,24 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
+            }
+        }
 
+        public string AuditsFilePath
+        {
+            get => _auditsFilePath;
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditsFilePath))
+                {
+                    _auditsFilePath = Dev2Logger.GetAuditsFilePath();
+                }
+                else
+                {
+                    IsDirty = !Equals(Item);
+                    _auditsFilePath = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -309,13 +312,14 @@ namespace Dev2.Settings.Logging
 
         bool EqualsSeq(LogSettingsViewModel other)
         {
-            var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
-                            string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
-                            string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
-                            string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
-                            Equals(_selectedLoggingType, other._selectedLoggingType) &&
-                            int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
-                            int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
+            var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString());
+            equalsSeq &= string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString());
+            equalsSeq &= string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString());
+            equalsSeq &= string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString());
+            equalsSeq &= Equals(_selectedLoggingType, other._selectedLoggingType);
+            equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
+            equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
+            equalsSeq &= Equals(_auditsFilePath, other._auditsFilePath);
             return equalsSeq;
         }
 
