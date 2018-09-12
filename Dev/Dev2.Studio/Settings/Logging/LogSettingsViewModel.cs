@@ -27,13 +27,13 @@ namespace Dev2.Settings.Logging
     {
         public IServer CurrentEnvironment
         {
-            private get =>_currentEnvironment;
+            private get => _currentEnvironment;
             set
             {
                 _currentEnvironment = value;
-                
+
                 OnPropertyChanged("CanEditStudioLogSettings");
-                
+
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
@@ -83,12 +83,7 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-
-            if (string.IsNullOrEmpty(logging.AuditsFilePath))
-            {
-                logging.AuditsFilePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits\\");
-            }
-            AuditsFilePath = logging.AuditsFilePath;
+            _auditsFilePath = Dev2Logger.GetAuditsFilePath().ToString(CultureInfo.InvariantCulture);
         }
 
         [ExcludeFromCodeCoverage]
@@ -148,7 +143,7 @@ namespace Dev2.Settings.Logging
         public bool CanEditLogSettings => CurrentEnvironment.IsConnected;
 
         public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
-        
+
         public virtual void Save(LoggingSettingsTo logSettings)
         {
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();

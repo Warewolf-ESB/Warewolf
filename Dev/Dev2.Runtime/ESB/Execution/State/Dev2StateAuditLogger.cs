@@ -35,14 +35,8 @@ namespace Dev2.Runtime.ESB.Execution
         {
             new AllPassFilter()
         };
-        private static string AuditsFilePath { get; set; }
         public Dev2StateAuditLogger(IDSFDataObject dsfDataObject)
         {
-            if (string.IsNullOrEmpty(AuditsFilePath))
-            {
-                AuditsFilePath = @"C:\ProgramData\Warewolf\Audits";
-            }
-
             _dsfDataObject = dsfDataObject;
         }
         public static IEnumerable<AuditLog> Query(Expression<Func<AuditLog, bool>> queryExpression)
@@ -61,7 +55,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private static DatabaseContext GetDatabase()
         {
-            var databaseContext = new DatabaseContext(AuditsFilePath);
+            var databaseContext = new DatabaseContext();
             return databaseContext;
         }
 
@@ -231,11 +225,11 @@ namespace Dev2.Runtime.ESB.Execution
     [Database]
     class DatabaseContext : DbContext
     {
-        public DatabaseContext(string auditPath) : base(new SQLiteConnection
+        public DatabaseContext() : base(new SQLiteConnection
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(auditPath, "\\auditDB.db"),
+                DataSource = Path.Combine(Dev2Logger.GetAuditsFilePath(), "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)
@@ -243,7 +237,7 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(auditPath, "\\auditDB.db"));
+                directoryWrapper.CreateIfNotExists(Path.Combine(Dev2Logger.GetAuditsFilePath()));
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
