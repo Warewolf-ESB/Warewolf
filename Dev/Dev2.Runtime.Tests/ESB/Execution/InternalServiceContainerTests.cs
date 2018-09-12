@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     [TestClass]
     public class InternalServiceContainerTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_GivenValidArgs_ShouldBuildCorrectly()
         {
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateRequestDictionaryFromDataObject_GivenValidArgs_ShouldClearArgsAndErros()
         {
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(0, esbExecuteRequest.Args.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNullService_ShouldAddValidError()
         {
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.AreEqual(string.Format(ErrorResource.CouldNotLocateManagementService, "name"), errorResultTO.FetchErrors().Single());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenService_ShouldAddBuildRequestArgs()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Warewolf.Launcher.Utils
 {
@@ -19,7 +20,19 @@ namespace Warewolf.Launcher.Utils
             }
             Console.WriteLine("Press Enter to Shutdown.");
             Console.ReadKey();
-            build.CleanupServerStudio();
+            build.CleanupServerStudio(!build.ApplyDotCover);
+            if (string.IsNullOrEmpty(build.JobName))
+            {
+                if (!string.IsNullOrEmpty(build.ProjectName))
+                {
+                    build.JobName = build.ProjectName;
+                }
+                else
+                {
+                    build.JobName = "Manual Tests";
+                }
+            }
+            build.MoveArtifactsToTestResults(build.ApplyDotCover, true, true, build.JobName);
         }
     }
 }

@@ -47,12 +47,9 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
-      <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
-    <None Include="..\Run Tests.ps1">
+    <None Include="..\Warewolf.Launcher\EnableDocker.txt">
       <Visible>False</Visible>
-      <Link>Run Tests.ps1</Link>
+      <Link>EnableDocker.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -65,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BrowserDebug.feature</DependentUpon>
     </Compile>
+    <Compile Include="BuildConfig.cs" />
     <Compile Include="Composition\CompositionLoadTests.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

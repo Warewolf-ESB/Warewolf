@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogExecuteWithNullFilePathExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogExecuteWithNullDirectoryExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogExecuteWithNonExistingDirectoryExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogExecuteWithNonExistingPathExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
             //Lock because of access to file system
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogHandlesTypeExpectedReturnsDeleteLogService()
         {
             var esb = new DeleteLog();
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void DeleteLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new DeleteLog();

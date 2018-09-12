@@ -22,7 +22,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         public const string EmptyWorkflow = "EmptyWorkflow";
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Creating_A_Test_With_Blank_Name()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Run_Failing_Test()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
        
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Run_Passing_Test()
         {
@@ -58,7 +58,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Invalid.Exists, "Test passing icon is not displayed after running a passing test.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Show_Duplicate_Test_Dialog()
         {
@@ -71,7 +71,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Duplicate_Test_Name_MessageBox_Ok();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
@@ -82,7 +82,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void RunTestAsSpecificUser()
         {
@@ -94,7 +94,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Delete_Test()
         {
@@ -106,7 +106,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Click_Duplicate_Test_Button()
         {
@@ -117,7 +117,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Workflow Testing")]
         public void Click_Duplicate_Test_Button_AssertIcon()
         {

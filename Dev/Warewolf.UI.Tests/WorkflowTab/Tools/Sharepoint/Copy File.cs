@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
 
         const string SourceName = "SharepointSourceFromTool";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {

@@ -316,7 +316,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mComboboxListItemAsDev2TestingDB = new WpfCustom(this);
                     #region Search Criteria
-                    this.mComboboxListItemAsDev2TestingDB.SearchProperties[WpfControl.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":""TEST-MSSQL"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testuser"",""Password"":""test123"",""DataList"":"""",""ConnectionString"":""Data Source=test-mssql,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""ResourceType"":""SqlDatabase"",""ResourceName"":""TestingDb"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-01-12T08:28:31.4692206+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""VersionId"":""47f2ec5f-a20a-41de-bbea-5653cb87b60c""}}";
+                    this.mComboboxListItemAsDev2TestingDB.SearchProperties[WpfControl.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":""rsaklfsvrdev.dev2.local"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testuser"",""Password"":""test123"",""DataList"":"""",""ConnectionString"":""Data Source=rsaklfsvrdev.dev2.local,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""ResourceType"":""SqlDatabase"",""ResourceName"":""TestingDb"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-01-12T08:28:31.4692206+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""ffa6880d-3b24-4d34-b829-a2db45e1c664"",""VersionId"":""47f2ec5f-a20a-41de-bbea-5653cb87b60c""}}";
                     this.mComboboxListItemAsDev2TestingDB.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -694,6 +694,18 @@ namespace Warewolf.UI.Tests
                     this.mComboboxListItemAsRemoteContainer = new ComboboxListItemAsRemoteContainer(this);
                 }
                 return this.mComboboxListItemAsRemoteContainer;
+            }
+        }
+        
+        public ComboboxListItemAsRemoteConnectionIntegration ComboboxListItemAsRemoteConnectionIntegration
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsRemoteConnectionIntegration == null))
+                {
+                    this.mComboboxListItemAsRemoteConnectionIntegration = new ComboboxListItemAsRemoteConnectionIntegration(this);
+                }
+                return this.mComboboxListItemAsRemoteConnectionIntegration;
             }
         }
         
@@ -1169,6 +1181,8 @@ namespace Warewolf.UI.Tests
         private UnpinnedTabContextMenu mUnpinnedTabContextMenu;
         
         private ComboboxListItemAsRemoteContainer mComboboxListItemAsRemoteContainer;
+        
+        private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         
         private ComboboxListItemAsRestrictedRemoteConnection mComboboxListItemAsRestrictedRemoteConnection;
         
@@ -19629,6 +19643,43 @@ namespace Warewolf.UI.Tests
                     this.mText = new WpfText(this);
                     #region Search Criteria
                     this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Container", PropertyExpressionOperator.Contains));
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ComboboxListItemAsRemoteConnectionIntegration : WpfCustom
+    {
+        
+        public ComboboxListItemAsRemoteConnectionIntegration(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Remote Connection Integration", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }

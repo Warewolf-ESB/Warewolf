@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
     {
         const string fileName = @"C:\.Python\testPython.py";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 		[TestCategory("Tools")]
         public void PytonScriptTool_Small_And_LargeView_UITest()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Tools")]
         public void PytonScriptTool_LargeView_SelectFile_UITest()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Tools")]
         public void PytonScriptTool_LoseFocus_ChangeTab_UITest()
         {

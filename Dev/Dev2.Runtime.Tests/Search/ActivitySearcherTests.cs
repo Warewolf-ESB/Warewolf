@@ -14,14 +14,14 @@ namespace Dev2.Tests.Runtime.Search
     [TestClass]
     public class ActivitySearcherTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullResourceCatalog_ShouldThrowException()
         {
             var searcher = new ActivitySearcher(null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GetSearchResults_WhenToolTitleHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Search
             Assert.AreEqual(Common.Interfaces.Search.SearchItemType.ToolTitle, searchResult.Type);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GetSearchResults_WhenToolTitleDoesNotHaveValue_ShouldNotReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.Search
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GetSearchResults_WhenComplexFlowHaveValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Runtime.Search
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void GetSearchResults_WhenMatchInTwoResources_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();

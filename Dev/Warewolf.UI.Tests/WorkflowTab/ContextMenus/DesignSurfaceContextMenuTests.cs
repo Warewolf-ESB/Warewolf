@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.WindowsDesignSurfaceContextMenu
     [CodedUITest]
     public class DesignSurfaceContextMenuTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void CopyAndPasteWorkflowToItselfDoesNotCopy()
         {
             UIMap.Click_NewWorkflow_RibbonButton();

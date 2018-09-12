@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Util
     public class FindResourceHelperTest
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
 
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(id, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
         public void FindResourceHelper_SerializeResourceForStudio_WhenNotNewResource_ExpectValidResource()
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(id, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
         public void FindResourceHelper_SerializeResourceForStudio_WhenCheckingAllProperties_ExpectValidResource()

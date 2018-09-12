@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
     [TestClass]
     public class StatusResponseWriterTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StatusResponseWriter_Write")]
         public void StatusResponseWriter_Write_WebServerContext_WritesTheStatus()

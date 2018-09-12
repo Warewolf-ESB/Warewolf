@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class DropboxSourceTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Source Wizards")]
         // ReSharper disable once InconsistentNaming
         public void Create_DropboxSource_From_ExplorerContextMenu_UITests()

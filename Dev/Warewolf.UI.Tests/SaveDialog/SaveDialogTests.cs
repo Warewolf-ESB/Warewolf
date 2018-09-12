@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.SaveDialog
         const string FolderRenamed = "FolderToRename_Renamed";
         const string SaveDialogHiddenVersion = "SaveDialogHiddenVersion";
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
         {
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void Save_Dialog_Resource_Version_Should_Be_Hidden()
         {
@@ -41,7 +41,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
@@ -50,7 +50,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
         {
@@ -61,7 +61,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
         {
@@ -72,7 +72,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationInvalidChars()
         {
@@ -80,14 +80,14 @@ namespace Warewolf.UI.Tests.SaveDialog
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is ENABLED.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithNumber()
         {
             DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("TestingWF1");
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithEmptySpace()
         {
@@ -95,7 +95,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void CloseSaveDialogRemovesExplorerFilter()
         {
@@ -106,7 +106,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             ExplorerUIMap.ExplorerItemsAppearOnTheExplorerTree();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void RenameFolderFromSaveDialog()
         {
@@ -118,7 +118,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             ExplorerUIMap.ExplorerContainItem("FolderToRename_Renamed");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void MoveFolderToSameLocationFromSaveDialog()
         {
@@ -127,7 +127,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.ResourceIsChildOfLocalhost(FolderToRename);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void MoveFolderToFolderToRenameFromSaveDialog()
         {
@@ -137,7 +137,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             DialogsUIMap.FolderIsChildOfParentFolder("FolderToMove", FolderToRename);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void MoveResourceToLocalhostFromSaveDialog()
         {
@@ -148,7 +148,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             ExplorerUIMap.ExplorerDoesNotContainFirstItemFirstSubItem();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void DoubleClickItemInSaveDialogDoesNotOpenResource()
         {
@@ -158,7 +158,7 @@ namespace Warewolf.UI.Tests.SaveDialog
             UIMap.ResourceDidNotOpen();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void PressEnterSavesResourceAndClosesSaveDialog()
         {
@@ -174,7 +174,7 @@ namespace Warewolf.UI.Tests.SaveDialog
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("Save Dialog")]
         public void ClickingSave_ThenPressEnter_SavesResource_AndClosesSaveDialog()
         {

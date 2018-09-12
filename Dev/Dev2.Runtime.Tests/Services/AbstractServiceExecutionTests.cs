@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.Services
     {
         #region Create Service
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ServiceExecutionAbstract_ExecuteWithCrazyXML_ShouldMap()
         {
             
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.Services
             //assert
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceExecutionAbstract_Execute")]
         public void ServiceExecutionAbstract_Execute_ObjectJson_ShouldMapCorrectly()
