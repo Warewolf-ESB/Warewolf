@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
@@ -83,7 +84,7 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            _auditsFilePath = Dev2Logger.GetAuditsFilePath().ToString(CultureInfo.InvariantCulture);
+            
         }
 
         [ExcludeFromCodeCoverage]
@@ -246,7 +247,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
@@ -268,7 +268,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
@@ -277,9 +276,16 @@ namespace Dev2.Settings.Logging
             get => _auditsFilePath;
             set
             {
-                _auditsFilePath = value;
-                IsDirty = !Equals(Item);
-                OnPropertyChanged();
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditsFilePath))
+                {
+                    _auditsFilePath = Dev2Logger.GetAuditsFilePath();
+                }
+                else
+                {
+                    IsDirty = !Equals(Item);
+                    _auditsFilePath = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
