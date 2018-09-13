@@ -236,8 +236,6 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
-                var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(Dev2Logger.GetAuditsFilePath()));
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);

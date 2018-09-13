@@ -135,7 +135,11 @@ namespace Dev2.Common
             }
             return 0;
         }
-
+        static void CreateIfNotExists(string path)
+        {
+            var directoryWrapper = new DirectoryWrapper();
+            directoryWrapper.CreateIfNotExists(path);
+        }
         public static string GetAuditsFilePath()
         {
             var h = (Hierarchy)LogManager.GetRepository();
@@ -143,9 +147,12 @@ namespace Dev2.Common
 
             if (rootLogger?.GetAppender("Audits") is FileAppender appender)
             {
+                CreateIfNotExists(appender.File);
                 return appender.File;
             }
-            return Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
+            var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
+            CreateIfNotExists(filePath);
+            return filePath;
         }
 
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
@@ -238,6 +245,7 @@ namespace Dev2.Common
                 var destination = Path.Combine(auditsFilePath, "auditDB.db");
                 if (_file.Exists(source))
                 {
+                    CreateIfNotExists(destination);
                     _file.Move(source, destination);
                 }
             }
@@ -273,7 +281,14 @@ namespace Dev2.Common
                         var rootElement = log4netElement.Element("root");
                         AddAuditLogger(rootElement);
                         settingsDocument.Save(settingsConfigFile);
+                        CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
                     }
+                }
+                else
+                {
+                    var auditFileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
+                    var fileElement = auditFileAppender.Element("file");
+                    CreateIfNotExists(fileElement.Attribute("value").Value);
                 }
             }
         }
