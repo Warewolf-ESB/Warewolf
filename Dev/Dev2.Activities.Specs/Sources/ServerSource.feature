@@ -15,11 +15,11 @@ Scenario: Create Windows Server Source
 
 Scenario: Create User Server Source
 	Given I create a server source as
-	| Address               | AuthenticationType |
-	| http://localhost:3142 | User               |
+	| Address                   | AuthenticationType |
+	| http://tst-ci-remote:3142 | User               |
 	And User details as 
-	| username        | Password      |
-	| .\WarewolfAdmin | W@rEw0lf@dm1n |
+	| username               | Password |
+	| dev2\integrationtester | I73573r0 |
 	When I Test the connection
 	Then The result is "success"
 

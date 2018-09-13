@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Address",
                         "AuthenticationType"});
             table2.AddRow(new string[] {
-                        "http://localhost:3142",
+                        "http://tst-ci-remote:3142",
                         "User"});
 #line 17
  testRunner.Given("I create a server source as", ((string)(null)), table2, "Given ");
@@ -137,8 +137,8 @@ this.ScenarioSetup(scenarioInfo);
                         "username",
                         "Password"});
             table3.AddRow(new string[] {
-                        ".\\WarewolfAdmin",
-                        "W@rEw0lf@dm1n"});
+                        "dev2\\integrationtester",
+                        "I73573r0"});
 #line 20
  testRunner.And("User details as", ((string)(null)), table3, "And ");
 #line 23
