@@ -144,7 +144,7 @@ namespace Dev2.Activities.Specs.Sources
         public void ThenTheResultIs(string p0)
         {
             var result = ScenarioContext.Current.Get<string>("result");
-            Assert.AreEqual(result, p0);
+            Assert.AreEqual(p0, result);
         }
 
         [Given(@"User details as")]
