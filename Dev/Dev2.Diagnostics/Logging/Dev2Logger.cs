@@ -242,11 +242,11 @@ namespace Dev2.Common
             {
                 IFile _file = new FileWrapper();
                 var source = Path.Combine(sourceFilePath, "auditDB.db");
-                var destination = Path.Combine(auditsFilePath, "auditDB.db");
+                var destination = Path.Combine(auditsFilePath);
                 if (_file.Exists(source))
                 {
                     CreateIfNotExists(destination);
-                    _file.Move(source, destination);
+                    _file.Move(source, Path.Combine(destination, "auditDB.db"));
                 }
             }
         }
