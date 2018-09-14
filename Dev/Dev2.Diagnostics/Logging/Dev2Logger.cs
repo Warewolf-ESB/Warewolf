@@ -245,7 +245,6 @@ namespace Dev2.Common
                 var destination = Path.Combine(auditsFilePath, "auditDB.db");
                 if (_file.Exists(source))
                 {
-                    CreateIfNotExists(destination);
                     _file.Move(source, destination);
                 }
             }
