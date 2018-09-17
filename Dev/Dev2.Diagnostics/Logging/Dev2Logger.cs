@@ -48,7 +48,6 @@ namespace Dev2.Common
         {
             var customMessage = UpdateCustomMessage(message, executionId);
             _log.Error(customMessage, exception);
-
         }
 
         public static void Warn(object message, string executionId)
@@ -61,7 +60,6 @@ namespace Dev2.Common
         {
             var customMessage = UpdateCustomMessage(message, executionId);
             _log.Warn(customMessage, exception);
-
         }
 
         public static void Fatal(object message, string executionId)
@@ -92,7 +90,6 @@ namespace Dev2.Common
 
         public static void UpdateLoggingConfig(string level)
         {
-
             var repository = LogManager.GetAllRepositories().First();
             repository.Threshold = repository.LevelMap[level];
             var hier = (Hierarchy)repository;
@@ -134,25 +131,6 @@ namespace Dev2.Common
                 return (int)Math.Round((decimal)logSize, 0);
             }
             return 0;
-        }
-        static void CreateIfNotExists(string path)
-        {
-            var directoryWrapper = new DirectoryWrapper();
-            directoryWrapper.CreateIfNotExists(path);
-        }
-        public static string GetAuditsFilePath()
-        {
-            var h = (Hierarchy)LogManager.GetRepository();
-            var rootLogger = h.Root;
-
-            if (rootLogger?.GetAppender("Audits") is FileAppender appender)
-            {
-                CreateIfNotExists(appender.File);
-                return appender.File;
-            }
-            var filePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
-            CreateIfNotExists(filePath);
-            return filePath;
         }
 
         public static void UpdateFileLoggerToProgramData(string settingsConfigFile)
@@ -202,7 +180,7 @@ namespace Dev2.Common
             }
         }
 
-        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile, string applicationNameForEventLog, string auditsFilePath)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile, string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
@@ -219,35 +197,7 @@ namespace Dev2.Common
                     ConfigureEventLoggerAppender(applicationNameForEventLog, eventLogLevel, rootElement);
                 }
                 SetupLogLevels(fileLogLevel, eventLogLevel, rootElement, eventAppender);
-
-                var auditsEventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.FileAppender");
-                rootElement = log4netElement.Element("root");
-                if (auditsEventAppender == null)
-                {
-                    ConfigureAuditsAppender(auditsFilePath, rootElement);
-                }
-                else
-                {
-                    var fileElement = auditsEventAppender.Element("file");
-                    var valueAttrib = fileElement.Attribute("value");
-                    UpdateauditsEvent(valueAttrib.Value, auditsFilePath);
-                    valueAttrib.SetValue(auditsFilePath);
-                }
                 settingsDocument.Save(settingsConfigFile);
-            }
-        }
-        static void UpdateauditsEvent(string sourceFilePath,string auditsFilePath)
-        {
-            if (sourceFilePath != auditsFilePath)
-            {
-                IFile _file = new FileWrapper();
-                var source = Path.Combine(sourceFilePath, "auditDB.db");
-                var destination = Path.Combine(auditsFilePath, "auditDB.db");
-                if (_file.Exists(source))
-                {
-                    CreateIfNotExists(destination);
-                    _file.Move(source, destination);
-                }
             }
         }
 
@@ -263,39 +213,17 @@ namespace Dev2.Common
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 if (eventAppender == null)
                 {
-
                     var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
                     ConfigureEventLoggerAppender(applicationNameForEventLog, "ERROR", fileAppender);
                     var rootElement = log4netElement.Element("root");
                     AddEventLogLogger(rootElement);
                     settingsDocument.Save(settingsConfigFile);
                 }
-                var auditsAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.FileAppender");
-                if (auditsAppender == null)
-                {
-                    var faAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
-                    var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
-                    if (fileAppender == null)
-                    {
-                        ConfigureAuditsAppender(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"), faAppender);
-                        var rootElement = log4netElement.Element("root");
-                        AddAuditLogger(rootElement);
-                        settingsDocument.Save(settingsConfigFile);
-                        CreateIfNotExists(Path.Combine(EnvironmentVariables.AppDataPath, "Audits"));
-                    }
-                }
-                else
-                {
-                    var auditFileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "Audits");
-                    var fileElement = auditFileAppender.Element("file");
-                    CreateIfNotExists(fileElement.Attribute("value").Value);
-                }
             }
         }
 
         static void UpdateFileSizeForFileLogAppender(string maxLogSize, IList<XElement> appenders)
         {
-
             var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
             var maxFileSizeElement = fileAppender?.Element("maximumFileSize");
             var maxFileSizeElementValueAttrib = maxFileSizeElement?.Attribute("value");
@@ -324,7 +252,6 @@ namespace Dev2.Common
 
         static void SetLogLogLevel(string eventLogLevel, XElement eventLogElement)
         {
-
             var levelElement = eventLogElement.Element("level");
             var levelElementValueAttrib = levelElement?.Attribute("value");
             if (levelElementValueAttrib != null)
@@ -335,17 +262,12 @@ namespace Dev2.Common
 
         static void SetEventLogLogLevel(string eventLogLevel, XElement eventLogElement)
         {
-
             eventLogElement.SetAttributeValue("value", eventLogLevel);
         }
 
         static void AddEventLogLogger(XElement rootElement)
         {
             rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "EventLogLogger")));
-        }
-        static void AddAuditLogger(XElement rootElement)
-        {
-            rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "Audits")));
         }
 
         static void ConfigureEventLoggerAppender(string applicationNameForEventLog, string logLevel, XElement element)
@@ -371,19 +293,6 @@ namespace Dev2.Common
             conversionPattenElement.SetAttributeValue("value", "%date [%thread] %-5level - %message%newline");
             layoutElement.Add(conversionPattenElement);
             eventAppenderElement.Add(layoutElement);
-            element.AddAfterSelf(eventAppenderElement);
-        }
-
-        static void ConfigureAuditsAppender(string auditsFilePath, XElement element)
-        {
-            var eventAppenderElement = new XElement("appender");
-            eventAppenderElement.SetAttributeValue("name", "Audits");
-            eventAppenderElement.SetAttributeValue("type", "log4net.Appender.FileAppender");
-
-            var auditsFilePathElement = new XElement("file");
-            auditsFilePathElement.SetAttributeValue("value", auditsFilePath);
-            eventAppenderElement.Add(auditsFilePathElement);
-
             element.AddAfterSelf(eventAppenderElement);
         }
 

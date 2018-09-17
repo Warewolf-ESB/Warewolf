@@ -12,11 +12,11 @@ using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
@@ -84,7 +84,6 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            
         }
 
         [ExcludeFromCodeCoverage]
@@ -150,8 +149,48 @@ namespace Dev2.Settings.Logging
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio", AuditsFilePath);
+
+            var sourceFilePath = Common.Config.Server["AuditFilePath"];
+
+            if (FileIsLocked(sourceFilePath, FileAccess.Read))
+            {
+                CustomContainer.Get<IPopupController>().Show("The file is locked by another process and cannot be moved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                HasAuditFilePathMoved = false;
+                return;
+            }
+
+            try
+            {
+                IServerSettingsData data = new ServerSettingsData { AuditsFilePath = AuditsFilePath };
+                CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, data);
+            }
+            catch (Exception ex)
+            {
+                CustomContainer.Get<IPopupController>().Show("The file was not moved. Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                HasAuditFilePathMoved = false;
+                return;
+            }
+
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
             SetItem(this);
+
+            HasAuditFilePathMoved = true;
+        }
+        public bool HasAuditFilePathMoved { get; set; }
+
+        static bool FileIsLocked(string filename, FileAccess file_access)
+        {
+            try
+            {
+                var fullfilename = filename + @"\auditDB.db";
+                var fs = new FileStream(fullfilename, FileMode.Open, file_access);
+                fs.Close();
+                return false;
+            }
+            catch (IOException)
+            {
+                return true;
+            }
         }
 
         [JsonIgnore]
@@ -280,7 +319,7 @@ namespace Dev2.Settings.Logging
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditsFilePath))
                 {
-                    _auditsFilePath = Dev2Logger.GetAuditsFilePath();
+                    _auditsFilePath = Config.Server["AuditFilePath"];
                 }
                 else
                 {

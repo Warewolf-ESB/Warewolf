@@ -38,6 +38,7 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
@@ -2426,6 +2427,25 @@ namespace BusinessDesignStudio.Unit.Tests
             StringAssert.Contains(esbExecuteRequest.Args["Database"].ToString(), "TestDB");
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(WarewolfSaveException))]
+        public void SaveServerSettings_OutputNull()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid g1) =>
+            {
+                sentPayLoad = o;
+            });
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var mockServerSettingsData = new Mock<IServerSettingsData>();
+            mockServerSettingsData.Setup(sett => sett.AuditsFilePath).Returns("somePath");
+            _repo.SaveServerSettings(_environmentModel.Object, mockServerSettingsData.Object);
+        }
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()
         {

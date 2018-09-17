@@ -43,6 +43,7 @@ namespace Dev2.Studio.Interfaces
         IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
         Settings ReadSettings(IServer currentEnv);
         ExecuteMessage WriteSettings(IServer currentEnv, Settings settings);
+        ExecuteMessage SaveServerSettings(IServer currentEnv, IServerSettingsData serverSettingsData);
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);

@@ -67,7 +67,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 FilterType="All"
-                                                DefaultText="File Path"
+                                                DefaultText="Folder Path"
                                                 WrapInBrackets="False"
                                                 Text="{Binding AuditsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}"
