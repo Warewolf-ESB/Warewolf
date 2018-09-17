@@ -1633,7 +1633,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The File Path to store the audit database. The default File Path is C:\ProgramData\Warewolf\Audits.
+        ///   Looks up a localized string similar to The Folder Path to store the audit database. The default Folder Path is C:\ProgramData\Warewolf\Audits.
         /// </summary>
         public static string LoggingViewAuditsFilePathHelpText {
             get {

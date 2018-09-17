@@ -871,6 +871,24 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
+        public ExecuteMessage SaveServerSettings(IServer currentEnv, IServerSettingsData serverSettingsData)
+        {
+            var comController = new CommunicationController { ServiceName = "SaveServerSettings" };
+            comController.AddPayloadArgument("ServerSettings", serverSettingsData.ToString());
+            var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
+            }
+
+            if (output.HasError)
+            {
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+            return output;
+        }
+
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public DbTableList GetDatabaseTables(DbSource dbSource)

@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Dev2Logger.GetAuditsFilePath(), "auditDB.db"),
+                DataSource = Path.Combine(Config.Server["AuditFilePath", Config.AppDataPath], "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)

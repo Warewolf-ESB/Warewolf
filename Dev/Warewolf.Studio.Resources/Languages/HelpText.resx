@@ -2244,6 +2244,6 @@ The conflicts on the left will show your current workflow changes and the confli
     <value>Timeout of the database command. To use the databases default timeout, leave the field blank. Note: SQL Server with a Command Timeout set to 0, will wait indefinitely.</value>
   </data>
   <data name="LoggingViewAuditsFilePathHelpText" xml:space="preserve">
-    <value>The File Path to store the audit database. The default File Path is C:\ProgramData\Warewolf\Audits</value>
+    <value>The Folder Path to store the audit database. The default Folder Path is C:\ProgramData\Warewolf\Audits</value>
   </data>
 </root>

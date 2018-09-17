@@ -28,7 +28,7 @@ namespace Dev2.Studio.Core
             : base(communicationControllerFactory, connection)
         {
         }
-        
+
         public void SaveServerSource(IServerSource resource, Guid workspaceId)
         {
             var con = Connection;

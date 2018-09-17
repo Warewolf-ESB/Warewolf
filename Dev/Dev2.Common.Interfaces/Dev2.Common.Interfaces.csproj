@@ -223,6 +223,7 @@
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="Core\PluginSourceDefinition.cs" />
+    <Compile Include="Core\ServerSettingsData.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="Core\SharePointServiceSourceDefinition.cs" />
     <Compile Include="Core\WcfServiceSourceDefinition.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="IServerSettingsData.cs" />
     <Compile Include="ISharepointHelper.cs" />
     <Compile Include="IToolConflictItem.cs" />
     <Compile Include="IMergeView.cs" />
@@ -516,6 +518,7 @@
     <Compile Include="Versioning\IServerVersionRepository.cs" />
     <Compile Include="Versioning\IVersionInfo.cs" />
     <Compile Include="Versioning\IVersionRepository.cs" />
+    <Compile Include="Wrappers\IConfigurationManager.cs" />
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />
     <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
