@@ -22,6 +22,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -2442,9 +2443,8 @@ namespace BusinessDesignStudio.Unit.Tests
             });
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            var mockServerSettingsData = new Mock<IServerSettingsData>();
-            mockServerSettingsData.Setup(sett => sett.AuditsFilePath).Returns("somePath");
-            _repo.SaveServerSettings(_environmentModel.Object, mockServerSettingsData.Object);
+            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
+            _repo.SaveServerSettings(_environmentModel.Object, serverSettingsData);
         }
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()

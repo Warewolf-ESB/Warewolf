@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 
@@ -80,6 +81,37 @@ namespace Dev2.Common
         {
             get => manager[settingName, defaultValue];
             set => manager[settingName] = value;
+        }
+
+        public ServerSettingsData Get()
+        {
+            var result = new ServerSettingsData();
+            foreach (var prop in typeof(ServerSettingsData).GetProperties())
+            {
+                var value = this[prop.Name];
+                if (value is null)
+                {
+                    continue;
+                }
+                switch (Type.GetTypeCode(prop.PropertyType))
+                {
+                    case TypeCode.UInt16:
+                        prop.SetValue(result, ushort.Parse(value));
+                        break;
+                    case TypeCode.String:
+                        prop.SetValue(result, value);
+                        break;
+                    case TypeCode.Int32:
+                        prop.SetValue(result, int.Parse(value));
+                        break;
+                    case TypeCode.Boolean:
+                        prop.SetValue(result, bool.Parse(value));
+                        break;
+                    default:
+                        throw new Exception($"unhandled setting type: {prop.PropertyType.Name}");
+                }
+            }
+            return result;
         }
     }
 }

@@ -27,12 +27,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("ServerSettings", out StringBuilder resourceDefinition);
 
-                IServerSettingsData updatedServerSettings = serializer.Deserialize<ServerSettingsData>(resourceDefinition);
+                var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(resourceDefinition);
 
                 var defaultSourceFilePath = Path.Combine(Config.AppDataPath, "Audits");
                 var sourceFilePath = Config.Server["AuditFilePath", defaultSourceFilePath];
 
-                var auditsFilePath = updatedServerSettings.AuditsFilePath;
+                var auditsFilePath = updatedServerSettings.AuditFilePath;
 
                 if (sourceFilePath != auditsFilePath)
                 {

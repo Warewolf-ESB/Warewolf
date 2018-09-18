@@ -333,7 +333,6 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
-    <Compile Include="IServerSettingsData.cs" />
     <Compile Include="ISharepointHelper.cs" />
     <Compile Include="IToolConflictItem.cs" />
     <Compile Include="IMergeView.cs" />

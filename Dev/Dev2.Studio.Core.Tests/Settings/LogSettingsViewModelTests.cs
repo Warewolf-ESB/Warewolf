@@ -331,9 +331,9 @@ namespace Dev2.Core.Tests.Settings
             //---------------Assert Precondition----------------
             Assert.IsFalse(logSettingsViewModel.IsDirty);
             //------------Execute Test---------------------------
-            logSettingsViewModel.AuditsFilePath = @"D:\Audits";
+            logSettingsViewModel.AuditFilePath = @"C:\ProgramData\Warewolf\Audits";
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"D:\Audits", logSettingsViewModel.AuditsFilePath);
+            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", logSettingsViewModel.AuditFilePath);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }

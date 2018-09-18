@@ -211,6 +211,7 @@
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
     <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
     <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
+    <Compile Include="ESB\Management\Services\GetServerSettings.cs" />
     <Compile Include="ESB\Management\Services\SaveServerSettings.cs" />
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="ESB\Management\Services\TestSqliteService.cs" />

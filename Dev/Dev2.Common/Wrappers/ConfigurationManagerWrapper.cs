@@ -5,35 +5,29 @@ namespace Dev2.Common.Wrappers
 {
     class ConfigurationManagerWrapper : IConfigurationManager
     {
-        readonly Configuration conf;
         private readonly object _settingLock = new object();
-        public ConfigurationManagerWrapper()
-        {
-            conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        }
         public string this[string settingName, string defaultValue = null]
         {
             get
             {
                 lock (_settingLock)
                 {
-                    return conf.AppSettings.Settings[settingName]?.Value ?? defaultValue;
+                    return ConfigurationManager.AppSettings.Get(settingName) ?? defaultValue;
                 }
             }
             set
             {
                 lock (_settingLock)
                 {
-                    var setting = conf.AppSettings.Settings[settingName];
+                    var setting = ConfigurationManager.AppSettings.Get(settingName);
                     if (setting is null)
                     {
-                        conf.AppSettings.Settings.Add(settingName, value);
+                        ConfigurationManager.AppSettings.Add(settingName, value);
                     }
                     else
                     {
-                        conf.AppSettings.Settings[settingName].Value = value;
+                        ConfigurationManager.AppSettings.Set(settingName, value);
                     }
-                    conf.Save(ConfigurationSaveMode.Modified);
                 }
             }
         }

@@ -1,11 +1,12 @@
-﻿using Dev2.Common.Interfaces.Wrappers;
+﻿using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Tests
 {
     [TestClass]
-    public class SettingsTest
+    public class ConfigTest
     {
         class MockConfigurationManager : IConfigurationManager
         {
@@ -59,6 +60,49 @@ namespace Dev2.Common.Tests
 
             Config.Server["AuditFilePath"] = expectedPath2;
             Assert.AreEqual(expectedPath2, Config.Server["AuditFilePath", expectedPath1]);
+        }
+
+        [TestMethod]
+        public void ServerSettingsData_Equals_Valid_Expected()
+        {
+            var expectedServerSettingsData = new ServerSettingsData
+            {
+                WebServerPort = 3142,
+                WebServerSslPort = 3143,
+                SslCertificateName = "SslCertificateName",
+                CollectUsageStats = true,
+                DaysToKeepTempFiles = 2,
+                AuditFilePath = "AuditFilePath"
+            };
+
+            var serverSettingsData = new ServerSettingsData
+            {
+                WebServerPort = 3142,
+                WebServerSslPort = 3143,
+                SslCertificateName = "SslCertificateName",
+                CollectUsageStats = true,
+                DaysToKeepTempFiles = 2,
+                AuditFilePath = "AuditFilePath"
+            };
+
+            Assert.IsTrue(serverSettingsData.Equals(expectedServerSettingsData));
+        }
+
+        [TestMethod]
+        public void Get_AppConfig_Configuration()
+        {
+            var mockConfig = new MockConfigurationManager();
+            Config.ConfigureSettings(mockConfig);
+
+            var settings = Config.Server.Get();
+            Assert.AreEqual(6, settings.GetType().GetProperties().Length);
+
+            Assert.AreEqual(0, settings.WebServerPort);
+            Assert.AreEqual(0, settings.WebServerSslPort);
+            Assert.AreEqual(null, settings.SslCertificateName);
+            Assert.AreEqual(false, settings.CollectUsageStats);
+            Assert.AreEqual(0, settings.DaysToKeepTempFiles);
+            Assert.AreEqual(null, settings.AuditFilePath);
         }
     }
 }
