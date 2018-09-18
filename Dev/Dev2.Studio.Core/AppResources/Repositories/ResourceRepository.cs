@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Search;
@@ -871,10 +872,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
-        public ExecuteMessage SaveServerSettings(IServer currentEnv, IServerSettingsData serverSettingsData)
+        public ExecuteMessage SaveServerSettings(IServer currentEnv, ServerSettingsData serverSettingsData)
         {
             var comController = new CommunicationController { ServiceName = "SaveServerSettings" };
-            comController.AddPayloadArgument("ServerSettings", serverSettingsData.ToString());
+            comController.AddPayloadArgument("ServerSettings", _serializer.Serialize(serverSettingsData));
             var output = comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
 
             if (output == null)
@@ -885,6 +886,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (output.HasError)
             {
                 throw new WarewolfSaveException(output.Message.ToString(), null);
+            }
+            return output;
+        }
+
+        public ServerSettingsData GetServerSettings(IServer currentEnv)
+        {
+            var comController = new CommunicationController { ServiceName = "GetServerSettings" };
+            var output = comController.ExecuteCommand<ServerSettingsData>(currentEnv.Connection, GlobalConstants.ServerWorkspaceID);
+
+            if (output == null)
+            {
+                throw new WarewolfSaveException(ErrorResource.UnableToContactServer, null);
             }
             return output;
         }

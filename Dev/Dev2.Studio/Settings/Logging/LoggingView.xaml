@@ -62,14 +62,14 @@
                             <RowDefinition Height="5"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="1">File Path</TextBlock>
+                        <TextBlock Grid.Row="1">Folder Path</TextBlock>
                         <ui:IntellisenseTextBox x:Name="AuditsFilePathTextBox"
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 FilterType="All"
                                                 DefaultText="Folder Path"
                                                 WrapInBrackets="False"
-                                                Text="{Binding AuditsFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Text="{Binding AuditFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 ToolTip="{x:Static languages:Tooltips.LoggingViewAuditsFilePathToolTip}"
                                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
                             <ui:IntellisenseTextBox.IntellisenseProvider>

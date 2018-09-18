@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -49,7 +50,7 @@ namespace Dev2.Settings.Logging
         readonly LogLevel _serverFileLogLevel;
         LogLevel _studioFileLogLevel;
         LogSettingsViewModel _item;
-        string _auditsFilePath;
+        string _auditFilePath;
 
         public LogSettingsViewModel()
         {
@@ -84,6 +85,7 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+            AuditFilePath = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment).AuditFilePath;
         }
 
         [ExcludeFromCodeCoverage]
@@ -150,18 +152,9 @@ namespace Dev2.Settings.Logging
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
 
-            var sourceFilePath = Common.Config.Server["AuditFilePath"];
-
-            if (FileIsLocked(sourceFilePath, FileAccess.Read))
-            {
-                CustomContainer.Get<IPopupController>().Show("The file is locked by another process and cannot be moved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
-                HasAuditFilePathMoved = false;
-                return;
-            }
-
             try
             {
-                IServerSettingsData data = new ServerSettingsData { AuditsFilePath = AuditsFilePath };
+                var data = new ServerSettingsData { AuditFilePath = AuditFilePath };
                 CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, data);
             }
             catch (Exception ex)
@@ -178,20 +171,7 @@ namespace Dev2.Settings.Logging
         }
         public bool HasAuditFilePathMoved { get; set; }
 
-        static bool FileIsLocked(string filename, FileAccess file_access)
-        {
-            try
-            {
-                var fullfilename = filename + @"\auditDB.db";
-                var fs = new FileStream(fullfilename, FileMode.Open, file_access);
-                fs.Close();
-                return false;
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-        }
+
 
         [JsonIgnore]
         public LogSettingsViewModel Item
@@ -312,32 +292,21 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public string AuditsFilePath
+        public string AuditFilePath
         {
-            get => _auditsFilePath;
+            get => _auditFilePath;
             set
             {
-                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditsFilePath))
-                {
-                    _auditsFilePath = Config.Server["AuditFilePath"];
-                }
-                else
-                {
-                    IsDirty = !Equals(Item);
-                    _auditsFilePath = value;
-                    OnPropertyChanged();
-                }
+                IsDirty = !Equals(Item);
+                _auditFilePath = value;
+                OnPropertyChanged();
             }
         }
-
-        #region Implementation of IUpdatesHelp
 
         public void UpdateHelpDescriptor(string helpText)
         {
             HelpText = helpText;
         }
-
-        #endregion
 
         bool Equals(LogSettingsViewModel other)
         {
@@ -358,7 +327,7 @@ namespace Dev2.Settings.Logging
             equalsSeq &= Equals(_selectedLoggingType, other._selectedLoggingType);
             equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
             equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
-            equalsSeq &= Equals(_auditsFilePath, other._auditsFilePath);
+            equalsSeq &= Equals(_auditFilePath, other._auditFilePath);
             return equalsSeq;
         }
 
