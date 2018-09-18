@@ -85,7 +85,10 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            AuditFilePath = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment).AuditFilePath;
+            var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+
+            AuditFilePath = serverSettingsData.AuditFilePath;
+            IsDirty = false;
         }
 
         [ExcludeFromCodeCoverage]
@@ -170,8 +173,6 @@ namespace Dev2.Settings.Logging
             HasAuditFilePathMoved = true;
         }
         public bool HasAuditFilePathMoved { get; set; }
-
-
 
         [JsonIgnore]
         public LogSettingsViewModel Item

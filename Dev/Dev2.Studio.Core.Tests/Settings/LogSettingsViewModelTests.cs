@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -323,7 +324,7 @@ namespace Dev2.Core.Tests.Settings
             var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "AuditsFilePath")
+                if (args.PropertyName == "AuditFilePath")
                 {
                     hasPropertyChanged = true;
                 }
@@ -342,7 +343,14 @@ namespace Dev2.Core.Tests.Settings
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
             var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
-            var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, new Mock<IServer>().Object);
+
+            var _resourceRepo = new Mock<IResourceRepository>();
+            var env = new Mock<IServer>();
+            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
+            _resourceRepo.Setup(res => res.GetServerSettings(env.Object)).Returns(serverSettingsData);
+            env.Setup(a => a.ResourceRepository).Returns(_resourceRepo.Object);
+
+            var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, env.Object);
             return logSettingsViewModel;
         }
     }
