@@ -11,42 +11,28 @@ namespace Dev2.Common.Tests
         class MockConfigurationManager : IConfigurationManager
         {
             readonly Dictionary<string, string> _store = new Dictionary<string, string>();
-            public string this[string settingName, string defaultValue = null]
+            public string this[params string[] args]
             {
-                get => _store.ContainsKey(settingName) ? _store[settingName] : defaultValue;
-                set => _store[settingName] = value;
+                get
+                {
+                    var settingName = args[0];
+                    var defaultValue = args[1];
+                    return _store.ContainsKey(settingName) ? _store[settingName] : defaultValue;
+                }
+                set
+                {
+                    var settingName = args[0];
+                    _store[settingName] = value;
+                }
             }
         }
 
-            [TestMethod]
+        [TestMethod]
         public void Constructor_Setup_ServerSettings_NotNull_Expected()
         {
+            const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
             Assert.IsNotNull(Config.Server);
-        }
-
-        [TestMethod]
-        public void Get_AppConfig_AuditFilePath_WithDefault_Expected()
-        {
-            const string expectedPath = "SomePath";
-
-            var mockConfig = new MockConfigurationManager();
-            Config.ConfigureSettings(mockConfig);
-
-            var value = Config.Server["AuditFilePath", expectedPath];
-            Assert.AreEqual(expectedPath, value);
-        }
-
-        [TestMethod]
-        public void Update_AppConfig_AuditFilePath_Default_Not_Persisted()
-        {
-            const string expectedPath1 = "SomePath";
-
-            var mockConfig = new MockConfigurationManager();
-            Config.ConfigureSettings(mockConfig);
-
-            var value = Config.Server["AuditFilePath", expectedPath1];
-            Assert.AreEqual(expectedPath1, value);
-            Assert.AreNotEqual(expectedPath1, Config.Server["AuditFilePath"]);
+            Assert.AreEqual(expectedPath, Config.Server["AuditFilePath"]);
         }
 
         [TestMethod]
@@ -59,7 +45,7 @@ namespace Dev2.Common.Tests
             Config.ConfigureSettings(mockConfig);
 
             Config.Server["AuditFilePath"] = expectedPath2;
-            Assert.AreEqual(expectedPath2, Config.Server["AuditFilePath", expectedPath1]);
+            Assert.AreEqual(expectedPath2, Config.Server["AuditFilePath"]);
         }
 
         [TestMethod]
@@ -91,6 +77,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void Get_AppConfig_Configuration()
         {
+            const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
             var mockConfig = new MockConfigurationManager();
             Config.ConfigureSettings(mockConfig);
 
@@ -102,7 +89,13 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(null, settings.SslCertificateName);
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
-            Assert.AreEqual(null, settings.AuditFilePath);
+            Assert.AreEqual(expectedPath, settings.AuditFilePath);
+        }
+
+        [TestMethod]
+        public void GetServerSettings_Constants()
+        {
+            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", Config.Server.AuditPath);
         }
     }
 }
