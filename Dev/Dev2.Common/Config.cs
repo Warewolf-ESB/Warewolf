@@ -9,7 +9,7 @@ namespace Dev2.Common
 {
     public class Config
     {
-        static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+        public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
         public static string AddOrUpdateAppSettings1()
         {
@@ -37,17 +37,6 @@ namespace Dev2.Common
             return sourceFilePath;
         }
 
-        public static string AppDataPath
-        {
-            get
-            {
-                if (!Directory.Exists(DataPath))
-                {
-                    Directory.CreateDirectory(DataPath);
-                }
-                return DataPath;
-            }
-        }
         private readonly object _configurationLock = new object();
         private readonly static Config _settings = new Config();
 
@@ -67,6 +56,8 @@ namespace Dev2.Common
 
     public class ServerSettings
     {
+        public string AuditPath => Path.Combine(Config.AppDataPath, @"Audits");
+
         readonly IConfigurationManager manager;
 
         public ServerSettings() : this(new ConfigurationManagerWrapper())
@@ -77,10 +68,14 @@ namespace Dev2.Common
             this.manager = manager;
         }
 
-        public string this[string settingName, string defaultValue = null]
+        public string this[string settingName]
         {
-            get => manager[settingName, defaultValue];
-            set => manager[settingName] = value;
+            get
+            {
+                var defaultValue = GetDefault(settingName, default(string));
+                return manager[settingName, defaultValue];
+            }
+            set => manager[settingName, null] = value;
         }
 
         public ServerSettingsData Get()
@@ -91,6 +86,7 @@ namespace Dev2.Common
                 var value = this[prop.Name];
                 if (value is null)
                 {
+                    prop.SetValue(result, GetDefault(prop.Name, value));
                     continue;
                 }
                 switch (Type.GetTypeCode(prop.PropertyType))
@@ -112,6 +108,15 @@ namespace Dev2.Common
                 }
             }
             return result;
+        }
+
+        static T GetDefault<T>(string key, T value)
+        {
+            if (Type.GetTypeCode(typeof(T)) == TypeCode.String && key == "AuditFilePath" && string.IsNullOrWhiteSpace(value as string))
+            {
+                return (T)(object)(Config.Server.AuditPath);
+            }
+            return  value;
         }
     }
 }

@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Config.Server["AuditFilePath", Config.AppDataPath + @"\Audits"], "auditDB.db"),
+                DataSource = Path.Combine(Config.Server["AuditFilePath"], "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)
@@ -237,7 +237,7 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Config.Server["AuditFilePath", Config.AppDataPath + @"\Audits"]);
+                directoryWrapper.CreateIfNotExists(Config.Server["AuditFilePath"]);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);

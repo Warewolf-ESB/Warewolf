@@ -29,8 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(resourceDefinition);
 
-                var defaultSourceFilePath = Path.Combine(Config.AppDataPath, "Audits");
-                var sourceFilePath = Config.Server["AuditFilePath", defaultSourceFilePath];
+                var sourceFilePath = Config.Server["AuditFilePath"];
 
                 var auditsFilePath = updatedServerSettings.AuditFilePath;
 
