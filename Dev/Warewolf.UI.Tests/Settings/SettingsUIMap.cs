@@ -541,7 +541,7 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.ServerLogFileItemText.ServerLogFileHyperlink, new Point(83, 6));
         }
 
         [When(@"I Click Studio Log File")]
