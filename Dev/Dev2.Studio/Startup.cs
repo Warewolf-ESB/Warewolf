@@ -14,8 +14,14 @@ namespace Dev2
         {
             ConfigureLogging();
             Dev2Logger.Info("Studio " + Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
-            var wrapper = new SingleInstanceApplicationWrapper();
-            wrapper.Run(args);
+            try {
+                var wrapper = new SingleInstanceApplicationWrapper();
+                wrapper.Run(args);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Fatal("failed starting app", e, GlobalConstants.ServerWorkspaceID.ToString());
+            }
         }
 
         static void ConfigureLogging()
