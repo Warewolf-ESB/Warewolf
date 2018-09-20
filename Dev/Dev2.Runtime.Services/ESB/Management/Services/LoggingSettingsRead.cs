@@ -18,14 +18,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var fileLogLevel = Dev2Logger.GetFileLogLevel();
                 var eventLogLevel = Dev2Logger.GetEventLogLevel();
                 var logMaxSize= Dev2Logger.GetLogMaxSize();
-                var auditsFilePath = Dev2Logger.GetAuditsFilePath();
 
                 var loggingSettings = new LoggingSettingsTo
                 {
                     FileLoggerLogLevel = fileLogLevel,
                     EventLogLoggerLogLevel = eventLogLevel,
-                    FileLoggerLogSize = logMaxSize,
-                    AuditsFilePath = auditsFilePath
+                    FileLoggerLogSize = logMaxSize
                 };
 
                 var serializer = new Dev2JsonSerializer();

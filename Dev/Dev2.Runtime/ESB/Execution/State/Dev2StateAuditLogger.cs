@@ -229,13 +229,15 @@ namespace Dev2.Runtime.ESB.Execution
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Dev2Logger.GetAuditsFilePath(), "auditDB.db"),
+                DataSource = Path.Combine(Config.Server["AuditFilePath"], "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
+                var directoryWrapper = new DirectoryWrapper();
+                directoryWrapper.CreateIfNotExists(Config.Server["AuditFilePath"]);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);

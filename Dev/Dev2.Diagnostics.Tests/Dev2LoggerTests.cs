@@ -57,21 +57,6 @@ namespace Dev2.Diagnostics.Test
   <level value=""Level0"" />
   <eventLogEntryType value=""ERROR"" />
 </mapping>");
-
         }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        public void GetAuditsFilePath_Scenerio_Result()
-        {
-            //------------Setup for test-------------------------
-            var auditsFilePath = Dev2Logger.GetAuditsFilePath();
-            var expectedAuditsFilePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
-            var directoryWrapper = new DirectoryWrapper();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(directoryWrapper.Exists(Path.Combine(Dev2Logger.GetAuditsFilePath())));
-            Assert.IsNotNull(auditsFilePath);
-            Assert.AreEqual(expectedAuditsFilePath, auditsFilePath);
-        }
-    }
-};
+    };
+}
