@@ -185,6 +185,7 @@
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
     <Compile Include="Search\Search.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="State\StateVariable.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
     <Compile Include="WorkflowExecutionWatcher.cs" />
+    <Compile Include="Wrappers\ConfigurationManagerWrapper.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />

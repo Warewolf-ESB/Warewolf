@@ -1699,7 +1699,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audits File Path.
+        ///   Looks up a localized string similar to Audits Folder Path.
         /// </summary>
         public static string LoggingViewAuditsFilePathToolTip {
             get {

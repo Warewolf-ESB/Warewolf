@@ -22,6 +22,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Interfaces.Core;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -43,6 +44,8 @@ namespace Dev2.Studio.Interfaces
         IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
         Settings ReadSettings(IServer currentEnv);
         ExecuteMessage WriteSettings(IServer currentEnv, Settings settings);
+        ExecuteMessage SaveServerSettings(IServer currentEnv, ServerSettingsData serverSettingsData);
+        ServerSettingsData GetServerSettings(IServer currentEnv);
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -12,11 +13,11 @@ using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Dev2.Utils;
@@ -49,7 +50,7 @@ namespace Dev2.Settings.Logging
         readonly LogLevel _serverFileLogLevel;
         LogLevel _studioFileLogLevel;
         LogSettingsViewModel _item;
-        string _auditsFilePath;
+        string _auditFilePath;
 
         public LogSettingsViewModel()
         {
@@ -84,7 +85,10 @@ namespace Dev2.Settings.Logging
                 _studioEventLogLevel = studioEventLogLevel;
             }
             _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
-            
+            var serverSettingsData = CurrentEnvironment.ResourceRepository.GetServerSettings(CurrentEnvironment);
+
+            AuditFilePath = serverSettingsData.AuditFilePath;
+            IsDirty = false;
         }
 
         [ExcludeFromCodeCoverage]
@@ -150,9 +154,25 @@ namespace Dev2.Settings.Logging
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio", AuditsFilePath);
+
+            try
+            {
+                var data = new ServerSettingsData { AuditFilePath = AuditFilePath };
+                CurrentEnvironment.ResourceRepository.SaveServerSettings(CurrentEnvironment, data);
+            }
+            catch (Exception ex)
+            {
+                CustomContainer.Get<IPopupController>().Show("The file was not moved. Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                HasAuditFilePathMoved = false;
+                return;
+            }
+
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
             SetItem(this);
+
+            HasAuditFilePathMoved = true;
         }
+        public bool HasAuditFilePathMoved { get; set; }
 
         [JsonIgnore]
         public LogSettingsViewModel Item
@@ -273,32 +293,21 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public string AuditsFilePath
+        public string AuditFilePath
         {
-            get => _auditsFilePath;
+            get => _auditFilePath;
             set
             {
-                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_auditsFilePath))
-                {
-                    _auditsFilePath = Dev2Logger.GetAuditsFilePath();
-                }
-                else
-                {
-                    IsDirty = !Equals(Item);
-                    _auditsFilePath = value;
-                    OnPropertyChanged();
-                }
+                IsDirty = !Equals(Item);
+                _auditFilePath = value;
+                OnPropertyChanged();
             }
         }
-
-        #region Implementation of IUpdatesHelp
 
         public void UpdateHelpDescriptor(string helpText)
         {
             HelpText = helpText;
         }
-
-        #endregion
 
         bool Equals(LogSettingsViewModel other)
         {
@@ -319,7 +328,7 @@ namespace Dev2.Settings.Logging
             equalsSeq &= Equals(_selectedLoggingType, other._selectedLoggingType);
             equalsSeq &= int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize);
             equalsSeq &= int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
-            equalsSeq &= Equals(_auditsFilePath, other._auditsFilePath);
+            equalsSeq &= Equals(_auditFilePath, other._auditFilePath);
             return equalsSeq;
         }
 
