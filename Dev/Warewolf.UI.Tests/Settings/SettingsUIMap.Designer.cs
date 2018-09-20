@@ -2028,6 +2028,18 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
                 return this.mAuditsFilePathComboBox;
             }
         }
+        
+        public ServerLogFileItemText ServerLogFileItemText
+        {
+            get
+            {
+                if ((this.mServerLogFileItemText == null))
+                {
+                    this.mServerLogFileItemText = new ServerLogFileItemText(this);
+                }
+                return this.mServerLogFileItemText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2040,6 +2052,8 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         private WpfPane mAudits;
         
         private AuditsFilePathComboBox mAuditsFilePathComboBox;
+        
+        private ServerLogFileItemText mServerLogFileItemText;
         #endregion
     }
     
@@ -2284,6 +2298,42 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         
         #region Fields
         private WpfEdit mAuditsFilePathTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServerLogFileItemText : WpfText
+    {
+        
+        public ServerLogFileItemText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ServerLogFileHyperlink
+        {
+            get
+            {
+                if ((this.mServerLogFileHyperlink == null))
+                {
+                    this.mServerLogFileHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mServerLogFileHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "   ";
+                    this.mServerLogFileHyperlink.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mServerLogFileHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mServerLogFileHyperlink;
         #endregion
     }
     
