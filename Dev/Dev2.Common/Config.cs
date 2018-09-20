@@ -11,32 +11,6 @@ namespace Dev2.Common
     {
         public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
-        public static string AddOrUpdateAppSettings1()
-        {
-            var conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var setting = conf.AppSettings.Settings["AuditFilePath"];
-            var sourceFilePath = Path.Combine(AppDataPath, "Audits");
-
-            if (setting != null && !string.IsNullOrEmpty(setting.Value))
-            {
-                sourceFilePath = setting.Value;
-            }
-            else
-            {
-                if (setting is null)
-                {
-                    conf.AppSettings.Settings.Add("AuditFilePath", sourceFilePath);
-                }
-                else
-                {
-                    conf.AppSettings.Settings["AuditFilePath"].Value = sourceFilePath;
-                }
-                conf.Save(ConfigurationSaveMode.Modified);
-            }
-
-            return sourceFilePath;
-        }
-
         private readonly object _configurationLock = new object();
         private readonly static Config _settings = new Config();
 
@@ -56,6 +30,7 @@ namespace Dev2.Common
 
     public class ServerSettings
     {
+        public string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
         public string AuditPath => Path.Combine(Config.AppDataPath, @"Audits");
 
         readonly IConfigurationManager manager;
