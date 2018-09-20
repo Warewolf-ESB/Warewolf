@@ -2,7 +2,6 @@
 using Dev2.Common.Interfaces.Wrappers;
 using Newtonsoft.Json;
 using System;
-using System.Configuration;
 
 namespace Dev2.Common.Wrappers
 {
@@ -29,7 +28,7 @@ namespace Dev2.Common.Wrappers
                     ServerSettingsData settings = null;
                     try
                     {
-                        var text = _fileWrapper.ReadAllText("serverSettings.json");
+                        var text = _fileWrapper.ReadAllText(Config.Server.SettingsPath);
                         settings = JsonConvert.DeserializeObject<ServerSettingsData>(text);
                     } catch {
                         settings = new ServerSettingsData();
@@ -64,7 +63,7 @@ namespace Dev2.Common.Wrappers
         {
             var fileWrapper = new FileWrapper();
             var json = JsonConvert.SerializeObject(data);
-            fileWrapper.WriteAllText("serverSettings.json", json);
+            fileWrapper.WriteAllText(Config.Server.SettingsPath, json);
         }
     }
 }
