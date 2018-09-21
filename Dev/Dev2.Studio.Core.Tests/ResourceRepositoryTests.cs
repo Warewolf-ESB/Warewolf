@@ -22,6 +22,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -38,6 +39,7 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
@@ -2426,6 +2428,24 @@ namespace BusinessDesignStudio.Unit.Tests
             StringAssert.Contains(esbExecuteRequest.Args["Database"].ToString(), "TestDB");
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(WarewolfSaveException))]
+        public void SaveServerSettings_OutputNull()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+            var sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid g1) =>
+            {
+                sentPayLoad = o;
+            });
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            var serverSettingsData = new ServerSettingsData { AuditFilePath = "somePath" };
+            _repo.SaveServerSettings(_environmentModel.Object, serverSettingsData);
+        }
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()
         {

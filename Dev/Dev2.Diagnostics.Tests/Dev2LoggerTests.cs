@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
@@ -56,20 +57,6 @@ namespace Dev2.Diagnostics.Test
   <level value=""Level0"" />
   <eventLogEntryType value=""ERROR"" />
 </mapping>");
-
         }
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        public void GetAuditsFilePath_Scenerio_Result()
-        {
-            //------------Setup for test-------------------------
-            var auditsFilePath = Dev2Logger.GetAuditsFilePath();
-            var expectedAuditsFilePath = Path.Combine(EnvironmentVariables.AppDataPath, "Audits");
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(auditsFilePath);
-            Assert.AreEqual(expectedAuditsFilePath, auditsFilePath);
-        }
-    }
-};
+    };
+}

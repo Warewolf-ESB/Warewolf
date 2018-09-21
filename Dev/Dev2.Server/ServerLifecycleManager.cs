@@ -23,6 +23,7 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Xml;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -351,7 +352,6 @@ namespace Dev2
         {
             try
             {
-
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
             catch (Exception e)
@@ -359,7 +359,6 @@ namespace Dev2
                 Fail("Unable to set working directory.", e);
             }
         }
-
         void InitializeServer()
         {
             try

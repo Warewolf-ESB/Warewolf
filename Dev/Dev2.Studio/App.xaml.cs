@@ -431,16 +431,22 @@ namespace Dev2.Studio
 
         void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
-            if (_appExceptionHandler != null)
+            try
             {
-                e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
-            }
-            else
+                Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
+                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventExceptions.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventExceptions.UnhandledException, "Method: OnApplicationDispatcherUnhandledException Exception: " + e.Exception);
+                if (_appExceptionHandler != null)
+                {
+                    e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+                }
+                else
+                {
+                    MessageBox.Show("Fatal Error : " + e.Exception);
+                }
+            } catch (Exception e2)
             {
-                MessageBox.Show("Fatal Error : " + e.Exception);
+                System.Console.WriteLine("== Error ==\nerror: " + e2 + "\n  while processing unhandled exception: "+ e.Exception +"\n== Error ==");
             }
         }
 

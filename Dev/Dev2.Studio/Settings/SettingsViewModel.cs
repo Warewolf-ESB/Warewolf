@@ -548,7 +548,7 @@ namespace Dev2.Settings
             if(CurrentEnvironment.IsConnected)
             {
                 if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
-                {                  
+                {
                     // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
                     ClearErrors();
                     if (!ValidateDuplicateResourcePermissions())
@@ -565,17 +565,16 @@ namespace Dev2.Settings
                     }
 
                     SecurityViewModel.Save(Settings.Security);
-                    if (LogSettingsViewModel.IsDirty)
+                    if (!SaveLogSettingsChanges())
                     {
-                        Settings.Logging.AuditsFilePath = LogSettingsViewModel.AuditsFilePath;
-                        LogSettingsViewModel.Save(Settings.Logging);
+                        return false;
                     }
                     if (PerfmonViewModel.IsDirty)
                     {
                         PerfmonViewModel.Save(Settings.PerfCounters);
                     }
                     var isWritten = WriteSettings();
-                    if(isWritten)
+                    if (isWritten)
                     {
                         ResetIsDirtyForChildren();
                         IsSaved = true;
@@ -596,6 +595,19 @@ namespace Dev2.Settings
             ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
             _popupController.ShowSaveSettingsNotReachableErrorMsg();
             return false;
+        }
+
+        private bool SaveLogSettingsChanges()
+        {
+            if (LogSettingsViewModel.IsDirty)
+            {
+                LogSettingsViewModel.Save(Settings.Logging);
+                if (!LogSettingsViewModel.HasAuditFilePathMoved)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         bool ValidateDuplicateServerPermissions()

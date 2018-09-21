@@ -236,7 +236,7 @@ namespace Dev2.Runtime.Auditing
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Dev2Logger.GetAuditsFilePath(), "auditDB.db"),
+                DataSource = Path.Combine(Config.Server["AuditFilePath"], "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)
@@ -244,7 +244,7 @@ namespace Dev2.Runtime.Auditing
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Path.Combine(Dev2Logger.GetAuditsFilePath()));
+                directoryWrapper.CreateIfNotExists(Config.Server["AuditFilePath"]);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
