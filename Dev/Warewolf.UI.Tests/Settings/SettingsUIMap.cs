@@ -541,7 +541,7 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.ServerLogFileItemText.ServerLogFileHyperlink, new Point(83, 6));
         }
 
         [When(@"I Click Studio Log File")]
@@ -626,12 +626,13 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
 
         public void Assert_Audits_File_Path(string expectedPath)
         {
-            Assert.AreEqual(expectedPath, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.Audits.AuditsFilePathComboBox.AuditsFilePathTextbox.Text);
+            var filePath = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.AuditsFilePathComboBox.AuditsFilePathTextbox.Text;
+            Assert.AreEqual(expectedPath, filePath);
         }
 
         public void Update_Audits_File_Path(string changedPath)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.Audits.AuditsFilePathComboBox.AuditsFilePathTextbox.Text = changedPath;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsView.AuditsFilePathComboBox.AuditsFilePathTextbox.Text = changedPath;
         }
     }
 }

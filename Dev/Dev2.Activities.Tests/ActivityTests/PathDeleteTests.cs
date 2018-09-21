@@ -40,6 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfPathDelete_Execution")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void DsfPathDelete_Execution_FileNotFound_DebugOutputErrorMessageRelevant()
         {
             var dsfPathDelete = new DsfPathDelete { InputPath = TestContext.TestRunDirectory + "\\some file that doesnt exist.txt", Result = "[[res]]" };

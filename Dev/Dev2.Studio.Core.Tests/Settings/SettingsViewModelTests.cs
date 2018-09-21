@@ -490,43 +490,6 @@ You need Administrator permission.", viewModel.Errors);
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SettingsViewModel_SaveCommand")]
-        public void SettingsViewModel_SaveCommand_LogSettingsViewModel_AuditsFilePath_UpdatesSettingsLogging()
-        {
-            //------------Setup for test--------------------------
-            const string ErrorMessage = "A message that is not just the word Success.";
-            const string ExpectedAuditsFilePath = @"D:\Audits";
-
-            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
-            var environment = new Mock<IServer>();
-            environment.Setup(e => e.IsConnected).Returns(true);
-            var authService = new Mock<IAuthorizationService>();
-            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
-            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
-            var repo = new Mock<IResourceRepository>();
-            environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
-            viewModel.CurrentEnvironment = environment.Object;
-            repo.Setup(a => a.WriteSettings(It.IsAny<IServer>(), It.IsAny<Data.Settings.Settings>())).Returns(new ExecuteMessage() { HasError = true, Message = new StringBuilder(ErrorMessage) });
-            viewModel.IsDirty = true;
-
-            viewModel.LogSettingsViewModel.AuditsFilePath = ExpectedAuditsFilePath;
-
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(ErrorMessage, viewModel.Errors);
-            Assert.AreEqual(ExpectedAuditsFilePath, viewModel.Settings.Logging.AuditsFilePath);
-        }
-
-
-        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_IsDirty_SecurityViewModelIsDirtyPropertyChanged_IsDirtyIsTrue()

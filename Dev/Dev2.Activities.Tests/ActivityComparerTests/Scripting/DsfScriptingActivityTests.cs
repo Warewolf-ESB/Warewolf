@@ -4,12 +4,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.State;
-using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
 {
@@ -18,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void UniqueIDEquals_EmptyJavascript_Object_IsEqual()
         {
             //---------------Set up test pack-------------------

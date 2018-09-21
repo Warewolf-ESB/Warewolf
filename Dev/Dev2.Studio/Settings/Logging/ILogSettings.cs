@@ -15,6 +15,6 @@ namespace Dev2.Settings.Logging
         bool CanEditLogSettings { get; }
         LogLevel StudioFileLogLevel { get; }
         IEnumerable<string> LoggingTypes { get; }
-        string AuditsFilePath { get; set; }
+        string AuditFilePath { get; set; }
     }
 }

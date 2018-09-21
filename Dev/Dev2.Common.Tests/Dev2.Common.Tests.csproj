@@ -74,6 +74,7 @@
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
+    <Compile Include="ConfigTest.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />
     <None Include="..\Run Tests.ps1">

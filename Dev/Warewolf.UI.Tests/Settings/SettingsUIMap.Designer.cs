@@ -2001,15 +2001,43 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
             }
         }
         
-        public Audits Audits
+        public WpfPane Audits
         {
             get
             {
                 if ((this.mAudits == null))
                 {
-                    this.mAudits = new Audits(this);
+                    this.mAudits = new WpfPane(this);
+                    #region Search Criteria
+                    this.mAudits.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+                    this.mAudits.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
                 }
                 return this.mAudits;
+            }
+        }
+        
+        public AuditsFilePathComboBox AuditsFilePathComboBox
+        {
+            get
+            {
+                if ((this.mAuditsFilePathComboBox == null))
+                {
+                    this.mAuditsFilePathComboBox = new AuditsFilePathComboBox(this);
+                }
+                return this.mAuditsFilePathComboBox;
+            }
+        }
+        
+        public ServerLogFileItemText ServerLogFileItemText
+        {
+            get
+            {
+                if ((this.mServerLogFileItemText == null))
+                {
+                    this.mServerLogFileItemText = new ServerLogFileItemText(this);
+                }
+                return this.mServerLogFileItemText;
             }
         }
         #endregion
@@ -2021,7 +2049,11 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         
         private LoggingTypesComboBox mLoggingTypesComboBox;
         
-        private Audits mAudits;
+        private WpfPane mAudits;
+        
+        private AuditsFilePathComboBox mAuditsFilePathComboBox;
+        
+        private ServerLogFileItemText mServerLogFileItemText;
         #endregion
     }
     
@@ -2236,38 +2268,6 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Audits : WpfPane
-    {
-        
-        public Audits(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public AuditsFilePathComboBox AuditsFilePathComboBox
-        {
-            get
-            {
-                if ((this.mAuditsFilePathComboBox == null))
-                {
-                    this.mAuditsFilePathComboBox = new AuditsFilePathComboBox(this);
-                }
-                return this.mAuditsFilePathComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private AuditsFilePathComboBox mAuditsFilePathComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
     public class AuditsFilePathComboBox : WpfComboBox
     {
         
@@ -2275,7 +2275,6 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "AuditsFilePathTextBox";
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
@@ -2289,7 +2288,6 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
                 {
                     this.mAuditsFilePathTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mAuditsFilePathTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
                     this.mAuditsFilePathTextbox.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
                     #endregion
                 }
@@ -2300,6 +2298,42 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         
         #region Fields
         private WpfEdit mAuditsFilePathTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ServerLogFileItemText : WpfText
+    {
+        
+        public ServerLogFileItemText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "   ";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ServerLogFileHyperlink
+        {
+            get
+            {
+                if ((this.mServerLogFileHyperlink == null))
+                {
+                    this.mServerLogFileHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mServerLogFileHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "   ";
+                    this.mServerLogFileHyperlink.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mServerLogFileHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mServerLogFileHyperlink;
         #endregion
     }
     

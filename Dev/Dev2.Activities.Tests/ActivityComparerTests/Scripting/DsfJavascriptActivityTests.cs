@@ -16,6 +16,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
         public void UniqueIDEquals_EmptyJavascript_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
