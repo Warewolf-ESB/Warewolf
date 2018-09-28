@@ -188,9 +188,33 @@ namespace Warewolf.Storage
 
         public int GetObjectLength(string recordSetName)
         {
-            var trimStart = recordSetName.TrimStart('@');
-            var count = _env.JsonObjects[trimStart].Count;
-            return count;
+            JArray findArray(JObject ob, string[] names)
+            {
+                if (names.Length == 1)
+                {
+                    return ob[names[0]] as JArray;
+                }
+                return findArray(ob[names[0]] as JObject, names.Skip(1).ToArray());
+            }
+
+            try
+            {
+                var trimStart = recordSetName.TrimStart('@');
+                var parts = trimStart.Split('.');
+                if (parts.Length < 2)
+                {
+                    return _env.JsonObjects[trimStart].Count;
+                }
+
+                var arr = findArray(_env.JsonObjects[parts[0]] as JObject, parts.Skip(1).ToArray());
+
+
+
+                return arr.Count;
+            } catch (KeyNotFoundException e)
+            {
+                throw new Exception("not a json array", e);
+            }
         }
 
         public int GetCount(string recordSetName) => _env.RecordSets[recordSetName.Trim()].Count;
