@@ -143,6 +143,22 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        public void ExecutionEnvironmentGetObjectLengthOfJson_ShouldThrow()
+        {
+            Assert.IsNotNull(_environment);
+            string msg = null;
+            try
+            {
+                _environment.GetObjectLength("@obj.people");
+            } catch (Exception e)
+            {
+                msg = e.Message;
+            }
+            Assert.AreEqual("not a json array", msg);
+        }
+
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExecutionEnvironmentAssignFromNestedStar_Should()
         {
