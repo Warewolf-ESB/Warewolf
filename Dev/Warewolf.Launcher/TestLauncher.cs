@@ -683,6 +683,10 @@ namespace Warewolf.Launcher
 ";
                 var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml";
                 TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
+                if (!Directory.Exists(TestRunner.TestsResultsPath))
+                {
+                    Directory.CreateDirectory(TestRunner.TestsResultsPath);
+                }
                 File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
                 Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
             }
