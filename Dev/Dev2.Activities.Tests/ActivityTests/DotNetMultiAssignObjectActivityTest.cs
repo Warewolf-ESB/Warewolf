@@ -579,6 +579,20 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var a = ob.GetDebugOutputs(env, 0);
             Assert.AreEqual("[[@names(3).Name]]", a[0].ResultsList[1].Variable);
+
+            ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[@obj.names().Name]]", "[[val]]", 0),
+                    new AssignObjectDTO("[[@obj.names().Name]]", "[[val]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var b = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[@obj.names(1).Name]]", b[0].ResultsList[1].Variable);
+            Assert.AreEqual("[[@obj.names(2).Name]]", b[1].ResultsList[1].Variable);
         }
 
         [TestMethod]
