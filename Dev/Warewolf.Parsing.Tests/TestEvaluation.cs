@@ -968,16 +968,36 @@ namespace WarewolfParsingTest
         {
             var assigns = new List<IAssignValue>
              {
-                 new AssignValue("[[@obj.addr().a]]", "25"),
-                 new AssignValue("[[@obj.addr().b]]", "33"),
-                 new AssignValue("[[@obj.addr().c]]", "26"),
+                 new AssignValue("[[@obj.addr().a]]", "125"),
+                 new AssignValue("[[@obj.addr().b]]", "133"),
+                 new AssignValue("[[@obj.addr().c]]", "126"),
+
+                 new AssignValue("[[@obj.addr().a]]", "225"),
+                 new AssignValue("[[@obj.addr().b]]", "233"),
+                 new AssignValue("[[@obj.addr().c]]", "226"),
              };
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
-            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
-            var items = testEnv2.JsonObjects;
 
-            Assert.AreEqual(items.Count, 1);
-            //Assert.AreEqual(items[0], "28");
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+
+            // assert that a, b, and c belong to the same object in the addr array inside obj
+            Assert.IsTrue(testEnv2.JsonObjects.ContainsKey("obj"));
+            var obj = testEnv2.JsonObjects["obj"] as JObject;
+            Assert.IsNotNull(obj, "not a JObject");
+            var addrList = obj["addr"] as JArray;
+            Assert.IsNotNull(addrList, "not a JArray");
+            Assert.AreEqual(2, addrList.Count);
+            var addr = addrList.First as JObject;
+            Assert.IsNotNull(addr, "not a JObject");
+
+            Assert.AreEqual(125, addr["a"].Value<int>());
+            Assert.AreEqual(133, addr["b"].Value<int>());
+            Assert.AreEqual(126, addr["c"].Value<int>());
+
+            addr = addrList.Last as JObject;
+            Assert.AreEqual(225, addr["a"].Value<int>());
+            Assert.AreEqual(233, addr["b"].Value<int>());
+            Assert.AreEqual(226, addr["c"].Value<int>());
         }
     }
 }
