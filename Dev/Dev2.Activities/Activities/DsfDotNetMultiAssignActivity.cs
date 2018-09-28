@@ -160,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if (dataObject.IsDebugMode())
             {
-                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
+                if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank &&  !assignValue.Name.Contains(DataListUtil.ObjectStartMarker))
                 {
                     var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
                     assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
