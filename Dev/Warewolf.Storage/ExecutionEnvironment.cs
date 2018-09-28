@@ -177,7 +177,14 @@ namespace Warewolf.Storage
                 AssignWithFrame(value, update);
             }
         }
-        public int GetLength(string recordSetName) => _env.RecordSets[recordSetName.Trim()].LastIndex;
+        public int GetLength(string recordSetName)
+        {
+            if (recordSetName.Length > 1 && recordSetName[0] == '@')
+            {
+                throw new Exception("not a recordset");
+            }
+            return _env.RecordSets[recordSetName.Trim()].LastIndex;
+        }
 
         public int GetObjectLength(string recordSetName)
         {
