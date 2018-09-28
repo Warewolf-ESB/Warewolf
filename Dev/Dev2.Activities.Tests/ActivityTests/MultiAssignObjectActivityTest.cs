@@ -531,14 +531,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultiAssignObjectWithJsonArrayMultiplePropertiesWithoutIndex()
         {
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Name]]", "Bob", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Surname]]", "Dill", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Age]]", "20", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Gender]]", "Male", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Name]]", "Jane", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Surname]]", "Doe", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Age]]", "30", fieldCollection.Count));
-            fieldCollection.Add(new AssignObjectDTO("[[Workers().Gender]]", "Female", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Name]]", "Bob", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Surname]]", "Dill", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Age]]", "20", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Gender]]", "Male", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Name]]", "Jane", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Surname]]", "Doe", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Age]]", "30", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Gender]]", "Female", fieldCollection.Count));
 
             SetupArguments(ActivityStrings.scalarShape, ActivityStrings.scalarShape, fieldCollection);
 
