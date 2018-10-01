@@ -485,5 +485,37 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.XPath
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentRefType_XpathDtos_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var xPathActivity = new XPathDTO() { WatermarkTextVariable = "some variable" };
+            object other = new XPathDTO() { WatermarkTextVariable = "some other variable" } as object;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(xPathActivity);
+            //---------------Execute Test ----------------------
+            var @equals = xPathActivity.Equals(other);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentTypes_XpathDto_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var xPathActivity = new XPathDTO() { WatermarkTextVariable = "some variable" };
+            var other = new object();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(xPathActivity);
+            //---------------Execute Test ----------------------
+            var @equals = xPathActivity.Equals(other);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
     }
 }
