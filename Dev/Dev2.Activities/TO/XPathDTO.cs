@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(XPathDTO other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -172,33 +172,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return true;
             }
 
-            return string.Equals(XPath, other.XPath)
-                && string.Equals(OutputVariable, other.OutputVariable)
-                && IndexNumber == other.IndexNumber
-                && Inserted == other.Inserted
-                && IsXpathVariableFocused == other.IsXpathVariableFocused
-                && IsOutputVariableFocused == other.IsOutputVariableFocused
-                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable);                
+            var eq = string.Equals(XPath, other.XPath);
+            eq &= string.Equals(OutputVariable, other.OutputVariable);
+            eq &= IndexNumber == other.IndexNumber;
+            eq &= Inserted == other.Inserted;
+            eq &= IsXpathVariableFocused == other.IsXpathVariableFocused;
+            eq &= IsOutputVariableFocused == other.IsOutputVariableFocused;
+            eq &= string.Equals(WatermarkTextVariable, other.WatermarkTextVariable);
+
+            return eq;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is XPathDTO xPathDTO)
             {
-                return false;
+                return Equals(xPathDTO);
             }
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((ActivityDTO)obj);
+            return false;
         }
 
         public override int GetHashCode()
