@@ -316,8 +316,8 @@ Scenario: Assign a value to a new json object array within a json object
     And the debug output as
     | # |							|
     | 1 | [[@Person.Score1(1)]] = 11	|
-    | 2 | [[@Person.Score2(2)]] = 22	|
-    | 3 | [[@Person.Score3(3)]] = 33	|
+    | 2 | [[@Person.Score2(1)]] = 22	|
+    | 3 | [[@Person.Score3(1)]] = 33	|
 
 Scenario: Assign a json variable with a calculate expression
 	Given I assign the value "=SUM(1,2,3)+1" to a json object "[[@Person.Score]]"
