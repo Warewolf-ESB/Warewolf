@@ -1315,10 +1315,10 @@ this.ScenarioSetup(scenarioInfo);
                         "[[@Person.Score1(1)]] = 11"});
             table32.AddRow(new string[] {
                         "2",
-                        "[[@Person.Score2(2)]] = 22"});
+                        "[[@Person.Score2(1)]] = 22"});
             table32.AddRow(new string[] {
                         "3",
-                        "[[@Person.Score3(3)]] = 33"});
+                        "[[@Person.Score3(1)]] = 33"});
 #line 316
     testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
