@@ -75,20 +75,21 @@ namespace Dev2.Data.PathOperations.Operations
 
         int WriteData(Stream src, IActivityIOPath dst)
         {
-            if (FileExist(dst, _fileWrapper) && !_arguments.Overwrite)
+            var fileExists = FileExist(dst, _fileWrapper);
+            if (fileExists && !_arguments.Overwrite)
             {
-                using (var stream = new FileStream(dst.Path, FileMode.Append))
-                {
-                    src.CopyTo(stream);
-                }
-                return (int)src.Length;
+                return -1;
             }
-            if (_arguments.Overwrite)
+
+            var mode = fileExists ? FileMode.Append : FileMode.CreateNew;
+            long length = src.Length;
+            using (var stream = new FileStream(dst.Path, mode))
             {
-                File.WriteAllBytes(dst.Path, src.ToByteArray());
-                return (int)src.Length;
+                src.CopyTo(stream);
             }
-            return -1;
+            // TODO: fix me this is a bug, files can be longer than 2Gb
+            return (int)length;
+
         }
     }
 }
