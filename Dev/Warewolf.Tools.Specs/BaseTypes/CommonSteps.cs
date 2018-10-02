@@ -305,8 +305,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     _scenarioContext.Get<string>(SourcePasswordHolder),
                     true, "");
                 var sb = new StringBuilder();
+                var overwrite = _scenarioContext.Get<bool>(OverwriteHolder);
+                var type = overwrite ? WriteType.Overwrite : WriteType.AppendBottom;
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
-                var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
+                var ops = ActivityIOFactory.CreatePutRawOperationTO(type, sb.ToString());
                 var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                 {
