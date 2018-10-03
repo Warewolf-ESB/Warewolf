@@ -95,8 +95,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        var overwrite = args.WriteType == WriteType.Overwrite;
-                        var newArgs = new Dev2CRUDOperationTO(overwrite);
+                        var newArgs = new Dev2CRUDOperationTO(true);
                         CreateEndPoint(dst, newArgs, true);
                         WriteDataToFile(args, dst);
                     }
@@ -361,14 +360,12 @@ namespace Dev2.PathOperations
             if (IsBase64(args.FileContents))
             {
                 var data = GetBytesFromBase64String(args);
-                var overwrite = args.WriteType == WriteType.Overwrite;
-                return PerformPut(data, dst, overwrite);
+                return PerformPut(data, dst, true);
             }
             else
             {
                 var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
-                var overwrite = args.WriteType == WriteType.Overwrite;
-                return PerformPut(fileContent, dst, overwrite);
+                return PerformPut(fileContent, dst, true);
             }
         }
 
