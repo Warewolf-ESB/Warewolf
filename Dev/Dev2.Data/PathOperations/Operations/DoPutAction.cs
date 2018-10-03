@@ -75,7 +75,7 @@ namespace Dev2.Data.PathOperations.Operations
 
         int WriteData(Stream src, IActivityIOPath dst)
         {
-            if (FileExist(dst, _fileWrapper) && !_arguments.Overwrite)
+            if (FileExist(dst, _fileWrapper) || !_arguments.Overwrite)
             {
                 using (var stream = new FileStream(dst.Path, FileMode.Append))
                 {

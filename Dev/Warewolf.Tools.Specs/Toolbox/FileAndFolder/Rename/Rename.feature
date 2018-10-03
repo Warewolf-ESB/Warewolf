@@ -6,10 +6,10 @@ Feature: Rename
 
 Scenario Outline: Rename file at location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
@@ -54,10 +54,10 @@ Scenario Outline: Rename file at location
 
 	Scenario Outline: Rename file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
@@ -107,12 +107,12 @@ Scenario Outline: Rename file validation
 	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
 	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And use private public key for source is "C:\\Temp\\key.opk"
 	And use private public key for destination is "C:\\Temp\\key.opk"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And result as "<resultVar>"
 	When validating the rename tool
 	Then validation is "<ValidationResult>"
@@ -207,10 +207,10 @@ Scenario Outline: Rename file validation
 	
 Scenario Outline: Rename file at location with invalid directories
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And result as "<resultVar>"
     When the rename file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"

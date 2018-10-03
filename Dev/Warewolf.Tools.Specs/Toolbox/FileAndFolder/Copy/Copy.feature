@@ -6,10 +6,10 @@ Feature: Copy
 
 Scenario Outline: Copy file at location
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
@@ -55,10 +55,10 @@ Scenario Outline: Copy file at location
            
 Scenario Outline: Copy file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
@@ -104,10 +104,10 @@ Scenario Outline: Copy file at location with overwrite disabled
 
 Scenario Outline: Copy file at location Null			
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
@@ -121,10 +121,10 @@ Scenario Outline: Copy file at location Null
 
 Scenario Outline: Copy file at location Null with overwrite disabled	
 	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
