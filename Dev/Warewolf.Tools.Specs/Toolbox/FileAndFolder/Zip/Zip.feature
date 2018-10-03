@@ -6,10 +6,10 @@ Feature: Zip
 
 Scenario Outline: Zip file at location
 	Given I have a source path "<source>" with value "<sourceLocation>"
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>" for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"	
@@ -55,10 +55,10 @@ Scenario Outline: Zip file at location
 
 Scenario Outline: Zip file at location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>" for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"	
@@ -105,10 +105,10 @@ Scenario Outline: Zip file at location with overwrite disabled
 
 Scenario Outline: Zip file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>" for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"	
@@ -127,10 +127,10 @@ Scenario Outline: Zip file at location Null
 		
 Scenario Outline: Zip file at location is compressed at ratio
 	Given I have a source path "<source>" with value "<sourceLocation>"
-	And overwrite is "<selected>"
 	And source credentials as "<username>" and "<password>" for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is ""
 	And use private public key for destination is ""
 	And result as "<resultVar>"	

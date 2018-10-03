@@ -174,6 +174,7 @@ namespace Dev2.PathOperations
             {
                 status = ValidateCopySourceDestinationFileOperation(src, dst, args, () =>
                 {
+                    var result = 0;
                     if (src.RequiresLocalTmpStorage())
                     {
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
@@ -183,7 +184,7 @@ namespace Dev2.PathOperations
 
                         using (var s = src.Get(src.IOPath, _filesToDelete))
                         {
-                            dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
+                            result = dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
                             s.Close();
                         }
                     }
@@ -199,11 +200,11 @@ namespace Dev2.PathOperations
                         {
                             if (sourceFile.Directory != null)
                             {
-                                dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
+                                result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
                             }
                         }
                     }
-                    return ResultOk;
+                    return result ==-1 ? ResultBad : ResultOk;
                 });
             }
             finally
