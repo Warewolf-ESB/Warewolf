@@ -30,6 +30,32 @@ Scenario Outline: Create file at location
 		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                            | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                           | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
+Scenario Outline: Create file at location with overwrite disabled
+	Given I have a destination path "<destination>" with value "<destinationLocation>"
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+	When the create file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | File or Folder                        | Overwrite  | Username   | Password | Destination Private Key File |
+         | <destination> = <destinationLocation> | <selected> | <username> | String   | <destinationPrivateKeyFile>  |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+		| No | Name       | destination | destinationLocation                                                                     | selected | username                     | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                           | False    | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | False    | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | False    | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
+		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORCREATEFILETESTING/test.txt                                   | False    | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORCREATEFILETESTING/test.txt                                   | False    | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                            | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                           | False    | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+
+
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
 	And overwrite is "<selected>"

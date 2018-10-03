@@ -516,15 +516,15 @@ namespace Dev2.PathOperations
         bool CreateFile(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
 
-            var result = true;
+            var result = false;
 
             var tmp = CreateTmpFile();
             using (Stream s = new MemoryStream(_fileWrapper.ReadAllBytes(tmp)))
             {
 
-                if (dst.Put(s, dst.IOPath, args, null, _filesToDelete) < 0)
+                if (dst.Put(s, dst.IOPath, args, null, _filesToDelete) >= 0)
                 {
-                    result = false;
+                    result = true;
                 }
 
                 s.Close();
