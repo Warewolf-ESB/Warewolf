@@ -184,11 +184,22 @@
                         <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="URL" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
                         <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
-                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}">
+                        <ui:IntellisenseTextBox Grid.Column="1" 
+                                                Grid.Row="1" 
+                                                AllowMultilinePaste="False"
+                                                AcceptsReturn="False"
+                                                AllowUserInsertLine="False"
+                                                WrapInBrackets="False"
+                                                Text="{Binding InputArea.QueryString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>
                                 <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestUrlHelp}" DataContext="{Binding}" />
+                                <errors:ErrorsSetter Source="{Binding}"
+                                                     SourcePropertyName="QueryString"
+                                                     SourcePropertyValue="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}"
+                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
-                        </TextBox>
+                        </ui:IntellisenseTextBox>
                         <Button x:Name="TestInputButton"
                                 Grid.Row="2"
                                 Grid.Column="1"
