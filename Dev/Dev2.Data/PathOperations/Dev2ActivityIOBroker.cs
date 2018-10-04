@@ -174,7 +174,7 @@ namespace Dev2.PathOperations
             {
                 status = ValidateCopySourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    var result = 0;
+                    var result = -1;
                     if (src.RequiresLocalTmpStorage())
                     {
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
@@ -204,7 +204,7 @@ namespace Dev2.PathOperations
                             }
                         }
                     }
-                    return result ==-1 ? ResultBad : ResultOk;
+                    return result == -1 ? ResultBad : ResultOk;
                 });
             }
             finally
