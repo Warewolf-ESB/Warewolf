@@ -285,7 +285,7 @@ Scenario: Assign a value to the end of a json object array within a json object
 	And I assign the value "33" to a json object "[[@Person.Score()]]"
 	When the assign object tool is executed
 	Then the json object "[[@Person.Score(1)]]" equals "11"
-	And the json object "[[@Person.Score(2)]]" equals "22"
+	And the json object "[[@Person.Score(2)]]" equals "22" 
 	And the json object "[[@Person.Score(3)]]" equals "33"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -295,9 +295,9 @@ Scenario: Assign a value to the end of a json object array within a json object
 	| 3 | [[@Person.Score()]] =	| 33		|
 	And the debug output as
     | # |							|
-    | 1 | [[@Person.Score()]] = 11	|
-    | 2 | [[@Person.Score()]] = 22	|
-    | 3 | [[@Person.Score()]] = 33	|
+    | 1 | [[@Person.Score(1)]] = 11	|
+    | 2 | [[@Person.Score(2)]] = 22	|
+    | 3 | [[@Person.Score(3)]] = 33	|
 
 Scenario: Assign a value to a new json object array within a json object
 	Given I assign the value "11" to a json object "[[@Person.Score1()]]"
@@ -315,9 +315,9 @@ Scenario: Assign a value to a new json object array within a json object
     | 3 | [[@Person.Score3()]] = | 33			|
     And the debug output as
     | # |							|
-    | 1 | [[@Person.Score1()]] = 11	|
-    | 2 | [[@Person.Score2()]] = 22	|
-    | 3 | [[@Person.Score3()]] = 33	|
+    | 1 | [[@Person.Score1(1)]] = 11	|
+    | 2 | [[@Person.Score2(1)]] = 22	|
+    | 3 | [[@Person.Score3(1)]] = 33	|
 
 Scenario: Assign a json variable with a calculate expression
 	Given I assign the value "=SUM(1,2,3)+1" to a json object "[[@Person.Score]]"

@@ -43,6 +43,7 @@ namespace Dev2.Data.Util
         internal const string ClosingSquareBrackets = "]]";
         internal const string RecordsetIndexOpeningBracket = "(";
         internal const string RecordsetIndexClosingBracket = ")";
+        public const string ObjectStartMarker = "@";
 
         static readonly HashSet<string> SysTags = new HashSet<string>();
         static readonly Lazy<ICommon> LazyCommon = new Lazy<ICommon>(() => new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);

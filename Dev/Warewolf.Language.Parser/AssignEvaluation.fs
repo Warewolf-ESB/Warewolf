@@ -83,6 +83,11 @@ let addJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (na
         let arr2 = List.map (fun a -> addValueToJArray arr a (value)) indexes
         List.map fst arr2
 
+let getObjectProperty (obj : Newtonsoft.Json.Linq.JObject) (name :string) =
+    let props = obj.Properties()
+    let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
+    theProp
+
 let getOrAddJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) (index : Index) (value : JToken) = 
     let props = obj.Properties()
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
@@ -100,6 +105,16 @@ let getOrAddJsonArrayPropertyToJsonWithValue (obj : Newtonsoft.Json.Linq.JObject
         let arr2 = List.map (fun a -> getOrAddValueToJArray arr a (value)) indexes
         List.map fst arr2
 
+let getExpressionName (exp : JsonIdentifierExpression) =
+    match exp with
+    | NameExpression a ->
+        a.Name
+    | NestedNameExpression a ->
+        a.ObjectName
+    | IndexNestedNameExpression b ->
+        b.ObjectName
+    | _ -> null
+
 let rec expressionToObject (obj : JToken) (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) = 
     match exp with
     | Terminal -> obj
@@ -110,9 +125,30 @@ let rec expressionToObject (obj : JToken) (exp : JsonIdentifierExpression) (res 
         | Terminal -> 
             let allProperties = addJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JValue(evalResultToString res))
             List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
-        | _ -> 
-            let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
-            List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+        | _ ->
+            if (a.Index = Index.Last) then
+                let arrTmp = getObjectProperty (obj :?> JObject) a.ObjectName
+                match arrTmp with
+                | Some someArr ->
+                    let arr = someArr.Value :?> JArray
+                    let lastOb = arr.Last
+                    let prop = getObjectProperty (lastOb :?> JObject) (getExpressionName a.Next)
+                    match prop with
+                    | Some _ -> //if (props.contains(a.Next.Name)) then
+                        let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+                        List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+                    | None ->
+                        let index = IntIndex arr.Count
+                        let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName index (new JObject() :> JToken)
+                        List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+                | _ ->
+                    let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+                    List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+            else
+                let allProperties = getOrAddJsonArrayPropertyToJsonWithValue (obj :?> JObject) a.ObjectName a.Index (new JObject() :> JToken)
+                List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+
+
 
 and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalResult) (obj : JContainer) = 
     match exp with
