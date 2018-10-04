@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
     [CodedUITest]
     public class Move_File
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointMoveFileTool_Small_And_LargeView_Then_NewSource_UITest()
         {

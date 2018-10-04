@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.DependencyGraph
     [CodedUITest]
     public class ShowDependencyTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenDotnetWorkflowAsDependencyIsDoubleClicked_ShouldOpenWorkflowTabWithToolsInside()
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests.DependencyGraph
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "Openned workflow does not contain expected DotNet Connector tool on the design surface.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenSourceIsDoubleClicked_ShouldOpenSourceTab()
@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.DependencyGraph
             Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll", DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Dependency Graph")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {
@@ -58,7 +58,7 @@ namespace Warewolf.UI.Tests.DependencyGraph
             DependencyGraphUIMap.Click_Close_Dependecy_Tab();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Dependency Graph")]
         public void ShowDependencies_On_An_Unfiltered_Resource()
         {

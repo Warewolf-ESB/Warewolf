@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests
     {
         const string SourceName = "CodedUITestSQLServerSource";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("MSSql")]
         // ReSharper disable once InconsistentNaming
         public void Test_SQLServerSource_From_ExplorerContextMenu_UITests()
@@ -71,7 +71,7 @@ namespace Warewolf.UI.Tests
             DBSourceUIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateSQLServerSource_GivenTabHasChanges_ClosingStudioPromptsChanges()

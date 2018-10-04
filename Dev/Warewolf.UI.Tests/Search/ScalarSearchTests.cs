@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.Search
     [CodedUITest]
     public class ScalarSearchTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Scalar_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Variable search did not expected Result.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Lower_Case_And_Match_Case_Is_False()
         {
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Upper_Case_And_Match_Case_Is_False()
         {
@@ -44,7 +44,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsTrue(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Lower_Case_And_Match_Case_Is_True()
         {
@@ -56,7 +56,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Upper_Case_And_Match_Case_Is_True()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Partial_Existing_Scalar_And_Match_WholeWord_Is_False()
         {
@@ -81,7 +81,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_Partial_Existing_Scalar_And_Match_WholeWord_Is_True()
         {
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Expected Results 1 Row to be returned.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Scalar Search")]
         public void Given_UnExisting_Scalar_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {

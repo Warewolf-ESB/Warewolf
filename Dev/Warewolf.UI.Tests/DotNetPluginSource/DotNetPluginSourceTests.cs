@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests
         const string GACAssemblySourceName = "CodedUITestGACDLLSource";
         const string SourceNameToEdit = "DotNetPluginSourceToEdit";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         public void Select_GACAssembly_DotNetPluginSource_UITests()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         public void Edit_DotNetSource_Keeps_The_Changes_On_ReOpen_UITests()
         {
@@ -55,7 +55,7 @@ namespace Warewolf.UI.Tests
         }
 
        
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         public void Select_AssemblyAndConfigFile_Then_Validate_Clear_On_GACSelection_UITests()
         {
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateDotNetSource_GivenTabHasChanges_ClosingStudioPromptsChanges()

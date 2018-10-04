@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests
         private const string HelloWorld = "Hello World";
         private const string Message = "Hello There World";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {   
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.Exists, "Set The Output Variable Test Step does not exist on service test tab after openning it by clicking the button in Hello World debug output.");  
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
@@ -41,7 +41,7 @@ namespace Warewolf.UI.Tests
             WorkflowServiceTestingUIMap.Click_Close_Tests_Tab();
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
@@ -64,7 +64,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
@@ -72,7 +72,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AsssignNameTreeItem.AssignAssert.SmallDataGridTable.Row1.Exists, "Row1 is not visible after selecting Mock.");
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
@@ -82,7 +82,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.Exists, "Test assert/mock step not added after clicking activity on design surface.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Hello World Mocking Tests")]
         public void DuplicatedWorkflowShouldUpdateTestResult()
         {

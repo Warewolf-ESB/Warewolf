@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.Tools
     public class ForEach
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tools")]
         public void ForEachTool_Small_And_LargeView_UITest()
         {
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(LoopConstructToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.DoneButton.Exists, "For each done button does not exist after double click openning large view.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
 		[TestCategory("Tools")]
         public void Drag_Decision_And_SwitchTools_Into_ForEachActivityDrop_ExpectError_UITest()
         {
@@ -42,14 +42,14 @@ namespace Warewolf.UI.Tests.Tools
             DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
 		[TestCategory("Tools")]
         public void Drag_Assigntool_Into_ForEach_ActivityDrop_ExpectSuccess_UITest()
         {
             LoopConstructToolsUIMap.Drag_Toolbox_AssignObject_Onto_Foreach();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tools")]
         public void Drag_Assigntool_Into_ForEach_LargeView_ActivityDrop_ExpectSuccess_UITest()
         {

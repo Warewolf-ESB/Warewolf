@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     {
         const string SourceName = "OracleSourceFromTool";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void OracleDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -55,7 +55,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "Oracle Source Tab does not exist");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void OracleDatabaseConnectorTool_Test_Connection_From_Design_Surface_UITest()
         {

@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Tools
     {
         const string AdvancedRecordset = "Advanced Recordset";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Small_And_LargeView()
         {
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(advancedRecordset.LargeView.GenerateOutputsButton.Exists, "Generate Outputs button does not exist on Advanced Recordset connector tool large view.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Clicking_GenerateOutputs_Creates_A_Recordset_Name()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.AreEqual("TableCopy", advancedRecordset.LargeView.RecordSetTextBoxEdit.Text);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Name_From_Person_Creates_PersonName_Mapping()
         {
@@ -65,7 +65,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.AreEqual("[[TableCopy().name]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Multiple_Fields_From_Person_Creates_All_Field_Mapping()
         {
@@ -84,7 +84,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.AreEqual("[[TableCopy().address_id]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow3.Row3Cell.Row3ComboBox.TextEdit.Text);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Name_With_An_Elias_From_Person_Creates_PersonAliasName_Mapping()
         {

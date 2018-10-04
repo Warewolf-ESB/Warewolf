@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     [CodedUITest]
     public class Data_Split
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
 		[TestCategory("Data Tools")]
         public void DataSplitTool_Small_And_Large_Then_QVIView_UITest()
         {
