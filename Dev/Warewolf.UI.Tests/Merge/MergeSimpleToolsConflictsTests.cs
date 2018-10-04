@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeWfWithVersion = "MergeWfWithVersion";
         public const string MergeAllConflicting = "MergeAllConflicting";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Merge_From_MergeWfWithVersion_ContextMenu_Show_Merge_PopUp()
         {
@@ -20,7 +20,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.Exists, "Workflow surface did not open.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Assign_From_The_Difference_List_Adds_Assign_To_The_Workflow()
         {

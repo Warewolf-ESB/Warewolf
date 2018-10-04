@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class TextboxHeightChanges
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_TextboxHeightChanges_UITest()
         {

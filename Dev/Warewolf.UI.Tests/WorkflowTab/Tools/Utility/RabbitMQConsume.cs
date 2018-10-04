@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     {
         const string SourceName = "RabbitMQSourceFromTool";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
 		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
 		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_IsObject_Selected_Output_Takes_Object_Variable_UITest()
         {

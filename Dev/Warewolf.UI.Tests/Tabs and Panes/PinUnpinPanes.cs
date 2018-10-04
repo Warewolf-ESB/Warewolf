@@ -22,7 +22,7 @@ namespace Warewolf.UI.Tests.Tabs
     [CodedUITest]
     public class PinUnpinPanes
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_WorkflowDesignerPane()
         {
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Pane_With_Context_Menu(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_SchedulerPane()
         {
@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Pane_With_Context_Menu(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.OUTPUT);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_TestFrameworkPane()
         {
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.Tabs
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinnedPaneContextMenuItems()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.MainStudioWindow.UnpinnedTabContextMenu.TabbedDocument.Checked = true;
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinSettingsWizardTab()
         {
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinServerSourceWizardTab()
         {
@@ -84,7 +84,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDBSourceWizardTab()
         {
@@ -92,7 +92,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDotNetPluginSourceWizardTab()
         {
@@ -100,7 +100,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinWebSourceWizardTab()
         {
@@ -108,7 +108,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDeployWizardTab()
         {
@@ -116,7 +116,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDependencyGraphWizardTab()
         {
@@ -124,7 +124,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(DependencyGraphUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinTestsWizardTab()
         {
@@ -133,7 +133,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void UnpinSchedulerWizardTab()
         {
@@ -141,7 +141,7 @@ namespace Warewolf.UI.Tests.Tabs
             UIMap.Unpin_Tab_With_Drag(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
         {
@@ -154,7 +154,7 @@ namespace Warewolf.UI.Tests.Tabs
             Assert.AreEqual("500", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()
         {

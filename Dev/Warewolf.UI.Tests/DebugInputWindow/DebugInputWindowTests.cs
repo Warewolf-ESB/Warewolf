@@ -9,7 +9,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
     [CodedUITest]
     public class DebugInputWindowTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_Validation_UITest()
         {
@@ -26,7 +26,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             UIMap.Click_DebugInput_ViewInBrowser_Button();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_TabSelectionChanged_UITest()
         {
@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.JSONWindow.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_AddAndRemoveRows_UITest()
         {
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row2), "Row 2 exists on after delete.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_Move_UITest()
         {

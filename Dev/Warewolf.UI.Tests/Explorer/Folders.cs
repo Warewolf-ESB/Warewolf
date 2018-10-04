@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests
     {
         const string ResourceCreatedInFolder = "Resource Created In Folder";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void Create_Resource_InFolderUITest()
         {
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests
                 File.Delete(firstOrDefault);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void CreateNewFolderInLocalHostUsingShortcutKeysUITest()
         {
@@ -40,7 +40,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void Save_Resource_In_Nested_Folder_Saves_Correctly_UITest()
         {

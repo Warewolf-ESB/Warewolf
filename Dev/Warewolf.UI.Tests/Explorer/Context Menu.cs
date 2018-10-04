@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class Context_Menu
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void Explorer_Workflow_And_Folder_ContextMenuItems_UITest()
         {
@@ -47,7 +47,7 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "Sources Context menu item does not exist on explorer context menu for workflows.");
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Explorer")]
         public void Explorer_DotNetPluginSource_ContextMenuItems()

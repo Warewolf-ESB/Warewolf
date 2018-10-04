@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.Merge
     {
         public const string MergeSequence = "MergeSequence";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_For_MergeSequence_Select_Current_Variables_Radio_Button()
         {
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_For_MergeSequence_Merge_With_Sequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
         {
@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_ForMergeSequence_Loads_With_Current_Version_Selected_And_Tools_Onto_Design_Surface()
         {

@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.PostgreSQLSource
     {
         const string SourceName = "CodedUITestMyPostgreSQLSource";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Sources")]
         public void Create_Save_And_Edit_PostgreSQLSource_From_ExplorerContextMenu_UITests()
         {
@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.PostgreSQLSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.AreEqual("TestDB", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Test_MySQLSource_ConnectionTimeout_UITests()

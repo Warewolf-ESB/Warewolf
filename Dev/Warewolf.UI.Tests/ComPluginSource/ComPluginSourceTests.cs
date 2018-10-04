@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     {
         const string SourceName = "CodedUITestCOMPluginSource";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         public void Create_ComPluginSource_From_ExplorerContextMenu_UITests()
         {
@@ -34,7 +34,7 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(string.IsNullOrEmpty(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text), "Assembly Name Textbox is empty after selecting an assembly.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Plugin Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateComPluginSource_GivenTabHasChanges_ClosingStudioPromptsChanges()

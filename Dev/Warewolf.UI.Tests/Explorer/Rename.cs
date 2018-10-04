@@ -18,7 +18,7 @@ namespace Warewolf.UI.Tests
         private const string ResourceToRename = "KeepNewName";
         const string newName = ResourceToRename + "Renamed";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void RenameFolder_ThenFolderItem()
         {
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual(newResourceName, itemEdit.DisplayText);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void RenameFolder_UsingF2_Shortcut()
         {            
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests
             
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void RenameFolder_Updates_The_Workflow_Url()
         {
@@ -61,7 +61,7 @@ namespace Warewolf.UI.Tests
             Directory.Move(renamedFolder, resourcesFolder);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Explorer")]
         public void Rename_Resource_Close_And_ReOpen_Resource_Keeps_New_Name()
         {

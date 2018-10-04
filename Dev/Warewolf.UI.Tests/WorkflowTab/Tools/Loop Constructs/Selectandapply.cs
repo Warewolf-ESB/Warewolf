@@ -8,7 +8,7 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class SelectAndApply
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tools")]
         public void SelectAndApplyTool_Small_And_LargeView_UITest()
         {
@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests.Tools
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
         [TestCategory("Tools")]
         public void SelectAndApplyTool_Small_To_LargeView_Keeps_Variables_UITest()
         {
