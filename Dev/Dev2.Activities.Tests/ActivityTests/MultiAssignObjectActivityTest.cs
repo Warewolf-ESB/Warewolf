@@ -524,5 +524,86 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectWithJsonArrayMultiplePropertiesWithoutIndex()
+        {
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Name]]", "Bob", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Surname]]", "Dill", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Age]]", "20", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Gender]]", "Male", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Name]]", "Jane", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Surname]]", "Doe", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Age]]", "30", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers().Gender]]", "Female", fieldCollection.Count));
+
+            SetupArguments(ActivityStrings.scalarShape, ActivityStrings.scalarShape, fieldCollection);
+
+            var result = ExecuteProcess();
+
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Name", out string actual, out string error);
+            Assert.AreEqual("Bob", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Surname", out actual, out error);
+            Assert.AreEqual("Dill", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Age", out actual, out error);
+            Assert.AreEqual("20", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Gender", out actual, out error);
+            Assert.AreEqual("Male", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Name", out actual, out error);
+            Assert.AreEqual("Jane", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Surname", out actual, out error);
+            Assert.AreEqual("Doe", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Age", out actual, out error);
+            Assert.AreEqual("30", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Gender", out actual, out error);
+            Assert.AreEqual("Female", actual);
+
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectWithJsonArrayMultiplePropertiesWithIndex()
+        {
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Name]]", "Warewolf", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Location]]", "Ireland", fieldCollection.Count));
+
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(1).Name]]", "Bob", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(1).Surname]]", "Dill", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(1).Age]]", "20", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(1).Gender]]", "Male", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(2).Name]]", "Jane", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(2).Surname]]", "Doe", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(2).Age]]", "30", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[@Org.Workers(2).Gender]]", "Female", fieldCollection.Count));
+
+            SetupArguments(ActivityStrings.scalarShape, ActivityStrings.scalarShape, fieldCollection);
+
+            var result = ExecuteProcess();
+
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Name", out string actual, out string error);
+            Assert.AreEqual("Bob", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Surname", out actual, out error);
+            Assert.AreEqual("Dill", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Age", out actual, out error);
+            Assert.AreEqual("20", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(1).Gender", out actual, out error);
+            Assert.AreEqual("Male", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Name", out actual, out error);
+            Assert.AreEqual("Jane", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Surname", out actual, out error);
+            Assert.AreEqual("Doe", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Age", out actual, out error);
+            Assert.AreEqual("30", actual);
+            GetScalarValueFromEnvironment(result.Environment, "@Org.Workers(2).Gender", out actual, out error);
+            Assert.AreEqual("Female", actual);
+
+        }
+
+
     }
 }

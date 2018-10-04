@@ -75,17 +75,17 @@ namespace Dev2.Data.PathOperations.Operations
 
         int WriteData(Stream src, IActivityIOPath dst)
         {
-            if (FileExist(dst, _fileWrapper) && !_arguments.Overwrite)
+            if (_arguments.Overwrite)
+            {
+                File.WriteAllBytes(dst.Path, src.ToByteArray());
+                return (int)src.Length;
+            }
+            if (FileExist(dst, _fileWrapper) || !_arguments.Overwrite)
             {
                 using (var stream = new FileStream(dst.Path, FileMode.Append))
                 {
                     src.CopyTo(stream);
                 }
-                return (int)src.Length;
-            }
-            if (_arguments.Overwrite)
-            {
-                File.WriteAllBytes(dst.Path, src.ToByteArray());
                 return (int)src.Length;
             }
             return -1;

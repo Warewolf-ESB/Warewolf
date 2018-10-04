@@ -844,7 +844,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
-            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\"\r\n    },\r\n    {\r\n      \"Age\": \"4\"\r\n    }\r\n  ]\r\n}");
+            Assert.AreEqual("{\r\n  \"Child\": [\r\n    {\r\n      \"Name\": \"2\",\r\n      \"Age\": \"4\"\r\n    }\r\n  ]\r\n}", env2.JsonObjects["Person"].ToString());
         }
 
         [TestMethod]
