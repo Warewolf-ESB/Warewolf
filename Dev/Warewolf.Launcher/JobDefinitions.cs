@@ -11,19 +11,25 @@ namespace Warewolf.Launcher
         public static Dictionary<string, Tuple<string, string>> GetJobDefinitions()
         {
             var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
-            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
-            //{
-            //    string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
-            //    foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
-            //    {
-            //        if (!(JobDefintionsLine.StartsWith("//")))
-            //        {
-            //            var SplitCSV = JobDefintionsLine.Split(',');
-            //            Console.WriteLine(SplitCSV[0]);
-            //            JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
-            //        }
-            //    }
-            //}
+            try
+            {
+                using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                {
+                    string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
+                    foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
+                    {
+                        if (!(JobDefintionsLine.StartsWith("//")))
+                        {
+                            var SplitCSV = JobDefintionsLine.Split(',');
+                            JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to get build config from {Properties.Settings.Default.BuildDefinitionsGitURL}\n{e.Message}");
+            }
             if (JobDefinitions.Count > 0)
             {
                 return JobDefinitions;
@@ -208,19 +214,18 @@ namespace Warewolf.Launcher
 
         public static bool GetEnableDockerValue()
         {
-            //string JobDefinitionsCSV = "";
-            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
-            //{
-            //    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
-            //}
-            //return JobDefinitionsCSV == "False";
             if (File.Exists("EnableDocker.txt"))
             {
                 return File.ReadAllText("EnableDocker.txt") == "True";
             }
             else
             {
-                return false;
+                string JobDefinitionsCSV = "";
+                using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                {
+                    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+                }
+                return JobDefinitionsCSV == "False";
             }
         }
     }
