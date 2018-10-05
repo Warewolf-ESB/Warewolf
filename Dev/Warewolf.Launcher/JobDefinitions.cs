@@ -15,13 +15,41 @@ namespace Warewolf.Launcher
             {
                 using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
                 {
-                    string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
-                    foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
+                    var BuildDefintions = ReadBuildDefinitionsFromRepo(repo);
+                    foreach (var BuildDefinition in BuildDefintions)
                     {
-                        if (!(JobDefintionsLine.StartsWith("//")))
+                        string currentJobName = "";
+                        foreach (var CurrentLine in BuildDefinition.Split('\r', '\n'))
                         {
-                            var SplitCSV = JobDefintionsLine.Split(',');
-                            JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
+                            if (CurrentLine.Contains("new Job("))
+                            {
+                                currentJobName = CurrentLine.Trim().Replace(".jobs(", "").Replace("new Job(\"", "").Replace("\",", "");
+                            }
+                            const string parseProjFrom = "--ProjectName \"";
+                            const string parseCategoryFrom = "--Category \"";
+                            if (CurrentLine.Contains(parseProjFrom) && !CurrentLine.Contains("#Error Correcting Download"))
+                            {
+                                var projStartIndex = CurrentLine.IndexOf(parseProjFrom) + parseProjFrom.Length;
+                                string projectName = null;
+                                while (CurrentLine[projStartIndex] != '\"')
+                                {
+                                    projectName += CurrentLine[projStartIndex++];
+                                }
+                                string categoryName = null;
+                                int findCategoryStart = CurrentLine.IndexOf(parseCategoryFrom);
+                                if (findCategoryStart > 0)
+                                {
+                                    var categoryStartIndex = findCategoryStart + parseCategoryFrom.Length;
+                                    while (CurrentLine[categoryStartIndex] != '\"')
+                                    {
+                                        categoryName += CurrentLine[categoryStartIndex++];
+                                    }
+                                }
+                                if (!JobDefinitions.ContainsKey(currentJobName))
+                                {
+                                    JobDefinitions.Add(currentJobName, new Tuple<string, string>(projectName, categoryName));
+                                }
+                            }
                         }
                     }
                 }
@@ -185,22 +213,31 @@ namespace Warewolf.Launcher
             };
         }
 
-        static string ReadFileFromRepo(Repository repo, string fileName)
+        static List<string> ReadBuildDefinitionsFromRepo(Repository repo)
         {
-            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            CheckoutBranch(ref repo);
+            List<string> result = new List<string>();
+            TreeEntry TreeWalker = null;
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["warewolf"].Target))
             {
-                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
                 {
-                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs[Properties.Settings.Default.BuildDefinitionGitBranch]);
-                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
+                    result.Add(ReadTreeEntry(TreeEntry));
                 }
             }
-            else
-            {
-                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
-            }
+            return result;
+        }
+
+        static string ReadFileFromRepo(Repository repo, string fileName)
+        {
+            CheckoutBranch(ref repo);
             var commit = repo.Head.Tip;
             var treeEntry = commit[fileName];
+            return ReadTreeEntry(treeEntry);
+        }
+
+        private static string ReadTreeEntry(TreeEntry treeEntry)
+        {
             var blob = (Blob)treeEntry.Target;
             var contentStream = blob.GetContentStream();
             string JobDefinitionsCSV;
@@ -210,6 +247,21 @@ namespace Warewolf.Launcher
             }
 
             return JobDefinitionsCSV;
+        }
+
+        static void CheckoutBranch(ref Repository repo)
+        {
+            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            {
+                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                {
+                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs["refs/heads/" + Properties.Settings.Default.BuildDefinitionGitBranch]);
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+            }
         }
 
         public static bool GetEnableDockerValue()
