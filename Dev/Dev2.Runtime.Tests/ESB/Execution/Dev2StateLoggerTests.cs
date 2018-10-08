@@ -20,10 +20,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
     {
         IFile _fileWrapper;
         IDirectory _directoryWrapper;
-        Dev2JsonStateLogger _dev2StateLogger;
         Dev2StateAuditLogger _dev2StateAuditLogger;
         Mock<IDev2Activity> _activity;
-        DetailedLogFile _detailedLog;
 
         [TestCleanup]
         public void Cleanup()
@@ -35,197 +33,37 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             _directoryWrapper.Delete(EnvironmentVariables.DetailLogPath, true);
         }
         [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_SubscribeToEventNotifications_Tests()
+        public void StateNotifier_SubscribeToEventNotifications_Tests()
         {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
-            using (_dev2StateLogger)
-            {
-                var nextActivityMock = new Mock<IDev2Activity>();
-                var nextActivity = nextActivityMock.Object;
-                var exception = new Exception("some exception");
-                var message = new { Message = "Some Message" };
-                var detailMethodName = nameof(Dev2StateLogger_SubscribeToEventNotifications_Tests);
+            TestSetup(out _fileWrapper, out _directoryWrapper, out _activity);
+            var nextActivityMock = new Mock<IDev2Activity>();
+            var nextActivity = nextActivityMock.Object;
+            var exception = new Exception("some exception");
+            var message = new { Message = "Some Message" };
+            var detailMethodName = nameof(StateNotifier_SubscribeToEventNotifications_Tests);
 
-                var notifier = new StateNotifier();
-                var stateLoggerMock = new Mock<IStateListener>();
-                stateLoggerMock.Setup(o => o.LogPreExecuteState(_activity.Object)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogPostExecuteState(_activity.Object, nextActivity)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
-                stateLoggerMock.Setup(o => o.LogStopExecutionState(nextActivity)).Verifiable();
-                var listener = stateLoggerMock.Object;
-                // test
-                notifier.Subscribe(listener);
-
-                notifier.LogPreExecuteState(_activity.Object);
-                notifier.LogPostExecuteState(_activity.Object, nextActivity);
-                notifier.LogExecuteException(exception, nextActivity);
-                notifier.LogAdditionalDetail(message, detailMethodName);
-                notifier.LogExecuteCompleteState(nextActivity);
-                notifier.LogStopExecutionState(nextActivity);
-
-                // verify
-                stateLoggerMock.Verify();
-                notifier.Dispose();
-            }
-        }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_LogPreExecuteState_Tests()
-        {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
+            var notifier = new StateNotifier();
+            var stateLoggerMock = new Mock<IStateListener>();
+            stateLoggerMock.Setup(o => o.LogPreExecuteState(_activity.Object)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogPostExecuteState(_activity.Object, nextActivity)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogExecuteException(exception, nextActivity)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogAdditionalDetail(message, detailMethodName)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogExecuteCompleteState(nextActivity)).Verifiable();
+            stateLoggerMock.Setup(o => o.LogStopExecutionState(nextActivity)).Verifiable();
+            var listener = stateLoggerMock.Object;
             // test
-            _dev2StateLogger.LogPreExecuteState(_activity.Object);
-            _dev2StateLogger.Dispose();
-            // verify
-            var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
-            //Expect something like: "header:LogPreExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
-            Assert.IsTrue(text.Contains("LogPreExecuteState"));
-            Assert.IsTrue(text.Contains("timestamp"));
-            Assert.IsTrue(text.Contains("NextActivity"));
-            Assert.IsTrue(text.Contains("scalars"));
-            Assert.IsTrue(text.Contains("record_sets"));
-            Assert.IsTrue(text.Contains("json_objects"));
-        }
+            notifier.Subscribe(listener);
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_LogPostExecuteState_Tests()
-        {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
-            var previousActivity = new Mock<IDev2Activity>();
-            var nextActivity = new Mock<IDev2Activity>();
-            // test
-            _dev2StateLogger.LogPostExecuteState(previousActivity.Object, nextActivity.Object);
-            _dev2StateLogger.Dispose();
-            // verify
-            var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
-            //Expect something like: "header:LogPostExecuteState\r\n{\"timestamp\":\"2018-06-19T16:05:29.6755408+02:00\",\"NextActivity\":null}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}}}}\r\n"
-            Assert.IsTrue(text.Contains("LogPostExecuteState"));
-            Assert.IsTrue(text.Contains("timestamp"));
-            Assert.IsTrue(text.Contains("NextActivity"));
-            Assert.IsTrue(text.Contains("scalars"));
-            Assert.IsTrue(text.Contains("record_sets"));
-            Assert.IsTrue(text.Contains("json_objects"));
-        }
+            notifier.LogPreExecuteState(_activity.Object);
+            notifier.LogPostExecuteState(_activity.Object, nextActivity);
+            notifier.LogExecuteException(exception, nextActivity);
+            notifier.LogAdditionalDetail(message, detailMethodName);
+            notifier.LogExecuteCompleteState(nextActivity);
+            notifier.LogStopExecutionState(nextActivity);
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_LogExecuteException_Tests()
-        {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
-            // setup
-            var nextActivity = new Mock<IDev2Activity>();
-            var exception = new NullReferenceException();
-            // test
-            _dev2StateLogger.LogExecuteException(exception, nextActivity.Object);
-            _dev2StateLogger.Dispose();
             // verify
-            var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
-            //Expect something like: "header:LogExecuteException{ "timestamp":"2018-06-20T08:32:01.719266+02:00","PreviousActivity":null,"Exception":"Object reference not set to an instance of an object."}{ "DsfDataObject":{ "ServerID":"00000000-0000-0000-0000-000000000000","ParentID":"00000000-0000-0000-0000-000000000000","ClientID":"00000000-0000-0000-0000-000000000000","ExecutingUser":"Mock<System.Security.Principal.IIdentity:00000001>.Object","ExecutionID":null,"ExecutionOrigin":0,"ExecutionOriginDescription":null,"ExecutionToken":"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object","IsSubExecution":false,"IsRemoteWorkflow":false,"Environment":{ "scalars":{ },"record_sets":{ },"json_objects":{ } } } }""
-            Assert.IsTrue(text.Contains("LogExecuteException"));
-            Assert.IsTrue(text.Contains("timestamp"));
-            Assert.IsTrue(text.Contains("PreviousActivity"));
-            Assert.IsTrue(text.Contains("Exception"));
-            Assert.IsTrue(text.Contains("scalars"));
-            Assert.IsTrue(text.Contains("record_sets"));
-            Assert.IsTrue(text.Contains("json_objects"));
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_LogExecuteCompleteState_Tests()
-        {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
-            var nextActivity = new Mock<IDev2Activity>();
-            var exception = new NullReferenceException();
-            // test
-            _dev2StateLogger.LogExecuteCompleteState(nextActivity.Object);
-            _dev2StateLogger.Dispose();
-            // verify
-            var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
-            //Expect something like: "header:LogExecuteException{ "timestamp":"2018-06-20T08:32:01.719266+02:00","PreviousActivity":null,"Exception":"Object reference not set to an instance of an object."}{ "DsfDataObject":{ "ServerID":"00000000-0000-0000-0000-000000000000","ParentID":"00000000-0000-0000-0000-000000000000","ClientID":"00000000-0000-0000-0000-000000000000","ExecutingUser":"Mock<System.Security.Principal.IIdentity:00000001>.Object","ExecutionID":null,"ExecutionOrigin":0,"ExecutionOriginDescription":null,"ExecutionToken":"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object","IsSubExecution":false,"IsRemoteWorkflow":false,"Environment":{ "scalars":{ },"record_sets":{ },"json_objects":{ } } } }""
-            Assert.IsTrue(text.Contains("LogExecuteCompleteState"));
-            Assert.IsTrue(text.Contains("timestamp"));
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_LogStopExecutionState_Tests()
-        {
-            TestSetup(out _fileWrapper, out _directoryWrapper, out _dev2StateLogger, out _activity, out _detailedLog);
-            var nextActivity = new Mock<IDev2Activity>();
-            var exception = new NullReferenceException();
-            // test
-            _dev2StateLogger.LogStopExecutionState(nextActivity.Object);
-            _dev2StateLogger.Dispose();
-            // verify
-            var text = _fileWrapper.ReadAllText(_detailedLog.LogFilePath);
-            //Expect something like: "header:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:50:55.1624974+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:02.3074228+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\nheader:LogStopExecutionState\r\n{\"timestamp\":\"2018-06-25T09:52:31.2454735+02:00\"}\r\n{\"DsfDataObject\":{\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"ExecutingUser\":\"Mock<System.Security.Principal.IIdentity:00000001>.Object\",\"ExecutionID\":null,\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutionToken\":\"Mock<Dev2.Common.Interfaces.IExecutionToken:00000001>.Object\",\"IsSubExecution\":false,\"IsRemoteWorkflow\":false,\"Environment\":{\"Environment\":{\"scalars\":{},\"record_sets\":{},\"json_objects\":{}},\"Errors\":[],\"AllErrors\":[]}}}\r\n"
-            Assert.IsTrue(text.Contains("LogStopExecutionState"));
-            Assert.IsTrue(text.Contains("timestamp"));
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_Given_LogFile_AlreadyExists()
-        {
-            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
-            var mockedDataObject = SetupDataObject();
-            var mockedFileWrapper = new Mock<IFile>();
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
-            mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
-            mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-1));
-            _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject);
-            var nextActivity = new Mock<IDev2Activity>();
-            // test
-            _dev2StateLogger.Dispose();
-            // verify
-            mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_2_Days_Old()
-        {
-            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
-            var mockedDataObject = SetupDataObject();
-            var mockedFileWrapper = new Mock<IFile>();
-            var zipWrapper = new Mock<IZipFile>();
-            zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
-            mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
-            mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-5));
-            _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);
-            var nextActivity = new Mock<IDev2Activity>();
-            // test
-            _dev2StateLogger.Dispose();
-            // verify
-            mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
-            zipWrapper.Verify(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        public void Dev2StateLogger_Given_LogFile_AlreadyExists_And_Is_More_Than_30_Days_Old()
-        {            
-            var streamWriter = TextWriter.Synchronized(new StreamWriter(new MemoryStream()));
-            var mockedStream = new Mock<IDev2StreamWriter>();
-            mockedStream.Setup(p => p.SynchronizedTextWriter).Returns(streamWriter);
-            var mockedDataObject = SetupDataObject();
-            var mockedFileWrapper = new Mock<IFile>();
-            var zipWrapper = new Mock<IZipFile>();
-            zipWrapper.Setup(p => p.CreateFromDirectory(It.IsAny<string>(), It.IsAny<string>()));
-            mockedFileWrapper.Setup(p => p.AppendText(It.IsAny<string>())).Returns(mockedStream.Object);
-            mockedFileWrapper.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
-            mockedFileWrapper.Setup(p => p.GetLastWriteTime(It.IsAny<string>())).Returns(DateTime.Today.AddDays(-45));
-            _dev2StateLogger = GetDev2JsonStateLogger(mockedFileWrapper.Object, mockedDataObject, zipWrapper.Object);
-            // test
-            _dev2StateLogger.Dispose();
-            // verify
-            mockedFileWrapper.Verify(p => p.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.AppendText(It.IsAny<string>()), Times.AtLeastOnce());
-            mockedFileWrapper.Verify(p => p.Delete(It.IsAny<string>()), Times.AtLeastOnce());
+            stateLoggerMock.Verify();
+            notifier.Dispose();
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
@@ -344,21 +182,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                             result.Environment);
         }
         
-        private static void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Dev2JsonStateLogger dev2StateLogger, out Mock<IDev2Activity> activity, out DetailedLogFile detailedLog)
+        private static void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
         {
             // setup
             Mock<IDSFDataObject> mockedDataObject = SetupDataObject();
             fileWrapper = new FileWrapper();
             directoryWrapper = new DirectoryWrapper();
             activity = new Mock<IDev2Activity>();
-            dev2StateLogger = GetDev2JsonStateLogger(fileWrapper, mockedDataObject);
-            detailedLog = SetupDetailedLog(dev2StateLogger);
         }
         
-        private static Dev2JsonStateLogger GetDev2JsonStateLogger(IFile fileWrapper, Mock<IDSFDataObject> mockedDataObject, IZipFile zipWrapper = null)
-        {
-            return new Dev2JsonStateLogger(mockedDataObject.Object, fileWrapper, zipWrapper);
-        }
         private static Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
             return new Dev2StateAuditLogger(mockedDataObject.Object);
@@ -402,12 +234,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
             mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
             return mockedDataObject;
-        }
-        private static DetailedLogFile SetupDetailedLog(Dev2JsonStateLogger dev2StateLogger)
-        {
-            var privateObject = new PrivateObject(dev2StateLogger);
-            var detailedLog = privateObject.GetField("_detailedLogFile") as DetailedLogFile;
-            return detailedLog;
         }
     }
 }
