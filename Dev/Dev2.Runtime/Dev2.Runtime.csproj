@@ -156,7 +156,6 @@
     <Compile Include="ESB\Control\IServiceLocator.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\State\Dev2StateAuditLogger.cs" />
-    <Compile Include="ESB\Execution\State\Dev2StateLogger.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
     <Compile Include="ESB\Execution\ExecutionManager.cs" />

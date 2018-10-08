@@ -434,4 +434,22 @@ namespace Dev2.Runtime.ESB.Execution
             return FilterLogEntry(auditLog, null);
         }
     }
+
+    static class IIdentityExtensionMethods
+    {
+        public static string ToJson(this System.Security.Principal.IIdentity identity)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(identity, Formatting.None);
+        }
+    }
+
+    static class ExecutionTokenExtensionMethods
+    {
+        public static string ToJson(this Common.Interfaces.IExecutionToken executionToken)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(executionToken, Formatting.None);
+        }
+    }
 }
