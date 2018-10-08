@@ -58,7 +58,7 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             | JsonIdentifierExpression _ -> (res, "")
         with ex -> 
           if ex.Message.ToLower() = "parse error" then
-            if (lang.Length > 2) then 
+            if (lang.Length > 2 && lang.StartsWith("[[")) then 
                 let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
                 match startswithNum with
                 | true -> 

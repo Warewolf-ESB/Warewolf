@@ -1,0 +1,9 @@
+
+<Source ID="91f5205a-0299-4c64-a0f9-da5a84aeb829" Name="Example COM Plugin Source" ResourceType="ComPluginSource" IsValid="false" ClsId="{4E77EC8F-51D8-386C-85FE-7DC931B7A8E7}" Is32Bit="false" ComName="System.Random" Type="ComPluginSource" ServerVersion="2.0.1.37" ServerID="6d8948f3-37ad-4952-87d5-c9c12fcc86c4">
+  <DisplayName>Example COM Plugin Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ComPluginSource</TypeOf>
+  <VersionInfo DateTimeStamp="2018-09-14T13:35:50.0713316+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="91f5205a-0299-4c64-a0f9-da5a84aeb829" VersionId="55215a2f-13fe-43b3-8b2a-868aa140fe07" />
+</Source>
