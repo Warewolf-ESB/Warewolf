@@ -1,0 +1,9 @@
+
+<Service ID="7d13e931-b8ca-4b01-986d-f2046368177f" Name="Example WCF Service Source" ResourceType="WcfSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAb2mQd5Ix1k+J+xSKJwiZTwQAAAACAAAAAAAQZgAAAAEAACAAAAD99XaJuOutKMGMfV5wjOCm+ZXjebecfz7BcTm9wju6AwAAAAAOgAAAAAIAACAAAACT7csLimnbDOu9LbPq3ItXIkOaO6gDc7+1fFZuDB+KspAAAACXgkYewieH6jBh25sIOsWi98Nq6qle6dLkyEp0qH10obq7JMSyx8ZTaZUHZjxR7NXmmJaoxYiuKoXc8rBFHqisFXbwwhnG+7HXgmt9a0FHDat+RTgpMKvbpcsfN02SC5TCcUS1/hBiId5NyHzJRQnjSwweoIxWqmoZ+ryjy9ZKdvU2guUs3mEz5tKH2H4f9+5AAAAANqyX9WEX3Q0R0q3hchFbtfMid3PIaBJCQmLj30l667daWv59LKIskgkzbGCnOPkzkdMh2bQGZuDgTKYD+7OvfA==" Type="WcfSource" ServerVersion="2.0.1.37" ServerID="6d8948f3-37ad-4952-87d5-c9c12fcc86c4">
+  <DisplayName>Example WCF Service Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WcfSource</TypeOf>
+  <VersionInfo DateTimeStamp="2018-09-17T09:44:11.3366296+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="7d13e931-b8ca-4b01-986d-f2046368177f" VersionId="a9fd4f52-a9d8-48a6-a35f-258e2bb025c3" />
+</Service>

@@ -1,0 +1,9 @@
+
+<Source ID="9ec5f01a-04c7-4a44-a63e-74a8b4807e2b" Name="Example Spotify API Source" ResourceType="WebSource" IsValid="false" ConnectionString="Address=https://api.spotify.com;DefaultQuery=/v1/users/{user_id}/playlists/{playlist_id}/followers;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="1.5.1.2" ServerID="693ca20d-fb17-4044-985a-df3051d6bac7">
+  <DisplayName>Example Spotify API Source</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-05-26T14:20:07.1645901+02:00" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="5" ResourceId="9ec5f01a-04c7-4a44-a63e-74a8b4807e2b" VersionId="07fea586-161c-4942-a204-8f8bf05c1da2" />
+</Source>
