@@ -11,7 +11,9 @@ namespace Warewolf.UI.Tests.Tools
     {
         const string SourceName = "WebSourceFromTool";
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebDELETETool_Small_And_LargeView_UITest()
         {
@@ -60,7 +62,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebDELETETool_GenerateOutputs_And_TestInputs_UITest()
         {
@@ -74,7 +78,9 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_DELETEWebTool_TestInputsButton();
             HTTPToolsUIMap.Click_DELETEWebTool_Outputs_DoneButton();
         }
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebDELETETool_Intellisense_UITest()
         {

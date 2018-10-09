@@ -9,7 +9,9 @@ namespace Warewolf.UI.Tests.Settings.Performance_Counters
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Settings")]
         public void Reset_Then_Configure_PerfomanceCounter_UITest()
         {

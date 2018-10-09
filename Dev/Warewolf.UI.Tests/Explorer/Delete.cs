@@ -19,7 +19,9 @@ namespace Warewolf.UI.Tests.Explorer
         const string DeleteAnywayResourceFolder = "DeleteAnyway";
         const string DeleteRemoteServer = "RemoteServerToDelete";
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void Delete_ExplorerResource()
         {
@@ -30,7 +32,9 @@ namespace Warewolf.UI.Tests.Explorer
             ExplorerUIMap.Click_Explorer_Refresh_Button();
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void DeleteDialog_PressEscape_ClosesDialogWindow()
         {
@@ -40,7 +44,9 @@ namespace Warewolf.UI.Tests.Explorer
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow), "Delete dialog still open after pressing escape key.");
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void DeletedResourceIsRemovedFromResources()
         {
@@ -55,7 +61,9 @@ namespace Warewolf.UI.Tests.Explorer
             Assert.IsNull(firstOrDefault);
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void DeletedResourceShowDependencies()
         {
@@ -70,7 +78,9 @@ namespace Warewolf.UI.Tests.Explorer
             DialogsUIMap.Click_DeleteAnyway_MessageBox_OK();
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void DeletedFolderShowDependencies()
         {
@@ -85,7 +95,9 @@ namespace Warewolf.UI.Tests.Explorer
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "Item did not delete");
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Explorer")]
         public void DeletedRemoteServer_RemoveItemFromTree()
         {

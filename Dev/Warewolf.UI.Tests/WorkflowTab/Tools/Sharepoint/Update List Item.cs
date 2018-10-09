@@ -9,7 +9,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
     [CodedUITest]
     public class Update_List_Item
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Sharepoint Tools")]
         public void SharepointUpdateListTool_Small_And_LargeView_Then_NewSource_UITest()
         {

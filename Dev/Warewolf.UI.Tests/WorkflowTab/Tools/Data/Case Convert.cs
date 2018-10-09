@@ -8,7 +8,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     [CodedUITest]
     public class Case_Convert
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Data Tools")]
         public void CaseConvertTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -26,7 +28,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent.Exists, "QVI on CaseConvert is not open");
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Data Tools")]
         public void CaseConvertTool_Small_And_Large_Then_ShowErrorBox_UITest()
         {

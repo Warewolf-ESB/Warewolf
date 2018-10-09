@@ -10,7 +10,9 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class Create
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("File Tools")]
         public void PathCreateTool_Small_And_LargeView_UITest()
         {
@@ -30,7 +32,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.DoneButton.Exists, "Done Button on the design surface does not exist");
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("File Tools")]
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {

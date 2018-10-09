@@ -8,7 +8,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class Xpath
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Utility Tools")]
         public void XPathTool_Small_And_LargeView_Then_QVIView_UITest()
         {

@@ -15,7 +15,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     {
         const string SourceName = "RabbitMQSourceFromTool";
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -68,7 +70,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             }
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Utility Tools")]
         public void RabbitMQConsumeTool_IsObject_Selected_Output_Takes_Object_Variable_UITest()
         {

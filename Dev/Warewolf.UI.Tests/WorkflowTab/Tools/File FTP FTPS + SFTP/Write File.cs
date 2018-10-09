@@ -8,7 +8,9 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class Write_File
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("File Tools")]
         public void WriteFileTool_Small_And_LargeView_UITest()
         {
