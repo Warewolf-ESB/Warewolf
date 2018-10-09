@@ -10,7 +10,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     [CodedUITest]
     public class Service
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Resource Tools")]
         public void ServiceTool_UIBehaviourCheck_UITest()
         {

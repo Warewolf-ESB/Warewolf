@@ -8,7 +8,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class Calculate
     {
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
 		[TestCategory("Utility Tools")]
         public void CalculateTool_Small_And_LargeView_Then_EnterSomeVariable_UITest()
         {
@@ -29,7 +31,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             Assert.AreEqual("[[SomeVariable]]", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FxCombobox.TextEdit.Text, "Calculate large view function textbox text does not equal \"[[SomeVariable]]\"");
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Utility Tools")]
         public void CalculateTool_Enter_On_DropDown_DoesNot_FreezeStudio()
         {

@@ -14,7 +14,9 @@ namespace Warewolf.UI.Tests.RabbitMQSource
     {
         const string SourceName = "CodedUITestRabbitMQSource";
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Open_RabbitMQSource_From_ExplorerContextMenu_UITests()
@@ -46,7 +48,9 @@ namespace Warewolf.UI.Tests.RabbitMQSource
             }
         }
 
-        [TestMethod, DeploymentItem(@"lib\win32\x86\git2-6311e88.dll")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
         [TestCategory("RabbitMQ Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateRabbitMQSource_GivenTabHasChanges_ClosingStudioPromptsChanges()
