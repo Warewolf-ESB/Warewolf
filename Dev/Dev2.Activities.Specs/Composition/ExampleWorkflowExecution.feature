@@ -249,24 +249,6 @@ Scenario: Example Executing Data - Data Merge example workflow
 	    |                                                                |
 	    | [[FileContent]] = String |
 	   
-Scenario: Example Executing Data - Find Index example workflow
-	  Given I have a workflow "Utility - Find Index Test"
-	  And "Utility - Find Index Test" contains "Data - Find Index" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Utility - Find Index Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the "Find Index1" in WorkFlow "Data - Find Index" debug inputs as
-	  | In Field | Index            | Characters | Direction     |
-	  | abc      | First Occurrence | b          | Left to Right |
-	  And the "Find Index1" in Workflow "Data - Find Index" debug outputs as  
-	  |                  |
-	  | [[WhereIsB]] = 2 |
-	  And the "Find Index2" in WorkFlow "Data - Find Index" debug inputs as
-	  | In Field           | Index           | Characters | Direction     |
-	  | abcbdefghibjklmnop | All Occurrences | b          | Left to Right |
-	  And the "Find Index2" in Workflow "Data - Find Index" debug outputs as  
-	  |                            |
-	  | [[WhereAreTheBs]] = 2,4,11 |
 
 Scenario: Example Executing File and Folder - Copy
 	  Given I have a workflow "File and Folder - Copy Test"
@@ -357,27 +339,6 @@ Scenario: Example Executing File and Folder - Zip
 	  And the "Zip" in Workflow "File and Folder - Zip" debug outputs as 
 	  |                        |
 	  | [[Complete]] = Success |
-
-Scenario: Example Executing Utility - Replace example workflow
-	  Given I have a workflow "Utility - Replace Test"
-	  And "Utility - Replace Test" contains "Utility - Replace" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Utility - Replace Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the "Replace1" in WorkFlow "Utility - Replace" debug inputs as
-	 | In Field(s)            | Find | Replace With |
-	 | [[SomeText]] = Replace | ac   | icat         |
-	  And the "Replace1" in Workflow "Utility - Replace" debug outputs as  
-	  |                                                                               |
-	  | [[SomeText]] = Replicate                                                      |
-	  | [[count]] = 1                                                                 |
-	  And the "Replace2" in Workflow "Utility - Replace" debug outputs as  
-	  |                                       |
-	  | [[rec(1).homeNumber]]   = +1553122442 |
-	  | [[rec(2).homeNumber]]   = +1554682136 |
-	  | [[rec(1).mobileNumber]] = +1655985781 |
-	  | [[rec(2).mobileNumber]] = +1985623145 |
-	  | [[recount]] = 3                       |
 
 Scenario: Example Executing Recordset - Count Records example workflow
 	  Given I have a workflow "Recordset - Count Records Test"
@@ -576,32 +537,6 @@ Scenario: Example Executing Control Flow - Switch example workflow
 	  And the "[[DiceRollValue]]" in Workflow "Control Flow - Switch" debug outputs as
 	  |   |
 	  | 4 |
-
-Scenario: Example Executing Scripting - Script example workflow
-  Given I have a workflow "Scripting - Script Test"
-  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
-  | Input to Service | From Variable | Output from Service | To Variable     |
-  When "Scripting - Script Test" is executed
-  Then the workflow execution has "NO" error
-  And the "Ruby" in WorkFlow "Scripting - Script" debug inputs as	
-  | Language | Script   |
-  | Ruby     | sleep(5) | 
-  And the "Ruby" in Workflow "Scripting - Script" debug outputs as    
-  |                    |
-  | [[RubyResult]] = 5 |
-  And the "JavaScript" in WorkFlow "Scripting - Script" debug inputs as	
-  | Language   | Script          |
-  | JavaScript | String = String |
-  And the "JavaScript" in Workflow "Scripting - Script" debug outputs as      
-  |                          |
-  | [[JavaScriptResult]] = 7 |
-  And the "Python" in WorkFlow "Scripting - Script" debug inputs as	
-  | Language | Script          |
-  | Python   | String = String |
-  And the "Python" in Workflow "Scripting - Script" debug outputs as    
-  |                  |
-  | [[PythonResult]] = not one or two |
-  
   
  Scenario: Example Executing Scripting - Ruby example workflow
   Given I have a workflow "Scripting - Ruby Test"

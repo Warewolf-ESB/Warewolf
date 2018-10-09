@@ -954,108 +954,38 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Data - Find Index example workflow")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
-        public virtual void ExampleExecutingData_FindIndexExampleWorkflow()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Data - Find Index example workflow", ((string[])(null)));
-#line 252
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 253
-   testRunner.Given("I have a workflow \"Utility - Find Index Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-#line 254
-   testRunner.And("\"Utility - Find Index Test\" contains \"Data - Find Index\" from server \"localhost\" " +
-                    "with mapping as", ((string)(null)), table55, "And ");
-#line 256
-   testRunner.When("\"Utility - Find Index Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 257
-   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
-                        "In Field",
-                        "Index",
-                        "Characters",
-                        "Direction"});
-            table56.AddRow(new string[] {
-                        "abc",
-                        "First Occurrence",
-                        "b",
-                        "Left to Right"});
-#line 258
-   testRunner.And("the \"Find Index1\" in WorkFlow \"Data - Find Index\" debug inputs as", ((string)(null)), table56, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table57.AddRow(new string[] {
-                        "[[WhereIsB]] = 2"});
-#line 261
-   testRunner.And("the \"Find Index1\" in Workflow \"Data - Find Index\" debug outputs as", ((string)(null)), table57, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
-                        "In Field",
-                        "Index",
-                        "Characters",
-                        "Direction"});
-            table58.AddRow(new string[] {
-                        "abcbdefghibjklmnop",
-                        "All Occurrences",
-                        "b",
-                        "Left to Right"});
-#line 264
-   testRunner.And("the \"Find Index2\" in WorkFlow \"Data - Find Index\" debug inputs as", ((string)(null)), table58, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table59.AddRow(new string[] {
-                        "[[WhereAreTheBs]] = 2,4,11"});
-#line 267
-   testRunner.And("the \"Find Index2\" in Workflow \"Data - Find Index\" debug outputs as", ((string)(null)), table59, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing File and Folder - Copy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
         public virtual void ExampleExecutingFileAndFolder_Copy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Copy", ((string[])(null)));
-#line 271
+#line 253
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 272
+#line 254
    testRunner.Given("I have a workflow \"File and Folder - Copy Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 273
+#line 255
    testRunner.And("\"File and Folder - Copy Test\" contains \"File and Folder - Copy\" from server \"loca" +
-                    "lhost\" with mapping as", ((string)(null)), table60, "And ");
-#line 275
+                    "lhost\" with mapping as", ((string)(null)), table55, "And ");
+#line 257
    testRunner.When("\"File and Folder - Copy Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
+#line 258
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table61.AddRow(new string[] {
+            table56.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 277
-   testRunner.And("the \"Copy\" in Workflow \"File and Folder - Copy\" debug outputs as", ((string)(null)), table61, "And ");
+#line 259
+   testRunner.And("the \"Copy\" in Workflow \"File and Folder - Copy\" debug outputs as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1067,32 +997,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Create()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Create", ((string[])(null)));
-#line 281
+#line 263
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 282
+#line 264
    testRunner.Given("I have a workflow \"File and Folder - Create Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 283
+#line 265
    testRunner.And("\"File and Folder - Create Test\" contains \"File and Folder - Create\" from server \"" +
-                    "localhost\" with mapping as", ((string)(null)), table62, "And ");
-#line 285
+                    "localhost\" with mapping as", ((string)(null)), table57, "And ");
+#line 267
    testRunner.When("\"File and Folder - Create Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 286
+#line 268
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table63.AddRow(new string[] {
+            table58.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 287
-   testRunner.And("the \"Create\" in Workflow \"File and Folder - Create\" debug outputs as", ((string)(null)), table63, "And ");
+#line 269
+   testRunner.And("the \"Create\" in Workflow \"File and Folder - Create\" debug outputs as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1104,32 +1034,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Delete()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Delete", ((string[])(null)));
-#line 291
+#line 273
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 292
+#line 274
    testRunner.Given("I have a workflow \"File and Folder - Delete Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 293
+#line 275
    testRunner.And("\"File and Folder - Delete Test\" contains \"File and Folder - Delete\" from server \"" +
-                    "localhost\" with mapping as", ((string)(null)), table64, "And ");
-#line 295
+                    "localhost\" with mapping as", ((string)(null)), table59, "And ");
+#line 277
    testRunner.When("\"File and Folder - Delete Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 296
+#line 278
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table65.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 297
-   testRunner.And("the \"Delete\" in Workflow \"File and Folder - Delete\" debug outputs as", ((string)(null)), table65, "And ");
+#line 279
+   testRunner.And("the \"Delete\" in Workflow \"File and Folder - Delete\" debug outputs as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1141,32 +1071,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Move()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Move", ((string[])(null)));
-#line 301
+#line 283
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 302
+#line 284
    testRunner.Given("I have a workflow \"File and Folder - Move Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 303
+#line 285
    testRunner.And("\"File and Folder - Move Test\" contains \"File and Folder - Move\" from server \"loca" +
-                    "lhost\" with mapping as", ((string)(null)), table66, "And ");
-#line 305
+                    "lhost\" with mapping as", ((string)(null)), table61, "And ");
+#line 287
    testRunner.When("\"File and Folder - Move Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 306
+#line 288
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table67.AddRow(new string[] {
+            table62.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 307
-   testRunner.And("the \"Move\" in Workflow \"File and Folder - Move\" debug outputs as", ((string)(null)), table67, "And ");
+#line 289
+   testRunner.And("the \"Move\" in Workflow \"File and Folder - Move\" debug outputs as", ((string)(null)), table62, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1178,32 +1108,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_ReadFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Read File", ((string[])(null)));
-#line 311
+#line 293
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 312
+#line 294
    testRunner.Given("I have a workflow \"File and Folder - Read File Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 313
+#line 295
    testRunner.And("\"File and Folder - Read File Test\" contains \"File and Folder - Read File\" from se" +
-                    "rver \"localhost\" with mapping as", ((string)(null)), table68, "And ");
-#line 315
+                    "rver \"localhost\" with mapping as", ((string)(null)), table63, "And ");
+#line 297
    testRunner.When("\"File and Folder - Read File Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 316
+#line 298
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table69.AddRow(new string[] {
+            table64.AddRow(new string[] {
                         "[[Logs]] = the contents of the log file"});
-#line 317
-   testRunner.And("the \"Read File\" in Workflow \"File and Folder - Read File\" debug outputs as", ((string)(null)), table69, "And ");
+#line 299
+   testRunner.And("the \"Read File\" in Workflow \"File and Folder - Read File\" debug outputs as", ((string)(null)), table64, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1215,32 +1145,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Rename()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Rename", ((string[])(null)));
-#line 321
+#line 303
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 322
+#line 304
    testRunner.Given("I have a workflow \"File and Folder - Rename Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 323
+#line 305
    testRunner.And("\"File and Folder - Rename Test\" contains \"File and Folder - Rename\" from server \"" +
-                    "localhost\" with mapping as", ((string)(null)), table70, "And ");
-#line 325
+                    "localhost\" with mapping as", ((string)(null)), table65, "And ");
+#line 307
    testRunner.When("\"File and Folder - Rename Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 326
+#line 308
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table71.AddRow(new string[] {
+            table66.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 327
-   testRunner.And("the \"Rename\" in Workflow \"File and Folder - Rename\" debug outputs as", ((string)(null)), table71, "And ");
+#line 309
+   testRunner.And("the \"Rename\" in Workflow \"File and Folder - Rename\" debug outputs as", ((string)(null)), table66, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1252,32 +1182,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Unzip()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Unzip", ((string[])(null)));
-#line 331
+#line 313
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 332
+#line 314
    testRunner.Given("I have a workflow \"File and Folder - Unzip Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 333
+#line 315
    testRunner.And("\"File and Folder - Unzip Test\" contains \"File and Folder - Unzip\" from server \"lo" +
-                    "calhost\" with mapping as", ((string)(null)), table72, "And ");
-#line 335
+                    "calhost\" with mapping as", ((string)(null)), table67, "And ");
+#line 317
    testRunner.When("\"File and Folder - Unzip Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
+#line 318
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table73.AddRow(new string[] {
+            table68.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 337
-   testRunner.And("the \"UnZip\" in Workflow \"File and Folder - Unzip\" debug outputs as", ((string)(null)), table73, "And ");
+#line 319
+   testRunner.And("the \"UnZip\" in Workflow \"File and Folder - Unzip\" debug outputs as", ((string)(null)), table68, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1289,32 +1219,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_WriteFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Write File", ((string[])(null)));
-#line 341
+#line 323
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 342
+#line 324
    testRunner.Given("I have a workflow \"File and Folder - Write File Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 343
+#line 325
    testRunner.And("\"File and Folder - Write File Test\" contains \"File and Folder - Write File\" from " +
-                    "server \"localhost\" with mapping as", ((string)(null)), table74, "And ");
-#line 345
+                    "server \"localhost\" with mapping as", ((string)(null)), table69, "And ");
+#line 327
    testRunner.When("\"File and Folder - Write File Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 346
+#line 328
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table75.AddRow(new string[] {
+            table70.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 347
-   testRunner.And("the \"Write\" in Workflow \"File and Folder - Write File\" debug outputs as", ((string)(null)), table75, "And ");
+#line 329
+   testRunner.And("the \"Write\" in Workflow \"File and Folder - Write File\" debug outputs as", ((string)(null)), table70, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1326,97 +1256,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingFileAndFolder_Zip()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing File and Folder - Zip", ((string[])(null)));
-#line 351
+#line 333
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 352
+#line 334
    testRunner.Given("I have a workflow \"File and Folder - Zip Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 353
+#line 335
    testRunner.And("\"File and Folder - Zip Test\" contains \"File and Folder - Zip\" from server \"localh" +
-                    "ost\" with mapping as", ((string)(null)), table76, "And ");
-#line 355
+                    "ost\" with mapping as", ((string)(null)), table71, "And ");
+#line 337
    testRunner.When("\"File and Folder - Zip Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 356
+#line 338
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table77.AddRow(new string[] {
+            table72.AddRow(new string[] {
                         "[[Complete]] = Success"});
-#line 357
-   testRunner.And("the \"Zip\" in Workflow \"File and Folder - Zip\" debug outputs as", ((string)(null)), table77, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Utility - Replace example workflow")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
-        public virtual void ExampleExecutingUtility_ReplaceExampleWorkflow()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - Replace example workflow", ((string[])(null)));
-#line 361
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 362
-   testRunner.Given("I have a workflow \"Utility - Replace Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-#line 363
-   testRunner.And("\"Utility - Replace Test\" contains \"Utility - Replace\" from server \"localhost\" wit" +
-                    "h mapping as", ((string)(null)), table78, "And ");
-#line 365
-   testRunner.When("\"Utility - Replace Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 366
-   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
-                        "In Field(s)",
-                        "Find",
-                        "Replace With"});
-            table79.AddRow(new string[] {
-                        "[[SomeText]] = Replace",
-                        "ac",
-                        "icat"});
-#line 367
-   testRunner.And("the \"Replace1\" in WorkFlow \"Utility - Replace\" debug inputs as", ((string)(null)), table79, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table80.AddRow(new string[] {
-                        "[[SomeText]] = Replicate"});
-            table80.AddRow(new string[] {
-                        "[[count]] = 1"});
-#line 370
-   testRunner.And("the \"Replace1\" in Workflow \"Utility - Replace\" debug outputs as", ((string)(null)), table80, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table81.AddRow(new string[] {
-                        "[[rec(1).homeNumber]]   = +1553122442"});
-            table81.AddRow(new string[] {
-                        "[[rec(2).homeNumber]]   = +1554682136"});
-            table81.AddRow(new string[] {
-                        "[[rec(1).mobileNumber]] = +1655985781"});
-            table81.AddRow(new string[] {
-                        "[[rec(2).mobileNumber]] = +1985623145"});
-            table81.AddRow(new string[] {
-                        "[[recount]] = 3"});
-#line 374
-   testRunner.And("the \"Replace2\" in Workflow \"Utility - Replace\" debug outputs as", ((string)(null)), table81, "And ");
+#line 339
+   testRunner.And("the \"Zip\" in Workflow \"File and Folder - Zip\" debug outputs as", ((string)(null)), table72, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1428,43 +1293,43 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_CountRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Count Records example workflow", ((string[])(null)));
-#line 382
+#line 343
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 383
+#line 344
    testRunner.Given("I have a workflow \"Recordset - Count Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 384
+#line 345
    testRunner.And("\"Recordset - Count Records Test\" contains \"Recordset - Count Records\" from server" +
-                    " \"localhost\" with mapping as", ((string)(null)), table82, "And ");
-#line 386
+                    " \"localhost\" with mapping as", ((string)(null)), table73, "And ");
+#line 347
    testRunner.When("\"Recordset - Count Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 387
+#line 348
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table83.AddRow(new string[] {
+            table74.AddRow(new string[] {
                         "[[rec(1).set]] = Warewolf"});
-            table83.AddRow(new string[] {
+            table74.AddRow(new string[] {
                         "[[rec(2).set]] = SOA"});
-            table83.AddRow(new string[] {
+            table74.AddRow(new string[] {
                         "[[rec(3).set]] = Recordset"});
-#line 388
-   testRunner.And("the \"Count Records\" in WorkFlow \"Recordset - Count Records\" debug inputs as", ((string)(null)), table83, "And ");
+#line 349
+   testRunner.And("the \"Count Records\" in WorkFlow \"Recordset - Count Records\" debug inputs as", ((string)(null)), table74, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table84.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "[[count]] = 3"});
-#line 393
-   testRunner.And("the \"Count Records\" in Workflow \"Recordset - Count Records\" debug outputs as", ((string)(null)), table84, "And ");
+#line 354
+   testRunner.And("the \"Count Records\" in Workflow \"Recordset - Count Records\" debug outputs as", ((string)(null)), table75, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1476,55 +1341,55 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_RecordsLengthExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Records Length example workflow", ((string[])(null)));
-#line 397
+#line 358
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 398
+#line 359
    testRunner.Given("I have a workflow \"Recordset - Records Length Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 399
+#line 360
    testRunner.And("\"Recordset - Records Length Test\" contains \"Recordset - Records Length\" from serv" +
-                    "er \"localhost\" with mapping as", ((string)(null)), table85, "And ");
-#line 401
+                    "er \"localhost\" with mapping as", ((string)(null)), table76, "And ");
+#line 362
    testRunner.When("\"Recordset - Records Length Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 402
+#line 363
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table86.AddRow(new string[] {
+            table77.AddRow(new string[] {
                         "[[rec(1).set]] = Warewolf"});
-            table86.AddRow(new string[] {
+            table77.AddRow(new string[] {
                         "[[rec(5).set]] = Recordset"});
-#line 403
-   testRunner.And("the \"Length1\" in WorkFlow \"Recordset - Records Length\" debug inputs as", ((string)(null)), table86, "And ");
+#line 364
+   testRunner.And("the \"Length1\" in WorkFlow \"Recordset - Records Length\" debug inputs as", ((string)(null)), table77, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table87.AddRow(new string[] {
+            table78.AddRow(new string[] {
                         "[[length]] = 5"});
-#line 407
-   testRunner.And("the \"Length1\" in Workflow \"Recordset - Records Length\" debug outputs as", ((string)(null)), table87, "And ");
+#line 368
+   testRunner.And("the \"Length1\" in Workflow \"Recordset - Records Length\" debug outputs as", ((string)(null)), table78, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table88.AddRow(new string[] {
+            table79.AddRow(new string[] {
                         "[[rec(5).set]] = Recordset"});
-#line 410
-   testRunner.And("the \"Length2\" in WorkFlow \"Recordset - Records Length\" debug inputs as", ((string)(null)), table88, "And ");
+#line 371
+   testRunner.And("the \"Length2\" in WorkFlow \"Recordset - Records Length\" debug inputs as", ((string)(null)), table79, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table89.AddRow(new string[] {
+            table80.AddRow(new string[] {
                         "[[length]] = 5"});
-#line 413
-   testRunner.And("the \"Length2\" in Workflow \"Recordset - Records Length\" debug outputs as", ((string)(null)), table89, "And ");
+#line 374
+   testRunner.And("the \"Length2\" in Workflow \"Recordset - Records Length\" debug outputs as", ((string)(null)), table80, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1536,55 +1401,55 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_DeleteRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Delete Records example workflow", ((string[])(null)));
-#line 417
+#line 378
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 418
+#line 379
    testRunner.Given("I have a workflow \"Recordset - Delete Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 419
+#line 380
    testRunner.And("\"Recordset - Delete Records Test\" contains \"Recordset - Delete Records\" from serv" +
-                    "er \"localhost\" with mapping as", ((string)(null)), table90, "And ");
-#line 421
+                    "er \"localhost\" with mapping as", ((string)(null)), table81, "And ");
+#line 382
    testRunner.When("\"Recordset - Delete Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 422
+#line 383
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
-            table91.AddRow(new string[] {
+            table82.AddRow(new string[] {
                         "[[rec(2).set]] = 2"});
-#line 423
-   testRunner.And("the \"Delete Record1\" in WorkFlow \"Recordset - Delete Records\" debug inputs as", ((string)(null)), table91, "And ");
+#line 384
+   testRunner.And("the \"Delete Record1\" in WorkFlow \"Recordset - Delete Records\" debug inputs as", ((string)(null)), table82, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table92.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 426
-   testRunner.And("the \"Delete Record1\" in Workflow \"Recordset - Delete Records\" debug outputs as", ((string)(null)), table92, "And ");
+#line 387
+   testRunner.And("the \"Delete Record1\" in Workflow \"Recordset - Delete Records\" debug outputs as", ((string)(null)), table83, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
-            table93.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "[[rec(1).set]] = 1"});
-            table93.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "[[rec(3).set]] = 3"});
-#line 429
-   testRunner.And("the \"Delete Record2\" in WorkFlow \"Recordset - Delete Records\" debug inputs as", ((string)(null)), table93, "And ");
+#line 390
+   testRunner.And("the \"Delete Record2\" in WorkFlow \"Recordset - Delete Records\" debug inputs as", ((string)(null)), table84, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table94.AddRow(new string[] {
+            table85.AddRow(new string[] {
                         "[[result]] = Success"});
-#line 433
-   testRunner.And("the \"Delete Record2\" in Workflow \"Recordset - Delete Records\" debug outputs as", ((string)(null)), table94, "And ");
+#line 394
+   testRunner.And("the \"Delete Record2\" in Workflow \"Recordset - Delete Records\" debug outputs as", ((string)(null)), table85, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1596,33 +1461,33 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_FindRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Find Records example workflow", ((string[])(null)));
-#line 437
+#line 398
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 438
+#line 399
    testRunner.Given("I have a workflow \"Recordset - Find Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 439
+#line 400
    testRunner.And("\"Recordset - Find Records Test\" contains \"Recordset - Find Records\" from server \"" +
-                    "localhost\" with mapping as", ((string)(null)), table95, "And ");
-#line 441
+                    "localhost\" with mapping as", ((string)(null)), table86, "And ");
+#line 402
    testRunner.When("\"Recordset - Find Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 442
+#line 403
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table96.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "[[Results]] = 6,8"});
-#line 443
+#line 404
    testRunner.And("the \"Find Record Index (2)\" in Workflow \"Recordset - Find Records\" debug outputs " +
-                    "as", ((string)(null)), table96, "And ");
+                    "as", ((string)(null)), table87, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1634,147 +1499,147 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_SortRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Sort Records example workflow", ((string[])(null)));
-#line 447
+#line 408
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 448
+#line 409
    testRunner.Given("I have a workflow \"Recordset - Sort Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 449
+#line 410
    testRunner.And("\"Recordset - Sort Records Test\" contains \"Recordset - Sort Records\" from server \"" +
-                    "localhost\" with mapping as", ((string)(null)), table97, "And ");
-#line 451
+                    "localhost\" with mapping as", ((string)(null)), table88, "And ");
+#line 412
    testRunner.When("\"Recordset - Sort Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 452
+#line 413
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
                         "Sort Field",
                         "Sort Order"});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(1).set]] = 2",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(2).set]] = x",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(3).set]] = 3",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(4).set]] = c",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(5).set]] = y",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(6).set]] = 0",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(7).set]] = a",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(8).set]] = b",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(9).set]] = 1",
                         ""});
-            table98.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[rec(10).set]] =z",
                         "Forward"});
-#line 453
-   testRunner.And("the \"Sort Records1\" in WorkFlow \"Recordset - Sort Records\" debug inputs as", ((string)(null)), table98, "And ");
+#line 414
+   testRunner.And("the \"Sort Records1\" in WorkFlow \"Recordset - Sort Records\" debug inputs as", ((string)(null)), table89, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(1).set]] = 0"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(2).set]] = 1"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(3).set]] = 2"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(4).set]] = 3"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(5).set]] = a"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(6).set]] = b"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(7).set]] = c"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(8).set]] = x"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(9).set]] = y"});
-            table99.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "[[rec(10).set]] =z"});
-#line 465
-   testRunner.And("the \"Sort Records1\" in Workflow \"Recordset - Sort Records\" debug outputs as", ((string)(null)), table99, "And ");
+#line 426
+   testRunner.And("the \"Sort Records1\" in Workflow \"Recordset - Sort Records\" debug outputs as", ((string)(null)), table90, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
                         "Sort Field",
                         "Sort Order"});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(1).set]] = 0",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(2).set]] = 1",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(3).set]] = 2",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(4).set]] = 3",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(5).set]] = a",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(6).set]] = b",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(7).set]] = c",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(8).set]] = x",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(9).set]] = y",
                         ""});
-            table100.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[rec(10).set]] =z",
                         "Backwards"});
-#line 477
-   testRunner.And("the \"Sort Records2\" in WorkFlow \"Recordset - Sort Records\" debug inputs as", ((string)(null)), table100, "And ");
+#line 438
+   testRunner.And("the \"Sort Records2\" in WorkFlow \"Recordset - Sort Records\" debug inputs as", ((string)(null)), table91, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(1).set]] = z"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(2).set]] = y"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(3).set]] = x"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(4).set]] = c"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(5).set]] = b"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(6).set]] = a"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(7).set]] = 3"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(8).set]] = 2"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(9).set]] = 1"});
-            table101.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "[[rec(10).set]] = 0"});
-#line 489
-   testRunner.And("the \"Sort Records2\" in Workflow \"Recordset - Sort Records\" debug outputs as", ((string)(null)), table101, "And ");
+#line 450
+   testRunner.And("the \"Sort Records2\" in Workflow \"Recordset - Sort Records\" debug outputs as", ((string)(null)), table92, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1786,78 +1651,78 @@ this.FeatureBackground();
         public virtual void ExampleExecutingRecordset_UniqueRecordsExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Recordset - Unique Records example workflow", ((string[])(null)));
-#line 502
+#line 463
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 503
+#line 464
    testRunner.Given("I have a workflow \"Recordset - Unique Records Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 504
+#line 465
    testRunner.And("\"Recordset - Unique Records Test\" contains \"Recordset - Unique Records\" from serv" +
-                    "er \"localhost\" with mapping as", ((string)(null)), table102, "And ");
-#line 506
+                    "er \"localhost\" with mapping as", ((string)(null)), table93, "And ");
+#line 467
    testRunner.When("\"Recordset - Unique Records Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 507
+#line 468
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "Return Fields"});
-            table103.AddRow(new string[] {
+            table94.AddRow(new string[] {
                         "In Field(s)",
                         "[[Example(4).FirstName]] = Jerome",
                         "[[Example().Index]] ="});
-#line 508
-   testRunner.And("the \"Unique Records1\" in WorkFlow \"Recordset - Unique Records\" debug inputs as", ((string)(null)), table103, "And ");
+#line 469
+   testRunner.And("the \"Unique Records1\" in WorkFlow \"Recordset - Unique Records\" debug inputs as", ((string)(null)), table94, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table104.AddRow(new string[] {
+            table95.AddRow(new string[] {
                         "1",
                         "[[Result(1).example1]] = 1"});
-            table104.AddRow(new string[] {
+            table95.AddRow(new string[] {
                         "",
                         "[[Result(2).example1]] = 4"});
-#line 511
-    testRunner.And("the \"Unique Records1\" in Workflow \"Recordset - Unique Records\" debug outputs as", ((string)(null)), table104, "And ");
+#line 472
+    testRunner.And("the \"Unique Records1\" in Workflow \"Recordset - Unique Records\" debug outputs as", ((string)(null)), table95, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "Return Fields"});
-            table105.AddRow(new string[] {
+            table96.AddRow(new string[] {
                         "In Field(s)",
                         "[[Example(4).FirstName]] = Jerome",
                         ""});
-            table105.AddRow(new string[] {
+            table96.AddRow(new string[] {
                         "",
                         "[[Example(4).LastName]] = Smit",
                         "[[Example().Index]] ="});
-#line 515
-      testRunner.And("the \"Unique Records2\" in WorkFlow \"Recordset - Unique Records\" debug inputs as", ((string)(null)), table105, "And ");
+#line 476
+      testRunner.And("the \"Unique Records2\" in WorkFlow \"Recordset - Unique Records\" debug inputs as", ((string)(null)), table96, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table106.AddRow(new string[] {
+            table97.AddRow(new string[] {
                         "1",
                         "[[Result(1).example2]] = 1"});
-            table106.AddRow(new string[] {
+            table97.AddRow(new string[] {
                         "",
                         "[[Result(2).example2]] = 2"});
-            table106.AddRow(new string[] {
+            table97.AddRow(new string[] {
                         "",
                         "[[Result(3).example2]] = 4"});
-#line 519
-    testRunner.And("the \"Unique Records2\" in Workflow \"Recordset - Unique Records\" debug outputs as", ((string)(null)), table106, "And ");
+#line 480
+    testRunner.And("the \"Unique Records2\" in Workflow \"Recordset - Unique Records\" debug outputs as", ((string)(null)), table97, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1869,113 +1734,113 @@ this.FeatureBackground();
         public virtual void ExampleExecutingControlFlow_SequenceExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Control Flow - Sequence example workflow", ((string[])(null)));
-#line 525
+#line 486
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 526
+#line 487
    testRunner.Given("I have a workflow \"Control Flow - Sequence Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 527
+#line 488
    testRunner.And("\"Control Flow - Sequence Test\" contains \"Control Flow - Sequence\" from server \"lo" +
-                    "calhost\" with mapping as", ((string)(null)), table107, "And ");
-#line 529
+                    "calhost\" with mapping as", ((string)(null)), table98, "And ");
+#line 490
    testRunner.When("\"Control Flow - Sequence Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 530
+#line 491
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "1",
                         "[[TempCustomers(1).FirstName]] = bart"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(2).FirstName]] = homer"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(3).FirstName]] = marge"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(4).FirstName]] = lisa"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(5).FirstName]] = maggie"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "2",
                         "[[TempCustomers(1).LastName]] = simpson"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(2).LastName]] = simpson"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(3).LastName]] = simpson"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(4).LastName]] = simpson"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(5).LastName]] = simpson"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "3",
                         "[[TempCustomers(1).Email]] = bart.simpson@couch.com"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(2).Email]] = homer.simpson@couch.com"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(3).Email]] = marge.simpson@couch.com"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(4).Email]] = lisa.simpson@couch.com"});
-            table108.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "",
                         "[[TempCustomers(5).Email]] = maggie.simpson@couch.com"});
-#line 531
-      testRunner.And("the \"Split Names (3)\" in Workflow \"Organize Customers\" debug outputs as", ((string)(null)), table108, "And ");
+#line 492
+      testRunner.And("the \"Split Names (3)\" in Workflow \"Organize Customers\" debug outputs as", ((string)(null)), table99, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
                         "Sort Field",
                         "Sort Order"});
-            table109.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "[[Customers(1).FirstName]] = bart",
                         ""});
-            table109.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "[[Customers(2).FirstName]] = homer",
                         ""});
-            table109.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "[[Customers(3).FirstName]] = marge",
                         ""});
-            table109.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "[[Customers(4).FirstName]] = lisa",
                         ""});
-            table109.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "[[Customers(5).FirstName]] = maggie",
                         "Forward"});
-#line 548
-    testRunner.And("the \"Sort Names Alphabetically\" in WorkFlow \"Organize Customers\" debug inputs as", ((string)(null)), table109, "And ");
+#line 509
+    testRunner.And("the \"Sort Names Alphabetically\" in WorkFlow \"Organize Customers\" debug inputs as", ((string)(null)), table100, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table110.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[Customers(1).FirstName]] = bart"});
-            table110.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[Customers(2).FirstName]] = homer"});
-            table110.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[Customers(3).FirstName]] = lisa"});
-            table110.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[Customers(4).FirstName]] = maggie"});
-            table110.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[Customers(5).FirstName]] = marge"});
-#line 555
+#line 516
     testRunner.And("the \"Sort Names Alphabetically\" in Workflow \"Organize Customers\" debug outputs as" +
-                    "", ((string)(null)), table110, "And ");
+                    "", ((string)(null)), table101, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1987,24 +1852,24 @@ this.FeatureBackground();
         public virtual void ExampleExecutingControlFlow_DecisionExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Control Flow - Decision example workflow", ((string[])(null)));
-#line 563
+#line 524
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 564
+#line 525
    testRunner.Given("I have a workflow \"Control Flow - Decision Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 565
+#line 526
    testRunner.And("\"Control Flow - Decision Test\" contains \"Control Flow - Decision\" from server \"lo" +
-                    "calhost\" with mapping as", ((string)(null)), table111, "And ");
-#line 567
+                    "calhost\" with mapping as", ((string)(null)), table102, "And ");
+#line 528
    testRunner.When("\"Control Flow - Decision Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 568
+#line 529
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2017,110 +1882,32 @@ this.FeatureBackground();
         public virtual void ExampleExecutingControlFlow_SwitchExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Control Flow - Switch example workflow", ((string[])(null)));
-#line 570
+#line 531
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 571
+#line 532
    testRunner.Given("I have a workflow \"Control Flow - Switch Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 572
+#line 533
    testRunner.And("\"Control Flow - Switch Test\" contains \"Control Flow - Switch\" from server \"localh" +
-                    "ost\" with mapping as", ((string)(null)), table112, "And ");
-#line 574
+                    "ost\" with mapping as", ((string)(null)), table103, "And ");
+#line 535
    testRunner.When("\"Control Flow - Switch Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 575
+#line 536
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table113.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "4"});
-#line 576
-   testRunner.And("the \"[[DiceRollValue]]\" in Workflow \"Control Flow - Switch\" debug outputs as", ((string)(null)), table113, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Scripting - Script example workflow")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
-        public virtual void ExampleExecutingScripting_ScriptExampleWorkflow()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Script example workflow", ((string[])(null)));
-#line 580
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 581
-  testRunner.Given("I have a workflow \"Scripting - Script Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-#line 582
-  testRunner.And("\"Scripting - Script Test\" contains \"Scripting - Script\" from server \"localhost\" w" +
-                    "ith mapping as", ((string)(null)), table114, "And ");
-#line 584
-  testRunner.When("\"Scripting - Script Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 585
-  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Language",
-                        "Script"});
-            table115.AddRow(new string[] {
-                        "Ruby",
-                        "sleep(5)"});
-#line 586
-  testRunner.And("the \"Ruby\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table115, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table116.AddRow(new string[] {
-                        "[[RubyResult]] = 5"});
-#line 589
-  testRunner.And("the \"Ruby\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table116, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Language",
-                        "Script"});
-            table117.AddRow(new string[] {
-                        "JavaScript",
-                        "String = String"});
-#line 592
-  testRunner.And("the \"JavaScript\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table117, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table118.AddRow(new string[] {
-                        "[[JavaScriptResult]] = 7"});
-#line 595
-  testRunner.And("the \"JavaScript\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table118, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Language",
-                        "Script"});
-            table119.AddRow(new string[] {
-                        "Python",
-                        "String = String"});
-#line 598
-  testRunner.And("the \"Python\" in WorkFlow \"Scripting - Script\" debug inputs as", ((string)(null)), table119, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table120.AddRow(new string[] {
-                        "[[PythonResult]] = not one or two"});
-#line 601
-  testRunner.And("the \"Python\" in Workflow \"Scripting - Script\" debug outputs as", ((string)(null)), table120, "And ");
+#line 537
+   testRunner.And("the \"[[DiceRollValue]]\" in Workflow \"Control Flow - Switch\" debug outputs as", ((string)(null)), table104, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2132,41 +1919,41 @@ this.FeatureBackground();
         public virtual void ExampleExecutingScripting_RubyExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Ruby example workflow", ((string[])(null)));
-#line 606
+#line 541
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 607
+#line 542
   testRunner.Given("I have a workflow \"Scripting - Ruby Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 608
+#line 543
   testRunner.And("\"Scripting - Ruby Test\" contains \"Scripting - Ruby\" from server \"localhost\" with " +
-                    "mapping as", ((string)(null)), table121, "And ");
-#line 610
+                    "mapping as", ((string)(null)), table105, "And ");
+#line 545
   testRunner.When("\"Scripting - Ruby Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 611
+#line 546
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table122.AddRow(new string[] {
+            table106.AddRow(new string[] {
                         "Ruby",
                         "sleep(5)"});
-#line 612
-  testRunner.And("the \"Ruby\" in WorkFlow \"Scripting - Ruby\" debug inputs as", ((string)(null)), table122, "And ");
+#line 547
+  testRunner.And("the \"Ruby\" in WorkFlow \"Scripting - Ruby\" debug inputs as", ((string)(null)), table106, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table123.AddRow(new string[] {
+            table107.AddRow(new string[] {
                         "[[RubyResult]] = 5"});
-#line 615
-  testRunner.And("the \"Ruby\" in Workflow \"Scripting - Ruby\" debug outputs as", ((string)(null)), table123, "And ");
+#line 550
+  testRunner.And("the \"Ruby\" in Workflow \"Scripting - Ruby\" debug outputs as", ((string)(null)), table107, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2178,41 +1965,41 @@ this.FeatureBackground();
         public virtual void ExampleExecutingScripting_PythonExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Python example workflow", ((string[])(null)));
-#line 619
+#line 554
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 620
+#line 555
   testRunner.Given("I have a workflow \"Scripting - Python Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 621
+#line 556
   testRunner.And("\"Scripting - Python Test\" contains \"Scripting - Python\" from server \"localhost\" w" +
-                    "ith mapping as", ((string)(null)), table124, "And ");
-#line 623
+                    "ith mapping as", ((string)(null)), table108, "And ");
+#line 558
   testRunner.When("\"Scripting - Python Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 624
+#line 559
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table125.AddRow(new string[] {
+            table109.AddRow(new string[] {
                         "Python",
                         "String = String"});
-#line 625
-   testRunner.And("the \"Python\" in WorkFlow \"Scripting - Python\" debug inputs as", ((string)(null)), table125, "And ");
+#line 560
+   testRunner.And("the \"Python\" in WorkFlow \"Scripting - Python\" debug inputs as", ((string)(null)), table109, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table126.AddRow(new string[] {
+            table110.AddRow(new string[] {
                         "[[PythonResult]] = not one or two"});
-#line 628
-  testRunner.And("the \"Python\" in Workflow \"Scripting - Python\" debug outputs as", ((string)(null)), table126, "And ");
+#line 563
+  testRunner.And("the \"Python\" in Workflow \"Scripting - Python\" debug outputs as", ((string)(null)), table110, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2224,41 +2011,41 @@ this.FeatureBackground();
         public virtual void ExampleExecutingScripting_JavascriptExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Scripting - Javascript example workflow", ((string[])(null)));
-#line 632
+#line 567
  this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 633
+#line 568
   testRunner.Given("I have a workflow \"Scripting - JavaScript Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 634
+#line 569
   testRunner.And("\"Scripting - JavaScript Test\" contains \"Scripting - JavaScript\" from server \"loca" +
-                    "lhost\" with mapping as", ((string)(null)), table127, "And ");
-#line 636
+                    "lhost\" with mapping as", ((string)(null)), table111, "And ");
+#line 571
   testRunner.When("\"Scripting - JavaScript Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 637
+#line 572
   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table128.AddRow(new string[] {
+            table112.AddRow(new string[] {
                         "JavaScript",
                         "String = String"});
-#line 638
-   testRunner.And("the \"JavaScript\" in WorkFlow \"Scripting - JavaScript\" debug inputs as", ((string)(null)), table128, "And ");
+#line 573
+   testRunner.And("the \"JavaScript\" in WorkFlow \"Scripting - JavaScript\" debug inputs as", ((string)(null)), table112, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table129.AddRow(new string[] {
+            table113.AddRow(new string[] {
                         "[[JavaScriptResult]] = 7"});
-#line 641
-  testRunner.And("the \"JavaScript\" in Workflow \"Scripting - JavaScript\" debug outputs as", ((string)(null)), table129, "And ");
+#line 576
+  testRunner.And("the \"JavaScript\" in Workflow \"Scripting - JavaScript\" debug outputs as", ((string)(null)), table113, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
