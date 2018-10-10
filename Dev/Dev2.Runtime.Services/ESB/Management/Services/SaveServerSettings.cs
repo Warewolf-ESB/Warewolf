@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var updatedServerSettings = serializer.Deserialize<ServerSettingsData>(resourceDefinition);
 
-                var sourceFilePath = Config.Server["AuditFilePath"];
+                var sourceFilePath = Config.Server.AuditFilePath;
 
                 var auditsFilePath = updatedServerSettings.AuditFilePath;
 
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var destination = Path.Combine(auditsFilePath, "auditDB.db");
                         CreateIfNotExists(auditsFilePath);
                         _file.Move(source, destination);
-                        Config.Server["AuditFilePath"] = auditsFilePath;
+                        Config.Server.AuditFilePath = auditsFilePath;
                         msg.Message = new StringBuilder("Moved");
                     }
                 }

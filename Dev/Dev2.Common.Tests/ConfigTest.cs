@@ -11,17 +11,14 @@ namespace Dev2.Common.Tests
         class MockConfigurationManager : IConfigurationManager
         {
             readonly Dictionary<string, string> _store = new Dictionary<string, string>();
-            public string this[params string[] args]
+            public string this[string settingName]
             {
                 get
                 {
-                    var settingName = args[0];
-                    var defaultValue = args[1];
-                    return _store.ContainsKey(settingName) ? _store[settingName] : defaultValue;
+                    return _store.ContainsKey(settingName) ? _store[settingName] : null;
                 }
                 set
                 {
-                    var settingName = args[0];
                     _store[settingName] = value;
                 }
             }
@@ -32,20 +29,19 @@ namespace Dev2.Common.Tests
         {
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
             Assert.IsNotNull(Config.Server);
-            Assert.AreEqual(expectedPath, Config.Server["AuditFilePath"]);
+            Assert.AreEqual(expectedPath, Config.Server.AuditFilePath);
         }
 
         [TestMethod]
         public void Update_AppConfig_AuditFilePath_Default_Not_Expected()
         {
-            const string expectedPath1 = "SomePath";
             const string expectedPath2 = "SomeOtherPath";
 
             var mockConfig = new MockConfigurationManager();
             Config.ConfigureSettings(mockConfig);
 
-            Config.Server["AuditFilePath"] = expectedPath2;
-            Assert.AreEqual(expectedPath2, Config.Server["AuditFilePath"]);
+            Config.Server.AuditFilePath = expectedPath2;
+            Assert.AreEqual(expectedPath2, Config.Server.AuditFilePath);
         }
 
         [TestMethod]
@@ -95,7 +91,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void GetServerSettings_Constants()
         {
-            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", Config.Server.AuditPath);
+            Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", Config.Server.DefaultAuditPath);
         }
     }
 }
