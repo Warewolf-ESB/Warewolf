@@ -612,18 +612,18 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Utility - Assign example workflows")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Data - Assign example workflows")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
-        public virtual void ExampleExecutingUtility_AssignExampleWorkflows()
+        public virtual void ExampleExecutingData_AssignExampleWorkflows()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - Assign example workflows", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Data - Assign example workflows", ((string[])(null)));
 #line 154
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 155
-   testRunner.Given("I have a workflow \"Test Example Utility - Assign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"Test Example Data - Assign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -646,10 +646,10 @@ this.FeatureBackground();
                         "hero(*).name",
                         "[[hero().name]]"});
 #line 156
-   testRunner.And("\"Test Example Utility - Assign\" contains \"Utility - Assign\" from server \"localhos" +
-                    "t\" with mapping as", ((string)(null)), table31, "And ");
+   testRunner.And("\"Test Example Data - Assign\" contains \"Data - Assign\" from server \"localhost\" wit" +
+                    "h mapping as", ((string)(null)), table31, "And ");
 #line 161
-   testRunner.When("\"Test Example Utility - Assign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"Test Example Data - Assign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 162
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -662,8 +662,7 @@ this.FeatureBackground();
             table32.AddRow(new string[] {
                         "[[hero(1).name]] = Chuck Norris"});
 #line 163
-   testRunner.And("the \"Utility - Assign\" in Workflow \"Test Example Utility - Assign\" debug outputs " +
-                    "as", ((string)(null)), table32, "And ");
+   testRunner.And("the \"Data - Assign\" in Workflow \"Test Example Data - Assign\" debug outputs as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
