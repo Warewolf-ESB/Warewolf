@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests
         const string SourceName = "CodedUITestMySQLSource";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Sources")]
         public void Create_Save_And_Edit_MySQLSource_From_ExplorerContextMenu_UITests()
@@ -50,7 +50,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming

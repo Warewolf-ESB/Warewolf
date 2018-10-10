@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     public class VariablesTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Sort_Variable_List_Aphalbetivally()
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Sort_RecordsetFields_List_Aphalbetivally()
@@ -62,7 +62,7 @@ namespace Warewolf.UI.Tests
         }
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Row1_Variable_Textbox_in_Debug_Input()
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void VariableList_DeleteAColumnOffARecorset_DeleteAllButtonIsEnbaled_UITest()
@@ -92,7 +92,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Fileter_Then_Clear_VariableList_Returns_All_Variables()
@@ -125,7 +125,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Fileter_Then_Clear_VariableList_Returns_All_Variables_CaseInsensitiveUpper()
@@ -159,7 +159,7 @@ namespace Warewolf.UI.Tests
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Filter_Then_Clear_VariableList_Returns_All_Variables_CaseInsensitiveLower()
@@ -193,7 +193,7 @@ namespace Warewolf.UI.Tests
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Variables")]
         public void Show_JSON_Edit_Dialog()

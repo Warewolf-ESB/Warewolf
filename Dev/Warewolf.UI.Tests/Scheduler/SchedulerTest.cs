@@ -17,7 +17,7 @@ namespace Warewolf.UI.Tests.Scheduler
         const string taskFolderName = "Warewolf";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
@@ -56,7 +56,7 @@ namespace Warewolf.UI.Tests.Scheduler
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Button_Enables_When_Task_IsDisabled_UITests()
@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests.Scheduler
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
@@ -86,7 +86,7 @@ namespace Warewolf.UI.Tests.Scheduler
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         [DeploymentItem("Microsoft.Win32.TaskScheduler.dll")]

@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.ServerSource
     public class ServerSourceTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
@@ -72,7 +72,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
@@ -111,7 +111,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
@@ -130,7 +130,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void Try_Create_Server_Source_On_Restricted_Server()
@@ -160,7 +160,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
@@ -175,7 +175,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
@@ -193,7 +193,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
@@ -212,7 +212,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
@@ -236,7 +236,7 @@ namespace Warewolf.UI.Tests.ServerSource
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DoubleClicking_ErrorMessage_SelectsWholeMessage()

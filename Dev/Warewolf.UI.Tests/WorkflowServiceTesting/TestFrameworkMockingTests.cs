@@ -16,7 +16,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
     {
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowWithSequenceToolLoadsAllContainedTools()
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
@@ -59,7 +59,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowTesting_AddDecisionStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
@@ -94,7 +94,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateNewTestThenCreateTestFromDebugOutput()
@@ -112,7 +112,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
@@ -135,7 +135,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
@@ -153,7 +153,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void SettingTestStepToMockDoesNotAffectTestOutput()
@@ -171,7 +171,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowWithObjectoutPutTests()
@@ -188,7 +188,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Cant_Delete_Off_Design_Surface_When_Editting_Tests()

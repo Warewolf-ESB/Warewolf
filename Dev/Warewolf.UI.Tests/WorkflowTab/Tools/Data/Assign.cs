@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
     public class Assign
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_Small_And_LargeView_Resize_UITest()
@@ -39,7 +39,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickDoneButton_Then_DeleteTool_UITest()
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_ClickTextboxTwice_Then_HelpText_DoesNotChanging_UITest()
@@ -66,7 +66,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_Url_UITest()
@@ -75,7 +75,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_QuickVariableInput_FromList_UITest()
@@ -89,7 +89,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_DebugOutput_UITest()
@@ -101,7 +101,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddRemoveVariables_UITest()
@@ -118,7 +118,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_AddVariablesInsertRow_UITest()
@@ -135,7 +135,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Assign Tool")]
         public void AssignTool_PasteTabValue_ShowTabInsertDialog_UITest()

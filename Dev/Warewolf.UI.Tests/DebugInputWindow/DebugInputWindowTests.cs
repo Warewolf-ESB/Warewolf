@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
     public class DebugInputWindowTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_Validation_UITest()
@@ -29,7 +29,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_TabSelectionChanged_UITest()
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_AddAndRemoveRows_UITest()
@@ -59,7 +59,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DebugInputWindow_Move_UITest()

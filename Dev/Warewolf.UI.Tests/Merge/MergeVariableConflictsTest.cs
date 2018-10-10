@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeVariables = "MergeVariables";
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Has_Variable_Conflicts()
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Current_Has_5TH_Variable()

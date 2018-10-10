@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.Tools
     public class HttpWebGet
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Small_And_LargeView_UITest()
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_GenerateOutputs_And_TestInputs_UITest()
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_GETWebTool_Outputs_DoneButton();
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Intellisense_UITest()
@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Test_WebServiceSource_Remove_Recordset_UITestsellisense_UITest()
