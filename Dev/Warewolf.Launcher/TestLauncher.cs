@@ -363,7 +363,7 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newConnectionString + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
+        public bool RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
             TestRunner.TestList = "";
@@ -387,18 +387,15 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Error parsing /TestRun/Results/UnitTestResult from trx file at {FullTRXFilePath}");
             }
             string TestRunnerPath;
-            if (TestFailures.Count > 0)
-            {
-                TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
-                TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
-                TestRunner.TestList = string.Join(",", TestFailures);
-                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
-            }
-            else
+            if (TestFailures.Count <= 0)
             {
                 Console.WriteLine($"No failing tests found to retry in trx file at {FullTRXFilePath}");
-                return;
+                return false;
             }
+            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
+            TestRunner.TestList = string.Join(",", TestFailures);
+            TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
             Console.WriteLine($"Re-running all test failures in \"{FullTRXFilePath}\".");
             var retryResults = RunTests(jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
             if (!string.IsNullOrEmpty(retryResults) && retryResults != FullTRXFilePath)
@@ -409,6 +406,7 @@ namespace Warewolf.Launcher
             {
                 Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestRunner.TestsResultsPath}");
             }
+            return true;
         }
 
         public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
@@ -747,9 +745,9 @@ namespace Warewolf.Launcher
                     foreach (var projectFolder in Directory.GetDirectories(ProjectFolderSpecInParent))
                     {
                         TestAssembliesList += TestRunner.AppendProjectFolder(projectFolder);
-                        if (!TestAssembliesDirectories.Contains(projectFolder + "\\bin\\Debug"))
+                        if (!TestAssembliesDirectories.Contains(Path.Combine(projectFolder, "bin", "Debug")))
                         {
-                            TestAssembliesDirectories.Add(projectFolder + "\\bin\\Debug");
+                            TestAssembliesDirectories.Add(Path.Combine(projectFolder, "bin", "Debug"));
                         }
                     }
                 }
@@ -1133,7 +1131,10 @@ namespace Warewolf.Launcher
                     //Re-try Failures
                     for (var count = 0; count < RetryCount; count++)
                     {
-                        RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                        if (!RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1))
+                        {
+                            break;
+                        }
                     }
                 }
             }
