@@ -407,7 +407,7 @@ namespace Warewolf.Launcher
             {
                 foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
                 {
-                    if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                    if (TestResult.Attributes["outcome"] == null || TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
                         if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
                         {
