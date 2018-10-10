@@ -249,6 +249,24 @@ Scenario: Example Executing Data - Data Merge example workflow
 	    |                                                                |
 	    | [[FileContent]] = String |
 	   
+Scenario: Example Executing Data - Find Index example workflow
+	  Given I have a workflow "Data - Find Index Test"
+	  And "Data - Find Index Test" contains "Data - Find Index" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Data - Find Index Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the "Find Index1" in WorkFlow "Data - Find Index" debug inputs as
+	  | In Field | Index            | Characters | Direction     |
+	  | abc      | First Occurrence | b          | Left to Right |
+	  And the "Find Index1" in Workflow "Data - Find Index" debug outputs as  
+	  |                  |
+	  | [[WhereIsB]] = 2 |
+	  And the "Find Index2" in WorkFlow "Data - Find Index" debug inputs as
+	  | In Field           | Index           | Characters | Direction     |
+	  | abcbdefghibjklmnop | All Occurrences | b          | Left to Right |
+	  And the "Find Index2" in Workflow "Data - Find Index" debug outputs as  
+	  |                            |
+	  | [[WhereAreTheBs]] = 2,4,11 |
 
 Scenario: Example Executing File and Folder - Copy
 	  Given I have a workflow "File and Folder - Copy Test"
@@ -354,6 +372,27 @@ Scenario: Example Executing Recordset - Count Records example workflow
 	  And the "Count Records" in Workflow "Recordset - Count Records" debug outputs as  
 	  |               |
 	  | [[count]] = 3 |
+
+Scenario: Example Executing Data - Replace example workflow
+	  Given I have a workflow "Data - Replace Test"
+	  And "Data - Replace Test" contains "Data - Replace" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Data - Replace Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the "Replace1" in WorkFlow "Data - Replace" debug inputs as
+	 | In Field(s)            | Find | Replace With |
+	 | [[SomeText]] = Replace | ac   | icat         |
+	  And the "Replace1" in Workflow "Data - Replace" debug outputs as  
+	  |                                                                               |
+	  | [[SomeText]] = Replicate                                                      |
+	  | [[count]] = 1                                                                 |
+	  And the "Replace2" in Workflow "Data - Replace" debug outputs as  
+	  |                                       |
+	  | [[rec(1).homeNumber]]   = +1553122442 |
+	  | [[rec(2).homeNumber]]   = +1554682136 |
+	  | [[rec(1).mobileNumber]] = +1655985781 |
+	  | [[rec(2).mobileNumber]] = +1985623145 |
+	  | [[recount]] = 3                       |
 
 Scenario: Example Executing Recordset - Records Length example workflow
 	  Given I have a workflow "Recordset - Records Length Test"
