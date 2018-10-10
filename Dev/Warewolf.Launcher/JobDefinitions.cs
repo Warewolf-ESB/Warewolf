@@ -273,9 +273,16 @@ namespace Warewolf.Launcher
             else
             {
                 string JobDefinitionsCSV = "";
-                using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                try
+                { 
+                    using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                    {
+                        JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+                    }
+                }
+                catch (Exception e)
                 {
-                    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+                    Console.WriteLine($"Failed to get Docker enable build config from {Properties.Settings.Default.BuildDefinitionsGitURL}\n{e.Message}");
                 }
                 return JobDefinitionsCSV == "True";
             }
