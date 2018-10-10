@@ -17,7 +17,7 @@ namespace Warewolf.UI.Tests
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void ShowVersionHistory_ForResource()
         {
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void OpenVersionHistory_ForResource()
         {
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void SetVersionHistory_ForResource()
         {
@@ -78,7 +78,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Updating_Resource_With_Dependencies_Should_Show_Dependency_Popup()
         {
@@ -95,7 +95,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Delete_A_Version_Should_Remove_Version()
         {

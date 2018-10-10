@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Small_And_LargeView()
         {
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Clicking_GenerateOutputs_Creates_A_Recordset_Name()
         {
@@ -54,7 +54,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Name_From_Person_Creates_PersonName_Mapping()
         {
@@ -73,7 +73,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Multiple_Fields_From_Person_Creates_All_Field_Mapping()
         {
@@ -94,7 +94,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Name_With_An_Elias_From_Person_Creates_PersonAliasName_Mapping()
         {

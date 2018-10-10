@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Decision Conflicts")]
         public void Click_On_Merge_With_Decision_Has_Conflicts()
         {
@@ -28,7 +28,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Decision Conflicts")]
         public void Merge_With_DecisionTool_And_On_Assigns_Given_Difference_Assign_Is_Selected_Assign_Is_Added_On_Design_Surface()
         {
@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.Merge
         }
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Decision Conflicts")]
         public void Merge_With_DecisionTool_Check_And_Unchecking_Defference_Assign_Multiple_Times_Toggles_State()
         {
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Decision Conflicts")]
         public void Merge_With_DecisionTool_And_On_Assigns_Given_Unchecking_Defference_Assign_Toggles_State()
         {

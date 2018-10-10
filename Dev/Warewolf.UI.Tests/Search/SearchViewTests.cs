@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Search
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Shortcut_Cntr_Shift_F_Opens_Search_View()
         {
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Clicking_Search_Menu_Item_Opens_Search_View()
         {
@@ -35,7 +35,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Clicking_New_Server_Button_Opens_Server_Source_Tab()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Clicking_Edit_Server_Button_Opens_Server_Source_Tab()
         {
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Open_Search_Window_Has_All_Options_UnSelected()
         {
@@ -79,7 +79,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Click_Search_Button_With_All_Selected_And_Nothing_Filtered()
         {
@@ -90,7 +90,7 @@ namespace Warewolf.UI.Tests.Search
         }  
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Click_Search_Button_With_Nothing_Filtered()
         {
@@ -102,7 +102,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void UnChecking_Service_CheckBox_Then_AllCheckBox_Checkes_AllCheckBox()
         {
@@ -124,7 +124,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void UnChecking_AllCheckBox_UnCheckesAll_Check_Boxes()
         {
@@ -161,7 +161,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Search")]
         public void Checking_AllCheckBox_CheckesAll_Check_Boxes()
         {

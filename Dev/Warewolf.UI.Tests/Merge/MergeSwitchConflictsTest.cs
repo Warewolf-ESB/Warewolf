@@ -18,7 +18,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Deleted_Default_Arm()
         {
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_SwitchCase_Is_Changed()
         {
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Arm_Has_Changed_Should_Have_2_Arm_Conflicts()
         {
@@ -66,7 +66,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Difference_Assign_Tool_Is_Selected_Enables_Connector()
         {
@@ -88,7 +88,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_Merge_With_Switch_Has_Current_Selected()
         {
@@ -126,7 +126,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_Merge_With_Switch_Has_Decision_And_Children()
         {
@@ -139,7 +139,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_MergeSwitch_With_Difference_Between_Decision_Add_Decision_On_Design_Surface()
         {

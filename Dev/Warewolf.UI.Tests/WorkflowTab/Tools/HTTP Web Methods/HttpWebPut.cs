@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.Tools
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_Small_And_LargeView_UITest()
         {
@@ -37,7 +37,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_GenerateOutputs_And_TestInputs_UITest()
         {
@@ -54,7 +54,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_Intellisense_UITest()
         {

@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.DebugInputWindow
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DebugOutput_MoreLink_UITest()
         {

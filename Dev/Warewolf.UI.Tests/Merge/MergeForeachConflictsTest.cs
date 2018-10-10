@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_With_Foreach_Has_Conflicts()
         {
@@ -24,7 +24,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Choosing_CreateExampleData_And_OrganizeCustomers_Enabled_The_Connector()
         {
@@ -39,7 +39,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Expanding_Foreach_Has_Convert_Tool_Inside()
         {
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Conflicts_On_Start_Node_Arm()
         {
@@ -64,7 +64,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Current_And_Difference_Selected_Has_Foreach_And_CreatExampleData_On_Design_Surface()
         {
@@ -79,7 +79,7 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Foreach")]
         public void Click_On_Merge_ForWF_ContainingForeachTool_Has_Foreach_On_Design_Surface()
         {

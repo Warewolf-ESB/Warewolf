@@ -17,7 +17,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {   
@@ -35,7 +35,7 @@ namespace Warewolf.UI.Tests
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
@@ -47,7 +47,7 @@ namespace Warewolf.UI.Tests
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
@@ -74,7 +74,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
@@ -84,7 +84,7 @@ namespace Warewolf.UI.Tests
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
@@ -96,7 +96,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
@@ -109,7 +109,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Hello World Mocking Tests")]
         public void DuplicatedWorkflowShouldUpdateTestResult()
         {
