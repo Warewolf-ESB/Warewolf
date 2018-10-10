@@ -151,16 +151,16 @@ Scenario: Example Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
-Scenario: Example Executing Utility - Assign example workflows
-	  Given I have a workflow "Test Example Utility - Assign"
-	  And "Test Example Utility - Assign" contains "Utility - Assign" from server "localhost" with mapping as
+Scenario: Example Executing Data - Assign example workflows
+	  Given I have a workflow "Test Example Data - Assign"
+	  And "Test Example Data - Assign" contains "Data - Assign" from server "localhost" with mapping as
 	 | Input to Service | From Variable | Output from Service | To Variable        |
 	 |                  |               | rec(*).set      | [[rec().set]]      |
 	 |                  |               | hero(*).pushups | [[hero().pushups]] |
 	 |                  |               | hero(*).name    | [[hero().name]]    |
-	  When "Test Example Utility - Assign" is executed
+	  When "Test Example Data - Assign" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Utility - Assign" in Workflow "Test Example Utility - Assign" debug outputs as    
+	  And the "Data - Assign" in Workflow "Test Example Data - Assign" debug outputs as    
 	  |                                                                |
 	  | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
 	  | [[hero(1).pushups]] = All of them.                             |
