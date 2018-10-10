@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Explorer_Workflow_And_Folder_ContextMenuItems_UITest()
         {
@@ -51,7 +51,7 @@ namespace Warewolf.UI.Tests
         
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Explorer")]
         public void Explorer_DotNetPluginSource_ContextMenuItems()

@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.Search
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_OutputVariable_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
@@ -24,7 +24,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Existing_OutputVariable_All_Lower_Case_And_Match_Case_Is_False()
         {
@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Existing_OutputVariable_All_Upper_Case_And_Match_Case_Is_False()
         {
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Existing_OutputVariable_All_Lower_Case_And_Match_Case_Is_True()
         {
@@ -66,7 +66,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Existing_OutputVariable_All_Upper_Case_And_Match_Case_Is_True()
         {
@@ -80,7 +80,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Partial_Existing_OutputVariable_And_Match_WholeWord_Is_False()
         {
@@ -95,7 +95,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_Partial_Existing_OutputVariable_And_Match_WholeWord_Is_True()
         {
@@ -109,7 +109,7 @@ namespace Warewolf.UI.Tests.Search
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Output Search")]
         public void Given_UnExisting_OutputVariable_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {

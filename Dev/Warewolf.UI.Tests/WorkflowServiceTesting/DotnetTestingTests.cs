@@ -16,7 +16,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesDotnetTestStepsExpandedFalse()
         {
@@ -28,7 +28,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ExpandingDotnetDllShowsChildStepsExpandedTrue()
         {
@@ -46,7 +46,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingConstructorRemovesTheStep()
         {
@@ -58,7 +58,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void DeletingFavouriteRemovesTheStep()
         {
@@ -70,7 +70,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ConstructorValuesAreLoadedCorrectly()
         {           
@@ -85,7 +85,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
         {
@@ -99,7 +99,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
@@ -116,7 +116,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsHasTheTestPassing()
         {
@@ -129,7 +129,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -145,7 +145,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithAssertHasTheTestPassing()
         {
@@ -160,7 +160,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
@@ -176,7 +176,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Dotnet Connector Mocking Tests")]
         public void RunTestsWithMockHasTheTestPassing()
         {

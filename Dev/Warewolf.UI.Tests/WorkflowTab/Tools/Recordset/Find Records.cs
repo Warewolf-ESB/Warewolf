@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void FindRecordsTool_Small_And_LargeView_UITest()
         {
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void Selecting_OptionInDropdown_With_Keyboard_UITest()
         {
@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void Selecting_OptionInDropdown_Changed_Fires_EventChanged()
         {

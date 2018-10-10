@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tools")]
         public void ForEachTool_Small_And_LargeView_UITest()
         {
@@ -34,7 +34,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Tools")]
         public void Drag_Decision_And_SwitchTools_Into_ForEachActivityDrop_ExpectError_UITest()
         {
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Tools")]
         public void Drag_Assigntool_Into_ForEach_ActivityDrop_ExpectSuccess_UITest()
         {
@@ -57,7 +57,7 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tools")]
         public void Drag_Assigntool_Into_ForEach_LargeView_ActivityDrop_ExpectSuccess_UITest()
         {

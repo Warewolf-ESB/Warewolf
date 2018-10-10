@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests
     {
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Settings")]
         public void Open_SettingsTab_Then_ConfigureLogging_UITest()
         {
@@ -28,7 +28,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\git2-6311e88.dll", @"lib\win32")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Settings")]
         public void ChangeServerLoggingType_ThenSave_PersistsChanges_UITest()
         {
