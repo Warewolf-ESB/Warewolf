@@ -10,6 +10,7 @@ namespace Dev2.Common.Interfaces.Core
         public bool CollectUsageStats { get; set; }
         public int DaysToKeepTempFiles { get; set; }
         public string AuditFilePath { get; set; }
+        public bool EnableDetailedLogging { get; set; }
 
         public bool Equals(ServerSettingsData other)
         {
