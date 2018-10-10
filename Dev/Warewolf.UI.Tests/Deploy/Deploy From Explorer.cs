@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests
     public class Deploy_From_Explorer
     {        
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_Resource_Already_Checked()
@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_All_Resources_In_Folder_Already_Checked()
@@ -47,7 +47,7 @@ namespace Warewolf.UI.Tests
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Deploy from Explorer")]
         public void Deploying_From_Explorer_Opens_The_Deploy_With_The_Resource_In_Folder_Already_Checked_And_Refresh_Keeps_Selected()

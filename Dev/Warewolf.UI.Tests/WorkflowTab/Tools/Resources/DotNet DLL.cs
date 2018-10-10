@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     public class DotNet_DLL_UITests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void DotNetDLLTool_Small_And_LargeView_Then_NewSource_UITest()
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void Selecting_Source_Enables_ClassName_UITests()
@@ -63,7 +63,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Enabled_Constructor_And_Actions_UITests()
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void Selecting_Classname_Loads_Class_Constructors_UITests()
@@ -92,7 +92,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void DotNetDLLTool_EditSource_UITest()
@@ -112,7 +112,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
@@ -125,7 +125,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_Loads_Actions_UITests()
@@ -139,7 +139,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_AndCtor_With_Parameters_Shows_Inputs_Grid_UITests()
@@ -156,7 +156,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
@@ -173,7 +173,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
@@ -192,7 +192,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_And_Action_Creates_New_Blank_Action_Dropbox_UITests()

@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.WebSource
         const string SourceName = "CodedUITestWebServiceSource";
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Web Sources")]
         public void Create_Save_And_Edit_WebServiceSource_From_ExplorerContextMenu_UITests()
@@ -49,7 +49,7 @@ namespace Warewolf.UI.Tests.WebSource
         }
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Web Sources")]     
         public void Test_WebServiceSource_DefaulQuery_UITests()
@@ -66,7 +66,7 @@ namespace Warewolf.UI.Tests.WebSource
         }
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Web Sources")]       
         public void Test_WebServiceSource_ValidateDefaultHttps_AddedOnMissingText_UITests()

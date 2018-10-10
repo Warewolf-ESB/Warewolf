@@ -23,7 +23,7 @@ namespace Warewolf.UI.Tests.Tabs
     public class PinUnpinPanes
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_WorkflowDesignerPane()
@@ -33,7 +33,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_SchedulerPane()
@@ -43,7 +43,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinPutput_TestFrameworkPane()
@@ -60,7 +60,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinnedPaneContextMenuItems()
@@ -77,7 +77,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinSettingsWizardTab()
@@ -87,7 +87,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinServerSourceWizardTab()
@@ -97,7 +97,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDBSourceWizardTab()
@@ -107,7 +107,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDotNetPluginSourceWizardTab()
@@ -117,7 +117,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinWebSourceWizardTab()
@@ -127,7 +127,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDeployWizardTab()
@@ -137,7 +137,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinDependencyGraphWizardTab()
@@ -147,7 +147,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinTestsWizardTab()
@@ -158,7 +158,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void UnpinSchedulerWizardTab()
@@ -168,7 +168,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
@@ -183,7 +183,7 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()

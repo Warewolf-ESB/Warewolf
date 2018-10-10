@@ -15,7 +15,7 @@ namespace Warewolf.UI.Tests.Workflow
         private const string HelloWorld = "Hello World";
         
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Open_And_Save_Workflow_With_ShortcutKeys()
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Workflow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_Shift_S_Saves_All_Workflows_Without_Closing()
@@ -63,7 +63,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs2.Exists);
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
@@ -80,7 +80,7 @@ namespace Warewolf.UI.Tests.Workflow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_W_Opens_NewWorkflow_In_The_Selected_Folder()
@@ -94,7 +94,7 @@ namespace Warewolf.UI.Tests.Workflow
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployWizardTab()

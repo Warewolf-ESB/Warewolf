@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Search
     public class ServiceSearchTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_For_Hello_World_On_Remote_Server()
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests.Search
         }        
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_hello_And_No_Search_Option_Is_Selected()
@@ -62,7 +62,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_Unexisting_Service_Name()
@@ -76,7 +76,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_WholeWord_Is_True()
@@ -92,7 +92,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_False_And_Match_WholeWord_Is_False()
@@ -107,7 +107,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_Case_Is_True()
@@ -122,7 +122,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_Case_Is_False()
@@ -136,7 +136,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Service Search")]
         public void Search_Hello_And_Only_Service_Name_Is_Selected()

@@ -23,7 +23,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
 
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Creating_A_Test_With_Blank_Name()
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Run_Failing_Test()
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
        
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Run_Passing_Test()
@@ -65,7 +65,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Show_Duplicate_Test_Dialog()
@@ -80,7 +80,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
@@ -93,7 +93,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void RunTestAsSpecificUser()
@@ -107,7 +107,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Delete_Test()
@@ -121,7 +121,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Click_Duplicate_Test_Button()
@@ -134,7 +134,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Workflow Testing")]
         public void Click_Duplicate_Test_Button_AssertIcon()

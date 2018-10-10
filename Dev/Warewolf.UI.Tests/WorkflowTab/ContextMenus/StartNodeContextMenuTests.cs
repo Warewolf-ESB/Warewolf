@@ -11,7 +11,7 @@ namespace Warewolf.UI.Tests.ContextMenu
     public class StartNodeContextMenuTests
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         public void CodedUIShowStartNodeContextMenuItems()
         {
@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests.ContextMenu
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         public void CodedUIShowStartNodeContextMenuItems_For_Version()
         {

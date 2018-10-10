@@ -10,7 +10,7 @@ namespace Warewolf.UI.Tests.Tools
     public class HttpWebPost
     {
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPOSTTool_Small_And_LargeView_UITest()
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPOSTTool_GenerateOutputs_And_TestInputs_UITest()
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_POSTWebTool_Outputs_DoneButton();
         }
         [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPOSTTool_Intellisense_UITest()
