@@ -1,0 +1,50 @@
+<mat-sidenav-container fullscreen class="sidenav-container">
+  <mat-sidenav #lsnav class="sidenav"
+               position="start"
+               role="navigation"
+               [(opened)]="opened"
+               [(closed)]="closed"
+               [mode]="mobileQuery.matches ? 'side' : 'side'"
+               [fixedInViewport]="mobileQuery.matches">
+    <img src="../../assets/images/logo.png" />
+    <mat-nav-list>
+      <a mat-list-item routerLink="/executionlogging">
+        <mat-icon class="material-icons icon-large-orange">view_list</mat-icon>
+        <span class="label">Execution Logging</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="toggleSideNav();">
+        <mat-icon class="material-icons icon-large-orange">{{sideNavIcon}}</mat-icon>
+        <span class="label">{{sideNavIcon}}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-toolbar color="primary" class="sidenav-toolbar mat-toolbar mat-primary">
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <span class="sidenav-fill-remaining-space"></span>
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+      <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+        <!--<li>
+          <a>
+            <mat-icon class="icon">input</mat-icon>
+            <span class="label">Login</span>
+          </a>
+        </li>-->
+      </ul>
+    </div>
+
+  </mat-toolbar>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="small">
+    <div class="text-center">
+      © 2018 Copyright:
+      <a href="warewolf.io"> Warewolf</a>
+    </div>
+  </footer>
+</mat-sidenav-container>
