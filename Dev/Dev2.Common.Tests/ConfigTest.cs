@@ -78,14 +78,15 @@ namespace Dev2.Common.Tests
             Config.ConfigureSettings(mockConfig);
 
             var settings = Config.Server.Get();
-            Assert.AreEqual(6, settings.GetType().GetProperties().Length);
+            Assert.AreEqual(7, settings.GetType().GetProperties().Length);
 
-            Assert.AreEqual(0, settings.WebServerPort);
-            Assert.AreEqual(0, settings.WebServerSslPort);
+            Assert.AreEqual((ushort)0, settings.WebServerPort);
+            Assert.AreEqual((ushort)0, settings.WebServerSslPort);
             Assert.AreEqual(null, settings.SslCertificateName);
             Assert.AreEqual(false, settings.CollectUsageStats);
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(expectedPath, settings.AuditFilePath);
+            Assert.AreEqual(true, settings.EnableDetailedLogging);
         }
 
         [TestMethod]
