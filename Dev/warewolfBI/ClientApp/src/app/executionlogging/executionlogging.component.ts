@@ -7,13 +7,14 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { ExecutionLoggingService } from './../services/executionlogging.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSort } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { ExecutionDataSource } from './executionLoggingDataSource';
 import { ExecutionLogging } from './../models/executionlogging.model';
 import { LogEntry } from './../models/logentry.model';
 import { tap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { fromEvent, merge } from 'rxjs';
+import { LogEntryComponent } from '../logentry/logentry.component';
 
 @Component({
   selector: 'app-executionlogging',
@@ -35,7 +36,7 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
   port: string;
   selected: string;
   protocol: string;
-  constructor(private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
 
   ngOnInit() {
     this.selected = '3142';
@@ -44,15 +45,10 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
     this.dataSource = new ExecutionDataSource(this.executionLoggingservice);
     if (this.selected == "3142") { this.protocol = "http"; } else { this.protocol = "https"; }
     this.serverURL = this.protocol + "://" + this.serverName + ":" + this.selected;
-    this.dataSource.loadLogs(this.serverURL,'', '', 'asc', 0, 3);
-   
+    this.dataSource.loadLogs(this.serverURL, '', '', 'asc', 0, 3);
   }
-  createURL(text) {
-    console.log('submit', text);
 
-  }
   ngAfterViewInit() {
-
     this.CreateServerURLInput.changes.subscribe(list => {
       list.forEach(inputs => {
         if (inputs.nativeElement.name == "serverNameInput") { this.serverName = inputs.nativeElement.value; }
@@ -62,7 +58,7 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
       });
     });
 
-
+    //TODO: This will be added in when we do the paging and sorting in the next ticket
     //fromEvent(this.serverNameInput.nativeElement, 'keyup')
     //  .pipe(
     //    debounceTime(150),
@@ -93,7 +89,11 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
       this.paginator.pageSize);
   }
 
-  onRowClicked(row) {
-    console.log('Row clicked: ', row);
+  onRowClicked(LogEntry) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = { LogEntry };
+    const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
   }
 }

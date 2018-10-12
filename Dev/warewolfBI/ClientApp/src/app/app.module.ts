@@ -32,10 +32,11 @@ import { MediatorService } from './services/mediator.service';
 import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
-import { ErrorDialogComponent} from './core/error-dialog/error-dialog.component'
+import { ErrorDialogComponent} from './core/error-dialog/error-dialog.component';
+import { LogEntryComponent } from './logentry/logentry.component'
 
 @NgModule({
-  entryComponents: [ErrorDialogComponent],
+  entryComponents: [ErrorDialogComponent, LogEntryComponent],
   declarations: [
     AppComponent,
     sanitizeHtmlPipe,
@@ -46,7 +47,7 @@ import { ErrorDialogComponent} from './core/error-dialog/error-dialog.component'
     OutputsExplorerComponent,
     ExecutionloggingComponent,
     SettingsComponent,
-    MaindashboardComponent
+    MaindashboardComponent    
   ],
   imports: [
     NgbModule.forRoot(),

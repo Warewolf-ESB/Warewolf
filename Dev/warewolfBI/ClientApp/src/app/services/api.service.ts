@@ -6,14 +6,14 @@ import { map, catchError } from 'rxjs/operators';
 import { LogEntry } from './../models/logentry.model';
 import { Observable } from 'rxjs';
 
-const httpOptions = {
+const httpHeaders = {
   headers: new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-    'Content-Type': 'application/json'    
+    'Content-Type': 'application/json'
   })
 };
-
+const httpOptions = { headers: httpHeaders, withCredentials: true };
 @Injectable({
   providedIn: 'root'
 })
@@ -32,8 +32,8 @@ export class APIService {
   getExecutionList(ServerUrl: string, ExecutionId: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
 
     this.serverUrl = ServerUrl.toLowerCase();
-    var wareWolfUrl = this.serverUrl  + "/services/GetLogDataService";
-    
+    var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
+
     //params: new HttpParams()
     //  .set('ExecutionId', ExecutionId.toString())
     //  .set('filter', filter)
@@ -41,7 +41,8 @@ export class APIService {
     //  .set('pageNumber', pageNumber.toString())
     //  .set('pageSize', pageSize.toString())
 
-    return this.httpClient.post(wareWolfUrl, '', { headers: httpOptions, withCredentials: true })
+   
+    return this.httpClient.post<any>(wareWolfUrl, filter, httpOptions)
       .pipe(map((response) => {
         return response;
       }), catchError((error) => {

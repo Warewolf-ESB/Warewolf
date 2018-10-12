@@ -14,6 +14,8 @@ import { MediatorService } from './services/mediator.service';
 import { AuthGuardService } from './guards/auth.guard.service';
 import { AuthenticationService } from './services/authentication.service';
 
+
+
 @Component({
   selector: 'app-root',
   styleUrls: ['./app.component.scss'],
@@ -66,6 +68,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.sideNavState = state;
     });
   }
+
+ 
 
   animationEvent(x) {
     this.overflowState = 'auto';
