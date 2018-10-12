@@ -25,13 +25,13 @@ namespace Warewolf.Launcher
                             {
                                 currentJobName = CurrentLine.Trim().Replace(".jobs(", "").Replace("new Job(\"", "").Replace("\",", "");
                             }
-                            const string parseProjFrom = "--ProjectName \"";
-                            const string parseCategoryFrom = "--Category \"";
+                            const string parseProjFrom = "--ProjectName \\\"";
+                            const string parseCategoryFrom = "--Category \\\"";
                             if (CurrentLine.Contains(parseProjFrom) && !CurrentLine.Contains("#Error Correcting Download"))
                             {
                                 var projStartIndex = CurrentLine.IndexOf(parseProjFrom) + parseProjFrom.Length;
                                 string projectName = null;
-                                while (CurrentLine[projStartIndex] != '\"')
+                                while (CurrentLine[projStartIndex] != '\\')
                                 {
                                     projectName += CurrentLine[projStartIndex++];
                                 }
@@ -40,7 +40,7 @@ namespace Warewolf.Launcher
                                 if (findCategoryStart > 0)
                                 {
                                     var categoryStartIndex = findCategoryStart + parseCategoryFrom.Length;
-                                    while (CurrentLine[categoryStartIndex] != '\"')
+                                    while (CurrentLine[categoryStartIndex] != '\\')
                                     {
                                         categoryName += CurrentLine[categoryStartIndex++];
                                     }
@@ -218,7 +218,21 @@ namespace Warewolf.Launcher
             CheckoutBranch(ref repo);
             List<string> result = new List<string>();
             TreeEntry TreeWalker = null;
-            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["warewolf"].Target))
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["CI"].Target))
+            {
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
+                {
+                    result.Add(ReadTreeEntry(TreeEntry));
+                }
+            }
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["Nightlies"].Target))
+            {
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
+                {
+                    result.Add(ReadTreeEntry(TreeEntry));
+                }
+            }
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["Single_Jobs"].Target))
             {
                 if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
                 {
