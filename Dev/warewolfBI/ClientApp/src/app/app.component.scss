@@ -60,11 +60,6 @@ footer {
 
 mat-sidenav {
   background-color: #333;
-  width: 240px;
-}
-
-.sidenav-fill-remaining-space {
-  flex: 1 1 auto;
 }
 
 .sidenav-tree-invisible {
@@ -142,9 +137,6 @@ mat-sidenav {
   height: 100%;
 }
 
-mat-sidenav {
-  width: 250px;
-}
 
 a {
   text-decoration: none;

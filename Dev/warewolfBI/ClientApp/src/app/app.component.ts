@@ -21,7 +21,7 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html',
   animations: [
-    trigger('onSideNavChange', [
+    trigger('toggleSideNav', [
       state('close',
         style({
           width: '50px'
@@ -67,9 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mediator.sideNavListener.subscribe(state => {
       this.sideNavState = state;
     });
-  }
-
- 
+  } 
 
   animationEvent(x) {
     this.overflowState = 'auto';
