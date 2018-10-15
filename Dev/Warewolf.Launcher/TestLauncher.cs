@@ -1049,16 +1049,9 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ProjectName))
             {
-                JobNames.Add(ProjectName);
+                JobNames.Add(LookupJobName(ProjectName, Category));
                 JobAssemblySpecs.Add(ProjectName);
-                if (!string.IsNullOrEmpty(Category))
-                {
-                    JobCategories.Add(Category);
-                }
-                else
-                {
-                    JobCategories.Add("");
-                }
+                JobCategories.Add(Category??"");
             }
             if (!File.Exists(TestRunner.Path))
             {
@@ -1143,6 +1136,18 @@ namespace Warewolf.Launcher
                 MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
                 MergeDotCoverSnapshots();
             }
+        }
+
+        string LookupJobName(string projectName, string category)
+        {
+            foreach(var job in JobSpecs)
+            {
+                if (job.Value.Item1 == projectName && job.Value.Item2 == category)
+                {
+                    return job.Key;
+                }
+            }
+            return null;
         }
     }
 }
