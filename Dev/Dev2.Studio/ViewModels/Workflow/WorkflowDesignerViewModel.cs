@@ -1143,15 +1143,18 @@ namespace Dev2.Studio.ViewModels.Workflow
         void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
         {
             var activity = droppedActivity;
-            var resource = _resourceModel.Environment.ResourceRepository.FindSingle(
-                c => c.Category == activity.ServiceName) as IContextualResourceModel;
             var serverRepository = CustomContainer.Get<IServerRepository>();
+            var server = CustomContainer.Get<IServerRepository>().ActiveServer;
+            var resourceId = Guid.Parse(activity.ResourceID.Expression.ToString());
+            var resource = server.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var displayName = resource != null ? resource.DisplayName : activity.DisplayName;
+
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
             if (_applicationTracker != null)
             {
-                _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, resource.DisplayName);
+                _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, displayName);
             }
         }
 
