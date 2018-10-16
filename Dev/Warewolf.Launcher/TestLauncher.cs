@@ -1049,7 +1049,9 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ProjectName))
             {
-                JobNames.Add(LookupJobName(ProjectName, Category));
+                string ResolvedJobName = LookupJobName(ProjectName, Category);
+                JobNames.Add(ResolvedJobName);
+                JobName = ResolvedJobName;
                 JobAssemblySpecs.Add(ProjectName);
                 JobCategories.Add(Category??"");
             }
