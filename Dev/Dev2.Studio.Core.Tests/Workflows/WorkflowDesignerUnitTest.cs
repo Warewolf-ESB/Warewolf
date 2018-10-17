@@ -2206,9 +2206,12 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup Mock ModelItem
             SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = new DsfActivity();
-            testAct.DisplayName = "Test";
-            testAct.ServiceName = "NewService";
+            var testAct = new DsfActivity
+            {
+                DisplayName = "Test",
+                ServiceName = "NewService",
+                ResourceID = Guid.NewGuid()
+            };
 
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var prop = new Mock<ModelProperty>();
