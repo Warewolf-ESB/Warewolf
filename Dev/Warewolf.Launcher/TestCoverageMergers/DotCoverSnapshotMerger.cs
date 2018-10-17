@@ -14,15 +14,12 @@ namespace Warewolf.Launcher.TestCoverageMergers
                 {
                     var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths);
                     TestCleanupUtils.CopyOnWrite($"{LogFilePath}.merge.log");
-                    TestCleanupUtils.CopyOnWrite($"{LogFilePath}.report.log");
-                    TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
-                    TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.html");
                     ProcessUtils.RunFileInThisProcess(ToolPath, $"merge /Source=\"{DotCoverSnapshotsString}\" /Output=\"{DestinationFilePath}.dcvr\" /LogFile=\"{LogFilePath}.merge.log\"");
                 }
                 if (SnapshotPaths.Count == 1)
                 {
                     var LoneSnapshot = SnapshotPaths[0];
-                    if (SnapshotPaths.Count == 1 && (File.Exists(LoneSnapshot)))
+                    if (SnapshotPaths.Count == 1 && File.Exists(LoneSnapshot))
                     {
                         ProcessUtils.RunFileInThisProcess(ToolPath, $"report /Source=\"{LoneSnapshot}\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
                         Console.WriteLine($"DotCover report written to {DestinationFilePath}\\DotCover Report.html");
@@ -31,6 +28,8 @@ namespace Warewolf.Launcher.TestCoverageMergers
             }
             if (File.Exists($"{DestinationFilePath}.dcvr"))
             {
+                TestCleanupUtils.CopyOnWrite($"{LogFilePath}.report.log");
+                TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.html");
                 ProcessUtils.RunFileInThisProcess(ToolPath, $"report /Source=\"{DestinationFilePath}.dcvr\" /Output=\"{DestinationFilePath}\\DotCover Report.html\" /ReportType=HTML /LogFile=\"{LogFilePath}.report.log\"");
                 Console.WriteLine($"DotCover report written to {DestinationFilePath}\\DotCover Report.html");
             }

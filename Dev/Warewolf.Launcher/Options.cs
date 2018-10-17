@@ -175,7 +175,7 @@ namespace Warewolf.Launcher
                 }
                 if (options.ServerPassword != null)
                 {
-                    Console.WriteLine("ServerPassword: ****");
+                    Console.WriteLine("ServerPassword: ???");
                     testLauncher.ServerPassword = options.ServerPassword;
                 }
                 if (options.RunAllJobs)
