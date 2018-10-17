@@ -950,14 +950,16 @@ namespace Warewolf.Launcher
 
         public void MergeDotCoverSnapshots()
         {
+            var MergedSnapshotFileName = JobName.Split(',')[0];
+            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
+            string DestinationFilePath = MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
+            TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
             var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
             if (string.IsNullOrEmpty(JobName))
             {
                 JobName = "DotCover";
             }
-            var MergedSnapshotFileName = JobName.Split(',')[0];
-            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
+            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
