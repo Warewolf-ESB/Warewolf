@@ -783,13 +783,13 @@ namespace Warewolf.Launcher
                 List<string> resolveStarNotation = new List<string>();
                 foreach (var file in resolveCommaNotation)
                 {
-                    if (TestAssembliesFileSpecsInParent.Contains('*'))
+                    if (file.Contains('*'))
                     {
-                        resolveStarNotation = Directory.GetFiles(Path.GetDirectoryName(TestAssembliesFileSpecsInParent), Path.GetFileName(TestAssembliesFileSpecsInParent), SearchOption.TopDirectoryOnly).ToList();
+                        resolveStarNotation = Directory.GetFiles(Path.GetDirectoryName(file), Path.GetFileName(file), SearchOption.TopDirectoryOnly).ToList();
                     }
                     else
                     {
-                        resolveStarNotation.Add(TestAssembliesFileSpecsInParent);
+                        resolveStarNotation.Add(file);
                     }
                 }
                 foreach (var file in resolveStarNotation)
@@ -1051,16 +1051,11 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ProjectName))
             {
-                JobNames.Add(ProjectName);
+                string ResolvedJobName = LookupJobName(ProjectName, Category);
+                JobNames.Add(ResolvedJobName);
+                JobName = ResolvedJobName;
                 JobAssemblySpecs.Add(ProjectName);
-                if (!string.IsNullOrEmpty(Category))
-                {
-                    JobCategories.Add(Category);
-                }
-                else
-                {
-                    JobCategories.Add("");
-                }
+                JobCategories.Add(Category??"");
             }
             if (!File.Exists(TestRunner.Path))
             {
@@ -1145,6 +1140,18 @@ namespace Warewolf.Launcher
                 MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
                 MergeDotCoverSnapshots();
             }
+        }
+
+        string LookupJobName(string projectName, string category)
+        {
+            foreach(var job in JobSpecs)
+            {
+                if (job.Value.Item1 == projectName && job.Value.Item2 == category)
+                {
+                    return job.Key;
+                }
+            }
+            return null;
         }
     }
 }
