@@ -15,6 +15,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
                     var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths);
                     TestCleanupUtils.CopyOnWrite($"{LogFilePath}.merge.log");
                     ProcessUtils.RunFileInThisProcess(ToolPath, $"merge /Source=\"{DotCoverSnapshotsString}\" /Output=\"{DestinationFilePath}.dcvr\" /LogFile=\"{LogFilePath}.merge.log\"");
+                    SnapshotPaths.ForEach((dotCoverSnapshot) => { File.Delete(dotCoverSnapshot); });
                 }
                 if (SnapshotPaths.Count == 1)
                 {
