@@ -950,8 +950,7 @@ namespace Warewolf.Launcher
 
         public void MergeDotCoverSnapshots()
         {
-            var MergedSnapshotFileName = JobName.Split(',')[0];
-            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
+            var MergedSnapshotFileName = "Merged " + JobName.Split(',')[0] + " Snapshots";
             string DestinationFilePath = MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
             TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
             var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
