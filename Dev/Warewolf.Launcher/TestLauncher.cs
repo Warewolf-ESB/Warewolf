@@ -959,7 +959,6 @@ namespace Warewolf.Launcher
                 JobName = "DotCover";
             }
             TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
-            DotCoverSnapshots.ForEach((dotCoverSnapshot)=> { File.Delete(dotCoverSnapshot); });
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
