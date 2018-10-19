@@ -22,7 +22,6 @@ namespace Warewolf.Launcher
         public string ServerPath { get; set; }
         public string StudioPath { get; set; }
         public string ResourcesType { get; set; }
-        public string DotCoverPath { get; set; }
         public string ServerUsername { get; set; }
         public string ServerPassword { get; set; }
         public string RunAllJobs { get; set; }
@@ -47,6 +46,7 @@ namespace Warewolf.Launcher
         public bool AdminMode { get; internal set; } = false;
 
         public ITestRunner TestRunner { get; internal set; }
+        public ITestCoverageRunner TestCoverageRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
         public ITestCoverageMerger TestCoverageMerger { get; internal set; }
         public string RetryFile { get; internal set; }
@@ -496,42 +496,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    var ServerBinDir = Path.GetDirectoryName(ServerPath);
-                    var RunnerXML = @"<AnalyseParams>
-    <TargetExecutable>" + ServerPath + @"</TargetExecutable>
-    <Output>" + Environment.ExpandEnvironmentVariables("%ProgramData%") + @"\Warewolf\Server Log\dotCover.dcvr</Output>
-    <Scope>
-	    <ScopeEntry>" + ServerBinDir + @"\*.dll</ScopeEntry>
-	    <ScopeEntry>" + ServerBinDir + @"\*.exe</ScopeEntry>
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>";
-                    
-                    var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Server DotCover Runner.xml";
-                    TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-                    File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestRunner.TestsResultsPath + "\\ServerDotCover.log\\\"";
-                    if (!ServerService)
-                    {
-                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Configuring service to " + RunServerWithDotcoverScript);
-                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\"");
-                    }
+                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerService, ServerPath, TestRunner.TestsResultsPath);
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
@@ -686,7 +651,7 @@ namespace Warewolf.Launcher
                     Directory.CreateDirectory(TestRunner.TestsResultsPath);
                 }
                 File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
+                Process.Start(TestCoverageRunner.CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
             }
             try
             {
@@ -700,7 +665,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    Process.Start(DotCoverPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
+                    Process.Start(TestCoverageRunner.CoverageToolPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
                 }
                 WaitForStudioStart(Path.GetDirectoryName(StudioPath));
             }
@@ -883,7 +848,7 @@ namespace Warewolf.Launcher
             // Write DotCover Runner Batch File
             var DotCoverRunnerPath = $"{TestRunner.TestsResultsPath}\\Run {JobName} DotCover.bat";
             TestCleanupUtils.CopyOnWrite(DotCoverRunnerPath);
-            File.WriteAllText(DotCoverRunnerPath, $"\"{DotCoverPath}\"{FullArgsList}");
+            File.WriteAllText(DotCoverRunnerPath, $"\"{TestCoverageRunner.CoverageToolPath}\"{FullArgsList}");
             return DotCoverRunnerPath;
         }
 
@@ -958,7 +923,7 @@ namespace Warewolf.Launcher
             {
                 JobName = "DotCover";
             }
-            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
+            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeDotCoverSnapshotsInDirectory + "\\DotCover", TestCoverageRunner.CoverageToolPath);
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
@@ -1061,9 +1026,9 @@ namespace Warewolf.Launcher
                 throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
             }
 
-            if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
+            if (ApplyDotCover && TestCoverageRunner.CoverageToolPath != "" && !(File.Exists(TestCoverageRunner.CoverageToolPath)))
             {
-                throw new ArgumentException("Error cannot find dotcover.exe. Use --DotCoverPath parameter to pass a path to that file.");
+                throw new ArgumentException("Error cannot find coverage tool path .exe. Use --CoverageToolPath parameter to pass a path to that file.");
             }
 
             if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))

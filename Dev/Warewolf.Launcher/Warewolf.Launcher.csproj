@@ -92,11 +92,13 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITestCoverageRunner.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TestCoverageRunners\DotCoverRunner.cs" />
     <Compile Include="Utils\AdminMode.cs" />
     <Compile Include="ContainerLauncher.cs" />
     <Compile Include="ITestCoverageMerger.cs" />
@@ -129,6 +131,9 @@
     <None Include="Warewolf.Launcher.AdminMode.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestCoverageRunners\NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

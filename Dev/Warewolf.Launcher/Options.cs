@@ -28,8 +28,8 @@ namespace Warewolf.Launcher
         [Option("MSTest")]
         public bool MSTest { get; set; }
 
-        [Option("DotCoverPath")]
-        public string DotCoverPath { get; set; }
+        [Option("CoverageToolPath")]
+        public string CoverageToolPath { get; set; }
 
         [Option("ServerUsername")]
         public string ServerUsername { get; set; }
@@ -164,10 +164,10 @@ namespace Warewolf.Launcher
                     Console.WriteLine("Test Runner: MSTest");
                     testLauncher.TestRunner = new MSTestRunner();
                 }
-                if (options.DotCoverPath != null)
+                if (options.CoverageToolPath != null)
                 {
-                    Console.WriteLine("DotCoverPath: " + options.DotCoverPath);
-                    testLauncher.DotCoverPath = options.DotCoverPath;
+                    Console.WriteLine("DotCoverPath: " + options.CoverageToolPath);
+                    testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
                 }
                 if (options.ServerUsername != null)
                 {
