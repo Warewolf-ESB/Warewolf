@@ -85,8 +85,8 @@ namespace Warewolf.Launcher
         [Option("TestList")]
         public string TestList { get; set; }
 
-        [Option("MergeDotCoverSnapshotsInDirectory")]
-        public string MergeDotCoverSnapshotsInDirectory { get; set; }
+        [Option("MergeCoverageSnapshotsInDirectory")]
+        public string MergeCoverageSnapshotsInDirectory { get; set; }
 
         [Option("TestsResultsPath")]
         public string TestsResultsPath { get; set; }
@@ -259,10 +259,10 @@ namespace Warewolf.Launcher
                     Console.WriteLine("TestList: " + options.TestList);
                     testLauncher.TestRunner.TestList = options.TestList;
                 }
-                if (options.MergeDotCoverSnapshotsInDirectory != null)
+                if (options.MergeCoverageSnapshotsInDirectory != null)
                 {
-                    Console.WriteLine("Merging DotCover Snapshots In Directory: " + options.MergeDotCoverSnapshotsInDirectory);
-                    testLauncher.MergeDotCoverSnapshotsInDirectory = options.MergeDotCoverSnapshotsInDirectory;
+                    Console.WriteLine("Merging DotCover Snapshots In Directory: " + options.MergeCoverageSnapshotsInDirectory);
+                    testLauncher.MergeCoverageSnapshotsInDirectory = options.MergeCoverageSnapshotsInDirectory;
                 }
                 if (options.TestsResultsPath != null)
                 {

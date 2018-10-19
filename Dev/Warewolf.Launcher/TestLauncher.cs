@@ -39,7 +39,7 @@ namespace Warewolf.Launcher
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
         public string JobName { get; set; }
-        public string MergeDotCoverSnapshotsInDirectory { get; set; }
+        public string MergeCoverageSnapshotsInDirectory { get; set; }
         public string StartDocker { get; set; }
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
@@ -481,10 +481,10 @@ namespace Warewolf.Launcher
 
             if (!StartServerAsConsole)
             {
-                var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
+                var exists = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
                 if (!ApplyDotCover)
                 {
-                    if (!ServerService)
+                    if (!exists)
                     {
                         Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
                     }
@@ -496,7 +496,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerService, ServerPath, TestRunner.TestsResultsPath);
+                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, exists);
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
@@ -620,38 +620,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                var StudioBinDir = Path.GetDirectoryName(StudioPath);
-                var RunnerXML = @"
-<AnalyseParams>
-    <TargetExecutable>" + StudioPath + @"</TargetExecutable>
-    <Output>" + Environment.ExpandEnvironmentVariables("%LocalAppData%") + @"\Warewolf\Studio Logs\dotCover.dcvr</Output>
-    <Scope>
-    	<ScopeEntry>" + StudioBinDir + @"\*.dll</ScopeEntry>
-    	<ScopeEntry>" + StudioBinDir + @"\*.exe</ScopeEntry>
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>
-";
-                var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml";
-                TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-                if (!Directory.Exists(TestRunner.TestsResultsPath))
-                {
-                    Directory.CreateDirectory(TestRunner.TestsResultsPath);
-                }
-                File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                Process.Start(TestCoverageRunner.CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
+                TestCoverageRunner.StartProcessWithCoverage(StudioPath, TestRunner.TestsResultsPath);
             }
             try
             {
@@ -805,53 +774,6 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string DotCoverRunner(string JobName, List<string> TestAssembliesDirectories)
-        {
-            // Write DotCover Runner XML 
-            var DotCoverSnapshotFile = Path.Combine(TestRunner.TestsResultsPath, $"{JobName} DotCover Output.dcvr");
-            TestCleanupUtils.CopyOnWrite(DotCoverSnapshotFile);
-            var DotCoverArgs = @"<AnalyseParams>
-    <TargetExecutable>" + TestRunner.TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
-    <Output>" + DotCoverSnapshotFile + @"</Output>
-    <Scope>";
-            foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
-            {
-                DotCoverArgs += @"
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.dll</ScopeEntry>
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.exe</ScopeEntry>";
-            }
-            DotCoverArgs += @"
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>";
-            var DotCoverRunnerXMLPath = Path.Combine(TestRunner.TestsResultsPath, JobName + " DotCover Runner.xml");
-            TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-            File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
-
-            // Create full DotCover argument string.
-            var DotCoverLogFile = TestRunner.TestsResultsPath + "\\DotCover.xml.log";
-            TestCleanupUtils.CopyOnWrite(DotCoverLogFile);
-            var FullArgsList = $" cover \"{DotCoverRunnerXMLPath}\" /LogFile=\"{DotCoverLogFile}\"";
-
-            // Write DotCover Runner Batch File
-            var DotCoverRunnerPath = $"{TestRunner.TestsResultsPath}\\Run {JobName} DotCover.bat";
-            TestCleanupUtils.CopyOnWrite(DotCoverRunnerPath);
-            File.WriteAllText(DotCoverRunnerPath, $"\"{TestCoverageRunner.CoverageToolPath}\"{FullArgsList}");
-            return DotCoverRunnerPath;
-        }
-
         public string RunTests(string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
             var trxTestResultsFile = "";
@@ -872,10 +794,8 @@ namespace Warewolf.Launcher
                 }
                 if (ApplyDotCover && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
                 {
-                    string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
+                    trxTestResultsFile = TestCoverageRunner.RunCoverageTool(TestRunner.TestsResultsPath, JobName, TestAssembliesDirectories);
 
-                    // Run DotCover Runner Batch File
-                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -913,17 +833,17 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void MergeDotCoverSnapshots()
+        public void MergeCoverageSnapshots()
         {
             var MergedSnapshotFileName = "Merged " + JobName.Split(',')[0] + " Snapshots";
-            string DestinationFilePath = MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
+            string DestinationFilePath = MergeCoverageSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
             TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
-            var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
+            var DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
             if (string.IsNullOrEmpty(JobName))
             {
                 JobName = "DotCover";
             }
-            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeDotCoverSnapshotsInDirectory + "\\DotCover", TestCoverageRunner.CoverageToolPath);
+            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover", TestCoverageRunner.CoverageToolPath);
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
@@ -988,7 +908,7 @@ namespace Warewolf.Launcher
             var JobNames = new List<string>();
             var JobAssemblySpecs = new List<string>();
             var JobCategories = new List<string>();
-            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory))
+            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeCoverageSnapshotsInDirectory))
             {
                 foreach (var Job in JobName.Split(','))
                 {
@@ -1101,8 +1021,8 @@ namespace Warewolf.Launcher
             }
             if (ApplyDotCover)
             {
-                MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
-                MergeDotCoverSnapshots();
+                MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
+                MergeCoverageSnapshots();
             }
         }
 

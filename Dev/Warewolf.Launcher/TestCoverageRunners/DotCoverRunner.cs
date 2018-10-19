@@ -2,23 +2,62 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Warewolf.Launcher.TestCoverageRunners
 {
     public class DotCoverRunner : ITestCoverageRunner
     {
-        string CoverageToolPath { get; set; }
-        string ITestCoverageRunner.CoverageToolPath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string CoverageToolPath { get; set; }
 
-        public void RunCoverageTool()
+        public string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories)
         {
-            throw new NotImplementedException();
+            // Write DotCover Runner XML 
+            var DotCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} DotCover Output.dcvr");
+            TestCleanupUtils.CopyOnWrite(DotCoverSnapshotFile);
+            var DotCoverArgs = @"<AnalyseParams>
+    <TargetExecutable>" + TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
+    <Output>" + DotCoverSnapshotFile + @"</Output>
+    <Scope>";
+            foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
+            {
+                DotCoverArgs += @"
+        <ScopeEntry>" + TestAssembliesDirectory + @"\*.dll</ScopeEntry>
+        <ScopeEntry>" + TestAssembliesDirectory + @"\*.exe</ScopeEntry>";
+            }
+            DotCoverArgs += @"
+    </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
+</AnalyseParams>";
+            var DotCoverRunnerXMLPath = Path.Combine(TestsResultsPath, JobName + " DotCover Runner.xml");
+            TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
+            File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
+
+            // Create full DotCover argument string.
+            var DotCoverLogFile = TestsResultsPath + "\\DotCover.xml.log";
+            TestCleanupUtils.CopyOnWrite(DotCoverLogFile);
+            var FullArgsList = $" cover \"{DotCoverRunnerXMLPath}\" /LogFile=\"{DotCoverLogFile}\"";
+
+            // Write DotCover Runner Batch File
+            var DotCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} DotCover.bat";
+            TestCleanupUtils.CopyOnWrite(DotCoverRunnerPath);
+            File.WriteAllText(DotCoverRunnerPath, $"\"{CoverageToolPath}\"{FullArgsList}");
+            // Run DotCover Runner Batch File
+            return ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
         }
 
-        public string StartServiceWithCoverage(bool ServerService, string ServerPath, string TestsResultsPath)
+        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, bool IsExistingService)
         {
             var ServerBinDir = Path.GetDirectoryName(ServerPath);
             var RunnerXML = @"<AnalyseParams>
@@ -47,7 +86,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
             File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
             var RunServerWithDotcoverScript = "\\\"" + CoverageToolPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestsResultsPath + "\\ServerDotCover.log\\\"";
-            if (!ServerService)
+            if (!IsExistingService)
             {
                 Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
             }
@@ -57,6 +96,42 @@ namespace Warewolf.Launcher.TestCoverageRunners
                 Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\"");
             }
             return RunServerWithDotcoverScript;
+        }
+
+        public void StartProcessWithCoverage(string processPath, string OutputDirectory)
+        {
+            var StudioBinDir = Path.GetDirectoryName(processPath);
+            var RunnerXML = @"
+<AnalyseParams>
+    <TargetExecutable>" + processPath + @"</TargetExecutable>
+    <Output>" + Environment.ExpandEnvironmentVariables("%LocalAppData%") + @"\Warewolf\Studio Logs\dotCover.dcvr</Output>
+    <Scope>
+    	<ScopeEntry>" + StudioBinDir + @"\*.dll</ScopeEntry>
+    	<ScopeEntry>" + StudioBinDir + @"\*.exe</ScopeEntry>
+    </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
+</AnalyseParams>
+";
+            var DotCoverRunnerXMLPath = OutputDirectory + "\\Studio DotCover Runner.xml";
+            TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
+            if (!Directory.Exists(OutputDirectory))
+            {
+                Directory.CreateDirectory(OutputDirectory);
+            }
+            File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
+            Process.Start(CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + OutputDirectory + "\\StudioDotCover.log\"");
         }
     }
 }
