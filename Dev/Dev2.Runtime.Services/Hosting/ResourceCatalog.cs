@@ -297,6 +297,15 @@ namespace Dev2.Runtime.Hosting
             return resources;
         }
 
+        public IList<IResource> LoadExamplesViaBuilder(string releasePath)
+        {
+            Builder = new ResourceCatalogBuilder();
+            Builder.BuildReleaseExamples(releasePath);
+            var resources = Builder.ResourceList;
+
+            return resources;
+        }
+
         public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");

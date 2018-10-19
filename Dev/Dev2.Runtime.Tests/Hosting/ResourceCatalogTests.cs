@@ -3358,6 +3358,15 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.TryBuildCatalogFromWorkspace("some value", null);
         }
 
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
+        public void ResourceCatalog_BuildReleaseExamples()
+        {
+            //------------Setup for test--------------------------
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            rc.BuildReleaseExamples("some value");
+        }
+
         class ResourceSaveProviderMock : ResourceSaveProvider
         {
             public ResourceSaveProviderMock(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
