@@ -392,7 +392,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"No failing tests found to retry in trx file at {FullTRXFilePath}");
                 return false;
             }
-            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", TestCleanupUtils.NumberToWords(currentRetryCount) + "RetryTestResults");
             TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
             TestRunner.TestList = string.Join(",", TestFailures);
             TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
@@ -407,9 +407,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestRunner.TestsResultsPath}");
             }
             return true;
-        }
-
-        public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
+        }        
 
         public void InstallServer()
         {
@@ -532,18 +530,25 @@ namespace Warewolf.Launcher
 
             if (!StartServerAsConsole)
             {
-                try
+                if (!String.IsNullOrEmpty(TestCoverageRunner.CoverageToolPath) && Path.GetFileName(TestCoverageRunner.CoverageToolPath).ToLower() != "dotcover.exe")
                 {
-                    ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                    Process.Start(TestCoverageRunner.CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{Path.Combine(TestRunner.TestsResultsPath, $"Server OpenCover Output.xml")}\"");
                 }
-                catch (InvalidOperationException e)
+                else
                 {
-                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    try
+                    {
+                        ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    }
                 }
 
                 var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
                 var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-                if (!(Output.EndsWith("RUNNING ")))
+                if (!(Output.Contains("STATE              : 4  RUNNING")))
                 {
                     Console.WriteLine(Output);
                     process.StartInfo.Arguments = "start \"Warewolf Server\"";
