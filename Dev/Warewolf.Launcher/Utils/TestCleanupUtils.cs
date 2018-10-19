@@ -383,7 +383,7 @@ namespace Warewolf.Launcher
             }
             if (Server && Studio && DotCover)
             {
-                build.TestCoverageMerger.MergeCoverageSnapshots(new List<string> { Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"), build.DotCoverPath);
+                build.TestCoverageMerger.MergeCoverageSnapshots(new List<string> { Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Server DotCover.dcvr"), Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Studio DotCover.dcvr") }, Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"), build.TestCoverageRunner.CoverageToolPath);
             }
             if (build.RecordScreen != null)
             {
