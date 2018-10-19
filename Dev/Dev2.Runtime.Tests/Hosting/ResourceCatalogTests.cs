@@ -3277,8 +3277,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var rcBuilder = new ResourceCatalogBuilder();
             var privateObject = new PrivateObject(rcBuilder);
             var fileHelperObject = new Mock<IFileHelper>();
-            fileHelperObject.Setup(o => o.Copy("E:\\Warewolf\\Dev\\Dev2.Runtime.Tests\\bin\\Debug\\Resources - Release\\Resources\\asdf\\asdf2.xml",
-                                               "C:\\ProgramData\\Warewolf\\Resources\\asdf\\asdf2.bite", false)).Verifiable();
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release\\Resources");
+            fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
+                                               EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
             var fileHelper = fileHelperObject.Object;
             var existingId = Guid.NewGuid().ToString();
             var programDataIds = new string[] {
@@ -3289,7 +3290,7 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 return new ResourceBuilderTO
                 {
-                    FilePath = "E:\\Warewolf\\Dev\\Dev2.Runtime.Tests\\bin\\Debug\\Resources - Release\\Resources\\"+ filename,
+                    FilePath = serverReleaseResources + "\\" + filename,
                     FileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
                 };
             }
