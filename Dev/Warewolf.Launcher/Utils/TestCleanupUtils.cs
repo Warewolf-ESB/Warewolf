@@ -10,6 +10,8 @@ namespace Warewolf.Launcher
 {
     public static class TestCleanupUtils
     {
+        public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
+
         static readonly string[] ToClean = new[]
         {
             "%LOCALAPPDATA%\\Warewolf\\DebugData\\PersistSettings.dat",
@@ -30,25 +32,26 @@ namespace Warewolf.Launcher
 
         public static void CopyOnWrite(string FileSpec)
         {
+            var DirectoryPath = Path.GetDirectoryName(FileSpec);
+            var FileNameWithoutExtention = Path.GetFileNameWithoutExtension(FileSpec);
             if (File.Exists(FileSpec))
             {
                 var num = 1;
                 var FileExtention = Path.GetExtension(FileSpec);
-                var FileSpecWithoutExtention = FileSpec.Substring(0, FileSpec.LastIndexOf('.') + 1);
-                while (File.Exists($"{FileSpecWithoutExtention}{num}{FileExtention}"))
+                while (File.Exists($"{DirectoryPath}\\{NumberToWords(num)} {FileNameWithoutExtention}{FileExtention}"))
                 {
                     num++;
                 }
-                File.Move(FileSpec, $"{FileSpecWithoutExtention}{num}{FileExtention}");
+                File.Move(FileSpec, $"{DirectoryPath}\\{NumberToWords(num)} {FileNameWithoutExtention}{FileExtention}");
             }
             else if (Directory.Exists(FileSpec))
             {
                 var num = 1;
-                while (Directory.Exists($"{FileSpec}{num}"))
+                while (Directory.Exists($"{DirectoryPath}\\{NumberToWords(num)} {FileNameWithoutExtention}"))
                 {
                     num++;
                 }
-                Directory.Move(FileSpec, $"{FileSpec}{num}");
+                Directory.Move(FileSpec, $"{DirectoryPath}\\{NumberToWords(num)} {FileNameWithoutExtention}");
             }
         }
 
@@ -240,6 +243,13 @@ namespace Warewolf.Launcher
             process.Start();
             process.StartInfo.Arguments = "/im \"IEDriverServer.exe\" /f";
             process.Start();
+            if (Force)
+            {
+                process.StartInfo.Arguments = "/im \"opencover.console.exe\" /f";
+                process.Start();
+                process.StartInfo.Arguments = "/im \"dotcover.exe\" /f";
+                process.Start();
+            }
 
             //Delete Certain Studio and Server Resources
             foreach (var FileOrFolder in ToClean)
@@ -279,6 +289,13 @@ namespace Warewolf.Launcher
 
         public static void MoveArtifactsToTestResults(this TestLauncher build, bool DotCover, bool Server, bool Studio, string JobName)
         {
+            string serverOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"Server OpenCover Output.xml");
+            string studioOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"Studio OpenCover Output.xml");
+            if (Server && Studio && File.Exists(serverOpenCoverSnapshot) && File.Exists(studioOpenCoverSnapshot))
+            {
+                build.TestCoverageReportGenerator.GenerateCoverageReport(new List<string> { serverOpenCoverSnapshot, studioOpenCoverSnapshot }, Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio Coverage Report"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
+                DotCover = false;
+            }
             string testsResultsPath = build.TestRunner.TestsResultsPath;
             if (Directory.Exists(testsResultsPath))
             {

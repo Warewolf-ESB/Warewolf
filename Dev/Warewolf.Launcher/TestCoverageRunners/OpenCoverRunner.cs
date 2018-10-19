@@ -53,7 +53,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
                     File.Delete(serverStartedFile);
                 }
                 Process.Start("sc.exe", $"config \"Warewolf Server\" binPath= \"{ServerPath}\"");
-                Process.Start(CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{OpenCoverSnapshotFile}\"");
+                
             }
             return WriteRunnerScriptFile(OutputDirectory, "Server", OpenCoverSnapshotFile);
         }
