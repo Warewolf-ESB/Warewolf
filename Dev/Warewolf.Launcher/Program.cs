@@ -100,14 +100,14 @@ namespace Warewolf.Launcher
                     Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
                 }
 
-                if (build.MergeDotCoverSnapshotsInDirectory != null)
+                if (build.MergeCoverageSnapshotsInDirectory != null)
                 {
-                    build.MergeDotCoverSnapshots();
+                    build.MergeCoverageSnapshots();
                 }
 
                 if (!build.Cleanup)
                 {
-                    if ((!string.IsNullOrEmpty(build.JobName) || !string.IsNullOrEmpty(build.ProjectName)) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
+                    if ((!string.IsNullOrEmpty(build.JobName) || !string.IsNullOrEmpty(build.ProjectName)) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeCoverageSnapshotsInDirectory))
                     {
                         build.RunTestJobs();
                     }
@@ -161,7 +161,7 @@ namespace Warewolf.Launcher
                     File.WriteAllText("FullVersionString", "FullVersionString=" + HighestReadVersion);
                 }
 
-                if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.ProjectName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
+                if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.ProjectName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeCoverageSnapshotsInDirectory))
                 {
                     if (build.AdminMode)
                     {

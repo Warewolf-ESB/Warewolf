@@ -9,7 +9,8 @@ namespace Warewolf.Launcher
     public interface ITestCoverageRunner
     {
         string CoverageToolPath { get; set; }
-        void RunCoverageTool();
-        string StartServiceWithCoverage(bool ServerService, string ServerPath, string TestsResultsPath);
+        string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories);
+        string StartServiceWithCoverage(string ServerPath, string OutputDirectory, bool IsExistingService);
+        void StartProcessWithCoverage(string processPath, string OutputDirectory);
     }
 }
