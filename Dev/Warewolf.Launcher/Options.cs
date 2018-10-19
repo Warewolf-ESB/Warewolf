@@ -1,6 +1,9 @@
 ﻿using CommandLine;
 using System;
+using System.IO;
 using System.Threading;
+using Warewolf.Launcher.TestCoverageMergers;
+using Warewolf.Launcher.TestCoverageRunners;
 using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
@@ -166,8 +169,25 @@ namespace Warewolf.Launcher
                 }
                 if (options.CoverageToolPath != null)
                 {
-                    Console.WriteLine("DotCoverPath: " + options.CoverageToolPath);
-                    testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
+                    Console.WriteLine("CoverageToolPath: " + options.CoverageToolPath);
+                    var coverageExeName = Path.GetFileName(options.CoverageToolPath).ToLower();
+                    switch (coverageExeName)
+                    {
+                        case "opencover.console.exe":
+                            testLauncher.TestCoverageRunner = new OpenCoverRunner();
+                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator();
+                            testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
+                            testLauncher.TestCoverageReportGenerator.ToolPath = @"..\..\..\packages\ReportGenerator.4.0.0-rc11\tools\net47\ReportGenerator.exe";
+                            break;
+                        case "dotcover.exe":
+                            testLauncher.TestCoverageRunner = new DotCoverRunner();
+                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator();
+                            testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
+                            testLauncher.TestCoverageReportGenerator.ToolPath = options.CoverageToolPath;
+                            break;
+                        default:
+                            throw new ArgumentException($"Unrecognized coverage tool {coverageExeName}");
+                    }
                 }
                 if (options.ServerUsername != null)
                 {
@@ -317,7 +337,6 @@ namespace Warewolf.Launcher
                     containerLauncher.LogOutputDirectory = testLauncher.TestRunner.TestsResultsPath;
                     testLauncher.StartContainer = containerLauncher;
                 }
-                testLauncher.TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
             }).WithNotParsed(errs =>
             {
                 foreach (var err in errs)

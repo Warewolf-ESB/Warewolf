@@ -20,7 +20,7 @@ namespace Warewolf.Launcher.Utils
             }
             Console.WriteLine("Press Enter to Shutdown.");
             Console.ReadKey();
-            build.CleanupServerStudio(!build.ApplyDotCover);
+            build.CleanupServerStudio(!build.ApplyCoverage);
             if (string.IsNullOrEmpty(build.JobName))
             {
                 if (!string.IsNullOrEmpty(build.ProjectName))
@@ -32,7 +32,7 @@ namespace Warewolf.Launcher.Utils
                     build.JobName = "Manual Tests";
                 }
             }
-            build.MoveArtifactsToTestResults(build.ApplyDotCover, true, true, build.JobName);
+            build.MoveArtifactsToTestResults(build.ApplyCoverage, true, true, build.JobName);
         }
     }
 }
