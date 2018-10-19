@@ -48,7 +48,7 @@ namespace Warewolf.Launcher
         public ITestRunner TestRunner { get; internal set; }
         public ITestCoverageRunner TestCoverageRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
-        public ITestCoverageMerger TestCoverageMerger { get; internal set; }
+        public ITestCoverageReportGenerator TestCoverageReportGenerator { get; internal set; }
         public string RetryFile { get; internal set; }
         public static bool EnableDocker { get; set; }
 
@@ -56,7 +56,7 @@ namespace Warewolf.Launcher
         public string StudioExeName;
         public List<string> ServerPathSpecs;
         public List<string> StudioPathSpecs;
-        public bool ApplyDotCover;
+        public bool ApplyCoverage;
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
 
@@ -482,7 +482,7 @@ namespace Warewolf.Launcher
             if (!StartServerAsConsole)
             {
                 var exists = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
-                if (!ApplyDotCover)
+                if (!ApplyCoverage)
                 {
                     if (!exists)
                     {
@@ -553,7 +553,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (!ApplyDotCover)
+                if (!ApplyCoverage)
                 {
                     Process.Start(ServerPath);
                 }
@@ -614,7 +614,7 @@ namespace Warewolf.Launcher
             }
             var StudioLogFile = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log");
             TestCleanupUtils.CopyOnWrite(StudioLogFile);
-            if (!ApplyDotCover)
+            if (!ApplyCoverage)
             {
                 Process.Start(StudioPath);
             }
@@ -628,7 +628,7 @@ namespace Warewolf.Launcher
             }
             catch (Exception)
             {
-                if (!ApplyDotCover)
+                if (!ApplyCoverage)
                 {
                     Process.Start(StudioPath);
                 }
@@ -792,7 +792,7 @@ namespace Warewolf.Launcher
                         }
                     }
                 }
-                if (ApplyDotCover && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
+                if (ApplyCoverage && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
                 {
                     trxTestResultsFile = TestCoverageRunner.RunCoverageTool(TestRunner.TestsResultsPath, JobName, TestAssembliesDirectories);
 
@@ -807,10 +807,10 @@ namespace Warewolf.Launcher
                     trxTestResultsFile = ProcessUtils.RunFileInThisProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
-                        this.CleanupServerStudio(!ApplyDotCover);
+                        this.CleanupServerStudio(!ApplyCoverage);
                     }
                 }
-                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
+                this.MoveArtifactsToTestResults(ApplyCoverage, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
             }
             return trxTestResultsFile;
         }
@@ -833,24 +833,28 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void MergeCoverageSnapshots()
+        public void GenerateCoverageReport()
         {
             var MergedSnapshotFileName = "Merged " + JobName.Split(',')[0] + " Snapshots";
             string DestinationFilePath = MergeCoverageSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
             TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
             var DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
+            if (DotCoverSnapshots.Count <= 0)
+            {
+                DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*OpenCover Output.xml", SearchOption.AllDirectories).ToList();
+            }
             if (string.IsNullOrEmpty(JobName))
             {
                 JobName = "DotCover";
             }
-            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, DestinationFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover", TestCoverageRunner.CoverageToolPath);
+            TestCoverageReportGenerator.GenerateCoverageReport(DotCoverSnapshots, DestinationFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover");
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
         {
             JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfUnitTestJobs));
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllServerTestJobs(int startIndex, int NumberOfServerTestJobs)
@@ -859,7 +863,7 @@ namespace Warewolf.Launcher
             ResourcesType = "ServerTests";
             DoServerStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllReleaseResourcesTestJobs(int startIndex, int NumberOfReleaseResourcesTestJobs)
@@ -868,7 +872,7 @@ namespace Warewolf.Launcher
             ResourcesType = "Release";
             DoServerStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllDesktopUITestJobs(int startIndex, int NumberOfDesktopUITestJobs)
@@ -877,7 +881,7 @@ namespace Warewolf.Launcher
             ResourcesType = "UITests";
             DoStudioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllWebUITestJobs(int startIndex, int NumberOfWebUITestJobs)
@@ -885,7 +889,7 @@ namespace Warewolf.Launcher
             JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfWebUITestJobs));
             DomywarewolfioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllLoadTestJobs(int startIndex, int NumberOfLoadTestJobs)
@@ -894,7 +898,7 @@ namespace Warewolf.Launcher
             ResourcesType = "Load";
             DoStudioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunTestJobs(string jobName = "")
@@ -946,7 +950,7 @@ namespace Warewolf.Launcher
                 throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
             }
 
-            if (ApplyDotCover && TestCoverageRunner.CoverageToolPath != "" && !(File.Exists(TestCoverageRunner.CoverageToolPath)))
+            if (ApplyCoverage && TestCoverageRunner.CoverageToolPath != "" && !(File.Exists(TestCoverageRunner.CoverageToolPath)))
             {
                 throw new ArgumentException("Error cannot find coverage tool path .exe. Use --CoverageToolPath parameter to pass a path to that file.");
             }
@@ -1019,10 +1023,10 @@ namespace Warewolf.Launcher
                     }
                 }
             }
-            if (ApplyDotCover)
+            if (ApplyCoverage)
             {
                 MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
-                MergeCoverageSnapshots();
+                GenerateCoverageReport();
             }
         }
 

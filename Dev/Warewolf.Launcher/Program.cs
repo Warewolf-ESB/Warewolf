@@ -62,12 +62,12 @@ namespace Warewolf.Launcher
 
                 if (build.JobName != null && build.JobName.Contains(" DotCover"))
                 {
-                    build.ApplyDotCover = true;
+                    build.ApplyCoverage = true;
                     build.JobName = build.JobName.Replace(" DotCover", "");
                 }
                 else
                 {
-                    build.ApplyDotCover = !string.IsNullOrEmpty(build.TestCoverageRunner.CoverageToolPath);
+                    build.ApplyCoverage = !string.IsNullOrEmpty(build.TestCoverageRunner.CoverageToolPath);
                 }
 
                 if (!string.IsNullOrEmpty(build.TestRunner.TestsPath) && build.TestRunner.TestsPath.StartsWith(".."))
@@ -102,7 +102,7 @@ namespace Warewolf.Launcher
 
                 if (build.MergeCoverageSnapshotsInDirectory != null)
                 {
-                    build.MergeCoverageSnapshots();
+                    build.GenerateCoverageReport();
                 }
 
                 if (!build.Cleanup)
@@ -114,7 +114,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    build.CleanupServerStudio(!build.ApplyDotCover);
+                    build.CleanupServerStudio(!build.ApplyCoverage);
                     if (string.IsNullOrEmpty(build.JobName))
                     {
                         if (!string.IsNullOrEmpty(build.ProjectName))
@@ -126,7 +126,7 @@ namespace Warewolf.Launcher
                             build.JobName = "Manual Tests";
                         }
                     }
-                    build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")), build.JobName);
+                    build.MoveArtifactsToTestResults(build.ApplyCoverage, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")), build.JobName);
                 }
 
                 if (!string.IsNullOrEmpty(build.AssemblyFileVersionsTest))

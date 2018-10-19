@@ -4,9 +4,11 @@ using System.IO;
 
 namespace Warewolf.Launcher.TestCoverageMergers
 {
-    class DotCoverSnapshotMerger : ITestCoverageMerger
+    class DotCoverReportGenerator : ITestCoverageReportGenerator
     {
-        public void MergeCoverageSnapshots(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath, string ToolPath)
+        public string ToolPath { get; set; }
+
+        public void GenerateCoverageReport(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath)
         {
             if (SnapshotPaths != null)
             {
