@@ -98,6 +98,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TestCoverageRunners\OpenCoverRunner.cs" />
     <Compile Include="TestCoverageRunners\DotCoverRunner.cs" />
     <Compile Include="Utils\AdminMode.cs" />
     <Compile Include="ContainerLauncher.cs" />
