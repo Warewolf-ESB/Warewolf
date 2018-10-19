@@ -501,11 +501,11 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
             {
-                Process.Start("sc.exe", "config \"Warewolf Server\" obj= \"" + ServerUsername + "\"");
+                Process.Start("sc.exe", $"config \"Warewolf Server\" obj= \"{ServerUsername}\"");
             }
             if (!string.IsNullOrEmpty(ServerUsername) && !string.IsNullOrEmpty(ServerPassword))
             {
-                Process.Start("sc.exe", "config \"Warewolf Server\" obj= \"" + ServerUsername + "\" password= \"" + ServerPassword + "\"");
+                Process.Start("sc.exe", $"config \"Warewolf Server\" obj= \"{ServerUsername}\" password= \"{ServerPassword}\"");
             }
 
             var ResourcePathSpecs = new List<string>();
@@ -568,7 +568,7 @@ namespace Warewolf.Launcher
 
         void WaitForServerStart(string ServerFolderPath)
         {
-            var ServerStartedFilePath = ServerFolderPath + "\\ServerStarted";
+            var ServerStartedFilePath = Path.Combine(ServerFolderPath, "ServerStarted");
             TestCleanupUtils.WaitForFileExist(ServerStartedFilePath);
             if (!(File.Exists(ServerStartedFilePath)))
             {

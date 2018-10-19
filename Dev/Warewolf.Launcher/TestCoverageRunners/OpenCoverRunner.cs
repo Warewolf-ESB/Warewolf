@@ -14,7 +14,13 @@ namespace Warewolf.Launcher.TestCoverageRunners
             // Prepare OpenCover Output File
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} OpenCover Output.xml");
             TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
+            string OpenCoverRunnerPath = WriteRunnerScriptFile(TestsResultsPath, JobName, OpenCoverSnapshotFile);
+            // Run OpenCover Runner Batch File
+            return ProcessUtils.RunFileInThisProcess(OpenCoverRunnerPath);
+        }
 
+        string WriteRunnerScriptFile(string TestsResultsPath, string JobName, string OpenCoverSnapshotFile)
+        {
             // Create full OpenCover argument string.
             var FullArgsList = $" -target:\"" + TestsResultsPath + "\\..\\Run " + JobName + $".bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"";
 
@@ -22,24 +28,34 @@ namespace Warewolf.Launcher.TestCoverageRunners
             var OpenCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} OpenCover.bat";
             TestCleanupUtils.CopyOnWrite(OpenCoverRunnerPath);
             File.WriteAllText(OpenCoverRunnerPath, $"\"{CoverageToolPath}\"{FullArgsList}");
-            // Run OpenCover Runner Batch File
-            return ProcessUtils.RunFileInThisProcess(OpenCoverRunnerPath);
+            return OpenCoverRunnerPath;
         }
 
-        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, bool IsExistingService)
+        public string StartServiceWithCoverage(string ServerPath, string OutputDirectory, bool IsExistingService)
         {
-            var RunServerWithOpenCoverScript = "\"" + CoverageToolPath + "\" -target:\"Warewolf Server\" -service";
+            // Prepare OpenCover Output File
+            var OpenCoverSnapshotFile = Path.Combine(OutputDirectory, $"Server OpenCover Output.xml");
+            TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
+
+            var RunServerWithOpenCoverScript = $"\"{CoverageToolPath}\" -target:\"Warewolf Server\" -service";
             if (!IsExistingService)
             {
-                Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithOpenCoverScript + "\" start= demand");
+                Process.Start("sc.exe", $"create \"Warewolf Server\" binPath= \"{RunServerWithOpenCoverScript}\" start= demand");
                 Process.Start(CoverageToolPath, "-target:\"Warewolf Server\" -service");
             }
             else
             {
-                Console.WriteLine("Instrumenting service for coverage with " + CoverageToolPath);
-                Process.Start(CoverageToolPath, "-target:\"Warewolf Server\" -service");
+                Console.WriteLine($"Instrumenting service for coverage with {CoverageToolPath}");
+                Process.Start("sc.exe", "stop \"Warewolf Server\"");
+                string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
+                if (File.Exists(serverStartedFile))
+                {
+                    File.Delete(serverStartedFile);
+                }
+                Process.Start("sc.exe", $"config \"Warewolf Server\" binPath= \"{ServerPath}\"");
+                Process.Start(CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{OpenCoverSnapshotFile}\"");
             }
-            return RunServerWithOpenCoverScript;
+            return WriteRunnerScriptFile(OutputDirectory, "Server", OpenCoverSnapshotFile);
         }
 
         public void StartProcessWithCoverage(string processPath, string OutputDirectory)
