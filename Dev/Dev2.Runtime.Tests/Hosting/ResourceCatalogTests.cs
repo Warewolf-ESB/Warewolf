@@ -46,6 +46,7 @@ using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -3266,6 +3267,61 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results------------------------
             Assert.AreEqual(1, resourceCount);
             Assert.IsTrue(resource.FilePath.EndsWith(".bite"));
+        }
+
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_CopyMissingResources()
+        {
+            //------------Setup for test--------------------------
+            var rcBuilder = new ResourceCatalogBuilder();
+            var privateObject = new PrivateObject(rcBuilder);
+            var fileHelperObject = new Mock<IFileHelper>();
+            fileHelperObject.Setup(o => o.Copy("E:\\Warewolf\\Dev\\Dev2.Runtime.Tests\\bin\\Debug\\Resources - Release\\Resources\\asdf\\asdf2.xml",
+                                               "C:\\ProgramData\\Warewolf\\Resources\\asdf\\asdf2.bite", false)).Verifiable();
+            var fileHelper = fileHelperObject.Object;
+            var existingId = Guid.NewGuid().ToString();
+            var programDataIds = new string[] {
+                existingId
+            };
+
+            ResourceBuilderTO newResourceBuilderTO(string filename, string id)
+            {
+                return new ResourceBuilderTO
+                {
+                    FilePath = "E:\\Warewolf\\Dev\\Dev2.Runtime.Tests\\bin\\Debug\\Resources - Release\\Resources\\"+ filename,
+                    FileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
+                };
+            }
+
+            var programFilesBuilders = new List<ResourceBuilderTO>
+            {
+                newResourceBuilderTO("asdf\\asdf.xml", existingId)
+            };
+
+            //------------Execute Test--------------------------
+            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, fileHelper);
+            //------------Assert Results------------------------
+            Assert.IsNotNull(result);
+            var hadMissing = (bool)result;
+            Assert.IsFalse(hadMissing);
+
+
+            //------------Execute Test--------------------------
+            programFilesBuilders = new List<ResourceBuilderTO> {
+                newResourceBuilderTO("asdf\\asdf.xml", existingId),
+                newResourceBuilderTO("asdf\\asdf2.xml", Guid.NewGuid().ToString())
+            };
+
+
+            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, fileHelper);
+
+            //------------Assert Results------------------------
+            Assert.IsNotNull(result);
+            hadMissing = (bool)result;
+            Assert.IsTrue(hadMissing);
+
+            fileHelperObject.Verify();
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
