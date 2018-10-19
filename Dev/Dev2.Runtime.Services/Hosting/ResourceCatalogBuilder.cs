@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Hosting
     class ResourceBuilderTO
     {
         internal string FilePath;
-        internal FileStream FileStream;
+        internal Stream FileStream;
     }
 
     public class ResourceCatalogBuilder
@@ -90,13 +90,13 @@ namespace Dev2.Runtime.Hosting
 
         private static void BuildStream(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
         {
+            var dir = new DirectoryHelper();
             foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
             {
                 if (!Directory.Exists(path))
                 {
                     continue;
                 }
-                var dir = new DirectoryHelper();
                 var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
                 foreach (var file in files)
                 {
@@ -152,6 +152,20 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
 
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new FileHelper());
+            foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
+            {
+                builderTO.FileStream.Close();
+            }
+
+            if (foundMissingResources)
+            {
+                ResourceCatalog.Instance.Reload();
+            }
+        }
+
+        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IFileHelper fileHelper)
+        {
             var foundMissingResources = false;
 
             // NOTE: we have not filtered for files that are not 
@@ -168,7 +182,8 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 var id = xml?.Attribute("ID")?.Value ?? null;
-                if (id != null && programDataIds.Any(programDataId => programDataId == id)) { // resource already installed
+                if (id != null && programDataIds.Any(programDataId => programDataId == id))
+                { // resource already installed
                     return;
                 }
                 if (id is null) // invalid resource
@@ -191,7 +206,6 @@ namespace Dev2.Runtime.Hosting
 
                 try
                 {
-                    var fileHelper = new FileHelper();
                     fileHelper.Copy(programFileItem.FilePath, MyNewInstalledFilePath, false);
                 }
                 catch (Exception e)
@@ -200,19 +214,7 @@ namespace Dev2.Runtime.Hosting
                 }
             });
 
-            foreach (var stream in programDataBuilders)
-            {
-                stream.FileStream.Close();
-            }
-            foreach (var stream in programFilesBuilders)
-            {
-                stream.FileStream.Close();
-            }
-
-            if (foundMissingResources)
-            {
-                ResourceCatalog.Instance.Reload();
-            }
+            return foundMissingResources;
         }
 
         private void BuildCatalogFromWorkspace(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
