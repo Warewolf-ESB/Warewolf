@@ -146,6 +146,6 @@
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.3.0\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.3.0\build\net45\MSTest.TestAdapter.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /E "$(SolutionDir)packages\OpenCover.4.6.519\tools" "$(TargetDir)opencover\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /E /Y "$(SolutionDir)packages\OpenCover.4.6.519\tools" "$(TargetDir)opencover\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
