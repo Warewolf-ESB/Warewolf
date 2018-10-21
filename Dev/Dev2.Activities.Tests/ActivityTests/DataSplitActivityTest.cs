@@ -430,6 +430,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [DeploymentItem("LargeRowsDataSplit.txt")]
+        [Timeout(90)]
         public void LargeRows_SplitOnNewLine_ShouldSplitCorrectly()
         {
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
