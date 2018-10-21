@@ -9,6 +9,8 @@ namespace Warewolf.Launcher.TestCoverageRunners
     {
         public string CoverageToolPath { get; set; }
 
+        public DotCoverRunner(string ToolPath) => CoverageToolPath = ToolPath;
+
         public string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories)
         {
             // Write DotCover Runner XML 
