@@ -17,27 +17,18 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.Common.State;
 using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for DataSplitActivityTest
-    /// </summary>
     [TestClass]
-
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
         readonly string _source = ActivityStrings.DataSplit_SourceString;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
@@ -53,9 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
-
-
-
+        
         #region Funky Language
 
         [TestMethod]
@@ -197,7 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        [TestMethod] // - OK
+        [TestMethod]
         public void EmptySourceString_Expected_No_Splits()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
@@ -430,7 +419,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [DeploymentItem("LargeRowsDataSplit.txt")]
-        [Timeout(90)]
+        [Timeout(90000)]
         public void LargeRows_SplitOnNewLine_ShouldSplitCorrectly()
         {
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
@@ -457,8 +446,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("0827373254", res.Item.First().ToString());
             Assert.AreEqual(8300000, totalCount, CurrentDl);
         }
-
-        //2012.09.28: massimo.guerrera - Add tab functionality
+        
         [TestMethod]
         public void TabTypeSplit_Expected_Split_On_Tab()
         {
