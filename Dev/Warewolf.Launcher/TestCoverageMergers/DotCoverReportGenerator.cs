@@ -8,6 +8,8 @@ namespace Warewolf.Launcher.TestCoverageMergers
     {
         public string ToolPath { get; set; }
 
+        public DotCoverReportGenerator(string ReportGeneratorToolPath) => ToolPath = ReportGeneratorToolPath;
+
         public void GenerateCoverageReport(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath)
         {
             if (SnapshotPaths != null)

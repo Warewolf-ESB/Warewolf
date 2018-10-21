@@ -9,6 +9,8 @@ namespace Warewolf.Launcher.TestCoverageRunners
     {
         public string CoverageToolPath { get; set; }
 
+        public OpenCoverRunner(string ToolPath) => CoverageToolPath = ToolPath;
+
         public string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories)
         {
             // Prepare OpenCover Output File

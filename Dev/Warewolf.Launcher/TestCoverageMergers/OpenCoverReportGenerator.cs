@@ -7,6 +7,8 @@ namespace Warewolf.Launcher.TestCoverageMergers
     {
         public string ToolPath { get; set; }
 
+        public OpenCoverReportGenerator(string ReportGeneratorToolPath) => ToolPath = ReportGeneratorToolPath;
+
         public void GenerateCoverageReport(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath)
         {
             TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.html");

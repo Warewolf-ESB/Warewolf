@@ -174,16 +174,12 @@ namespace Warewolf.Launcher
                     switch (coverageExeName)
                     {
                         case "opencover.console.exe":
-                            testLauncher.TestCoverageRunner = new OpenCoverRunner();
-                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator();
-                            testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
-                            testLauncher.TestCoverageReportGenerator.ToolPath = @"ReportGenerator\ReportGenerator.exe";
+                            testLauncher.TestCoverageRunner = new OpenCoverRunner(options.CoverageToolPath);
+                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(@"ReportGenerator\ReportGenerator.exe");
                             break;
                         case "dotcover.exe":
-                            testLauncher.TestCoverageRunner = new DotCoverRunner();
-                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator();
-                            testLauncher.TestCoverageRunner.CoverageToolPath = options.CoverageToolPath;
-                            testLauncher.TestCoverageReportGenerator.ToolPath = options.CoverageToolPath;
+                            testLauncher.TestCoverageRunner = new DotCoverRunner(options.CoverageToolPath);
+                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
                             break;
                         default:
                             throw new ArgumentException($"Unrecognized coverage tool {coverageExeName}");
