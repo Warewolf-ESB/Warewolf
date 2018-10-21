@@ -841,8 +841,7 @@ namespace Warewolf.Launcher
         public void GenerateCoverageReport()
         {
             var MergedSnapshotFileName = "Merged " + JobName.Split(',')[0] + " Snapshots";
-            string DestinationFilePath = MergeCoverageSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
-            TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.dcvr");
+            string ReportFilePath = MergeCoverageSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
             var DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
             if (DotCoverSnapshots.Count <= 0)
             {
@@ -852,7 +851,7 @@ namespace Warewolf.Launcher
             {
                 JobName = "DotCover";
             }
-            TestCoverageReportGenerator.GenerateCoverageReport(DotCoverSnapshots, DestinationFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover");
+            TestCoverageReportGenerator.GenerateCoverageReport(DotCoverSnapshots, ReportFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover");
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
