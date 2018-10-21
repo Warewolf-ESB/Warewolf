@@ -13,6 +13,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
         {
             TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.html");
             var DotCoverSnapshotsString = String.Join("\",\"", SnapshotPaths);
+            Console.WriteLine($"Writing coverage report to {DestinationFilePath} with {ToolPath}");
             ProcessUtils.RunFileInThisProcess(ToolPath, $"-reports:\"{DotCoverSnapshotsString}\" -targetdir:\"{DestinationFilePath}\"");
         }
     }
