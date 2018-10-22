@@ -57,6 +57,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             };
             var modelItem = ModelItemUtils.CreateModelItem(sqlActivity);
             var environmentModel = ServerRepository.Instance.Source;
+            CustomContainer.Register<IServerRepository>(ServerRepository.Instance);
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
