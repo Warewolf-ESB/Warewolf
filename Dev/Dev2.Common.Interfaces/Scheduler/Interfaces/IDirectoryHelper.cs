@@ -15,7 +15,7 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
     public interface IDirectoryHelper
     {
         string[] GetFiles(string path);
-        string CreateIfNotExists(string debugOutputPath);
+        string CreateIfNotExists(string path);
         IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions);
         void Copy(string sourceDirName, string destDirName, bool copySubDirs);
         void CleanUp(string path);

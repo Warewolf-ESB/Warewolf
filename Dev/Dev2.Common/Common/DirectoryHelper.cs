@@ -174,14 +174,14 @@ namespace Dev2.Common.Common
             }
         }
 
-        public string CreateIfNotExists(string debugOutputPath)
+        public string CreateIfNotExists(string path)
         {
-            if (!Directory.Exists(debugOutputPath))
+            if (!Directory.Exists(path))
             {
-                return Directory.CreateDirectory(debugOutputPath).Name;
+                return Directory.CreateDirectory(path).Name;
             }
 
-            return debugOutputPath;
+            return path;
         }
     }
 }
