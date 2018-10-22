@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Manual Resumption</h2>
+<mat-dialog-content>
+  <mat-card>ExecutionId: {{ExecutionId}}</mat-card>
+  <mat-card>Url: {{Url}}</mat-card>
+  <mat-card>ExecutionTime: {{ExecutionTime}}</mat-card>
+  <mat-card>Status: {{Status}}</mat-card>
+  <mat-card>StartDateTime: {{StartDateTime}}</mat-card>
+  <mat-card>CompletedDateTime: {{CompletedDateTime}}</mat-card>
+  <mat-card>User: {{User}}</mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="close()">    Close  </button>
+  <button class="mat-raised-button mat-primary" (click)="resume()">    Resume  </button>
+</mat-dialog-actions>
