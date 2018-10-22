@@ -59,7 +59,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             return ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
         }
 
-        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
+        public string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             var ServerBinDir = Path.GetDirectoryName(ServerPath);
             var RunnerXML = @"<AnalyseParams>
@@ -135,5 +135,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
             Process.Start(CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
         }
+
+        public void StartServiceWithCoverage(string TestsResultsPath, string jobName) => Process.Start("sc.exe", "start \"Warewolf Server\"");
     }
 }
