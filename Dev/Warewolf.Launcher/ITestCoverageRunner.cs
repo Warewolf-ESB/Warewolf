@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {
@@ -10,7 +7,7 @@ namespace Warewolf.Launcher
     {
         string CoverageToolPath { get; set; }
         string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories);
-        string StartServiceWithCoverage(string ServerPath, string OutputDirectory, bool IsExistingService);
-        void StartProcessWithCoverage(string processPath, string OutputDirectory);
+        string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService);
+        void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName);
     }
 }
