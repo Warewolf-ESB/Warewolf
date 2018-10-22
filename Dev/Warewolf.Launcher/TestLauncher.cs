@@ -494,7 +494,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, exists);
+                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, JobName, exists);
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))

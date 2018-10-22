@@ -59,7 +59,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             return ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
         }
 
-        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, bool IsExistingService)
+        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             var ServerBinDir = Path.GetDirectoryName(ServerPath);
             var RunnerXML = @"<AnalyseParams>
@@ -100,7 +100,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             return RunServerWithDotcoverScript;
         }
 
-        public void StartProcessWithCoverage(string processPath, string OutputDirectory)
+        public void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName)
         {
             var StudioBinDir = Path.GetDirectoryName(processPath);
             var RunnerXML = @"
@@ -126,14 +126,14 @@ namespace Warewolf.Launcher.TestCoverageRunners
     </Filters>
 </AnalyseParams>
 ";
-            var DotCoverRunnerXMLPath = OutputDirectory + "\\Studio DotCover Runner.xml";
+            var DotCoverRunnerXMLPath = TestsResultsPath + "\\Studio DotCover Runner.xml";
             TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-            if (!Directory.Exists(OutputDirectory))
+            if (!Directory.Exists(TestsResultsPath))
             {
-                Directory.CreateDirectory(OutputDirectory);
+                Directory.CreateDirectory(TestsResultsPath);
             }
             File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-            Process.Start(CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + OutputDirectory + "\\StudioDotCover.log\"");
+            Process.Start(CoverageToolPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
         }
     }
 }

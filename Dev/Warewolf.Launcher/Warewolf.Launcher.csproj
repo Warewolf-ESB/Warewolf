@@ -98,7 +98,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="TestCoverageMergers\OpenCoverReportGenerator.cs" />
+    <Compile Include="CoverageReportGenerators\OpenCoverReportGenerator.cs" />
     <Compile Include="TestCoverageRunners\OpenCoverRunner.cs" />
     <Compile Include="TestCoverageRunners\DotCoverRunner.cs" />
     <Compile Include="Utils\AdminMode.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Utils\ProcessUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Utils\TestCleanupUtils.cs" />
-    <Compile Include="TestCoverageMergers\DotCoverReportGenerator.cs" />
+    <Compile Include="CoverageReportGenerators\DotCoverReportGenerator.cs" />
     <Compile Include="TestLauncher.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="TestResultsMergers\TRXMerger.cs" />
