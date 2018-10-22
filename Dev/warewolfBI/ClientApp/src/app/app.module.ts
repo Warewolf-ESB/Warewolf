@@ -10,6 +10,7 @@ import { ModalModule } from 'angular-custom-modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngMaterialModule } from './angmaterial';
 import { LayoutModule } from '@angular/cdk/layout';
+import { HttpModule } from "@angular/http";
 
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { AuthInterceptor } from './helpers/auth.interceptor';
@@ -53,6 +54,7 @@ import { LogEntryComponent } from './logentry/logentry.component'
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
+    HttpModule,
     CustomMaterialModule,
     AppRoutingModule,
     CommonModule,

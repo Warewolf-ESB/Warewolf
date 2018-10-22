@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\alert\alert.service.ts" />
     <None Remove="ClientApp\src\app\angmaterial.ts" />
     <None Remove="ClientApp\src\app\animations.ts" />
     <None Remove="ClientApp\src\app\dashboard\cards\abstract-dashboard-card.ts" />
@@ -50,7 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\alert\alert.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\angmaterial.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\animations.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\executionlogging\executionLoggingDataSource.ts" />

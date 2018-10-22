@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'app-root';
   mobileQuery: MediaQueryList;
   opened: boolean;
+  closed: boolean;
   events: string[] = [];
   private _mobileQueryListener: () => void;
   panelOpenState = false;
