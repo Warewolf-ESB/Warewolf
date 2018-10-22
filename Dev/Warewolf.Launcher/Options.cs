@@ -175,7 +175,7 @@ namespace Warewolf.Launcher
                     {
                         case "opencover.console.exe":
                             testLauncher.TestCoverageRunner = new OpenCoverRunner(options.CoverageToolPath);
-                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(@"ReportGenerator\ReportGenerator.exe");
+                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "ReportGenerator", "ReportGenerator.exe"));
                             break;
                         case "dotcover.exe":
                             testLauncher.TestCoverageRunner = new DotCoverRunner(options.CoverageToolPath);
