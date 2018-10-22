@@ -7,7 +7,8 @@ export class LogEntry implements Deserializable {
   public Result: string;
   public User: string;
   public CompletedDateTime: string;
-   public ExecutionTime: string;
+  public ExecutionTime: string;
+  public Count: number;
  
   public ExecutionId: string;
     LogEntry: LogEntry;

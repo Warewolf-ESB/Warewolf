@@ -51,5 +51,5 @@
     <mat-row  *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)">
     </mat-row>
   </mat-table>
-  <mat-paginator [length]="logEntry?.count" [pageSize]="10" [pageSizeOptions]="[10, 50, 100]"></mat-paginator>
+  <mat-paginator [length]="logEntry?.Count" [pageSize]="10" [pageSizeOptions]="[10, 50, 100]"></mat-paginator>
 </div>
