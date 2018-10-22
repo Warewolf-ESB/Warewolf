@@ -1,0 +1,38 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar mat-toolbar mat-primary">
+    <button mat-icon-button (click)="lsnav.toggle()"><mat-icon>menu</mat-icon></button>
+    <img src="../../assets/images/logo.png" />
+    <span class="example-fill-remaining-space"></span>
+    <span>
+      <a routerLink="/report-builder"><i class="material-icons">settings  </i>Settings</a>
+    </span>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #lsnav
+                 position="start"
+                 [(opened)]="opened"
+                 (opened)="events.push('open!')"
+                 (closed)="events.push('close!')"
+                 [mode]="mobileQuery.matches ? 'over' : 'push'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard"><i class="material-icons">view_list  </i>Execution Logging</a>
+        <a mat-list-item routerLink="/report-builder"><i class="material-icons">dashboard  </i>Reporting</a>
+      </mat-nav-list>
+  
+    </mat-sidenav>
+    <mat-sidenav #rsnav
+                 position="end"
+                 [(opened)]="opened"
+                 (opened)="events.push('open!')"
+                 (closed)="events.push('close!')"
+                 [mode]="mobileQuery.matches ? 'over' : 'push'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+      <router-outlet name="popup"></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

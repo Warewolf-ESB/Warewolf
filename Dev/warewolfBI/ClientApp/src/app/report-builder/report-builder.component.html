@@ -1,0 +1,32 @@
+
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Report Builder</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-select placeholder="Data Service">
+        <mat-option>--</mat-option>
+        <mat-option value="1">Worflow 1</mat-option>
+        <mat-option value="2">Worflow 2</mat-option>
+        <mat-option value="3">Worflow 3</mat-option>
+        <mat-option value="4">Worflow 4</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Report Type">
+        <mat-option>--</mat-option>
+        <mat-option value="1">Tabular</mat-option>
+        <mat-option value="2">Pie</mat-option>
+        <mat-option value="3">Line</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-checkbox class="checkbox">Run from Cache</mat-checkbox>
+    <mat-checkbox  class="checkbox">Run Live</mat-checkbox>
+  </mat-card-actions>
+  <mat-card-actions>
+    <button mat-raised-button>Generate Report</button>
+  </mat-card-actions>
+</mat-card>
