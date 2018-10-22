@@ -236,6 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var vm = GetViewModel();
             Assert.IsNotNull(vm.ActionRegion);
+            Assert.IsNotNull(vm.ActionRegion.Actions, "No Actions were generated for source: " + vm.SourceRegion.SelectedSource);
             vm.ActionRegion.SelectedAction = vm.ActionRegion.Actions.FirstOrDefault(p => p.Name == actionName);
             SetDbAction(activityName, actionName);
             Assert.IsNotNull(vm.ActionRegion.SelectedAction);
