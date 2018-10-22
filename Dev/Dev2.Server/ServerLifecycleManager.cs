@@ -579,7 +579,7 @@ namespace Dev2
 
         static void CheckExampleResources()
         {
-            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release");
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
             if (Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverReleaseResources))
             {
                 ResourceCatalog.Instance.LoadExamplesViaBuilder(serverReleaseResources);
