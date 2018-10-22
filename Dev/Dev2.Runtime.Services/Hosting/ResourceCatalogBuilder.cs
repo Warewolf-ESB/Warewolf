@@ -152,7 +152,7 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
 
-            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new FileHelper());
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryHelper(), new FileHelper());
             foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
             {
                 builderTO.FileStream.Close();
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IFileHelper fileHelper)
+        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectoryHelper directoryHelper, IFileHelper fileHelper)
         {
             var foundMissingResources = false;
 
@@ -196,13 +196,10 @@ namespace Dev2.Runtime.Hosting
                 programFileItem.FileStream.Close();
                 var currentPath = programFileItem.FilePath;
 
-                var resourceDir = "Resources";
-#if DEBUG
-                resourceDir = "Resources - Release\\Resources";
-#endif
-                var appResourcesPath = Path.Combine(EnvironmentVariables.ApplicationPath, resourceDir);
+                var appResourcesPath = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
                 var currentSubPath = currentPath.Replace(appResourcesPath, "").Replace(".xml", ".bite");
                 var MyNewInstalledFilePath = EnvironmentVariables.ResourcePath + $"{currentSubPath}";
+                directoryHelper.CreateIfNotExists(fileHelper.DirectoryName(MyNewInstalledFilePath));
 
                 try
                 {

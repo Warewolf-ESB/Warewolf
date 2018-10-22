@@ -3277,10 +3277,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var rcBuilder = new ResourceCatalogBuilder();
             var privateObject = new PrivateObject(rcBuilder);
             var fileHelperObject = new Mock<IFileHelper>();
-            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources - Release\\Resources");
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
             fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
                                                EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
+            fileHelperObject.Setup(o => o.DirectoryName(EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite")).Returns(EnvironmentVariables.ResourcePath + "\\asdf").Verifiable();
             var fileHelper = fileHelperObject.Object;
+            var directoryHelperObject = new Mock<IDirectoryHelper>();
+            directoryHelperObject.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
+            var directoryHelper = directoryHelperObject.Object;
             var existingId = Guid.NewGuid().ToString();
             var programDataIds = new string[] {
                 existingId
@@ -3301,7 +3305,7 @@ namespace Dev2.Tests.Runtime.Hosting
             };
 
             //------------Execute Test--------------------------
-            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, fileHelper);
+            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
             //------------Assert Results------------------------
             Assert.IsNotNull(result);
             var hadMissing = (bool)result;
@@ -3315,7 +3319,7 @@ namespace Dev2.Tests.Runtime.Hosting
             };
 
 
-            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, fileHelper);
+            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
 
             //------------Assert Results------------------------
             Assert.IsNotNull(result);
@@ -3323,6 +3327,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(hadMissing);
 
             fileHelperObject.Verify();
+            directoryHelperObject.Verify();
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
