@@ -522,7 +522,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void StartServer()
+        public void StartServer(string jobName="")
         {
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             Console.WriteLine($"Deploying New resources from {ServerFolderPath}\\Resources - {ResourcesType}\\*");
@@ -532,7 +532,7 @@ namespace Warewolf.Launcher
             {
                 if (!String.IsNullOrEmpty(TestCoverageRunner.CoverageToolPath) && Path.GetFileName(TestCoverageRunner.CoverageToolPath).ToLower() != "dotcover.exe")
                 {
-                    Process.Start(TestCoverageRunner.CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{Path.Combine(TestRunner.TestsResultsPath, $"Server OpenCover Output.xml")}\"");
+                    Process.Start(TestCoverageRunner.CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{Path.Combine(TestRunner.TestsResultsPath, $"{jobName} Server OpenCover Output.xml")}\"");
                 }
                 else
                 {
@@ -611,7 +611,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void StartStudio()
+        public void StartStudio(string jobName="")
         {
             if (string.IsNullOrEmpty(StudioPath))
             {
@@ -625,7 +625,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                TestCoverageRunner.StartProcessWithCoverage(StudioPath, TestRunner.TestsResultsPath);
+                TestCoverageRunner.StartProcessWithCoverage(StudioPath, TestRunner.TestsResultsPath, jobName);
             }
             try
             {
@@ -779,27 +779,27 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string RunTests(string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
+        public string RunTests(string jobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
             var trxTestResultsFile = "";
             if (File.Exists(TestRunnerPath))
             {
                 if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                 {
-                    this.CleanupServerStudio(true, JobName);
+                    this.CleanupServerStudio(true, jobName);
                     Startmywarewolfio();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
                     {
-                        StartServer();
+                        StartServer(jobName);
                         if (!string.IsNullOrEmpty(DoStudioStart))
                         {
-                            StartStudio();
+                            StartStudio(jobName);
                         }
                     }
                 }
                 if (ApplyCoverage && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
                 {
-                    trxTestResultsFile = TestCoverageRunner.RunCoverageTool(TestRunner.TestsResultsPath, JobName, TestAssembliesDirectories);
+                    trxTestResultsFile = TestCoverageRunner.RunCoverageTool(TestRunner.TestsResultsPath, jobName, TestAssembliesDirectories);
 
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
@@ -815,7 +815,7 @@ namespace Warewolf.Launcher
                         this.CleanupServerStudio(!ApplyCoverage);
                     }
                 }
-                this.MoveArtifactsToTestResults(ApplyCoverage, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
+                this.MoveArtifactsToTestResults(ApplyCoverage, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), jobName);
             }
             return trxTestResultsFile;
         }

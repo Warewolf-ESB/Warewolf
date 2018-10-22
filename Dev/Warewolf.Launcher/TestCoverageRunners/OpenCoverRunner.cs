@@ -33,10 +33,10 @@ namespace Warewolf.Launcher.TestCoverageRunners
             return OpenCoverRunnerPath;
         }
 
-        public string StartServiceWithCoverage(string ServerPath, string OutputDirectory, bool IsExistingService)
+        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             // Prepare OpenCover Output File
-            var OpenCoverSnapshotFile = Path.Combine(OutputDirectory, $"Server OpenCover Output.xml");
+            var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Server OpenCover Output.xml");
             TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
 
             var RunServerWithOpenCoverScript = $"\"{CoverageToolPath}\" -target:\"Warewolf Server\" -service";
@@ -57,17 +57,17 @@ namespace Warewolf.Launcher.TestCoverageRunners
                 Process.Start("sc.exe", $"config \"Warewolf Server\" binPath= \"{ServerPath}\"");
                 
             }
-            return WriteRunnerScriptFile(OutputDirectory, "Server", OpenCoverSnapshotFile);
+            return WriteRunnerScriptFile(TestsResultsPath, "Server", OpenCoverSnapshotFile);
         }
 
-        public void StartProcessWithCoverage(string processPath, string OutputDirectory)
+        public void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName)
         {
             // Prepare OpenCover Output File
-            if (!Directory.Exists(OutputDirectory))
+            if (!Directory.Exists(TestsResultsPath))
             {
-                Directory.CreateDirectory(OutputDirectory);
+                Directory.CreateDirectory(TestsResultsPath);
             }
-            var OpenCoverSnapshotFile = Path.Combine(OutputDirectory, $"Studio OpenCover Output.xml");
+            var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Studio OpenCover Output.xml");
             TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
 
             // Run OpenCover
