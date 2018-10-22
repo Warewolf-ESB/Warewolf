@@ -7,7 +7,8 @@ namespace Warewolf.Launcher
     {
         string CoverageToolPath { get; set; }
         string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories);
-        string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService);
+        string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService);
+        void StartServiceWithCoverage(string TestsResultsPath, string jobName);
         void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName);
     }
 }

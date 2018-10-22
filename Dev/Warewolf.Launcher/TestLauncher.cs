@@ -494,7 +494,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    RunServerWithDotcoverScript = TestCoverageRunner.StartServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, JobName, exists);
+                    RunServerWithDotcoverScript = TestCoverageRunner.InstallServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, JobName, exists);
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
@@ -530,9 +530,9 @@ namespace Warewolf.Launcher
 
             if (!StartServerAsConsole)
             {
-                if (!String.IsNullOrEmpty(TestCoverageRunner.CoverageToolPath) && Path.GetFileName(TestCoverageRunner.CoverageToolPath).ToLower() != "dotcover.exe")
+                if (ApplyCoverage)
                 {
-                    Process.Start(TestCoverageRunner.CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{Path.Combine(TestRunner.TestsResultsPath, $"{jobName} Server OpenCover Output.xml")}\"");
+                    TestCoverageRunner.StartServiceWithCoverage(TestRunner.TestsResultsPath, jobName);
                 }
                 else
                 {

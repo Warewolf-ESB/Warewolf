@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.ServiceProcess;
 
 namespace Warewolf.Launcher.TestCoverageRunners
 {
@@ -33,7 +34,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             return OpenCoverRunnerPath;
         }
 
-        public string StartServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
+        public string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             // Prepare OpenCover Output File
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Server OpenCover Output.xml");
@@ -43,21 +44,24 @@ namespace Warewolf.Launcher.TestCoverageRunners
             if (!IsExistingService)
             {
                 Process.Start("sc.exe", $"create \"Warewolf Server\" binPath= \"{RunServerWithOpenCoverScript}\" start= demand");
-                Process.Start(CoverageToolPath, "-target:\"Warewolf Server\" -service");
             }
             else
             {
-                Console.WriteLine($"Instrumenting service for coverage with {CoverageToolPath}");
-                Process.Start("sc.exe", "stop \"Warewolf Server\"");
-                string serverStartedFile = Path.Combine(Path.GetDirectoryName(ServerPath), "ServerStarted");
-                if (File.Exists(serverStartedFile))
-                {
-                    File.Delete(serverStartedFile);
-                }
-                Process.Start("sc.exe", $"config \"Warewolf Server\" binPath= \"{ServerPath}\"");
-                
+                Console.WriteLine("Configuring service to " + ServerPath);
+                Process.Start("sc.exe", $"config \"Warewolf Server\" binPath= \"{ServerPath}\"");                
             }
             return WriteRunnerScriptFile(TestsResultsPath, "Server", OpenCoverSnapshotFile);
+        }
+
+        public void StartServiceWithCoverage(string TestsResultsPath, string jobName)
+        {
+            Console.WriteLine($"Instrumenting service for coverage with {CoverageToolPath}");
+            var service = new ServiceController("Warewolf Server");
+            while (service.Status != ServiceControllerStatus.Stopped)
+            {
+                service.Stop();
+            }
+            Process.Start(CoverageToolPath, $"-target:\"Warewolf Server\" -service -output:\"{Path.Combine(TestsResultsPath, $"{jobName} Server OpenCover Output.xml")}\"");
         }
 
         public void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName)
