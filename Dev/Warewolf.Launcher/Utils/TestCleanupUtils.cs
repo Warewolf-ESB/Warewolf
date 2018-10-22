@@ -291,7 +291,7 @@ namespace Warewolf.Launcher
         {
             string serverOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"Server OpenCover Output.xml");
             string studioOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"Studio OpenCover Output.xml");
-            if (Server && Studio && File.Exists(serverOpenCoverSnapshot) && File.Exists(studioOpenCoverSnapshot))
+            if (Server && Studio && File.Exists(serverOpenCoverSnapshot))
             {
                 build.TestCoverageReportGenerator.GenerateCoverageReport(new List<string> { serverOpenCoverSnapshot, studioOpenCoverSnapshot }, Path.Combine(build.TestRunner.TestsResultsPath, $"{JobName} Merged Server and Studio Coverage Report"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
                 DotCover = false;
