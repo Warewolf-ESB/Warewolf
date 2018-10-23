@@ -229,7 +229,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             ConnectionString = new SQLiteConnectionStringBuilder
             {
-                DataSource = Path.Combine(Config.Server["AuditFilePath"], "auditDB.db"),
+                DataSource = Path.Combine(Config.Server.AuditFilePath, "auditDB.db"),
                 ForeignKeys = true
             }.ConnectionString
         }, true)
@@ -237,7 +237,7 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
                 var directoryWrapper = new DirectoryWrapper();
-                directoryWrapper.CreateIfNotExists(Config.Server["AuditFilePath"]);
+                directoryWrapper.CreateIfNotExists(Config.Server.AuditFilePath);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
@@ -432,6 +432,24 @@ namespace Dev2.Runtime.ESB.Execution
         public bool FilterLogEntry(AuditLog auditLog)
         {
             return FilterLogEntry(auditLog, null);
+        }
+    }
+
+    static class IIdentityExtensionMethods
+    {
+        public static string ToJson(this System.Security.Principal.IIdentity identity)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(identity, Formatting.None);
+        }
+    }
+
+    static class ExecutionTokenExtensionMethods
+    {
+        public static string ToJson(this Common.Interfaces.IExecutionToken executionToken)
+        {
+            var json = new Dev2JsonSerializer();
+            return json.Serialize(executionToken, Formatting.None);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IConfigurationManager
     {
-        string this[params string[] args] { get; set; }
+        string this[string args] { get; set; }
     }
 }

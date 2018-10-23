@@ -212,8 +212,10 @@ namespace Dev2
 
             try
             {
+                RegisterDependencies();
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
+                CheckExampleResources();
                 MigrateOldTests();
                 InitializeServer();
                 LoadSettingsProvider();
@@ -239,6 +241,12 @@ namespace Dev2
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
+        }
+
+        private void RegisterDependencies()
+        {
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
         }
 
         void OpenCOMStream()
@@ -525,7 +533,6 @@ namespace Dev2
 
         static ResourceCatalog LoadResourceCatalog()
         {
-
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
@@ -551,10 +558,8 @@ namespace Dev2
         static void LoadActivityCache(ResourceCatalog catalog)
         {
             PreloadReferences();
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadServerActivityCache();
-            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
             WriteLine("done.");
         }
         public static IDirectoryHelper DirectoryHelperInstance()
@@ -569,6 +574,15 @@ namespace Dev2
                 var dir = DirectoryHelperInstance();
                 dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
                 dir.CleanUp(serverBinResources);
+            }
+        }
+
+        static void CheckExampleResources()
+        {
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverReleaseResources))
+            {
+                ResourceCatalog.Instance.LoadExamplesViaBuilder(serverReleaseResources);
             }
         }
 

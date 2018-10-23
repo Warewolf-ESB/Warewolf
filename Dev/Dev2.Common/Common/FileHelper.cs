@@ -16,5 +16,12 @@ namespace Dev2.Common.Common
     public class FileHelper : IFileHelper
     {
         public string ReadAllText(string fileName) => File.ReadAllText(fileName);
+        public void Copy(string sourceFileName, string destFileName, bool overwrite) => File.Copy(sourceFileName, destFileName, overwrite);
+
+        public string DirectoryName(string filePath)
+        {
+            var f = new FileInfo(filePath);
+            return f.DirectoryName;
+        }
     }
 }
