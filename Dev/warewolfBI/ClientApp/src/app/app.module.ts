@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CustomMaterialModule } from "./core/material.module";
+import { CustomMaterialModule } from "./core/custommaterial.module";
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './core/app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { ReportBuilderComponent } from './report-builder/report-builder.component';
 import { DashboardUsersComponent } from './dashboard/cards/dashboard-users/dashboard-users.component';
 import { DashboardService } from './dashboard/services/dashboard.service';
 import { ServerExplorerComponent } from './server-explorer/server-explorer.component';
@@ -43,7 +42,6 @@ import { LogEntryComponent } from './logentry/logentry.component'
     sanitizeHtmlPipe,
     DashboardComponent,
     DashboardUsersComponent,
-    ReportBuilderComponent,
     ServerExplorerComponent,
     OutputsExplorerComponent,
     ExecutionloggingComponent,

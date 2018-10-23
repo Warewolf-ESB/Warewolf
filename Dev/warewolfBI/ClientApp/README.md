@@ -25,3 +25,25 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+Angular CLI has test coverage reporting somewhat built in.
+
+First install the dependencies.
+
+## Testing
+$ npm install karma karma-jasmine karma-chrome-launcher karma-jasmine-html-reporter karma-coverage-istanbul-reporter
+1
+$ npm install karma karma-jasmine karma-chrome-launcher karma-jasmine-html-reporter karma-coverage-istanbul-reporter
+Then run ng test.
+
+
+$ ng test --code-coverage
+1
+$ ng test --code-coverage
+Then run the server that shows you your report.
+
+
+$ http-server -c-1 -o -p 9875 ./coverage
+1
+$ http-server -c-1 -o -p 9875 ./coverage
+You should see something like this.
