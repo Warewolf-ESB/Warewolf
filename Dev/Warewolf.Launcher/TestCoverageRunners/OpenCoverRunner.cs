@@ -35,12 +35,12 @@ namespace Warewolf.Launcher.TestCoverageRunners
         public string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Server OpenCover Output.xml");
-            if (!File.Exists(OpenCoverSnapshotFile))
+            var mergeOutput = "";
+            if (File.Exists(OpenCoverSnapshotFile))
             {
-                WriteCoverageSeedFile(OpenCoverSnapshotFile);
+                mergeOutput = " -mergeoutput";
             }
-            
-            var DoubleEscapedArgsList = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\" -mergeOutput";
+            var DoubleEscapedArgsList = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
             if (!IsExistingService)
             {
                 Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\" start= demand");
