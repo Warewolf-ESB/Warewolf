@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-import { LogEntryComponent } from '../logentry/logentry.component';
+import { LogEntryComponent } from '../components/logentry/logentry.component';
 import {
   MatFormFieldModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule,
   MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule, MatGridListModule, MatIconModule,

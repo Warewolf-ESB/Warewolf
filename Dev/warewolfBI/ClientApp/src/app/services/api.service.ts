@@ -38,7 +38,7 @@ export class APIService {
     //  .set('pageNumber', pageNumber.toString())
     //  .set('pageSize', pageSize.toString())
 
-    return this.httpClient.post<any>(wareWolfUrl, filter, { headers: httpHeaders, withCredentials: true })
+    return this.httpClient.post<any>(wareWolfUrl, filter)
       .pipe(map((response) => {
         return response;
       }), catchError((error) => {

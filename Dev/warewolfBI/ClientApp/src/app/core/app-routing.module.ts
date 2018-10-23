@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { RoleGuardService as RoleGuard } from '../guards/role-guard.service';
-import { ExecutionloggingComponent } from '../executionlogging/executionlogging.component';
-import { SettingsComponent } from '../settings/settings.component';
+import { ExecutionloggingComponent } from '../components/executionlogging/executionlogging.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 import { CustomMaterialModule } from "./custommaterial.module";
 const appRoutes: Routes = [
   { path: '', component: ExecutionloggingComponent },

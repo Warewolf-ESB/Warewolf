@@ -19,21 +19,21 @@ import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './core/app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { DashboardUsersComponent } from './dashboard/cards/dashboard-users/dashboard-users.component';
-import { DashboardService } from './dashboard/services/dashboard.service';
-import { ServerExplorerComponent } from './server-explorer/server-explorer.component';
-import { OutputsExplorerComponent } from './outputs-explorer/outputs-explorer.component';
-import { ExecutionloggingComponent } from './executionlogging/executionlogging.component';
-import { SettingsComponent } from './settings/settings.component';
-import { MaindashboardComponent } from './maindashboard/maindashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { DashboardUsersComponent } from './components/dashboard/cards/dashboard-users/dashboard-users.component';
+import { DashboardService } from './components/dashboard/services/dashboard.service';
+import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
+import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
+import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { MaindashboardComponent } from './components/maindashboard/maindashboard.component';
 
 import { MediatorService } from './services/mediator.service';
 import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
 import { ErrorDialogComponent} from './core/error-dialog/error-dialog.component';
-import { LogEntryComponent } from './logentry/logentry.component'
+import { LogEntryComponent } from './components/logentry/logentry.component'
 
 @NgModule({
   entryComponents: [ErrorDialogComponent, LogEntryComponent],
