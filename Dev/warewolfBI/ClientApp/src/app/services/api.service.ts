@@ -11,7 +11,7 @@ const httpHeaders = {
     'Content-Type': 'application/json'
   })
 };
-const httpOptions = { headers: httpHeaders, withCredentials: true };
+
 
 @Injectable({ providedIn: 'root' })
 
@@ -38,7 +38,7 @@ export class APIService {
     //  .set('pageNumber', pageNumber.toString())
     //  .set('pageSize', pageSize.toString())
 
-    return this.httpClient.post<any>(wareWolfUrl, filter, httpOptions)
+    return this.httpClient.post<any>(wareWolfUrl, filter, { headers: httpHeaders, withCredentials: true })
       .pipe(map((response) => {
         return response;
       }), catchError((error) => {
