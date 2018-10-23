@@ -67,7 +67,7 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    build.ApplyCoverage = !string.IsNullOrEmpty(build.TestCoverageRunner.CoverageToolPath);
+                    build.ApplyCoverage = build.TestCoverageRunner == null || !string.IsNullOrEmpty(build.TestCoverageRunner.CoverageToolPath);
                 }
 
                 if (!string.IsNullOrEmpty(build.TestRunner.TestsPath) && build.TestRunner.TestsPath.StartsWith(".."))
