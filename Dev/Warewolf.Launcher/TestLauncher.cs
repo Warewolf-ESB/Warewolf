@@ -840,18 +840,13 @@ namespace Warewolf.Launcher
 
         public void GenerateCoverageReport()
         {
-            var MergedSnapshotFileName = "Merged " + JobName.Split(',')[0] + " Snapshots";
-            string ReportFilePath = MergeCoverageSnapshotsInDirectory + "\\" + MergedSnapshotFileName;
-            var DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
-            if (DotCoverSnapshots.Count <= 0)
-            {
-                DotCoverSnapshots = Directory.GetFiles(MergeCoverageSnapshotsInDirectory, "*OpenCover Output.xml", SearchOption.AllDirectories).ToList();
-            }
             if (string.IsNullOrEmpty(JobName))
             {
-                JobName = "DotCover";
+                JobName = "OpenCover";
             }
-            TestCoverageReportGenerator.GenerateCoverageReport(DotCoverSnapshots, ReportFilePath, MergeCoverageSnapshotsInDirectory + "\\DotCover");
+            var destinationFolderName = JobName.Split(',')[0] + " Coverage";
+            var destinationPath = Path.Combine(MergeCoverageSnapshotsInDirectory, destinationFolderName);
+            TestCoverageReportGenerator.GenerateCoverageReport(destinationPath, MergeCoverageSnapshotsInDirectory + "\\Coverage");
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
