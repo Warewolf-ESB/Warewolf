@@ -14,20 +14,19 @@ namespace Warewolf.Launcher.TestCoverageRunners
 
         public string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories)
         {
-            // Prepare OpenCover Output File
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} OpenCover Output.xml");
-            TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
             string OpenCoverRunnerPath = WriteRunnerScriptFile(TestsResultsPath, JobName, OpenCoverSnapshotFile);
-            // Run OpenCover Runner Batch File
             return ProcessUtils.RunFileInThisProcess(OpenCoverRunnerPath);
         }
 
         string WriteRunnerScriptFile(string TestsResultsPath, string JobName, string OpenCoverSnapshotFile)
         {
-            // Create full OpenCover argument string.
-            var FullArgsList = $" -target:\"" + TestsResultsPath + "\\..\\Run " + JobName + $".bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"";
-
-            // Write OpenCover Runner Batch File
+            var mergeOutput = "";
+            if (File.Exists(OpenCoverSnapshotFile))
+            {
+                mergeOutput = " -mergeoutput";
+            }
+            var FullArgsList = $" -target:\"" + TestsResultsPath + "\\..\\Run " + JobName + $".bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
             var OpenCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} OpenCover.bat";
             TestCleanupUtils.CopyOnWrite(OpenCoverRunnerPath);
             File.WriteAllText(OpenCoverRunnerPath, $"\"{CoverageToolPath}\"{FullArgsList}");
@@ -36,37 +35,41 @@ namespace Warewolf.Launcher.TestCoverageRunners
 
         public string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
-            // Prepare OpenCover Output File
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Server OpenCover Output.xml");
-            TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
+            var mergeOutput = "";
+            if (File.Exists(OpenCoverSnapshotFile))
+            {
+                mergeOutput = " -mergeoutput";
+            }
             
-            var RunServerWithOpenCoverScript = "\\\"" + CoverageToolPath + $"\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\"";
+            var DoubleEscapedArgsList = "\\\"" + CoverageToolPath + $"\\\" -target:\\\"{ServerPath}\\\" -register:user -oldStyle -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
             if (!IsExistingService)
             {
-                Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithOpenCoverScript + "\" start= demand");
+                Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\" start= demand");
             }
             else
             {
-                Console.WriteLine("Configuring service to " + RunServerWithOpenCoverScript);
-                Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithOpenCoverScript + "\"");
+                Console.WriteLine("Configuring service to " + DoubleEscapedArgsList);
+                Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\"");
             }
-            return RunServerWithOpenCoverScript;
+            return DoubleEscapedArgsList;
         }
 
         public void StartServiceWithCoverage(string TestsResultsPath, string jobName) => Process.Start("sc.exe", "start \"Warewolf Server\"");
 
         public void StartProcessWithCoverage(string processPath, string TestsResultsPath, string JobName)
         {
-            // Prepare OpenCover Output File
             if (!Directory.Exists(TestsResultsPath))
             {
                 Directory.CreateDirectory(TestsResultsPath);
             }
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Studio OpenCover Output.xml");
-            TestCleanupUtils.CopyOnWrite(OpenCoverSnapshotFile);
-
-            // Run OpenCover
-            Process.Start(CoverageToolPath, $" -target:\"" + processPath + $"\" -register:user -output:\"{OpenCoverSnapshotFile}\"");
+            var mergeOutput = "";
+            if (File.Exists(OpenCoverSnapshotFile))
+            {
+                mergeOutput = " -mergeoutput";
+            }
+            Process.Start(CoverageToolPath, $" -target:\"" + processPath + $"\" -register:user -oldStyle -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
         }
     }
 }
