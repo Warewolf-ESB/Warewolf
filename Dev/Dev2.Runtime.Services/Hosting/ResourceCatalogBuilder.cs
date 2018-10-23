@@ -32,7 +32,7 @@ namespace Dev2.Runtime.Hosting
     class ResourceBuilderTO
     {
         internal string FilePath;
-        internal FileStream FileStream;
+        internal Stream FileStream;
     }
 
     public class ResourceCatalogBuilder
@@ -87,20 +87,19 @@ namespace Dev2.Runtime.Hosting
                 UpdateExtensions(_convertToBiteExtension);
             }
         }
-       
-        private void BuildCatalogFromWorkspace(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
+
+        private static void BuildStream(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
         {
+            var dir = new DirectoryHelper();
             foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
             {
                 if (!Directory.Exists(path))
                 {
                     continue;
                 }
-                var dir = new DirectoryHelper();
                 var files = dir.GetFilesByExtensions(path, ".xml", ".bite");
                 foreach (var file in files)
                 {
-
                     var fa = File.GetAttributes(file);
 
                     if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
@@ -113,9 +112,111 @@ namespace Dev2.Runtime.Hosting
                     // In many cases, this will avoid blocking a ThreadPool thread.  
                     var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
                     streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
-
                 }
             }
+        }
+
+        public void BuildReleaseExamples(string releasePath)
+        {
+            var programDataBuilders = new List<ResourceBuilderTO>();
+
+            var resourcesFolders = Directory.EnumerateDirectories(EnvironmentVariables.ResourcePath, "*", SearchOption.AllDirectories);
+            var allResourcesFolders = resourcesFolders.ToList();
+            allResourcesFolders.Add(EnvironmentVariables.ResourcePath);
+
+            BuildStream(EnvironmentVariables.ResourcePath, allResourcesFolders.ToArray(), programDataBuilders);
+
+            // get all installed resource ids in ProgramData
+            var programDataIds = programDataBuilders.Select(currentItem =>
+            {
+                XElement xml = null;
+                try
+                {
+                    xml = XElement.Load(currentItem.FileStream);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
+                }
+
+                return xml?.Attribute("ID")?.Value ?? null;
+            })
+            .Where(o => o != null) // ignore files with no id
+            .OrderBy(o => o).ToArray(); // cache installed ids in array
+
+            var releaseFolders = Directory.EnumerateDirectories(releasePath, "*", SearchOption.AllDirectories);
+            var allReleaseFolders = releaseFolders.ToList();
+            allReleaseFolders.Add(releasePath);
+
+            var programFilesBuilders = new List<ResourceBuilderTO>();
+
+            BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
+
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryHelper(), new FileHelper());
+            foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
+            {
+                builderTO.FileStream.Close();
+            }
+
+            if (foundMissingResources)
+            {
+                ResourceCatalog.Instance.Reload();
+            }
+        }
+
+        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectoryHelper directoryHelper, IFileHelper fileHelper)
+        {
+            var foundMissingResources = false;
+
+            // NOTE: we have not filtered for files that are not 
+            programFilesBuilders.ForEach(programFileItem =>
+            {
+                XElement xml = null;
+                try
+                {
+                    xml = XElement.Load(programFileItem.FileStream);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Resource [ " + programFileItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
+                }
+
+                var id = xml?.Attribute("ID")?.Value ?? null;
+                if (id != null && programDataIds.Any(programDataId => programDataId == id))
+                { // resource already installed
+                    return;
+                }
+                if (id is null) // invalid resource
+                {
+                    return;
+                }
+
+                // Only get here if the bite file does not exist in ProgramData directory
+                foundMissingResources = true;
+                programFileItem.FileStream.Close();
+                var currentPath = programFileItem.FilePath;
+
+                var appResourcesPath = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+                var currentSubPath = currentPath.Replace(appResourcesPath, "").Replace(".xml", ".bite");
+                var MyNewInstalledFilePath = EnvironmentVariables.ResourcePath + $"{currentSubPath}";
+                directoryHelper.CreateIfNotExists(fileHelper.DirectoryName(MyNewInstalledFilePath));
+
+                try
+                {
+                    fileHelper.Copy(programFileItem.FilePath, MyNewInstalledFilePath, false);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn("Failed to copy Examples resource to ProgramData, " + e.Message, GlobalConstants.WarewolfWarn);
+                }
+            });
+
+            return foundMissingResources;
+        }
+
+        private void BuildCatalogFromWorkspace(string workspacePath, string[] folders, List<ResourceBuilderTO> streams)
+        {
+            BuildStream(workspacePath, folders, streams);
 
             // Use the parallel task library to process file system ;)
             IList<Type> allTypes = new List<Type>();

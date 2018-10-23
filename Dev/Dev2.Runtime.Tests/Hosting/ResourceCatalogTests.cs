@@ -46,6 +46,7 @@ using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -3270,6 +3271,67 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_CopyMissingResources()
+        {
+            //------------Setup for test--------------------------
+            var rcBuilder = new ResourceCatalogBuilder();
+            var privateObject = new PrivateObject(rcBuilder);
+            var fileHelperObject = new Mock<IFileHelper>();
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
+                                               EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
+            fileHelperObject.Setup(o => o.DirectoryName(EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite")).Returns(EnvironmentVariables.ResourcePath + "\\asdf").Verifiable();
+            var fileHelper = fileHelperObject.Object;
+            var directoryHelperObject = new Mock<IDirectoryHelper>();
+            directoryHelperObject.Setup(o => o.CreateIfNotExists("C:\\ProgramData\\Warewolf\\Resources\\asdf")).Verifiable();
+            var directoryHelper = directoryHelperObject.Object;
+            var existingId = Guid.NewGuid().ToString();
+            var programDataIds = new string[] {
+                existingId
+            };
+
+            ResourceBuilderTO newResourceBuilderTO(string filename, string id)
+            {
+                return new ResourceBuilderTO
+                {
+                    FilePath = serverReleaseResources + "\\" + filename,
+                    FileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
+                };
+            }
+
+            var programFilesBuilders = new List<ResourceBuilderTO>
+            {
+                newResourceBuilderTO("asdf\\asdf.xml", existingId)
+            };
+
+            //------------Execute Test--------------------------
+            var result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
+            //------------Assert Results------------------------
+            Assert.IsNotNull(result);
+            var hadMissing = (bool)result;
+            Assert.IsFalse(hadMissing);
+
+
+            //------------Execute Test--------------------------
+            programFilesBuilders = new List<ResourceBuilderTO> {
+                newResourceBuilderTO("asdf\\asdf.xml", existingId),
+                newResourceBuilderTO("asdf\\asdf2.xml", Guid.NewGuid().ToString())
+            };
+
+
+            result = privateObject.Invoke("CopyMissingResources", programDataIds, programFilesBuilders, directoryHelper, fileHelper);
+
+            //------------Assert Results------------------------
+            Assert.IsNotNull(result);
+            hadMissing = (bool)result;
+            Assert.IsTrue(hadMissing);
+
+            fileHelperObject.Verify();
+            directoryHelperObject.Verify();
+        }
+
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_IsWarewolfResource_Given_NonWarewolf_Resource_Retunrs_False()
         {
             //------------Setup for test--------------------------
@@ -3356,6 +3418,15 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
             rc.TryBuildCatalogFromWorkspace("some value", null);
+        }
+
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
+        public void ResourceCatalog_BuildReleaseExamples()
+        {
+            //------------Setup for test--------------------------
+            var rc = new ResourceCatalogBuilder(ResourceUpgraderFactory.GetUpgrader());
+            rc.BuildReleaseExamples("some value");
         }
 
         class ResourceSaveProviderMock : ResourceSaveProvider

@@ -39,6 +39,32 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ServicePickerDialog.OK), "Service picker dialog still exists after clicking cancel button.");
         }
 
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestCategory("Resource Tools")]
+        public void ServiceTool_CopyPaste_NoStudioFreeze_UITest()
+        {
+            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Explorer.Exists, "Service picker Explorer Tree does not exist on the Design Surface");
+            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.OK.Exists, "Service picker OK Button does not exist on the Design Surface");
+            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Cancel.Exists, "Service picker cancel button does not exist on the Design Surface");
+            // OK Button does not enable after clicking folder
+            Assert.IsFalse(DialogsUIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
+            DialogsUIMap.Select_FirstItem_From_ServicePicker_Tree();
+            Assert.IsFalse(DialogsUIMap.ServicePickerDialog.OK.Enabled, "OK Button is enabled");
+            // Selection of Hello World enables OK Button
+            DialogsUIMap.Filter_ServicePicker_Explorer("Hello World");
+            DialogsUIMap.Select_FirstItem_From_ServicePicker_Tree();
+            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.OK.Enabled, "OK Button is not enabled");
+            // Hello World workflow opens
+            DialogsUIMap.Click_Service_Picker_Dialog_OK();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
+            // Copy
+            Keyboard.SendKeys("^c");
+            // Paste
+            Keyboard.SendKeys("^v");
+            // Validate Studio is active
+            UIMap.Click_NewWorkflow_RibbonButton();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

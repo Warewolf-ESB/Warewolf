@@ -14,5 +14,7 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
     public interface IFileHelper
     {
         string ReadAllText(string fileName);
+        void Copy(string sourceFileName, string destFileName, bool overwrite);
+        string DirectoryName(string filePath);
     }
 }

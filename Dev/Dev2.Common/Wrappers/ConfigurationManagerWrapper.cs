@@ -13,16 +13,10 @@ namespace Dev2.Common.Wrappers
         {
             _fileWrapper = new FileWrapper();
         }
-        public string this[params string[] args]
+        public string this[string settingName]
         {
             get
             {
-                if (args.Length <= 1)
-                {
-                    throw new ArgumentNullException();
-                }
-                var settingName = args[0];
-                var defaultValue = args[1];
                 lock (_settingLock)
                 {
                     ServerSettingsData settings = null;
@@ -34,18 +28,11 @@ namespace Dev2.Common.Wrappers
                         settings = new ServerSettingsData();
                     }
                     var prop = typeof(ServerSettingsData).GetProperty(settingName);
-                    var setting = prop.GetValue(settings)?.ToString();
-                    //var setting = ConfigurationManager.AppSettings.Get(settingName)
-                    return string.IsNullOrWhiteSpace(setting) ? defaultValue : setting;
+                    return prop.GetValue(settings)?.ToString();
                 }
             }
             set
             {
-                if (args.Length <= 0)
-                {
-                    throw new ArgumentNullException();
-                }
-                var settingName = args[0];
                 lock (_settingLock)
                 {
                     var settings = Config.Server.Get();

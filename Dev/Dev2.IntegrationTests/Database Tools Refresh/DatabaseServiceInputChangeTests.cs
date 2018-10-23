@@ -41,63 +41,6 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
-        {
-            var procName = "TestingAddingANewInput";
-            var inputs = new List<IServiceInput>()
-                {
-                    new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + procName}
-                };
-            var sqlActivity = new DsfSqlServerDatabaseActivity()
-            {
-                Inputs = inputs,
-                ActionName = "dbo." + procName,
-                ProcedureName = "dbo." + procName,
-                SourceId = new Guid("b9184f70-64ea-4dc5-b23b-02fcd5f91082")
-            };
-            var modelItem = ModelItemUtils.CreateModelItem(sqlActivity);
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            var environmentConnection = environmentModel.Connection;
-            var controllerFactory = new CommunicationControllerFactory();
-            var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
-            var mock = new Mock<IShellViewModel>();
-            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
-                                                                                    , _proxyLayer.QueryManagerProxy
-                                                                                    , mock.Object
-                                                                                    , environmentModel);
-            var source = new DatabaseSourceRegion(dbServiceModel, modelItem, Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase);
-            var selectedSource = source.Sources.Single(a => a.Id == sqlActivity.SourceId);
-            source.SelectedSource = selectedSource;
-            var actionRegion = new DbActionRegion(dbServiceModel, modelItem, source, new SynchronousAsyncWorker());
-            
-            IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(modelItem, actionRegion);
-            Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
-            Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
-            Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
-            //testing here
-            var alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
-            var alterTableResults = SqlHelper.RunSqlCommand(alterProcedure);
-            Assert.AreEqual(-1, alterTableResults);
-            actionRegion.RefreshActionsCommand.Execute(null);
-            var underTest = actionRegion.Actions.Single(p => p.Name.EndsWith(procName));
-            Assert.AreEqual(3, databaseInputRegion.Inputs.Count);
-            Assert.AreEqual("ProductId", underTest.Inputs.ToList()[0].Name);
-            Assert.AreEqual("ProductId1", underTest.Inputs.ToList()[1].Name);
-            Assert.AreEqual("ProductId2", underTest.Inputs.ToList()[2].Name);
-
-            Assert.AreEqual("ProductId", databaseInputRegion.Inputs.ToList()[0].Name);
-            Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.ToList()[0].Value);
-
-            Assert.AreEqual("ProductId1", databaseInputRegion.Inputs.ToList()[1].Name);
-            Assert.AreEqual("[[ProductId1]]", databaseInputRegion.Inputs.ToList()[1].Value);
-
-            Assert.AreEqual("ProductId2", databaseInputRegion.Inputs.ToList()[2].Name);
-            Assert.AreEqual("[[ProductId2]]", databaseInputRegion.Inputs.ToList()[2].Value);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void change_sql_source_verify_Empty_Inputs()
         {
             var newName = Guid.NewGuid().ToString();

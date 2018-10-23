@@ -41,18 +41,9 @@ namespace Dev2.Runtime.ESB.Execution
             //       in this server instance. Re-use either the notifier or its loggers.
             var stateNotifier = new StateNotifier();
 
-            stateNotifier.Subscribe(new Dev2StateAuditLogger(dsfDataObject));
-
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                if (dsfDataObject.Settings.LoggerType == LoggerType.JSON)
-                {
-                    stateNotifier.Subscribe(new Dev2JsonStateLogger(dsfDataObject));
-                }
-                else
-                {
-                    throw new Exception("logger not implemented");
-                }
+                stateNotifier.Subscribe(new Dev2StateAuditLogger(dsfDataObject));
             }
             return stateNotifier;
         }
