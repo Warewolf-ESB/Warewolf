@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CustomMaterialModule } from "./core/custommaterial.module";
 import { FormsModule } from '@angular/forms';
@@ -32,11 +32,14 @@ import { MediatorService } from './services/mediator.service';
 import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
-import { ErrorDialogComponent} from './core/error-dialog/error-dialog.component';
+import { ErrorDialogComponent } from './core/error-dialog/error-dialog.component';
 import { LogEntryComponent } from './components/logentry/logentry.component'
 
 @NgModule({
-  entryComponents: [ErrorDialogComponent, LogEntryComponent],
+  entryComponents: [
+    ErrorDialogComponent,
+    LogEntryComponent
+  ],
   declarations: [
     AppComponent,
     sanitizeHtmlPipe,
@@ -46,7 +49,7 @@ import { LogEntryComponent } from './components/logentry/logentry.component'
     OutputsExplorerComponent,
     ExecutionloggingComponent,
     SettingsComponent,
-    MaindashboardComponent    
+    MaindashboardComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -64,14 +67,18 @@ import { LogEntryComponent } from './components/logentry/logentry.component'
     LayoutModule,
     GoogleChartsModule,
   ],
-  exports: [sanitizeHtmlPipe],
-  providers: [DashboardService,
+  exports: [
+    sanitizeHtmlPipe
+  ],
+  providers: [
+    DashboardService,
     MediatorService,
     UserService,
     APIService,
     ExecutionLoggingService],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
   ],
   bootstrap: [AppComponent]
 })
