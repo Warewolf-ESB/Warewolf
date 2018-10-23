@@ -1,9 +1,9 @@
-import { ExecutionLogging } from '../models/executionlogging.model';
+import { ExecutionLogging } from '../../models/executionlogging.model';
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { MatPaginator, MatSort } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ExecutionLoggingService } from './../services/executionlogging.service';
-import { LogEntry } from './../models/logentry.model';
+import { ExecutionLoggingService } from './../../services/executionlogging.service';
+import { LogEntry } from './../../models/logentry.model';
 import { catchError, finalize } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
