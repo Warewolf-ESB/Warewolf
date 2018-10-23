@@ -291,14 +291,8 @@ namespace Warewolf.Launcher
         {
             string serverOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Server OpenCover Output.xml");
             string studioOpenCoverSnapshot = Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Studio OpenCover Output.xml");
-            if (Server && Studio && File.Exists(serverOpenCoverSnapshot) && File.Exists(studioOpenCoverSnapshot))
+            if ((Server && File.Exists(serverOpenCoverSnapshot)) || (Server && Studio && File.Exists(serverOpenCoverSnapshot) && File.Exists(studioOpenCoverSnapshot)))
             {
-                build.TestCoverageReportGenerator.GenerateCoverageReport(new List<string> { serverOpenCoverSnapshot, studioOpenCoverSnapshot }, Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Merged Server and Studio OpenCover Output"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
-                DotCover = false;
-            }
-            if (Server && File.Exists(serverOpenCoverSnapshot))
-            {
-                build.TestCoverageReportGenerator.GenerateCoverageReport(new List<string> { serverOpenCoverSnapshot }, Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Server OpenCover Output"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
                 DotCover = false;
             }
             string testsResultsPath = build.TestRunner.TestsResultsPath;
@@ -405,7 +399,7 @@ namespace Warewolf.Launcher
             }
             if (Server && Studio && DotCover)
             {
-                build.TestCoverageReportGenerator.GenerateCoverageReport(new List<string> { Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Server DotCover.dcvr"), Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Studio DotCover.dcvr") }, Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
+                build.TestCoverageReportGenerator.GenerateCoverageReport(Path.Combine(build.TestRunner.TestsResultsPath, $"{jobName} Merged Server and Studio DotCover"), Path.Combine(build.TestRunner.TestsResultsPath, "ServerAndStudioDotCoverSnapshot"));
             }
             if (build.RecordScreen != null)
             {

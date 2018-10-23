@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.ServiceProcess;
 
 namespace Warewolf.Launcher.TestCoverageRunners
 {
@@ -26,7 +25,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            var FullArgsList = $" -target:\"" + TestsResultsPath + "\\..\\Run " + JobName + $".bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
+            var FullArgsList = $" -target:\"{TestsResultsPath}\\..\\Run {JobName}.bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
             var OpenCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} OpenCover.bat";
             TestCleanupUtils.CopyOnWrite(OpenCoverRunnerPath);
             File.WriteAllText(OpenCoverRunnerPath, $"\"{CoverageToolPath}\"{FullArgsList}");
@@ -36,13 +35,12 @@ namespace Warewolf.Launcher.TestCoverageRunners
         public string InstallServiceWithCoverage(string ServerPath, string TestsResultsPath, string JobName, bool IsExistingService)
         {
             var OpenCoverSnapshotFile = Path.Combine(TestsResultsPath, $"{JobName} Server OpenCover Output.xml");
-            var mergeOutput = "";
-            if (File.Exists(OpenCoverSnapshotFile))
+            if (!File.Exists(OpenCoverSnapshotFile))
             {
-                mergeOutput = " -mergeoutput";
+                WriteCoverageSeedFile(OpenCoverSnapshotFile);
             }
             
-            var DoubleEscapedArgsList = "\\\"" + CoverageToolPath + $"\\\" -target:\\\"{ServerPath}\\\" -register:user -oldStyle -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
+            var DoubleEscapedArgsList = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\" -mergeOutput";
             if (!IsExistingService)
             {
                 Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\" start= demand");
@@ -53,6 +51,20 @@ namespace Warewolf.Launcher.TestCoverageRunners
                 Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\"");
             }
             return DoubleEscapedArgsList;
+        }
+        public void WriteCoverageSeedFile(string filename)
+        {
+            string result = string.Empty;
+
+            using (Stream stream = GetType().Assembly.
+                       GetManifestResourceStream("Warewolf.Launcher.Blank OpenCover Output.xml"))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    result = sr.ReadToEnd();
+                }
+            }
+            File.WriteAllText(filename, result);
         }
 
         public void StartServiceWithCoverage(string TestsResultsPath, string jobName) => Process.Start("sc.exe", "start \"Warewolf Server\"");
@@ -69,7 +81,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            Process.Start(CoverageToolPath, $" -target:\"" + processPath + $"\" -register:user -oldStyle -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
+            Process.Start(CoverageToolPath, $" -target:\"{processPath}\" -register:user -oldStyle -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
         }
     }
 }

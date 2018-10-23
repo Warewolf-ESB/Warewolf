@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Warewolf.Launcher.TestCoverageMergers
 {
@@ -10,8 +10,9 @@ namespace Warewolf.Launcher.TestCoverageMergers
 
         public DotCoverReportGenerator(string ReportGeneratorToolPath) => ToolPath = ReportGeneratorToolPath;
 
-        public void GenerateCoverageReport(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath)
+        public void GenerateCoverageReport(string DestinationFilePath, string LogFilePath)
         {
+            var SnapshotPaths = Directory.GetFiles(Path.GetDirectoryName(DestinationFilePath), "*.dcvr", SearchOption.AllDirectories).ToList();
             if (SnapshotPaths != null)
             {
                 if (SnapshotPaths.Count > 1)

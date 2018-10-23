@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Warewolf.Launcher.TestCoverageMergers
 {
@@ -9,9 +10,9 @@ namespace Warewolf.Launcher.TestCoverageMergers
 
         public OpenCoverReportGenerator(string ReportGeneratorToolPath) => ToolPath = ReportGeneratorToolPath;
 
-        public void GenerateCoverageReport(List<string> SnapshotPaths, string DestinationFilePath, string LogFilePath)
+        public void GenerateCoverageReport(string DestinationFilePath, string LogFilePath)
         {
-            TestCleanupUtils.CopyOnWrite($"{DestinationFilePath}.html");
+            var SnapshotPaths = Directory.GetFiles(Path.GetDirectoryName(DestinationFilePath), "*OpenCover Output.xml", SearchOption.AllDirectories).ToList();
             var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths);
             Console.WriteLine($"Writing coverage report to {DestinationFilePath} with {ToolPath}");
             ProcessUtils.RunFileInThisProcess(ToolPath, $"-reports:\"{DotCoverSnapshotsString}\" -targetdir:\"{DestinationFilePath}\"");
