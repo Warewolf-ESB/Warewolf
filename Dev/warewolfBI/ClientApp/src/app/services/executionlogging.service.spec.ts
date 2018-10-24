@@ -3,7 +3,7 @@ import { LogEntry } from './../models/logentry.model';
 import { ExecutionLoggingService } from './executionlogging.service';
 import { APIService } from './api.service';
 
-describe('ExecutionloggingComponent', () => {
+describe('ExecutionLoggingService', () => {
   let service: ExecutionLoggingService;
   let serverURL = this.protocol + "http://localhost:3142";
   let apiService: APIService;

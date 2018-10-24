@@ -7,7 +7,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { CustomMaterialModule } from "./core/custommaterial.module";
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
+import { ExecutionLoggingComponent } from './components/executionlogging/executionlogging.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,7 +16,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        ExecutionloggingComponent,
+        ExecutionLoggingComponent,
         SettingsComponent
       ],
       schemas: [

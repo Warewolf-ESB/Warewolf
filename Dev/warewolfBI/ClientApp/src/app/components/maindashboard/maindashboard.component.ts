@@ -7,7 +7,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
   templateUrl: './maindashboard.component.html',
   styleUrls: ['./maindashboard.component.css']
 })
-export class MaindashboardComponent {
+export class MainDashboardComponent {
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
