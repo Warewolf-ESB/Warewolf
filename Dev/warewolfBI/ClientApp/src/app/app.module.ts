@@ -8,7 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'angular-custom-modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngMaterialModule } from './angmaterial';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from "@angular/http";
 import { MatInputModule } from '@angular/material/input';
@@ -24,7 +23,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 
 import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
 import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
-import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
+import { ExecutionLoggingComponent } from './components/executionlogging/executionlogging.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 

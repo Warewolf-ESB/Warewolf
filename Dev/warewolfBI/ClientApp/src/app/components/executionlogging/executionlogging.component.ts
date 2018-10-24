@@ -22,7 +22,7 @@ import { LogEntryComponent } from '../logentry/logentry.component';
   styleUrls: ['./executionlogging.component.scss']
 })
 
-export class ExecutionloggingComponent implements OnInit, AfterViewInit {
+export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   logEntry: LogEntry;
   dataSource: ExecutionDataSource;
   displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];

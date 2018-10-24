@@ -14,8 +14,8 @@ import { ExecutionloggingComponent } from './executionlogging.component';
 import { ExecutionLoggingService } from './../../services/executionlogging.service';
 
 describe('ExecutionloggingComponent', () => {
-  let component: ExecutionloggingComponent;
-  let fixture: ComponentFixture<ExecutionloggingComponent>;
+  let component: ExecutionLoggingComponent;
+  let fixture: ComponentFixture<ExecutionLoggingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('ExecutionloggingComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExecutionloggingComponent);
+    fixture = TestBed.createComponent(ExecutionLoggingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
