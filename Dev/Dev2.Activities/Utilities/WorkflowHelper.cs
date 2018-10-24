@@ -279,6 +279,10 @@ namespace Dev2.Utilities
             {
                 return true;
             }
+            if (lnode.Name.Equals("av:PointCollection"))
+            {
+                return true;
+            }
 
             bool result = lnode.Name.Equals(rnode.Name);
             if (!result)
