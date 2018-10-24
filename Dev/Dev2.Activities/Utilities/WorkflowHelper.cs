@@ -314,8 +314,17 @@ namespace Dev2.Utilities
         }
         private static bool CompareAttributes(XmlNode lnode, XmlNode rnode)
         {
+            if (lnode.Attributes.Count != rnode.Attributes.Count)
+            {
+                return false;
+            }
             for (int i = 0; i < lnode.Attributes.Count; i++)
             {
+                var isHintSize = lnode.Attributes[i].Name.Equals("sap:VirtualizedContainerService.HintSize");
+                if (isHintSize)
+                {
+                    continue;
+                }
                 var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
                 eq &= lnode.Attributes[i].Value.Equals(rnode.Attributes[i].Value);
                 if (!eq)
