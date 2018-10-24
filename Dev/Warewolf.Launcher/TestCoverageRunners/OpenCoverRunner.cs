@@ -52,20 +52,6 @@ namespace Warewolf.Launcher.TestCoverageRunners
             }
             return DoubleEscapedArgsList;
         }
-        public void WriteCoverageSeedFile(string filename)
-        {
-            string result = string.Empty;
-
-            using (Stream stream = GetType().Assembly.
-                       GetManifestResourceStream("Warewolf.Launcher.Blank OpenCover Output.xml"))
-            {
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    result = sr.ReadToEnd();
-                }
-            }
-            File.WriteAllText(filename, result);
-        }
 
         public void StartServiceWithCoverage(string TestsResultsPath, string jobName) => Process.Start("sc.exe", "start \"Warewolf Server\"");
 
