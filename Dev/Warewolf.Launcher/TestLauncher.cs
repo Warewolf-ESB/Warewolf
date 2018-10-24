@@ -9,9 +9,7 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
 using Warewolf.Launcher.TestResultsMergers;
-
 using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Warewolf.Launcher.TestRunners
@@ -105,38 +103,113 @@ namespace Warewolf.Launcher.TestRunners
             return TestCategories;
         }
 
-        public void ReadPlaylist()
+        public List<string> ReadPlaylist()
         {
-            if (string.IsNullOrEmpty(TestList))
+            var testList = new List<string>();
+            foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
             {
-                foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
+                XmlDocument playlistContent = new XmlDocument();
+                playlistContent.Load(playlistFile);
+                if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
                 {
-                    XmlDocument playlistContent = new XmlDocument();
-                    playlistContent.Load(playlistFile);
-                    if (playlistContent.DocumentElement.SelectNodes("/Playlist/Add").Count > 0)
+                    TestList = " /Tests:";
+                    foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
                     {
-                        foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
-                        {
-                            TestList += "," + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
-                        }
+                        string fullTestName = TestName.Attributes["Test"].InnerText;
+                        string testName = fullTestName.Substring(fullTestName.LastIndexOf(".") + 1);
+                        testList.Add(fullTestName);
+                        TestList += "," + testName;
+                    }
+                }
+                else
+                {
+                    if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
+                    {
+                        string fullTestName = playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText;
+                        string testName = fullTestName.Substring(fullTestName.LastIndexOf(".") + 1);
+                        testList.Add(fullTestName);
+                        TestList = " /Tests:" + testName;
                     }
                     else
                     {
-                        if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
+                        Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
+                    }
+                }
+            }
+            return testList;
+        }
+
+        public void WritePlaylist(string jobName)
+        {
+            if (Directory.Exists(TestsResultsPath))
+            {
+                foreach (var FullTRXFilePath in Directory.GetFiles(TestsResultsPath, "*.trx"))
+                {
+                    XmlDocument trxContent = new XmlDocument();
+                    trxContent.Load(FullTRXFilePath);
+                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary", namespaceManager).Attributes["outcome"].Value != "Completed")
+                    {
+                        WriteFailingTestPlaylist($"{TestsResultsPath}\\{jobName} Failures.playlist", FullTRXFilePath, trxContent, namespaceManager);
+                    }
+                }
+            }
+        }
+
+        void WriteFailingTestPlaylist(string OutPlaylistPath, string FullTRXFilePath, XmlDocument trxContent, XmlNamespaceManager namespaceManager)
+        {
+            Console.WriteLine($"Writing all test failures in \"{FullTRXFilePath}\" to a playlist file \"{OutPlaylistPath}\".");
+            var playlist = "<Playlist Version=\"1.0\">";
+            if (File.Exists(OutPlaylistPath))
+            {
+                playlist += "<Add Test=\"" + string.Join("\" /><Add Test=\"", ReadPlaylist()) + "\" />";
+                File.Delete(OutPlaylistPath);
+            }
+            if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Count > 0)
+            {
+                foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager))
+                {
+                    if (TestResult.Attributes["outcome"] == null || TestResult.Attributes["outcome"].InnerText == "Failed")
+                    {
+                        if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Count > 0)
                         {
-                            TestList = " /Tests:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                            foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager))
+                            {
+                                if (TestResult.Attributes["testName"] != null && TestDefinition.Attributes["name"].InnerText == TestResult.Attributes["testName"].InnerText)
+                                {
+                                    var fullTestName = TestDefinition.Attributes["className"].InnerText + "." + TestDefinition.Attributes["name"].InnerText;
+                                    if (!playlist.Contains(fullTestName))
+                                    {
+                                        playlist += "<Add Test=\"" + fullTestName + "\" />";
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Error parsing Playlist.Add from playlist file at " + playlistFile);
+                            Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at trxFile");
                         }
                     }
                 }
-                if (TestList.StartsWith(","))
+            }
+            else
+            {
+                if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager).Attributes["outcome"].InnerText == "Failed")
                 {
-                    TestList = TestList.Replace("^.", " /Tests:");
+                    playlist += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod", namespaceManager).Attributes["name"].InnerText + "\" />";
+                }
+                else
+                {
+                    if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult", namespaceManager) == null)
+                    {
+                        Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                    }
                 }
             }
+            playlist += "</Playlist>";
+            File.WriteAllText(OutPlaylistPath, playlist);
+            Console.WriteLine($"Playlist file written to \"{OutPlaylistPath}\".");
         }
 
         public string AppendProjectFolder(string projectFolder) => " /testcontainer:\"" + projectFolder + "\\bin\\Debug\\" + System.IO.Path.GetFileName(projectFolder) + ".dll\"";
