@@ -6,7 +6,7 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"

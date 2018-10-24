@@ -20,6 +20,10 @@ export class User implements Deserializable {
   public createdDate: string;
   public userStatusId: string;
 
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }
+
   getFullName() {
     return this.firstName + ' ' + this.lastName;
   }

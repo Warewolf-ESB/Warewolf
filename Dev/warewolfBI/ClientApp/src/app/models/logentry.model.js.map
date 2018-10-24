@@ -1,1 +1,1 @@
-{"version":3,"file":"logentry.model.js","sourceRoot":"","sources":["logentry.model.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,QAAQ;IAWnB,WAAW,CAAC,KAAU;QACpB,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,KAAK,CAAC,CAAC;QAC3B,OAAO,IAAI,CAAC;IACd,CAAC;CACF"}
+{"version":3,"file":"logentry.model.js","sourceRoot":"","sources":["logentry.model.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,QAAQ;IAanB,YAAY,SAAiB,EAAE;QAC7B,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,MAAM,CAAC,CAAC;IAC9B,CAAC;IAED,WAAW,CAAC,KAAU;QACpB,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,KAAK,CAAC,CAAC;QAC3B,OAAO,IAAI,CAAC;IACd,CAAC;CACF"}

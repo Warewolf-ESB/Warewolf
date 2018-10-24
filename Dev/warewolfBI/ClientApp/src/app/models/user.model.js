@@ -1,4 +1,7 @@
 export class User {
+    constructor(values = {}) {
+        Object.assign(this, values);
+    }
     getFullName() {
         return this.firstName + ' ' + this.lastName;
     }

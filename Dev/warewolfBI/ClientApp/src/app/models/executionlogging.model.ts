@@ -8,6 +8,10 @@ export class ExecutionLogging implements Deserializable {
   public SortBy: string
   public ComputerName: string
 
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }
+
   deserialize(input: any) {
     Object.assign(this, input);
     return this;
