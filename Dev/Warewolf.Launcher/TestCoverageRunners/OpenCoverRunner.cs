@@ -25,10 +25,10 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            var FullArgsList = $" -target:\"{TestsResultsPath}\\..\\Run {JobName}.bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
+            var commandLine = $"\"{CoverageToolPath}\" -target:\"{TestsResultsPath}\\..\\Run {JobName}.bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
             var OpenCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} OpenCover.bat";
             TestCleanupUtils.CopyOnWrite(OpenCoverRunnerPath);
-            File.WriteAllText(OpenCoverRunnerPath, $"\"{CoverageToolPath}\"{FullArgsList}");
+            File.WriteAllText(OpenCoverRunnerPath, commandLine);
             return OpenCoverRunnerPath;
         }
 
@@ -40,17 +40,17 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            var DoubleEscapedArgsList = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
+            var doubleEscapedCommandLine = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
             if (!IsExistingService)
             {
-                Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\" start= demand");
+                Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + doubleEscapedCommandLine + "\" start= demand");
             }
             else
             {
-                Console.WriteLine("Configuring service to " + DoubleEscapedArgsList);
-                Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + DoubleEscapedArgsList + "\"");
+                Console.WriteLine("Configuring service to " + doubleEscapedCommandLine);
+                Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + doubleEscapedCommandLine + "\"");
             }
-            return DoubleEscapedArgsList;
+            return doubleEscapedCommandLine;
         }
 
         public void StartServiceWithCoverage(string TestsResultsPath, string jobName) => Process.Start("sc.exe", "start \"Warewolf Server\"");
