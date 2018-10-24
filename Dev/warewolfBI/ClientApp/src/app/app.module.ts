@@ -8,12 +8,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'angular-custom-modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngMaterialModule } from './angmaterial';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from "@angular/http";
 
-import { ErrorInterceptor } from './helpers/error.interceptor';
-import { AuthInterceptor } from './helpers/auth.interceptor';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -24,9 +21,9 @@ import { DashboardUsersComponent } from './components/dashboard/cards/dashboard-
 import { DashboardService } from './components/dashboard/services/dashboard.service';
 import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
 import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
-import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
+import { ExecutionLoggingComponent } from './components/executionlogging/executionlogging.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { MaindashboardComponent } from './components/maindashboard/maindashboard.component';
+import { MainDashboardComponent } from './components/maindashboard/maindashboard.component';
 
 import { MediatorService } from './services/mediator.service';
 import { UserService } from './services/user.service';
@@ -47,9 +44,9 @@ import { LogEntryComponent } from './components/logentry/logentry.component'
     DashboardUsersComponent,
     ServerExplorerComponent,
     OutputsExplorerComponent,
-    ExecutionloggingComponent,
+    ExecutionLoggingComponent,
     SettingsComponent,
-    MaindashboardComponent
+    MainDashboardComponent
   ],
   imports: [
     NgbModule.forRoot(),
