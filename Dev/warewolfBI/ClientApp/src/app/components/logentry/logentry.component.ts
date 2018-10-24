@@ -44,5 +44,4 @@ export class LogEntryComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
-
 }

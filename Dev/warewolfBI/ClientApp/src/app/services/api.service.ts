@@ -27,7 +27,7 @@ export class APIService {
   }
 
   getExecutionList(ServerUrl: string, ExecutionId: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
-
+    
     this.serverUrl = ServerUrl.toLowerCase();
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
 

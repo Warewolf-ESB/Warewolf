@@ -1,6 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatPaginatorModule, MatSortModule} from '@angular/material';
+import { BrowserModule, By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CustomMaterialModule } from '../../core/custommaterial.module';
+import { LogEntryComponent } from '../logentry/logentry.component';
 import { ExecutionloggingComponent } from './executionlogging.component';
+import { ExecutionLoggingService } from './../../services/executionlogging.service';
 
 describe('ExecutionloggingComponent', () => {
   let component: ExecutionloggingComponent;
@@ -8,7 +19,20 @@ describe('ExecutionloggingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExecutionloggingComponent ]
+      declarations: [
+        ExecutionloggingComponent,
+        LogEntryComponent
+      ],
+      imports: [
+        RouterTestingModule,
+        CustomMaterialModule, MatDialogModule, MatPaginatorModule, MatSortModule, MatInputModule ,
+        HttpClientModule,
+        BrowserModule,
+        FormsModule,
+        BrowserAnimationsModule
+      ],
+      providers[ExecutionLoggingService],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -23,3 +47,5 @@ describe('ExecutionloggingComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+  

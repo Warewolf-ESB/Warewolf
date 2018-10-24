@@ -48,6 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
   overflowState: any = 'auto';
   sideNavText = "Lock Menu";
   sideNavIcon = "lock";
+
+
   constructor(
     private mediator: MediatorService,
     private changeDetectorRef: ChangeDetectorRef,

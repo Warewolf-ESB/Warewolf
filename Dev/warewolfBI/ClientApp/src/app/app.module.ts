@@ -11,7 +11,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngMaterialModule } from './angmaterial';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from "@angular/http";
-
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { GoogleChartsModule } from 'angular-google-charts';
@@ -19,21 +21,19 @@ import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './core/app-routing.module';
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
-import { DashboardUsersComponent } from './components/dashboard/cards/dashboard-users/dashboard-users.component';
-import { DashboardService } from './components/dashboard/services/dashboard.service';
+
 import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
 import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
 import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { MaindashboardComponent } from './components/maindashboard/maindashboard.component';
+
 
 import { MediatorService } from './services/mediator.service';
 import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
 import { ErrorDialogComponent } from './core/error-dialog/error-dialog.component';
-import { LogEntryComponent } from './components/logentry/logentry.component'
+import { LogEntryComponent } from './components/logentry/logentry.component';
 
 @NgModule({
   entryComponents: [
@@ -43,13 +43,10 @@ import { LogEntryComponent } from './components/logentry/logentry.component'
   declarations: [
     AppComponent,
     sanitizeHtmlPipe,
-    DashboardComponent,
-    DashboardUsersComponent,
     ServerExplorerComponent,
     OutputsExplorerComponent,
     ExecutionloggingComponent,
-    SettingsComponent,
-    MaindashboardComponent
+    SettingsComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -65,13 +62,12 @@ import { LogEntryComponent } from './components/logentry/logentry.component'
     ReactiveFormsModule,
     FormsModule,
     LayoutModule,
-    GoogleChartsModule,
+    GoogleChartsModule, MatDialogModule,MatInputModule 
   ],
   exports: [
     sanitizeHtmlPipe
   ],
   providers: [
-    DashboardService,
     MediatorService,
     UserService,
     APIService,

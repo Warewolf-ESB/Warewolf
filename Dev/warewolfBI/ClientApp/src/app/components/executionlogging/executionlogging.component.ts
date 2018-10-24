@@ -7,7 +7,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { ExecutionLoggingService } from './../../services/executionlogging.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatDialogConfig, MatPaginator, MatSort } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSort} from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { ExecutionDataSource } from './executionLoggingDataSource';
 import { ExecutionLogging } from './../../models/executionlogging.model';
@@ -36,7 +36,7 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
   port: string;
   selected: string;
   protocol: string;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
 
   ngOnInit() {
     this.selected = '3142';
@@ -86,7 +86,8 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
       this.serverURL,
       this.sort.direction,
       this.paginator.pageIndex,
-      this.paginator.pageSize);
+      this.paginator.pageSize
+    );
   }
 
   onRowClicked(LogEntry) {
@@ -97,3 +98,4 @@ export class ExecutionloggingComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
   }
 }
+
