@@ -31,7 +31,7 @@ describe('LogEntryComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogEntryComponent(mockLogEntry));
+    fixture = TestBed.createComponent(LogEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

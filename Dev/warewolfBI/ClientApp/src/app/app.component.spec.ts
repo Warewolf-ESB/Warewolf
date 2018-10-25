@@ -1,25 +1,16 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, inject, async, fakeAsync, tick, ComponentFixture } from '@angular/core/testing';
+import { DebugElement, Component, Input, Directive } from "@angular/core";
+import { By } from '@angular/platform-browser';
+
+import { AppTestingModule } from './app-testing-module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-
-import { Router } from '@angular/router';
-import { Component, Input, Directive } from "@angular/core";
-
-import { BrowserModule, By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
-import { CustomMaterialModule } from "./core/custommaterial.module";
-import { AppComponent } from './app.component';
-import { ExecutionloggingComponent } from './components/executionlogging/executionlogging.component';
-import { SettingsComponent } from './components/settings/settings.component';
-
-import { MediatorService } from './services/mediator.service';
-import { AuthGuardService } from './guards/auth.guard.service';
-import { AuthenticationService } from './services/authentication.service';
-
 import { RouterLinkDirective } from '../testing/router-link.directive';
+
+import { AppComponent } from './app.component';
+import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
+import { OutputsExplorerComponent } from './components/outputs-explorer/outputs-explorer.component';
+import { ExecutionLoggingComponent } from './components/executionlogging/executionlogging.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent {
@@ -34,38 +25,10 @@ describe('AppComponent & TestModule', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        RouterLinkDirective,
-        RouterOutletStubComponent,
-        ExecutionloggingComponent,
-        SettingsComponent
-      ],
       imports: [
-        RouterTestingModule,
-        CustomMaterialModule,
-        HttpClientModule,
-        BrowserModule,
-        FormsModule,
-        BrowserAnimationsModule
+        AppTestingModule,
+        RouterTestingModule
       ]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AppComponent);
-        component = fixture.componentInstance;
-      });
-  }));
-  tests();
-});
-
-describe('AppComponent & NO_ERRORS_SCHEMA', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        RouterLinkDirective
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
         fixture = TestBed.createComponent(AppComponent);
@@ -139,5 +102,3 @@ function tests() {
     expect(executionloggingLink.navigatedTo).toBe('/executionlogging');
   });
 }
-
-

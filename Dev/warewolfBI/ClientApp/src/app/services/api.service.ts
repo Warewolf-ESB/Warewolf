@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+
 import { LogEntry } from './../models/logentry.model';
-import { Observable } from 'rxjs';
 
 const httpHeaders = {
   headers: new HttpHeaders({
@@ -12,22 +14,25 @@ const httpHeaders = {
   })
 };
 
-
 @Injectable({ providedIn: 'root' })
 
 export class APIService {
   serverUrl: string;
+  private headers = new Headers({ 'Content-Type': "application/json" });
+
   constructor(private httpClient: HttpClient) { }
+
 
   login(username: string, password: string) {
     return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {})
-      .map(data => {
-        return data;
-      });
+      .pipe(
+        map((response) => { return response; }),
+        catchError(this.handleError('login', []))
+      );
   }
 
   getExecutionList(ServerUrl: string, ExecutionId: string, filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 3): Observable<LogEntry[]> {
-    
+
     this.serverUrl = ServerUrl.toLowerCase();
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
 
@@ -39,10 +44,21 @@ export class APIService {
     //  .set('pageSize', pageSize.toString())
 
     return this.httpClient.post<any>(wareWolfUrl, filter)
-      .pipe(map((response) => {
-        return response;
-      }), catchError((error) => {
-        return error;
-      }));
+      .pipe(
+        map((response) => { return response; }),
+        catchError(this.handleError('getLogs', []))
+      );
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      this.log(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {
+    console.error(message);
+    //TODO: Add to the logging DB;
   }
 }

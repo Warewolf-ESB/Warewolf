@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import * as moment from "moment";
 import { APIService } from './api.service';
 import { LogEntry } from './../models/logentry.model';
 
