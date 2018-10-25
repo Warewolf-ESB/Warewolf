@@ -34,15 +34,12 @@ namespace Warewolf.Launcher.TestCoverageMergers
             }
             var hasContent = false;
             var RetryCount = 0;
-            while (!hasContent && RetryCount < 100)
+            while (!hasContent && RetryCount < 200)
             {
                 RetryCount++;
-                try
-                {
-                    var content = File.ReadAllBytes(snapshot);
-                    hasContent = content.Length > 0;
-                }
-                catch
+                var content = File.ReadAllBytes(snapshot);
+                hasContent = content.Length > 0;
+                if (!hasContent)
                 {
                     Console.WriteLine($"Still waiting for {snapshot} file to contain something.");
                     Thread.Sleep(3000);
