@@ -572,7 +572,7 @@ namespace Warewolf.Launcher
         void WaitForServerStart(string ServerFolderPath)
         {
             var ServerStartedFilePath = Path.Combine(ServerFolderPath, "ServerStarted");
-            TestCleanupUtils.WaitForFileExist(ServerStartedFilePath);
+            TestCleanupUtils.WaitForFileExist(ServerStartedFilePath, 35);
             if (!(File.Exists(ServerStartedFilePath)))
             {
                 throw new Exception("Server Cannot Start.");
