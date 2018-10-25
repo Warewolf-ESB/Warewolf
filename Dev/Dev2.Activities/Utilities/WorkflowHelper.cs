@@ -275,11 +275,7 @@ namespace Dev2.Utilities
             {
                 return lnode == rnode;
             }
-            if (lnode.Name.Equals("av:Size"))
-            {
-                return true;
-            }
-            if (lnode.Name.Equals("av:PointCollection"))
+            if (SkipNode(lnode))
             {
                 return true;
             }
@@ -324,12 +320,15 @@ namespace Dev2.Utilities
             }
             for (int i = 0; i < lnode.Attributes.Count; i++)
             {
-                var isHintSize = lnode.Attributes[i].Name.Equals("sap:VirtualizedContainerService.HintSize");
-                if (isHintSize)
+                var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
+                if (!eq)
+                {
+                    return eq;
+                }
+                if (SkipAttribute(lnode.Attributes[i]))
                 {
                     continue;
                 }
-                var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
                 eq &= lnode.Attributes[i].Value.Equals(rnode.Attributes[i].Value);
                 if (!eq)
                 {
@@ -337,6 +336,26 @@ namespace Dev2.Utilities
                 }
             }
             return true;
+        }
+
+        static bool SkipAttribute(XmlAttribute attr)
+        {
+            var eq = false;
+
+            eq |= attr.Name.Equals("sap:VirtualizedContainerService.HintSize");
+
+            return eq;
+        }
+
+        static bool SkipNode(XmlNode node)
+        {
+            var eq = false;
+
+            eq |= node.Name.Equals("av:Size");
+            eq |= node.Name.Equals("sap:VirtualizedContainerService.HintSize");
+            eq |= node.Name.Equals("av:PointCollection");
+
+            return eq;
         }
     }
 }
