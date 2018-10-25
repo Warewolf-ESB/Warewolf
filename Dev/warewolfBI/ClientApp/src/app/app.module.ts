@@ -44,7 +44,7 @@ import { LogEntryComponent } from './components/logentry/logentry.component';
     sanitizeHtmlPipe,
     ServerExplorerComponent,
     OutputsExplorerComponent,
-    ExecutionloggingComponent,
+    ExecutionLoggingComponent,
     SettingsComponent
   ],
   imports: [

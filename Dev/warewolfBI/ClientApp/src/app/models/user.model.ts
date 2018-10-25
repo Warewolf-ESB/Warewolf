@@ -1,6 +1,4 @@
-import { Deserializable } from "./../models/deserializable";
-
-export class User implements Deserializable {
+export class User  {
   public id: string;
   public active: boolean;
   public firstName: string;
@@ -22,18 +20,5 @@ export class User implements Deserializable {
 
   constructor(values: Object = {}) {
     Object.assign(this, values);
-  }
-
-  getFullName() {
-    return this.firstName + ' ' + this.lastName;
-  }
-
-  isAdmin() {
-    return this.adminAccount;
-  }
-
-  deserialize(input: any) {
-    Object.assign(this, input);
-    return this;
-  }
+  }  
 }

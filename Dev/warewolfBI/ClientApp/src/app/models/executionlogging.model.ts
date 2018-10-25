@@ -1,6 +1,4 @@
-import { Deserializable } from "./../models/deserializable";
-
-export class ExecutionLogging implements Deserializable {
+export class ExecutionLogging {
 
   public Server: string
   public Port: string
@@ -12,8 +10,5 @@ export class ExecutionLogging implements Deserializable {
     Object.assign(this, values);
   }
 
-  deserialize(input: any) {
-    Object.assign(this, input);
-    return this;
-  }
+ 
 }

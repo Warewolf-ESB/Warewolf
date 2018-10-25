@@ -25,17 +25,17 @@ import { LogEntryComponent } from '../logentry/logentry.component';
 export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   logEntry: LogEntry;
   dataSource: ExecutionDataSource;
-  displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChildren('PortInput,serverNameInput,PortInput', { read: ElementRef }) CreateServerURLInput: QueryList<ElementRef>
-
   serverURL: string;
   serverName: string;
   port: string;
   selected: string;
   protocol: string;
+  displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChildren('PortInput,serverNameInput,PortInput', { read: ElementRef }) CreateServerURLInput: QueryList<ElementRef>;
+  
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
 
   ngOnInit() {
