@@ -10,13 +10,13 @@ import { DebugElement, Type, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@a
 import { Location } from '@angular/common';
 
 import { AppComponent } from '../app.component';
-import { ExecutionloggingComponent } from '../components/executionlogging/executionlogging.component';
+import { ExecutionLoggingComponent } from '../components/executionlogging/executionlogging.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { AppRoutingModule } from '../core/app-routing.module';
 
 const appRoutes: Routes = [
-  { path: '', component: ExecutionloggingComponent },
-  { path: 'executionlogging', component: ExecutionloggingComponent },
+  { path: '', component: ExecutionLoggingComponent },
+  { path: 'executionlogging', component: ExecutionLoggingComponent },
   { path: 'settings', component: SettingsComponent }
 ];
 describe('Router: App', () => {
@@ -31,7 +31,7 @@ describe('Router: App', () => {
         RouterTestingModule.withRoutes(appRoutes)
       ],
       declarations: [
-        ExecutionloggingComponent,
+        ExecutionLoggingComponent,
         SettingsComponent,
         AppComponent
       ],
