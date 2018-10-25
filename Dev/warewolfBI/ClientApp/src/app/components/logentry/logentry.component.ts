@@ -24,15 +24,15 @@ export class LogEntryComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<LogEntryComponent>,
+    public dialogRef: MatDialogRef<LogEntryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: LogEntry) {
-    this.ExecutionId = data.LogEntry.ExecutionId;
-    this.Url = data.LogEntry.Url;
-    this.Status = data.LogEntry.Status;
-    this.ExecutionTime = data.LogEntry.ExecutionTime;
-    this.StartDateTime = data.LogEntry.StartDateTime;
-    this.CompletedDateTime = data.LogEntry.CompletedDateTime;
-    this.User = data.LogEntry.User;
+    this.ExecutionId = data.ExecutionId;
+    this.Url = data.Url;
+    this.Status = data.Status;
+    this.ExecutionTime = data.ExecutionTime;
+    this.StartDateTime = data.StartDateTime;
+    this.CompletedDateTime = data.CompletedDateTime;
+    this.User = data.User;
   }
 
   ngOnInit() { }
