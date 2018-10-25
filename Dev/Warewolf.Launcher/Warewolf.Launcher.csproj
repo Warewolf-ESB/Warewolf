@@ -133,6 +133,15 @@
     <None Include="Warewolf.Launcher.AdminMode.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<Content Include="..\packages\LibGit2Sharp.NativeBinaries.1.0.217\runtimes\win7-x64\native\git2-6311e88.dll">
+	  <Link>git2-6311e88.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\packages\LibGit2Sharp.NativeBinaries.1.0.217\runtimes\win7-x64\native\git2-6311e88.pdb">
+      <Link>git2-6311e88.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
