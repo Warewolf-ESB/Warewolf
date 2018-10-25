@@ -33,7 +33,6 @@
     <None Remove="ClientApp\src\app\guards\auth.interceptor.ts" />
     <None Remove="ClientApp\src\app\guards\role-guard.service.ts" />
     <None Remove="ClientApp\src\app\helpers\error.interceptor.ts" />
-    <None Remove="ClientApp\src\app\models\deserializable.ts" />
     <None Remove="ClientApp\src\app\models\executionlogging.model.ts" />
     <None Remove="ClientApp\src\app\models\logentry.model.ts" />
     <None Remove="ClientApp\src\app\models\user.model.ts" />
@@ -53,7 +52,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\guards\role-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\auth.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\error.interceptor.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\models\deserializable.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\executionlogging.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\logentry.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\user.model.ts" />

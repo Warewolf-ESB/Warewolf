@@ -10,17 +10,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../core/custommaterial.module';
 import { LogEntryComponent } from '../logentry/logentry.component';
-import { ExecutionloggingComponent } from './executionlogging.component';
+import { ExecutionLoggingComponent } from './executionlogging.component';
 import { ExecutionLoggingService } from './../../services/executionlogging.service';
 
-describe('ExecutionloggingComponent', () => {
+describe('ExecutionLoggingComponent', () => {
   let component: ExecutionLoggingComponent;
   let fixture: ComponentFixture<ExecutionLoggingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ExecutionloggingComponent,
+        ExecutionLoggingComponent,
         LogEntryComponent
       ],
       imports: [
@@ -31,7 +31,7 @@ describe('ExecutionloggingComponent', () => {
         FormsModule,
         BrowserAnimationsModule
       ],
-      providers[ExecutionLoggingService],
+      providers:[ExecutionLoggingService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
