@@ -448,11 +448,11 @@ namespace Warewolf.Launcher
             return locked;
         }
 
-        public static bool WaitForFileExist(string FileSpec)
+        public static bool WaitForFileExist(string FileSpec, int timeout=3)
         {
             var exists = false;
             var RetryCount = 0;
-            while (!exists && RetryCount < 100)
+            while (!exists && RetryCount < timeout*20)
             {
                 RetryCount++;
                 if (File.Exists(FileSpec))
