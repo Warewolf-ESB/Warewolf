@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             var model = CustomContainer.CreateInstance<ISqliteServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             SetupCommonProperties();
-            SetupDeclareVariables(modelItem);
+            SetupDeclareVariables(_modelItem);
             this.RunViewSetup();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_AdvancedRecordset;
         }
@@ -99,7 +99,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             set
             {
                 _declareVariables = value;
-                OnPropertyChanged("DeclareVariables");
+                OnPropertyChanged(nameof(DeclareVariables));
             }
         }
         public string RecordsetName
@@ -158,48 +158,39 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         }
         void SetupDeclareVariables(ModelItem modelItem)
         {
-            var existing = modelItem.GetProperty<IList<INameValue>>("DeclareVariables");
+            var existing = modelItem.GetProperty<IList<INameValue>>(nameof(DeclareVariables));
             var nameValues = existing ?? new List<INameValue>();
             DeclareVariables = new ObservableCollection<INameValue>();
             DeclareVariables.CollectionChanged += DeclareVariablesOnCollectionChanged;
-            foreach(var nv in nameValues.Where(name => !string.IsNullOrEmpty(name.Name)))
+            foreach (var nv in nameValues.Where(name => !string.IsNullOrEmpty(name.Name)))
             {
                 DeclareVariables.Add(nv);
             }
 
-            DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
+            if (!DeclareVariables.Any())
             {
-                _modelItem.SetProperty("DeclareVariables",
-                    _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-            }));
-
-            
-            if (DeclareVariables.Count == 0)
-            {
-                DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
-                {
-                    _modelItem.SetProperty("DeclareVariables",
-                        _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                }));
+                return;
             }
-            else
+            var nameValue = DeclareVariables.Last();
+            if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
             {
-                var nameValue = DeclareVariables.Last();
-                if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
-                {
-                    DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
-                    {
-                        _modelItem.SetProperty("DeclareVariables",
-                            _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                    }));
-                }
+                AddDeclareVariables();
             }
         }
+
+        private void AddDeclareVariables()
+        {
+            DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
+            {
+                _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            }));
+        }
+
         void DeclareVariablesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            _modelItem.SetProperty("DeclareVariables", _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -210,13 +201,9 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                     DeclareVariables.Remove(nv);
                 }
 
-                DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
-                {
-                    _modelItem.SetProperty("DeclareVariables",
-                        _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                }));
+                AddDeclareVariables();
             }
-            _modelItem.SetProperty("DeclareVariables", _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         private void GenerateOutputs()
