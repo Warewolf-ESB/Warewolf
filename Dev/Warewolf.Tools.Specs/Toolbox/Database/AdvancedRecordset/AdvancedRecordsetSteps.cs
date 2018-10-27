@@ -70,12 +70,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Database.AdvancedRecordset
         public void GivenDeclareVariablesAs(Table decalreVariables)
         {
             var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
-            var i = 0;
             foreach (var row in decalreVariables.Rows)
             {
-                viewModel.DeclareVariables[i].Name = row["Name"];
-                viewModel.DeclareVariables[i].Value = row["Value"];
-                i++;
+                var nameValue = new NameValue
+                {
+                    Name = row["Name"],
+                    Value = row["Value"]
+                };
+                viewModel.DeclareVariables.Add(nameValue);
             }
         }
         [Then(@"Declare variables will be")]
