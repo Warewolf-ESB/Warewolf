@@ -23,7 +23,11 @@ namespace Warewolf.Launcher
                         {
                             if (CurrentLine.Contains("new Job("))
                             {
-                                currentJobName = CurrentLine.Trim().Replace(".jobs(", "").Replace("new Job(\"", "").Replace("\",", "");
+                                currentJobName = CurrentLine.Trim()
+                                    .Replace(".jobs(", "")
+                                    .Replace("new Job(\"", "")
+                                    .Replace("\",", "")
+                                    .Replace("public static Job Job = ", "");
                             }
                             const string parseProjFrom = "--ProjectName \\\"";
                             const string parseCategoryFrom = "--Category \\\"";
