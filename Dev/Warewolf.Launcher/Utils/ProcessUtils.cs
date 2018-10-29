@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace Warewolf.Launcher
@@ -21,7 +22,7 @@ namespace Warewolf.Launcher
 
         static string TRXPath;
 
-        public static string RunFileInThisProcess(string TestRunnerPath, string args = "")
+        public static string RunFileInThisProcess(string TestRunnerPath, string args = "", string logFilePath="")
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -32,8 +33,8 @@ namespace Warewolf.Launcher
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.Arguments = args;
             TRXPath = null;
-            process.OutputDataReceived += (sender, arguments) => Display(arguments.Data);
-            process.ErrorDataReceived += (sender, arguments) => Display(arguments.Data);
+            process.OutputDataReceived += (sender, arguments) => Display(arguments.Data, logFilePath);
+            process.ErrorDataReceived += (sender, arguments) => Display(arguments.Data, logFilePath);
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
@@ -42,9 +43,16 @@ namespace Warewolf.Launcher
             return TRXPath;
         }
 
-        static void Display(string output)
+        static void Display(string output, string logFilePath = "")
         {
-            Console.WriteLine(output);
+            if (string.IsNullOrEmpty(logFilePath))
+            {
+                Console.WriteLine(output);
+            }
+            else
+            {
+                File.AppendAllLines(logFilePath, new string[] { output }, System.Text.Encoding.UTF8);
+            }
             if (output != null && output.StartsWith("Results File: "))
             {
                 TRXPath = ParseTrxFilePath(output);
