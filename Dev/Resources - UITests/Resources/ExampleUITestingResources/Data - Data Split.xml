@@ -1,7 +1,7 @@
 
 <Service ID="3182dad0-339e-4a0c-926b-4417f7deea46" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Data - Data Split" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6018.21806">
   <DisplayName>Data - Data Split</DisplayName>
-  <Category>Examples\Data - Data Split</Category>
+  <Category>ExampleUITestingResources\Data - Data Split</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
