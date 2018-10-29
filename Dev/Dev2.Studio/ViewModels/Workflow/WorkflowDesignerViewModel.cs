@@ -1972,6 +1972,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         ResourceModel.WorkflowXaml = ServiceDefinition;
                         OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
                     }
+                    if (ResourceModel.WorkflowXaml is null)
+                    {
+                        ResourceModel.WorkflowXaml = ServiceDefinition;
+                    }
 
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
