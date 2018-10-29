@@ -1,5 +1,6 @@
 import { Component, OnInit, Injectable, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate, keyframes, query, group } from '@angular/animations';
+
 import { MediaMatcher } from '@angular/cdk/layout';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
@@ -48,7 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
   overflowState: any = 'auto';
   sideNavText = "Lock Menu";
   sideNavIcon = "lock";
-
 
   constructor(
     private mediator: MediatorService,
