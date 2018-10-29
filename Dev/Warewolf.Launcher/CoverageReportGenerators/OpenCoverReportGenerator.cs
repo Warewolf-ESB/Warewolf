@@ -18,7 +18,8 @@ namespace Warewolf.Launcher.TestCoverageMergers
             {
                 if (!WaitForFileChanged(snapshot))
                 {
-                    throw new Exception($"Snapshot \"{snapshot}\" contains no content.");
+                    File.Delete(snapshot);
+                    Console.WriteLine($"Snapshot \"{snapshot}\" still contains no content after waiting until the timeout and has been deleted.");
                 }
             }
             var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths);
