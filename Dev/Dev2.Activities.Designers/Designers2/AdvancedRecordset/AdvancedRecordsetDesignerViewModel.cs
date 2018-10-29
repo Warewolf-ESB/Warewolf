@@ -167,12 +167,20 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 DeclareVariables.Add(nv);
             }
 
-            if (!DeclareVariables.Any())
+            AddLastEmptyDeclareVariable();
+        }
+
+        private void AddLastEmptyDeclareVariable()
+        {
+            var shouldAddEmpty = !DeclareVariables.Any();
+
+            if (!shouldAddEmpty)
             {
-                return;
+                var nameValue = DeclareVariables.Last();
+                shouldAddEmpty = !string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value);
             }
-            var nameValue = DeclareVariables.Last();
-            if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+
+            if (shouldAddEmpty)
             {
                 AddDeclareVariables();
             }
