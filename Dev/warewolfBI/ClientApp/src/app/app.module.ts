@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CustomMaterialModule } from "./core/custommaterial.module";
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,7 @@ import { ModalModule } from 'angular-custom-modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -18,7 +19,7 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AppRoutingModule } from './core/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { ServerExplorerComponent } from './components/server-explorer/server-explorer.component';
@@ -53,12 +54,12 @@ import { APIService } from './services/api.service';
     BrowserAnimationsModule,
     HttpModule,
     HttpClientModule,
+    MatButtonModule,
     CustomMaterialModule,
     AppRoutingModule,
     CommonModule,
     FlexLayoutModule,
     ModalModule,
-    HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     LayoutModule,
