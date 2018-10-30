@@ -960,6 +960,14 @@ namespace Dev2.Studio.ViewModels.DataList
         string GetDataListString()
         {
             var result = new StringBuilder("<" + RootTag + ">");
+
+            IList<IScalarItemModel> filledScalars = ScalarCollection?.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() ?? new List<IScalarItemModel>();
+            foreach (var scalar in filledScalars)
+            {
+                AddItemToBuilder(result, scalar);
+                result.Append("/>");
+            }
+
             foreach (var recSet in RecsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
             {
                 IEnumerable<IDataListItemModel> filledRecordSet = recSet.Children.Where(c => !c.IsBlank && !c.HasError);
@@ -981,13 +989,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 result.Append(recSet.DisplayName);
                 result.Append(">");
             }
-
-            IList<IScalarItemModel> filledScalars = ScalarCollection?.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() ?? new List<IScalarItemModel>();
-            foreach (var scalar in filledScalars)
-            {
-                AddItemToBuilder(result, scalar);
-                result.Append("/>");
-            }
+            
             var complexObjectItemModels = ComplexObjectCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError);
             foreach (var complexObjectItemModel in complexObjectItemModels)
             {
