@@ -1457,7 +1457,7 @@ namespace Dev2.Core.Tests
             Setup();
             var result = _dataListViewModel.WriteToResourceModel();
 
-            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
+            const string expectedResult = @"<DataList><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /></Car></DataList>";
 
             Assert.AreEqual(expectedResult, result);
         }
