@@ -2,8 +2,6 @@ import './testing/global-jasmine';
 import 'jasmine-core/lib/jasmine-core/jasmine-html.js';
 import 'jasmine-core/lib/jasmine-core/boot.js';
 
-declare var jasmine;
-
 import './polyfills';
 
 import 'zone.js/dist/zone-testing';
@@ -13,8 +11,6 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
-// Spec files to include in the Stackblitz tests
-import './tests.sb.ts';
 
 bootstrap();
 

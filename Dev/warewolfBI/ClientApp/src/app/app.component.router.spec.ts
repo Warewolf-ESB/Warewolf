@@ -2,13 +2,12 @@ import {
   async, ComponentFixture, fakeAsync, TestBed, tick,
 } from '@angular/core/testing';
 
-import { asyncData } from '../testing';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation } from '@angular/common/testing';
 
 import * as r from '@angular/router';
-import { Router, RouterLinkWithHref } from '@angular/router';
+import { Router, RouterLinkWithHref, NavigationEnd } from '@angular/router';
 
 import { By } from '@angular/platform-browser';
 import { DebugElement, Type } from '@angular/core';
@@ -38,21 +37,21 @@ describe('AppComponent RouterTestingModule', () => {
 
   it('should navigate to "executionlogging" immediately', fakeAsync(() => {
     createComponent();
-    expect(location.path()).toEqual('/executionlogging', 'after initialNavigation()');   
+    expect(location.path()).toEqual('/executionlogging', 'after initialNavigation()');
     expectElementOf(ExecutionLoggingComponent);
   }));
 
   it('should navigate to "executionlogging" on click', fakeAsync(() => {
     createComponent();
-    console.log(page);
+    
     click(page.executionloggingLinkDe);
-
     advance();
     expectPathToBe('/executionlogging');
     expectElementOf(ExecutionLoggingComponent);
-    
+
     page.expectEvents([
-      [r.NavigationStart, '/executionlogging'], [r.RoutesRecognized, '/executionlogging'],
+      [r.NavigationStart, '/executionlogging'],
+      [r.RoutesRecognized, '/executionlogging'],
       [r.NavigationEnd, '/executionlogging']
     ]);
   }));
@@ -79,12 +78,13 @@ class Page {
   executionloggingLinkDe: DebugElement;
   recordedEvents: any[] = [];
   comp: AppComponent;
-  location: SpyLocation;
-  router: Router;
+  location: SpyLocation; 
   fixture: ComponentFixture<AppComponent>;
-  
+
   expectEvents(pairs: any[]) {
     const events = this.recordedEvents;
+    console.log(events);
+    console.log(pairs.length);
     expect(events.length).toEqual(pairs.length, 'actual/expected events length mismatch');
     for (let i = 0; i < events.length; ++i) {
       expect((<any>events[i].constructor).name).toBe(pairs[i][0].name, 'unexpected event name');
@@ -93,9 +93,12 @@ class Page {
   }
 
   constructor() {
-    router.events.subscribe(e => this.recordedEvents.push(e));
+    router.events.subscribe((val) => {
+      this.recordedEvents.push(val)
+      console.log(val instanceof NavigationEnd)
+    });
     const links = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
-    this.executionloggingLinkDe = links[0]; 
+    this.executionloggingLinkDe = links[0];
     this.comp = comp;
     this.fixture = fixture;
     this.router = router;
