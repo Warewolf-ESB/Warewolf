@@ -21,6 +21,7 @@ using Dev2.Interfaces;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -843,13 +844,54 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        #region Private Test Methods
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDataSplitActivity_GetState")]
+        public void DsfDataSplitActivity_EmptyLines_ShouldExist()
+        {
+            var sourceStringLines = new string[] {
+                "",
+                "two",
+                "three",
+                "",
+                "five",
+                "",
+                "",
+                "eight",
+                "next blank is index 10",
+                ""
+            };
 
-        void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
+            _resultsCollection.Add(new DataSplitDTO("[[rs().lines]]", "New Line", "", 1));
+            var sourceString = string.Join(Environment.NewLine, sourceStringLines);
+
+
+            SetupArguments("<root><ADL><testData>"+ sourceString +"</testData></ADL></root>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "lines", out string error);
+
+            Assert.AreEqual(sourceStringLines.Length, col1List.Count);
+
+            var len = sourceStringLines.Length;
+            for (int i=0; i < len; i++)
+            {
+                Assert.AreEqual(sourceStringLines[i], col1List[i]);
+            }
+        }
+
+            #region Private Test Methods
+
+            void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection }
+                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection, SkipBlankRows = false }
             };
 
             CurrentDl = testData;
