@@ -1,18 +1,19 @@
-/// <reference path="src/app/app.component.spec.ts" />
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 module.exports = function (config) {
   config.set({
     basePath: './app',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', 'jasmine-matchers', '@angular-devkit/build-angular'],
+
     plugins: [
-      require('karma-jasmine'),
+      require('karma-jasmine'),      
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
-      require('karma-spec-reporter')
+      require('karma-spec-reporter'),
+      require('karma-jasmine-matchers'),
     ],
     client:{
       clearContext: false
@@ -27,18 +28,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'ChromeNoSandboxHeadless'],
-    singleRun: false,
-    customLaunchers: {
-      ChromeNoSandboxHeadless: {
-        base: 'Chrome',
-        flags: [
-          '--no-sandbox',        
-          '--headless',
-          '--disable-gpu',        
-          ' --remote-debugging-port=9222',
-        ],
-      },
-    },
+    browsers: ['Chrome'],
+    singleRun: false
   });
 };
