@@ -43,11 +43,12 @@ namespace Warewolf.Launcher.TestCoverageMergers
             {
                 RetryCount++;
                 hasChanged = isChanging;
-                isChanging = new FileInfo(snapshot).Length != lastSnapshotSize;
-                hasChanged = !isChanging && hasChanged;
+                long fileSize = new FileInfo(snapshot).Length;
+                isChanging = fileSize != lastSnapshotSize;
+                hasChanged = fileSize != 0 && !isChanging && hasChanged;
                 if (!hasChanged)
                 {
-                    Console.WriteLine($"Still waiting for {snapshot} file to contain something.");
+                    Console.WriteLine($"Still waiting for {snapshot} file to grow and then stop growing.");
                     Thread.Sleep(3000);
                 }
                 lastSnapshotSize = new FileInfo(snapshot).Length;
