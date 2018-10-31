@@ -1,1 +1,0 @@
-{"version":3,"file":"takeWhile.js","sources":["../../src/compat/operator/takeWhile.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,SAAS,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAsC1D,MAAM,UAAU,SAAS,CAAyB,SAA+C;IAC/F,OAAO,WAAW,CAAC,SAAS,CAAC,CAAC,IAAI,CAAC,CAAC;AACtC,CAAC"}

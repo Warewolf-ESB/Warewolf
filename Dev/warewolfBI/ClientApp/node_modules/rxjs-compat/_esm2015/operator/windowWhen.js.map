@@ -1,1 +1,0 @@
-{"version":3,"file":"windowWhen.js","sources":["../../src/compat/operator/windowWhen.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,UAAU,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAwC3D,MAAM,UAAU,UAAU,CAAyB,eAAsC;IACvF,OAAO,WAAW,CAAC,eAAe,CAAC,CAAC,IAAI,CAA8B,CAAC;AACzE,CAAC"}

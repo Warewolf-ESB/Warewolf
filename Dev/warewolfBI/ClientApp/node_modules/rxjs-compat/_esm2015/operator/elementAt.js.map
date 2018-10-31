@@ -1,1 +1,0 @@
-{"version":3,"file":"elementAt.js","sources":["../../src/compat/operator/elementAt.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,SAAS,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AA4C1D,MAAM,UAAU,SAAS,CAAyB,KAAa,EAAE,YAAgB;IAC/E,OAAO,WAAW,CAAC,KAAK,CAAC,SAAS,EAAE,SAAS,CAAC,CAAC,IAAI,CAAC,CAAC;AACvD,CAAC"}

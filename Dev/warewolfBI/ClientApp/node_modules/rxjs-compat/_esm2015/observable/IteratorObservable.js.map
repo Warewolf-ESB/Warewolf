@@ -1,1 +1,0 @@
-{"version":3,"file":"IteratorObservable.js","sources":["../../src/compat/observable/IteratorObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,IAAI,EAAE,MAAM,MAAM,CAAC;AAEvD,MAAM,OAAO,kBAAsB,SAAQ,UAAa;IACtD,MAAM,CAAC,MAAM,CAAI,QAAa,EAAE,SAAyB;QACvD,OAAO,IAAI,CAAI,QAAQ,EAAE,SAAS,CAAC,CAAC;IACtC,CAAC;CACF"}

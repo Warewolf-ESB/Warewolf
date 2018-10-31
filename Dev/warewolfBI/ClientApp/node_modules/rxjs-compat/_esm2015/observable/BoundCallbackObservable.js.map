@@ -1,1 +1,0 @@
-{"version":3,"file":"BoundCallbackObservable.js","sources":["../../src/compat/observable/BoundCallbackObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,YAAY,EAAE,MAAM,MAAM,CAAC;AAE/D,MAAM,OAAO,uBAA2B,SAAQ,UAAa;IAoB3D,MAAM,CAAC,MAAM,CAAI,IAAc,EACd,WAA4B,SAAS,EACrC,SAAyB;QACxC,OAAQ,YAAY,CAAC,IAAI,EAAO,QAAQ,EAAE,SAAS,CAAC,CAAC;IACvD,CAAC;CACF"}
