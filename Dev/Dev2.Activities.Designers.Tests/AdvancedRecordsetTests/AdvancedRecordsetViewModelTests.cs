@@ -148,7 +148,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
 
             //------------Setup for test--------------------------
             var act = new AdvancedRecordsetActivity();
-            const string expectedFormat = "Invalid Output Mapping: count(*)";
+            const string expectedFormat = "Invalid Output Mapping: count ( * )";
 
             using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
