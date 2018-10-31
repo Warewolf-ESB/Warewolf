@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                     OutputsRegion.RecordsetName = string.Empty;
                     return;
                 }
-                
+
                 var service = ToModel();
                 ManageServiceModel.Model = service;
                 ValidateDeclareVariables();
@@ -282,13 +282,13 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         public void ValidateSql()
         {
             try
-            {                
+            {
                 SqlQuery = CleanUpSql().ToString();
                 var statements = TSQLStatementReader.ParseStatements(SqlQuery);
                 if (statements.Count > 0)
                 {
                     LoadRecordsets(SqlQuery);
-                    FormatSql();                
+                    FormatSql();
                 }
             }
             catch (Exception e)
@@ -301,11 +301,11 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         void LoadRecordsets(string sqlQuery)
         {
             var advancedRecordset = new Dev2.Activities.AdvancedRecordset();
-            foreach(var recSet in DataListSingleton.ActiveDataList.RecsetCollection)
+            foreach (var recSet in DataListSingleton.ActiveDataList.RecsetCollection)
             {
                 if (!string.IsNullOrEmpty(recSet.DisplayName))
                 {
-                    var recSetHash = "A"+recSet.GetHashCode().ToString().Replace("-","B");
+                    var recSetHash = "A" + recSet.GetHashCode().ToString().Replace("-", "B");
                     _hashedRecSets.Add((recSetHash, recSet));
                     advancedRecordset.AddRecordsetAsTable((recSetHash, recSet.Children.Select(c => c.DisplayName).ToList()));
                 }
@@ -315,10 +315,10 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             if (sqlQuery.Contains("UNION") && countOfStatements == 2)
             {
                 var sqlQueryToUpdate = sqlQuery;
-                foreach(var item in _hashedRecSets)
+                foreach (var item in _hashedRecSets)
                 {
                     sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet.DisplayName, item.hashCode);
-                }                
+                }
                 var sql = Regex.Replace(sqlQueryToUpdate, @"\@\w+\b", match => "''");
                 var result = advancedRecordset.ExecuteQuery(sql);
                 var table = result.Tables[0];
@@ -343,9 +343,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             {
                 var statement = statements[i];
 
-                var sql = advancedRecordset.ReturnSql(statement.Tokens);
-                sql = UpdateSqlWithHashCodes(statement, sql);
-
+                var sql = UpdateSqlWithHashCodes(statement);
                 sql = Regex.Replace(sql, @"\@\w+\b", match => "''");
                 var result = advancedRecordset.ExecuteStatement(statement, sql);
                 if (i == countOfStatements - 1)
@@ -363,22 +361,29 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             }
         }
 
-        private string UpdateSqlWithHashCodes(TSQLStatement statement, string sql)
+        private string UpdateSqlWithHashCodes(TSQLStatement statement)
         {
-            var sqlToUpdate = sql;
+            var sqlBuildUp = new List<string>();
             foreach (var token in statement.Tokens)
             {
-                if (token.Type == TSQL.Tokens.TSQLTokenType.Identifier)
+                if (token.Type == TSQL.Tokens.TSQLTokenType.Identifier && sqlBuildUp.Count >= 1)
                 {
-                    var hash = _hashedRecSets.FirstOrDefault(x => x.recSet.DisplayName == token.Text);
-                    if (!hash.Equals(default((string, IRecordSetItemModel))))
+                    if (sqlBuildUp[sqlBuildUp.Count - 1] == ".")
                     {
-                        sqlToUpdate = sqlToUpdate.Replace(token.Text, hash.hashCode);
+                        sqlBuildUp.Add(token.Text);
+                    }
+                    else
+                    {
+                        var hash = _hashedRecSets.FirstOrDefault(x => x.recSet.DisplayName == token.Text);
+                        sqlBuildUp.Add(!hash.Equals(default((string, IRecordSetItemModel))) ? hash.hashCode : token.Text);
                     }
                 }
+                else
+                {
+                    sqlBuildUp.Add(token.Text);
+                }
             }
-
-            return sqlToUpdate;
+            return string.Join(" ", sqlBuildUp);
         }
 
         private static List<string> GetFields(DataTable table)
@@ -428,7 +433,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             }
             SqlQuery = string.Join(Environment.NewLine, allStatementsCorrected);
         }
-        
+
         void AddToRegionOutputs(List<string> fieldNames, string recorsetName)
         {
             var recordsetName = OutputsRegion.RecordsetName;
@@ -493,7 +498,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 }
             }
         }
-       
+
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
@@ -678,7 +683,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             }
         }
 
-        
+
     }
 
 

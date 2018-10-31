@@ -142,15 +142,21 @@ namespace Dev2.Activities
             {
                 if (token.Type == TSQLTokenType.Identifier)
                 {
-                    var hash = HashedRecSets.FirstOrDefault(x => x.recSet == token.Text);
-                    sqlBuildUp.Add(!hash.Equals(default) ? hash.hashCode : token.Text);
+                    if (sqlBuildUp[sqlBuildUp.Count - 1] == ".")
+                    {
+                        sqlBuildUp.Add(token.Text);
+                    }
+                    else
+                    {
+                        var hash = HashedRecSets.FirstOrDefault(x => x.recSet == token.Text);
+                        sqlBuildUp.Add(!hash.Equals(default) ? hash.hashCode : token.Text);
+                    }
                 }
                 else
                 {
                     sqlBuildUp.Add(token.Text);
                 }
             }
-
             return string.Join(" ", sqlBuildUp);
         }
         public void CreateVariableTable()

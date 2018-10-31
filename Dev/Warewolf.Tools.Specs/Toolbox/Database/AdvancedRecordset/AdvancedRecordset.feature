@@ -4480,3 +4480,86 @@ Scenario: Select from recordset with same name different casing
     And the debug output as
     |                                |
     | [[TableCopy(3).name]] = Hatter |
+
+Scenario:   Join statement with underscore in the field name and star after select
+    Given I have a recordset with this shape
+    | [[person]]            |               |
+    | person(1).name        | Hatter        |
+    | person(1).id          | 1             |
+    | person(2).name        | Jane          |
+    | person(2).id          | 2             |
+    | address(1).address_Id | 1             |
+    | address(1).line1      | 1a Lane Place |
+    | address(2).address_Id | 2             |
+    | address(2).line1      | 2a Lane Place |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "select * from person p join address o on p.id=o.address_Id"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                  |
+    | name        | [[TableCopy().name]]       |
+    | id          | [[TableCopy().id]]         |
+    | address_Id  | [[TableCopy().address_Id]] |
+    | line1       | [[TableCopy().line1]]      |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs                | value  |
+    | TableCopy(1).name | Hatter |
+    | TableCopy(2).name | Jane   |
+	 Then recordset "[[TableCopy(*).id]]"  will be
+    | rs              | value |
+    | TableCopy(1).id | 1     |
+    | TableCopy(2).id | 2     |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                        |
+    | [[TableCopy(2).name]] = Jane           |
+    | [[TableCopy(2).id]] = 2                |
+    | [[TableCopy(2).address_Id]] = 2        |
+    | [[TableCopy(2).line1]] = 2a Lane Place |
+   
+
+   Scenario:   Join statement with underscore in the field name and fieldname is same as table name
+    Given I have a recordset with this shape
+    | [[person]]         |               |
+    | person(1).name     | Hatter        |
+    | person(1).id       | 1             |
+    | person(2).name     | Jane          |
+    | person(2).id       | 2             |
+    | address(1).address | 1             |
+    | address(1).line1   | 1a Lane Place |
+    | address(2).address | 2             |
+    | address(2).line1   | 2a Lane Place |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "select * from person p join address o on p.id=o.address"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To               |
+    | name        | [[TableCopy().name]]    |
+    | id          | [[TableCopy().id]]      |
+    | address     | [[TableCopy().address]] |
+    | line1       | [[TableCopy().line1]]   |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs                | value  |
+    | TableCopy(1).name | Hatter |
+    | TableCopy(2).name | Jane   |
+	 Then recordset "[[TableCopy(*).id]]"  will be
+    | rs              | value |
+    | TableCopy(1).id | 1     |
+    | TableCopy(2).id | 2     |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                        |
+    | [[TableCopy(2).name]] = Jane           |
+    | [[TableCopy(2).id]] = 2                |
+    | [[TableCopy(2).address]] = 2           |
+    | [[TableCopy(2).line1]] = 2a Lane Place |
