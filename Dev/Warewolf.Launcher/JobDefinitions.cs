@@ -21,13 +21,12 @@ namespace Warewolf.Launcher
                         string currentJobName = "";
                         foreach (var CurrentLine in BuildDefinition.Split('\r', '\n'))
                         {
-                            if (CurrentLine.Contains("new Job("))
+                            if (CurrentLine.Contains("public class "))
                             {
                                 currentJobName = CurrentLine.Trim()
-                                    .Replace(".jobs(", "")
-                                    .Replace("new Job(\"", "")
-                                    .Replace("\",", "")
-                                    .Replace("public static Job Job = ", "");
+                                    .Replace("public class ", "")
+                                    .Replace(" {", "")
+                                    .Replace("_", " ");
                             }
                             const string parseProjFrom = "--ProjectName \\\"";
                             const string parseCategoryFrom = "--Category \\\"";
