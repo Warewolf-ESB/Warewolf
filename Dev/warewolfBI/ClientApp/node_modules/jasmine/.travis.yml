@@ -1,8 +1,0 @@
-sudo: false
-language: node_js
-node_js:
-  - '9'
-  - '8'
-  - '4'
-before_script:
-  - npm install git+https://github.com/jasmine/jasmine.git

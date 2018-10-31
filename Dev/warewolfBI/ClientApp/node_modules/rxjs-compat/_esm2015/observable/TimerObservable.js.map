@@ -1,1 +1,0 @@
-{"version":3,"file":"TimerObservable.js","sources":["../../src/compat/observable/TimerObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,KAAK,EAAE,MAAM,MAAM,CAAC;AAExD,MAAM,OAAO,eAAmB,SAAQ,UAAa;IACnD,MAAM,CAAC,MAAM,CAAC,eAA8B,CAAC,EAC/B,MAA+B,EAC/B,SAAyB;QACrC,OAAO,KAAK,CAAC,YAAY,EAAE,MAAM,EAAE,SAAS,CAAC,CAAC;IAChD,CAAC;CACF"}

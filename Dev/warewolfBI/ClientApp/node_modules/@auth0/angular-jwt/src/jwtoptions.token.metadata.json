@@ -1,1 +1,0 @@
-[{"__symbolic":"module","version":4,"metadata":{"JWT_OPTIONS":{"__symbolic":"new","expression":{"__symbolic":"reference","module":"@angular/core","name":"InjectionToken","line":2,"character":31},"arguments":["JWT_OPTIONS"]}}}]

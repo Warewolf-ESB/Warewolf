@@ -1,1 +1,0 @@
-{"version":3,"file":"FromEventPatternObservable.js","sources":["../../src/compat/observable/FromEventPatternObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,gBAAgB,EAAE,MAAM,MAAM,CAAC;AAEpD,MAAM,OAAO,0BAA8B,SAAQ,UAAa;IAC9D,MAAM,CAAC,MAAM,CAAI,UAAsC,EACtC,aAAyD,EACzD,QAAqC;QACpD,OAAO,gBAAgB,CAAC,UAAU,EAAE,aAAa,EAAE,QAAQ,CAAC,CAAC;IAC/D,CAAC;CACF"}

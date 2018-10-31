@@ -1,1 +1,0 @@
-{"version":3,"file":"map.js","sources":["../../src/compat/operator/map.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,GAAG,IAAI,cAAc,EAAE,MAAM,gBAAgB,CAAC;AAoCvD,MAAM,UAAU,GAAG,CAA4B,OAAuC,EAAE,OAAa;IACnG,OAAO,cAAc,CAAC,OAAO,EAAE,OAAO,CAAC,CAAC,IAAI,CAAC,CAAC;AAChD,CAAC"}
