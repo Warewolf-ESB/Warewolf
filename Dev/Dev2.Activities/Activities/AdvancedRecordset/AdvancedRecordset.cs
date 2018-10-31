@@ -140,7 +140,7 @@ namespace Dev2.Activities
             var sqlBuildUp = new List<string>();
             foreach (var token in statement.Tokens)
             {
-                if (token.Type == TSQLTokenType.Identifier)
+                if (token.Type == TSQLTokenType.Identifier && sqlBuildUp.Count >=1)
                 {
                     if (sqlBuildUp[sqlBuildUp.Count - 1] == ".")
                     {
