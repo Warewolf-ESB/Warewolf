@@ -1,0 +1,1 @@
+{"version":3,"file":"pluck.js","sources":["../../src/compat/operator/pluck.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AA4BtD,MAAM,UAAU,KAAK,CAA4B,GAAG,UAAoB;IACtE,OAAO,WAAW,CAAC,GAAG,UAAU,CAAC,CAAC,IAAI,CAAkB,CAAC;AAC3D,CAAC"}

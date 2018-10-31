@@ -1,0 +1,1 @@
+{"version":3,"file":"IfObservable.js","sources":["../../src/compat/observable/IfObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAyB,GAAG,EAAE,MAAM,MAAM,CAAC;AAE9D,MAAM,OAAO,YAAgB,SAAQ,UAAa;IAChD,MAAM,CAAC,MAAM,CAAO,SAA+B,EAC/B,UAA4C,EAC5C,UAA4C;QAC9D,OAAO,GAAG,CAAgB,SAAS,EAA4B,UAAU,EAA4B,UAAU,CAAC,CAAC;IACnH,CAAC;CACF"}

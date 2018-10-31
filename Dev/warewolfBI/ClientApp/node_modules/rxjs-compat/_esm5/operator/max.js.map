@@ -1,0 +1,1 @@
+{"version":3,"file":"max.js","sources":["../../src/compat/operator/max.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,GAAG,IAAI,cAAc,EAAE,MAAM,gBAAgB,CAAC;AAiCvD,MAAM,UAAU,GAAG,CAAyB,QAAiC;IAC3E,OAAO,cAAc,CAAC,QAAQ,CAAC,CAAC,IAAI,CAAC,CAAC;AACxC,CAAC"}

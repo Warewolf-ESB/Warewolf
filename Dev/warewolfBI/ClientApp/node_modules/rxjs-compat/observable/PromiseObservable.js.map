@@ -1,0 +1,1 @@
+{"version":3,"file":"PromiseObservable.js","sources":["../src/compat/observable/PromiseObservable.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA,6BAAuD;AAEvD;IAA0C,qCAAa;IAAvD;;IAIA,CAAC;IAHQ,wBAAM,GAAb,UAAiB,OAAuB,EAAE,SAAyB;QACjE,OAAO,WAAI,CAAC,OAAO,EAAE,SAAS,CAAC,CAAC;IAClC,CAAC;IACH,wBAAC;AAAD,CAAC,AAJD,CAA0C,iBAAU,GAInD;AAJY,8CAAiB"}

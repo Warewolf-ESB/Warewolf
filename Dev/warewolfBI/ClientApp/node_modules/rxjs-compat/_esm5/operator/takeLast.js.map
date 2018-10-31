@@ -1,0 +1,1 @@
+{"version":3,"file":"takeLast.js","sources":["../../src/compat/operator/takeLast.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,QAAQ,IAAI,mBAAmB,EAAE,MAAM,gBAAgB,CAAC;AAsCjE,MAAM,UAAU,QAAQ,CAAyB,KAAa;IAC5D,OAAO,mBAAmB,CAAC,KAAK,CAAC,CAAC,IAAI,CAAkB,CAAC;AAC3D,CAAC"}

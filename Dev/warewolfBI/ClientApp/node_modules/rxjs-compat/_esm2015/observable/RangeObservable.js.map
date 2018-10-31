@@ -1,0 +1,1 @@
+{"version":3,"file":"RangeObservable.js","sources":["../../src/compat/observable/RangeObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,KAAK,EAAE,MAAM,MAAM,CAAC;AAExD,MAAM,OAAO,eAAmB,SAAQ,UAAa;IACnD,MAAM,CAAC,MAAM,CAAC,QAAgB,CAAC,EACjB,QAAgB,CAAC,EACjB,SAAyB;QACrC,OAAO,KAAK,CAAC,KAAK,EAAE,KAAK,EAAE,SAAS,CAAC,CAAC;IACxC,CAAC;CACF"}

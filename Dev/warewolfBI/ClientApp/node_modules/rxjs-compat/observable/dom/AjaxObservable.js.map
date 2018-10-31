@@ -1,0 +1,1 @@
+{"version":3,"file":"AjaxObservable.js","sources":["../../src/compat/observable/dom/AjaxObservable.ts"],"names":[],"mappings":";;AAAA,sEACiH;AADvE,2CAAA,OAAO,CAAA;AAAE,4CAAA,QAAQ,CAAA;AAAE,8CAAA,UAAU,CAAA;AAAE,2CAAA,OAAO,CAAA;AAAE,6CAAA,SAAS,CAAA;AAAE,+CAAA,WAAW,CAAA;AACtG,kDAAA,cAAc,CAAA;AAAE,kDAAA,cAAc,CAAA;AAAE,gDAAA,YAAY,CAAA;AAAE,6CAAA,SAAS,CAAA;AAAE,oDAAA,gBAAgB,CAAA"}

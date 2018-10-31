@@ -1,0 +1,1 @@
+{"version":3,"file":"pairwise.js","sources":["../../src/compat/operator/pairwise.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,QAAQ,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAqCzD,MAAM,UAAU,QAAQ;IACtB,OAAO,WAAW,EAAE,CAAC,IAAI,CAAuB,CAAC;AACnD,CAAC"}

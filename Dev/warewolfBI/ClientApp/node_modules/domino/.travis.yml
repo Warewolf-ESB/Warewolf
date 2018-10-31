@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "4"
+  - "6"
+  - "8"
+  - "10"
+  # From the nvm docs, "this installs the latest version of node".
+  - "node"
+
+script: npm run test-spec
+sudo: false

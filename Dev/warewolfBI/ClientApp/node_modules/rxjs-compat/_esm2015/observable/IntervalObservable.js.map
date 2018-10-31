@@ -1,0 +1,1 @@
+{"version":3,"file":"IntervalObservable.js","sources":["../../src/compat/observable/IntervalObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,cAAc,EAAE,QAAQ,EAAE,MAAM,MAAM,CAAC;AAE3E,MAAM,OAAO,kBAAsB,SAAQ,UAAa;IACtD,MAAM,CAAC,MAAM,CAAC,SAAiB,CAAC,EAClB,YAA2B,cAAc;QACrD,OAAO,QAAQ,CAAC,MAAM,EAAE,SAAS,CAAC,CAAC;IACrC,CAAC;CACF"}

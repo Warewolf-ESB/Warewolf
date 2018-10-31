@@ -1,0 +1,1 @@
+{"version":3,"file":"windowCount.js","sources":["../../src/compat/operator/windowCount.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,WAAW,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAkD5D,MAAM,UAAU,WAAW,CAAyB,UAAkB,EACvC,mBAA2B,CAAC;IACzD,OAAO,WAAW,CAAC,UAAU,EAAE,gBAAgB,CAAC,CAAC,IAAI,CAA8B,CAAC;AACtF,CAAC"}
