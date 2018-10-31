@@ -1,0 +1,1 @@
+export { AjaxRequest, AjaxCreationMethod, ajaxGet, ajaxPost, ajaxDelete, ajaxPut, ajaxPatch, ajaxGetJSON, AjaxObservable, AjaxSubscriber, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/internal-compatibility';

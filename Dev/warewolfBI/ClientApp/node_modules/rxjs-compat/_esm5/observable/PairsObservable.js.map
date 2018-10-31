@@ -1,0 +1,1 @@
+{"version":3,"file":"PairsObservable.js","sources":["../../src/compat/observable/PairsObservable.ts"],"names":[],"mappings":";;;;;;;;;;;;;AAAA,OAAO,EAAE,UAAU,EAAiB,KAAK,EAAE,MAAM,MAAM,CAAC;AAExD;IAAwC,mCAAa;IAArD;;IAIA,CAAC;IAHQ,sBAAM,GAAb,UAAiB,GAAW,EAAE,SAAyB;QACrD,OAAO,KAAK,CAAC,GAAG,EAAE,SAAS,CAAC,CAAC;IAC/B,CAAC;IACH,sBAAC;AAAD,CAAC,AAJD,CAAwC,UAAU,GAIjD"}

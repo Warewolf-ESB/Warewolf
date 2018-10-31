@@ -1,0 +1,1 @@
+{"version":3,"file":"timestamp.js","sources":["../../src/compat/operator/timestamp.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAA6B,MAAM,MAAM,CAAC;AACjE,OAAO,EAAE,SAAS,IAAI,WAAW,EAAC,MAAM,gBAAgB,CAAC;AAQzD,MAAM,UAAU,SAAS,CAAyB,YAA2B,cAAc;IACzF,OAAO,WAAW,CAAC,SAAS,CAAC,CAAC,IAAI,CAA6B,CAAC;AAClE,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"skipLast.js","sources":["../../src/compat/operator/skipLast.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,QAAQ,IAAI,WAAW,EAAE,MAAM,gBAAgB,CAAC;AAkCzD,MAAM,UAAU,QAAQ,CAAyB,KAAa;IAC5D,OAAO,WAAW,CAAC,KAAK,CAAC,CAAC,IAAI,CAAkB,CAAC;AACnD,CAAC"}

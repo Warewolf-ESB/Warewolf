@@ -1,0 +1,1 @@
+{"version":3,"file":"ErrorObservable.js","sources":["../../src/compat/observable/ErrorObservable.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiB,UAAU,EAAE,MAAM,MAAM,CAAC;AAE7D,MAAM,OAAO,eAAmB,SAAQ,UAAa;IACnD,MAAM,CAAC,MAAM,CAAI,KAAU,EAAE,SAAyB;QACpD,OAAO,UAAU,CAAC,KAAK,EAAE,SAAS,CAAC,CAAC;IACtC,CAAC;CACF"}
