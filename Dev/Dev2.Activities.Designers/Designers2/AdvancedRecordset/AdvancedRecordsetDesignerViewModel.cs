@@ -431,7 +431,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                 var correctedString = string.Join("", correctedItems);
                 allStatementsCorrected.Add(correctedString);
             }
-            SqlQuery = string.Join(Environment.NewLine, allStatementsCorrected);
+            SqlQuery = string.Join(Environment.NewLine, allStatementsCorrected).Replace(" . ",".");
         }
 
         void AddToRegionOutputs(List<string> fieldNames, string recorsetName)
