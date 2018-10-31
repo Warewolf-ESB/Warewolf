@@ -26,37 +26,6 @@ let page: Page;
 let router: Router;
 let location: SpyLocation;
 
-describe('AppComponent RouterTestingModule', () => {
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [AppTestingModule, RouterTestingModule]
-    })
-      .compileComponents();
-  }));
-
-  it('should navigate to "executionlogging" immediately', fakeAsync(() => {
-    createComponent();
-    expect(location.path()).toEqual('/executionlogging', 'after initialNavigation()');
-    expectElementOf(ExecutionLoggingComponent);
-  }));
-
-  it('should navigate to "executionlogging" on click', fakeAsync(() => {
-    createComponent();
-    
-    click(page.executionloggingLinkDe);
-    advance();
-    expectPathToBe('/executionlogging');
-    expectElementOf(ExecutionLoggingComponent);
-
-    page.expectEvents([
-      [r.NavigationStart, '/executionlogging'],
-      [r.RoutesRecognized, '/executionlogging'],
-      [r.NavigationEnd, '/executionlogging']
-    ]);
-  }));
-});
-
 function createComponent() {
   fixture = TestBed.createComponent(AppComponent);
   comp = fixture.componentInstance;
@@ -101,7 +70,7 @@ class Page {
     this.executionloggingLinkDe = links[0];
     this.comp = comp;
     this.fixture = fixture;
-    this.router = router;
+    //this.router = router;
   }
 }
 
