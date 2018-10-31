@@ -219,14 +219,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (!allErrors.HasErrors() && tokenizer != null)
                 {
-                    AddToDebugDictionary(dataObject, update, env, positions, singleInnerIteration, resultsEnumerator, debugDictionary, tokenizer);
+                    ProcessTokenizerItems(dataObject, update, env, positions, singleInnerIteration, resultsEnumerator, debugDictionary, tokenizer);
                 }
             }
             env.CommitAssign();
         }
 
-        void AddToDebugDictionary(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, bool singleInnerIteration, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
+        // TODO: rename as ProcessItems?
+        void ProcessTokenizerItems(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, bool singleInnerIteration, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
         {
+            var lastItemEndedInNewLine = false;
             while (tokenizer.HasMoreOps())
             {
                 var currentval = resultsEnumerator.MoveNext();
@@ -253,17 +255,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var outputVar = resultsEnumerator.Current.OutputVariable;
                 if (!IsNullEmptyOrNewLine(tmp))
                 {
-                    if (!String.IsNullOrEmpty(outputVar))
-                    {
-                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                        positions[outputVar] = positions[outputVar] + 1;
-                    }
+                    AssignItem(update, env, positions, ref lastItemEndedInNewLine, ref tmp, outputVar);
                     if (dataObject.IsDebugMode())
                     {
                         AddOutputToDebugOutput(update, env, resultsEnumerator, debugDictionary);
                     }
                 }
+            }
+
+            if (lastItemEndedInNewLine)
+            {
+                var tovar = resultsEnumerator.Current.OutputVariable;
+                var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
+                env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                positions[tovar] = positions[tovar] + 1;
+            }
+        }
+
+        private void AssignItem(int update, IExecutionEnvironment env, IDictionary<string, int> positions, ref bool lastItemEndedInNewLine, ref string tmp, string outputVar)
+        {
+            if (!String.IsNullOrEmpty(outputVar))
+            {
+                lastItemEndedInNewLine = tmp.EndsWith(Environment.NewLine);
+                var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                if (!SkipBlankRows)
+                {
+                    tmp = tmp.Replace(Environment.NewLine, "");
+                }
+                env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                positions[outputVar] = positions[outputVar] + 1;
             }
         }
 
@@ -429,6 +449,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dtb.AddTokenOp("\t", t.Include);
                     break;
                 case "New Line":
+                    t.Include |= !SkipBlankRows;
                     AddLineBreakTokenOp(stringToSplit, dtb, t);
                     break;
                 case "Chars":
