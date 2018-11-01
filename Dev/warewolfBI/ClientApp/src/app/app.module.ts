@@ -13,7 +13,7 @@ import { HttpModule } from '@angular/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
@@ -63,7 +63,8 @@ import { APIService } from './services/api.service';
     ReactiveFormsModule,
     FormsModule,
     LayoutModule,
-    MatDialogModule, MatInputModule
+    MatDialogModule,
+    MatInputModule
   ],
   exports: [
     sanitizeHtmlPipe
