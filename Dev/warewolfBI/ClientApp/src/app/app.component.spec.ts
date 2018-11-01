@@ -61,6 +61,11 @@ function tests() {
     expect(component).not.toBeNull();
   });
 
+  it('should set animation event to auto', () => {
+    component.animationEvent(null);
+    expect(component.overflowState).toEqual('auto');
+  });
+
   it('can get RouterLinks from template', () => {
     expect(routerLinks.length).toBe(1, 'should have 1 routerLinks');
     expect(routerLinks[0].linkParams).toBe('/executionlogging');
@@ -76,5 +81,62 @@ function tests() {
     fixture.detectChanges();
 
     expect(executionloggingLink.navigatedTo).toBe('/executionlogging');
+  });
+
+  it('should set correct values on toggle side nav close', () => {
+    component.sideNavState = 'close';
+
+    spyOn(component, 'toggleSideNav');
+
+    component.toggleSideNav();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.sideNavState = 'close';
+      component.toggleSideNav();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.toggleSideNav).toHaveBeenCalled();
+        expect(component.sideNavState).toEqual('open');
+        expect(component.overflowState).toEqual('hidden');
+      });
+    });
+    expect(component.toggleSideNav).toHaveBeenCalled();
+  });
+
+  it('should set correct values on toggle side nav open', () => {
+    component.sideNavState = 'open';
+
+    spyOn(component, 'toggleSideNav');
+
+    component.toggleSideNav();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.sideNavState = 'open';
+      component.toggleSideNav();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.toggleSideNav).toHaveBeenCalled();
+        expect(component.sideNavState).toEqual('open');
+        expect(component.overflowState).toEqual('hidden');
+      });
+    });
+    expect(component.toggleSideNav).toHaveBeenCalled();
+  });
+
+  it('should set correct values on toggle side nav default', () => {
+    spyOn(component, 'toggleSideNav');
+
+    component.toggleSideNav();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.toggleSideNav();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.toggleSideNav).toHaveBeenCalled();
+        expect(component.sideNavState).toEqual('open');
+        expect(component.overflowState).toEqual('hidden');
+      });
+    });
+    expect(component.toggleSideNav).toHaveBeenCalled();
   });
 }
