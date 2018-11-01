@@ -67,7 +67,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            Process.Start(CoverageToolPath, $" -target:\"{processPath}\" -register:user -oldStyle -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
+            Process.Start(CoverageToolPath, $" -target:\"{processPath}\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
         }
     }
 }
