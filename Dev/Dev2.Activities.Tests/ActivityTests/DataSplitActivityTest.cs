@@ -20,6 +20,7 @@ using Dev2.DynamicServices;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -66,15 +67,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "09123456646|James|Apple</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
-                           _resultsCollection);
+                           _resultsCollection,
+                           true);
 
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
-            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
-            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
-            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
+            var col1List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col1", out string error);
+            var col2List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "data", out error);
 
             // remove test datalist ;)
 
@@ -112,15 +114,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "09123456646|James|Apple</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
-                           _resultsCollection);
+                           _resultsCollection,
+                           true);
 
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
-            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
-            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
-            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
+            var col1List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col1", out string error);
+            var col2List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "data", out error);
 
             // remove test datalist ;)
 
@@ -158,15 +161,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "09123456646|James|Apple</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
-                           _resultsCollection);
+                           _resultsCollection,
+                           true);
 
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
 
-            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
-            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
-            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
-            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
+            var col1List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col1", out string error);
+            var col2List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "data", out error);
 
             // remove test datalist ;)
 
@@ -275,7 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
             _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 2));
 
-            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection, true);
 
             var result = ExecuteProcess();
             var expected = new List<string> { @"me|TelNo|
@@ -310,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 2));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection, true);
 
             var result = ExecuteProcess();
             const string expected = @"me|TelNo|
@@ -359,7 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Clear();
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Space", "", 1));
 
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection, true);
 
             var result = ExecuteProcess();
 
@@ -467,7 +471,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void EndTypeSplit_Expected_Split_On_End_Of_String()
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "End", "", 1));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection, true);
             var result = ExecuteProcess();
 
             const string expected = @"Title|Fname|LName|TelNo|
@@ -535,7 +539,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 1));
             _resultsCollection.Add(new DataSplitDTO("[[recset1().rec1]]", "Index", "15", 2));
 
-            SetupArguments("<root></root>", ActivityStrings.DataList_NewPreEx, _source, _resultsCollection);
+            SetupArguments("<root></root>", ActivityStrings.DataList_NewPreEx, _source, _resultsCollection, true);
             var result = ExecuteProcess();
             var expected = new List<string> { @"me|TelNo|
 1.Mr"
@@ -556,7 +560,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         @"896"
 
                                                         };
-            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
+            var actual = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
@@ -832,13 +836,54 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        #region Private Test Methods
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDataSplitActivity_GetState")]
+        public void DsfDataSplitActivity_EmptyLines_ShouldExist()
+        {
+            var sourceStringLines = new string[] {
+                "",
+                "two",
+                "three",
+                "",
+                "five",
+                "",
+                "",
+                "eight",
+                "next blank is index 10",
+                ""
+            };
 
-        void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
+            _resultsCollection.Add(new DataSplitDTO("[[rs().lines]]", "New Line", "", 1));
+            var sourceString = string.Join(Environment.NewLine, sourceStringLines);
+
+
+            SetupArguments("<root><ADL><testData>"+ sourceString +"</testData></ADL></root>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "lines", out string error);
+
+            Assert.AreEqual(sourceStringLines.Length, col1List.Count);
+
+            var len = sourceStringLines.Length;
+            for (int i=0; i < len; i++)
+            {
+                Assert.AreEqual(sourceStringLines[i], col1List[i]);
+            }
+        }
+
+            #region Private Test Methods
+
+            void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection, bool skipBlankRows = false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection }
+                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection, SkipBlankRows = skipBlankRows}
             };
 
             CurrentDl = testData;
