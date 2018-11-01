@@ -69,14 +69,14 @@ namespace Warewolf.Launcher.TestCoverageMergers
             do
             {
                 snapshotSize = new FileInfo(snapshot).Length;
-                if (!backOff)
+                if (backOff)
                 {
-                    Console.WriteLine($"Waiting to detect if {snapshot} is still changing.");
-                    backOff = true;
+                    Console.WriteLine($"Backing off of {snapshot}.");
                 }
                 else
                 {
-                    Console.WriteLine($"Backing off of {snapshot}.");
+                    Console.WriteLine($"Waiting to detect if {snapshot} is still changing.");
+                    backOff = true;
                 }
                 Thread.Sleep(10000);
             }
