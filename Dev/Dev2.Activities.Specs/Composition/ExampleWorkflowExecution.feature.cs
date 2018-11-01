@@ -407,7 +407,7 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 93
-   testRunner.And("\"Utility - System Information Test\" contains \"Utility - System Information\" from " +
+   testRunner.And("\"Utility - System Information Test\" contains \"Utility - Gather System Info\" from " +
                     "server \"localhost\" with mapping as", ((string)(null)), table23, "And ");
 #line 95
    testRunner.When("\"Utility - System Information Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -483,7 +483,7 @@ this.FeatureBackground();
                         "[[Domain]] =",
                         "Domain"});
 #line 97
-   testRunner.And("the \"Gather System Information (17)\" in WorkFlow \"Utility - System Information\" d" +
+   testRunner.And("the \"Gather System Information (17)\" in WorkFlow \"Utility - Gather System Info\" d" +
                     "ebug inputs as", ((string)(null)), table24, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -538,7 +538,7 @@ this.FeatureBackground();
                         "16",
                         "[[Domain]]        =    String"});
 #line 115
-  testRunner.And("the \"Gather System Information (17)\" in Workflow \"Utility - System Information\" d" +
+  testRunner.And("the \"Gather System Information (17)\" in Workflow \"Utility - Gather System Info\" d" +
                     "ebug outputs as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();

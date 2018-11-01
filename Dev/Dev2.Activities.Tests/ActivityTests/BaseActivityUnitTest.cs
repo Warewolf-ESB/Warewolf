@@ -407,13 +407,22 @@ namespace ActivityUnitTests
             }
         }
 
-        protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
+        protected List<string> RetrieveAllRecordSetFieldValuesSkipEmpty(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
         {
             var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]", 0);
             error = "";
             var retrieveAllRecordSetFieldValues = (List<string>)retVals;
             return retrieveAllRecordSetFieldValues.Where(s => !string.IsNullOrEmpty(s)).ToList();
         }
+
+        protected List<string> RetrieveAllRecordSetFieldValues(IExecutionEnvironment environment, string recordSetName, string fieldToRetrieve, out string error)
+        {
+            var retVals = environment.EvalAsListOfStrings("[[" + recordSetName + "(*)." + fieldToRetrieve + "]]", 0);
+            error = "";
+            var retrieveAllRecordSetFieldValues = (List<string>)retVals;
+            return retrieveAllRecordSetFieldValues;
+        }
+
 
         #endregion Retrieve DataList Values
     }
