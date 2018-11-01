@@ -90,11 +90,11 @@ Scenario: Example Executing Utility - Date and Time example workflow
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
-	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
+	  And "Utility - System Information Test" contains "Utility - Gather System Info" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - System Information Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Gather System Information (17)" in WorkFlow "Utility - System Information" debug inputs as
+	  And the "Gather System Information (17)" in WorkFlow "Utility - Gather System Info" debug inputs as
 	 | #  |                     |                     |
 	 | 1  | [[DateTime]] =      | Date & Time         |
 	 | 2  | [[OpSystem]]  =     | Operating System    |
@@ -112,7 +112,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	 | 14 | [[UserRoles]] =     | User Roles          |
 	 | 15 | [[UserName]] =      | User Name           |
 	 | 16 | [[Domain]] =        | Domain              |	 
-	 And the "Gather System Information (17)" in Workflow "Utility - System Information" debug outputs as    
+	 And the "Gather System Information (17)" in Workflow "Utility - Gather System Info" debug outputs as    
 	   | #  |                               |
 	   | 1  | [[DateTime]]      =    String |
 	   | 2  | [[OpSystem]]      =    String |
