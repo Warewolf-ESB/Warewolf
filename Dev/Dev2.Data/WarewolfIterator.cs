@@ -8,6 +8,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using System.Text;
+using static DataStorage;
 
 namespace Dev2.Data
 {
@@ -18,7 +19,7 @@ namespace Dev2.Data
         readonly int _maxValue;
         int _currentValue;
         readonly FunctionEvaluatorOption _functionEvaluatorOption;
-
+        public string NewLineFormat { get; private set; } = "\r\n";
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -77,6 +78,14 @@ namespace Dev2.Data
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
                 _scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                if (_scalarResult.Item.IsDataString)
+                {
+                    var str = _scalarResult.Item.ToString();
+                    if (str.Contains("\n") && !str.Contains("\r\n"))
+                    {
+                        NewLineFormat = "\n";
+                    }
+                }
             }
         }
 
