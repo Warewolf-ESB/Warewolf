@@ -601,6 +601,11 @@ namespace Warewolf.Launcher
             }
 
             WaitForServerStart(ServerFolderPath);
+            if (ResourcesType == "UITests")
+            {
+                Directory.Delete(Path.Combine(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"), "Resources", "Examples"), true);
+                RefreshServer();
+            }
         }
 
         void WaitForServerStart(string ServerFolderPath)
@@ -781,13 +786,13 @@ namespace Warewolf.Launcher
                 List<string> resolveStarNotation = new List<string>();
                 foreach (var file in resolveCommaNotation)
                 {
-                    if (TestAssembliesFileSpecsInParent.Contains('*'))
+                    if (file.Contains('*'))
                     {
-                        resolveStarNotation = Directory.GetFiles(Path.GetDirectoryName(TestAssembliesFileSpecsInParent), Path.GetFileName(TestAssembliesFileSpecsInParent), SearchOption.TopDirectoryOnly).ToList();
+                        resolveStarNotation = Directory.GetFiles(Path.GetDirectoryName(file), Path.GetFileName(file), SearchOption.TopDirectoryOnly).ToList();
                     }
                     else
                     {
-                        resolveStarNotation.Add(TestAssembliesFileSpecsInParent);
+                        resolveStarNotation.Add(file);
                     }
                 }
                 foreach (var file in resolveStarNotation)
