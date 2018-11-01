@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -14,47 +15,72 @@ namespace Warewolf.Launcher.TestCoverageMergers
         public void GenerateCoverageReport(string DestinationFilePath, string LogFilePath)
         {
             var SnapshotPaths = Directory.GetFiles(Path.GetDirectoryName(DestinationFilePath), "*OpenCover Output.xml", SearchOption.AllDirectories).ToList();
+            var DeletedSnapshots = new List<string>();
             foreach (var snapshot in SnapshotPaths)
             {
-                if (!WaitForFileChanged(snapshot))
+                if (!WaitForSnapshotReady(snapshot))
                 {
                     File.Delete(snapshot);
                     Console.WriteLine($"Snapshot \"{snapshot}\" still contains no content after waiting until the timeout and has been deleted.");
+                    DeletedSnapshots.Add(snapshot);
                 }
             }
-            var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths);
+            var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths.Where((snapshot) => { return !DeletedSnapshots.Contains(snapshot); }));
             Console.WriteLine($"Writing coverage report to \"{DestinationFilePath}\" with \"{ToolPath}\" see log at \"{LogFilePath}\".");
             ProcessUtils.RunFileInThisProcess(ToolPath, $"-reports:\"{DotCoverSnapshotsString}\" -targetdir:\"{DestinationFilePath}\"");
         }
 
-        bool WaitForFileChanged(string snapshot)
+        bool WaitForSnapshotReady(string snapshot)
         {
             if (!File.Exists(snapshot))
             {
                 return false;
             }
+            if (!WaitForAnySnapshotContent(snapshot))
+            {
+                return false;
+            }
+            BackOffAChangingSnapshot(snapshot);
+            return true;
+        }
+
+        bool WaitForAnySnapshotContent(string snapshot)
+        {
             var RetryCount = 0;
-            var lastSnapshotSize = 0.0;
-            var isChanging = false;
-            var hasChanged = false;
             long fileSize = 0;
-#pragma warning disable S2589 // false positive - this expression is just complex
-            while (!hasChanged && RetryCount < 200)
-#pragma warning restore S2589
+            while (fileSize <= 0 && RetryCount < 200)
             {
                 RetryCount++;
-                hasChanged = isChanging;
                 fileSize = new FileInfo(snapshot).Length;
-                isChanging = fileSize != lastSnapshotSize;
-                hasChanged = fileSize != 0 && !isChanging && hasChanged;
-                if (!hasChanged)
+                if (fileSize <= 0)
                 {
-                    Console.WriteLine($"Still waiting for {snapshot} file to grow and then stop growing.");
+                    Console.WriteLine($"Still waiting for {snapshot} file to contain something.");
                     Thread.Sleep(3000);
                 }
-                lastSnapshotSize = new FileInfo(snapshot).Length;
             }
-            return fileSize != 0;
+            return fileSize <= 0;
+        }
+
+        void BackOffAChangingSnapshot(string snapshot)
+        {
+            var RetryCount = 0;
+            var snapshotSize = 0.0;
+            var backOff = false;
+            do
+            {
+                snapshotSize = new FileInfo(snapshot).Length;
+                if (!backOff)
+                {
+                    Console.WriteLine($"Waiting to detect if {snapshot} is still changing.");
+                    backOff = true;
+                }
+                else
+                {
+                    Console.WriteLine($"Backing off of {snapshot}.");
+                }
+                Thread.Sleep(10000);
+            }
+            while (new FileInfo(snapshot).Length != snapshotSize && RetryCount++ < 5);
         }
     }
 }
