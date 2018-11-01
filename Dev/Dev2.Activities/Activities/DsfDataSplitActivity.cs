@@ -89,6 +89,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 OnPropertyChanged("SkipBlankRows");
             }
         }
+        private string NewLineFormat { get; set; } = "\r\n";
+
 
         protected override bool CanInduceIdle => true;
 
@@ -160,7 +162,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
                     AddDebug(ResultsCollection, dataObject.Environment, update);
                 }
-                var res = new WarewolfIterator(env.Eval(sourceString, update));
+                var sourceStringValue = env.Eval(sourceString, update);
+                var res = new WarewolfIterator(sourceStringValue);
+                NewLineFormat = res.NewLineFormat;
+
+
                 iter.AddVariableToIterateOn(res);
                 IDictionary<string, int> positions = new Dictionary<string, int>();
                 CleanArguments(ResultsCollection);
@@ -242,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.MoveNext();
                 }
                 var tmp = tokenizer.NextToken();
-                if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
+                if (tmp.StartsWith(NewLineFormat) && !SkipBlankRows)
                 {
                     resultsEnumerator.Reset();
                     while (resultsEnumerator.MoveNext())
@@ -255,7 +261,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var outputVar = resultsEnumerator.Current.OutputVariable;
                 if (!IsNullEmptyOrNewLine(tmp))
                 {
-                    AssignItem(update, env, positions, ref lastItemEndedInNewLine, ref tmp, outputVar);
+                    lastItemEndedInNewLine = tmp.EndsWith(NewLineFormat);
+                    AssignItem(update, env, positions, ref tmp, outputVar);
                     if (dataObject.IsDebugMode())
                     {
                         AddOutputToDebugOutput(update, env, resultsEnumerator, debugDictionary);
@@ -272,15 +279,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AssignItem(int update, IExecutionEnvironment env, IDictionary<string, int> positions, ref bool lastItemEndedInNewLine, ref string tmp, string outputVar)
+        private void AssignItem(int update, IExecutionEnvironment env, IDictionary<string, int> positions, ref string tmp, string outputVar)
         {
             if (!String.IsNullOrEmpty(outputVar))
             {
-                lastItemEndedInNewLine = tmp.EndsWith(Environment.NewLine);
                 var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
                 if (!SkipBlankRows)
                 {
-                    tmp = tmp.Replace(Environment.NewLine, "");
+                    tmp = tmp.Replace(NewLineFormat, "");
                 }
                 env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
                 positions[outputVar] = positions[outputVar] + 1;
