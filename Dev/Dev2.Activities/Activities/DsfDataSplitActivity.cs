@@ -231,7 +231,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             env.CommitAssign();
         }
 
-        // TODO: rename as ProcessItems?
         void ProcessTokenizerItems(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, bool singleInnerIteration, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
         {
             var lastItemEndedInNewLine = false;
