@@ -16,13 +16,23 @@ let mockLogEntry: LogEntry;
 let spyOnAdd: jasmine.Spy;
 
 describe('LogEntryComponent', () => {
- 
+
+  // mock object with close method
+  const dialogMock = {
+    close: () => { }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LogEntryComponent],
-      imports: [BrowserModule, RouterTestingModule, FormsModule, ReactiveFormsModule, MatDialogModule, MatButtonModule],
+      imports: [BrowserModule,
+        RouterTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MatButtonModule],
       providers: [
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -38,5 +48,31 @@ describe('LogEntryComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should resume', () => {
+    spyOn(component, 'resume');
+    component.resume();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.resume();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.resume).toHaveBeenCalled();
+      });
+    });
+    expect(component.resume).toHaveBeenCalled();
+  });
+  it('should close', () => {
+    spyOn(component, 'close');
+    component.close();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.dialogRef.close();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.close).toHaveBeenCalled();
+      });
+    });
+    expect(component.close).toHaveBeenCalled();
   });
 });
