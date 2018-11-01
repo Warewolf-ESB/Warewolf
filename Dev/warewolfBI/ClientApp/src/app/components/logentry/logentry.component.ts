@@ -10,7 +10,6 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 })
 
 export class LogEntryComponent implements OnInit {
- 
 
   constructor(
     private fb: FormBuilder,
@@ -21,7 +20,7 @@ export class LogEntryComponent implements OnInit {
   ngOnInit() { }
 
   resume() {
-    this.dialogRef.close();
+    this.dialogRef.componentInstance.resume();
   }
 
   close() {
