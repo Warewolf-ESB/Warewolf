@@ -37,13 +37,14 @@ namespace Warewolf.Launcher.TestCoverageMergers
             var lastSnapshotSize = 0.0;
             var isChanging = false;
             var hasChanged = false;
+            long fileSize = 0;
 #pragma warning disable S2589 // false positive - this expression is just complex
             while (!hasChanged && RetryCount < 200)
 #pragma warning restore S2589
             {
                 RetryCount++;
                 hasChanged = isChanging;
-                long fileSize = new FileInfo(snapshot).Length;
+                fileSize = new FileInfo(snapshot).Length;
                 isChanging = fileSize != lastSnapshotSize;
                 hasChanged = fileSize != 0 && !isChanging && hasChanged;
                 if (!hasChanged)
@@ -53,7 +54,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
                 }
                 lastSnapshotSize = new FileInfo(snapshot).Length;
             }
-            return hasChanged;
+            return fileSize != 0;
         }
     }
 }
