@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
 
 namespace Warewolf.Launcher
 {
@@ -18,7 +20,9 @@ namespace Warewolf.Launcher
             return process;
         }
 
-        public static string RunFileInThisProcess(string TestRunnerPath, string args = "")
+        static string TRXPath;
+
+        public static string RunFileInThisProcess(string TestRunnerPath, string args = "", string logFilePath="")
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -28,22 +32,31 @@ namespace Warewolf.Launcher
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.Arguments = args;
+            TRXPath = null;
+            process.OutputDataReceived += (sender, arguments) => Display(arguments.Data, logFilePath);
+            process.ErrorDataReceived += (sender, arguments) => Display(arguments.Data, logFilePath);
             process.Start();
-            var trxFilePath = "";
-
-            while (!process.StandardOutput.EndOfStream)
-            {
-                string testRunLine = process.StandardOutput.ReadLine();
-                Console.WriteLine(testRunLine);
-                if (testRunLine.StartsWith("Results File: "))
-                {
-                    trxFilePath = ParseTrxFilePath(testRunLine);
-                }
-            }
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            
             process.WaitForExit();
-            string allErrors = process.StandardError.ReadToEnd();
-            Console.WriteLine(allErrors);
-            return trxFilePath;
+            return TRXPath;
+        }
+
+        static void Display(string output, string logFilePath = "")
+        {
+            if (string.IsNullOrEmpty(logFilePath))
+            {
+                Console.WriteLine(output);
+            }
+            else
+            {
+                File.AppendAllLines(logFilePath, new string[] { output }, System.Text.Encoding.UTF8);
+            }
+            if (output != null && output.StartsWith("Results File: "))
+            {
+                TRXPath = ParseTrxFilePath(output);
+            }
         }
 
         static string ParseTrxFilePath(string standardOutput)
