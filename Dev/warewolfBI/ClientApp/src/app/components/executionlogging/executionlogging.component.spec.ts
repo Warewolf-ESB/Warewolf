@@ -12,10 +12,14 @@ import { CustomMaterialModule } from '../../core/custommaterial.module';
 import { LogEntryComponent } from '../logentry/logentry.component';
 import { ExecutionLoggingComponent } from './executionlogging.component';
 import { ExecutionLoggingService } from './../../services/executionlogging.service';
+import { LogEntry } from '../../models/logentry.model';
+
+let component: ExecutionLoggingComponent;
+let fixture: ComponentFixture<ExecutionLoggingComponent>;
+let mockLogEntry: LogEntry;
 
 describe('ExecutionLoggingComponent', () => {
-  let component: ExecutionLoggingComponent;
-  let fixture: ComponentFixture<ExecutionLoggingComponent>;
+  
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -45,6 +49,60 @@ describe('ExecutionLoggingComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set defaults on ngOnInit', () => {
+    component.ngOnInit();
+    expect(component.selected).toEqual('3142');
+    expect(component.serverName).toEqual('localhost');
+    expect(component.logEntry).not.toBeNull;
+    expect(component.dataSource).not.toBeNull;
+  });
+
+  it('should set defaults on ngAfterViewInit', () => {
+    spyOn(component, 'ngAfterViewInit');
+
+    component.ngAfterViewInit();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.ngAfterViewInit();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.ngAfterViewInit).toHaveBeenCalled();
+      });
+    });
+    expect(component.ngAfterViewInit).toHaveBeenCalled();
+  });
+
+  it('should set defaults on loadLogsPage', () => {
+    spyOn(component, 'loadLogsPage');
+
+    component.loadLogsPage();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.loadLogsPage();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.loadLogsPage).toHaveBeenCalled();
+        expect(component.dataSource).not.toBeNull();
+      });
+    });
+    expect(component.loadLogsPage).toHaveBeenCalled();
+  });
+
+  it('should set defaults on onRowClicked', () => {
+    spyOn(component, 'onRowClicked');
+
+    component.onRowClicked(mockLogEntry);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      component.onRowClicked(mockLogEntry);
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.onRowClicked).toHaveBeenCalled();
+      });
+    });
+    expect(component.onRowClicked).toHaveBeenCalled();
   });
 });
 
