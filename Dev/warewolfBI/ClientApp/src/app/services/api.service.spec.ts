@@ -19,8 +19,8 @@ describe('Service: APIService', () => {
         MockBackend,
         BaseRequestOptions,
         {
-          provide: Jsonp,
-          useFactory: (backend, options) => new Jsonp(backend, options),
+          provide: Http,
+          useFactory: (backend, options) => new Http(backend, options),
           deps: [MockBackend, BaseRequestOptions]
         }
       ]
@@ -30,18 +30,22 @@ describe('Service: APIService', () => {
   });
 
   it('default should return list of execution logs ', fakeAsync(() => {
-    let serverURL = "http://localhost:3142";
-    let response = {};
-    //let response = {
-    //  "resultCount": 1,
-    //  "results": [
-    //    {
-    //      "artistId": 78500,
-    //      "artistName": "U2",
-    //      "trackName": "Beautiful Day",
-    //      "artworkUrl60": "image.jpg",
-    //    }]
-    //};
+    let response = {
+      "results": [
+        {
+          "$id": "1",
+          "$type": "Dev2.Common.LogEntry, Dev2.Common",
+          "StartDateTime": "2018-10-16T12:46:29.834",
+          "Status": "ERROR",
+          "Url": "http://rsaklfcandice:3142/secure/Ellidex/Api/Unsaved 2.xml?<DataList></DataList>&wid=c14edb3d-a116-4b9e-9072-87578dba5ae6",
+          "Result": null,
+          "User": "'DEV2\\Candice.Daniel'",
+          "CompletedDateTime": "2018-10-16T12:46:29.886",
+          "ExecutionTime": "52",
+          "ExecutionId": "c03bb708-8c1d-4622-9161-8a945e79f6c0"
+        }
+      ]
+    };
 
     backend.connections.subscribe(connection => {
       connection.mockRespond(new Response(<ResponseOptions>{
@@ -52,6 +56,7 @@ describe('Service: APIService', () => {
     service.getExecutionList("http://localhost:3142", '', '', 'asc', 0, 3);
     tick();
     expect(service).toBeTruthy();
+    
     //TODO: mock out results later
     //expect(service.results.length).toBe(1);
     //expect(service.results[0].artist).toBe("U2");

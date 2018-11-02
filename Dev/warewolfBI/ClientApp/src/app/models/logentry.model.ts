@@ -22,6 +22,7 @@ export class LogEntry {
   public Environment: string;
   public AuditDate: string;
 
+
   constructor(values: Object = {}) {
     Object.assign(this, values);
   }
