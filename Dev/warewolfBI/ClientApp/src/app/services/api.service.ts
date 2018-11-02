@@ -6,10 +6,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { LogEntry } from './../models/logentry.model';
 
-const httpHeaders = {
+const httpOptions = {
   headers: new HttpHeaders({
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+    'Access-Control-Allow-Origin': 'http://localhost:4200',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
     'Content-Type': 'application/json'
   })
 };
@@ -18,10 +18,7 @@ const httpHeaders = {
 
 export class APIService {
   serverUrl: string;
-  private headers = new Headers({ 'Content-Type': "application/json" });
-
   constructor(private httpClient: HttpClient) { }
-
 
   login(username: string, password: string) {
     return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {})
@@ -35,15 +32,10 @@ export class APIService {
 
     this.serverUrl = ServerUrl.toLowerCase();
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
+    let apiURL = `${wareWolfUrl}?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
+    var accessToken = "";
 
-    //params: new HttpParams()
-    //  .set('ExecutionId', ExecutionId.toString())
-    //  .set('filter', filter)
-    //  .set('sortOrder', sortOrder)
-    //  .set('pageNumber', pageNumber.toString())
-    //  .set('pageSize', pageSize.toString())
-
-    return this.httpClient.post<any>(wareWolfUrl, filter)
+    return this.httpClient.post(wareWolfUrl, '', { headers: httpOptions, withCredentials: true })
       .pipe(
         map((response) => { return response; }),
         catchError(this.handleError('getLogs', []))

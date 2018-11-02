@@ -46,6 +46,7 @@
     "bootstrap": "^4.1.3",
     "chart.js": "^2.5.0",
     "core-js": "^2.5.7",
+    "cors": "^2.8.4",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
