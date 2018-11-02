@@ -104,6 +104,19 @@ describe('ExecutionLoggingComponent', () => {
     });
     expect(component.onRowClicked).toHaveBeenCalled();
   });
+
+  it('should get defaults on getLogData', () => {
+    spyOn(component, 'ngOnInit');
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.dataSource.loadLogs('http://localhost:3142', '', '', 'asc', 0, 3)).not.toBeNull();
+      });
+    });
+    expect(component.dataSource.loadLogs('http://localhost:3142', '', '', 'asc', 0, 3)).not.toBeNull();
+  });
 });
 
   
