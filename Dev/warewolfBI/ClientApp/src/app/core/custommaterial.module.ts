@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { InformationDialogComponent } from './information-dialog/information-dialog.component';
 
 import {
   MatFormFieldModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule,
@@ -27,6 +27,6 @@ import {
     MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule,
     MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatTreeModule],
 
-  declarations: [ErrorDialogComponent],
+  declarations: [InformationDialogComponent],
 })
 export class CustomMaterialModule { }
