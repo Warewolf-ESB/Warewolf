@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InformationDialogComponent } from './information-dialog/information-dialog.component';
 
 import {
   MatFormFieldModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule,
@@ -25,8 +24,6 @@ import {
     MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressBarModule,
     MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
     MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule,
-    MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatTreeModule],
-
-  declarations: [InformationDialogComponent],
+    MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatTreeModule]
 })
 export class CustomMaterialModule { }

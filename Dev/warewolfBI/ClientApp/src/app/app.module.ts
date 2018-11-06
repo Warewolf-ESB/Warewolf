@@ -25,7 +25,6 @@ import { ExecutionLoggingComponent } from './components/executionlogging/executi
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { ExecutionLoggingService } from './services/executionlogging.service';
-import { InformationDialogComponent } from './core/information-dialog/information-dialog.component';
 //import { LogEntryComponent } from './components/logentry/logentry.component';
 
 import { MediatorService } from './services/mediator.service';
@@ -33,7 +32,6 @@ import { APIService } from './services/api.service';
 
 @NgModule({
   entryComponents: [
-    InformationDialogComponent
     //LogEntryComponent
   ],
   declarations: [
