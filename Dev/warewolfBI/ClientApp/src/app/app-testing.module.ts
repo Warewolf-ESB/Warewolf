@@ -15,19 +15,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { MediatorService } from './services/mediator.service';
 
-import { AuthGuardService } from './guards/auth.guard.service';
-import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
 
 import { HttpModule } from '@angular/http';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
 import { Routes } from '@angular/router';
 
 export const testRoutes: Routes = [
@@ -53,7 +49,6 @@ export const testRoutes: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
     RouterTestingModule.withRoutes(testRoutes)
   ],
   exports: [
