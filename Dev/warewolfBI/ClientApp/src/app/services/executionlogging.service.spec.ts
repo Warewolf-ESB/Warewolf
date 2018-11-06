@@ -1,6 +1,4 @@
-import { TestBed, fakeAsync, tick, ComponentFixture } from '@angular/core/testing';
-import { JsonpModule, Jsonp, BaseRequestOptions, Response, ResponseOptions, Http } from "@angular/http";
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 
 import { LogEntry } from './../models/logentry.model';
 import { APIService } from './api.service';
@@ -8,34 +6,22 @@ import { ExecutionLoggingService } from './executionlogging.service';
 import { asyncData } from '../../testing';
 
 describe('Service: ExecutionLoggingService', () => {
-
-  let apiService: APIService;
   let service: ExecutionLoggingService;
   let httpClientSpy: { post: jasmine.Spy };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [JsonpModule, HttpClientModule],
+      imports: [],
       providers: [
-        ExecutionLoggingService,
-        HttpClient,
-        BaseRequestOptions,
-        {
-          provide: Jsonp,
-          useFactory: (backend, options) => new Jsonp(backend, options),
-          deps: [BaseRequestOptions]
-        }
+        ExecutionLoggingService
       ]
     });
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
-    apiService = new APIService(<any>httpClientSpy);
-    service = new ExecutionLoggingService(apiService);
+    service = new ExecutionLoggingService(new APIService(<any>httpClientSpy));
   });
 
   it('default should return list of execution logs from getLogData', fakeAsync(() => {
-    let expectedExecutionLogList: LogEntry[];
-    expectedExecutionLogList =
-      [
+    let expectedExecutionLogList: LogEntry[] = [
         {
           "$id": "1",
           "$type": "Dev2.Common.LogEntry, Dev2.Common",
@@ -49,7 +35,6 @@ describe('Service: ExecutionLoggingService', () => {
           "User": "'DEV2\Candice.Daniel'"
         }
       ];
-    expect(service).toBeTruthy();
 
     httpClientSpy.post.and.returnValue(asyncData(expectedExecutionLogList));
 
