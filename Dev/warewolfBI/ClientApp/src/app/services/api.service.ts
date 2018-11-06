@@ -22,7 +22,7 @@ export class APIService {
   constructor(private httpClient: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {})
+    return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {}) 
       .pipe(
         map((response) => { return response; }),
         catchError(this.handleError('login', []))
