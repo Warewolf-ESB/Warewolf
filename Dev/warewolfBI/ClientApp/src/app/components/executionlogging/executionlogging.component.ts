@@ -82,7 +82,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   loadLogsPage() {
     this.dataSource.loadLogs(
       this.serverURL,
-      this.logEntry.ExecutionID,
+      this.logEntry.ExecutionId,
       '',
       this.sort.direction,
       this.paginator.pageIndex,

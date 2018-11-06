@@ -18,6 +18,7 @@ const httpOptions = {
 
 export class APIService {
   serverUrl: string;
+  results: LogEntry[];
   constructor(private httpClient: HttpClient) { }
 
   login(username: string, password: string) {
@@ -33,13 +34,20 @@ export class APIService {
     this.serverUrl = ServerUrl.toLowerCase();
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
     let apiURL = `${wareWolfUrl}?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
-    var accessToken = "";
 
-    return this.httpClient.post(wareWolfUrl, '', { headers: httpOptions, withCredentials: true })
+    return this.httpClient.post<LogEntry[]>(apiURL,'', { headers:httpOptions, withCredentials: true })
       .pipe(
-        map((response) => { return response; }),
+        map((response) => {
+          this.results = response as LogEntry[];
+          console.log(response);
+          return response;
+        }),
         catchError(this.handleError('getLogs', []))
       );
+  }
+  public handleErrors(error: any): Promise<any> {
+    console.error('An error occurred', error); 
+    return Promise.reject(error.message || error);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -51,6 +59,6 @@ export class APIService {
 
   private log(message: string) {
     console.error(message);
-    //TODO: Add to the logging DB;
+    //TODO: Add to the logging DB
   }
 }
