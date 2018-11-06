@@ -15,7 +15,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { MediatorService } from './services/mediator.service';
 
-import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 import { ExecutionLoggingService } from './services/executionlogging.service';
 
@@ -56,7 +55,6 @@ export const testRoutes: Routes = [
   ],
   providers: [
     MediatorService,
-    UserService,
     APIService,
     ExecutionLoggingService
   ],

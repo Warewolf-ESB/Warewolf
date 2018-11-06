@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MediatorService } from './services/mediator.service';
-import { RoleGuardService as RoleGuard } from './guards/role-guard.service';
 
 import { ExecutionLoggingComponent } from './components/executionlogging/executionlogging.component';
-import { SettingsComponent } from './components/settings/settings.component';
 import { CustomMaterialModule } from "./core/custommaterial.module";
 
 const appRoutes: Routes = [
