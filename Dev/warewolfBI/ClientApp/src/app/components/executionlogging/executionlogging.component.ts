@@ -90,12 +90,12 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onRowClicked(LogEntry) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = { LogEntry };
-    const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
-  }
+  //onRowClicked(LogEntry) {
+  //  const dialogConfig = new MatDialogConfig();
+  //  dialogConfig.disableClose = true;
+  //  dialogConfig.autoFocus = true;
+  //  dialogConfig.data = { LogEntry };
+  //  const dialogRef = this.dialog.open(LogEntryComponent, dialogConfig);
+  //}
 }
 
