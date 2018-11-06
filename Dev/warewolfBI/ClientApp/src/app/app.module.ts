@@ -13,8 +13,6 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material';
-import { ErrorInterceptor } from './helpers/error.interceptor';
-import { AuthInterceptor } from './helpers/auth.interceptor';
 import { sanitizeHtmlPipe } from './sanitize-html.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -31,7 +29,6 @@ import { ErrorDialogComponent } from './core/error-dialog/error-dialog.component
 import { LogEntryComponent } from './components/logentry/logentry.component';
 
 import { MediatorService } from './services/mediator.service';
-import { UserService } from './services/user.service';
 import { APIService } from './services/api.service';
 
 @NgModule({
@@ -69,7 +66,6 @@ import { APIService } from './services/api.service';
   ],
   providers: [
     MediatorService,
-    UserService,
     APIService,
     ExecutionLoggingService],
   schemas: [

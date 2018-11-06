@@ -29,38 +29,27 @@
     <None Remove="ClientApp\src\app\angmaterial.ts" />
     <None Remove="ClientApp\src\app\animations.ts" />
     <None Remove="ClientApp\src\app\components\executionlogging\executionLoggingDataSource.ts" />
-    <None Remove="ClientApp\src\app\guards\auth.guard.service.ts" />
-    <None Remove="ClientApp\src\app\guards\auth.interceptor.ts" />
-    <None Remove="ClientApp\src\app\guards\role-guard.service.ts" />
     <None Remove="ClientApp\src\app\helpers\error.interceptor.ts" />
     <None Remove="ClientApp\src\app\models\executionlogging.model.ts" />
     <None Remove="ClientApp\src\app\models\logentry.model.ts" />
-    <None Remove="ClientApp\src\app\models\user.model.ts" />
     <None Remove="ClientApp\src\app\sanitize-html.pipe.ts" />
     <None Remove="ClientApp\src\app\services\api.service.ts" />
-    <None Remove="ClientApp\src\app\services\authentication.service.ts" />
     <None Remove="ClientApp\src\app\services\executionlogging.service.ts" />
     <None Remove="ClientApp\src\app\services\mediator.service.ts" />
-    <None Remove="ClientApp\src\app\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\angmaterial.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\animations.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\executionlogging\executionLoggingDataSource.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\guards\role-guard.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\auth.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\executionlogging.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\logentry.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\models\user.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\sanitize-html.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\api.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\services\authentication.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\executionlogging.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\mediator.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\services\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

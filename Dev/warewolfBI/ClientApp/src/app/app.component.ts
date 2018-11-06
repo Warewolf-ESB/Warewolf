@@ -12,8 +12,6 @@ import { Observable,BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { MediatorService } from './services/mediator.service';
-import { AuthGuardService } from './guards/auth.guard.service';
-import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -54,8 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private mediator: MediatorService,
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
-    public authService: AuthenticationService,
-    private AuthGuard: AuthGuardService,
     private breakpointObserver: BreakpointObserver,
     public router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
