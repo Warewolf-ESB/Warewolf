@@ -1,35 +1,38 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick, ComponentFixture } from '@angular/core/testing';
 import { JsonpModule, Jsonp, BaseRequestOptions, Response, ResponseOptions, Http } from "@angular/http";
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { LogEntry } from './../models/logentry.model';
 import { APIService } from './api.service';
+import { ExecutionLoggingService } from './executionlogging.service';
 import { asyncData } from '../../testing';
 
-describe('Service: APIService', () => {
+describe('Service: ExecutionLoggingService', () => {
 
-  let service: APIService;
+  let apiService: APIService;
+  let service: ExecutionLoggingService;
   let httpClientSpy: { post: jasmine.Spy };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [JsonpModule, HttpClientModule],
       providers: [
+        ExecutionLoggingService,
         HttpClient,
-        APIService,
         BaseRequestOptions,
         {
-          provide: Http,
-          useFactory: (backend, options) => new Http(backend, options),
+          provide: Jsonp,
+          useFactory: (backend, options) => new Jsonp(backend, options),
           deps: [BaseRequestOptions]
         }
       ]
     });
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
-    service = new APIService(<any>httpClientSpy);
+    apiService = new APIService(<any>httpClientSpy);
+    service = new ExecutionLoggingService(apiService);
   });
 
-  it('default should return list of execution logs from getExecutionList', fakeAsync(() => {
+  it('default should return list of execution logs from getLogData', fakeAsync(() => {
     let expectedExecutionLogList: LogEntry[];
     expectedExecutionLogList =
       [
@@ -45,13 +48,12 @@ describe('Service: APIService', () => {
           "Url": "http://rsaklfcandice:3142/secure/Ellidex/Api/Unsaved 2.xml?<DataList></DataList>&wid=c14edb3d-a116-4b9e-9072-87578dba5ae6",
           "User": "'DEV2\Candice.Daniel'"
         }
-      ]
-      ;
+      ];
     expect(service).toBeTruthy();
 
     httpClientSpy.post.and.returnValue(asyncData(expectedExecutionLogList));
 
-    service.getExecutionList("http://localhost:3142", '', '', 'asc', 0, 3)
+    service.getLogData("http://localhost:3142", '', '', 'asc', 0, 3)
       .subscribe(
         executionLogList => expect(executionLogList).toEqual(expectedExecutionLogList, 'Expect Execution List'),
         fail
