@@ -39,7 +39,6 @@ export class APIService {
       .pipe(
         map((response) => {
           this.results = response as LogEntry[];
-          console.log(response);
           return response;
         }),
         catchError(this.handleError('getLogs', []))
