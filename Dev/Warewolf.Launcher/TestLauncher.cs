@@ -818,6 +818,11 @@ namespace Warewolf.Launcher
                         this.CleanupServerStudio(!ApplyCoverage);
                     }
                 }
+                if (ApplyCoverage)
+                {
+                    MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
+                    GenerateCoverageReport();
+                }
                 this.MoveArtifactsToTestResults(ApplyCoverage, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), jobName);
             }
             return trxTestResultsFile;
@@ -1024,11 +1029,6 @@ namespace Warewolf.Launcher
                         }
                     }
                 }
-            }
-            if (ApplyCoverage)
-            {
-                MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
-                GenerateCoverageReport();
             }
         }
 
