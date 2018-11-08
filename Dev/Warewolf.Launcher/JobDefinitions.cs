@@ -228,6 +228,13 @@ namespace Warewolf.Launcher
                     result.Add(ReadTreeEntry(TreeEntry));
                 }
             }
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["Single_Jobs"].Target)["Coverage"].Target))
+            {
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
+                {
+                    result.Add(ReadTreeEntry(TreeEntry));
+                }
+            }
             return result;
         }
 
