@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using Warewolf.Launcher.TestCoverageMergers;
+using Warewolf.Launcher.TestCoverageRunners;
 
 namespace Warewolf.Launcher.Utils
 {
@@ -38,6 +41,16 @@ namespace Warewolf.Launcher.Utils
                     }
                 }
             }
+            Console.WriteLine("Apply Coverage? [y/N]");
+            var applyingCoverage = WindowUtils.PromptForUserInput().ToLower();
+            build.ApplyCoverage = applyingCoverage == "y";
+            if (build.ApplyCoverage)
+            {
+                string currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                build.TestCoverageRunner = new OpenCoverRunner(Path.Combine(currentFolder, "OpenCover", "OpenCover.Console.exe"));
+                build.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(currentFolder, "ReportGenerator", "ReportGenerator.exe"));
+            }
+
             Console.WriteLine("\nAdmin, What would you like to do?");
             var options = new[] {
                     "[1]Single Job: Run One Test Job. (This is the default)",
