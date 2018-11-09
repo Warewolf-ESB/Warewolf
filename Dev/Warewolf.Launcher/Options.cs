@@ -34,6 +34,9 @@ namespace Warewolf.Launcher
         [Option("CoverageToolPath")]
         public string CoverageToolPath { get; set; }
 
+        [Option("CoverageReportGeneratorToolPath")]
+        public object CoverageReportGenerator { get; set; }
+
         [Option("ServerUsername")]
         public string ServerUsername { get; set; }
 
@@ -167,6 +170,22 @@ namespace Warewolf.Launcher
                     Console.WriteLine("Test Runner: MSTest");
                     testLauncher.TestRunner = new MSTestRunner();
                 }
+                if (options.CoverageReportGenerator != null)
+                {
+                    Console.WriteLine("CoverageReportGeneratorToolPath: " + options.CoverageToolPath);
+                    var coverageReportGeneratorExeName = Path.GetFileName(options.CoverageToolPath).ToLower();
+                    switch (coverageReportGeneratorExeName)
+                    {
+                        case "reportgenerator.exe":
+                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(options.CoverageToolPath);
+                            break;
+                        case "dotcover.exe":
+                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
+                            break;
+                        default:
+                            throw new ArgumentException($"Unrecognized coverage tool {coverageReportGeneratorExeName}");
+                    }
+                }
                 if (options.CoverageToolPath != null)
                 {
                     Console.WriteLine("CoverageToolPath: " + options.CoverageToolPath);
@@ -175,11 +194,17 @@ namespace Warewolf.Launcher
                     {
                         case "opencover.console.exe":
                             testLauncher.TestCoverageRunner = new OpenCoverRunner(options.CoverageToolPath);
-                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "ReportGenerator", "ReportGenerator.exe"));
+                            if (testLauncher.TestCoverageReportGenerator == null)
+                            {
+                                testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "ReportGenerator", "ReportGenerator.exe"));
+                            }
                             break;
                         case "dotcover.exe":
                             testLauncher.TestCoverageRunner = new DotCoverRunner(options.CoverageToolPath);
-                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
+                            if (testLauncher.TestCoverageReportGenerator == null)
+                            {
+                                testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
+                            }
                             break;
                         default:
                             throw new ArgumentException($"Unrecognized coverage tool {coverageExeName}");
