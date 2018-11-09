@@ -854,7 +854,7 @@ namespace Warewolf.Launcher
             }
             var destinationFolderName = JobName.Split(',')[0] + " Coverage";
             var destinationPath = Path.Combine(MergeCoverageSnapshotsInDirectory, destinationFolderName);
-            TestCoverageReportGenerator.GenerateCoverageReport(destinationPath, MergeCoverageSnapshotsInDirectory + "\\Coverage");
+            TestCoverageReportGenerator.GenerateCoverageReport(destinationPath, MergeCoverageSnapshotsInDirectory + "\\OpenCover Coverage.log");
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
