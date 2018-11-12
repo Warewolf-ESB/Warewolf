@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Launcher (AdminMode)",
+            "name": "Launcher (AdminMode)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -16,7 +16,7 @@
             "console": "internalConsole"
         },
         {
-            "name": ".NET Launch Server (ServerTests)",
+            "name": "Launch Server (ServerTests)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -27,18 +27,7 @@
             "console": "internalConsole"
         },
         {
-            "name": ".NET Launch Server (UITests)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Warewolf.Launcher/bin/Debug/Warewolf.Launcher.exe",
-            "args": ["--StartServer", "--ResourcesType \"UITests\""],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "console": "internalConsole"
-        },
-        {
-            "name": ".NET Launch Server+Studio",
+            "name": "Launch Server+Studio (UITests)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -63,46 +52,6 @@
             "script": "${workspaceFolder}/../Compile.ps1",
             "args": ["-UITesting", "-MSBuildPath 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe'"],
             "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "PowerShell",
-            "request": "launch",
-            "name": "PowerShell Launch Current File",
-            "script": "${file}",
-            "args": [],
-            "cwd": "${file}"
-        },
-        {
-            "type": "PowerShell",
-            "request": "launch",
-            "name": "PowerShell Launch Current File in Temporary Console",
-            "script": "${file}",
-            "args": [],
-            "cwd": "${file}",
-            "createTemporaryIntegratedConsole": true
-        },
-        {
-            "type": "PowerShell",
-            "request": "launch",
-            "name": "PowerShell Launch Current File w/Args Prompt",
-            "script": "${file}",
-            "args": [
-                "${command:SpecifyScriptArgs}"
-            ],
-            "cwd": "${file}"
-        },
-        {
-            "type": "PowerShell",
-            "request": "attach",
-            "name": "PowerShell Attach to Host Process",
-            "processId": "${command:PickPSHostProcess}",
-            "runspaceId": 1
-        },
-        {
-            "type": "PowerShell",
-            "request": "launch",
-            "name": "PowerShell Interactive Session",
-            "cwd": ""
         }
     ]
 }
