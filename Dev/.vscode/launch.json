@@ -52,8 +52,16 @@
             "type": "PowerShell",
             "request": "launch",
             "name": "PowerShell Compile AcceptanceTesting",
-            "script": "${workspaceFolder}/Compile.ps1",
-            "args": ["-AcceptanceTesting", "-MSBuildPath 'D:\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe'"],
+            "script": "${workspaceFolder}/../Compile.ps1",
+            "args": ["-AcceptanceTesting", "-MSBuildPath 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe'"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Compile UITesting",
+            "script": "${workspaceFolder}/../Compile.ps1",
+            "args": ["-UITesting", "-MSBuildPath 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe'"],
             "cwd": "${workspaceFolder}"
         },
         {
