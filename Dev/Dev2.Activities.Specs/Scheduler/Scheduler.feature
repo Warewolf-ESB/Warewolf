@@ -35,7 +35,7 @@ Scenario: Setting schedule task "At log on"
 	  And "Diceroll1" executes an Workflow "Hello World" 
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
-	  And "Diceroll1" has a username of "LocalSchedulerAdmin" and a Password of "987Sched#@!"
+	  And "Diceroll1" has a username of "DEV2\IntegrationTester" and a Password of "I73573r0"
 	  And "Diceroll1" has a Schedule of
 	  | ScheduleType | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |ResourceId |
 	  | At log on    | 1     | hour          | 1      | hour           | 2020/01/02 | 15:40:15   |           |
