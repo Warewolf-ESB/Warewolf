@@ -25,7 +25,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            var commandLine = $"\"{CoverageToolPath}\" -target:\"{TestsResultsPath}\\..\\Run {JobName}.bat\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}";
+            var commandLine = $"\"{CoverageToolPath}\" -target:\"{TestsResultsPath}\\..\\Run {JobName}.bat\" -register:user -output:\"{OpenCoverSnapshotFile}\" -filter:\"+[Warewolf*]* +[Dev2*]*\"{mergeOutput}";
             var OpenCoverRunnerPath = $"{TestsResultsPath}\\Run {JobName} OpenCover.bat";
             TestCleanupUtils.CopyOnWrite(OpenCoverRunnerPath);
             File.WriteAllText(OpenCoverRunnerPath, commandLine);
@@ -40,7 +40,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            var doubleEscapedCommandLine = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\"{mergeOutput}";
+            var doubleEscapedCommandLine = $"\\\"{CoverageToolPath}\\\" -target:\\\"{ServerPath}\\\" -register:user -output:\\\"{OpenCoverSnapshotFile}\\\" -filter:\\\"+[Warewolf*]* +[Dev2*]*\\\"{mergeOutput}";
             if (!IsExistingService)
             {
                 Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + doubleEscapedCommandLine + "\" start= demand");
@@ -67,7 +67,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
             {
                 mergeOutput = " -mergeoutput";
             }
-            Process.Start(CoverageToolPath, $" -target:\"{processPath}\" -register:user -output:\"{OpenCoverSnapshotFile}\"{mergeOutput}");
+            Process.Start(CoverageToolPath, $" -target:\"{processPath}\" -register:user -output:\"{OpenCoverSnapshotFile}\" -filter:\"+[Warewolf*]* +[Dev2*]*\"{mergeOutput}");
         }
     }
 }
