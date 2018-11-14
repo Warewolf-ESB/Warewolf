@@ -9,7 +9,9 @@
             "command": "${workspaceFolder}\\..\\Compile.ps1",
             "args": [
                 "-AcceptanceTesting",
-                "-UITesting"
+                "-UITesting",
+                "-MSBuildPath",
+				"D:\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe"
             ],
             "group": "build",
             "presentation": {
