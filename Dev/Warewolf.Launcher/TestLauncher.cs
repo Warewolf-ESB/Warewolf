@@ -569,8 +569,12 @@ namespace Warewolf.Launcher
             WaitForServerStart(ServerFolderPath);
             if (ResourcesType == "UITests")
             {
-                Directory.Delete(Path.Combine(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"), "Resources", "Examples"), true);
-                RefreshServer();
+                string examplesFolder = Path.Combine(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"), "Resources", "Examples");
+                if (Directory.Exists(examplesFolder))
+                {
+                    Directory.Delete(examplesFolder, true);
+                    RefreshServer();
+                }
             }
         }
 
