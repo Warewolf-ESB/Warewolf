@@ -11,29 +11,29 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class WarewolfQueueTests
     {
-        IWarewolfQueue queue;
+        IWarewolfQueue _queue;
 
         [TestInitialize]
         public void init()
         {
-            queue = new WarewolfQueue();
+            _queue = new WarewolfQueue();
         }
         [TestCleanup]
         public void cleanup()
         {
-            queue.Dispose();
+            _queue.Dispose();
         }
 
         [TestMethod]
         public void WarewolfQueue_Create_Success()
         {
-            Assert.IsNotNull(queue);
+            Assert.IsNotNull(_queue);
         }
 
         [TestMethod]
         public void WarewolfQueue_OpenSession_Success()
         {
-            using (var session = queue.OpenSession())
+            using (var session = _queue.OpenSession())
             {
 
             }
@@ -43,13 +43,13 @@ namespace Dev2.Common.Tests
         public void WarewolfQueue_EnqueueDequeue_Success()
         {
             var expected = "test data";
-            using (var session = queue.OpenSession())
+            using (var session = _queue.OpenSession())
             {
                 session.Enqueue<string>(expected);
                 session.Flush();
             }
 
-            using (var session = queue.OpenSession())
+            using (var session = _queue.OpenSession())
             {
                 var ob = session.Dequeue<string>();
                 Assert.AreEqual(ob, expected);
@@ -69,7 +69,7 @@ namespace Dev2.Common.Tests
             {
                 try
                 {
-                    using (var session = queue.OpenSession())
+                    using (var session = _queue.OpenSession())
                     {
                         string data = null;
                         do
@@ -94,7 +94,7 @@ namespace Dev2.Common.Tests
 
             thread.Start();
 
-            using (var session = queue.OpenSession())
+            using (var session = _queue.OpenSession())
             {
                 startTime = DateTime.UtcNow;
                 session.Enqueue<string>(expected);

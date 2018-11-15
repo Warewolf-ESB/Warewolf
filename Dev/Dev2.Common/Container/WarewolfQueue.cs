@@ -9,11 +9,11 @@ namespace Dev2.Common.Container
 {
     public class WarewolfQueue : IWarewolfQueue
     {
-        readonly ConcurrentQueue<byte[]> queue = new ConcurrentQueue<byte[]>();
+        readonly ConcurrentQueue<byte[]> _queue = new ConcurrentQueue<byte[]>();
 
         public IWarewolfQueueSession OpenSession()
         {
-            return new WarewolfQueueSession(queue);
+            return new WarewolfQueueSession(_queue);
         }
 
         public void Dispose()
@@ -23,21 +23,21 @@ namespace Dev2.Common.Container
 
     public class WarewolfQueueSession : IWarewolfQueueSession
     {
-        readonly ConcurrentQueue<byte[]> queue;
-        readonly IList<byte[]> buffer = new List<byte[]>();
+        readonly ConcurrentQueue<byte[]> _queue;
+        readonly IList<byte[]> _buffer = new List<byte[]>();
 
         public WarewolfQueueSession(ConcurrentQueue<byte[]> queue)
         {
-            this.queue = queue;
+            this._queue = queue;
         }
         public void Enqueue<T>(T ob)
         {
             var json = JsonConvert.SerializeObject(ob);
-            buffer.Add(Encoding.UTF8.GetBytes(json));
+            _buffer.Add(Encoding.UTF8.GetBytes(json));
         }
         public T Dequeue<T>()
         {
-            if (!queue.TryDequeue(out byte[] data))
+            if (!_queue.TryDequeue(out byte[] data))
             {
                 return default(T);
             }
@@ -46,11 +46,11 @@ namespace Dev2.Common.Container
 
         public virtual void Flush()
         {
-            var tmpCopy = buffer.ToList();
+            var tmpCopy = _buffer.ToList();
             foreach (var item in tmpCopy)
             {
-                queue.Enqueue(item);
-                buffer.Remove(item);
+                _queue.Enqueue(item);
+                _buffer.Remove(item);
             }
         }
 
