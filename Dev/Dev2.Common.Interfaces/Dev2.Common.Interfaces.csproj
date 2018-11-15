@@ -190,6 +190,7 @@
     <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
+    <Compile Include="Container\IPersistentQueue.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />

@@ -58,6 +58,9 @@
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
     </Reference>
+    <Reference Include="DiskQueue, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiskQueue.1.2.0\lib\net40\DiskQueue.dll</HintPath>
+    </Reference>
     <Reference Include="Dropbox.Api, Version=4.0.0.0, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
       <HintPath>..\packages\Dropbox.Api.4.2.4\lib\net45\Dropbox.Api.dll</HintPath>
       <Private>True</Private>
@@ -124,6 +127,7 @@
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="Common\FileHelper.cs" />
+    <Compile Include="Container\PersistentQueue.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
     <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
