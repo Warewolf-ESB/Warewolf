@@ -14,12 +14,13 @@ using System.Data.Entity.Core.Common;
 using Dev2.Common;
 using System.IO;
 using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Logging;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     interface IDev2StateAuditLogger
     {
-        void LogAuditState(AuditLog auditLog);
+
     }
 
     public class SQLiteConfiguration : DbConfiguration
@@ -32,7 +33,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
     }
 
-    class Dev2StateAuditLogger : IDev2StateAuditLogger, IStateListener, IDisposable
+    class Dev2StateAuditLogger : IDev2StateAuditLogger, IWarewolfLogWriter, IStateListener, IDisposable
     {
         readonly StateListener _listener;
 
@@ -107,12 +108,12 @@ namespace Dev2.Runtime.ESB.Execution
             db.SaveChanges();
         }
 
-        public void LogAuditState(AuditLog auditLog)
+        public void LogAuditState(Object auditLog)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
-                Flush(auditLog, 3);
+                Flush(auditLog as AuditLog, 3);
             });
         }
 

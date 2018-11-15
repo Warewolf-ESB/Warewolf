@@ -2,17 +2,18 @@
 using Newtonsoft.Json;
 using Dev2.Interfaces;
 using Dev2.Communication;
+using Dev2.Common.Interfaces.Logging;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     class StateListener : IStateListener
     {
         readonly IDSFDataObject _dsfDataObject;
-        readonly IDev2StateAuditLogger _dev2StateAuditLogger;
-        public StateListener(IDev2StateAuditLogger dev2StateAuditLogger, IDSFDataObject dsfDataObject)
+        readonly IWarewolfLogWriter _logWriter;
+        public StateListener(IWarewolfLogWriter logWriter, IDSFDataObject dsfDataObject)
         {
             _dsfDataObject = dsfDataObject;
-            _dev2StateAuditLogger = dev2StateAuditLogger;
+            _logWriter = logWriter;
         }
 
         public void LogAdditionalDetail(object detail, string callerName)
@@ -54,7 +55,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void LogAuditState(AuditLog auditLog)
         {
-            _dev2StateAuditLogger.LogAuditState(auditLog);
+            _logWriter.LogAuditState(auditLog);
         }
 
         public void Dispose()
