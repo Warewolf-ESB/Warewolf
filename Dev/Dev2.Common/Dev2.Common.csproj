@@ -127,7 +127,7 @@
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="Common\FileHelper.cs" />
-    <Compile Include="Container\PersistentQueue.cs" />
+    <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
     <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />

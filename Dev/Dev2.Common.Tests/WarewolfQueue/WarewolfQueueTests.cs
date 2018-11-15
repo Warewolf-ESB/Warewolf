@@ -9,31 +9,29 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Common.Tests
 {
     [TestClass]
-    public class PersistentQueueTests
+    public class WarewolfQueueTests
     {
-        IPersistentQueue queue;
+        IWarewolfQueue queue;
 
         [TestInitialize]
         public void init()
         {
-            queue = new PersistentQueue("persistent_queue_test");
+            queue = new WarewolfQueue();
         }
         [TestCleanup]
         public void cleanup()
         {
             queue.Dispose();
-            var d = new DirectoryWrapper();
-            d.Delete("persistent_queue_test", true);
         }
 
         [TestMethod]
-        public void PersistentQueue_Create_Success()
+        public void WarewolfQueue_Create_Success()
         {
             Assert.IsNotNull(queue);
         }
 
         [TestMethod]
-        public void PersistentQueue_OpenSession_Success()
+        public void WarewolfQueue_OpenSession_Success()
         {
             using (var session = queue.OpenSession())
             {
@@ -42,7 +40,7 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void PersistentQueue_EnqueueDequeue_Success()
+        public void WarewolfQueue_EnqueueDequeue_Success()
         {
             var expected = "test data";
             using (var session = queue.OpenSession())
@@ -60,7 +58,7 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        public void PersistentQueue_Threaded_EnqueueDequeue_FlushShouldDelay_Success()
+        public void WarewolfQueue_Threaded_EnqueueDequeue_FlushShouldDelay_Success()
         {
             var startTime = DateTime.UtcNow;
 
@@ -81,7 +79,7 @@ namespace Dev2.Common.Tests
                         } while (data is null);
                         Assert.AreEqual(data, expected);
                         var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
-                        Assert.IsTrue(startTimeValue > 1000);
+                        Assert.IsTrue(startTimeValue > 1000, "flush does not define enqueue timing");
                         session.Flush();
                     }
                 }
