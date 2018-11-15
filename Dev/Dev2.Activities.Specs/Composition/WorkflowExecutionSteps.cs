@@ -4678,13 +4678,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("LogFileContent", out string logFileContent);
             Assert.IsTrue(logFileContent.Contains(searchString), $"detailed log file does not contain {searchString}");
         }
-        [Then(@"Then I add Filter ""(.*)""")]
-        public void ThenThenIAddFilter(string filterString)
-        {
-            var auditFilter = new ActivityAuditFilter(filterString, filterString, filterString);
 
-            Dev2StateAuditLogger.AddFilter(auditFilter);
-        }
         [Given(@"the audit database is empty")]
         public void GivenTheAuditDatabaseIsEmpty()
         {
