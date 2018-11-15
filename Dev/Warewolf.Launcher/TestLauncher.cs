@@ -950,7 +950,7 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ProjectName))
             {
-                string ResolvedJobName = LookupJobName(ProjectName, Category);
+                string ResolvedJobName = GetJobName(ProjectName, Category);
                 JobNames.Add(ResolvedJobName);
                 JobName = ResolvedJobName;
                 JobAssemblySpecs.Add(ProjectName);
@@ -1036,7 +1036,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        string LookupJobName(string projectName, string category)
+        string GetJobName(string projectName, string category)
         {
             foreach(var job in JobSpecs)
             {
@@ -1045,7 +1045,7 @@ namespace Warewolf.Launcher
                     return job.Key;
                 }
             }
-            return null;
+            return projectName + ", " + category;
         }
     }
 }
