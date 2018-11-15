@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                stateNotifier.Subscribe(new Dev2StateAuditLogger(dsfDataObject));
+                stateNotifier.Subscribe(new Dev2StateAuditLogger(new DatabaseContextFactory(), dsfDataObject).StateListener);
             }
             return stateNotifier;
         }

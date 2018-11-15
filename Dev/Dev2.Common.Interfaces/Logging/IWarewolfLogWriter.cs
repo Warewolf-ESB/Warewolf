@@ -8,6 +8,6 @@ namespace Dev2.Common.Interfaces.Logging
 {
     public interface IWarewolfLogWriter
     {
-        void LogAuditState(Object auditLog);
+        void LogAuditState(Object logEntry);
     }
 }

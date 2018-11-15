@@ -18,9 +18,10 @@ using Dev2.Common.Interfaces.Logging;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    interface IDev2StateAuditLogger
+    interface IDev2StateAuditLogger : IDisposable
     {
-
+        IStateListener StateListener { get; }
+        void Flush();
     }
 
     public class SQLiteConfiguration : DbConfiguration
@@ -33,44 +34,21 @@ namespace Dev2.Runtime.ESB.Execution
         }
     }
 
-    class Dev2StateAuditLogger : IDev2StateAuditLogger, IWarewolfLogWriter, IStateListener, IDisposable
+    class Dev2StateAuditLogger : IDev2StateAuditLogger, IWarewolfLogWriter
     {
-        readonly StateListener _listener;
+        const int MAX_DATABASE_TRIES = 3;
 
-        public Dev2StateAuditLogger(IDSFDataObject dataObject=null)
+        readonly StateListener _listener;
+        readonly IList<AuditLog> _auditLogsBuffer = new List<AuditLog>();
+        public IStateListener StateListener => _listener;
+        readonly IDatabaseContextFactory _databaseContextFactory;
+
+        public Dev2StateAuditLogger(IDatabaseContextFactory databaseContextFactory, IDSFDataObject dataObject = null)
         {
+            _databaseContextFactory = databaseContextFactory;
             _listener = new StateListener(this, dataObject);
         }
 
-        public void LogAdditionalDetail(object detail, string callerName)
-        {
-            _listener?.LogAdditionalDetail(detail, callerName);
-        }
-
-        public void LogExecuteCompleteState(IDev2Activity activity)
-        {
-            _listener?.LogExecuteCompleteState(activity);
-        }
-
-        public void LogExecuteException(Exception e, IDev2Activity activity)
-        {
-            _listener?.LogExecuteException(e, activity);
-        }
-
-        public void LogPostExecuteState(IDev2Activity previousActivity, IDev2Activity nextActivity)
-        {
-            _listener?.LogPostExecuteState(previousActivity, nextActivity);
-        }
-
-        public void LogPreExecuteState(IDev2Activity nextActivity)
-        {
-            _listener?.LogPreExecuteState(nextActivity);
-        }
-
-        public void LogStopExecutionState(IDev2Activity activity)
-        {
-            _listener?.LogStopExecutionState(activity);
-        }
         public void Dispose()
         {
 
@@ -82,7 +60,7 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
-                var db = GetDatabase();
+                var db = new DatabaseContext();
                 audits = db.Audits.Where(queryExpression).AsEnumerable();
 
             });
@@ -90,15 +68,9 @@ namespace Dev2.Runtime.ESB.Execution
             return audits;
         }
 
-        private static DatabaseContext GetDatabase()
-        {
-            var databaseContext = new DatabaseContext();
-            return databaseContext;
-        }
-
         public static void ClearAuditLog()
         {
-            var db = GetDatabase();
+            var db = new DatabaseContext();
             foreach (var id in db.Audits.Select(e => e.Id))
             {
                 var entity = new AuditLog { Id = id };
@@ -108,24 +80,27 @@ namespace Dev2.Runtime.ESB.Execution
             db.SaveChanges();
         }
 
-        public void LogAuditState(Object auditLog)
+
+        public void LogAuditState(Object logEntry)
+        {
+            if (logEntry is AuditLog auditLog)
+            {
+                _auditLogsBuffer.Add(auditLog);
+                return;
+            }
+            throw new Exception("unhandled log type: " + logEntry?.GetType().Name);
+        }
+
+        private void Flush(IAuditDatabaseContext database, int reTry)
         {
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
-                Flush(auditLog as AuditLog, 3);
-            });
-        }
 
-        private static void Flush(AuditLog auditLog, int reTry)
-        {
-            using (var database = GetDatabase())
-            {
                 try
                 {
-                    database.Audits.Add(auditLog);
                     database.SaveChanges();
-                 }
+                }
                 catch (SQLiteException e)
                 {
                     if (reTry == 0)
@@ -133,18 +108,66 @@ namespace Dev2.Runtime.ESB.Execution
                         throw new Exception(e.Message);
                     }
                     reTry--;
-                    Flush(auditLog, reTry);
+                    Flush(database, reTry);
                 }
                 catch (Exception e)
                 {
                     throw new Exception(e.Message);
                 }
+            });
+        }
+
+        public void Flush()
+        {
+            IAuditDatabaseContext database = null;
+            int count = MAX_DATABASE_TRIES;
+            do
+            {
+                try
+                {
+                    database = _databaseContextFactory.Get();
+                }
+                catch (Exception)
+                {
+                    count--;
+                    if (count <= 0)
+                    {
+                        throw;
+                    }
+                }
+            } while (database is null);
+
+            using (database)
+            {
+                foreach (var logItem in _auditLogsBuffer)
+                {
+                    database.Audits.Add(logItem);
+                }
+
+                Flush(database, MAX_DATABASE_TRIES);
             }
         }
     }
 
+    interface IAuditDatabaseContext : IDisposable
+    {
+        DbSet<AuditLog> Audits { get; set; }
+        int SaveChanges();
+    }
+    interface IDatabaseContextFactory
+    {
+        IAuditDatabaseContext Get();
+    }
+    class DatabaseContextFactory : IDatabaseContextFactory
+    {
+        public IAuditDatabaseContext Get()
+        {
+            return new DatabaseContext();
+        }
+    }
+
     [Database]
-    class DatabaseContext : DbContext
+    class DatabaseContext : DbContext, IAuditDatabaseContext
     {
         public DatabaseContext() : base(new SQLiteConnection
         {
@@ -156,7 +179,8 @@ namespace Dev2.Runtime.ESB.Execution
         }, true)
         {
             var userPrinciple = Common.Utilities.ServerUser;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => {
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
                 var directoryWrapper = new DirectoryWrapper();
                 directoryWrapper.CreateIfNotExists(Config.Server.AuditFilePath);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
@@ -173,15 +197,6 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public DbSet<AuditLog> Audits { get; set; }
-    }
-
-    static class IIdentityExtensionMethods
-    {
-        public static string ToJson(this System.Security.Principal.IIdentity identity)
-        {
-            var json = new Dev2JsonSerializer();
-            return json.Serialize(identity, Formatting.None);
-        }
     }
 
     static class ExecutionTokenExtensionMethods
