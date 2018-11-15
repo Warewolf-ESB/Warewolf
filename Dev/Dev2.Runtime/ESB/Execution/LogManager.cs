@@ -15,9 +15,11 @@ using Dev2.Runtime.ESB.Execution.State;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    internal class LogManager
+    internal class LogManager : IDisposable
     {
         private static LogManager _instance;
+        private Dev2StateAuditLogger _logger;
+
         private static LogManager Instance
         {
             get
@@ -32,10 +34,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
-            return Instance.GetStateNotifier(dsfDataObject);
+            return Instance.CreateStateNotifierImpl(dsfDataObject);
         }
 
-        private IStateNotifier GetStateNotifier(IDSFDataObject dsfDataObject)
+        private IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
             // TODO: check if there is already a state notifier for this workflow
             //       in this server instance. Re-use either the notifier or its loggers.
@@ -43,9 +45,37 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                stateNotifier.Subscribe(new Dev2StateAuditLogger(new DatabaseContextFactory(), dsfDataObject).StateListener);
+                _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), dsfDataObject);
+                stateNotifier.Subscribe(_logger.StateListener);
             }
             return stateNotifier;
+        }
+
+        internal static void FlushLogs()
+        {
+            Instance.FlushLogsImpl();
+        }
+        private void FlushLogsImpl()
+        {
+            _logger?.Flush();
+        }
+
+        private bool isDisposed = false; // To detect redundant calls
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    _logger.Dispose();
+                }
+                isDisposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }
