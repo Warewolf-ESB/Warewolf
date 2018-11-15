@@ -268,6 +268,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             finally
             {
+                LogManager.FlushLogs();
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
 
