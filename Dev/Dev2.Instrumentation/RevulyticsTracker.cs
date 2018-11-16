@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Util;
 using RUISDK_5_3_1;
@@ -150,7 +151,16 @@ namespace Dev2.Instrumentation
                 RuiSdk = new RUISDK(true, SdkFilePath,"RUISDK_5_3_1");
                 if (RuiSdk != null)
                 {
+                    if (!Directory.Exists(ConfigFilePath) && !File.Exists(ConfigFilePath))
+                    {
+                        Directory.CreateDirectory(ConfigFilePath);
+                    }
                     result = RuiSdk.CreateConfig(ConfigFilePath, ProductId, AppName, ProductUrl, Protocol, AesHexKey, MultiSessionEnabled, ReachOutOnAutoSync);
+                    int timeout = 10;
+                    while (RuiSdk.GetState() == RUIState.startedNewRegRunning && timeout > 0)
+                    {
+                        Thread.Sleep(100);
+                    }
                 }
                 return result;
             }

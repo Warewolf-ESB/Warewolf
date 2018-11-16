@@ -10,7 +10,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
     [CodedUITest]
     public class Com_DLL
     {        
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -100,7 +102,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void ChooseComPluginSelection()
         {
@@ -119,7 +123,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Resources
             Assert.IsFalse(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.GenerateOutputsButton.Enabled, "COM generate outputs button should be disabled");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Resource Tools")]
         public void COMDLLTool_EditSource_UITest()
         {

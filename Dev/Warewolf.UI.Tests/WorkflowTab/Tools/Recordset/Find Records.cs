@@ -9,7 +9,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
     [CodedUITest]
     public class Find_Records
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void FindRecordsTool_Small_And_LargeView_UITest()
         {
@@ -29,7 +31,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
             Assert.IsTrue(RecordsetToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.DoneButton.Exists, "Done Button does not exist on design surface");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void Selecting_OptionInDropdown_With_Keyboard_UITest()
         {
@@ -39,7 +43,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Recordset
             Assert.IsTrue(RecordsetToolsUIMap.MainStudioWindow.TabManSplitPane.TabManager.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FindRecordsIndex.SmallViewContentCustom.SmallDataGridTable.Row1.SearchCriteriaCell.SearchCriteriaComboBox.Enabled);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Recordset Tools")]
         public void Selecting_OptionInDropdown_Changed_Fires_EventChanged()
         {

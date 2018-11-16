@@ -9,7 +9,9 @@ namespace Warewolf.UI.Tests.Tools
     [CodedUITest]
     public class HttpWebGet
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Small_And_LargeView_UITest()
         {
@@ -33,7 +35,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Enabled, "Default Query Textbox is not enabled");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_GenerateOutputs_And_TestInputs_UITest()
         {
@@ -47,7 +51,9 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_GETWebTool_TestInputsButton();
             HTTPToolsUIMap.Click_GETWebTool_Outputs_DoneButton();
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Intellisense_UITest()
         {
@@ -63,7 +69,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.AreEqual("[[Output]]", HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit.Text);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Test_WebServiceSource_Remove_Recordset_UITestsellisense_UITest()
         {

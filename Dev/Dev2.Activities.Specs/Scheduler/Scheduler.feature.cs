@@ -101,8 +101,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-   testRunner.And("\"ScheduleWithHistory\" has a username of \"LocalSchedulerAdmin\" and a Password of \"" +
-                    "987Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll00\" has a username of \"DEV2\\IntegrationTester\" and a Password of \"I73573" +
+                    "r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -121,7 +121,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
-                        "2014/01/01",
+                        "2020/01/01",
                         "15:40:44",
                         "1",
                         "day",
@@ -129,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 13
@@ -147,12 +147,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating task with schedule statud disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating task with schedule status is disabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Scheduler")]
-        public virtual void CreatingTaskWithScheduleStatudDisabled()
+        public virtual void CreatingTaskWithScheduleStatusIsDisabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating task with schedule statud disabled", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating task with schedule status is disabled", ((string[])(null)));
 #line 21
 this.ScenarioSetup(scenarioInfo);
 #line 22
@@ -184,7 +184,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "On a schedule",
                         "\"Daily\"",
-                        "2014/01/01",
+                        "2020/01/01",
                         "15:40:44",
                         "1",
                         "day",
@@ -192,7 +192,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 27
@@ -223,8 +223,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
-   testRunner.And("\"Diceroll1\" has a username of \"LocalSchedulerAdmin\" and a Password of \"987Sched#@" +
-                    "!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll1\" has a username of \"DEV2\\IntegrationTester\" and a Password of \"I73573r" +
+                    "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -241,7 +241,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 39
@@ -293,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 53
@@ -342,7 +342,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
-                        "2014/01/01",
+                        "2020/01/01",
                         "15:40:44",
                         "1",
                         "day",
@@ -350,7 +350,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 64
@@ -405,7 +405,7 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
-                        "2014/01/01",
+                        "2020/01/01",
                         "15:40:44",
                         "1",
                         "day",
@@ -413,7 +413,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         ""});
 #line 78
@@ -466,7 +466,7 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
-                        "2014/01/01",
+                        "2020/01/01",
                         "15:40:44",
                         "1",
                         "day",
@@ -474,7 +474,7 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "1",
                         "hour",
-                        "2014/01/02",
+                        "2020/01/02",
                         "15:40:15",
                         "e7ea5196-33f7-4e0e-9d66-44bd67528a96"});
 #line 91
