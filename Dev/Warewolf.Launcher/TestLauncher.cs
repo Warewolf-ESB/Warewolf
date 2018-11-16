@@ -827,7 +827,7 @@ namespace Warewolf.Launcher
                     MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
                     GenerateCoverageReport();
                 }
-                this.MoveArtifactsToTestResults(ApplyCoverage, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), jobName);
+                this.MoveArtifactsToTestResults((!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), jobName);
             }
             return trxTestResultsFile;
         }

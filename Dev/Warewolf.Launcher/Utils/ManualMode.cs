@@ -32,7 +32,7 @@ namespace Warewolf.Launcher.Utils
                     build.JobName = "Manual Tests";
                 }
             }
-            build.MoveArtifactsToTestResults(build.ApplyCoverage, true, true, build.JobName);
+            build.MoveArtifactsToTestResults(true, true, build.JobName);
         }
     }
 }
