@@ -125,6 +125,7 @@ namespace Dev2
 
         Dev2Endpoint[] _endpoints;
         Timer _timer;
+        Timer _loggerFlushTimer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
         int _daysToKeepTempFiles;
@@ -215,6 +216,7 @@ namespace Dev2
                 RegisterDependencies();
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
+                LoadPerformanceCounters();
                 CheckExampleResources();
                 MigrateOldTests();
                 InitializeServer();
@@ -223,8 +225,8 @@ namespace Dev2
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, Config.Server.LogFlushInterval, GlobalConstants.NetworkComputerNameQueryFreq);
                 StartPulseLogger();
-                LoadPerformanceCounters();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
                 StartWebServer();
@@ -269,6 +271,11 @@ namespace Dev2
             {
                 DeleteTempFiles();
             }
+        }
+
+        void PerformLoggerFlushActions(object state)
+        {
+            Runtime.ESB.Execution.LogManager.FlushLogs();
         }
 
         static void PreloadReferences()

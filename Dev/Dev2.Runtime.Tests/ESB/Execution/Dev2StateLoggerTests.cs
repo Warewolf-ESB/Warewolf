@@ -23,6 +23,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         IFile _fileWrapper;
         IDirectory _directoryWrapper;
         IDev2StateAuditLogger _dev2StateAuditLogger;
+        IDSFDataObject _dSFDataObject;
         Mock<IDev2Activity> _activity;
 
         [TestCleanup]
@@ -76,7 +77,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             // test
-            _dev2StateAuditLogger.StateListener.LogExecuteCompleteState(nextActivity.Object);
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
 
             _dev2StateAuditLogger.Flush();
 
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             // test
             var activity = new Mock<IDev2Activity>();
             var exception = new Mock<Exception>();
-            _dev2StateAuditLogger.StateListener.LogExecuteException(exception.Object, activity.Object);
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteException(exception.Object, activity.Object);
 
             _dev2StateAuditLogger.Flush();
 
@@ -124,7 +125,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             // test
             var previousActivity = new Mock<IDev2Activity>();
             var nextActivity = new Mock<IDev2Activity>();
-            _dev2StateAuditLogger.StateListener.LogPostExecuteState(previousActivity.Object, nextActivity.Object);
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogPostExecuteState(previousActivity.Object, nextActivity.Object);
 
             _dev2StateAuditLogger.Flush();
 
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             // test
             var additionalDetailObject = new { Message = "Some Message" };
-            _dev2StateAuditLogger.StateListener.LogAdditionalDetail(additionalDetailObject, "");
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogAdditionalDetail(additionalDetailObject, "");
 
             _dev2StateAuditLogger.Flush();
 
@@ -169,7 +170,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowName = "LogPreExecuteState_Workflow";
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             // test
-            _dev2StateAuditLogger.StateListener.LogPreExecuteState(_activity.Object);
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogPreExecuteState(_activity.Object);
             // verify
 
             _dev2StateAuditLogger.Flush();
@@ -197,7 +198,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var expectedWorkflowName = "LogPreExecuteState_Workflow";
             TestAuditSetupWithAssignedInputsNullDbFactory(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             // test
-            _dev2StateAuditLogger.StateListener.LogPreExecuteState(_activity.Object);
+            _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogPreExecuteState(_activity.Object);
             // verify
 
             _dev2StateAuditLogger.Flush();
@@ -236,7 +237,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             (_dev2StateAuditLogger as Dev2StateAuditLogger).LogAuditState(1);
         }
 
-        private static void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
+        private void TestSetup(out IFile fileWrapper, out IDirectory directoryWrapper, out Mock<IDev2Activity> activity)
         {
             // setup
             var mockedDataObject = SetupDataObject();
@@ -244,24 +245,24 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             directoryWrapper = new DirectoryWrapper();
             activity = new Mock<IDev2Activity>();
         }
-
-        private static Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
+        
+        private Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
-            return new Dev2StateAuditLogger(new DatabaseContextFactory(), mockedDataObject.Object);
+            return new Dev2StateAuditLogger(new DatabaseContextFactory());
         }
 
-        private static Dev2StateAuditLogger GetDev2AuditStateLoggerNullDbFactory(Mock<IDSFDataObject> mockedDataObject)
+        private Dev2StateAuditLogger GetDev2AuditStateLoggerNullDbFactory(Mock<IDSFDataObject> mockedDataObject)
         {
-            return new Dev2StateAuditLogger(null, mockedDataObject.Object);
+            return new Dev2StateAuditLogger(null);
         }
 
-        private static void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
             dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
         }
 
-        private static void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
+        private void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
         {
             var executionId = Guid.NewGuid();
             // setup
@@ -269,22 +270,22 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             activity = new Mock<IDev2Activity>();
         }
 
-        private static void TestAuditSetupWithAssignedInputsNullDbFactory(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        private void TestAuditSetupWithAssignedInputsNullDbFactory(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
             dev2AuditStateLogger = GetDev2AuditStateLoggerNullDbFactory(mockedDataObject);
         }
 
-        private static void TestMockAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        private void TestMockAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactory(), mockedDataObject.Object);
+            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactory());
         }
 
-        private static void TestMockDatabaseContextFactoryWithMockDbContext<ExceptionT>(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity) where ExceptionT : Exception, new()
+        private void TestMockDatabaseContextFactoryWithMockDbContext<ExceptionT>(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity) where ExceptionT : Exception, new()
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactoryWithMockDbContext<ExceptionT>(), mockedDataObject.Object);
+            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactoryWithMockDbContext<ExceptionT>());
         }
 
         class MockDatabaseContextFactory : IDatabaseContextFactory
@@ -318,7 +319,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             }
         }
 
-        private static Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+        private Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {
             // mocks
             var mockedDataObject = new Mock<IDSFDataObject>();
@@ -330,10 +331,15 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
             mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+
+            _dSFDataObject = mockedDataObject.Object;
+
             return mockedDataObject;
         }
 
-        private static Mock<IDSFDataObject> SetupDataObject()
+
+
+        private Mock<IDSFDataObject> SetupDataObject()
         {
             // mocks
             var mockedDataObject = new Mock<IDSFDataObject>();
@@ -344,6 +350,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
             mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+
+            _dSFDataObject = mockedDataObject.Object;
+
             return mockedDataObject;
         }
     }
