@@ -44,7 +44,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
             return true;
         }
 
-        bool WaitForAnySnapshotContent(string snapshot)
+        public static bool WaitForAnySnapshotContent(string snapshot)
         {
             var RetryCount = 0;
             long fileSize = 0;
@@ -58,7 +58,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
                     Thread.Sleep(3000);
                 }
             }
-            return !(fileSize <= 0 && RetryCount < 200);
+            return new FileInfo(snapshot).Length > 0;
         }
 
         void BackOffAChangingSnapshot(string snapshot)
