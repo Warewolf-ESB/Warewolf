@@ -15,7 +15,7 @@ using Dev2.Runtime.ESB.Execution.State;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    internal class LogManager : IDisposable
+    public class LogManager : IDisposable
     {
         private static LogManager _instance;
         private Dev2StateAuditLogger _logger;
@@ -45,13 +45,13 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), dsfDataObject);
-                stateNotifier.Subscribe(_logger.StateListener);
+                _logger = new Dev2StateAuditLogger(new DatabaseContextFactory());
+                stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
             return stateNotifier;
         }
 
-        internal static void FlushLogs()
+        public static void FlushLogs()
         {
             Instance.FlushLogsImpl();
         }
