@@ -16,6 +16,7 @@ using System.IO;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Logging;
 using System.Threading;
+using Dev2.Common.Interfaces.Container;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -39,15 +40,15 @@ namespace Dev2.Runtime.ESB.Execution
     {
         const int MAX_DATABASE_TRIES = 3;
 
-        readonly IList<AuditLog> _auditLogsBuffer = new List<AuditLog>();
         public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         readonly IDatabaseContextFactory _databaseContextFactory;
 
-        // TODO: add WarewolfQueue
+        readonly IWarewolfQueue _warewolfQueue;
 
-        public Dev2StateAuditLogger(IDatabaseContextFactory databaseContextFactory)
+        public Dev2StateAuditLogger(IDatabaseContextFactory databaseContextFactory, IWarewolfQueue warewolfQueue)
         {
             _databaseContextFactory = databaseContextFactory;
+            _warewolfQueue = warewolfQueue;
         }
 
         public void Dispose()
@@ -85,13 +86,17 @@ namespace Dev2.Runtime.ESB.Execution
         {
             if (logEntry is AuditLog auditLog)
             {
-                // TODO: this function will enqueue data into the WarewolfQueue
-                _auditLogsBuffer.Add(auditLog);
+                using (var session = _warewolfQueue.OpenSession())
+                {
+                    session.Enqueue(auditLog);
+                    session.Flush();
+                }
                 return;
             }
             throw new ArgumentException("unhandled log type: " + logEntry?.GetType().Name);
         }
 
+        private readonly object _flushLock = new object();
         private void Flush(IAuditDatabaseContext database, int reTry)
         {
             var userPrinciple = Common.Utilities.ServerUser;
@@ -115,34 +120,45 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Flush()
         {
-            IAuditDatabaseContext database = null;
-            int count = MAX_DATABASE_TRIES;
-            do
+            lock (_flushLock)
             {
-                try
+                IAuditDatabaseContext database = null;
+                int count = MAX_DATABASE_TRIES;
+                do
                 {
-                    database = _databaseContextFactory.Get();
-                }
-                catch (Exception)
-                {
-                    count--;
-                    if (count <= 0)
+                    try
                     {
-                        throw;
+                        database = _databaseContextFactory.Get();
                     }
-                }
-                Thread.Sleep(100);
-            } while (database is null && --count >= 0);
+                    catch (Exception)
+                    {
+                        count--;
+                        if (count <= 0)
+                        {
+                            throw;
+                        }
+                    }
+                    Thread.Sleep(100);
+                } while (database is null && --count >= 0);
 
-            using (database)
-            {
-                foreach (var logItem in _auditLogsBuffer)
+                using (database)
                 {
-                    // TODO: this will dequeue data from the WarewolfQueue
-                    database.Audits.Add(logItem);
-                }
+                    using (var session = _warewolfQueue.OpenSession())
+                    {
+                        do
+                        {
+                            var auditLog = session.Dequeue<AuditLog>();
+                            if (auditLog is null)
+                            {
+                                break;
+                            }
+                            database.Audits.Add(auditLog);
+                        }
+                        while (true);
+                    }
 
-                Flush(database, MAX_DATABASE_TRIES);
+                    Flush(database, MAX_DATABASE_TRIES);
+                }
             }
         }
     }

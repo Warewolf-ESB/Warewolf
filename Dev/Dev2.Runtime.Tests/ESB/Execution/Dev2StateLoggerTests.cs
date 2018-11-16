@@ -14,6 +14,7 @@ using Warewolf.Storage;
 using System.Linq;
 using System.Data.SQLite;
 using System.Data.Entity;
+using Dev2.Common.Container;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
@@ -248,12 +249,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         
         private Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
-            return new Dev2StateAuditLogger(new DatabaseContextFactory());
+            return new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
         }
 
         private Dev2StateAuditLogger GetDev2AuditStateLoggerNullDbFactory(Mock<IDSFDataObject> mockedDataObject)
         {
-            return new Dev2StateAuditLogger(null);
+            return new Dev2StateAuditLogger(null, new WarewolfQueue());
         }
 
         private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
@@ -279,13 +280,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         private void TestMockAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactory());
+            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactory(), new WarewolfQueue());
         }
 
         private void TestMockDatabaseContextFactoryWithMockDbContext<ExceptionT>(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity) where ExceptionT : Exception, new()
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactoryWithMockDbContext<ExceptionT>());
+            dev2AuditStateLogger = new Dev2StateAuditLogger(new MockDatabaseContextFactoryWithMockDbContext<ExceptionT>(), new WarewolfQueue());
         }
 
         class MockDatabaseContextFactory : IDatabaseContextFactory
