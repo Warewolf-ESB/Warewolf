@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     interface IDev2StateAuditLogger : IDisposable
     {
-        IStateListener StateListener { get; }
+        IStateListener NewStateListener(IDSFDataObject dataObject);
         void Flush();
     }
 
@@ -39,15 +39,15 @@ namespace Dev2.Runtime.ESB.Execution
     {
         const int MAX_DATABASE_TRIES = 3;
 
-        readonly StateListener _listener;
         readonly IList<AuditLog> _auditLogsBuffer = new List<AuditLog>();
-        public IStateListener StateListener => _listener;
+        public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         readonly IDatabaseContextFactory _databaseContextFactory;
 
-        public Dev2StateAuditLogger(IDatabaseContextFactory databaseContextFactory, IDSFDataObject dataObject = null)
+        // TODO: add WarewolfQueue
+
+        public Dev2StateAuditLogger(IDatabaseContextFactory databaseContextFactory)
         {
             _databaseContextFactory = databaseContextFactory;
-            _listener = new StateListener(this, dataObject);
         }
 
         public void Dispose()
@@ -81,11 +81,11 @@ namespace Dev2.Runtime.ESB.Execution
             db.SaveChanges();
         }
 
-
         public void LogAuditState(Object logEntry)
         {
             if (logEntry is AuditLog auditLog)
             {
+                // TODO: this function will enqueue data into the WarewolfQueue
                 _auditLogsBuffer.Add(auditLog);
                 return;
             }
@@ -138,6 +138,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var logItem in _auditLogsBuffer)
                 {
+                    // TODO: this will dequeue data from the WarewolfQueue
                     database.Audits.Add(logItem);
                 }
 
