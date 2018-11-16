@@ -15,6 +15,7 @@ using Dev2.Common;
 using System.IO;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Logging;
+using System.Threading;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -88,7 +89,7 @@ namespace Dev2.Runtime.ESB.Execution
                 _auditLogsBuffer.Add(auditLog);
                 return;
             }
-            throw new Exception("unhandled log type: " + logEntry?.GetType().Name);
+            throw new ArgumentException("unhandled log type: " + logEntry?.GetType().Name);
         }
 
         private void Flush(IAuditDatabaseContext database, int reTry)
@@ -96,7 +97,6 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
-
                 try
                 {
                     database.SaveChanges();
@@ -105,14 +105,10 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     if (reTry == 0)
                     {
-                        throw new Exception(e.Message);
+                        throw;
                     }
                     reTry--;
                     Flush(database, reTry);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
                 }
             });
         }
@@ -135,7 +131,8 @@ namespace Dev2.Runtime.ESB.Execution
                         throw;
                     }
                 }
-            } while (database is null);
+                Thread.Sleep(100);
+            } while (database is null && --count >= 0);
 
             using (database)
             {
