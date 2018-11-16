@@ -38,7 +38,8 @@ namespace Dev2.Runtime.ESB.Execution
 
     class Dev2StateAuditLogger : IDev2StateAuditLogger, IWarewolfLogWriter
     {
-        const int MAX_DATABASE_TRIES = 3;
+        const int MAX_DATABASE_TRIES = 10;
+        const int DATABASE_RETRY_DELAY = 100;
 
         public IStateListener NewStateListener(IDSFDataObject dataObject) => new StateListener(this, dataObject);
         readonly IDatabaseContextFactory _databaseContextFactory;
@@ -96,7 +97,6 @@ namespace Dev2.Runtime.ESB.Execution
             throw new ArgumentException("unhandled log type: " + logEntry?.GetType().Name);
         }
 
-        private readonly object _flushLock = new object();
         private void Flush(IAuditDatabaseContext database, int reTry)
         {
             var userPrinciple = Common.Utilities.ServerUser;
@@ -106,13 +106,14 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     database.SaveChanges();
                 }
-                catch (SQLiteException e)
+                catch (Exception e)
                 {
                     if (reTry == 0)
                     {
                         throw;
                     }
                     reTry--;
+                    Thread.Sleep(DATABASE_RETRY_DELAY);
                     Flush(database, reTry);
                 }
             });
@@ -120,45 +121,42 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Flush()
         {
-            lock (_flushLock)
+            IAuditDatabaseContext database = null;
+            int count = MAX_DATABASE_TRIES;
+            do
             {
-                IAuditDatabaseContext database = null;
-                int count = MAX_DATABASE_TRIES;
-                do
+                try
                 {
-                    try
-                    {
-                        database = _databaseContextFactory.Get();
-                    }
-                    catch (Exception)
-                    {
-                        count--;
-                        if (count <= 0)
-                        {
-                            throw;
-                        }
-                    }
-                    Thread.Sleep(100);
-                } while (database is null && --count >= 0);
-
-                using (database)
-                {
-                    using (var session = _warewolfQueue.OpenSession())
-                    {
-                        do
-                        {
-                            var auditLog = session.Dequeue<AuditLog>();
-                            if (auditLog is null)
-                            {
-                                break;
-                            }
-                            database.Audits.Add(auditLog);
-                        }
-                        while (true);
-                    }
-
-                    Flush(database, MAX_DATABASE_TRIES);
+                    database = _databaseContextFactory.Get();
                 }
+                catch (Exception)
+                {
+                    count--;
+                    if (count <= 0)
+                    {
+                        throw;
+                    }
+                }
+                Thread.Sleep(DATABASE_RETRY_DELAY);
+            } while (database is null && --count >= 0);
+
+            using (database)
+            {
+                using (var session = _warewolfQueue.OpenSession())
+                {
+                    do
+                    {
+                        var auditLog = session.Dequeue<AuditLog>();
+                        if (auditLog is null)
+                        {
+                            break;
+                        }
+                        database.Audits.Add(auditLog);
+                    }
+                    while (true);
+                }
+
+                Flush(database, MAX_DATABASE_TRIES);
             }
         }
     }
