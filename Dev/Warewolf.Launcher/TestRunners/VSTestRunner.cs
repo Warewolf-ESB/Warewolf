@@ -102,8 +102,9 @@ namespace Warewolf.Launcher.TestRunners
             return TestCategories;
         }
 
-        public void ReadPlaylist()
+        public List<string> ReadPlaylist()
         {
+            var testList = new List<string>();
             if (string.IsNullOrEmpty(TestList))
             {
                 foreach (var playlistFile in Directory.GetFiles(TestsPath, "*.playlist"))
@@ -114,14 +115,20 @@ namespace Warewolf.Launcher.TestRunners
                     {
                         foreach (XmlNode TestName in playlistContent.DocumentElement.SelectNodes("/Playlist/Add"))
                         {
-                            TestList += " /test:" + TestName.Attributes["Test"].InnerText.Substring(TestName.Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                            string fullTestName = TestName.Attributes["Test"].InnerText;
+                            string testName = fullTestName.Substring(fullTestName.LastIndexOf(".") + 1);
+                            testList.Add(fullTestName);
+                            TestList += " /test:" + testName;
                         }
                     }
                     else
                     {
                         if (playlistContent.SelectSingleNode("/Playlist/Add") != null && playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"] != null)
                         {
-                            TestList = " /test:" + playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.Substring(playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText.LastIndexOf(".") + 1);
+                            string fullTestName = playlistContent.SelectSingleNode("/Playlist/Add").Attributes["Test"].InnerText;
+                            string testName = fullTestName.Substring(fullTestName.LastIndexOf(".") + 1);
+                            testList.Add(fullTestName);
+                            TestList = " /test:" + testName;
                         }
                         else
                         {
@@ -130,7 +137,13 @@ namespace Warewolf.Launcher.TestRunners
                     }
                 }
             }
+            return testList;
         }
+
+        public void WritePlaylist(string jobName) => new MSTestRunner()
+        {
+            TestsResultsPath = TestsResultsPath
+        }.WritePlaylist(jobName);
 
         public string AppendProjectFolder(string projectFolder) => " \"" + projectFolder + "\\bin\\Debug\\" + System.IO.Path.GetFileName(projectFolder) + ".dll\"";
 
