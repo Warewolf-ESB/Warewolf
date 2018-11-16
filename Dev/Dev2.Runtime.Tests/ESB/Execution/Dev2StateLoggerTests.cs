@@ -206,17 +206,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Dev2StateAuditLogger_Flush_InvalidDatabase_ExpectedException_Tests()
-        {
-            var expectedWorkflowId = Guid.NewGuid();
-            var expectedWorkflowName = "LogPreExecuteState_Workflow";
-            TestMockAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
-            // test
-            _dev2StateAuditLogger.Flush();
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(SQLiteException))]
         public void Dev2StateAuditLogger_Flush_SaveChanges_ExpectedSQLiteException_Tests()
         {
