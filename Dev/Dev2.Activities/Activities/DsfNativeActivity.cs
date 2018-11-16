@@ -1047,7 +1047,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDebugItem itemToAdd = new DebugItem();
             itemToAdd.AddRange(parameters.GetDebugItemResult());
+#pragma warning disable S3215
             _debugInputs.Add((DebugItem)itemToAdd);
+#pragma warning restore S3215
         }
 
         protected void AddDebugOutputItem(DebugOutputBase parameters)

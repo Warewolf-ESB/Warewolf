@@ -48,6 +48,8 @@ namespace Dev2.Common
         public bool   CollectUsageStats     => StringToBool(manager[nameof(CollectUsageStats)], false);
         public int    DaysToKeepTempFiles   => StringToInt(manager[nameof(DaysToKeepTempFiles)], 0);
 
+        public int LogFlushInterval => StringToInt(manager[nameof(LogFlushInterval)], 100);
+
         private static bool StringToBool(string value, bool defaultValue) {
             if (value is null)
             {

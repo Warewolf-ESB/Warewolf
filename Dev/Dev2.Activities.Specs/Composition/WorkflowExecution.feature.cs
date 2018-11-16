@@ -5367,10 +5367,8 @@ this.FeatureBackground();
 #line 1460
  testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1461
- testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1462
  testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1463
+#line 1462
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table251 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5420,7 +5418,7 @@ this.FeatureBackground();
                         "TestSqlExecutesOnce",
                         "Dev2.Activities.DsfSqlServerDatabaseActivity",
                         "Dev2.Activities.DsfDecision"});
-#line 1464
+#line 1463
  testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
                     "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table251, "And ");
 #line hidden
@@ -5435,19 +5433,17 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Audit Log Query Expect 8 Items from search", new string[] {
                         "WorkflowExecution"});
-#line 1476
+#line 1475
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 1477
+#line 1476
  testRunner.Given("I have a server at \"localhost\" with workflow \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1478
+#line 1477
  testRunner.And("the audit database is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1479
- testRunner.Then("Then I add Filter \"SQL Server Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1480
+#line 1478
  testRunner.When("\"localhost\" is the active environment used to execute \"TestSqlExecutesOnce\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1481
+#line 1479
     testRunner.Then("the workflow execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table252 = new TechTalk.SpecFlow.Table(new string[] {
@@ -5497,7 +5493,7 @@ this.FeatureBackground();
                         "TestSqlExecutesOnce",
                         "Dev2.Activities.DsfSqlServerDatabaseActivity",
                         "Dev2.Activities.DsfDecision"});
-#line 1482
+#line 1480
  testRunner.And("The audit database has \"8\" search results containing \"SQL Server Database\" with t" +
                     "ype \"\" for \"TestSqlExecutesOnce\" as", ((string)(null)), table252, "And ");
 #line hidden
