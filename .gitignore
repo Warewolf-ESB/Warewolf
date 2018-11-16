@@ -82,3 +82,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Dev2.IntegrationTests/TestEditorFlakeyTests.cs
 /Dev/Dev2.Activities.Tests/LargeRowsDataSplit.txt
 /Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/**
+/Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/places.sqlite
