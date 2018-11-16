@@ -1,5 +1,5 @@
 ﻿using Dev2.Common.Interfaces.Container;
-using Newtonsoft.Json;
+using Dev2.Common.Serializers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +32,9 @@ namespace Dev2.Common.Container
         }
         public void Enqueue<T>(T ob)
         {
-            var json = JsonConvert.SerializeObject(ob);
-            _buffer.Add(Encoding.UTF8.GetBytes(json));
+            var jsonSerializer = new Dev2JsonSerializer();
+            var builder = jsonSerializer.Serialize<T>(ob);
+            _buffer.Add(Encoding.UTF8.GetBytes(builder));
         }
         public T Dequeue<T>()
         {
@@ -41,7 +42,8 @@ namespace Dev2.Common.Container
             {
                 return default(T);
             }
-            return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(data));
+            var jsonSerializer = new Dev2JsonSerializer();
+            return jsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(data));
         }
 
         public virtual void Flush()

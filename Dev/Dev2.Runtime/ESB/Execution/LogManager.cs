@@ -9,7 +9,7 @@
 */
 
 using System;
-using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Container;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution.State;
 
@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Execution
     public class LogManager : IDisposable
     {
         private static LogManager _instance;
-        private Dev2StateAuditLogger _logger;
+        readonly Dev2StateAuditLogger _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
 
         private static LogManager Instance
         {
@@ -39,13 +39,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         private IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
-            // TODO: check if there is already a state notifier for this workflow
-            //       in this server instance. Re-use either the notifier or its loggers.
             var stateNotifier = new StateNotifier();
 
             if (dsfDataObject.Settings.EnableDetailedLogging)
             {
-                _logger = new Dev2StateAuditLogger(new DatabaseContextFactory());
                 stateNotifier.Subscribe(_logger.NewStateListener(dsfDataObject));
             }
             return stateNotifier;
@@ -57,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
         private void FlushLogsImpl()
         {
-            _logger?.Flush();
+            _logger.Flush();
         }
 
         private bool isDisposed = false; // To detect redundant calls
