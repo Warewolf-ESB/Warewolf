@@ -155,6 +155,7 @@
     <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\IServiceLocator.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
+    <Compile Include="ESB\Execution\State\AuditLog.cs" />
     <Compile Include="ESB\Execution\State\Dev2StateAuditLogger.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
     <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
+    <Compile Include="ESB\Execution\State\StateListener.cs" />
     <Compile Include="ESB\Execution\State\StateNotifier.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
