@@ -11,19 +11,56 @@ namespace Warewolf.Launcher
         public static Dictionary<string, Tuple<string, string>> GetJobDefinitions()
         {
             var JobDefinitions = new Dictionary<string, Tuple<string, string>>();
-            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
-            //{
-            //    string JobDefinitionsCSV = ReadFileFromRepo(repo, "JobSpecs.csv");
-            //    foreach (var JobDefintionsLine in JobDefinitionsCSV.Split('\r', '\n'))
-            //    {
-            //        if (!(JobDefintionsLine.StartsWith("//")))
-            //        {
-            //            var SplitCSV = JobDefintionsLine.Split(',');
-            //            Console.WriteLine(SplitCSV[0]);
-            //            JobDefinitions.Add(SplitCSV[0], new Tuple<string, string>(SplitCSV[1], SplitCSV.Length > 2 ? SplitCSV[2] : null));
-            //        }
-            //    }
-            //}
+            try
+            {
+                using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                {
+                    var BuildDefintions = ReadBuildDefinitionsFromRepo(repo);
+                    foreach (var BuildDefinition in BuildDefintions)
+                    {
+                        string currentJobName = "";
+                        foreach (var CurrentLine in BuildDefinition.Split('\r', '\n'))
+                        {
+                            if (CurrentLine.Contains("public class "))
+                            {
+                                currentJobName = CurrentLine.Trim()
+                                    .Replace("public class ", "")
+                                    .Replace(" {", "")
+                                    .Replace("_", " ");
+                            }
+                            const string parseProjFrom = "--ProjectName \\\"";
+                            const string parseCategoryFrom = "--Category \\\"";
+                            if (CurrentLine.Contains(parseProjFrom) && !CurrentLine.Contains("#Error Correcting Download"))
+                            {
+                                var projStartIndex = CurrentLine.IndexOf(parseProjFrom) + parseProjFrom.Length;
+                                string projectName = null;
+                                while (CurrentLine[projStartIndex] != '\\')
+                                {
+                                    projectName += CurrentLine[projStartIndex++];
+                                }
+                                string categoryName = null;
+                                int findCategoryStart = CurrentLine.IndexOf(parseCategoryFrom);
+                                if (findCategoryStart > 0)
+                                {
+                                    var categoryStartIndex = findCategoryStart + parseCategoryFrom.Length;
+                                    while (CurrentLine[categoryStartIndex] != '\\')
+                                    {
+                                        categoryName += CurrentLine[categoryStartIndex++];
+                                    }
+                                }
+                                if (!JobDefinitions.ContainsKey(currentJobName))
+                                {
+                                    JobDefinitions.Add(currentJobName, new Tuple<string, string>(projectName, categoryName));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to get build config from {Properties.Settings.Default.BuildDefinitionsGitURL}\n{e.Message}");
+            }
             if (JobDefinitions.Count > 0)
             {
                 return JobDefinitions;
@@ -92,15 +129,15 @@ namespace Warewolf.Launcher
                 ["Studio Test Framework With Scripting Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithScriptingTools"),
                 ["Studio Test Framework With Subworkflow Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithSubworkflow"),
                 ["Studio Test Framework With Utility Tools Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "StudioTestFrameworkWithUtilityTools"),
-                ["Other Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", null),
-                ["Conflicting Contribute View And Execute Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ConflictingContributeViewExecutePermissionsSecurity"),
-                ["Conflicting Execute Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ConflictingExecutePermissionsSecurity"),
-                ["Conflicting View And Execute Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ConflictingViewExecutePermissionsSecurity"),
-                ["Conflicting View Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ConflictingViewPermissionsSecurity"),
-                ["No Conflicting Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "NoConflictingPermissionsSecurity"),
-                ["Overlapping User Groups Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"),
-                ["Resource Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ResourcePermissionsSecurity"),
-                ["Server Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ServerPermissionsSecurity"),
+                ["Other Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", null),
+                ["Conflicting Contribute View And Execute Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ConflictingContributeViewExecutePermissionsSecurity"),
+                ["Conflicting Execute Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ConflictingExecutePermissionsSecurity"),
+                ["Conflicting View And Execute Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ConflictingViewExecutePermissionsSecurity"),
+                ["Conflicting View Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ConflictingViewPermissionsSecurity"),
+                ["No Conflicting Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "NoConflictingPermissionsSecurity"),
+                ["Overlapping User Groups Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "OverlappingUserGroupsPermissionsSecurity"),
+                ["Resource Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ResourcePermissionsSecurity"),
+                ["Server Permissions Security Specs"] = new Tuple<string, string>("Dev2.*.Specs,Warewolf.*.Specs", "ServerPermissionsSecurity"),
                 //Release Resource Tests
                 ["Example Workflow Execution Specs"] = new Tuple<string, string>("Dev2.Activities.Specs", "ExampleWorkflowExecution"),
                 //Desktop UI Tests
@@ -179,22 +216,38 @@ namespace Warewolf.Launcher
             };
         }
 
-        static string ReadFileFromRepo(Repository repo, string fileName)
+        static List<string> ReadBuildDefinitionsFromRepo(Repository repo)
         {
-            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            CheckoutBranch(ref repo);
+            List<string> result = new List<string>();
+            TreeEntry TreeWalker = null;
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["Single_Jobs"].Target))
             {
-                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
                 {
-                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs[Properties.Settings.Default.BuildDefinitionGitBranch]);
-                    Commands.Checkout(repo, Properties.Settings.Default.BuildDefinitionGitBranch);
+                    result.Add(ReadTreeEntry(TreeEntry));
                 }
             }
-            else
+            foreach (var TreeEntry in ((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)((Tree)repo.Head.Tip.Tree[@"bamboo-specs"].Target)["src"].Target)["main"].Target)["java"].Target)["com"].Target)["Single_Jobs"].Target)["Coverage"].Target))
             {
-                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+                if (TreeEntry.TargetType == TreeEntryTargetType.Blob)
+                {
+                    result.Add(ReadTreeEntry(TreeEntry));
+                }
             }
+            return result;
+        }
+
+        static string ReadFileFromRepo(Repository repo, string fileName)
+        {
+            CheckoutBranch(ref repo);
             var commit = repo.Head.Tip;
             var treeEntry = commit[fileName];
+            return ReadTreeEntry(treeEntry);
+        }
+
+        private static string ReadTreeEntry(TreeEntry treeEntry)
+        {
             var blob = (Blob)treeEntry.Target;
             var contentStream = blob.GetContentStream();
             string JobDefinitionsCSV;
@@ -206,21 +259,42 @@ namespace Warewolf.Launcher
             return JobDefinitionsCSV;
         }
 
+        static void CheckoutBranch(ref Repository repo)
+        {
+            if (repo.Branches[Properties.Settings.Default.BuildDefinitionGitBranch] != null)
+            {
+                if (Properties.Settings.Default.BuildDefinitionGitBranch != "master")
+                {
+                    repo.Refs.UpdateTarget(repo.Refs.Head, repo.Refs["refs/heads/" + Properties.Settings.Default.BuildDefinitionGitBranch]);
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Unrecognized branch {Properties.Settings.Default.BuildDefinitionGitBranch} for repo {Properties.Settings.Default.BuildDefinitionsGitURL}");
+            }
+        }
+
         public static bool GetEnableDockerValue()
         {
-            //string JobDefinitionsCSV = "";
-            //using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
-            //{
-            //    JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
-            //}
-            //return JobDefinitionsCSV == "False";
             if (File.Exists("EnableDocker.txt"))
             {
                 return File.ReadAllText("EnableDocker.txt") == "True";
             }
             else
             {
-                return false;
+                string JobDefinitionsCSV = "";
+                try
+                { 
+                    using (var repo = new Repository(Properties.Settings.Default.BuildDefinitionsGitURL))
+                    {
+                        JobDefinitionsCSV = ReadFileFromRepo(repo, "EnableDocker.txt");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to get Docker enable build config from {Properties.Settings.Default.BuildDefinitionsGitURL}\n{e.Message}");
+                }
+                return JobDefinitionsCSV == "True";
             }
         }
     }

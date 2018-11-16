@@ -83,11 +83,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Warewolf.Launcher\EnableDocker.txt">
-      <Visible>False</Visible>
-      <Link>EnableDocker.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="BuildConfig.cs" />
     <Compile Include="RabbitMq Source.feature.cs">
       <AutoGen>True</AutoGen>

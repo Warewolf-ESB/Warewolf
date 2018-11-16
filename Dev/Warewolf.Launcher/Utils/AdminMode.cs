@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using Warewolf.Launcher.TestCoverageMergers;
+using Warewolf.Launcher.TestCoverageRunners;
 
 namespace Warewolf.Launcher.Utils
 {
@@ -38,6 +41,16 @@ namespace Warewolf.Launcher.Utils
                     }
                 }
             }
+            Console.WriteLine("Apply Coverage? [y/N]");
+            var applyingCoverage = WindowUtils.PromptForUserInput().ToLower();
+            build.ApplyCoverage = applyingCoverage == "y";
+            if (build.ApplyCoverage)
+            {
+                string currentFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                build.TestCoverageRunner = new OpenCoverRunner(Path.Combine(currentFolder, "OpenCover", "OpenCover.Console.exe"));
+                build.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(currentFolder, "ReportGenerator", "ReportGenerator.exe"));
+            }
+
             Console.WriteLine("\nAdmin, What would you like to do?");
             var options = new[] {
                     "[1]Single Job: Run One Test Job. (This is the default)",
@@ -68,7 +81,7 @@ namespace Warewolf.Launcher.Utils
                     Console.ForegroundColor = originalColour;
                     Console.Write(option);
                 }
-                Console.WriteLine("\n\nType the name or number of the job (or comma seperated list of jobs). Leave blank to use default (Other Unit Tests)...");
+                Console.WriteLine("\n\nType the test project name (for example: Dev2.Studio.Core.Tests) or the name or number of one of the jobs above (or comma seperated list of jobs/projects). Leave blank to use default (Other Unit Tests)...");
 
                 string selectedOption = WindowUtils.PromptForUserInput();
                 if (string.IsNullOrEmpty(selectedOption))
@@ -90,33 +103,55 @@ namespace Warewolf.Launcher.Utils
                         }
                         else
                         {
-                            throw new ArgumentException($"{selectedOption} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                            if (Directory.GetFiles(build.TestRunner.TestsPath).Contains(Path.Combine(build.TestRunner.TestsPath, selectedOption + ".dll")))
+                            {
+                                build.ProjectName = selectedOption;
+                            }
+                            else
+                            {
+                                throw new ArgumentException($"{selectedOption} is not a recognized test job or project name. Please type just the name or number of the option you would like to select and then press Enter.");
+                            }
                         }
                     }
                 }
                 else
                 {
-                    var resolvedSelectedOptions = new List<string>();
+                    var resolvedSelectedJobs = new List<string>();
+                    var resolvedSelectedProjects = new List<string>();
                     foreach (var option in selectedOption.Split(','))
                     {
                         var canParse = int.TryParse(option, out int jobNumber);
                         if (canParse)
                         {
-                            resolvedSelectedOptions.Add(build.JobSpecs.Keys.ToList()[jobNumber - 1]);
+                            resolvedSelectedJobs.Add(build.JobSpecs.Keys.ToList()[jobNumber - 1]);
                         }
                         else
                         {
                             if (build.JobSpecs.Keys.ToList().Contains(option))
                             {
-                                resolvedSelectedOptions.Add(option);
+                                resolvedSelectedJobs.Add(option);
                             }
                             else
                             {
-                                throw new ArgumentException($"{option} is an invalid option. Please type just the number of the option you would like to select and then press Enter.");
+                                if (Directory.GetFiles(build.TestRunner.TestsPath).Contains(Path.Combine(build.TestRunner.TestsPath, option + ".dll")))
+                                {
+                                    resolvedSelectedProjects.Add(option);
+                                }
+                                else
+                                {
+                                    throw new ArgumentException($"{option} is not a recognized test job or project name. Please type just the name or number of the option you would like to select and then press Enter.");
+                                }
                             }
                         }
                     }
-                    build.JobName = string.Join(",", resolvedSelectedOptions);
+                    if (resolvedSelectedJobs.Count > 0)
+                    {
+                        build.JobName = string.Join(",", resolvedSelectedJobs);
+                    }
+                    if (resolvedSelectedProjects.Count > 0)
+                    {
+                        build.ProjectName = string.Join(",", resolvedSelectedProjects);
+                    }
                 }
                 Console.WriteLine("\nWhich tests would you like to run? (Comma seperated list of test names to run or leave blank to run all)");
 
