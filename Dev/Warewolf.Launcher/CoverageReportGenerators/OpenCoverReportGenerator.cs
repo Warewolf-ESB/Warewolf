@@ -58,7 +58,7 @@ namespace Warewolf.Launcher.TestCoverageMergers
                     Thread.Sleep(3000);
                 }
             }
-            return fileSize <= 0 && RetryCount < 200;
+            return !(fileSize <= 0 && RetryCount < 200);
         }
 
         void BackOffAChangingSnapshot(string snapshot)
