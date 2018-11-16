@@ -225,7 +225,7 @@ namespace Dev2
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, Config.Server.LogFlushInterval, GlobalConstants.NetworkComputerNameQueryFreq);
+                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
                 StartPulseLogger();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
@@ -275,7 +275,7 @@ namespace Dev2
 
         void PerformLoggerFlushActions(object state)
         {
-            Runtime.ESB.Execution.LogManager.FlushLogs();
+            LogManager.FlushLogs();
         }
 
         static void PreloadReferences()
