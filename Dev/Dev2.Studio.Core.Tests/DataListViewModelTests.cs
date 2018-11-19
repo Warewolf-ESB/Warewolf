@@ -96,6 +96,33 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddMissingDataListItems_AddRecordSet_WithDuplicateName_ExpectedError()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var scalarPart = new Mock<IDataListVerifyPart>();
+            scalarPart.Setup(c => c.Field).Returns("Province");
+            scalarPart.Setup(c => c.DisplayValue).Returns("[[Province]]");
+            scalarPart.Setup(c => c.Description).Returns("A state in a republic");
+            scalarPart.Setup(c => c.IsScalar).Returns(true);
+            parts.Add(scalarPart.Object);
+
+            var recordSetPart = new Mock<IDataListVerifyPart>();
+            recordSetPart.Setup(c => c.Recordset).Returns("Province");
+            recordSetPart.Setup(c => c.DisplayValue).Returns("[[Province]]");
+            recordSetPart.Setup(c => c.Description).Returns("A state in a republic");
+            recordSetPart.Setup(c => c.IsScalar).Returns(false);
+            recordSetPart.Setup(c => c.Field).Returns("name");
+            parts.Add(recordSetPart.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts);
+            Assert.IsTrue(_dataListViewModel.RecsetCollectionCount == 3);
+            var duplicateRecSet = _dataListViewModel.RecsetCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateRecSet);
+        }
+
+        [TestMethod]
         public void AddMissingDataListItems_AddRecordSetWhenDataListContainsScalarWithSameName()
         {
             Setup();
