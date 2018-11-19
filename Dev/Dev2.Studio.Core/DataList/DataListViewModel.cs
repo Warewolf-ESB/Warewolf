@@ -431,6 +431,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler.RemoveBlankScalars();
             _recordsetHandler.RemoveBlankRecordsets();
             _recordsetHandler.RemoveBlankRecordsetFields();
+            _recordsetHandler.ValidateRecordset();
             _complexObjectHandler.RemoveBlankComplexObjects();
             if (parts.Count > 0)
             {
