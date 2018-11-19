@@ -11,7 +11,7 @@ namespace Warewolf.Launcher.TestCoverageRunners
 
         public OpenCoverRunner(string ToolPath) => CoverageToolPath = ToolPath;
 
-        readonly String filter = "+[Warewolf*]* +[Dev2*]* -[Dev2*Tests]* -[Warewolf*Tests]* -[Dev2*Specs]* -[Warewolf*Specs]* -[Warewolf.UIBindingTests.*]* -[Warewolf.Launcher]* -[Warewolf.TestingDotnetDllCascading.dll]* -[Warewolf.Storage.Interfaces]* -[Dev2.Data.Interfaces]* -[Dev2.Debug]* -[Dev2.ScheduleExecutor]* -[Dev2.TaskScheduler.Wrappers]* -[TrieNet]* -[Warewolf.COMIPC]* -[Warewolf.Exchange.Email.Wrapper]*";
+        readonly String filter = "+[Warewolf*]* +[Dev2*]* -[Dev2*Tests]* -[Warewolf*Tests]* -[Dev2*Specs]* -[Warewolf*Specs]* -[Warewolf.UIBindingTests.*]* -[Warewolf.Launcher]* -[Warewolf.TestingDotnetDllCascading.dll]* -[Warewolf.Storage.Interfaces]* -[Dev2.Data.Interfaces]* -[Dev2.Debug]* -[Dev2.ScheduleExecutor]* -[Dev2.TaskScheduler.Wrappers]* -[TrieNet]* -[Warewolf.COMIPC]* -[Warewolf.Exchange.Email.Wrapper]* -[Dev2.SignalR.Wrappers]*";
 
         public string RunCoverageTool(string TestsResultsPath, string JobName, List<string> TestAssembliesDirectories)
         {
