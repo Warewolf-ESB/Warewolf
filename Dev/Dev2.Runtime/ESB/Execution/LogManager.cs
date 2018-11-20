@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Execution
             _logger.Flush();
         }
 
-        private bool isDisposed = false; // To detect redundant calls
+        private bool isDisposed = false;
         protected virtual void Dispose(bool disposing)
         {
             if (!isDisposed)

@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Configuration;
+using System.Data.SQLite;
 using System.IO;
+using System.Threading;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -30,6 +31,9 @@ namespace Dev2.Common
 
     public class ServerSettings
     {
+        const int DELETE_TRIES_SLEEP = 50;
+        const int DELETE_TRIES_MAX = 50;
+
         public string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
         public string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
         public string AuditFilePath
@@ -48,7 +52,7 @@ namespace Dev2.Common
         public bool   CollectUsageStats     => StringToBool(manager[nameof(CollectUsageStats)], false);
         public int    DaysToKeepTempFiles   => StringToInt(manager[nameof(DaysToKeepTempFiles)], 0);
 
-        public int LogFlushInterval => StringToInt(manager[nameof(LogFlushInterval)], 100);
+        public int LogFlushInterval => StringToInt(manager[nameof(LogFlushInterval)], 200);
 
         private static bool StringToBool(string value, bool defaultValue) {
             if (value is null)
@@ -95,5 +99,71 @@ namespace Dev2.Common
             }
             return result;
         }
+
+        public bool SaveLoggingPath(string auditsFilePath)
+        {
+            var sourceFilePath = Config.Server.AuditFilePath;
+            IFile _fileWrapper = new FileWrapper();
+            var directoryWrapper = new DirectoryWrapper();
+
+            if (sourceFilePath != auditsFilePath)
+            {
+                var source = Path.Combine(sourceFilePath, "auditDB.db");
+                if (_fileWrapper.Exists(source))
+                {
+                    var destination = Path.Combine(auditsFilePath, "auditDB.db");
+                    directoryWrapper.CreateIfNotExists(auditsFilePath);
+
+                    try
+                    {
+                        OnLogFlushPauseRequested?.Invoke();
+
+                        _fileWrapper.Copy(source, destination);
+                        Config.Server.AuditFilePath = auditsFilePath;
+                        TryDeleteOldLogFile(_fileWrapper, source);
+                    }
+                    finally
+                    {
+                        OnLogFlushResumeRequested?.Invoke();
+                    }
+                    
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void TryDeleteOldLogFile(IFile _fileWrapper, string source)
+        {
+            new Thread(() =>
+            {
+                int tries = 0;
+                while (_fileWrapper.Exists(source))
+                {
+                    try
+                    {
+                        SQLiteConnection.ClearAllPools();
+                        GC.Collect();
+                        
+                        _fileWrapper.Delete(source);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                         if (tries++ >= DELETE_TRIES_MAX)
+                        {
+                            throw;
+                        }
+                        // try until we delete the file at least once
+                        Thread.Sleep(DELETE_TRIES_SLEEP);
+                    }
+                }
+            }).Start();
+        }
+
+        public delegate void VoidEventHandler();
+        public event VoidEventHandler OnLogFlushPauseRequested;
+        public event VoidEventHandler OnLogFlushResumeRequested;
     }
 }
