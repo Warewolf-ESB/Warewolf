@@ -931,7 +931,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("DsfDataSplitActivity_GetState")]
+        [TestCategory("DsfDataSplitActivity_EmptyColumn")]
         public void DsfDataSplitActivity_EmptyColumn()
         {
             _resultsCollection.Clear();
@@ -963,7 +963,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var col1Expected = new List<string> { "Title", "Mr" , "Mrs", "Mr", "Mr" };
             var col2Expected = new List<string> { "Fname","Mike","Samantha","Steve","James" };
             var col3Expected = new List<string> { "LName" ,"Jones", "","", "Apple"};
-            var col4Expected = new List<string> { "TelNo","11111","22222","","","33333" };
+            var col4Expected = new List<string> { "TelNo","11111","","","33333" };
             
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(col1Expected, col1List, comparer);
