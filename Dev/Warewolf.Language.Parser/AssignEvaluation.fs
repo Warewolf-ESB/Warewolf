@@ -350,7 +350,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                                     if env.RecordSets.ContainsKey(value.Name) then env
                                     else evalJsonAssign value  update env
         | JsonIdentifierExpression d -> evalJsonAssign (new WarewolfParserInterop.AssignValue(value.Name, evalResultToString right)) update env                                
-        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
+       // | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
