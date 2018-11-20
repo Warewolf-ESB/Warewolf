@@ -258,7 +258,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.MoveNext();
                 }
                 var outputVar = resultsEnumerator.Current.OutputVariable;
-                if (!IsNullEmptyOrNewLine(tmp))
+                if (!NewLine(tmp))
                 {
                     lastItemEndedInNewLine = tmp.EndsWith(NewLineFormat);
                     AssignItem(update, env, positions, ref tmp, outputVar);
@@ -280,16 +280,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AssignItem(int update, IExecutionEnvironment env, IDictionary<string, int> positions, ref string tmp, string outputVar)
         {
-            if (!String.IsNullOrEmpty(outputVar))
+            var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+            if (!SkipBlankRows)
             {
-                var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                if (!SkipBlankRows)
-                {
-                    tmp = tmp.Replace(NewLineFormat, "");
-                }
-                env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                positions[outputVar] = positions[outputVar] + 1;
+                tmp = tmp.Replace(NewLineFormat, "");
             }
+            env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+            positions[outputVar] = positions[outputVar] + 1;
         }
 
         void AddOutputToDebugOutput(int update, IExecutionEnvironment env, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary)
@@ -314,7 +311,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static bool IsNullEmptyOrNewLine(string tmp) => String.IsNullOrEmpty(tmp) || tmp == "\r" || tmp == "\n" || tmp == Environment.NewLine;
+        private static bool NewLine(string tmp) => tmp == "\r" || tmp == "\n" || tmp == Environment.NewLine;
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
