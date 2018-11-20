@@ -953,10 +953,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
 
-            var col1List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "Title", out string error);
-            var col2List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "Fname", out error);
-            var col3List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "LName", out error);
-            var col4List = RetrieveAllRecordSetFieldValuesSkipEmpty(result.Environment, "rs", "TelNo", out error);
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "Title", out string error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "Fname", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "LName", out error);
+            var col4List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "TelNo", out error);
             
             //------------Assert Results-------------------------
 
