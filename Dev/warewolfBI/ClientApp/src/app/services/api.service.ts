@@ -35,7 +35,7 @@ export class APIService {
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
     let apiURL = `${wareWolfUrl}?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
 
-    return this.httpClient.post<LogEntry[]>(apiURL,'', { headers:httpOptions, withCredentials: true })
+    return this.httpClient.post<LogEntry[]>(apiURL,'', { })
       .pipe(
         map((response) => {
           this.results = response as LogEntry[];
