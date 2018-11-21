@@ -280,13 +280,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AssignItem(int update, IExecutionEnvironment env, IDictionary<string, int> positions, ref string tmp, string outputVar)
         {
-            var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-            if (!SkipBlankRows)
+            if (!String.IsNullOrEmpty(outputVar))
             {
-                tmp = tmp.Replace(NewLineFormat, "");
+                var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                if (!SkipBlankRows)
+                {
+                    tmp = tmp.Replace(NewLineFormat, "");
+                }
+                env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                positions[outputVar] = positions[outputVar] + 1;
             }
-            env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-            positions[outputVar] = positions[outputVar] + 1;
         }
 
         void AddOutputToDebugOutput(int update, IExecutionEnvironment env, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary)
