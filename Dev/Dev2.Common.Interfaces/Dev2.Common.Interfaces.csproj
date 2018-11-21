@@ -190,6 +190,7 @@
     <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
+    <Compile Include="Container\IWarewolfQueue.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\ComPluginSourceDefinition.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
@@ -407,6 +408,7 @@
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebSource.cs" />
+    <Compile Include="Logging\IWarewolfLogWriter.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
     <Compile Include="Monitoring\IPerformanceCounterPersistence.cs" />

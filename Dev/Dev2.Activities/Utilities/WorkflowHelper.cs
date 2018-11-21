@@ -265,7 +265,8 @@ namespace Dev2.Utilities
                 xmlDoc_Left.LoadXml(left);
                 var xmlDoc_Right = new XmlDocument();
                 xmlDoc_Right.LoadXml(right);
-                return CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+                var eq = CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+                return eq;
             }
             return false;
         }
@@ -273,9 +274,10 @@ namespace Dev2.Utilities
         {
             if (lnode is null || rnode is null)
             {
-                return lnode == rnode;
+                var nodeEq = CompareNodeAttributes(lnode, rnode);
+                return nodeEq;
             }
-            if (lnode.Name.Equals("av:Size"))
+            if (SkipNode(lnode))
             {
                 return true;
             }
@@ -312,11 +314,44 @@ namespace Dev2.Utilities
 
             return result;
         }
+
+        private static bool CompareNodeAttributes(XmlNode lnode, XmlNode rnode)
+        {
+            var nodeEq = false;
+            if (lnode.Name.Equals("dci:NameValue"))
+            {
+                var leftNodeAttrName = lnode.Attributes[0].Value;
+                var leftNodeAttrValue = lnode.Attributes[0].Value;
+                if (string.IsNullOrWhiteSpace(leftNodeAttrName) && string.IsNullOrWhiteSpace(leftNodeAttrValue))
+                {
+                    nodeEq = true;
+                }
+            }
+            else
+            {
+                nodeEq = lnode == rnode;
+            }
+
+            return nodeEq;
+        }
+
         private static bool CompareAttributes(XmlNode lnode, XmlNode rnode)
         {
+            if (lnode.Attributes.Count != rnode.Attributes.Count)
+            {
+                return false;
+            }
             for (int i = 0; i < lnode.Attributes.Count; i++)
             {
                 var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
+                if (!eq)
+                {
+                    return eq;
+                }
+                if (SkipAttribute(lnode.Attributes[i]))
+                {
+                    continue;
+                }
                 eq &= lnode.Attributes[i].Value.Equals(rnode.Attributes[i].Value);
                 if (!eq)
                 {
@@ -324,6 +359,27 @@ namespace Dev2.Utilities
                 }
             }
             return true;
+        }
+
+        static bool SkipAttribute(XmlAttribute attr)
+        {
+            var eq = false;
+
+            eq |= attr.Name.Equals("sap:VirtualizedContainerService.HintSize");
+            eq |= attr.Name.Equals("Capacity");
+
+            return eq;
+        }
+
+        static bool SkipNode(XmlNode node)
+        {
+            var eq = false;
+
+            eq |= node.Name.Equals("av:Size");
+            eq |= node.Name.Equals("sap:VirtualizedContainerService.HintSize");
+            eq |= node.Name.Equals("av:PointCollection");
+
+            return eq;
         }
     }
 }

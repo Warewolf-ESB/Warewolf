@@ -140,17 +140,23 @@ namespace Dev2.Activities
             var sqlBuildUp = new List<string>();
             foreach (var token in statement.Tokens)
             {
-                if (token.Type == TSQLTokenType.Identifier)
+                if (token.Type == TSQLTokenType.Identifier && sqlBuildUp.Count >=1)
                 {
-                    var hash = HashedRecSets.FirstOrDefault(x => x.recSet == token.Text);
-                    sqlBuildUp.Add(!hash.Equals(default) ? hash.hashCode : token.Text);
+                    if (sqlBuildUp[sqlBuildUp.Count - 1] == ".")
+                    {
+                        sqlBuildUp.Add(token.Text);
+                    }
+                    else
+                    {
+                        var hash = HashedRecSets.FirstOrDefault(x => x.recSet == token.Text);
+                        sqlBuildUp.Add(!hash.Equals(default) ? hash.hashCode : token.Text);
+                    }
                 }
                 else
                 {
                     sqlBuildUp.Add(token.Text);
                 }
             }
-
             return string.Join(" ", sqlBuildUp);
         }
         public void CreateVariableTable()
