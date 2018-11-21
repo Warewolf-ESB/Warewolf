@@ -1458,7 +1458,6 @@ Scenario: Audit Log Query Expect No Results
 Scenario: Audit Log Query Expect 8 Items
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
-	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
 	And The audit database has "8" search results containing "SQL Server Database" with type "" for "TestSqlExecutesOnce" as 
@@ -1476,7 +1475,6 @@ Scenario: Audit Log Query Expect 8 Items
 Scenario: Audit Log Query Expect 8 Items from search
 	Given I have a server at "localhost" with workflow "TestSqlExecutesOnce"
 	And the audit database is empty
-	Then Then I add Filter "SQL Server Database"
 	When "localhost" is the active environment used to execute "TestSqlExecutesOnce"
     Then the workflow execution has "No" error
 	And The audit database has "8" search results containing "SQL Server Database" with type "" for "TestSqlExecutesOnce" as 
