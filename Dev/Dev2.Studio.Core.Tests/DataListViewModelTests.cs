@@ -123,6 +123,67 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddMissingDataListItems_AddVariables_WithDuplicateName_ValidateExactErrors()
+        {
+            Setup();
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var scalarPart = new Mock<IDataListVerifyPart>();
+            scalarPart.Setup(c => c.Field).Returns("Province");
+            scalarPart.Setup(c => c.DisplayValue).Returns("Province");
+            scalarPart.Setup(c => c.Description).Returns("A state in a republic");
+            scalarPart.Setup(c => c.IsScalar).Returns(true);
+            scalarPart.Setup(c => c.IsJson).Returns(false);
+            parts.Add(scalarPart.Object);
+
+            var recordSetPart = new Mock<IDataListVerifyPart>();
+            recordSetPart.Setup(c => c.Recordset).Returns("Province");
+            recordSetPart.Setup(c => c.DisplayValue).Returns("Province");
+            recordSetPart.Setup(c => c.Description).Returns("A state in a republic");
+            recordSetPart.Setup(c => c.IsScalar).Returns(false);
+            recordSetPart.Setup(c => c.IsJson).Returns(false);
+            recordSetPart.Setup(c => c.Field).Returns("name");
+            parts.Add(recordSetPart.Object);
+
+            var objectPart = new Mock<IDataListVerifyPart>();
+            objectPart.Setup(c => c.DisplayValue).Returns("Province.name");
+            objectPart.Setup(c => c.Description).Returns("A state in a republic");
+            objectPart.Setup(c => c.IsScalar).Returns(false);
+            objectPart.Setup(c => c.IsJson).Returns(true);
+            parts.Add(objectPart.Object);
+
+            // validate all variables have 'HasError' is true
+            _dataListViewModel.AddMissingDataListItems(parts);
+
+            var duplicateScalar = _dataListViewModel.ScalarCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateScalar);
+            var duplicateRecSet = _dataListViewModel.RecsetCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateRecSet);
+            var duplicateObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateObject);
+
+            // remove scalar and validate recordset and object 'HasError' is true
+            _dataListViewModel.ScalarCollection.Remove(duplicateScalar);
+
+            duplicateScalar = _dataListViewModel.ScalarCollection.FirstOrDefault(o => o.DisplayName == "Province");
+            Assert.IsNull(duplicateScalar);
+            duplicateRecSet = _dataListViewModel.RecsetCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateRecSet);
+            duplicateObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(o => o.DisplayName == "Province" && o.HasError);
+            Assert.IsNotNull(duplicateObject);
+
+            // remove recordset and validate object 'HasError' is false
+            _dataListViewModel.RecsetCollection.Remove(duplicateRecSet);
+
+            duplicateScalar = _dataListViewModel.ScalarCollection.FirstOrDefault(o => o.DisplayName == "Province");
+            Assert.IsNull(duplicateScalar);
+            duplicateRecSet = _dataListViewModel.RecsetCollection.FirstOrDefault(o => o.DisplayName == "Province");
+            Assert.IsNull(duplicateRecSet);
+            duplicateObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(o => o.DisplayName == "Province" && !o.HasError);
+            Assert.IsNotNull(duplicateObject);
+        }
+
+        [TestMethod]
         public void AddMissingDataListItems_AddRecordSetWhenDataListContainsScalarWithSameName()
         {
             Setup();
