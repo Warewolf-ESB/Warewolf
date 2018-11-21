@@ -28,6 +28,7 @@
 *.sln.DotSettings.user
 *.stackdump
 *.lnk
+*.metaproj
 
 ####################################################################################
 # Visual Studio
