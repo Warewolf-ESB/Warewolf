@@ -87,7 +87,7 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(0, settings.DaysToKeepTempFiles);
             Assert.AreEqual(expectedPath, settings.AuditFilePath);
             Assert.AreEqual(true, settings.EnableDetailedLogging);
-            Assert.AreEqual(100, settings.LogFlushInterval);
+            Assert.AreEqual(200, settings.LogFlushInterval);
         }
 
         [TestMethod]
