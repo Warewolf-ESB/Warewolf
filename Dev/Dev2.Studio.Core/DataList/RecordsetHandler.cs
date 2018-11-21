@@ -102,17 +102,12 @@ namespace Dev2.Studio.Core.DataList
         public void ValidateRecordsetChildren(IRecordSetItemModel recset)
         {
             CheckForEmptyRecordset();
-            if (recset != null)
-            {
-                CheckDataListItemsForDuplicates(recset.Children);
-            }
             CheckForFixedEmptyRecordsets();
         }
 
         public void ValidateRecordset()
         {
             CheckForEmptyRecordset();
-            CheckDataListItemsForDuplicates(_vm.DataList);
             CheckForFixedEmptyRecordsets();
         }
 
@@ -159,27 +154,6 @@ namespace Dev2.Studio.Core.DataList
                 {
                     newChild.Parent = recset;
                     recset.Children.Add(newChild);
-                }
-            }
-        }
-        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
-        {
-            var duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
-            foreach (var duplicate in duplicates)
-            {
-                if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
-                {
-                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
-                }
-                else
-                {
-                    duplicate.ForEach(model =>
-                    {
-                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
-                        {
-                            model.RemoveError();
-                        }
-                    });
                 }
             }
         }
@@ -340,6 +314,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
+        // TODO: is this corrupting the field items for recordsets when adding two dups and then clicking off of them?
         public void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset)
         {
             var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);

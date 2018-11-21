@@ -1144,6 +1144,8 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RemoveBlankRows(item);
             _dataListViewModel.AddRecordsetNamesIfMissing();
             _dataListViewModel.ValidateNames(item);
+            //TODO: This commented code should not have to be added to make the test pass
+            //_dataListViewModel.CheckDataListItemsForDuplicates()
 
             Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
