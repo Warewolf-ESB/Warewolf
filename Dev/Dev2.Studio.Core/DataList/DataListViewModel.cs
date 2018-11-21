@@ -186,6 +186,8 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             RemoveItemPropertyChangeEvent(args);
             AddItemPropertyChangeEvent(args);
+
+            CheckDataListItemsForDuplicates();
         }
 
         public ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection
@@ -431,7 +433,6 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler.RemoveBlankScalars();
             _recordsetHandler.RemoveBlankRecordsets();
             _recordsetHandler.RemoveBlankRecordsetFields();
-            _recordsetHandler.ValidateRecordset();
             _complexObjectHandler.RemoveBlankComplexObjects();
             if (parts.Count > 0)
             {
@@ -622,13 +623,11 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 var item = itemToRemove as IScalarItemModel;
                 Remove(item);
-                CheckDataListItemsForDuplicates(DataList);
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
                 var item = itemToRemove as IRecordSetItemModel;
                 Remove(item);
-                CheckDataListItemsForDuplicates(DataList);
             }
             else
             {
@@ -636,7 +635,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     var item = itemToRemove as IRecordSetFieldItemModel;
                     recset.Children.Remove(item);
-                    CheckDataListItemsForDuplicates(recset.Children);
                 }
             }
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
@@ -677,42 +675,61 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _recordsetHandler.ValidateRecordset();
             }
-            else if (item is IRecordSetFieldItemModel)
-            {
-                var rs = (IRecordSetFieldItemModel)item;
-                _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
-            }
             else
             {
-                ValidateScalar();
+                if (item is IRecordSetFieldItemModel)
+                {
+                    var rs = (IRecordSetFieldItemModel)item;
+                    _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
+                }
             }
         }
 
-        void ValidateScalar()
+        void CheckDataListItemsForDuplicates()
         {
-            CheckDataListItemsForDuplicates(DataList);
-        }
-
-        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
-        {
-            var duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
-            foreach (var duplicate in duplicates)
+            IEnumerable<IDataListItemModel> getItems()
             {
-                if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                foreach (var scalar in ScalarCollection)
                 {
-                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                    yield return scalar;
                 }
-                else
+                foreach (var recset in RecsetCollection)
                 {
-                    duplicate.ForEach(model =>
+                    yield return recset;
+                    foreach (var child in recset.Children)
                     {
-                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
-                        {
-                            model.RemoveError();
-                        }
-                    });
+                        yield return child;
+                    }
+                }
+                foreach (var ob in ComplexObjectCollection)
+                {
+                    yield return ob;
                 }
             }
+
+            void CheckDataListItemsForDuplicates(IEnumerable<IGrouping<string, IDataListItemModel>> itemsToCheck)
+            {
+                foreach (var duplicate in itemsToCheck)
+                {
+                    if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                    {
+                        duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                    }
+                    else
+                    {
+                        duplicate.ForEach(model =>
+                        {
+                            if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                            {
+                                model.RemoveError();
+                            }
+                        });
+                    }
+                }
+            }
+
+            var groups = getItems().GroupBy(o => o.DisplayName);
+            CheckDataListItemsForDuplicates(groups);
         }
 
         bool HasAnyUnusedItems()
