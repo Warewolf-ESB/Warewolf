@@ -88,6 +88,14 @@ namespace Dev2.Common
             this.manager = manager;
         }
 
+        public void SaveIfNotExists()
+        {
+            if (!File.Exists(Config.Server.SettingsPath))
+            {
+                Config.Server.Get().Save();
+            }
+        }
+
         public ServerSettingsData Get()
         {
             var result = new ServerSettingsData();

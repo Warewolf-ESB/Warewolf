@@ -216,6 +216,8 @@ namespace Dev2
             {
                 RegisterDependencies();
                 SetWorkingDirectory();
+                Config.Server.SaveIfNotExists();
+
                 LoadHostSecurityProvider();
                 LoadPerformanceCounters();
                 CheckExampleResources();
@@ -276,9 +278,12 @@ namespace Dev2
 
         private void ConfigureLogFlushing()
         {
-            Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
-            Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
-            _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
+            if (Config.Server.EnableDetailedLogging)
+            {
+                Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
+                Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
+                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
+            }
         }
 
         volatile bool _flushing;
