@@ -1,7 +1,10 @@
 ﻿using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dev2.Common.Tests
 {
@@ -94,6 +97,44 @@ namespace Dev2.Common.Tests
         public void GetServerSettings_Constants()
         {
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Audits", Config.Server.DefaultAuditPath);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("Logging Paths")]
+        public void IsPathNotExist_SaveLoggingPath()
+        {
+            string newAuditsFilePath = "falsepath7";
+
+            var mockConfigurationManager = new Mock<IConfigurationManager>();
+            mockConfigurationManager.SetupSet(o => o["AuditFilePath"] = newAuditsFilePath).Verifiable();
+            Config.ConfigureSettings(mockConfigurationManager.Object);
+            //arrange
+            ServerSettings serverSettings;
+
+            string sourceFilePath = Config.Server.AuditFilePath;
+
+            var source = Path.Combine(sourceFilePath, "auditDB.db");
+            var destination = Path.Combine(newAuditsFilePath, "auditDB.db");
+
+            var mockIFile = new Mock<IFile>();
+            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(true).Verifiable();
+            mockIFile.Setup(c=> c.Copy(It.IsAny<string>() , It.IsAny<string>())).Verifiable();
+
+            var mockDirectory = new Mock<IDirectory>();
+            mockDirectory.Setup(d => d.CreateIfNotExists(It.IsAny<string>())).Returns(newAuditsFilePath).Verifiable();
+
+            serverSettings = new ServerSettings(mockConfigurationManager.Object, mockIFile.Object, mockDirectory.Object);
+
+            //act
+            bool actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
+
+            //assert
+            Assert.IsTrue(actual);
+            mockIFile.Verify();
+            mockDirectory.Verify();
+            mockConfigurationManager.Verify();
+
         }
     }
 }
