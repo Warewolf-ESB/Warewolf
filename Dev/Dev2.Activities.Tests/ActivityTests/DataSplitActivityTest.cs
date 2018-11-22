@@ -34,7 +34,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
         readonly string _source = ActivityStrings.DataSplit_SourceString;
-
+        
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -187,7 +187,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string> { "RSA ID","09123456646" };
+            var col1Expected = new List<string> { "RSA ID", "09123456646" };
             var col2Expected = new List<string> { "FirstName", "James" };
             var col3Expected = new List<string> { "LastName", "Apple" };
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones" };
@@ -796,7 +796,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_GetState_ReturnsStateVariable()
         {
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
-            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ReverseOrder=true,SkipBlankRows=true, ResultsCollection = resultsCollection };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ReverseOrder = true, SkipBlankRows = true, ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
@@ -869,7 +869,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var sourceString = string.Join(Environment.NewLine, sourceStringLines);
 
 
-            SetupArguments("<root><ADL><testData>"+ sourceString +"</testData></ADL></root>",
+            SetupArguments("<root><ADL><testData>" + sourceString + "</testData></ADL></root>",
                            "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
                            "[[testData]]",
                            _resultsCollection);
@@ -882,7 +882,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(sourceStringLines.Length, col1List.Count);
 
             var len = sourceStringLines.Length;
-            for (int i=0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 Assert.AreEqual(sourceStringLines[i], col1List[i]);
             }
@@ -929,13 +929,76 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfDataSplitActivity_EmptyColumn")]
+        public void DsfDataSplitActivity_EmptyColumn()
+        {
+            _resultsCollection.Clear();
+            _resultsCollection.Add(new DataSplitDTO("[[rs().Title]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().Fname]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().LName]]", "Chars", "|", 3));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().TelNo]]", "New Line", "", 4));
+
+            SetupArguments("<root><ADL><testData>Title|Fname|LName|TelNo" + Environment.NewLine +
+                           "Mr|Mike|Jones|11111" + Environment.NewLine +
+                           "Mrs|Samantha||" + Environment.NewLine +
+                           "Mr|Steve||" + Environment.NewLine +
+                           "Mr|James|Apple|33333</testData></ADL></root>",
+                           "<ADL><rs><Title/><Fname/><LName/><TelNo/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection,
+                           true);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "Title", out string error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "Fname", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "LName", out error);
+            var col4List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "TelNo", out error);
+            
+            //------------Assert Results-------------------------
+
+            var col1Expected = new List<string> { "Title", "Mr" , "Mrs", "Mr", "Mr" };
+            var col2Expected = new List<string> { "Fname","Mike","Samantha","Steve","James" };
+            var col3Expected = new List<string> { "LName" ,"Jones", "","", "Apple"};
+            var col4Expected = new List<string> { "TelNo","11111","","","33333" };
+            
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            CollectionAssert.AreEqual(col1Expected, col1List, comparer);
+            CollectionAssert.AreEqual(col2Expected, col2List, comparer);
+            CollectionAssert.AreEqual(col3Expected, col3List, comparer);
+            CollectionAssert.AreEqual(col4Expected, col4List, comparer);
+
+            var len = col1Expected.Count;
+            for (int i = 0; i < len; i++)
+            {
+                Assert.AreEqual(col1Expected[i], col1List[i]);
+            }
+            len = col2Expected.Count;
+            for (int i = 0; i < len; i++)
+            {
+                Assert.AreEqual(col2Expected[i], col2List[i]);
+            }
+            len = col3Expected.Count;
+            for (int i = 0; i < len; i++)
+            {
+                Assert.AreEqual(col3Expected[i], col3List[i]);
+            }
+            len = col4Expected.Count;
+            for (int i = 0; i < len; i++)
+            {
+                Assert.AreEqual(col4Expected[i], col4List[i]);
+            }
+        }
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection, bool skipBlankRows = false)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection, SkipBlankRows = skipBlankRows}
+                Action = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultCollection, SkipBlankRows = skipBlankRows }
             };
 
             CurrentDl = testData;
