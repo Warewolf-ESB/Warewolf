@@ -66,10 +66,6 @@ namespace Dev2.Studio.Core.DataList
                     var recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
                     child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
                 }
-                else
-                {
-                    child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
-                }
                 FixCommonNamingProblems(child);
             }
         }
@@ -99,21 +95,15 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void ValidateRecordsetChildren(IRecordSetItemModel recset)
-        {
-            CheckForEmptyRecordset();
-            CheckForFixedEmptyRecordsets();
-        }
-
         public void ValidateRecordset()
         {
-            CheckForEmptyRecordset();
-            CheckForFixedEmptyRecordsets();
+            MarkEmptyRecordsetErrors();
+            ClearEmptyRecordsetErrors();
         }
 
         bool RecordSetHasChildren(IRecordSetItemModel model) => model.Children != null && model.Children.Count > 0;
 
-        void CheckForEmptyRecordset()
+        void MarkEmptyRecordsetErrors()
         {
             foreach (var recordset in _vm.RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].DisplayName) && !string.IsNullOrEmpty(c.DisplayName)))
             {
@@ -121,7 +111,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        void CheckForFixedEmptyRecordsets()
+        void ClearEmptyRecordsetErrors()
         {
             foreach (var recset in _vm.RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].DisplayName)))
             {
@@ -314,7 +304,6 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        // TODO: is this corrupting the field items for recordsets when adding two dups and then clicking off of them?
         public void AddMissingTempRecordSet(IDataListVerifyPart part, IRecordSetItemModel tmpRecset)
         {
             var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);

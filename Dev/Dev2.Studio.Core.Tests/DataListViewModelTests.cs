@@ -1034,7 +1034,7 @@ namespace Dev2.Core.Tests
             scalarDataListItemWithError.ErrorMessage = "This is an Error";
             _dataListViewModel.Add(scalarDataListItemWithError);
             _dataListViewModel.Add(scalarDataListItemWithError);
-            _dataListViewModel.ValidateNames(scalarDataListItemWithError);
+            _dataListViewModel.ValidateVariableNamesForUI(scalarDataListItemWithError);
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
             var xmlDataList = _dataListViewModel.WriteToResourceModel();
@@ -1143,13 +1143,11 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             _dataListViewModel.AddRecordsetNamesIfMissing();
-            _dataListViewModel.ValidateNames(item);
-            //TODO: This commented code should not have to be added to make the test pass
-            //_dataListViewModel.CheckDataListItemsForDuplicates()
+            _dataListViewModel.ValidateVariableNamesForUI(item);
 
-            Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[0].HasError);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
-            Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[1].HasError);
+            Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[1].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
         }
 
@@ -1191,7 +1189,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RemoveBlankRows(item);
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
@@ -1229,7 +1227,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ComplexObjectCollection.Insert(1, item);
 
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
         }
@@ -1303,9 +1301,9 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             _dataListViewModel.AddRecordsetNamesIfMissing();
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
 
-            Assert.AreEqual(false, _dataListViewModel.RecsetCollection[1].HasError);
+            Assert.IsFalse(_dataListViewModel.RecsetCollection[1].HasError);
         }
 
         [TestMethod]
@@ -1321,7 +1319,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RemoveBlankRows(item);
             _dataListViewModel.AddRecordsetNamesIfMissing();
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
@@ -1340,7 +1338,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
@@ -1358,7 +1356,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsFalse(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
         }
@@ -1372,7 +1370,7 @@ namespace Dev2.Core.Tests
             var item = SetupForValidateNamesDuplicateRecordSetFieldsTests();
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsFalse(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
         }
@@ -1389,7 +1387,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[0].ErrorMessage);
@@ -1408,7 +1406,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[0].ErrorMessage);
@@ -1426,7 +1424,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsFalse(_dataListViewModel.ScalarCollection[0].HasError);
         }
@@ -1440,7 +1438,7 @@ namespace Dev2.Core.Tests
             var item = SetupForValidateNamesDuplicateScalarTests();
             _dataListViewModel.RemoveBlankRows(item);
             //------------Execute Test---------------------------
-            _dataListViewModel.ValidateNames(item);
+            _dataListViewModel.ValidateVariableNamesForUI(item);
             //------------Assert Results-------------------------
             Assert.IsFalse(_dataListViewModel.ScalarCollection[0].HasError);
         }
@@ -1728,12 +1726,12 @@ namespace Dev2.Core.Tests
 
             child.Parent = parent;
             _dataListViewModel.Add(parent);
-            _dataListViewModel.ValidateNames(parent);
+            _dataListViewModel.ValidateVariableNamesForUI(parent);
             Assert.IsTrue(parent.HasError);
             Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
 
             _dataListViewModel.RecsetCollection.Last().Children[0] = child;
-            _dataListViewModel.ValidateNames(child);
+            _dataListViewModel.ValidateVariableNamesForUI(child);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(parent.HasError);
@@ -1749,7 +1747,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar()", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child") });
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListItemModel.HasError);
         }
@@ -1764,7 +1762,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar().", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child") });
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
             Assert.AreEqual("Recordset name [[TestScalar.]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
@@ -1780,7 +1778,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar()", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child@") });
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel.Children[0]);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel.Children[0]);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.Children[0].HasError);
             Assert.AreEqual("Recordset field name Child@ contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.Children[0].ErrorMessage);
@@ -1798,7 +1796,7 @@ namespace Dev2.Core.Tests
 
             parent.Children.Add(child);
             _dataListViewModel.Add(parent);
-            _dataListViewModel.ValidateNames(parent);
+            _dataListViewModel.ValidateVariableNamesForUI(parent);
             Assert.IsTrue(parent.HasError);
             Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
         }
@@ -1817,7 +1815,7 @@ namespace Dev2.Core.Tests
             parent.Children.Add(child);
             _dataListViewModel.Add(parent);
             //----------------------Execute--------------------------------
-            _dataListViewModel.ValidateNames(parent);
+            _dataListViewModel.ValidateVariableNamesForUI(parent);
             //----------------------Assert---------------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, "[[RecordSet]] : Recordset must contain one or more field(s).");
@@ -1849,7 +1847,7 @@ namespace Dev2.Core.Tests
             var parent = DataListItemModelFactory.CreateRecordSetItemModel("RecordSet");
             parent.Children.Add(child);
             _dataListViewModel.Add(parent);
-            _dataListViewModel.ValidateNames(parent);
+            _dataListViewModel.ValidateVariableNamesForUI(parent);
             Assert.IsFalse(parent.HasError);
         }
         #endregion
@@ -1867,7 +1865,7 @@ namespace Dev2.Core.Tests
             dataListItemModel.HasError = true;
             dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
             //------------Execute Test---------------------------
-            dataListViewModel.ValidateNames(dataListItemModel);
+            dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
         }
@@ -1884,7 +1882,7 @@ namespace Dev2.Core.Tests
             dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
             dataListViewModel.Add(dataListItemModel);
             //------------Execute Test---------------------------
-            dataListViewModel.ValidateNames(dataListItemModel);
+            dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.HasErrors);
             StringAssert.Contains(dataListViewModel.DataListErrorMessage, dataListItemModel.ErrorMessage);
@@ -1900,7 +1898,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar!");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
             Assert.AreEqual("Scalar name [[TestScalar!]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
@@ -1916,7 +1914,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar.");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
             Assert.AreEqual("Scalar name [[TestScalar.]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
@@ -1932,7 +1930,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar.ad");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
             Assert.AreEqual("Scalar name [[TestScalar.ad]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
@@ -1948,7 +1946,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar()");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
             Assert.AreEqual("Scalar name [[TestScalar()]] contains invalid character(s). Only use alphanumeric _ and - ", dataListItemModel.ErrorMessage);
@@ -1964,7 +1962,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar_1");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListItemModel.HasError);
         }
@@ -1979,7 +1977,7 @@ namespace Dev2.Core.Tests
             var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel);
-            _dataListViewModel.ValidateNames(dataListItemModel);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListItemModel.HasError);
         }
@@ -1995,9 +1993,9 @@ namespace Dev2.Core.Tests
             var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(dataListItemModel2);
-            _dataListViewModel.ValidateNames(dataListItemModel2);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel2);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(dataListItemModel2.HasError);
@@ -2016,9 +2014,9 @@ namespace Dev2.Core.Tests
             var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(dataListItemModel2);
-            _dataListViewModel.ValidateNames(dataListItemModel2);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel2);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(dataListItemModel2.HasError);
@@ -2038,9 +2036,9 @@ namespace Dev2.Core.Tests
             var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(dataListItemModel2);
-            _dataListViewModel.ValidateNames(dataListItemModel2);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel2);
 
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(dataListItemModel2.HasError);
@@ -2053,7 +2051,7 @@ namespace Dev2.Core.Tests
 
 
 
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
 
             //------------Assert Results-------------------------
 
@@ -2072,9 +2070,9 @@ namespace Dev2.Core.Tests
             var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar2");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(dataListItemModel2);
-            _dataListViewModel.ValidateNames(dataListItemModel2);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel2);
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListItemModel1.HasError);
             Assert.IsFalse(dataListItemModel2.HasError);
@@ -2097,9 +2095,9 @@ namespace Dev2.Core.Tests
             newItem.Children.Add(newItemsChild);
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(newItem);
-            _dataListViewModel.ValidateNames(newItem);
+            _dataListViewModel.ValidateVariableNamesForUI(newItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(newItem.HasError);
@@ -2120,9 +2118,9 @@ namespace Dev2.Core.Tests
             newItem.Children.Add(newItemsChild);
             //------------Execute Test---------------------------
             _dataListViewModel.Add(dataListItemModel1);
-            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ValidateVariableNamesForUI(dataListItemModel1);
             _dataListViewModel.Add(newItem);
-            _dataListViewModel.ValidateNames(newItem);
+            _dataListViewModel.ValidateVariableNamesForUI(newItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.HasErrors);
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, dataListItemModel1.ErrorMessage);
@@ -2143,9 +2141,9 @@ namespace Dev2.Core.Tests
             var newItem = DataListItemModelFactory.CreateScalarItemModel("TestRecordset");
             //------------Execute Test---------------------------
             _dataListViewModel.Add(existingRecordset);
-            _dataListViewModel.ValidateNames(existingRecordset);
+            _dataListViewModel.ValidateVariableNamesForUI(existingRecordset);
             _dataListViewModel.Add(newItem);
-            _dataListViewModel.ValidateNames(newItem);
+            _dataListViewModel.ValidateVariableNamesForUI(newItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(existingRecordset.HasError);
             Assert.IsTrue(newItem.HasError);
@@ -2160,16 +2158,16 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var existingRecordset = DataListItemModelFactory.CreateRecordSetItemModel("TestRecordset");
-            var existingRecordsetChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("Field");
+            var existingRecordset = DataListItemModelFactory.CreateRecordSetItemModel("rec");
+            var existingRecordsetChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("a");
             existingRecordset.Children.Add(existingRecordsetChild);
 
-            var newItem = DataListItemModelFactory.CreateScalarItemModel("Field");
+            var newItem = DataListItemModelFactory.CreateScalarItemModel("a");
             //------------Execute Test---------------------------            
             _dataListViewModel.Add(existingRecordset);
-            _dataListViewModel.ValidateNames(existingRecordset);
+            _dataListViewModel.ValidateVariableNamesForUI(existingRecordset);
             _dataListViewModel.Add(newItem);
-            _dataListViewModel.ValidateNames(newItem);
+            _dataListViewModel.ValidateVariableNamesForUI(newItem);
             //------------Assert Results-------------------------
             Assert.IsNull(newItem.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
             Assert.IsNull(existingRecordsetChild.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");

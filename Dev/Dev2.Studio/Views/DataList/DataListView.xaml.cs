@@ -76,7 +76,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 var itemThatChanged = txtbox.DataContext as IDataListItemModel;
                 vm.RemoveBlankRows(itemThatChanged);
-                vm.ValidateNames(itemThatChanged);
+                vm.ValidateVariableNamesForUI(itemThatChanged);
 
                 if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
                 {

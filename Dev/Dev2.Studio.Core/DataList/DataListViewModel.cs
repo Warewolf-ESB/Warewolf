@@ -10,7 +10,6 @@
 
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Utils;
 using Dev2.Data;
@@ -664,71 +663,64 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.AddRecordsetNamesIfMissing();
         }
 
-        public void ValidateNames(IDataListItemModel item)
+        public void ValidateVariableNamesForUI(IDataListItemModel item)
         {
             if (item == null)
             {
                 return;
             }
 
-            if (item is IRecordSetItemModel)
+            if (item is IRecordSetItemModel || item is IRecordSetFieldItemModel)
             {
                 _recordsetHandler.ValidateRecordset();
             }
-            else
-            {
-                if (item is IRecordSetFieldItemModel)
-                {
-                    var rs = (IRecordSetFieldItemModel)item;
-                    _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
-                }
-            }
+            CheckDataListItemsForDuplicates();
         }
 
         void CheckDataListItemsForDuplicates()
         {
-            IEnumerable<IDataListItemModel> getItems()
+            IEnumerable<(string path, IDataListItemModel model)> getItems()
             {
                 foreach (var scalar in ScalarCollection)
                 {
-                    yield return scalar;
+                    yield return (scalar.DisplayName, scalar);
                 }
                 foreach (var recset in RecsetCollection)
                 {
-                    yield return recset;
+                    yield return (recset.DisplayName, recset);
                     foreach (var child in recset.Children)
                     {
-                        yield return child;
+                        yield return ($"{recset.DisplayName}().{child.DisplayName}", child);
                     }
                 }
                 foreach (var ob in ComplexObjectCollection)
                 {
-                    yield return ob;
+                    yield return (ob.DisplayName, ob);
                 }
             }
 
-            void CheckDataListItemsForDuplicates(IEnumerable<IGrouping<string, IDataListItemModel>> itemsToCheck)
+            void CheckDataListItemsForDuplicates(IEnumerable<IGrouping<string, (string path, IDataListItemModel model)>> itemsToCheck)
             {
-                foreach (var duplicate in itemsToCheck)
+                foreach (var group in itemsToCheck)
                 {
-                    if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                    if (group.Count() > 1 && !String.IsNullOrEmpty(group.Key))
                     {
-                        duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                        group.ForEach(item => item.model.SetError(StringResources.ErrorMessageDuplicateValue));
                     }
                     else
                     {
-                        duplicate.ForEach(model =>
+                        group.ForEach(item =>
                         {
-                            if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                            if (item.model.ErrorMessage != null && item.model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
                             {
-                                model.RemoveError();
+                                item.model.RemoveError();
                             }
                         });
                     }
                 }
             }
 
-            var groups = getItems().GroupBy(o => o.DisplayName);
+            var groups = getItems().GroupBy(o => o.path);
             CheckDataListItemsForDuplicates(groups);
         }
 
