@@ -88,7 +88,6 @@ namespace Dev2.Session
             RememberInputs = that.RememberInputs;
             XmlData = that.XmlData;
             WorkflowID = that.WorkflowID;
-            RememberInputs = that.RememberInputs;
             DataListHash = that.DataListHash;
         }
 
