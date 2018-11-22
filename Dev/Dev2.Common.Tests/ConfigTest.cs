@@ -30,6 +30,8 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void Constructor_Setup_ServerSettings_NotNull_Expected()
         {
+            var mockConfigurationManager = new Mock<IConfigurationManager>();
+            Config.ConfigureSettings(mockConfigurationManager.Object);
             const string expectedPath = @"C:\ProgramData\Warewolf\Audits";
             Assert.IsNotNull(Config.Server);
             Assert.AreEqual(expectedPath, Config.Server.AuditFilePath);
@@ -100,11 +102,42 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("Logging Paths")]
+        public void ServerSettings_SaveIfNotExists()
+        {
+            var mockConfigurationManager = new Mock<IConfigurationManager>();
+            Config.ConfigureSettings(mockConfigurationManager.Object);
+            //arrange
+            ServerSettings serverSettings;
+
+            var sourceFilePath = Config.Server.AuditFilePath;
+
+            var source = Path.Combine(sourceFilePath, "auditDB.db");
+
+            var mockIFile = new Mock<IFile>();
+            mockIFile.Setup(o => o.Exists(It.IsAny<string>())).Returns(false).Verifiable();
+
+            var mockDirectory = new Mock<IDirectory>();
+
+            serverSettings = new ServerSettings(mockConfigurationManager.Object, mockIFile.Object, mockDirectory.Object);
+
+            //act
+            serverSettings.SaveIfNotExists();
+
+            //assert
+            mockIFile.Verify();
+            mockDirectory.Verify();
+            mockConfigurationManager.Verify();
+
+        }
+
+        [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("Logging Paths")]
-        public void IsPathNotExist_SaveLoggingPath()
+        public void ServerSettings_SaveLoggingPath()
         {
-            string newAuditsFilePath = "falsepath7";
+            var newAuditsFilePath = "falsepath7";
 
             var mockConfigurationManager = new Mock<IConfigurationManager>();
             mockConfigurationManager.SetupSet(o => o["AuditFilePath"] = newAuditsFilePath).Verifiable();
@@ -112,7 +145,7 @@ namespace Dev2.Common.Tests
             //arrange
             ServerSettings serverSettings;
 
-            string sourceFilePath = Config.Server.AuditFilePath;
+            var sourceFilePath = Config.Server.AuditFilePath;
 
             var source = Path.Combine(sourceFilePath, "auditDB.db");
             var destination = Path.Combine(newAuditsFilePath, "auditDB.db");
@@ -127,14 +160,15 @@ namespace Dev2.Common.Tests
             serverSettings = new ServerSettings(mockConfigurationManager.Object, mockIFile.Object, mockDirectory.Object);
 
             //act
-            bool actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
+            var actual = serverSettings.SaveLoggingPath(sourceFilePath);
+            Assert.IsFalse(actual);
 
+            actual = serverSettings.SaveLoggingPath(newAuditsFilePath);
             //assert
             Assert.IsTrue(actual);
             mockIFile.Verify();
             mockDirectory.Verify();
             mockConfigurationManager.Verify();
-
         }
     }
 }
