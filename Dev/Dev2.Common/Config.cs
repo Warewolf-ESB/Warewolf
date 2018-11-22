@@ -94,6 +94,14 @@ namespace Dev2.Common
             _fileWrapper = file;
         }
 
+        public void SaveIfNotExists()
+        {
+            if (!File.Exists(Config.Server.SettingsPath))
+            {
+                Config.Server.Get().Save();
+            }
+        }
+
         public ServerSettingsData Get()
         {
             var result = new ServerSettingsData();
