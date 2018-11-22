@@ -31,8 +31,8 @@ namespace Dev2.Common
 
     public class ServerSettings
     {
-        const int DELETE_TRIES_SLEEP = 50;
-        const int DELETE_TRIES_MAX = 50;
+        const int DELETE_TRIES_SLEEP = 5000;
+        const int DELETE_TRIES_MAX = 30;
 
         public string SettingsPath => Path.Combine(Config.AppDataPath, "Server Settings", "serverSettings.json");
         public string DefaultAuditPath => Path.Combine(Config.AppDataPath, @"Audits");
@@ -96,9 +96,9 @@ namespace Dev2.Common
 
         public void SaveIfNotExists()
         {
-            if (!File.Exists(Config.Server.SettingsPath))
+            if (!_fileWrapper.Exists(Config.Server.SettingsPath))
             {
-                Config.Server.Get().Save();
+                Config.Server.Get().Save(_fileWrapper);
             }
         }
 
@@ -156,13 +156,13 @@ namespace Dev2.Common
                     {
                         SQLiteConnection.ClearAllPools();
                         GC.Collect();
-                        
+
                         _fileWrapper.Delete(source);
                         break;
                     }
                     catch (Exception)
                     {
-                         if (tries++ >= DELETE_TRIES_MAX)
+                        if (tries++ >= DELETE_TRIES_MAX)
                         {
                             throw;
                         }

@@ -52,7 +52,7 @@ namespace Dev2.Common.Wrappers
                     var settings = Config.Server.Get();
                     var prop = typeof(ServerSettingsData).GetProperty(settingName);
                     prop.SetValue(settings, value);
-                    settings.Save();
+                    settings.Save(_fileWrapper);
                 }
             }
         }
@@ -60,9 +60,8 @@ namespace Dev2.Common.Wrappers
 
     static class ServerSettingsDataExtensionMethods
     {
-        public static void Save(this ServerSettingsData data)
+        public static void Save(this ServerSettingsData data, IFile fileWrapper)
         {
-            var fileWrapper = new FileWrapper();
             var json = JsonConvert.SerializeObject(data);
             fileWrapper.WriteAllText(Config.Server.SettingsPath, json);
         }
