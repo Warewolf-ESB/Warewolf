@@ -20,7 +20,7 @@ namespace Dev2.Common
         {
             lock (_configurationLock)
             {
-                Server = new ServerSettings(m);
+                Server = new ServerSettings(m, new FileWrapper(), new DirectoryWrapper());
             }
         }
         public static void ConfigureSettings(IConfigurationManager m)
@@ -79,13 +79,19 @@ namespace Dev2.Common
         }
 
         readonly IConfigurationManager manager;
+        private readonly IDirectory _directoryWrapper;
+        private readonly IFile _fileWrapper;
 
-        public ServerSettings() : this(new ConfigurationManagerWrapper())
+        public ServerSettings()
+            : this(new ConfigurationManagerWrapper(), new FileWrapper(), new DirectoryWrapper())
         {
         }
-        public ServerSettings(IConfigurationManager manager)
+
+        public ServerSettings(IConfigurationManager manager, IFile file, IDirectory directoryWrapper)
         {
             this.manager = manager;
+            _directoryWrapper = directoryWrapper;
+            _fileWrapper = file;
         }
 
         public ServerSettingsData Get()
@@ -103,16 +109,13 @@ namespace Dev2.Common
         public bool SaveLoggingPath(string auditsFilePath)
         {
             var sourceFilePath = Config.Server.AuditFilePath;
-            IFile _fileWrapper = new FileWrapper();
-            var directoryWrapper = new DirectoryWrapper();
-
             if (sourceFilePath != auditsFilePath)
             {
                 var source = Path.Combine(sourceFilePath, "auditDB.db");
                 if (_fileWrapper.Exists(source))
                 {
                     var destination = Path.Combine(auditsFilePath, "auditDB.db");
-                    directoryWrapper.CreateIfNotExists(auditsFilePath);
+                    _directoryWrapper.CreateIfNotExists(auditsFilePath);
 
                     try
                     {
