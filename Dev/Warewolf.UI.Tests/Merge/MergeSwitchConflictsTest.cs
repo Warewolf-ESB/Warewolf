@@ -16,7 +16,9 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeSwitchWithCaseUpdated = "MergeSwitchWithCaseUpdated";
         public const string MergeSwitchWithMultipleCasesPointingTo1Tool = "MergeSwitchWithMultipleCasesPointingTo1Tool";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Deleted_Default_Arm()
         {
@@ -28,7 +30,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem6.Difference.Enabled);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_SwitchCase_Is_Changed()
         {
@@ -47,7 +51,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.CurrentCheckBox.Checked);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Arm_Has_Changed_Should_Have_2_Arm_Conflicts()
         {
@@ -58,7 +64,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem4.Difference.Enabled);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Merge_Switch_Given_Difference_Assign_Tool_Is_Selected_Enables_Connector()
         {
@@ -78,7 +86,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem6.Current.Selected);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_Merge_With_Switch_Has_Current_Selected()
         {
@@ -114,7 +124,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem16.MergeItemExpander.MergeButton.DifferenceCheckBox.Enabled);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_Merge_With_Switch_Has_Decision_And_Children()
         {
@@ -125,7 +137,9 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem10.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Merge Switch Conflicts")]
         public void Click_On_MergeSwitch_With_Difference_Between_Decision_Add_Decision_On_Design_Surface()
         {

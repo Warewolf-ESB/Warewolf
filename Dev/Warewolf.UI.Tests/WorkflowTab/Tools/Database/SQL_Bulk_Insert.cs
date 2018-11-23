@@ -12,7 +12,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     [CodedUITest]
     public class SQL_Bulk_Insert
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         public void SQLBulkInsertTool_Small_And_Large_Then_QVIView_UITest()
         {
@@ -47,7 +49,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.QuickVariableInputContentPane.Exists, "QVI Content Pane on SQLBulkInsert Tool is not open");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         public void Confirm_ErrorMessage_On_NoDB_Or_TableSelection_Then_NewSource_UITest()
         {

@@ -62,12 +62,12 @@ namespace Warewolf.Launcher
 
                 if (build.JobName != null && build.JobName.Contains(" DotCover"))
                 {
-                    build.ApplyDotCover = true;
+                    build.ApplyCoverage = true;
                     build.JobName = build.JobName.Replace(" DotCover", "");
                 }
                 else
                 {
-                    build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
+                    build.ApplyCoverage = build.TestCoverageRunner != null && !string.IsNullOrEmpty(build.TestCoverageRunner.CoverageToolPath);
                 }
 
                 if (!string.IsNullOrEmpty(build.TestRunner.TestsPath) && build.TestRunner.TestsPath.StartsWith(".."))
@@ -100,21 +100,21 @@ namespace Warewolf.Launcher
                     Directory.CreateDirectory(build.TestRunner.TestsResultsPath);
                 }
 
-                if (build.MergeDotCoverSnapshotsInDirectory != null)
+                if (build.MergeCoverageSnapshotsInDirectory != null)
                 {
-                    build.MergeDotCoverSnapshots();
+                    build.GenerateCoverageReport();
                 }
 
                 if (!build.Cleanup)
                 {
-                    if (!string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
+                    if ((!string.IsNullOrEmpty(build.JobName) || !string.IsNullOrEmpty(build.ProjectName)) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeCoverageSnapshotsInDirectory))
                     {
                         build.RunTestJobs();
                     }
                 }
                 else
                 {
-                    build.CleanupServerStudio(!build.ApplyDotCover);
+                    build.CleanupServerStudio(!build.ApplyCoverage);
                     if (string.IsNullOrEmpty(build.JobName))
                     {
                         if (!string.IsNullOrEmpty(build.ProjectName))
@@ -126,7 +126,7 @@ namespace Warewolf.Launcher
                             build.JobName = "Manual Tests";
                         }
                     }
-                    build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")), build.JobName);
+                    build.MoveArtifactsToTestResults(File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")), build.JobName);
                 }
 
                 if (!string.IsNullOrEmpty(build.AssemblyFileVersionsTest))
@@ -161,7 +161,7 @@ namespace Warewolf.Launcher
                     File.WriteAllText("FullVersionString", "FullVersionString=" + HighestReadVersion);
                 }
 
-                if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
+                if (!build.Cleanup && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.ProjectName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeCoverageSnapshotsInDirectory))
                 {
                     if (build.AdminMode)
                     {

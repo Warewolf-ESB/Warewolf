@@ -18,7 +18,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         const string SelectionHighlightWf = "SelectionHighlightWf";
         const string DropboxSelectionHighlightWf = "DropboxSelectionHighlightWf";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void Change_Value_On_HelloWorld_Assign_Marks_Workflow_As_Dirty_UITest()
         {
@@ -30,7 +32,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
         }
 
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void HelloWorld_Is_Highlighted_After_Execution_UITest()
         {
@@ -43,7 +47,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(helloWorldIsHighlighted, "Sub-workflow is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void WebRequestTool_Is_Highlighted_After_Execution_UITest()
         {
@@ -54,7 +60,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(webRequest, "Web request tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void WorkFlowSelection_Validation_UITest()
         {
@@ -69,7 +77,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(assignHasNoFocus, "Assign tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DropboxWorkFlowSelection_Validation_UITest()
         {
@@ -84,7 +94,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(assignHasNoFocus, "Dropbox delete tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void SelectAndApplyWorkFlowSelection_Validation_UITest()
         {
@@ -95,7 +107,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(selectAndApplyFocus, "Select and Apply tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DropboxDownloadWorkFlowSelection_Validation_UITest()
         {
@@ -106,7 +120,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(dropboxDownloadHasFocus, "Dropbox download tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DropboxDeleteWorkFlowSelection_Validation_UITest()
         {
@@ -117,7 +133,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(dropboxDeleteHasFocus, "Dropbox delete tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DropboxUploadWorkFlowSelection_Validation_UITest()
         {
@@ -128,7 +146,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(dropboxUploadHasFocus, "Dropbox upload tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void DropboxListWorkFlowSelection_Validation_UITest()
         {
@@ -139,7 +159,9 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(dropboxListHasFocus, "Dropbox list tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         public void Executing_Sql_Procedure_With_Errors()
         {

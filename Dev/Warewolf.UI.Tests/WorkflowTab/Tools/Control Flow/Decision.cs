@@ -9,7 +9,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
     [CodedUITest]
     public class Decision
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void DecisionTool_LargeViewResize_UITest()
         {
@@ -27,7 +29,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             DialogsUIMap.Click_Decision_Dialog_Cancel_Button();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void DecisionTool_MatchType_Combobox_ListItems_UITest()
         {
@@ -62,7 +66,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsNotBetween.Exists, "Not Between match type combobox list item does not exist.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Control Flow Tools")]
         public void CopyDecisions_With_ContextMenu_And_Paste_UITest()
         {
@@ -73,7 +79,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.DecisionOrSwitchDialog), "Decision large view dialog openned after copy and paste.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Control Flow Tools")]
         public void DecisionTool_MatchVariable_AddNewRow_UITest()
         {
