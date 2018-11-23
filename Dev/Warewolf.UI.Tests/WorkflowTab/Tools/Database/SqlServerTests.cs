@@ -15,7 +15,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     {
         const string SourceName = "SQLServerSourceFromTool";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -64,7 +66,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("MSSql")]
         public void Open_SqlServer_Contains_Outputs()
         {

@@ -13,7 +13,9 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class ConfigureSettingsPermissionsTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Settings")]
         public void Check_SettingsView_Then_SetPublicPermissions_And_SaveEnabled()
         {
@@ -81,7 +83,9 @@ namespace Warewolf.UI.Tests
             Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Settings")]
         public void AddRemoveResourcePermission()
         {
@@ -93,7 +97,9 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Edit_Server_Removes_Server_From_Explorer()
         {
@@ -107,7 +113,9 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer), "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void Save_With_Duplicate_Server_Permission()
         {
@@ -117,7 +125,9 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.UITosavearesourcepersmText.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Explorer")]
         public void PublicApisJson_Requires_ExecutePermission()
         {

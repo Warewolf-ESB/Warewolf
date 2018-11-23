@@ -67,11 +67,21 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /DotCoverOutput/**
 /DotCoverRunner.xml
 /DotCoverOutput.html
+
+####################################################################################
+# axoCover
+####################################################################################
 /Dev/.axoCover
 /Dev/.axoCover/settings.json
 /Dev/.axoCover/reports
 /Dev/.axoCover/runs
+
+####################################################################################
+# Tests
+####################################################################################
 /Dev/Dev2.IntegrationTests/TestEditorFlakeyTests.cs
 /Dev/Dev2.Activities.Tests/LargeRowsDataSplit.txt
-/Dev/warewolfBI/ClientApp/node_modules/.bin
 /Dev/warewolfBI/ClientApp/node_modules
+/Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/**
+/Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/places.sqlite
+

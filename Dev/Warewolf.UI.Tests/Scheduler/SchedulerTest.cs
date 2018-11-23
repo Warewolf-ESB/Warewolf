@@ -16,7 +16,9 @@ namespace Warewolf.UI.Tests.Scheduler
         const string newassignwf = "NewAssignWf";
         const string taskFolderName = "Warewolf";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
@@ -53,7 +55,9 @@ namespace Warewolf.UI.Tests.Scheduler
             SchedulerUIMap.Click_SchedulerTab_CloseButton();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Button_Enables_When_Task_IsDisabled_UITests()
         {
@@ -65,7 +69,9 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
         {
@@ -79,7 +85,9 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem), "A new item was not deleted correctly.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Scheduler")]
         [DeploymentItem("Microsoft.Win32.TaskScheduler.dll")]
         public void Open_SchedulerTask_For_New_Workflow_Schedule_UITests()

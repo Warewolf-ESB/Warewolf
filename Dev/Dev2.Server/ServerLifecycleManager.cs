@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -215,6 +216,8 @@ namespace Dev2
             {
                 RegisterDependencies();
                 SetWorkingDirectory();
+                Config.Server.SaveIfNotExists();
+
                 LoadHostSecurityProvider();
                 LoadPerformanceCounters();
                 CheckExampleResources();
@@ -225,7 +228,7 @@ namespace Dev2
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
+                ConfigureLogFlushing();
                 StartPulseLogger();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
@@ -273,9 +276,45 @@ namespace Dev2
             }
         }
 
+        private void ConfigureLogFlushing()
+        {
+            if (Config.Server.EnableDetailedLogging)
+            {
+                Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
+                Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
+                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
+            }
+        }
+
+        volatile bool _flushing;
         void PerformLoggerFlushActions(object state)
         {
-            LogManager.FlushLogs();
+            if (_flushing)
+            {
+                return;
+            }
+
+            _flushing = true;
+            try
+            {
+                LogManager.FlushLogs();
+            }
+            finally
+            {
+                _flushing = false;
+            }
+        }
+        void PerformLogFlushTimerPause()
+        {
+            _loggerFlushTimer.Change(0, Timeout.Infinite);
+            while (_flushing)
+            {
+                Thread.Sleep(100);
+            }
+        }
+        void PerformLogFlushTimerResume()
+        {
+            _loggerFlushTimer.Change(10000, Config.Server.LogFlushInterval);
         }
 
         static void PreloadReferences()

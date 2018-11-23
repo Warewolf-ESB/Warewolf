@@ -22,7 +22,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	When I open "Debug Output UI Load Testing" workflow
 	Given I start the timer
 	When I Debug with input of "500"
-	Then the timer duration is between "60" and "155" seconds
+	Then the timer duration is between "45" and "155" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
 	Then the timer duration is between "60" and "145" seconds
@@ -33,7 +33,7 @@ Scenario: Studio Large Variable List UI Load Test
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	And I Click VariableList Scalar Row1 Delete Button
-	Then the timer duration is between "30" and "60" seconds
+	Then the timer duration is between "20" and "64" seconds
 	Given I start the timer
 	When I Open Assign Tool Large View
 	And I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
@@ -92,7 +92,7 @@ Scenario: Studio Many Workflow Tests UI Load Test
 	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Delete The First Test
-	Then the timer duration is between "30" and "90" seconds
+	Then the timer duration is between "20" and "90" seconds
 	
 Scenario: Studio Shutdown And Startup UI Load Test
 	Given The Warewolf Studio is running
