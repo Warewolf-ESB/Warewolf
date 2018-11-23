@@ -1370,5 +1370,10 @@ namespace Dev2.Core.Tests
         public IServiceTestViewModel ViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
+
+        public string GetWorkflowLink()
+        {
+            return "";
+        }
     }
 }

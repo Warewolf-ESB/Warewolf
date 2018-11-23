@@ -41,6 +41,7 @@ namespace Dev2.Studio.Interfaces
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
+        string GetWorkflowLink();
     }
 
     public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel
