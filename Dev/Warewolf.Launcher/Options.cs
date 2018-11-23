@@ -1,6 +1,9 @@
 ﻿using CommandLine;
 using System;
+using System.IO;
 using System.Threading;
+using Warewolf.Launcher.TestCoverageMergers;
+using Warewolf.Launcher.TestCoverageRunners;
 using Warewolf.Launcher.TestRunners;
 
 namespace Warewolf.Launcher
@@ -28,8 +31,11 @@ namespace Warewolf.Launcher
         [Option("MSTest")]
         public bool MSTest { get; set; }
 
-        [Option("DotCoverPath")]
-        public string DotCoverPath { get; set; }
+        [Option("CoverageToolPath")]
+        public string CoverageToolPath { get; set; }
+
+        [Option("CoverageReportGeneratorToolPath")]
+        public object CoverageReportGenerator { get; set; }
 
         [Option("ServerUsername")]
         public string ServerUsername { get; set; }
@@ -85,8 +91,8 @@ namespace Warewolf.Launcher
         [Option("TestList")]
         public string TestList { get; set; }
 
-        [Option("MergeDotCoverSnapshotsInDirectory")]
-        public string MergeDotCoverSnapshotsInDirectory { get; set; }
+        [Option("MergeCoverageSnapshotsInDirectory")]
+        public string MergeCoverageSnapshotsInDirectory { get; set; }
 
         [Option("TestsResultsPath")]
         public string TestsResultsPath { get; set; }
@@ -164,10 +170,45 @@ namespace Warewolf.Launcher
                     Console.WriteLine("Test Runner: MSTest");
                     testLauncher.TestRunner = new MSTestRunner();
                 }
-                if (options.DotCoverPath != null)
+                if (options.CoverageReportGenerator != null)
                 {
-                    Console.WriteLine("DotCoverPath: " + options.DotCoverPath);
-                    testLauncher.DotCoverPath = options.DotCoverPath;
+                    Console.WriteLine("CoverageReportGeneratorToolPath: " + options.CoverageToolPath);
+                    var coverageReportGeneratorExeName = Path.GetFileName(options.CoverageToolPath).ToLower();
+                    switch (coverageReportGeneratorExeName)
+                    {
+                        case "reportgenerator.exe":
+                            testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(options.CoverageToolPath);
+                            break;
+                        case "dotcover.exe":
+                            testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
+                            break;
+                        default:
+                            throw new ArgumentException($"Unrecognized coverage tool {coverageReportGeneratorExeName}");
+                    }
+                }
+                if (options.CoverageToolPath != null)
+                {
+                    Console.WriteLine("CoverageToolPath: " + options.CoverageToolPath);
+                    var coverageExeName = Path.GetFileName(options.CoverageToolPath).ToLower();
+                    switch (coverageExeName)
+                    {
+                        case "opencover.console.exe":
+                            testLauncher.TestCoverageRunner = new OpenCoverRunner(options.CoverageToolPath);
+                            if (testLauncher.TestCoverageReportGenerator == null)
+                            {
+                                testLauncher.TestCoverageReportGenerator = new OpenCoverReportGenerator(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "ReportGenerator", "ReportGenerator.exe"));
+                            }
+                            break;
+                        case "dotcover.exe":
+                            testLauncher.TestCoverageRunner = new DotCoverRunner(options.CoverageToolPath);
+                            if (testLauncher.TestCoverageReportGenerator == null)
+                            {
+                                testLauncher.TestCoverageReportGenerator = new DotCoverReportGenerator(options.CoverageToolPath);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentException($"Unrecognized coverage tool {coverageExeName}");
+                    }
                 }
                 if (options.ServerUsername != null)
                 {
@@ -175,7 +216,7 @@ namespace Warewolf.Launcher
                 }
                 if (options.ServerPassword != null)
                 {
-                    Console.WriteLine("ServerPassword: ****");
+                    Console.WriteLine("ServerPassword: ???");
                     testLauncher.ServerPassword = options.ServerPassword;
                 }
                 if (options.RunAllJobs)
@@ -259,10 +300,10 @@ namespace Warewolf.Launcher
                     Console.WriteLine("TestList: " + options.TestList);
                     testLauncher.TestRunner.TestList = options.TestList;
                 }
-                if (options.MergeDotCoverSnapshotsInDirectory != null)
+                if (options.MergeCoverageSnapshotsInDirectory != null)
                 {
-                    Console.WriteLine("Merging DotCover Snapshots In Directory: " + options.MergeDotCoverSnapshotsInDirectory);
-                    testLauncher.MergeDotCoverSnapshotsInDirectory = options.MergeDotCoverSnapshotsInDirectory;
+                    Console.WriteLine("Merging DotCover Snapshots In Directory: " + options.MergeCoverageSnapshotsInDirectory);
+                    testLauncher.MergeCoverageSnapshotsInDirectory = options.MergeCoverageSnapshotsInDirectory;
                 }
                 if (options.TestsResultsPath != null)
                 {
@@ -317,7 +358,6 @@ namespace Warewolf.Launcher
                     containerLauncher.LogOutputDirectory = testLauncher.TestRunner.TestsResultsPath;
                     testLauncher.StartContainer = containerLauncher;
                 }
-                testLauncher.TestCoverageMerger = new TestCoverageMergers.DotCoverSnapshotMerger();
             }).WithNotParsed(errs =>
             {
                 foreach (var err in errs)

@@ -9,9 +9,7 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
 using Warewolf.Launcher.TestResultsMergers;
-
 using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace Warewolf.Launcher
 {
@@ -22,7 +20,6 @@ namespace Warewolf.Launcher
         public string ServerPath { get; set; }
         public string StudioPath { get; set; }
         public string ResourcesType { get; set; }
-        public string DotCoverPath { get; set; }
         public string ServerUsername { get; set; }
         public string ServerPassword { get; set; }
         public string RunAllJobs { get; set; }
@@ -40,15 +37,16 @@ namespace Warewolf.Launcher
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
         public string JobName { get; set; }
-        public string MergeDotCoverSnapshotsInDirectory { get; set; }
+        public string MergeCoverageSnapshotsInDirectory { get; set; }
         public string StartDocker { get; set; }
         public int RetryCount { get; internal set; } = 0;
         public bool StartServerAsConsole { get; internal set; } = false;
         public bool AdminMode { get; internal set; } = false;
 
         public ITestRunner TestRunner { get; internal set; }
+        public ITestCoverageRunner TestCoverageRunner { get; internal set; }
         public ITestResultsMerger TestResultsMerger { get; internal set; }
-        public ITestCoverageMerger TestCoverageMerger { get; internal set; }
+        public ITestCoverageReportGenerator TestCoverageReportGenerator { get; internal set; }
         public string RetryFile { get; internal set; }
         public static bool EnableDocker { get; set; }
 
@@ -56,7 +54,7 @@ namespace Warewolf.Launcher
         public string StudioExeName;
         public List<string> ServerPathSpecs;
         public List<string> StudioPathSpecs;
-        public bool ApplyDotCover;
+        public bool ApplyCoverage;
         public Dictionary<string, Tuple<string, string>> JobSpecs;
         public string WebsPath;
 
@@ -363,7 +361,7 @@ namespace Warewolf.Launcher
             return serverSourceXML.Substring(0, startIndex) + newConnectionString + serverSourceXML.Substring(startIndex, serverSourceXML.Length - startIndex);
         }
 
-        public void RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
+        public bool RetryTestFailures(string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath, int currentRetryCount)
         {
             TestCleanupUtils.WaitForFileUnlock(FullTRXFilePath);
             TestRunner.TestList = "";
@@ -387,18 +385,15 @@ namespace Warewolf.Launcher
                 Console.WriteLine($"Error parsing /TestRun/Results/UnitTestResult from trx file at {FullTRXFilePath}");
             }
             string TestRunnerPath;
-            if (TestFailures.Count > 0)
-            {
-                TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", NumberToWords(currentRetryCount) + "RetryTestResults");
-                TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
-                TestRunner.TestList = string.Join(",", TestFailures);
-                TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
-            }
-            else
+            if (TestFailures.Count <= 0)
             {
                 Console.WriteLine($"No failing tests found to retry in trx file at {FullTRXFilePath}");
-                return;
+                return false;
             }
+            TestRunner.TestsResultsPath = Path.Combine(TestRunner.TestsResultsPath, "..", TestCleanupUtils.NumberToWords(currentRetryCount) + "RetryTestResults");
+            TestRunner.TestsResultsPath = Path.GetFullPath((new Uri(TestRunner.TestsResultsPath)).LocalPath);
+            TestRunner.TestList = string.Join(",", TestFailures);
+            TestRunnerPath = TestRunner.WriteTestRunner(jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(TestRunner.TestsResultsPath, "RetryResults"), RecordScreen != null, Parallelize, JobSpecs);
             Console.WriteLine($"Re-running all test failures in \"{FullTRXFilePath}\".");
             var retryResults = RunTests(jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
             if (!string.IsNullOrEmpty(retryResults) && retryResults != FullTRXFilePath)
@@ -409,9 +404,8 @@ namespace Warewolf.Launcher
             {
                 Console.WriteLine($"{TestRunnerPath} did not produce a test result trx file in {TestRunner.TestsResultsPath}");
             }
-        }
-
-        public static string NumberToWords(int number) => new[] { "None", "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth", "Tenth", "Eleventh", "Twelveth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth" }[number];
+            return true;
+        }        
 
         public void InstallServer()
         {
@@ -483,10 +477,10 @@ namespace Warewolf.Launcher
 
             if (!StartServerAsConsole)
             {
-                var ServerService = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
-                if (!ApplyDotCover)
+                var exists = ServiceController.GetServices().Any(serviceController => serviceController.ServiceName.Equals("Warewolf Server"));
+                if (!ApplyCoverage)
                 {
-                    if (!ServerService)
+                    if (!exists)
                     {
                         Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + ServerPath + "\" start= demand");
                     }
@@ -498,51 +492,16 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    var ServerBinDir = Path.GetDirectoryName(ServerPath);
-                    var RunnerXML = @"<AnalyseParams>
-    <TargetExecutable>" + ServerPath + @"</TargetExecutable>
-    <Output>" + Environment.ExpandEnvironmentVariables("%ProgramData%") + @"\Warewolf\Server Log\dotCover.dcvr</Output>
-    <Scope>
-	    <ScopeEntry>" + ServerBinDir + @"\*.dll</ScopeEntry>
-	    <ScopeEntry>" + ServerBinDir + @"\*.exe</ScopeEntry>
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>";
-                    
-                    var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Server DotCover Runner.xml";
-                    TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-                    File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                    RunServerWithDotcoverScript = "\\\"" + DotCoverPath + "\\\" cover \\\"" + DotCoverRunnerXMLPath + "\\\" /LogFile=\\\"" + TestRunner.TestsResultsPath + "\\ServerDotCover.log\\\"";
-                    if (!ServerService)
-                    {
-                        Process.Start("sc.exe", "create \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\" start= demand");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Configuring service to " + RunServerWithDotcoverScript);
-                        Process.Start("sc.exe", "config \"Warewolf Server\" binPath= \"" + RunServerWithDotcoverScript + "\"");
-                    }
+                    RunServerWithDotcoverScript = TestCoverageRunner.InstallServiceWithCoverage(ServerPath, TestRunner.TestsResultsPath, JobName, exists);
                 }
             }
             if (!string.IsNullOrEmpty(ServerUsername) && string.IsNullOrEmpty(ServerPassword))
             {
-                Process.Start("sc.exe", "config \"Warewolf Server\" obj= \"" + ServerUsername + "\"");
+                Process.Start("sc.exe", $"config \"Warewolf Server\" obj= \"{ServerUsername}\"");
             }
             if (!string.IsNullOrEmpty(ServerUsername) && !string.IsNullOrEmpty(ServerPassword))
             {
-                Process.Start("sc.exe", "config \"Warewolf Server\" obj= \"" + ServerUsername + "\" password= \"" + ServerPassword + "\"");
+                Process.Start("sc.exe", $"config \"Warewolf Server\" obj= \"{ServerUsername}\" password= \"{ServerPassword}\"");
             }
 
             var ResourcePathSpecs = new List<string>();
@@ -561,7 +520,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void StartServer()
+        public void StartServer(string jobName="")
         {
             var ServerFolderPath = Path.GetDirectoryName(ServerPath);
             Console.WriteLine($"Deploying New resources from {ServerFolderPath}\\Resources - {ResourcesType}\\*");
@@ -569,18 +528,25 @@ namespace Warewolf.Launcher
 
             if (!StartServerAsConsole)
             {
-                try
+                if (ApplyCoverage)
                 {
-                    ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                    TestCoverageRunner.StartServiceWithCoverage(TestRunner.TestsResultsPath, jobName);
                 }
-                catch (InvalidOperationException e)
+                else
                 {
-                    Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    try
+                    {
+                        ServiceController.GetServices().FirstOrDefault(serviceController => serviceController.ServiceName.Equals("Warewolf Server"))?.Start();
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        Console.WriteLine(e.InnerException == null ? e.Message : e.InnerException.Message);
+                    }
                 }
 
                 var process = ProcessUtils.StartProcess("sc.exe", "interrogate \"Warewolf Server\"");
                 var Output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
-                if (!(Output.EndsWith("RUNNING ")))
+                if (!(Output.Contains("STATE              : 4  RUNNING")))
                 {
                     Console.WriteLine(Output);
                     process.StartInfo.Arguments = "start \"Warewolf Server\"";
@@ -590,7 +556,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                if (!ApplyDotCover)
+                if (!ApplyCoverage)
                 {
                     Process.Start(ServerPath);
                 }
@@ -603,15 +569,19 @@ namespace Warewolf.Launcher
             WaitForServerStart(ServerFolderPath);
             if (ResourcesType == "UITests")
             {
-                Directory.Delete(Path.Combine(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"), "Resources", "Examples"), true);
-                RefreshServer();
+                string examplesFolder = Path.Combine(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf"), "Resources", "Examples");
+                if (Directory.Exists(examplesFolder))
+                {
+                    Directory.Delete(examplesFolder, true);
+                    RefreshServer();
+                }
             }
         }
 
         void WaitForServerStart(string ServerFolderPath)
         {
-            var ServerStartedFilePath = ServerFolderPath + "\\ServerStarted";
-            TestCleanupUtils.WaitForFileExist(ServerStartedFilePath);
+            var ServerStartedFilePath = Path.Combine(ServerFolderPath, "ServerStarted");
+            TestCleanupUtils.WaitForFileExist(ServerStartedFilePath, 35);
             if (!(File.Exists(ServerStartedFilePath)))
             {
                 throw new Exception("Server Cannot Start.");
@@ -648,7 +618,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void StartStudio()
+        public void StartStudio(string jobName="")
         {
             if (string.IsNullOrEmpty(StudioPath))
             {
@@ -656,40 +626,13 @@ namespace Warewolf.Launcher
             }
             var StudioLogFile = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log");
             TestCleanupUtils.CopyOnWrite(StudioLogFile);
-            if (!ApplyDotCover)
+            if (!ApplyCoverage)
             {
                 Process.Start(StudioPath);
             }
             else
             {
-                var StudioBinDir = Path.GetDirectoryName(StudioPath);
-                var RunnerXML = @"
-<AnalyseParams>
-    <TargetExecutable>" + StudioPath + @"</TargetExecutable>
-    <Output>" + Environment.ExpandEnvironmentVariables("%LocalAppData%") + @"\Warewolf\Studio Logs\dotCover.dcvr</Output>
-    <Scope>
-    	<ScopeEntry>" + StudioBinDir + @"\*.dll</ScopeEntry>
-    	<ScopeEntry>" + StudioBinDir + @"\*.exe</ScopeEntry>
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>
-";
-                var DotCoverRunnerXMLPath = TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml";
-                TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-                File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
-                Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
+                TestCoverageRunner.StartProcessWithCoverage(StudioPath, TestRunner.TestsResultsPath, jobName);
             }
             try
             {
@@ -697,13 +640,13 @@ namespace Warewolf.Launcher
             }
             catch (Exception)
             {
-                if (!ApplyDotCover)
+                if (!ApplyCoverage)
                 {
                     Process.Start(StudioPath);
                 }
                 else
                 {
-                    Process.Start(DotCoverPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
+                    Process.Start(TestCoverageRunner.CoverageToolPath, "cover \"" + TestRunner.TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestRunner.TestsResultsPath + "\\StudioDotCover.log\"");
                 }
                 WaitForStudioStart(Path.GetDirectoryName(StudioPath));
             }
@@ -748,9 +691,9 @@ namespace Warewolf.Launcher
                     foreach (var projectFolder in Directory.GetDirectories(ProjectFolderSpecInParent))
                     {
                         TestAssembliesList += TestRunner.AppendProjectFolder(projectFolder);
-                        if (!TestAssembliesDirectories.Contains(projectFolder + "\\bin\\Debug"))
+                        if (!TestAssembliesDirectories.Contains(Path.Combine(projectFolder, "bin", "Debug")))
                         {
-                            TestAssembliesDirectories.Add(projectFolder + "\\bin\\Debug");
+                            TestAssembliesDirectories.Add(Path.Combine(projectFolder, "bin", "Debug"));
                         }
                     }
                 }
@@ -843,77 +786,28 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string DotCoverRunner(string JobName, List<string> TestAssembliesDirectories)
-        {
-            // Write DotCover Runner XML 
-            var DotCoverSnapshotFile = Path.Combine(TestRunner.TestsResultsPath, $"{JobName} DotCover Output.dcvr");
-            TestCleanupUtils.CopyOnWrite(DotCoverSnapshotFile);
-            var DotCoverArgs = @"<AnalyseParams>
-    <TargetExecutable>" + TestRunner.TestsResultsPath + "\\..\\Run " + JobName + @".bat</TargetExecutable>
-    <Output>" + DotCoverSnapshotFile + @"</Output>
-    <Scope>";
-            foreach (var TestAssembliesDirectory in TestAssembliesDirectories)
-            {
-                DotCoverArgs += @"
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.dll</ScopeEntry>
-        <ScopeEntry>" + TestAssembliesDirectory + @"\*.exe</ScopeEntry>";
-            }
-            DotCoverArgs += @"
-    </Scope>
-    <Filters>
-        <ExcludeFilters>
-            <FilterEntry>
-                <ModuleMask>*.tests</ModuleMask>
-                <ModuleMask>*.specs</ModuleMask>
-            </FilterEntry>
-        </ExcludeFilters>
-        <AttributeFilters>
-            <AttributeFilterEntry>
-                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-            </AttributeFilterEntry>
-        </AttributeFilters>
-    </Filters>
-</AnalyseParams>";
-            var DotCoverRunnerXMLPath = Path.Combine(TestRunner.TestsResultsPath, JobName + " DotCover Runner.xml");
-            TestCleanupUtils.CopyOnWrite(DotCoverRunnerXMLPath);
-            File.WriteAllText(DotCoverRunnerXMLPath, DotCoverArgs);
-
-            // Create full DotCover argument string.
-            var DotCoverLogFile = TestRunner.TestsResultsPath + "\\DotCover.xml.log";
-            TestCleanupUtils.CopyOnWrite(DotCoverLogFile);
-            var FullArgsList = $" cover \"{DotCoverRunnerXMLPath}\" /LogFile=\"{DotCoverLogFile}\"";
-
-            // Write DotCover Runner Batch File
-            var DotCoverRunnerPath = $"{TestRunner.TestsResultsPath}\\Run {JobName} DotCover.bat";
-            TestCleanupUtils.CopyOnWrite(DotCoverRunnerPath);
-            File.WriteAllText(DotCoverRunnerPath, $"\"{DotCoverPath}\"{FullArgsList}");
-            return DotCoverRunnerPath;
-        }
-
-        public string RunTests(string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
+        public string RunTests(string jobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
             var trxTestResultsFile = "";
             if (File.Exists(TestRunnerPath))
             {
                 if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                 {
-                    this.CleanupServerStudio(true, JobName);
+                    this.CleanupServerStudio(true, jobName);
                     Startmywarewolfio();
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
                     {
-                        StartServer();
+                        StartServer(jobName);
                         if (!string.IsNullOrEmpty(DoStudioStart))
                         {
-                            StartStudio();
+                            StartStudio(jobName);
                         }
                     }
                 }
-                if (ApplyDotCover && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
+                if (ApplyCoverage && string.IsNullOrEmpty(DoServerStart) && string.IsNullOrEmpty(DoStudioStart))
                 {
-                    string DotCoverRunnerPath = DotCoverRunner(JobName, TestAssembliesDirectories);
+                    trxTestResultsFile = TestCoverageRunner.RunCoverageTool(TestRunner.TestsResultsPath, jobName, TestAssembliesDirectories);
 
-                    // Run DotCover Runner Batch File
-                    trxTestResultsFile = ProcessUtils.RunFileInThisProcess(DotCoverRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
                         this.CleanupServerStudio(false);
@@ -925,10 +819,15 @@ namespace Warewolf.Launcher
                     trxTestResultsFile = ProcessUtils.RunFileInThisProcess(TestRunnerPath);
                     if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart) || !string.IsNullOrEmpty(DomywarewolfioStart))
                     {
-                        this.CleanupServerStudio(!ApplyDotCover);
+                        this.CleanupServerStudio(!ApplyCoverage);
                     }
                 }
-                this.MoveArtifactsToTestResults(ApplyDotCover, (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), JobName);
+                if (ApplyCoverage)
+                {
+                    MergeCoverageSnapshotsInDirectory = TestRunner.TestsResultsPath;
+                    GenerateCoverageReport();
+                }
+                this.MoveArtifactsToTestResults((!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart)), !string.IsNullOrEmpty(DoStudioStart), jobName);
             }
             return trxTestResultsFile;
         }
@@ -951,23 +850,22 @@ namespace Warewolf.Launcher
             }
         }
 
-        public void MergeDotCoverSnapshots()
+        public void GenerateCoverageReport()
         {
-            var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
             if (string.IsNullOrEmpty(JobName))
             {
-                JobName = "DotCover";
+                JobName = "OpenCover";
             }
-            var MergedSnapshotFileName = JobName.Split(',')[0];
-            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-            TestCoverageMerger.MergeCoverageSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover", DotCoverPath);
+            var destinationFolderName = JobName.Split(',')[0] + " Coverage";
+            var destinationPath = Path.Combine(MergeCoverageSnapshotsInDirectory, destinationFolderName);
+            TestCoverageReportGenerator.GenerateCoverageReport(destinationPath, MergeCoverageSnapshotsInDirectory + "\\OpenCover Coverage.log");
         }
 
         public void RunAllUnitTestJobs(int startIndex, int NumberOfUnitTestJobs)
         {
             JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfUnitTestJobs));
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllServerTestJobs(int startIndex, int NumberOfServerTestJobs)
@@ -976,7 +874,7 @@ namespace Warewolf.Launcher
             ResourcesType = "ServerTests";
             DoServerStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllReleaseResourcesTestJobs(int startIndex, int NumberOfReleaseResourcesTestJobs)
@@ -985,7 +883,7 @@ namespace Warewolf.Launcher
             ResourcesType = "Release";
             DoServerStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllDesktopUITestJobs(int startIndex, int NumberOfDesktopUITestJobs)
@@ -994,7 +892,7 @@ namespace Warewolf.Launcher
             ResourcesType = "UITests";
             DoStudioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllWebUITestJobs(int startIndex, int NumberOfWebUITestJobs)
@@ -1002,7 +900,7 @@ namespace Warewolf.Launcher
             JobName = string.Join(",", JobSpecs.Keys.ToList().GetRange(startIndex, NumberOfWebUITestJobs));
             DomywarewolfioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunAllLoadTestJobs(int startIndex, int NumberOfLoadTestJobs)
@@ -1011,7 +909,7 @@ namespace Warewolf.Launcher
             ResourcesType = "Load";
             DoStudioStart = "true";
             RunTestJobs();
-            this.CleanupServerStudio(ApplyDotCover);
+            this.CleanupServerStudio(ApplyCoverage);
         }
 
         public void RunTestJobs(string jobName = "")
@@ -1025,7 +923,7 @@ namespace Warewolf.Launcher
             var JobNames = new List<string>();
             var JobAssemblySpecs = new List<string>();
             var JobCategories = new List<string>();
-            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeDotCoverSnapshotsInDirectory))
+            if (!string.IsNullOrEmpty(JobName) && string.IsNullOrEmpty(MergeCoverageSnapshotsInDirectory))
             {
                 foreach (var Job in JobName.Split(','))
                 {
@@ -1052,25 +950,20 @@ namespace Warewolf.Launcher
             }
             if (!string.IsNullOrEmpty(ProjectName))
             {
-                JobNames.Add(ProjectName);
+                string ResolvedJobName = GetJobName(ProjectName, Category);
+                JobNames.Add(ResolvedJobName);
+                JobName = ResolvedJobName;
                 JobAssemblySpecs.Add(ProjectName);
-                if (!string.IsNullOrEmpty(Category))
-                {
-                    JobCategories.Add(Category);
-                }
-                else
-                {
-                    JobCategories.Add("");
-                }
+                JobCategories.Add(Category??"");
             }
             if (!File.Exists(TestRunner.Path))
             {
                 throw new ArgumentException("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
             }
 
-            if (ApplyDotCover && DotCoverPath != "" && !(File.Exists(DotCoverPath)))
+            if (ApplyCoverage && TestCoverageRunner.CoverageToolPath != "" && !(File.Exists(TestCoverageRunner.CoverageToolPath)))
             {
-                throw new ArgumentException("Error cannot find dotcover.exe. Use --DotCoverPath parameter to pass a path to that file.");
+                throw new ArgumentException("Error cannot find coverage tool path .exe. Use --CoverageToolPath parameter to pass a path to that file.");
             }
 
             if (!string.IsNullOrEmpty(DoServerStart) || !string.IsNullOrEmpty(DoStudioStart))
@@ -1134,15 +1027,25 @@ namespace Warewolf.Launcher
                     //Re-try Failures
                     for (var count = 0; count < RetryCount; count++)
                     {
-                        RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1);
+                        if (!RetryTestFailures(ThisJobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile, count + 1))
+                        {
+                            break;
+                        }
                     }
                 }
             }
-            if (ApplyDotCover)
+        }
+
+        string GetJobName(string projectName, string category)
+        {
+            foreach(var job in JobSpecs)
             {
-                MergeDotCoverSnapshotsInDirectory = TestRunner.TestsResultsPath;
-                MergeDotCoverSnapshots();
+                if (job.Value.Item1 == projectName && job.Value.Item2 == category)
+                {
+                    return job.Key;
+                }
             }
+            return projectName + ", " + category;
         }
     }
 }

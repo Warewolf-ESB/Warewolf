@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using RUISDK_5_3_1;
 using System.Configuration;
+using System.Threading;
 
 namespace Dev2.Instrumentation.Tests
 {
@@ -190,7 +191,6 @@ namespace Dev2.Instrumentation.Tests
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, username);
             Assert.AreEqual(tracker.RuiSdk.GetState(), RUIState.running, "Revulytics Started");
-
         }
         /// <summary>
         /// Revulytics config must be created and sdk must be started before logging any event.

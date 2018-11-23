@@ -11,7 +11,9 @@ namespace Warewolf.UI.Tests.DebugInputWindow
         private const string InputDataText = "Coded UI Test";
         const string HelloWorld = "Hello World";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void Save_DebugInputs_AfterCancel_UITest()
         {
@@ -27,7 +29,9 @@ namespace Warewolf.UI.Tests.DebugInputWindow
             Assert.AreEqual(InputDataText, UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Cancelling and re-openning the debug input dialog loses input values.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Debug Input")]
         public void Save_DebugInputs_AfterDebug_UITest()
         {
