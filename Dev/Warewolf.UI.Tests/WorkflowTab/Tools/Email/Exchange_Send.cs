@@ -12,7 +12,9 @@ namespace Warewolf.UI.Tests.Tools
     {
         const string SourceName = "ExchangeSourceFromTool";
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
@@ -52,7 +54,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsFalse(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.TryGetClickablePoint(out point), "Connection test Passed");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_HtmlBody_Checkbox_Is_Selected_UITest()
         {
@@ -67,7 +71,9 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.HtmlBodyCheckBox.Checked, "HTML Body Combobox is not checked after changing to small view.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Email Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {

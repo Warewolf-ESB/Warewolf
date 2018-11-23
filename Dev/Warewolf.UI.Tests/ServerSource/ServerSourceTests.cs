@@ -14,7 +14,9 @@ namespace Warewolf.UI.Tests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServer_GivenTabIsOpened_ShouldHaveDefaultControls()
@@ -30,7 +32,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button is enabled");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServerSource_GivenTabIsOpenedUserButtonSelected_ShouldHaveCredentialsControls()
@@ -43,7 +47,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
@@ -65,7 +71,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
@@ -84,7 +92,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.AreEqual("WarewolfAdmin", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
@@ -100,7 +110,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
         {
@@ -117,7 +129,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated), "Server exists in connect control dropdown list after it was deleted from the explorer.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void Try_Create_Server_Source_On_Restricted_Server()
         {
@@ -145,7 +159,9 @@ namespace Warewolf.UI.Tests.ServerSource
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenTabHasChanges_ClosingStudioPromptsChanges()
@@ -158,7 +174,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_GivenExistingOpenTabHasNoChanges_ClosingStudioPromptsChanges()
@@ -174,7 +192,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void CreateNewServer_CreateNewWorkflow_ClosingWorkflowDoesNotError()
@@ -191,7 +211,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
         {
@@ -213,7 +235,9 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Server Sources")]
         public void DoubleClicking_ErrorMessage_SelectsWholeMessage()
         {

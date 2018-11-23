@@ -8,7 +8,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class Sys_Info
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
 		[TestCategory("Utility Tools")]
         public void SysInfoTool_Small_And_LargeView_Then_QVIView_UITest()
         {
@@ -26,7 +28,9 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.QuickVariableInputContent.Exists, "System Info QVI window does not exist on the design surface");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Data Tools")]
         public void SysInfo_Small_And_Large_Then_ShowErrorBox_UITest()
         {
