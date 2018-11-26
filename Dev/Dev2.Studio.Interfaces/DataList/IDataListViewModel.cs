@@ -68,7 +68,7 @@ namespace Dev2.Studio.Interfaces.DataList
         
         void RemoveUnusedDataListItems();
         
-        void ValidateNames(IDataListItemModel item);
+        void ValidateVariableNamesForUI(IDataListItemModel item);
 
         List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify);
 

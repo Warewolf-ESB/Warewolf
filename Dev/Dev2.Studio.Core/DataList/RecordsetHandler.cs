@@ -66,10 +66,6 @@ namespace Dev2.Studio.Core.DataList
                     var recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
                     child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
                 }
-                else
-                {
-                    child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
-                }
                 FixCommonNamingProblems(child);
             }
         }
@@ -99,26 +95,15 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        public void ValidateRecordsetChildren(IRecordSetItemModel recset)
-        {
-            CheckForEmptyRecordset();
-            if (recset != null)
-            {
-                CheckDataListItemsForDuplicates(recset.Children);
-            }
-            CheckForFixedEmptyRecordsets();
-        }
-
         public void ValidateRecordset()
         {
-            CheckForEmptyRecordset();
-            CheckDataListItemsForDuplicates(_vm.DataList);
-            CheckForFixedEmptyRecordsets();
+            MarkEmptyRecordsetErrors();
+            ClearEmptyRecordsetErrors();
         }
 
         bool RecordSetHasChildren(IRecordSetItemModel model) => model.Children != null && model.Children.Count > 0;
 
-        void CheckForEmptyRecordset()
+        void MarkEmptyRecordsetErrors()
         {
             foreach (var recordset in _vm.RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].DisplayName) && !string.IsNullOrEmpty(c.DisplayName)))
             {
@@ -126,7 +111,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        void CheckForFixedEmptyRecordsets()
+        void ClearEmptyRecordsetErrors()
         {
             foreach (var recset in _vm.RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].DisplayName)))
             {
@@ -159,27 +144,6 @@ namespace Dev2.Studio.Core.DataList
                 {
                     newChild.Parent = recset;
                     recset.Children.Add(newChild);
-                }
-            }
-        }
-        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
-        {
-            var duplicates = itemsToCheck.ToLookup(x => x.DisplayName).ToList();
-            foreach (var duplicate in duplicates)
-            {
-                if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
-                {
-                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
-                }
-                else
-                {
-                    duplicate.ForEach(model =>
-                    {
-                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
-                        {
-                            model.RemoveError();
-                        }
-                    });
                 }
             }
         }

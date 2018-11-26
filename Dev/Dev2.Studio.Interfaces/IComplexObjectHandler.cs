@@ -18,6 +18,5 @@ namespace Dev2.Studio.Interfaces
         void AddComplexObjectsToBuilder(StringBuilder result, IComplexObjectItemModel complexObjectItemModel);
         void DetectUnusedComplexObjects(IEnumerable<IDataListVerifyPart> partsToVerify);
         void RemoveUnusedComplexObjects();
-        void ValidateComplexObject();
     }
 }
