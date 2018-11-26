@@ -30,6 +30,7 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 
 namespace Dev2.Core.Tests.Workflows
@@ -124,6 +125,27 @@ namespace Dev2.Core.Tests.Workflows
             workflowInputDataviewModel.LoadWorkflowInputs();
             workflowInputDataviewModel.Save();
             Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
+        }
+
+        [TestMethod]
+        public void WorkflowInputDataViewModel_Close_Updates_WorkflowLink()
+        {
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
+            var workSurfaceContextViewModelMock = new Mock<IWorkSurfaceContextViewModel>();
+            var wdMock = new Mock<IWorkflowDesignerViewModel>();
+            var wdMock_asWorkSurfaceViewModelMock = wdMock.As<IWorkSurfaceViewModel>();
+            workSurfaceContextViewModelMock.Setup(o => o.WorkSurfaceViewModel).Returns(wdMock_asWorkSurfaceViewModelMock.Object);
+            wdMock.Setup(o => o.GetAndUpdateWorkflowLinkWithWorkspaceID()).Returns("").Verifiable();
+            workSurfaceContextViewModelMock.Setup(o => o.Parent).Returns(wdMock.Object).Verifiable();
+            workflowInputDataViewModel.Parent = workSurfaceContextViewModelMock.Object;
+
+            workflowInputDataViewModel.ViewClosed();
+
+            wdMock.Verify();
+            wdMock_asWorkSurfaceViewModelMock.Verify();
         }
 
         [TestMethod]
@@ -741,6 +763,12 @@ namespace Dev2.Core.Tests.Workflows
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             var workflowInputDataviewModel = new WorkflowInputDataViewModelMock(serviceDebugInfo.Object, debugVM);
             workflowInputDataviewModel.DebugExecutionFinished += () => debugVM.DebugStatus = DebugStatus.Finished;
+            var workSurfaceContextViewModelMock = new Mock<IWorkSurfaceContextViewModel>();
+            var wdMock = new Mock<IWorkflowDesignerViewModel>();
+            var wdMock_asWorkSurfaceViewModelMock = wdMock.As<IWorkSurfaceViewModel>();
+            workSurfaceContextViewModelMock.Setup(o => o.WorkSurfaceViewModel).Returns(wdMock_asWorkSurfaceViewModelMock.Object);
+            workSurfaceContextViewModelMock.Setup(o => o.Parent).Returns(wdMock.Object).Verifiable();
+            workflowInputDataviewModel.Parent = workSurfaceContextViewModelMock.Object;
             workflowInputDataviewModel.ViewClosed();
             Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
         }

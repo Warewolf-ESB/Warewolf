@@ -1325,9 +1325,6 @@ namespace Dev2.Core.Tests
         public bool IsTestView { get; set; }
         public ModelItem SelectedItem { get; set; }
         public bool CanViewWorkflowLink { get; set; }
-        public void UpdateWorkflowLink(string newLink)
-        {
-        }
 
         public void Dispose() => throw new NotImplementedException();
         public bool NotifyItemSelected(object primarySelection) => throw new NotImplementedException();
@@ -1370,5 +1367,10 @@ namespace Dev2.Core.Tests
         public IServiceTestViewModel ViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
+
+        public string GetAndUpdateWorkflowLinkWithWorkspaceID()
+        {
+            return "";
+        }
     }
 }
