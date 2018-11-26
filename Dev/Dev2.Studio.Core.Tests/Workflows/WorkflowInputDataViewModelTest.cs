@@ -138,7 +138,7 @@ namespace Dev2.Core.Tests.Workflows
             var wdMock = new Mock<IWorkflowDesignerViewModel>();
             var wdMock_asWorkSurfaceViewModelMock = wdMock.As<IWorkSurfaceViewModel>();
             workSurfaceContextViewModelMock.Setup(o => o.WorkSurfaceViewModel).Returns(wdMock_asWorkSurfaceViewModelMock.Object);
-            wdMock.Setup(o => o.GetWorkflowLink()).Returns("").Verifiable();
+            wdMock.Setup(o => o.GetAndUpdateWorkflowLinkWithWorkspaceID()).Returns("").Verifiable();
             workSurfaceContextViewModelMock.Setup(o => o.Parent).Returns(wdMock.Object).Verifiable();
             workflowInputDataViewModel.Parent = workSurfaceContextViewModelMock.Object;
 
