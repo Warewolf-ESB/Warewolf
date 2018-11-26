@@ -743,13 +743,10 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.CopyUrlCommand.Execute(null);
-            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
             //------------Assert Results-------------------------
-            var workflowLink = viewModel.GetWorkflowLink(false);
-            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
-            viewModel.OpenWorkflowLinkCommand.Execute(null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", workflowLink);
+            var expectedCopiedText = "http://mymachinename:3142/secure/myservice.json?<DataList></DataList>";
+            Assert.AreEqual(expectedCopiedText, viewModel.DisplayWorkflowLink);
+            Assert.AreEqual(expectedCopiedText, Clipboard.GetText());
         }
 
         #region Debug Selection Changed
@@ -1649,7 +1646,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
@@ -1709,7 +1706,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -1777,7 +1774,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
             //------------Assert Results-------------------------
@@ -1839,7 +1836,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);

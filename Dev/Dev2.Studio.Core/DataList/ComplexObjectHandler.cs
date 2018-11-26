@@ -93,9 +93,7 @@ namespace Dev2.Studio.Core.DataList
                     }
                     itemModel = item;
                 }
-
             }
-            ValidateComplexObject();
         }
 
         public IEnumerable<string> RefreshJsonObjects(IEnumerable<IComplexObjectItemModel> complexObjectItemModels)
@@ -249,7 +247,6 @@ namespace Dev2.Studio.Core.DataList
                     AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
                 }
             }
-            ValidateComplexObject();
         }
 
         public void AddComplexObjectsToBuilder(StringBuilder result, IComplexObjectItemModel complexObjectItemModel)
@@ -337,31 +334,6 @@ namespace Dev2.Studio.Core.DataList
                 foreach (var dataListItemModel in unusedComplexObjects)
                 {
                     _vm.RemoveDataListItem(dataListItemModel);
-                }
-            }
-            ValidateComplexObject();
-
-        }
-
-        public void ValidateComplexObject()
-        {
-            var itemsToCheck = _vm.ComplexObjectCollection;
-            var duplicates = itemsToCheck.ToLookup(x => x.DisplayName, new StringCompexObjectEqualityComparer());
-            foreach (var duplicate in duplicates)
-            {
-                if (duplicate.Count() > 1 && !string.IsNullOrEmpty(duplicate.Key))
-                {
-                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
-                }
-                else
-                {
-                    duplicate.ForEach(model =>
-                    {
-                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
-                        {
-                            model.RemoveError();
-                        }
-                    });
                 }
             }
         }
