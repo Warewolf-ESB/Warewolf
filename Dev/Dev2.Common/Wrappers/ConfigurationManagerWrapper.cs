@@ -13,10 +13,19 @@ namespace Dev2.Common.Wrappers
         {
             _fileWrapper = new FileWrapper();
         }
+
+        volatile ServerSettingsData cache;
         public string this[string settingName]
         {
             get
             {
+                var cacheCopy = cache;
+                if (cacheCopy != null)
+                {
+                    var prop = typeof(ServerSettingsData).GetProperty(settingName);
+                    return prop.GetValue(cacheCopy)?.ToString();
+                }
+
                 lock (_settingLock)
                 {
                     ServerSettingsData settings = null;
@@ -27,6 +36,9 @@ namespace Dev2.Common.Wrappers
                     } catch {
                         settings = new ServerSettingsData();
                     }
+
+                    cache = settings;
+
                     var prop = typeof(ServerSettingsData).GetProperty(settingName);
                     return prop.GetValue(settings)?.ToString();
                 }
@@ -35,10 +47,12 @@ namespace Dev2.Common.Wrappers
             {
                 lock (_settingLock)
                 {
+                    cache = null;
+
                     var settings = Config.Server.Get();
                     var prop = typeof(ServerSettingsData).GetProperty(settingName);
                     prop.SetValue(settings, value);
-                    settings.Save();
+                    settings.Save(_fileWrapper);
                 }
             }
         }
@@ -46,9 +60,8 @@ namespace Dev2.Common.Wrappers
 
     static class ServerSettingsDataExtensionMethods
     {
-        public static void Save(this ServerSettingsData data)
+        public static void Save(this ServerSettingsData data, IFile fileWrapper)
         {
-            var fileWrapper = new FileWrapper();
             var json = JsonConvert.SerializeObject(data);
             fileWrapper.WriteAllText(Config.Server.SettingsPath, json);
         }
