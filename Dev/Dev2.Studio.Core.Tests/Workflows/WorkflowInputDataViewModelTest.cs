@@ -763,6 +763,12 @@ namespace Dev2.Core.Tests.Workflows
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             var workflowInputDataviewModel = new WorkflowInputDataViewModelMock(serviceDebugInfo.Object, debugVM);
             workflowInputDataviewModel.DebugExecutionFinished += () => debugVM.DebugStatus = DebugStatus.Finished;
+            var workSurfaceContextViewModelMock = new Mock<IWorkSurfaceContextViewModel>();
+            var wdMock = new Mock<IWorkflowDesignerViewModel>();
+            var wdMock_asWorkSurfaceViewModelMock = wdMock.As<IWorkSurfaceViewModel>();
+            workSurfaceContextViewModelMock.Setup(o => o.WorkSurfaceViewModel).Returns(wdMock_asWorkSurfaceViewModelMock.Object);
+            workSurfaceContextViewModelMock.Setup(o => o.Parent).Returns(wdMock.Object).Verifiable();
+            workflowInputDataviewModel.Parent = workSurfaceContextViewModelMock.Object;
             workflowInputDataviewModel.ViewClosed();
             Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
         }
