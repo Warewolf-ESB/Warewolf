@@ -47,6 +47,7 @@ namespace Warewolf.Launcher
         {
             if (string.IsNullOrEmpty(logFilePath))
             {
+                TestCleanupUtils.WaitForFileUnlock(logFilePath);
                 Console.WriteLine(output);
             }
             else

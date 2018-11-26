@@ -258,7 +258,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.MoveNext();
                 }
                 var outputVar = resultsEnumerator.Current.OutputVariable;
-                if (!IsNullEmptyOrNewLine(tmp))
+                if (!NewLine(tmp))
                 {
                     lastItemEndedInNewLine = tmp.EndsWith(NewLineFormat);
                     AssignItem(update, env, positions, ref tmp, outputVar);
@@ -314,7 +314,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static bool IsNullEmptyOrNewLine(string tmp) => String.IsNullOrEmpty(tmp) || tmp == "\r" || tmp == "\n" || tmp == Environment.NewLine;
+        private static bool NewLine(string tmp) => tmp == "\r" || tmp == "\n" || tmp == Environment.NewLine;
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
