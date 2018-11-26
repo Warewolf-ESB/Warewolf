@@ -743,13 +743,10 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
             viewModel.CopyUrlCommand.Execute(null);
-            Assert.IsTrue(viewModel.ViewSwaggerCommand.CanExecute(null));
             //------------Assert Results-------------------------
-            var workflowLink = viewModel.GetWorkflowLink(false);
-            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
-            viewModel.OpenWorkflowLinkCommand.Execute(null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>", workflowLink);
+            var expectedCopiedText = "http://mymachinename:3142/secure/myservice.json?<DataList></DataList>";
+            Assert.AreEqual(expectedCopiedText, viewModel.DisplayWorkflowLink);
+            Assert.AreEqual(expectedCopiedText, Clipboard.GetText());
         }
 
         #region Debug Selection Changed
@@ -1649,7 +1646,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
@@ -1709,7 +1706,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -1777,7 +1774,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
             //------------Assert Results-------------------------
@@ -1839,7 +1836,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Preconditions-------------------
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
             //------------Execute Test---------------------------
-            var workflowLink = viewModel.GetWorkflowLink();
+            var workflowLink = viewModel.GetAndUpdateWorkflowLinkWithWorkspaceID();
             var displayWorkflowLink = viewModel.DisplayWorkflowLink;
             //------------Assert Results-------------------------
             Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
@@ -1892,71 +1889,6 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Results-------------------------
             resourceRep.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Never());
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
-        }
-
-
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
-        public void WorkflowDesignerViewModel_LinkName_SavedDebugData_ShouldReturnUrlWithChangedDebugData()
-        {
-            //------------Setup for test--------------------------
-            var workflow = new ActivityBuilder
-            {
-                Implementation = new Flowchart
-                {
-                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
-                }
-            };
-
-            #region Setup viewModel
-
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
-            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IServer>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
-            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
-            var serverEvents = new Mock<IEventPublisher>();
-            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
-            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
-            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
-            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
-            resourceModel.Setup(model => model.Category).Returns("myservice");
-            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
-            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
-            var workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel.Object);
-            workflowInputDataViewModel.LoadWorkflowInputs();
-            workflowInputDataViewModel.WorkflowInputs[0].Value = "1";
-            workflowInputDataViewModel.WorkflowInputs[1].Value = "2";
-            workflowInputDataViewModel.DoSaveActions();
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-            resourceModel.SetupProperty(model => model.WorkflowXaml);
-
-            #endregion
-
-            //------------Assert Preconditions-------------------
-            Assert.IsNull(resourceModel.Object.WorkflowXaml);
-            //------------Execute Test---------------------------
-          
-            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
-            var workflowLink = viewModel.GetWorkflowLink();
-            //------------Assert Results-------------------------
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
-            Assert.AreEqual("http://mymachinename:3142/secure/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
-            workflowInputDataViewModel.WorkflowInputs[0].Value = "";
-            workflowInputDataViewModel.WorkflowInputs[1].Value = "";
-            workflowInputDataViewModel.DoSaveActions();
         }
     }
 }
