@@ -189,7 +189,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
             UpdateWorkflowInputDataViewModel(_resourceModel);
-            GetWorkflowLink();
+            UpdateWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
@@ -607,9 +607,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
         
-        public string GetWorkflowLink() => GetWorkflowLink(true);
+        public string GetAndUpdateWorkflowLinkWithWorkspaceID()
+        {
+            UpdateWorkflowLink();
+            return _workflowLinkWithWid;
+        }
 
-        public string GetWorkflowLink(bool addWorkflowId)
+        public void UpdateWorkflowLink()
         {
             if (_workflowInputDataViewModel != null)
             {
@@ -621,14 +625,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData(true);
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json, addWorkflowId);
-                if (workflowUri != null)
-                {
-                    _workflowLink = workflowUri.ToString();
+
+                var uri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json, true);
+                if (uri != null) {
+                    _workflowLinkWithWid = uri.ToString();
+                    var startIndex = _workflowLinkWithWid.IndexOf("&wid", StringComparison.InvariantCultureIgnoreCase);
+                    if (startIndex != -1)
+                    {
+                        _workflowLink = _workflowLinkWithWid.Remove(startIndex);
+                    }
                 }
             }
             NotifyOfPropertyChange(() => DisplayWorkflowLink);
-            return _workflowLink;
         }
 
         public string GetWorkflowInputs(string field)
@@ -642,16 +650,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                var workflowLink = _workflowLink;
-                if (!string.IsNullOrEmpty(workflowLink))
-                {
-                    var startIndex = workflowLink.IndexOf("&wid", StringComparison.InvariantCultureIgnoreCase);
-                    if (startIndex != -1)
-                    {
-                        return workflowLink.Remove(startIndex);
-                    }
-                }
-                return workflowLink;
+                return _workflowLink;
             }
             private set
             {
@@ -677,12 +676,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public WorkflowDesigner Designer => _wd;
 
         public UIElement DesignerView => _wd?.View;
-
-        public void UpdateWorkflowLink(string newLink)
-        {
-            DisplayWorkflowLink = newLink;
-            NotifyOfPropertyChange(nameof(DisplayWorkflowLink));
-        }
 
         public StringBuilder DesignerText => ServiceDefinition;
 
@@ -957,7 +950,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ICommand CopyUrlCommand => _copyUrlCommand ?? (_copyUrlCommand = new DelegateCommand(param =>
         {
-            Clipboard.SetText(GetWorkflowLink(false));
+            Clipboard.SetText(_workflowLink);
         }));
         
         protected ModelItem PerformAddItems(ModelItem addedItem)
@@ -2387,6 +2380,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _workspaceSave;
         WorkflowInputDataViewModel _workflowInputDataViewModel;
         string _workflowLink;
+        string _workflowLinkWithWid;
         ICommand _openWorkflowLinkCommand;
         bool _firstWorkflowChange;
         readonly IAsyncWorker _asyncWorker;
@@ -2674,7 +2668,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
-            GetWorkflowLink();
+            UpdateWorkflowLink();
         }
 
         public void Handle(SaveUnsavedWorkflowMessage message)
@@ -2695,8 +2689,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
                 UpdateWorkflowInputDataViewModel(_resourceModel);
-                UpdateWorkflowLink(GetWorkflowLink());
-                NotifyOfPropertyChange(() => DesignerView);
+
+                DisplayWorkflowLink = GetAndUpdateWorkflowLinkWithWorkspaceID();
+                NotifyOfPropertyChange(nameof(DisplayWorkflowLink));
+                NotifyOfPropertyChange(nameof(DesignerView));
             }
             RemoveUnsavedWorkflowName(unsavedName);
         }

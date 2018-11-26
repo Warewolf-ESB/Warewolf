@@ -134,6 +134,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 SendFinishedMessage();
             }
+            var context = Parent as IWorkSurfaceContextViewModel;
+            if (context.WorkSurfaceViewModel is IWorkflowDesignerViewModel wd)
+            {
+                wd.GetAndUpdateWorkflowLinkWithWorkspaceID();
+            }
         }
         
         public int WorkflowInputCount => _workflowInputs.Count;

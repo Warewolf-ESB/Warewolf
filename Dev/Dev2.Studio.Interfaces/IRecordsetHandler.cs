@@ -10,7 +10,6 @@ namespace Dev2.Studio.Interfaces
         void AddRecordsetNamesIfMissing();
         void RemoveBlankRecordsets();
         void RemoveBlankRecordsetFields();
-        void ValidateRecordsetChildren(IRecordSetItemModel recset);
         void ValidateRecordset();
         void AddRowToRecordsets();
         void AddRecordSet();
