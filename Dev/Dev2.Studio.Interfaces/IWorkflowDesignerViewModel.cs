@@ -32,7 +32,6 @@ namespace Dev2.Studio.Interfaces
         bool CanViewWorkflowLink { get; set; }
         bool CanMerge { get; set; }
 
-        void UpdateWorkflowLink(string newLink);
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -41,6 +40,7 @@ namespace Dev2.Studio.Interfaces
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
+        string GetAndUpdateWorkflowLinkWithWorkspaceID();
     }
 
     public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel
