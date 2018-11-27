@@ -72,13 +72,19 @@ namespace Warewolf.UI.Tests
             }
             finally
             {
-                // RESET TO DEFAULT
-                SettingsUIMap.Update_Audits_File_Path(defaultPath);
-                UIMap.Click_Save_RibbonButton();
-                if (Directory.Exists(changedPath))
+                try
                 {
-                    Directory.Delete(changedPath, true);
-                    Assert.IsFalse(Directory.Exists(changedPath));
+                    // RESET TO DEFAULT
+                    SettingsUIMap.Update_Audits_File_Path(defaultPath);
+                    UIMap.Click_Save_RibbonButton();
+                }
+                finally
+                {
+                    if (Directory.Exists(changedPath))
+                    {
+                        Directory.Delete(changedPath, true);
+                        Assert.IsFalse(Directory.Exists(changedPath));
+                    }
                 }
             }
         }
