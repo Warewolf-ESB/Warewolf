@@ -77,7 +77,7 @@ namespace Warewolf.UI.Tests
             {
                 if (Directory.Exists(changedPath))
                 {
-                    Directory.Delete(changedPath);
+                    Directory.Delete(changedPath, true);
                     Assert.IsFalse(Directory.Exists(changedPath));
                 }
             }
