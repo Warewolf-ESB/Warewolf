@@ -11,7 +11,7 @@ namespace Dev2.Common.Interfaces.Container
     {
         void Enqueue<T>(T ob);
 
-        T Dequeue<T>();
+        T Dequeue<T>() where T : class;
 
         void Flush();
     }
