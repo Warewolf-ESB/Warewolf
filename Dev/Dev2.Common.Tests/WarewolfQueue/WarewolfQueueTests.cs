@@ -57,12 +57,38 @@ namespace Dev2.Common.Tests
             }
         }
 
+        class BenchmarkOb : IEquatable<BenchmarkOb>
+        {
+            public int num;
+            public string word;
+
+            public override bool Equals(Object obj)
+            {
+                if (obj is BenchmarkOb benchmarkOb)
+                {
+                    return Equals(benchmarkOb);
+                }
+                return false;
+            }
+            public bool Equals(BenchmarkOb other)
+            {
+                var eq = true;
+                eq &= num == other.num;
+                eq &= word == other.word;
+                return eq;
+            }
+        }
+
         [TestMethod]
         public void WarewolfQueue_Threaded_EnqueueDequeue_FlushShouldDelay_Success()
         {
             var startTime = DateTime.UtcNow;
 
-            const string expected = "test data";
+            var expected = new BenchmarkOb
+            {
+                num = 123,
+                word = "test value"
+            };
 
             Exception threadException = null;
             var thread = new Thread(() =>
@@ -71,10 +97,10 @@ namespace Dev2.Common.Tests
                 {
                     using (var session = _queue.OpenSession())
                     {
-                        string data = null;
+                        BenchmarkOb data = null;
                         do
                         {
-                            data = session.Dequeue<string>();
+                            data = session.Dequeue<BenchmarkOb>();
                             Thread.Sleep(100);
                         } while (data is null);
                         Assert.AreEqual(data, expected);
@@ -97,9 +123,68 @@ namespace Dev2.Common.Tests
             using (var session = _queue.OpenSession())
             {
                 startTime = DateTime.UtcNow;
-                session.Enqueue<string>(expected);
+                session.Enqueue(expected);
                 Thread.Sleep(1000);
                 session.Flush();
+            }
+
+            thread.Join();
+            if (threadException != null)
+            {
+                throw threadException;
+            }
+        }
+
+        [TestMethod]
+        public void WarewolfQueue_Threaded_EnqueueDequeue_Benchmark_Success()
+        {
+            var startTime = DateTime.UtcNow;
+
+            var expected = new BenchmarkOb
+            {
+                num = 123,
+                word = "test value"
+            };
+
+            Exception threadException = null;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    using (var session = _queue.OpenSession())
+                    {
+                        for (var i = 0; i < 100000; i++)
+                        {
+                            BenchmarkOb data = null;
+                            do
+                            {
+                                data = session.Dequeue<BenchmarkOb>();
+                            } while (data is null);
+                            Assert.AreEqual(data, expected);
+                            var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
+                            session.Flush();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    threadException = e;
+                }
+            })
+            {
+                IsBackground = true
+            };
+
+            thread.Start();
+
+            using (var session = _queue.OpenSession())
+            {
+                startTime = DateTime.UtcNow;
+                for (var i = 0; i < 100000; i++)
+                {
+                    session.Enqueue(expected);
+                    session.Flush();
+                }
             }
 
             thread.Join();
