@@ -57,24 +57,29 @@ namespace Warewolf.UI.Tests
                 Assert.IsTrue(Directory.Exists(changedPath));
             }
 
-            UIMap.Click_ConfigureSetting_From_Menu();
-            SettingsUIMap.Select_LoggingTab();
-            SettingsUIMap.Assert_Audits_File_Path(defaultPath);
-            SettingsUIMap.Update_Audits_File_Path(changedPath);
-            UIMap.Click_Save_RibbonButton();
-            SettingsUIMap.Click_Close_Settings_Tab_Button();
-            UIMap.Click_ConfigureSetting_From_Menu();
-            SettingsUIMap.Select_LoggingTab();
-            // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
-            SettingsUIMap.Assert_Audits_File_Path(changedPath);
-            // RESET TO DEFAULT
-            SettingsUIMap.Update_Audits_File_Path(defaultPath);
-            UIMap.Click_Save_RibbonButton();
-
-            if (Directory.Exists(changedPath))
+            try
             {
-                Directory.Delete(changedPath);
-                Assert.IsFalse(Directory.Exists(changedPath));
+                UIMap.Click_ConfigureSetting_From_Menu();
+                SettingsUIMap.Select_LoggingTab();
+                SettingsUIMap.Assert_Audits_File_Path(defaultPath);
+                SettingsUIMap.Update_Audits_File_Path(changedPath);
+                UIMap.Click_Save_RibbonButton();
+                SettingsUIMap.Click_Close_Settings_Tab_Button();
+                UIMap.Click_ConfigureSetting_From_Menu();
+                SettingsUIMap.Select_LoggingTab();
+                // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
+                SettingsUIMap.Assert_Audits_File_Path(changedPath);
+                // RESET TO DEFAULT
+                SettingsUIMap.Update_Audits_File_Path(defaultPath);
+                UIMap.Click_Save_RibbonButton();
+            }
+            finally
+            {
+                if (Directory.Exists(changedPath))
+                {
+                    Directory.Delete(changedPath);
+                    Assert.IsFalse(Directory.Exists(changedPath));
+                }
             }
         }
 
