@@ -12,6 +12,7 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <AssemblyName>warewolfBI</AssemblyName>
     <RootNamespace>warewolf.BI</RootNamespace>
+	<ProjectGuid>64B1BC06-92D4-4314-8B7E-279E9D008648</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
