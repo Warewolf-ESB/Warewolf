@@ -4715,7 +4715,7 @@ namespace Dev2.Activities.Specs.Composition
                    (item.PreviousActivity != null && item.PreviousActivity.Contains(activityName)) ||
                    (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
                ))
-            );ilure message to this assert
+            );
             Assert.AreEqual(expectedCount, results.Count(), string.Join(" ", results.Select(entry => entry.WorkflowName + " " + entry.AuditDate + " " + entry.AdditionalDetail).ToList()));
 
             if (results.Any() && table.Rows.Count > 0)
