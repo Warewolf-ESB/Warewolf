@@ -72,7 +72,7 @@ namespace Warewolf.UI.Tests
         [Then("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
+            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Warewolf.Launcher\\bin\\Debug\\Warewolf.Launcher.exe\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 
         }
