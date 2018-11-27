@@ -69,12 +69,12 @@ namespace Warewolf.UI.Tests
                 SettingsUIMap.Select_LoggingTab();
                 // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
                 SettingsUIMap.Assert_Audits_File_Path(changedPath);
-                // RESET TO DEFAULT
-                SettingsUIMap.Update_Audits_File_Path(defaultPath);
-                UIMap.Click_Save_RibbonButton();
             }
             finally
             {
+                // RESET TO DEFAULT
+                SettingsUIMap.Update_Audits_File_Path(defaultPath);
+                UIMap.Click_Save_RibbonButton();
                 if (Directory.Exists(changedPath))
                 {
                     Directory.Delete(changedPath, true);
