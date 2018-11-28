@@ -14,90 +14,112 @@ namespace Dev2.Runtime.ESB.Execution
         [JsonProperty]
         [Column(Name = "Id", IsDbGenerated = true, DbType = "Integer", IsPrimaryKey = true)]
         [Key]
+        [DataMember]
         public int Id { get; set; }
 
         [JsonProperty]
         [Column(Name = "WorkflowID", CanBeNull = true)]
+        [DataMember]
         public string WorkflowID { get; set; }
 
         [JsonProperty]
         [Column(Name = "ExecutionID", CanBeNull = true)]
+        [DataMember]
         public string ExecutionID { get; set; }
 
         [JsonProperty]
         [Column(Name = "ExecutionOrigin", CanBeNull = true)]
+        [DataMember]
         public long ExecutionOrigin { get; set; }
 
         [JsonProperty]
         [Column(Name = "IsSubExecution", CanBeNull = true)]
+        [DataMember]
         public long IsSubExecution { get; set; }
 
         [JsonProperty]
         [Column(Name = "IsRemoteWorkflow", CanBeNull = true)]
+        [DataMember]
         public long IsRemoteWorkflow { get; set; }
 
         [JsonProperty]
+        [DataMember]
         [Column(Name = "WorkflowName", CanBeNull = true)]
         public string WorkflowName { get; set; }
 
         [JsonProperty]
         [Column(Name = "AuditType", CanBeNull = true)]
+        [DataMember]
         public string AuditType { get; set; }
 
         [JsonProperty]
         [Column(Name = "PreviousActivity", CanBeNull = true)]
+        [DataMember]
         public string PreviousActivity { get; set; }
 
         [JsonProperty]
         [Column(Name = "PreviousActivityType", CanBeNull = true)]
+        [DataMember]
         public string PreviousActivityType { get; set; }
 
         [JsonProperty]
         [Column(Name = "PreviousActivityID", CanBeNull = true)]
+        [DataMember]
         public string PreviousActivityId { get; set; }
 
         [JsonProperty]
         [Column(Name = "NextActivity", CanBeNull = true)]
+        [DataMember]
         public string NextActivity { get; set; }
 
         [JsonProperty]
         [Column(Name = "NextActivityType", CanBeNull = true)]
+        [DataMember]
         public string NextActivityType { get; set; }
 
         [JsonProperty]
         [Column(Name = "NextActivityID", CanBeNull = true)]
+        [DataMember]
         public string NextActivityId { get; set; }
 
         [JsonProperty]
         [Column(Name = "ServerID", CanBeNull = true)]
+        [DataMember]
         public string ServerID { get; set; }
 
         [JsonProperty]
         [Column(Name = "ParentID", CanBeNull = true)]
+        [DataMember]
         public string ParentID { get; set; }
 
         [JsonProperty]
         [Column(Name = "ExecutingUser", CanBeNull = true)]
+        [DataMember]
         public string ExecutingUser { get; set; }
 
         [JsonProperty]
         [Column(Name = "ExecutionOriginDescription", CanBeNull = true)]
+        [DataMember]
         public string ExecutionOriginDescription { get; set; }
 
         [JsonProperty]
         [Column(Name = "ExecutionToken", CanBeNull = true)]
+        [DataMember]
         public string ExecutionToken { get; set; }
 
         [JsonProperty]
         [Column(Name = "AdditionalDetail", CanBeNull = true)]
+        [DataMember]
         public string AdditionalDetail { get; set; }
 
         [JsonProperty]
         [Column(Name = "Environment", CanBeNull = true)]
+        [DataMember]
         public string Environment { get; set; }
 
         [JsonProperty]
         [Column(Name = "AuditDate", CanBeNull = true)]
+        [DataMember]
         public string AuditDate { get; set; }
 
         public AuditLog() { }
@@ -130,6 +152,42 @@ namespace Dev2.Runtime.ESB.Execution
                 NextActivityType = nextActivity.GetType().ToString();
                 NextActivityId = nextActivity.ActivityId.ToString();
             }
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj is AuditLog auditLog)
+            {
+                return Equals(auditLog);
+            }
+            return false;
+        }
+        public bool Equals(AuditLog other) {
+            var eq = true;
+            eq &= Id == other.Id;
+            eq &= WorkflowID == other.WorkflowID;
+            eq &= ExecutionID == other.ExecutionID;
+            eq &= ExecutionOrigin == other.ExecutionOrigin;
+            eq &= IsSubExecution == other.IsSubExecution;
+            eq &= IsRemoteWorkflow == other.IsRemoteWorkflow;
+            eq &= WorkflowName == other.WorkflowName;
+            eq &= AuditType == other.AuditType;
+            eq &= PreviousActivity == other.PreviousActivity;
+            eq &= PreviousActivityType == other.PreviousActivityType;
+            eq &= PreviousActivityId == other.PreviousActivityId;
+            eq &= NextActivity == other.NextActivity;
+            eq &= NextActivityType == other.NextActivityType;
+            eq &= NextActivityId == other.NextActivityId;
+            eq &= ServerID == other.ServerID;
+            eq &= ParentID == other.ParentID;
+            eq &= ExecutingUser == other.ExecutingUser;
+            eq &= ExecutionOriginDescription == other.ExecutionOriginDescription;
+            eq &= ExecutionToken == other.ExecutionToken;
+            eq &= AdditionalDetail == other.AdditionalDetail;
+            eq &= Environment == other.Environment;
+            eq &= AuditDate == other.AuditDate;
+            return eq;
         }
     }
 }
