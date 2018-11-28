@@ -1177,7 +1177,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Contains(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
@@ -1409,11 +1409,11 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Contains(toolName)).ToList();
             if (!toolSpecificDebug.Any())
             {
                 toolSpecificDebug =
-                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.DisplayName.Contains(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
