@@ -30,6 +30,7 @@ namespace Dev2.Runtime.ESB.Execution
     {
         public SQLiteConfiguration()
         {
+            SQLiteLog.Enabled = false;
             SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
             SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
             SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
@@ -74,12 +75,8 @@ namespace Dev2.Runtime.ESB.Execution
         public static void ClearAuditLog()
         {
             var db = new DatabaseContext();
-            foreach (var id in db.Audits.Select(e => e.Id))
-            {
-                var entity = new AuditLog { Id = id };
-                db.Audits.Attach(entity);
-                db.Audits.Remove(entity);
-            }
+            db.Database.ExecuteSqlCommand("DELETE FROM AuditLog");
+
             db.SaveChanges();
         }
 
