@@ -30,9 +30,9 @@ namespace Warewolf.Launcher.TestCoverageMergers
                     DeletedSnapshots.Add(snapshot);
                 }
             }
-            var DotCoverSnapshotsString = String.Join("\";\"", SnapshotPaths.Where((snapshot) => { return !DeletedSnapshots.Contains(snapshot); }));
+            var DotCoverSnapshotsString = string.Join("\";\"", SnapshotPaths.Where((snapshot) => { return !DeletedSnapshots.Contains(snapshot); }));
             Console.WriteLine($"Writing coverage report to \"{DestinationFilePath}\" with \"{ToolPath}\" see log at \"{LogFilePath}\".");
-            ProcessUtils.RunFileInThisProcess(ToolPath, $"-reports:\"{DotCoverSnapshotsString}\" -targetdir:\"{DestinationFilePath}\"");
+            ProcessUtils.RunFileInThisProcess(ToolPath, $"-reports:\"{DotCoverSnapshotsString}\" -targetdir:\"{DestinationFilePath}\" -reporttypes:Html;Xml");
         }
     }
 }
