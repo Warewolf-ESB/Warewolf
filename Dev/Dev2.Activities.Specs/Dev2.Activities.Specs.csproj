@@ -359,7 +359,7 @@
       <HintPath>..\packages\TimeSpan2.2.1.4\lib\net40\TimeSpan2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Warewolf.Language.Parser, Version=0.0.6903.11800, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Warewolf.Language.Parser, Version=0.0.6905.12826, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
