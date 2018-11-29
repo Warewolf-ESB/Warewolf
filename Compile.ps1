@@ -251,6 +251,7 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 }
 
 #Compile Solutions
+&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.Launcher\Warewolf.Launcher.csproj" "/p:Platform=`"AnyCPU`";Configuration=`"Debug`"" "/maxcpucount" $Target "/nodeReuse:false"
 foreach ($SolutionFile in $KnownSolutionFiles) {
     if (Test-Path $SolutionFile) {
         $GetSolutionFileInfo = Get-Item $SolutionFile
