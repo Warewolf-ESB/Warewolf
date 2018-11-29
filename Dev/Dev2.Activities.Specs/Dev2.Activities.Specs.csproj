@@ -172,6 +172,7 @@
       <DependentUpon>StudioTestFramework.feature</DependentUpon>
     </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkSteps.cs" />
+    <Compile Include="DatasplitCompositionLoadTests.cs" />
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -358,6 +359,7 @@
       <HintPath>..\packages\TimeSpan2.2.1.4\lib\net40\TimeSpan2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Warewolf.Language.Parser, Version=0.0.6903.11800, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
