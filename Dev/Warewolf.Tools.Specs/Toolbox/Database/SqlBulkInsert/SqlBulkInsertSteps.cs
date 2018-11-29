@@ -251,6 +251,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.Result = "[[result]]";
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
+            Console.WriteLine("Sql Bulk Insert Tool Result: "  + result);
         }
 
         [Then(@"the new table will have")]
