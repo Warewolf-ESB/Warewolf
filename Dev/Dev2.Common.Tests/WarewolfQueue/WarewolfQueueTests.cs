@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using Dev2.Common.Container;
@@ -57,9 +58,12 @@ namespace Dev2.Common.Tests
             }
         }
 
-        class BenchmarkOb : IEquatable<BenchmarkOb>
+        [DataContract]
+        public class BenchmarkOb
         {
+            [DataMember]
             public int num;
+            [DataMember]
             public string word;
 
             public override bool Equals(Object obj)
@@ -77,6 +81,10 @@ namespace Dev2.Common.Tests
                 eq &= word == other.word;
                 return eq;
             }
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
 
         [TestMethod]
@@ -90,19 +98,22 @@ namespace Dev2.Common.Tests
                 word = "test value"
             };
 
+            var gate = new ManualResetEvent(false);
+
             Exception threadException = null;
-            var thread = new Thread(() =>
+            var thread = new Thread((Object queueOb) =>
             {
+                var queue = queueOb as WarewolfQueue;
+
                 try
                 {
-                    using (var session = _queue.OpenSession())
+                    using (var session = queue.OpenSession())
                     {
                         BenchmarkOb data = null;
-                        do
-                        {
-                            data = session.Dequeue<BenchmarkOb>();
-                            Thread.Sleep(100);
-                        } while (data is null);
+                        gate.WaitOne();
+
+                        data = session.Dequeue<BenchmarkOb>();
+                        Assert.IsNotNull(data);
                         Assert.AreEqual(data, expected);
                         var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
                         Assert.IsTrue(startTimeValue > 1000, "flush does not define enqueue timing");
@@ -118,7 +129,7 @@ namespace Dev2.Common.Tests
                 IsBackground = true
             };
 
-            thread.Start();
+            thread.Start(_queue);
 
             using (var session = _queue.OpenSession())
             {
@@ -126,6 +137,7 @@ namespace Dev2.Common.Tests
                 session.Enqueue(expected);
                 Thread.Sleep(1000);
                 session.Flush();
+                gate.Set();
             }
 
             thread.Join();
