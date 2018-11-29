@@ -31,9 +31,10 @@ namespace Dev2.Common.Container
         {
             this._queue = queue;
         }
-        public void Enqueue<T>(T ob)
+        public IWarewolfQueueSession Enqueue<T>(T ob)
         {
-            _buffer.Add(MessagePackSerializer.Typeless.Serialize(ob));
+            _buffer.Add(MessagePackSerializer.Serialize<T>(ob));
+            return this;
         }
         public T Dequeue<T>() where T : class
         {
@@ -41,7 +42,7 @@ namespace Dev2.Common.Container
             {
                 return default(T);
             }
-            return MessagePackSerializer.Typeless.Deserialize(data) as T;
+            return MessagePackSerializer.Deserialize<T>(data);
         }
 
         public virtual void Flush()
