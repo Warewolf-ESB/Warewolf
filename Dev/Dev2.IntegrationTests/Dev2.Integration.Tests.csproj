@@ -195,7 +195,7 @@
     </Reference>
     <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Warewolf.Launcher\bin\Debug\Warewolf.Launcher.exe</HintPath>
+      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
