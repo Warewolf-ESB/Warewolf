@@ -118,43 +118,63 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void Flush()
         {
-            IAuditDatabaseContext database = null;
-            int count = MAX_DATABASE_TRIES;
-            do
+            bool AddLogsToDatabase(IAuditDatabaseContext databaseContext)
             {
-                try
-                {
-                    database = _databaseContextFactory.Get();
-                }
-                catch (Exception)
-                {
-                    count--;
-                    if (count <= 0)
-                    {
-                        throw;
-                    }
-                }
-                Thread.Sleep(DATABASE_RETRY_DELAY);
-            } while (database is null && --count >= 0);
-
-            using (database)
-            {
+                var _hadLogs = false;
                 using (var session = _warewolfQueue.OpenSession())
                 {
-                    do
+                    for (int insertCount = 0; insertCount <= 250; insertCount++)
                     {
                         var auditLog = session.Dequeue<AuditLog>();
                         if (auditLog is null)
                         {
                             break;
                         }
-                        database.Audits.Add(auditLog);
+                        databaseContext.Audits.Add(auditLog);
+                        _hadLogs = true;
                     }
-                    while (true);
                 }
-
-                Flush(database, MAX_DATABASE_TRIES);
+                return _hadLogs;
             }
+            void TryGetDatabaseContext(ref IAuditDatabaseContext databaseContext)
+            {
+                int count = MAX_DATABASE_TRIES;
+                do
+                {
+                    try
+                    {
+                        databaseContext = _databaseContextFactory.Get();
+                    }
+                    catch (Exception)
+                    {
+                        count--;
+                        if (count <= 0)
+                        {
+                            throw;
+                        }
+                    }
+                    Thread.Sleep(DATABASE_RETRY_DELAY);
+                } while (databaseContext is null && --count >= 0);
+            }
+
+            IAuditDatabaseContext database = null;
+            var hadLogs = false;
+            do
+            {
+                TryGetDatabaseContext(ref database);
+
+                using (database)
+                {
+                    try
+                    {
+                        hadLogs = AddLogsToDatabase(database);
+                    }
+                    finally
+                    {
+                        Flush(database, MAX_DATABASE_TRIES);
+                    }
+                }
+            } while (hadLogs);
         }
     }
 
@@ -190,12 +210,16 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
+                this.Configuration.AutoDetectChangesEnabled = false;
+                this.Configuration.ValidateOnSaveEnabled = false;
                 var directoryWrapper = new DirectoryWrapper();
                 directoryWrapper.CreateIfNotExists(Config.Server.AuditFilePath);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
                 this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
+                this.Configuration.AutoDetectChangesEnabled = false;
+                this.Configuration.ValidateOnSaveEnabled = false;
             });
         }
 
