@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 
 namespace Dev2.Activities.Specs
 {

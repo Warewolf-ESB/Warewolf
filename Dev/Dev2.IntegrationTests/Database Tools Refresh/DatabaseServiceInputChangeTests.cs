@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Core;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Integration.Tests.Database_Tools_Refresh
