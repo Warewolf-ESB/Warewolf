@@ -4804,6 +4804,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)"" as")]
         public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string activityName, string auditType, string workflowName, Table table)
         {
+            Thread.Sleep(1000);
             var results = Dev2StateAuditLogger.Query(item =>
                (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
                (auditType == "" || item.AuditType.Equals(auditType)) &&
