@@ -286,28 +286,31 @@ namespace Dev2
             }
         }
 
-        volatile bool _flushing;
+        long _flushing;
         void PerformLoggerFlushActions(object state)
         {
-            if (_flushing)
+            if (Interlocked.Exchange(ref _flushing, 1) != 0)
             {
                 return;
             }
 
-            _flushing = true;
             try
             {
                 LogManager.FlushLogs();
             }
+            catch (Exception e)
+            {
+                //
+            }
             finally
             {
-                _flushing = false;
+                Interlocked.Decrement(ref _flushing);
             }
         }
         void PerformLogFlushTimerPause()
         {
             _loggerFlushTimer.Change(0, Timeout.Infinite);
-            while (_flushing)
+            while (Interlocked.Read(ref _flushing) > 0)
             {
                 Thread.Sleep(100);
             }
