@@ -251,7 +251,6 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 }
 
 #Compile Solutions
-&"$MSBuildPath" "$PSScriptRoot\Dev\Warewolf.Launcher\Warewolf.Launcher.csproj" "/p:Platform=`"AnyCPU`";Configuration=`"Debug`"" "/maxcpucount" $Target "/nodeReuse:false"
 foreach ($SolutionFile in $KnownSolutionFiles) {
     if (Test-Path $SolutionFile) {
         $GetSolutionFileInfo = Get-Item $SolutionFile
@@ -270,7 +269,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 $OutputProperty = ""
             }
             &"$NuGet" "restore" "$SolutionFile"
-            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target "/nodeReuse:false"
+            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/nodeReuse:false" $OutputProperty $Target
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 exit 1
