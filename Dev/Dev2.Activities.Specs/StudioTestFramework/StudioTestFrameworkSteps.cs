@@ -42,7 +42,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Activities.Specs.Composition;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
