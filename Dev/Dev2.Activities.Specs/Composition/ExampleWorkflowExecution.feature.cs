@@ -416,7 +416,7 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 93
-   testRunner.And("\"Utility - System Information Test\" contains \"Utility - Gather System Info\" from " +
+   testRunner.And("\"Utility - System Information Test\" contains \"Utility - System Information\" from " +
                     "server \"localhost\" with mapping as", ((string)(null)), table23, "And ");
 #line 95
    testRunner.When("\"Utility - System Information Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

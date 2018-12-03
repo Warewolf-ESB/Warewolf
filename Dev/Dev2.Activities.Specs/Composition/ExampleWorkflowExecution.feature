@@ -90,7 +90,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
-	  And "Utility - System Information Test" contains "Utility - Gather System Info" from server "localhost" with mapping as
+	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - System Information Test" is executed
 	  Then the workflow execution has "NO" error
