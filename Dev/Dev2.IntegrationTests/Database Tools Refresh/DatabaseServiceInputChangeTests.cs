@@ -41,18 +41,18 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void change_sql_source_verify_Empty_Inputs()
+        public void Change_sql_source_verify_Empty_Inputs()
         {
             var newName = Guid.NewGuid().ToString();
             var cleanProcName = newName.Replace("-", "").Replace(" ", "");
             var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
             var result = SqlHelper.RunSqlCommand(createProcedure);
             Assert.AreEqual(-1, result);
-            var inputs = new List<IServiceInput>()
+            var inputs = new List<IServiceInput>
                 {
                     new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + cleanProcName}
                 };
-            var sqlActivity = new DsfSqlServerDatabaseActivity()
+            var sqlActivity = new DsfSqlServerDatabaseActivity
             {
                 Inputs = inputs,
                 ActionName = "dbo." + cleanProcName,
@@ -84,8 +84,17 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             //add testing here
 
             source.SelectedSource = mockSource.Object;
-            Assert.AreEqual(0, databaseInputRegion.Inputs.Count);          
-           
+            Assert.AreEqual(0, databaseInputRegion.Inputs.Count);
+
+            var dropResult = DropProcedure(cleanProcName);
+            Assert.AreEqual(-1, dropResult);
+        }
+
+        private int DropProcedure(string cleanProcName)
+        {
+            var dropProcedure = "IF ( OBJECT_ID('" + cleanProcName + "') IS NOT NULL ) DROP PROCEDURE [dbo].[" + cleanProcName + "]";
+            var dropResult = SqlHelper.RunSqlCommand(dropProcedure);
+            return dropResult;
         }
     }
 }
