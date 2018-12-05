@@ -189,5 +189,38 @@ namespace Dev2.Runtime.ESB.Execution
             eq &= AuditDate == other.AuditDate;
             return eq;
         }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = 1561563491;
+
+                hashCode = (hashCode * 157) + Id.GetHashCode();
+                hashCode = (hashCode * 157) + WorkflowID.GetHashCode();
+                hashCode = (hashCode * 157) + ExecutionID.GetHashCode();
+                hashCode = (hashCode * 157) + ExecutionOrigin.GetHashCode();
+                hashCode = (hashCode * 157) + IsSubExecution.GetHashCode();
+                hashCode = (hashCode * 157) + IsRemoteWorkflow.GetHashCode();
+                hashCode = (hashCode * 157) + WorkflowName.GetHashCode();
+                hashCode = (hashCode * 157) + AuditType.GetHashCode();
+                hashCode = (hashCode * 157) + PreviousActivity.GetHashCode();
+                hashCode = (hashCode * 157) + PreviousActivityType.GetHashCode();
+                hashCode = (hashCode * 157) + PreviousActivityId.GetHashCode();
+                hashCode = (hashCode * 157) + NextActivity.GetHashCode();
+                hashCode = (hashCode * 157) + NextActivityType.GetHashCode();
+                hashCode = (hashCode * 157) + NextActivityId.GetHashCode();
+                hashCode = (hashCode * 157) + ServerID.GetHashCode();
+                hashCode = (hashCode * 157) + ParentID.GetHashCode();
+                hashCode = (hashCode * 157) + ExecutingUser.GetHashCode();
+                hashCode = (hashCode * 157) + ExecutionOriginDescription.GetHashCode();
+                hashCode = (hashCode * 157) + ExecutionToken.GetHashCode();
+                hashCode = (hashCode * 157) + AdditionalDetail.GetHashCode();
+                hashCode = (hashCode * 157) + Environment.GetHashCode();
+                hashCode = (hashCode * 157) + AuditDate.GetHashCode();
+
+                return hashCode;
+            }
+        }
     }
 }
