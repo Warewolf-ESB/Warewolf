@@ -59,26 +59,26 @@ namespace Dev2.Common.Tests
         }
 
         [DataContract]
-        public class BenchmarkOb
+        public class BenchmarkObject
         {
             [DataMember]
-            public int num;
+            public int Number;
             [DataMember]
-            public string word;
+            public string Word;
 
             public override bool Equals(Object obj)
             {
-                if (obj is BenchmarkOb benchmarkOb)
+                if (obj is BenchmarkObject benchmarkObject)
                 {
-                    return Equals(benchmarkOb);
+                    return Equals(benchmarkObject);
                 }
                 return false;
             }
-            public bool Equals(BenchmarkOb other)
+            public bool Equals(BenchmarkObject other)
             {
                 var eq = true;
-                eq &= num == other.num;
-                eq &= word == other.word;
+                eq &= Number == other.Number;
+                eq &= Word == other.Word;
                 return eq;
             }
             public override int GetHashCode()
@@ -92,58 +92,60 @@ namespace Dev2.Common.Tests
         {
             var startTime = DateTime.UtcNow;
 
-            var expected = new BenchmarkOb
+            var expected = new BenchmarkObject
             {
-                num = 123,
-                word = "test value"
+                Number = 123,
+                Word = "test value"
             };
 
-            var gate = new ManualResetEvent(false);
-
-            Exception threadException = null;
-            var thread = new Thread((Object queueOb) =>
+            using (var gate = new ManualResetEvent(false))
             {
-                var queue = queueOb as WarewolfQueue;
 
-                try
+                Exception threadException = null;
+                var thread = new Thread((Object queueInstance) =>
                 {
-                    using (var session = queue.OpenSession())
+                    var queue = queueInstance as WarewolfQueue;
+
+                    try
                     {
-                        BenchmarkOb data = null;
-                        gate.WaitOne();
+                        using (var session = queue.OpenSession())
+                        {
+                            BenchmarkObject data = null;
+                            gate.WaitOne();
 
-                        data = session.Dequeue<BenchmarkOb>();
-                        Assert.IsNotNull(data);
-                        Assert.AreEqual(data, expected);
-                        var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
-                        Assert.IsTrue(startTimeValue > 1000, "flush does not define enqueue timing");
-                        session.Flush();
+                            data = session.Dequeue<BenchmarkObject>();
+                            Assert.IsNotNull(data);
+                            Assert.AreEqual(data, expected);
+                            var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
+                            Assert.IsTrue(startTimeValue > 1000, "flush does not define enqueue timing");
+                            session.Flush();
+                        }
                     }
-                }
-                catch (Exception e)
+                    catch (Exception e)
+                    {
+                        threadException = e;
+                    }
+                })
                 {
-                    threadException = e;
+                    IsBackground = true
+                };
+
+                thread.Start(_queue);
+
+                using (var session = _queue.OpenSession())
+                {
+                    startTime = DateTime.UtcNow;
+                    session.Enqueue(expected);
+                    Thread.Sleep(1000);
+                    session.Flush();
+                    gate.Set();
                 }
-            })
-            {
-                IsBackground = true
-            };
 
-            thread.Start(_queue);
-
-            using (var session = _queue.OpenSession())
-            {
-                startTime = DateTime.UtcNow;
-                session.Enqueue(expected);
-                Thread.Sleep(1000);
-                session.Flush();
-                gate.Set();
-            }
-
-            thread.Join();
-            if (threadException != null)
-            {
-                throw threadException;
+                thread.Join();
+                if (threadException != null)
+                {
+                    throw threadException;
+                }
             }
         }
 
@@ -152,10 +154,10 @@ namespace Dev2.Common.Tests
         {
             var startTime = DateTime.UtcNow;
 
-            var expected = new BenchmarkOb
+            var expected = new BenchmarkObject
             {
-                num = 123,
-                word = "test value"
+                Number = 123,
+                Word = "test value"
             };
 
             Exception threadException = null;
@@ -167,10 +169,10 @@ namespace Dev2.Common.Tests
                     {
                         for (var i = 0; i < 100000; i++)
                         {
-                            BenchmarkOb data = null;
+                            BenchmarkObject data = null;
                             do
                             {
-                                data = session.Dequeue<BenchmarkOb>();
+                                data = session.Dequeue<BenchmarkObject>();
                             } while (data is null);
                             Assert.AreEqual(data, expected);
                             var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;

@@ -17,6 +17,18 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         }
 
         [TestMethod]
+        public void AuditLog_GetHashCode()
+        {
+            var expected = new AuditLog();
+            var actual = new AuditLog();
+            Assert.AreEqual(expected, actual);
+            actual.AuditType = "AuditType";
+            Assert.AreNotEqual(expected, actual);
+            expected.AuditType = "AuditType";
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void AuditLog_Can_Pass_Through_WarewolfQueue()
         {
             using (var queue = new WarewolfQueue())
