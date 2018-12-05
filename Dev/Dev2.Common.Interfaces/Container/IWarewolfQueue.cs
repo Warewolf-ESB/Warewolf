@@ -5,6 +5,7 @@ namespace Dev2.Common.Interfaces.Container
     public interface IWarewolfQueue : IDisposable
     {
         IWarewolfQueueSession OpenSession();
+        bool IsEmpty();
     }
 
     public interface IWarewolfQueueSession : IDisposable
