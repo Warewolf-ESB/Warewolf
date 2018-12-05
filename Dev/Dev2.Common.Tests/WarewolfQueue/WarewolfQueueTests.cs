@@ -152,8 +152,6 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void WarewolfQueue_Threaded_EnqueueDequeue_Benchmark_Success()
         {
-            var startTime = DateTime.UtcNow;
-
             var expected = new BenchmarkObject
             {
                 Number = 123,
@@ -175,7 +173,6 @@ namespace Dev2.Common.Tests
                                 data = session.Dequeue<BenchmarkObject>();
                             } while (data is null);
                             Assert.AreEqual(data, expected);
-                            var startTimeValue = (DateTime.UtcNow - startTime).TotalMilliseconds;
                             session.Flush();
                         }
                     }
@@ -193,7 +190,6 @@ namespace Dev2.Common.Tests
 
             using (var session = _queue.OpenSession())
             {
-                startTime = DateTime.UtcNow;
                 for (var i = 0; i < 100000; i++)
                 {
                     session.Enqueue(expected);
