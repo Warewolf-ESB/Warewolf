@@ -20,6 +20,11 @@ namespace Dev2.Common.Container
         public void Dispose()
         {
         }
+
+        public bool IsEmpty()
+        {
+            return !_queue.Any();
+        }
     }
 
     public class WarewolfQueueSession : IWarewolfQueueSession

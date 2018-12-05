@@ -96,24 +96,21 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void Flush(IAuditDatabaseContext database, int reTry)
         {
-            var userPrinciple = Common.Utilities.ServerUser;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            
+            try
             {
-                try
+                database.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                if (reTry == 0)
                 {
-                    database.SaveChanges();
+                    throw;
                 }
-                catch (Exception e)
-                {
-                    if (reTry == 0)
-                    {
-                        throw;
-                    }
-                    reTry--;
-                    Thread.Sleep(DATABASE_RETRY_DELAY);
-                    Flush(database, reTry);
-                }
-            });
+                reTry--;
+                Thread.Sleep(DATABASE_RETRY_DELAY);
+                Flush(database, reTry);
+            }
         }
 
         public void Flush()
@@ -130,7 +127,7 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             break;
                         }
-                        databaseContext.Audits.Add(auditLog);
+                        //databaseContext.Audits.Add(auditLog)
                         _hadLogs = true;
                     }
                 }
@@ -157,6 +154,11 @@ namespace Dev2.Runtime.ESB.Execution
                 } while (databaseContext is null && --count >= 0);
             }
 
+            if (_warewolfQueue.IsEmpty())
+            {
+                return;
+            }
+
             IAuditDatabaseContext database = null;
             var hadLogs = false;
             do
@@ -165,13 +167,23 @@ namespace Dev2.Runtime.ESB.Execution
 
                 using (database)
                 {
-                    try
+                    using (var transaction = database.Database.BeginTransaction())
                     {
-                        hadLogs = AddLogsToDatabase(database);
-                    }
-                    finally
-                    {
-                        Flush(database, MAX_DATABASE_TRIES);
+                        try
+                        {
+                            try
+                            {
+                                hadLogs = AddLogsToDatabase(database);
+                            }
+                            finally
+                            {
+                                Flush(database, MAX_DATABASE_TRIES);
+                            }
+                            transaction.Commit();
+                        } catch
+                        {
+                            transaction.Rollback();
+                        }
                     }
                 }
             } while (hadLogs);
@@ -182,6 +194,7 @@ namespace Dev2.Runtime.ESB.Execution
     {
         DbSet<AuditLog> Audits { get; set; }
         int SaveChanges();
+        Database Database { get; }
     }
     interface IDatabaseContextFactory
     {
