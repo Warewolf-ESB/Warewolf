@@ -110,25 +110,30 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
         {
             var newName = Guid.NewGuid().ToString();
             var cleanProcName = newName.Replace("-", "").Replace(" ", "");
-            var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
-            var result = SqlHelper.RunSqlCommand(createProcedure);
-            Assert.AreEqual(-1, result);
+            try
+            {
+                var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
+                var result = SqlHelper.RunSqlCommand(createProcedure);
+                Assert.AreEqual(-1, result);
 
-            Setup(cleanProcName);
+                Setup(cleanProcName);
 
-            var mockSource = new Mock<IDbSource>();
+                var mockSource = new Mock<IDbSource>();
 
-            IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(_modelItem, _dbActionRegion);
-            Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
-            Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
-            Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
-            //add testing here
+                IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(_modelItem, _dbActionRegion);
+                Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
+                Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
+                Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
+                //add testing here
 
-            _source.SelectedSource = mockSource.Object;
-            Assert.AreEqual(0, databaseInputRegion.Inputs.Count);
-
-            var dropResult = DropProcedure(cleanProcName);
-            Assert.AreEqual(-1, dropResult);
+                _source.SelectedSource = mockSource.Object;
+                Assert.AreEqual(0, databaseInputRegion.Inputs.Count);
+            }
+            finally
+            {
+                var dropResult = DropProcedure(cleanProcName);
+                Assert.AreEqual(-1, dropResult);
+            }
         }
 
         private int DropProcedure(string cleanProcName)
@@ -151,7 +156,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
             Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
             //testing here
-            const string alterProcedure = "ALTER procedure [dbo]‌‌.[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
+            const string alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
             var alterTableResults = SqlHelper.RunSqlCommand(alterProcedure);
             Assert.AreEqual(-1, alterTableResults);
 
@@ -159,19 +164,15 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             Assert.IsNotNull(_dbActionRegion.Actions, "No Actions were generated for source: " + _selectedSource);
 
             var underTest = _dbActionRegion.Actions.Single(p => p.Name.EndsWith(procName));
-            Assert.AreEqual(3, databaseInputRegion.Inputs.Count);
+
             Assert.AreEqual("ProductId", underTest.Inputs.ToList()[0].Name);
+            Assert.AreEqual("[[ProductId]]", underTest.Inputs.ToList()[0].Value);
+
             Assert.AreEqual("ProductId1", underTest.Inputs.ToList()[1].Name);
+            Assert.AreEqual("[[ProductId1]]", underTest.Inputs.ToList()[1].Value);
+
             Assert.AreEqual("ProductId2", underTest.Inputs.ToList()[2].Name);
-
-            Assert.AreEqual("ProductId", databaseInputRegion.Inputs.ToList()[0].Name);
-            Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.ToList()[0].Value);
-
-            Assert.AreEqual("ProductId1", databaseInputRegion.Inputs.ToList()[1].Name);
-            Assert.AreEqual("[[ProductId1]]", databaseInputRegion.Inputs.ToList()[1].Value);
-
-            Assert.AreEqual("ProductId2", databaseInputRegion.Inputs.ToList()[2].Name);
-            Assert.AreEqual("[[ProductId2]]", databaseInputRegion.Inputs.ToList()[2].Value);
+            Assert.AreEqual("[[ProductId2]]", underTest.Inputs.ToList()[2].Value);
         }
     }
 }
