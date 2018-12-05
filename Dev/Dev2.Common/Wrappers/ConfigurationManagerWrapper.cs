@@ -47,12 +47,12 @@ namespace Dev2.Common.Wrappers
             {
                 lock (_settingLock)
                 {
-                    cache = null;
-
                     var settings = Config.Server.Get();
                     var prop = typeof(ServerSettingsData).GetProperty(settingName);
                     prop.SetValue(settings, value);
                     settings.Save(_fileWrapper);
+
+                    cache = null;
                 }
             }
         }
