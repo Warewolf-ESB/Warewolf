@@ -5,7 +5,27 @@ body {
   margin: 0;
   color: #333;
 }
+navbar-brand > img {
+  display: block;
+}
+.navbar-inverse .navbar-brand {
+  color: #9d9d9d;
+}
 
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}
+.navbar-brand, .navbar > .container-fluid .navbar-brand {
+  margin-left: -15px;
+}
+#brandLogo {
+  border: 0;
+  margin-top: -27px;
+}
 .img-thumbnail, body {
   background-color: #fff;
 }
@@ -24,6 +44,7 @@ a:-webkit-any-link {
   color: #555;
   text-decoration: none;
 }
+
 .mat-primary {
   background-color: #ab4e08;
 }
@@ -52,10 +73,10 @@ footer {
   color: #fff;
 }
 
+.sidenav-toolbar img,
 .sidenav img {
-  margin: 5px;
   width: auto;
-  height: 50px;
+  max-height: 62px;
 }
 
 mat-sidenav {
@@ -107,8 +128,16 @@ mat-sidenav {
   overflow: auto;
   max-height: 500px;
 }
-
+.sidenav-toolbar {
+  min-height: 80px;
+  padding-top: 10px;
+  padding-left: 100px;
+  padding-right: 100px;
+  position: fixed;
+  z-index: 2;
+}
 .sidenav-is-mobile .sidenav-toolbar {
+
   position: fixed;
   z-index: 2;
 }
@@ -126,9 +155,7 @@ mat-sidenav {
 }
 
 main {
-  display: flex;
   min-height: 500px;
-  min-width: 100%;
 }
 
 mat-sidenav-container,
@@ -170,4 +197,59 @@ a:active {
   line-height: 30px;
   margin: 0;
   width: 85%;
+}
+
+
+/*FOOTER*/
+.footerWrap {
+  width: 100%;
+  bottom: 0px;
+  margin-top: 20px;
+}
+
+.footer {
+  width: 100%;
+  margin: auto;
+}
+
+.footerContent {
+  float: left;
+  width: 100%;
+  background-color: black;
+  padding: 20px 0;
+}
+
+.footer p {
+  float: left;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+/*FOOTER*/
+
+
+.generalMessageWrap {
+  width: 100%;
+  bottom: 0px;
+  margin-top: 20px;
+}
+
+.generalMessage {
+  width: 100%;
+  margin: auto;
+}
+
+.generalMessageContent {
+  float: left;
+  width: 100%;
+  background-color: gray;
+  padding: 20px 0;
+}
+
+.generalMessage p {
+  float: left;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
 }

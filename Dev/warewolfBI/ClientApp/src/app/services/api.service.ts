@@ -36,7 +36,6 @@ export class APIService {
     return this.httpClient.get<any[]>(wareWolfUrl, httpOptions)
       .pipe(
         map((response) => {
-          console.log('response' + response);
           this.results = response as LogEntry[];
           return response;
         }),
