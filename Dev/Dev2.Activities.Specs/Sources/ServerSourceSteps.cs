@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using Dev2.Activities.Specs.Composition;
 using Dev2.Common;
@@ -26,12 +27,26 @@ namespace Dev2.Activities.Specs.Sources
     public sealed class ServerSourceSteps : RecordSetBases
     {
         IServer environmentModel;
+        const string wolfsdenServer = "192.168.104.202";
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
             environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
+        }
+
+        private static void IsServerOnline(string server)
+        {
+            PingReply pingReply;
+            using (var ping = new Ping())
+            {
+                pingReply = ping.Send(server);
+            }
+            if (pingReply.Status != IPStatus.Success)
+            {
+                Assert.Fail(server + " is unavailable");
+            }
         }
 
         [AfterScenario]
@@ -49,6 +64,10 @@ namespace Dev2.Activities.Specs.Sources
         public void GivenICreateAServerSourceAs(Table table)
         {
             var address = table.Rows[0]["Address"];
+            if (address == "http://wolfs-den:3142")
+            {
+                IsServerOnline(wolfsdenServer);
+            }
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
 
