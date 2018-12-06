@@ -292,6 +292,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 public DbSet<AuditLog> Audits { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
                 public bool IsDisposed { get; private set; }
+
+                public Database Database => throw new NotImplementedException();
+
                 public void Dispose()
                 {
                     IsDisposed = true;
