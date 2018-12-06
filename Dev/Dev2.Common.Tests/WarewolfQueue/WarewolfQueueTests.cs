@@ -62,9 +62,9 @@ namespace Dev2.Common.Tests
         public class BenchmarkObject
         {
             [DataMember]
-            public int Number;
+            public int _number;
             [DataMember]
-            public string Word;
+            public string _word;
 
             public override bool Equals(Object obj)
             {
@@ -77,8 +77,8 @@ namespace Dev2.Common.Tests
             public bool Equals(BenchmarkObject other)
             {
                 var eq = true;
-                eq &= Number == other.Number;
-                eq &= Word == other.Word;
+                eq &= _number == other._number;
+                eq &= _word == other._word;
                 return eq;
             }
             public override int GetHashCode()
@@ -94,8 +94,8 @@ namespace Dev2.Common.Tests
 
             var expected = new BenchmarkObject
             {
-                Number = 123,
-                Word = "test value"
+                _number = 123,
+                _word = "test value"
             };
 
             using (var gate = new ManualResetEvent(false))
@@ -154,8 +154,8 @@ namespace Dev2.Common.Tests
         {
             var expected = new BenchmarkObject
             {
-                Number = 123,
-                Word = "test value"
+                _number = 123,
+                _word = "test value"
             };
 
             Exception threadException = null;
