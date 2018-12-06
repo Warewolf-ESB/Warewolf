@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using Dev2.Common.Container;
 using Dev2.Common.Interfaces.Container;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Common.Tests
@@ -15,12 +13,12 @@ namespace Dev2.Common.Tests
         IWarewolfQueue _queue;
 
         [TestInitialize]
-        public void init()
+        public void Init()
         {
             _queue = new WarewolfQueue();
         }
         [TestCleanup]
-        public void cleanup()
+        public void Cleanup()
         {
             _queue.Dispose();
         }
@@ -36,14 +34,14 @@ namespace Dev2.Common.Tests
         {
             using (var session = _queue.OpenSession())
             {
-
+                //
             }
         }
 
         [TestMethod]
         public void WarewolfQueue_EnqueueDequeue_Success()
         {
-            var expected = "test data";
+            const string expected = "test data";
             using (var session = _queue.OpenSession())
             {
                 session.Enqueue<string>(expected);
@@ -62,9 +60,9 @@ namespace Dev2.Common.Tests
         public class BenchmarkObject
         {
             [DataMember]
-            public int Number;
+            public int Number { get; set; }
             [DataMember]
-            public string Word;
+            public string Word { get; set; }
 
             public override bool Equals(Object obj)
             {
@@ -100,7 +98,6 @@ namespace Dev2.Common.Tests
 
             using (var gate = new ManualResetEvent(false))
             {
-
                 Exception threadException = null;
                 var thread = new Thread((Object queueInstance) =>
                 {
