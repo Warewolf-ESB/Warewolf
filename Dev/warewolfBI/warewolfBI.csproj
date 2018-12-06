@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\favicon.ico" />
     <None Remove="ClientApp\src\app\angmaterial.ts" />
     <None Remove="ClientApp\src\app\animations.ts" />
     <None Remove="ClientApp\src\app\components\executionlogging\executionLoggingDataSource.ts" />
@@ -44,8 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\favicon.ico" />
-    <Content Include="ClientApp\src\assets\favicon.ico" />
     <Content Include="ClientApp\src\assets\images\logo.png" />
     <Content Include="ClientApp\src\favicon.ico" />
   </ItemGroup>
