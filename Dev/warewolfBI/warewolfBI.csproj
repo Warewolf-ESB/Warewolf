@@ -39,12 +39,14 @@
     <None Remove="ClientApp\src\app\services\executionlogging.service.ts" />
     <None Remove="ClientApp\src\app\services\mediator.service.ts" />
     <None Remove="ClientApp\src\assets\favicon.ico" />
+    <None Remove="ClientApp\src\assets\images\logo.png" />
     <None Remove="ClientApp\src\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="ClientApp\favicon.ico" />
     <Content Include="ClientApp\src\assets\favicon.ico" />
+    <Content Include="ClientApp\src\assets\images\logo.png" />
     <Content Include="ClientApp\src\favicon.ico" />
   </ItemGroup>
 

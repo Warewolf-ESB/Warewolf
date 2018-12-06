@@ -1,5 +1,5 @@
 <mat-sidenav-container fullscreen class="sidenav-container">
-  <mat-sidenav #lsnav class="sidenav"
+ <!-- <mat-sidenav #lsnav class="sidenav"
                position="start"
                role="navigation"
                [(opened)]="opened"
@@ -15,10 +15,13 @@
       <!--<a mat-list-item (click)="toggleSideNav();">
         <mat-icon class="material-icons icon-large-orange">{{sideNavIcon}}</mat-icon>
         <span class="label">{{sideNavText}}</span>
-      </a>-->
+      </a>
     </mat-nav-list>
-  </mat-sidenav>
+  </mat-sidenav>-->
   <mat-toolbar color="primary" class="sidenav-toolbar mat-toolbar mat-primary">
+    <a class="navbar-brand" href="https://warewolf.io/index.php" target="_blank">
+      <img id="brandLogo" class="brand-logo" src="./../assets/images/logo.png" width="240" alt="Warewolf microservices">
+    </a>
     <div fxHide.gt-xs>
       <button mat-icon-button (click)="toggleSideNav()">
         <mat-icon>menu</mat-icon>
@@ -28,21 +31,22 @@
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
       <ul fxLayout fxLayoutGap="20px" class="navigation-items">
         <!--<li>
-          <a>
-            <mat-icon class="icon">input</mat-icon>
-            <span class="label">Login</span>
-          </a>
-        </li>-->
+        <a>
+          <mat-icon class="icon">input</mat-icon>
+          <span class="label">Login</span>
+        </a>
+      </li>-->
       </ul>
     </div>
   </mat-toolbar>
   <main>
     <router-outlet></router-outlet>
   </main>
-  <footer class="small">
-    <div class="text-center">
-      © 2018 Copyright:
-      <a href="warewolf.io"> Warewolf</a>
+  <div class="footerWrap">
+    <div class="footer">
+      <div class="footerContent">
+        <p>Copyright © 2018 Warewolf</p>
+      </div>
     </div>
-  </footer>
+  </div>
 </mat-sidenav-container>

@@ -23,41 +23,42 @@ import { LogEntryComponent } from '../logentry/logentry.component';
 })
 
 export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
+  displayLogs: boolean = false;
   logEntry: LogEntry;
   dataSource: ExecutionDataSource;
   serverURL: string;
-  serverName: string;
-  port: string;
-  selected: string;
-  protocol: string;
+  serverName: string = "localhost";
+  port: string = "3142";
+  protocol: string = 'http';;
+  loading:boolean = true;
+  portSelect = 'http';
   displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChildren('PortInput,serverNameInput,PortInput', { read: ElementRef }) CreateServerURLInput: QueryList<ElementRef>;
-  
+   
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private executionLoggingservice: ExecutionLoggingService) { }
 
   ngOnInit() {
-    this.selected = '3142';
+    this.displayLogs = false;
+    this.loading = true;
+    this.protocol = 'http';
+    this.port = "3142"
     this.serverName = "localhost";
     this.logEntry = this.route.snapshot.data["logEntry"];
     this.dataSource = new ExecutionDataSource(this.executionLoggingservice);
-    if (this.selected == "3142") { this.protocol = "http"; } else { this.protocol = "https"; }
-    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.selected;
+    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
     this.dataSource.loadLogs(this.serverURL, '', '', 'asc', 0, 3);
+    this.loading = false;
+    this.displayLogs = true;
   }
-
+  ChangingPort(event) {
+    this.protocol = event;
+    if (this.protocol == "http") { this.port = "3142" } else { this.port = "3143"; }
+    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
+  }
   ngAfterViewInit() {
-    this.CreateServerURLInput.changes.subscribe(list => {
-      list.forEach(inputs => {
-        if (inputs.nativeElement.name == "serverNameInput") { this.serverName = inputs.nativeElement.value; }
-        if (inputs.nativeElement.name == "Protocol") { this.protocol = inputs.nativeElement.value; }
-        if (this.selected == "3142") { this.protocol = "http"; } else { this.protocol = "https"; }
-        this.serverURL = this.protocol + "://" + this.serverName + ":" + this.selected;
-      });
-    });
-
+    
     //TODO: This will be added in when we do the paging and sorting in the next ticket
     //fromEvent(this.serverNameInput.nativeElement, 'keyup')
     //  .pipe(
@@ -78,8 +79,12 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
     //    )
     //    .subscribe();
   }
-
+  UpdateList() {
+    this.serverURL = this.protocol + "://" + this.serverName + ":" + this.port;
+    this.dataSource.loadLogs(this.serverURL, '', '', 'asc', 0, 3);
+  }
   loadLogsPage() {
+    this.loading = true;
     this.dataSource.loadLogs(
       this.serverURL,
       this.logEntry.ExecutionId,
@@ -88,6 +93,8 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
+    this.loading = false;
+    this.displayLogs = true;
   }
 
   //onRowClicked(LogEntry) {
