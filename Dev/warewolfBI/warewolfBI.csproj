@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\favicon.ico" />
     <None Remove="ClientApp\src\app\angmaterial.ts" />
     <None Remove="ClientApp\src\app\animations.ts" />
     <None Remove="ClientApp\src\app\components\executionlogging\executionLoggingDataSource.ts" />
@@ -37,13 +38,20 @@
     <None Remove="ClientApp\src\app\services\api.service.ts" />
     <None Remove="ClientApp\src\app\services\executionlogging.service.ts" />
     <None Remove="ClientApp\src\app\services\mediator.service.ts" />
+    <None Remove="ClientApp\src\assets\favicon.ico" />
+    <None Remove="ClientApp\src\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\favicon.ico" />
+    <Content Include="ClientApp\src\assets\favicon.ico" />
+    <Content Include="ClientApp\src\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\angmaterial.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\animations.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\executionlogging\executionLoggingDataSource.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\helpers\auth.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\helpers\error.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\executionlogging.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\logentry.model.ts" />
@@ -51,12 +59,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\services\api.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\executionlogging.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\mediator.service.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ClientApp\src\Favicon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

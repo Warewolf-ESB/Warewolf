@@ -1,18 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-
 import { LogEntry } from './../models/logentry.model';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Access-Control-Allow-Origin': 'http://localhost:4200',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    'Content-Type': 'application/json'
-  })
-};
+const httpOptions = { withCredentials: true };
 
 @Injectable({ providedIn: 'root' })
 
@@ -22,7 +14,7 @@ export class APIService {
   constructor(private httpClient: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {}) 
+    return this.httpClient.post<any>(`${this.serverUrl}/services/Login";`, {})
       .pipe(
         map((response) => { return response; }),
         catchError(this.handleError('login', []))
@@ -34,10 +26,17 @@ export class APIService {
     this.serverUrl = ServerUrl.toLowerCase();
     var wareWolfUrl = this.serverUrl + "/services/GetLogDataService";
     let apiURL = `${wareWolfUrl}?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
-
-    return this.httpClient.post<LogEntry[]>(apiURL,'', { })
+    let params = new HttpParams();
+    params = params.set('ExecutionId', ExecutionId);
+    params = params.set('filter', filter);
+    params = params.set('sortOrder', sortOrder);
+    params = params.set('pageNumber', pageNumber.toString());
+    params = params.set('pageSize', pageSize.toString());
+    
+    return this.httpClient.get<any[]>(wareWolfUrl, httpOptions)
       .pipe(
         map((response) => {
+          console.log('response' + response);
           this.results = response as LogEntry[];
           return response;
         }),
@@ -45,7 +44,7 @@ export class APIService {
       );
   }
   public handleErrors(error: any): Promise<any> {
-    console.error('An error occurred', error); 
+    console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
 
@@ -57,7 +56,6 @@ export class APIService {
   }
 
   private log(message: string) {
-    console.error(message);
     //TODO: Add to the logging DB
   }
 }
