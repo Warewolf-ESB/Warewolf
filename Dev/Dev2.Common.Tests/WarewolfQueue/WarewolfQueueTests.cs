@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using Dev2.Common.Container;
 using Dev2.Common.Interfaces.Container;
-using Dev2.Common.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Common.Tests
@@ -15,12 +13,12 @@ namespace Dev2.Common.Tests
         IWarewolfQueue _queue;
 
         [TestInitialize]
-        public void init()
+        public void Init()
         {
             _queue = new WarewolfQueue();
         }
         [TestCleanup]
-        public void cleanup()
+        public void Cleanup()
         {
             _queue.Dispose();
         }
@@ -36,14 +34,14 @@ namespace Dev2.Common.Tests
         {
             using (var session = _queue.OpenSession())
             {
-
+                //
             }
         }
 
         [TestMethod]
         public void WarewolfQueue_EnqueueDequeue_Success()
         {
-            var expected = "test data";
+            const string expected = "test data";
             using (var session = _queue.OpenSession())
             {
                 session.Enqueue<string>(expected);
@@ -62,9 +60,9 @@ namespace Dev2.Common.Tests
         public class BenchmarkObject
         {
             [DataMember]
-            public int _number;
+            public int Number { get; set; }
             [DataMember]
-            public string _word;
+            public string Word { get; set; }
 
             public override bool Equals(Object obj)
             {
@@ -77,8 +75,8 @@ namespace Dev2.Common.Tests
             public bool Equals(BenchmarkObject other)
             {
                 var eq = true;
-                eq &= _number == other._number;
-                eq &= _word == other._word;
+                eq &= Number == other.Number;
+                eq &= Word == other.Word;
                 return eq;
             }
             public override int GetHashCode()
@@ -94,13 +92,12 @@ namespace Dev2.Common.Tests
 
             var expected = new BenchmarkObject
             {
-                _number = 123,
-                _word = "test value"
+                Number = 123,
+                Word = "test value"
             };
 
             using (var gate = new ManualResetEvent(false))
             {
-
                 Exception threadException = null;
                 var thread = new Thread((Object queueInstance) =>
                 {
@@ -154,8 +151,8 @@ namespace Dev2.Common.Tests
         {
             var expected = new BenchmarkObject
             {
-                _number = 123,
-                _word = "test value"
+                Number = 123,
+                Word = "test value"
             };
 
             Exception threadException = null;
