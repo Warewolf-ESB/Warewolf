@@ -31,7 +31,7 @@ namespace Dev2.Runtime.Hosting
 
         public void Build(IResourceCatalog resourceCatalog)
         {
-            LoadProvider = new ResourceLoadProvider(_workspaceResources, _managementServices);
+            LoadProvider = new ResourceLoadProvider(_workspaceResources,_versionRepository,_managementServices);
             SyncProvider = new ResourceSyncProvider();
             DeleteProvider = new ResourceDeleteProvider(resourceCatalog,_versionRepository);
             RenameProvider = new ResourceRenameProvider(resourceCatalog,_versionRepository);

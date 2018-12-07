@@ -9,14 +9,15 @@ namespace Warewolf.Web.UI.Tests
     public class Web_UITests_For_IE
     {
         private BaseWebDriver driver;
-        string browserName = "InternetExplorer";
+        readonly string browserName = "InternetExplorer";
         public TestContext TestContext { get; set; }
-        private FfMpegVideoRecorder screenRecorder = new FfMpegVideoRecorder();
+        private FfMpegVideoRecorder screenRecorder;
 
         [TestInitialize]
         public void SetupTest()
         {
             driver = new InternetExplorerWebDriver();
+            screenRecorder = new FfMpegVideoRecorder();
             screenRecorder.StartRecording(TestContext, browserName);
         }
 
@@ -27,6 +28,7 @@ namespace Warewolf.Web.UI.Tests
             {
                 driver.Quit();
                 driver.Close();
+                screenRecorder.Dispose();
             }
             catch (Exception)
             {
@@ -43,8 +45,8 @@ namespace Warewolf.Web.UI.Tests
         [DeploymentItem(@"avcodec-57.dll")]
         [DeploymentItem(@"IEDriverServer.exe")]
         [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
-        [TestCategory("ExecutionLogging")]
-        public void InternetExplorer_ExecutionLogging_ClickRefresh_UITest()
+        [TestCategory("Audit")]
+        public void InternetExplorer_Audit_ClickRefresh_UITest()
         {
             //Generate some test log data
             driver.CreateWebRequest();
@@ -53,7 +55,7 @@ namespace Warewolf.Web.UI.Tests
             Assert.IsTrue(driver.WaitForSpinner());
             Assert.IsTrue(driver.WaitForExecutionList());
             Assert.IsTrue(driver.IsExecutionListVisible());
-            string assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            var assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
             Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
 
             driver.ClickUpdateServer();

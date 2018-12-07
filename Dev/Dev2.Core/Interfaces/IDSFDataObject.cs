@@ -43,6 +43,7 @@ namespace Dev2.Interfaces
         Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
+        string VersionNumber { get; set; }
         int NumberOfSteps { get; set; }
         IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }
@@ -93,7 +94,7 @@ namespace Dev2.Interfaces
         bool IsDebugMode();
         bool IsRemoteWorkflow();
         IExecutionEnvironment Environment { get; set; }
-        IExecutionToken ExecutionToken   { get; set; }
+        IExecutionToken ExecutionToken { get; set; }
 
         void PopEnvironment();
         void PushEnvironment(IExecutionEnvironment env);

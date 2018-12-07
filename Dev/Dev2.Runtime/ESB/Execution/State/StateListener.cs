@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Dev2.Interfaces;
 using Dev2.Communication;
 using Dev2.Common.Interfaces.Logging;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Runtime.ESB.Execution
 {

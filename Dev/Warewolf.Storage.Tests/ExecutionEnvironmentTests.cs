@@ -935,6 +935,56 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual(expected, envWithErrors.ToJson());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_ShouldSetValidEnvironment()
+        {
+            var serializedEnv= "{\"Environment\":{\"scalars\":{\"Name\":\"Bob\"},\"record_sets\":{\"R\":{\"FName\":[\"Bob\"],\"WarewolfPositionColumn\":[1]},\"Rec\":{\"Name\":[\"Bob\",,\"Bob\"],\"SurName\":[,\"Bob\",],\"WarewolfPositionColumn\":[1,3,4]},\"RecSet\":{\"Field\":[\"Bob\",\"Jane\"],\"WarewolfPositionColumn\":[1,2]}},\"json_objects\":{\"Person\":{\"Name\":\"B\"}}},\"Errors\":[],\"AllErrors\":[]}";
+            _environment.FromJson(serializedEnv);
+            var rec1Field1 = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[R(*).FName]]", 0));
+            var rec2Field1 = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[Rec(*).Name]]", 0));
+            var rec2Field2 = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[Rec(*).SurName]]", 0));
+            var rec3Field1 = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[RecSet(*).Field]]", 0));
+            var scalar = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[Name]]", 0));
+            var jsonVal = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[@Person]]", 0));
+            Assert.AreEqual("Bob", scalar);
+            Assert.AreEqual("Bob", rec1Field1);
+            Assert.AreEqual("Bob,,Bob", rec2Field1);
+            Assert.AreEqual(",Bob,", rec2Field2);
+            Assert.AreEqual("Bob,Jane", rec3Field1);
+            Assert.AreEqual("{"+Environment.NewLine+"  \"Name\": \"B\""+Environment.NewLine+"}", jsonVal);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_Invalid_ShouldNotUpdateEnvironment()
+        {
+            var serializedEnv = "some string";
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_EmptyString_ShouldNotUpdateEnvironment()
+        {
+            var serializedEnv = "";
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void GivenJsonSerializedEnv_FromJson_NullString_ShouldNotUpdateEnvironment()
+        {
+            string serializedEnv = null;
+            _environment.FromJson(serializedEnv);
+            var hasRecSet = _environment.HasRecordSet("R");
+            Assert.IsFalse(hasRecSet);
+        }
+
         #region Private Methods
 
         ExecutionEnvironment CreateEnvironmentWithErrors()
