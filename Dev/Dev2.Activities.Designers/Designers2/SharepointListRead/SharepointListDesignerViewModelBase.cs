@@ -307,7 +307,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         IEnumerable<SharepointSource> GetSharepointServers()
         {
-            var sources = _server.ResourceRepository.FindSourcesByType<SharepointSource>(_server, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var sources = _server.ResourceRepository?.FindSourcesByType<SharepointSource>(_server, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             return sources;
         }
 

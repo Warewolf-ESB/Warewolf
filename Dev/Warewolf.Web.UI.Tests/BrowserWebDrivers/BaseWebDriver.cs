@@ -69,7 +69,7 @@ namespace Warewolf.Web.UI.Tests
 
         public void GoToUrl()
         {
-            Navigate().GoToUrl(baseURL + "/ExecutionLogging");
+            Navigate().GoToUrl(baseURL + "/Audit");
         }
 
         public bool KillServerIfRunning()
@@ -114,7 +114,7 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
                 wait.Until(ExpectedConditions.AlertIsPresent());
                 SwitchTo().Alert();
                 return true;
@@ -133,8 +133,8 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                IAlert alert = SwitchTo().Alert();
-                string alertText = alert.Text;
+                var alert = SwitchTo().Alert();
+                var alertText = alert.Text;
                 if (acceptAlert)
                 {
                     alert.Accept();
@@ -155,7 +155,7 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
                 wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.Id("loader")));
                 return true;
             }
@@ -173,8 +173,8 @@ namespace Warewolf.Web.UI.Tests
         {
             try
             {
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
-                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("executionList")));
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30));
+                wait.Until(ExpectedConditions.ElementIsVisible(By.Id("auditList")));
                 return true;
             }
             catch (InvalidElementStateException)
@@ -190,15 +190,15 @@ namespace Warewolf.Web.UI.Tests
 
         public bool IsExecutionListVisible()
         {
-            return FindElement(By.Id("executionList")).Displayed;
+            return FindElement(By.Id("auditList")).Displayed;
         }
 
         public static string GetOperaPath()
         {
-            string path = @"C:\Program Files\Opera";
+            const string path = @"C:\Program Files\Opera";
             var operaPath = string.Empty;
 
-            string[] files = System.IO.Directory.GetFiles(path, "*opera.exe", System.IO.SearchOption.AllDirectories);
+            var files = System.IO.Directory.GetFiles(path, "*opera.exe", System.IO.SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 operaPath = file;

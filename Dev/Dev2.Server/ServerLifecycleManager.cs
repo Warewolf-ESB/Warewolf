@@ -233,6 +233,7 @@ namespace Dev2
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
                 StartWebServer();
+                RegisterDependencies();
                 LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }

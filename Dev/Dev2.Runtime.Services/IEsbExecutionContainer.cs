@@ -14,4 +14,6 @@ namespace Dev2.Runtime
         String InstanceInputDefinition { get; set; }
         IDSFDataObject GetDataObject();
     }
+
+    public interface IResumableExecutionContainer : IEsbExecutionContainer { }
 }

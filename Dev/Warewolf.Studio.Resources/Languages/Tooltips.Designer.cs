@@ -5868,7 +5868,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View Execution Logging.
+        ///   Looks up a localized string similar to View Audit.
         /// </summary>
         public static string ViewExecutionLoggingTooltip {
             get {

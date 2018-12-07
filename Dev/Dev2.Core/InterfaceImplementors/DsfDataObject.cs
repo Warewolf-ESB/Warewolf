@@ -102,7 +102,7 @@ namespace Dev2.DynamicServices
 
         void ExtractXmlValues(XElement xe)
         {
-            bool isDebug;           
+            bool isDebug;
             var debugString = ExtractValue(xe, "IsDebug");
             if (!string.IsNullOrEmpty(debugString))
             {
@@ -114,6 +114,9 @@ namespace Dev2.DynamicServices
                 bool.TryParse(debugString, out isDebug);
             }
             IsDebug = isDebug;
+
+            VersionNumber = ExtractValue(xe, "VersionNumber");
+
 
             Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
             DebugSessionID = debugSessionId;
@@ -172,6 +175,8 @@ namespace Dev2.DynamicServices
 
             // Set incoming service name ;)
             ServiceName = ExtractValue(xe, "Service");
+
+            VersionNumber = ExtractValue(xe, "VersionNumber");
         }
 
         public Guid DebugEnvironmentId { get; set; }
@@ -193,6 +198,7 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
+        public string VersionNumber { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
@@ -376,6 +382,7 @@ namespace Dev2.DynamicServices
             result.WorkspaceID = WorkspaceID;
             result.ThreadsToDispose = ThreadsToDispose;
             result.ParentID = ParentID;
+            result.VersionNumber = VersionNumber;
             result.RunWorkflowAsync = RunWorkflowAsync;
             result.IsDebugNested = IsDebugNested;
             result.ForEachNestingLevel = ForEachNestingLevel;
