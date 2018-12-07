@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.Auditing
             _dev2StateAuditLogger.Dispose();
 
             foreach (var item in results)
-            {
+            {   
 
             }
 
