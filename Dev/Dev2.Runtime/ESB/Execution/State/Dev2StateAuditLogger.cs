@@ -127,7 +127,7 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             break;
                         }
-                        //databaseContext.Audits.Add(auditLog)
+                        databaseContext.Audits.Add(auditLog);
                         _hadLogs = true;
                     }
                 }
