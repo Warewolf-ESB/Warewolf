@@ -14,7 +14,6 @@ using System.Data.SQLite;
 using System.Data.Entity;
 using Dev2.Common.Container;
 using Dev2.Runtime.Auditing;
-using Dev2.Common.Container;
 
 namespace Dev2.Tests.Runtime.Auditing
 {
