@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using Dev2.Activities.Specs.Composition;
 using Dev2.Common;
@@ -34,6 +36,28 @@ namespace Dev2.Activities.Specs.Sources
             environmentModel.Connect();
         }
 
+        string GetIPAddress(string server)
+        {
+            var serverName = server.Replace("http://", "").Replace(":3142", "");
+            var ipHostInfo = Dns.GetHostEntry(serverName);
+            var ipAddress = ipHostInfo.AddressList[0];
+
+            return ipAddress.ToString();
+        }
+
+        private static void IsServerOnline(string server)
+        {
+            PingReply pingReply;
+            using (var ping = new Ping())
+            {
+                pingReply = ping.Send(server);
+            }
+            if (pingReply.Status != IPStatus.Success)
+            {
+                Assert.Fail(server + " is unavailable");
+            }
+        }
+
         [AfterScenario]
         public void Cleanup()
         {
@@ -49,6 +73,11 @@ namespace Dev2.Activities.Specs.Sources
         public void GivenICreateAServerSourceAs(Table table)
         {
             var address = table.Rows[0]["Address"];
+            if (!address.Contains("localhost"))
+            {
+                var ipAddress = GetIPAddress(address);
+                IsServerOnline(ipAddress);
+            }
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
 
