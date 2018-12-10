@@ -627,10 +627,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             securityService.Verify(p => p.Remove(resourceID));
         }
-
-
-
-
+        //----Test classes for : AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue
         class TestDirectoryEntry : IDirectoryEntry
         {
             private string _name;
@@ -661,8 +658,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 return null;
             }
         }
-        
-
         class TestDirectoryEntries : IDirectoryEntries
         {
 
@@ -677,8 +672,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 yield return new TestDirectoryEntry("no users");
             }
         }
-
-
+        
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
@@ -707,7 +701,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var children = new Mock<IDirectoryEntries>();
             var dir = new Mock<IDirectoryEntry>();
 
-            //securityPermission.SetupGet(p => p.Administrator).Returns(true);
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
             user.Setup(u => u.Identity.Name).Returns("TestUser");
             actualGChildren.ForEach(b => b.Setup(a => a.Name).Returns("Warewolf Administrators"));
