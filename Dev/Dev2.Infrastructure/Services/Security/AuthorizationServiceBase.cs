@@ -18,6 +18,7 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Wrappers;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
@@ -31,6 +32,10 @@ namespace Dev2.Services.Security
         internal Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
 
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
+        : this(new Dev2DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"), securityService, isLocalConnection)
+        {
+        }
+        protected AuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection)
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
             _securityService = securityService;
@@ -42,10 +47,10 @@ namespace Dev2.Services.Security
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
             {
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
-                using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                using(var ad = directoryEntry)
                 {
                     ad.Children.SchemaFilter.Add("group");
-                    foreach(DirectoryEntry dChildEntry in ad.Children)
+                    foreach(IDirectoryEntry dChildEntry in ad.Children)
                     {
                         if (dChildEntry.Name != "Warewolf Administrators")
                         {
@@ -60,12 +65,9 @@ namespace Dev2.Services.Security
                         }
                         foreach(var member in (IEnumerable)members)
                         {
-                            using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                            if (isMemberOfAdmin(member, adGroup))
                             {
-                                if(memberEntry.Name == adGroup)
-                                {
-                                    return true;
-                                }
+                                return true;
                             }
                         }
                     }
@@ -74,6 +76,18 @@ namespace Dev2.Services.Security
                 return false;
             };
 
+        }
+
+        public virtual bool isMemberOfAdmin<T>(T member, string adGroup)
+        {
+            using (DirectoryEntry memberEntry = new DirectoryEntry(member))
+            {
+                if (memberEntry.Name == adGroup)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         static string FindGroup(SecurityIdentifier searchSid)

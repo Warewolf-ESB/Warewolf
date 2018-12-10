@@ -9,11 +9,15 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Linq;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -622,6 +626,107 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             securityService.Verify(p => p.Remove(resourceID));
+        }
+
+
+
+
+        class TestDirectoryEntry : IDirectoryEntry
+        {
+            private string _name;
+
+            public TestDirectoryEntry(string name)
+            {
+                _name = name;
+            }
+            public IDirectoryEntries Children => throw new NotImplementedException();
+
+            public string SchemaClassName => throw new NotImplementedException();
+
+            public string Name => _name;
+
+            public DirectoryEntry Instance => throw new NotImplementedException();
+
+            public void Dispose()
+            {
+                
+            }
+
+            public object Invoke(string methodName, params object[] args)
+            {
+                if(methodName == "Members" && Name == "Warewolf Administrators")
+                {
+                    return new List<string> { "Administrators".ToString() };
+                }
+                return null;
+            }
+        }
+        
+
+        class TestDirectoryEntries : IDirectoryEntries
+        {
+
+            public SchemaNameCollection SchemaFilter => new DirectoryEntry().Children.SchemaFilter;
+
+            public DirectoryEntries Instance => throw new NotImplementedException();
+
+            public IEnumerator GetEnumerator()
+            {
+                yield return new TestDirectoryEntry("Test Group");
+                yield return new TestDirectoryEntry("Warewolf Administrators");
+                yield return new TestDirectoryEntry("no users");
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            // permissions setup
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            //Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            Assert.IsFalse(result);
+
+            // Setup rest of test ;
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
+            var securityService = new Mock<ISecurityService>();
+            var user = new Mock<IPrincipal>();
+            var actualGChildren = new List<Mock<IDirectoryEntry>> { new Mock<IDirectoryEntry>() };
+            var gChildren = new Mock<IDirectoryEntries>();
+            var actualChildren = new List<Mock<IDirectoryEntry>> { new Mock<IDirectoryEntry>() };
+            var children = new Mock<IDirectoryEntries>();
+            var dir = new Mock<IDirectoryEntry>();
+
+            //securityPermission.SetupGet(p => p.Administrator).Returns(true);
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+            user.Setup(u => u.Identity.Name).Returns("TestUser");
+            actualGChildren.ForEach(b => b.Setup(a => a.Name).Returns("Warewolf Administrators"));
+            actualGChildren.ForEach(b => b.Setup(a => a.SchemaClassName).Returns("Computer"));
+
+            gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
+            actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
+            children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
+            SchemaNameCollection filterList = new DirectoryEntry().Children.SchemaFilter;
+            children.Setup(a => a.SchemaFilter).Returns(filterList);
+            dir.Setup(a => a.Children).Returns(new TestDirectoryEntries());
+
+            var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object };
+            authorizationService.MemberOfAdminOverride = true;
+            //------------Execute Test---------------------------
+            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isMember);
         }
     }
 }

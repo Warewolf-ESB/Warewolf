@@ -10,6 +10,7 @@
 
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -19,12 +20,25 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
             : base(securityService, isLocalConnection)
         {
-            if(!overrideAreAdminsFn)
+            if (!overrideAreAdminsFn)
             {
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
+        public TestAuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
+            : base(directoryEntry, securityService, isLocalConnection)
+        {
+            if(overrideAreAdminsFn)
+            {
+                AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
+            }
+        }
+        public override bool isMemberOfAdmin<T>(T member, string adGroup)
+        {
+            return MemberOfAdminOverride;
+        }
 
+        public bool MemberOfAdminOverride { get; set; }
         public int RaisePermissionsChangedHitCount { get; private set; }
         public int RaisePermissionsModifiedHitCount { get; private set; }
 
