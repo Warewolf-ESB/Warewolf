@@ -72,7 +72,12 @@ namespace Dev2.Common.Common
 
                 var kids = root.Children;
 
-                return (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
+                var result = (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
+
+                if (result.Any())
+                {
+                    return result;
+                }
             }
 
             return new List<string> { Environment.MachineName };
