@@ -17,6 +17,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Logging;
 using System.Threading;
 using Dev2.Common.Interfaces.Container;
+using LinqKit;
 
 namespace Dev2.Runtime.Auditing
 {
@@ -66,6 +67,20 @@ namespace Dev2.Runtime.Auditing
             {
                 var db = new DatabaseContext();
                 audits = db.Audits.Where(queryExpression).AsEnumerable();
+
+            });
+
+            return audits;
+        }
+
+        public static IQueryable<AuditLog> PredicateQuery(Expression<Func<AuditLog, bool>> queryExpression)
+        {
+            var audits = default(IQueryable<AuditLog>);
+            var userPrinciple = Common.Utilities.ServerUser;
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            {
+                var db = new DatabaseContext();
+                audits = db.Audits.AsExpandable().Where(queryExpression).AsQueryable();
 
             });
 

@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.Auditing
         IDev2StateAuditLogger _dev2StateAuditLogger;
         Mock<IDev2Activity> _activity;
         IDSFDataObject _dSFDataObject;
-
+        
         [TestCleanup]
         public void Cleanup()
         {
@@ -66,16 +66,14 @@ namespace Dev2.Tests.Runtime.Auditing
         public void GetLogDataService_Execute_WithLogData_ShouldReturnLogDataObject()
         {
             //------------Setup for test--------------------------
+            var expectedWorkflowId = Guid.NewGuid();
             var serializer = new Dev2JsonSerializer();
             var getLogDataService = new GetLogDataService();
-            var expectedWorkflowId = Guid.NewGuid();
-            var expectedExecutionId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
-            var principal = new Mock<IPrincipal>();
-            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
-            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
 
+            TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
+            // test
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
             _dev2StateAuditLogger.Flush();
 
@@ -428,17 +426,33 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
+        private void TestSetup(out Mock<IDev2Activity> activity)
+        {
+            // setup
+            var mockedDataObject = SetupDataObject();
+           
+            activity = new Mock<IDev2Activity>();
+        }
+        private Mock<IDSFDataObject> SetupDataObject()
+        {
+            // mocks
+            var mockedDataObject = new Mock<IDSFDataObject>();
+            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
+            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
+            mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
+            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
+            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
+
+            _dSFDataObject = mockedDataObject.Object;
+
+            return mockedDataObject;
+        }
         private Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
             return new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
         }
-
-        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
-        {
-            GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
-            dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
-        }
-
 
         private void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
         {
@@ -446,6 +460,11 @@ namespace Dev2.Tests.Runtime.Auditing
             // setup
             mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
             activity = new Mock<IDev2Activity>();
+        }
+        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        {
+            GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
+            dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
         }
         private Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {

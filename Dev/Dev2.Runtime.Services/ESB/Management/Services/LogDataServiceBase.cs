@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             predicate = predicate.And(p => (p.IsSubExecution == isSubExecution));
             predicate = predicate.And(p => (p.IsRemoteWorkflow == isRemoteWorkflow));
 
-            var query = from p in  Dev2StateAuditLogger.Query(predicate)
+            var query = from p in  Dev2StateAuditLogger.PredicateQuery(predicate)
                   select p;
 
             return query.ToList();
