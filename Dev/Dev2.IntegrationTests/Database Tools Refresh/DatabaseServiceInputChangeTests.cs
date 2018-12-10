@@ -142,5 +142,37 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var dropResult = SqlHelper.RunSqlCommand(dropProcedure);
             return dropResult;
         }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void Add_A_New_InputOnSqlProcedure_Expect_New_IS_InputAdded()
+        {
+            const string procName = "TestingAddingANewInput";
+
+            Setup(procName);
+
+            IDatabaseInputRegion databaseInputRegion = new DatabaseInputRegion(_modelItem, _dbActionRegion);
+            Assert.AreEqual(1, databaseInputRegion.Inputs.Count);
+            Assert.AreEqual("ProductId", databaseInputRegion.Inputs.Single().Name);
+            Assert.AreEqual("[[ProductId]]", databaseInputRegion.Inputs.Single().Value);
+            //testing here
+            const string alterProcedure = "ALTER procedure [dbo].[" + procName + "](@ProductId int,@ProductId1 int,@ProductId2 int) as Begin select * from Country select * from City end";
+            var alterTableResults = SqlHelper.RunSqlCommand(alterProcedure);
+            Assert.AreEqual(-1, alterTableResults);
+
+            _dbActionRegion.RefreshActionsCommand.Execute(null);
+            Assert.IsNotNull(_dbActionRegion.Actions, "No Actions were generated for source: " + _selectedSource);
+
+            var procActionsToInputs = _dbActionRegion.Actions.Single(p => p.Name.EndsWith(procName));
+
+            Assert.AreEqual("ProductId", procActionsToInputs.Inputs.ToList()[0].Name);
+            Assert.AreEqual("[[ProductId]]", procActionsToInputs.Inputs.ToList()[0].Value);
+
+            Assert.AreEqual("ProductId1", procActionsToInputs.Inputs.ToList()[1].Name);
+            Assert.AreEqual("[[ProductId1]]", procActionsToInputs.Inputs.ToList()[1].Value);
+
+            Assert.AreEqual("ProductId2", procActionsToInputs.Inputs.ToList()[2].Name);
+            Assert.AreEqual("[[ProductId2]]", procActionsToInputs.Inputs.ToList()[2].Value);
+        }
     }
 }
