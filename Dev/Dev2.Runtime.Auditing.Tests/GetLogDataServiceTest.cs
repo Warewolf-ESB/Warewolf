@@ -426,29 +426,6 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        private void TestSetup(out Mock<IDev2Activity> activity)
-        {
-            // setup
-            var mockedDataObject = SetupDataObject();
-           
-            activity = new Mock<IDev2Activity>();
-        }
-        private Mock<IDSFDataObject> SetupDataObject()
-        {
-            // mocks
-            var mockedDataObject = new Mock<IDSFDataObject>();
-            mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
-            mockedDataObject.Setup(o => o.ServiceName).Returns(() => "Some Workflow");
-            mockedDataObject.Setup(o => o.ResourceID).Returns(() => Guid.NewGuid());
-            var principal = new Mock<IPrincipal>();
-            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
-            mockedDataObject.Setup(o => o.ExecutingUser).Returns(() => principal.Object);
-            mockedDataObject.Setup(o => o.ExecutionToken).Returns(() => new Mock<IExecutionToken>().Object);
-
-            _dSFDataObject = mockedDataObject.Object;
-
-            return mockedDataObject;
-        }
         private Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
             return new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
