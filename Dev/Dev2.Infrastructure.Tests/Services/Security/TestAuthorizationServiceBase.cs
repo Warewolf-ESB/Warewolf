@@ -33,7 +33,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
-        public override bool isMemberOfAdmin<T>(T member, string adGroup)
+        public override bool IsMemberOfAdmin<T>(T member, string adGroup)
         {
             return MemberOfAdminOverride;
         }

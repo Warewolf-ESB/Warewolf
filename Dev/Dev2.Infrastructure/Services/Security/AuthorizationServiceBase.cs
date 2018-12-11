@@ -65,7 +65,7 @@ namespace Dev2.Services.Security
                         }
                         foreach(var member in (IEnumerable)members)
                         {
-                            if (isMemberOfAdmin(member, adGroup))
+                            if (IsMemberOfAdmin(member, adGroup))
                             {
                                 return true;
                             }
@@ -78,7 +78,7 @@ namespace Dev2.Services.Security
 
         }
 
-        public virtual bool isMemberOfAdmin<T>(T member, string adGroup)
+        public virtual bool IsMemberOfAdmin<T>(T member, string adGroup)
         {
             using (DirectoryEntry memberEntry = new DirectoryEntry(member))
             {

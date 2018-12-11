@@ -472,7 +472,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, true, true) { User = user.Object };
+            var dir = new Mock<IDirectoryEntry>();
+            dir.Setup(a => a.Children).Returns(new TestDirectoryEntries());
+
+            var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object };
+            authorizationService.MemberOfAdminOverride = true;
 
             //------------Execute Test---------------------------
             var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
