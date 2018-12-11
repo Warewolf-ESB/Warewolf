@@ -17,6 +17,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 {
     public class TestAuthorizationServiceBase : AuthorizationServiceBase
     {
+        private readonly bool _overrideIsAdminMember;
         public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
             : base(securityService, isLocalConnection)
         {
@@ -25,16 +26,21 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
-        public TestAuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
+        public TestAuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false, bool overrideIsAdminMember = true)
             : base(directoryEntry, securityService, isLocalConnection)
         {
-            if(overrideAreAdminsFn)
+            _overrideIsAdminMember = overrideIsAdminMember;
+            if (overrideAreAdminsFn)
             {
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
-        public override bool IsMemberOfAdmin<T>(T member, string adGroup)
+        protected override bool IsGroupNameAdministrators<T>(T member, string adGroup)
         {
+            if(!_overrideIsAdminMember)
+            {
+                return base.IsGroupNameAdministrators(member, adGroup);
+            }
             return MemberOfAdminOverride;
         }
 
