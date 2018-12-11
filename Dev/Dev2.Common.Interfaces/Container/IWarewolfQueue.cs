@@ -5,13 +5,14 @@ namespace Dev2.Common.Interfaces.Container
     public interface IWarewolfQueue : IDisposable
     {
         IWarewolfQueueSession OpenSession();
+        bool IsEmpty();
     }
 
     public interface IWarewolfQueueSession : IDisposable
     {
-        void Enqueue<T>(T ob);
+        IWarewolfQueueSession Enqueue<T>(T ob);
 
-        T Dequeue<T>();
+        T Dequeue<T>() where T : class;
 
         void Flush();
     }

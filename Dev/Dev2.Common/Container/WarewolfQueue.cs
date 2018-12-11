@@ -1,5 +1,6 @@
 ﻿using Dev2.Common.Interfaces.Container;
 using Dev2.Common.Serializers;
+using MessagePack;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace Dev2.Common.Container
         public void Dispose()
         {
         }
+
+        public bool IsEmpty()
+        {
+            return !_queue.Any();
+        }
     }
 
     public class WarewolfQueueSession : IWarewolfQueueSession
@@ -30,20 +36,18 @@ namespace Dev2.Common.Container
         {
             this._queue = queue;
         }
-        public void Enqueue<T>(T ob)
+        public IWarewolfQueueSession Enqueue<T>(T ob)
         {
-            var jsonSerializer = new Dev2JsonSerializer();
-            var builder = jsonSerializer.Serialize<T>(ob);
-            _buffer.Add(Encoding.UTF8.GetBytes(builder));
+            _buffer.Add(MessagePackSerializer.Serialize<T>(ob));
+            return this;
         }
-        public T Dequeue<T>()
+        public T Dequeue<T>() where T : class
         {
             if (!_queue.TryDequeue(out byte[] data))
             {
                 return default(T);
             }
-            var jsonSerializer = new Dev2JsonSerializer();
-            return jsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(data));
+            return MessagePackSerializer.Deserialize<T>(data);
         }
 
         public virtual void Flush()

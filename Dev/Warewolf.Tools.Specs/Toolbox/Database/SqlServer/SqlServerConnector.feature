@@ -186,3 +186,17 @@ Scenario: SqlServer backward Compatiblity
 	When "DataMigration" is executed
     Then the workflow "DataMigration" execution has "NO" error
 	
+@ExecuteSqlServerWithTimeout
+	Scenario: Execute Sql Server With Timeout
+		Given I have workflow "SqlServerWorkflowForTimeout" with "SqlServerActivity" SqlServer database connector
+		And Sql Server Source is Enabled
+		And I Select "NewSqlServerSource" as SqlServer Source for "SqlServerActivity"
+		And I Select "dbo.Pr_CitiesGetCountries_Delayed" as Server Action for "SqlServerActivity"
+		And Sql Command Timeout is "60" milliseconds for "SqlServerActivity"
+		And Validate Sql Server is Enabled
+		And I click Sql Generate Outputs
+		And I click Test
+		And Sql Command Timeout is "1" milliseconds for "SqlServerActivity"
+		When Sql Workflow "SqlServerWorkflowForTimeout" containing dbTool is executed
+		And the workflow "SqlServerWorkflowForTimeout" execution has "AN" error "SQL Error: Execution Timeout Expired"
+		And the workflow "SqlServerWorkflowForTimeout" error does not contain "NewLine"
