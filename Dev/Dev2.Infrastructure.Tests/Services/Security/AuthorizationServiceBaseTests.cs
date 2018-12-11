@@ -472,10 +472,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var dir = new Mock<IDirectoryEntry>();
-            dir.Setup(a => a.Children).Returns(new TestDirectoryEntries());
-
-            var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object };
+            var authorizationService = new TestAuthorizationServiceBase( securityService.Object, true, false, false) { User = user.Object };
             authorizationService.MemberOfAdminOverride = true;
 
             //------------Execute Test---------------------------
@@ -483,6 +480,14 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.IsFalse(isMember);
+            
+            authorizationService.MemberOfAdminOverride = false;
+
+            var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+            //------------Assert Results Again-------------------------
+            Assert.IsFalse(isMemberTestAgain);
+
         }
 
 
