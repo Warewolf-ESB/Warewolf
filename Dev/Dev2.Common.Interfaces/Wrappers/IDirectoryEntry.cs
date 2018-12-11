@@ -41,13 +41,21 @@ namespace Dev2.Common.Interfaces.Wrappers
 
         public IEnumerator GetEnumerator()
         {
-            return Instance.GetEnumerator();
+
+            foreach (var item in Instance)
+            {
+                yield return new Dev2DirectoryEntry(item as DirectoryEntry);
+            }
         }
     }
 
     public class Dev2DirectoryEntry : IDirectoryEntry
     {
         readonly DirectoryEntry _directoryEntry;
+        public Dev2DirectoryEntry(DirectoryEntry directoryEntry)
+        {
+            _directoryEntry = directoryEntry;
+        }
         public Dev2DirectoryEntry(string path)
         {
             _directoryEntry = new DirectoryEntry(path);

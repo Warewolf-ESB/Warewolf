@@ -447,6 +447,45 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenNonAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+
+            // permissions setup
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            Assert.IsFalse(result);
+
+            // Setup rest of test ;)
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.Identity.Name).Returns("TestUser");
+
+            var authorizationService = new TestAuthorizationServiceBase( securityService.Object, true, false, true) { User = user.Object };
+            
+            authorizationService.MemberOfAdminOverride = false;
+
+            var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+            //------------Assert Results Again-------------------------
+            Assert.IsFalse(isMemberTestAgain);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -472,7 +511,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase( securityService.Object, true, false, false) { User = user.Object };
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, false, true) { User = user.Object };
             authorizationService.MemberOfAdminOverride = true;
 
             //------------Execute Test---------------------------
@@ -480,13 +519,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.IsFalse(isMember);
-            
-            authorizationService.MemberOfAdminOverride = false;
-
-            var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
-
-            //------------Assert Results Again-------------------------
-            Assert.IsFalse(isMemberTestAgain);
 
         }
 
@@ -681,7 +713,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 yield return new TestDirectoryEntry("no users");
             }
         }
-        
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
@@ -730,5 +762,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             Assert.IsTrue(isMember);
         }
+        
     }
 }
