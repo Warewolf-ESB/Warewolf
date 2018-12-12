@@ -15,6 +15,6 @@ namespace Dev2.Common.Interfaces.Wrappers
     public interface IDirectoryEntryFactory
     {
         IDirectoryEntry Create(string path);
-        IDirectoryEntries Create(DirectoryEntries directoryEntries);
+        IDirectoryEntry Create<T>(T member);
     }
 }

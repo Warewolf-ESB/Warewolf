@@ -26,8 +26,8 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
-        public TestAuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false, bool overrideIsAdminMember = true)
-            : base(directoryEntry, securityService, isLocalConnection)
+        public TestAuthorizationServiceBase(IDirectoryEntryFactory directoryEntryFactory, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false, bool overrideIsAdminMember = true)
+            : base(directoryEntryFactory, securityService, isLocalConnection)
         {
             _overrideIsAdminMember = overrideIsAdminMember;
             if (overrideAreAdminsFn)
