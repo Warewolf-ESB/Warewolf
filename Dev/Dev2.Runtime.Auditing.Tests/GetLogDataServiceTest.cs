@@ -340,7 +340,6 @@ namespace Dev2.Tests.Runtime.Auditing
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
             var expectedWorkflowId = Guid.NewGuid();
-            var expectedExecutionId = Guid.NewGuid();
             var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
             var principal = new Mock<IPrincipal>();
@@ -370,17 +369,18 @@ namespace Dev2.Tests.Runtime.Auditing
             //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
             var expectedWorkflowId = Guid.NewGuid();
-            var expectedExecutionId = Guid.NewGuid();
-            var nextActivity = new Mock<IDev2Activity>();
             var IsSubExecution = false;
+            var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
             var principal = new Mock<IPrincipal>();
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
             _dev2StateAuditLogger.Flush();
+
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
+            stringBuilders.Add("WorkflowName", expectedWorkflowName.ToString().ToStringBuilder());
             stringBuilders.Add("IsSubExecution", IsSubExecution.ToString().ToStringBuilder());
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
@@ -399,18 +399,17 @@ namespace Dev2.Tests.Runtime.Auditing
         [TestCategory("GetLogDataService_FromDB_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithIsRemoteWorkflow()
         {
-            //------------Setup for test--------------------------
             var getLogDataService = new GetLogDataService();
-            var expectedWorkflowId = Guid.NewGuid();
-            var expectedExecutionId = Guid.NewGuid();
-            var nextActivity = new Mock<IDev2Activity>();
             var IsRemoteWorkflow = false;
+            var expectedWorkflowId = Guid.NewGuid();
+            var nextActivity = new Mock<IDev2Activity>();
             var expectedWorkflowName = "LogExecuteCompleteState_Workflow";
-           
+            var principal = new Mock<IPrincipal>();
+            principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
-
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
             _dev2StateAuditLogger.Flush();
+           
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("IsRemoteWorkflow", IsRemoteWorkflow.ToString().ToStringBuilder());
