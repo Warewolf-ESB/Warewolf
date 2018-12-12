@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.Auditing
             _dev2StateAuditLogger.Flush();
 
             var str = expectedWorkflowId.ToString();
-            var results = Dev2StateAuditLogger.Query(item => true);
+            var results = Dev2StateAuditLogger.Query(a => a.WorkflowID == str);
             _dev2StateAuditLogger.Dispose();
 
             foreach (var item in results)

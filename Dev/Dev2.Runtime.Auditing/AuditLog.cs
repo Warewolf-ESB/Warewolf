@@ -123,7 +123,7 @@ namespace Dev2.Runtime.Auditing
         [DataMember]
         public string VersionNumber { get; set; }
 
-        [Column(Name = "AuditDate",DbType = "string", CanBeNull = true)]
+        [Column(Name = "AuditDate", DbType = "string", CanBeNull = true)]
         [JsonProperty("AuditDate")]
         [DataMember]
         public DateTime AuditDate { get; set; }
