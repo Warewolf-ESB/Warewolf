@@ -26,14 +26,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         public IEnumerable<dynamic> BuildTempObjects(Dictionary<string, StringBuilder> values)
         {
-            var startTime = Convert.ToDateTime(GetValue<string>("StartDateTime", values));
-            var endTime = Convert.ToDateTime(GetValue<string>("CompletedDateTime", values));
+            var startTime = Convert.ToDateTime(HttpUtility.UrlDecode(GetValue<string>("StartDateTime", values)));
+            var endTime = Convert.ToDateTime(HttpUtility.UrlDecode(GetValue<string>("CompletedDateTime", values)));
             var auditType = GetValue<string>("AuditType", values);
             var executingUser = GetValue<string>("User", values);
             var workflowID = GetValue<string>("WorkflowID", values);
             var executionID = GetValue<string>("ExecutionID", values);
-            var isSubExecution = GetValue<long>("IsSubExecution", values);
-            var isRemoteWorkflow = GetValue<long>("IsRemoteWorkflow", values);
+            var isSubExecution = GetValue<bool>("IsSubExecution", values);
+            var isRemoteWorkflow = GetValue<bool>("IsRemoteWorkflow", values);
             var workflowName = GetValue<string>("WorkflowName", values);
             var serverID = GetValue<string>("ServerID", values);
             var parentID = GetValue<string>("ParentID", values);
@@ -44,8 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     && (string.IsNullOrEmpty(auditType) || entry.AuditType == auditType)
                     && (string.IsNullOrEmpty(workflowID) || entry.WorkflowID == workflowID)
                     && (string.IsNullOrEmpty(executionID) || entry.ExecutionID == executionID)
-                    && (isSubExecution == 0 || entry.IsSubExecution == isSubExecution)
-                    && (isRemoteWorkflow == 0 || entry.IsRemoteWorkflow == isRemoteWorkflow)
+                    && (isSubExecution == false || entry.IsSubExecution == isSubExecution)
+                    && (isRemoteWorkflow == false || entry.IsRemoteWorkflow == isRemoteWorkflow)
                     && (string.IsNullOrEmpty(workflowName) || entry.WorkflowName == workflowName)
                     && (string.IsNullOrEmpty(serverID) || entry.ServerID == serverID)
                     && (string.IsNullOrEmpty(parentID) || entry.ParentID == parentID)

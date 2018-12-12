@@ -38,12 +38,12 @@ namespace Dev2.Runtime.Auditing
         [Column(Name = "IsSubExecution", CanBeNull = true)]
         [JsonProperty("IsSubExecution")]
         [DataMember]
-        public long IsSubExecution { get; set; }
+        public bool IsSubExecution { get; set; }
 
         [Column(Name = "IsRemoteWorkflow", CanBeNull = true)]
         [JsonProperty("IsRemoteWorkflow")]
         [DataMember]
-        public long IsRemoteWorkflow { get; set; }
+        public bool IsRemoteWorkflow { get; set; }
 
         [Column(Name = "WorkflowName", CanBeNull = true)]
         [JsonProperty("WorkflowName")]
@@ -145,8 +145,8 @@ namespace Dev2.Runtime.Auditing
             WorkflowID = dsfDataObject.ResourceID.ToString();
             ExecutionID = dsfDataObject.ExecutionID.ToString();
             ExecutionOrigin = Convert.ToInt64(dsfDataObject.ExecutionOrigin);
-            IsSubExecution = Convert.ToInt64(dsfDataObject.IsSubExecution);
-            IsRemoteWorkflow = Convert.ToInt64(dsfDataObject.IsRemoteWorkflow());
+            IsSubExecution = Convert.ToBoolean(dsfDataObject.IsSubExecution);
+            IsRemoteWorkflow = Convert.ToBoolean(dsfDataObject.IsRemoteWorkflow());
             WorkflowName = dsfDataObject.ServiceName;
             ServerID = dsfDataObject.ServerID.ToString();
             ParentID = dsfDataObject.ParentID.ToString();
