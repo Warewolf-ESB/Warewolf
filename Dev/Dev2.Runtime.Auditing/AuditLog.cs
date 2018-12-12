@@ -17,90 +17,115 @@ namespace Dev2.Runtime.Auditing
         [Column(Name = "Id", IsDbGenerated = true, DbType = "Integer", IsPrimaryKey = true)]
         [Key]
         [JsonProperty("Id")]
+        [DataMember]
         public int Id { get; set; }
 
         [Column(Name = "WorkflowID", CanBeNull = true)]
         [JsonProperty("WorkflowID")]
+        [DataMember]
         public string WorkflowID { get; set; }
 
         [Column(Name = "ExecutionID", CanBeNull = true)]
         [JsonProperty("ExecutionID")]
+        [DataMember]
         public string ExecutionID { get; set; }
 
         [Column(Name = "ExecutionOrigin", CanBeNull = true)]
         [JsonProperty("ExecutionOrigin")]
+        [DataMember]
         public long ExecutionOrigin { get; set; }
 
         [Column(Name = "IsSubExecution", CanBeNull = true)]
         [JsonProperty("IsSubExecution")]
+        [DataMember]
         public long IsSubExecution { get; set; }
 
         [Column(Name = "IsRemoteWorkflow", CanBeNull = true)]
         [JsonProperty("IsRemoteWorkflow")]
+        [DataMember]
         public long IsRemoteWorkflow { get; set; }
 
         [Column(Name = "WorkflowName", CanBeNull = true)]
         [JsonProperty("WorkflowName")]
+        [DataMember]
         public string WorkflowName { get; set; }
 
         [Column(Name = "AuditType", CanBeNull = true)]
         [JsonProperty("AuditType")]
+        [DataMember]
         public string AuditType { get; set; }
 
         [Column(Name = "PreviousActivity", CanBeNull = true)]
         [JsonProperty("PreviousActivity")]
+        [DataMember]
         public string PreviousActivity { get; set; }
+
         [Column(Name = "PreviousActivityType", CanBeNull = true)]
         [JsonProperty("PreviousActivityType")]
+        [DataMember]
         public string PreviousActivityType { get; set; }
+
         [Column(Name = "PreviousActivityID", CanBeNull = true)]
         [JsonProperty("PreviousActivityID")]
+        [DataMember]
         public string PreviousActivityId { get; set; }
 
         [Column(Name = "NextActivity", CanBeNull = true)]
         [JsonProperty("NextActivity")]
+        [DataMember]
         public string NextActivity { get; set; }
         [Column(Name = "NextActivityType", CanBeNull = true)]
         [JsonProperty("NextActivityType")]
+        [DataMember]
         public string NextActivityType { get; set; }
         [Column(Name = "NextActivityID", CanBeNull = true)]
         [JsonProperty("NextActivityID")]
+        [DataMember]
         public string NextActivityId { get; set; }
 
         [Column(Name = "ServerID", CanBeNull = true)]
         [JsonProperty("ServerID")]
+        [DataMember]
         public string ServerID { get; set; }
 
         [Column(Name = "ParentID", CanBeNull = true)]
         [JsonProperty("ParentID")]
+        [DataMember]
         public string ParentID { get; set; }
 
         [Column(Name = "ExecutingUser", CanBeNull = true)]
         [JsonProperty("ExecutingUser")]
+        [DataMember]
         public string ExecutingUser { get; set; }
 
         [Column(Name = "ExecutionOriginDescription", CanBeNull = true)]
         [JsonProperty("ExecutionOriginDescription")]
+        [DataMember]
         public string ExecutionOriginDescription { get; set; }
 
         [Column(Name = "ExecutionToken", CanBeNull = true)]
         [JsonProperty("ExecutionToken")]
+        [DataMember]
         public string ExecutionToken { get; set; }
 
         [Column(Name = "AdditionalDetail", CanBeNull = true)]
         [JsonProperty("AdditionalDetail")]
+        [DataMember]
         public string AdditionalDetail { get; set; }
 
         [Column(Name = "Environment", CanBeNull = true)]
         [JsonProperty("Environment")]
+        [DataMember]
         public string Environment { get; set; }
 
         [Column(Name = "VersionNumber", CanBeNull = true)]
         [JsonProperty("VersionNumber")]
+        [DataMember]
         public string VersionNumber { get; set; }
 
         [Column(Name = "AuditDate",DbType = "string", CanBeNull = true)]
         [JsonProperty("AuditDate")]
+        [DataMember]
         public DateTime AuditDate { get; set; }
 
         public static Expression<Func<AuditLog, bool>> EqualsAuditType(string searchTerm)
