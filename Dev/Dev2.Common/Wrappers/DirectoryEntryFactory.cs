@@ -22,9 +22,9 @@ namespace Dev2.Common.Wrappers
             Instance.Dispose();
         }
 
-        public IDirectoryEntries Create(DirectoryEntries directoryEntries)
+        public IDirectoryEntry Create<T>(T member)
         {
-            throw new NotImplementedException();
+            return new Dev2DirectoryEntry(new DirectoryEntry(member));
         }
     }
 }

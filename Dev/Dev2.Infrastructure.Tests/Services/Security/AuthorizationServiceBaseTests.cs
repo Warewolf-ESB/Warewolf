@@ -677,7 +677,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             {
                 _name = name;
             }
-            public IDirectoryEntries Children => throw new NotImplementedException();
+            public IDirectoryEntries Children => new TestDirectoryEntries();
 
             public string SchemaClassName => throw new NotImplementedException();
 
@@ -731,7 +731,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             Assert.IsFalse(result);
 
-            // Setup rest of test ;
+            // Setup rest of test
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
             var securityService = new Mock<ISecurityService>();
@@ -740,7 +740,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var gChildren = new Mock<IDirectoryEntries>();
             var actualChildren = new List<Mock<IDirectoryEntry>> { new Mock<IDirectoryEntry>() };
             var children = new Mock<IDirectoryEntries>();
-            var dir = new Mock<IDirectoryEntry>();
+            var dir = new Mock<IDirectoryEntryFactory>();
 
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
             user.Setup(u => u.Identity.Name).Returns("TestUser");
@@ -752,7 +752,8 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
             SchemaNameCollection filterList = new DirectoryEntry().Children.SchemaFilter;
             children.Setup(a => a.SchemaFilter).Returns(filterList);
-            dir.Setup(a => a.Children).Returns(new TestDirectoryEntries());
+            var ss = "WinNT://" + Environment.MachineName + ",computer";
+            dir.Setup(a => a.Create(ss)).Returns(new TestDirectoryEntry(ss));
 
             var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object };
             authorizationService.MemberOfAdminOverride = true;
@@ -762,6 +763,5 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             Assert.IsTrue(isMember);
         }
-        
     }
 }

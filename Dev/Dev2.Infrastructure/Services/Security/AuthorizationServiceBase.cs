@@ -19,35 +19,38 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
 {
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
-
+        private readonly IDirectoryEntryFactory _directoryEntryFactory;
         protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
         internal Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
 
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
-        : this(new Dev2DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"), securityService, isLocalConnection)
+        : this(new DirectoryEntryFactory(), securityService, isLocalConnection)
         {
         }
-        protected AuthorizationServiceBase(IDirectoryEntry directoryEntry, ISecurityService securityService, bool isLocalConnection)
+        protected AuthorizationServiceBase(IDirectoryEntryFactory directoryEntryFactory, ISecurityService securityService, bool isLocalConnection)
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
+            VerifyArgument.IsNotNull("DirectoryEntryFactory", directoryEntryFactory);
             _securityService = securityService;
             _securityService.Read();
             _isLocalConnection = isLocalConnection;
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
+            _directoryEntryFactory = directoryEntryFactory;
 
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
             {
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
-                using(var ad = directoryEntry)
+                using(var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
                 {
                     ad.Children.SchemaFilter.Add("group");
                     foreach(IDirectoryEntry dChildEntry in ad.Children)
@@ -80,7 +83,7 @@ namespace Dev2.Services.Security
 
         protected virtual bool IsGroupNameAdministrators<T>(T member, string adGroup)
         {
-            using (DirectoryEntry memberEntry = new DirectoryEntry(member))
+            using (IDirectoryEntry memberEntry = _directoryEntryFactory.Create(member))
             {
                 if (memberEntry.Name == adGroup)
                 {
@@ -111,6 +114,7 @@ namespace Dev2.Services.Security
         public event EventHandler PermissionsChanged;
         EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
         readonly object _getPermissionsLock = new object();
+
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
             add
