@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
 using Dev2.Data.TO;
+using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
@@ -330,6 +331,14 @@ namespace Dev2.Runtime.ESB.Execution
         }
     }
 
+
+    public class ResumableExecutionContainerFactory : IResumableExecutionContainerFactory
+    {
+        public IResumableExecutionContainer New(Guid startActivityId, ServiceAction sa, DsfDataObject dataObject)
+        {
+            return new ResumableExecutionContainer(startActivityId, sa, dataObject);
+        }
+    }
     public class ResumableExecutionContainer : WfExecutionContainer, IResumableExecutionContainer
     {
         readonly Guid _resumeActivityId;

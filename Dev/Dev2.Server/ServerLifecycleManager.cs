@@ -253,6 +253,7 @@ namespace Dev2
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
+            CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
         }
 
         void OpenCOMStream()
