@@ -1,0 +1,30 @@
+﻿using Dev2.Common.Interfaces.Wrappers;
+using System;
+using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Dev2.Common.Wrappers
+{
+    public class DirectoryEntryFactory : IDirectoryEntryFactory, IDisposable
+    {
+        protected IDirectoryEntry _directoryEntry;
+        protected IDirectoryEntries _directoryEnties;
+        public IDirectoryEntry Create(string path)
+        {
+            return _directoryEntry = new Dev2DirectoryEntry(path);
+        }
+        public IDirectoryEntry Instance => _directoryEntry;
+        public void Dispose()
+        {
+            Instance.Dispose();
+        }
+
+        public IDirectoryEntries Create(DirectoryEntries directoryEntries)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
