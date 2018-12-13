@@ -30,5 +30,25 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(Environment.MachineName, entry.Name);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("DirectoryEntryTest_Create")]
+        public void DirectoryEntryFactoryTest_DirectoryEntry_IsDisposed()
+        {
+            //-----------------Arrage------------------
+            var path = "WinNT://" + Environment.MachineName + ",computer";
+            IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
+            //-----------------Act------------------
+            var entry = _directoryEntryFactory.Create(path);
+            //-----------------Assert------------------
+            Assert.IsNotNull(entry);
+            Assert.AreEqual(Environment.MachineName, entry.Name);
+            //----------------Test if it does dispose-----------
+            //----------------Act-------------------------------
+            entry.Dispose();
+            //----------------Assert-------------------------------
+            Assert.ThrowsException<ObjectDisposedException>(()=>entry.Name);
+        }
+
     }
 }
