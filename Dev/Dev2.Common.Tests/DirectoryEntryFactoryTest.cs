@@ -50,5 +50,18 @@ namespace Dev2.Common.Tests
             Assert.ThrowsException<ObjectDisposedException>(()=>entry.Name);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("DirectoryEntryTest_Create")]
+        public void DirectoryEntryFactoryTest_DirectoryEntryPath_IsTrue()
+        {
+            //-----------------Arrage------------------
+            IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
+            //-----------------Act------------------
+            var entry = _directoryEntryFactory.Create("Administrator");
+            //-----------------Assert------------------
+            Assert.IsNotNull(entry);
+            Assert.IsTrue(entry.Instance.Path == "Administrator");
+        }
     }
 }
