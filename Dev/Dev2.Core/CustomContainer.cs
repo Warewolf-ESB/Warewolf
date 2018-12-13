@@ -69,6 +69,10 @@ namespace Dev2
 
         public static void AddToLoadedTypes(Type type)
         {
+            if(LoadedTypes is null)
+            {
+                LoadedTypes = new List<Type>();
+            }
             if (!LoadedTypes.Contains(type))
             {
                 LoadedTypes.Add(type);

@@ -1,0 +1,94 @@
+<div class="ExecutionLogs" style="padding-top: 6px;">
+  <form name="form" (ngSubmit)="onSubmit(buttonType)" #f="ngForm" novalidate>
+  <table id="filterTable">
+    <tr>
+      <td class="serverName">
+        <label for="Server">Server</label>
+      </td>
+      <td class="protocol">
+        <select class="form-control" id="protocolDropdown" name="protocolDropdown" (change)="ChangingPort($event.target.value)">
+          <option selected="selected" value='http'>http</option>
+          <option value='https'>https</option>
+        </select>
+      </td>
+      <td class="serverDesc">://</td>
+      <td class="serverText">
+        <input class="Server serverText form-control text-box single-line" type="text" #serverNameInput name="serverNameInput" placeholder="Server" value={{serverName}}>
+      </td>
+      <td class="serverDesc">:</td>
+      <td>
+        <input class="port form-control text-box single-line" type="text" #PortInput placeholder="Port" name="Port" value="{{port}}">
+      </td>
+      <td><button id="updateServer" class="btn btn-default" type="submit" (click)="onSubmit('Update')">Update</button></td>
+    </tr>
+  </table>
+  <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  <div style="padding-top: 3px;">
+    
+      <table id="executionFilters" class="table">
+        <tr>
+          <td style="display:none;" class='filter-container filterContainId'>
+            <input id="filterId" [(ngModel)]="model.filterId" #filterId="ngModel" autocomplete='off' class='filter' name='filterId' placeholder='Execution Id' data-col='Execution Id' />
+          </td>
+          <td class='filter-container filterContainUrl' style="width:100%">
+            <input id="filterUrl" [(ngModel)]="model.filterUrl" #filterUrl="ngModel" autocomplete='off' class='filter' name='filterUrl' placeholder='Url' data-col='Url' />
+          </td>
+          <td class='filter-container filterContainTime'>
+            <input id="filterTime" [(ngModel)]="model.filterTime" #filterTime="ngModel" autocomplete='off' class='filter' name='filterTime' placeholder='Time (ms)' data-col='Execution Time' />
+          </td>
+          <td class='filter-container filterContainStatus'>
+            <input id="filterStatus" [(ngModel)]="model.filterStatus" #filterStatus="ngModel" autocomplete='off' class='filter' name='filterStatus' placeholder='Status' data-col='Status' />
+          </td>
+          <td class='filter-container filterContainStart'>
+            <input id="filterStart" [(ngModel)]="model.filterStart" #filterStart="ngModel" autocomplete='off' class='filter' name='filterStart' placeholder='Start Time' data-col='Start Time' />
+          </td>
+          <td class='filter-container filterContainComplete'>
+            <input id="filterComplete" [(ngModel)]="model.filterComplete" #filterComplete="ngModel" autocomplete='off' class='filter' name='filterComplete' placeholder='Completed Time' data-col='Completed Time' />
+          </td>
+          <td class='filter-container filterContainUser'>
+            <input id="filterUser" [(ngModel)]="model.filterUser" #filterUser="ngModel" autocomplete='off' class='filter' name='filterUser' placeholder='User' data-col='User' />
+          </td>
+          <td class='filter-container filterContainReset'>
+            <button type="submit" class="btn btn-default" id="ResetButton" (click)="onSubmit('Clear')">Clear</button>
+          </td>
+        </tr>
+      </table>
+
+  </div>
+  </form>
+  <div class="executionList">
+    <mat-table id="executionList" class="logs-table mat-elevation-z8" [dataSource]="dataSource">
+      <ng-container matColumnDef="ExecutionId">
+        <mat-header-cell *matHeaderCellDef>ExecutionId</mat-header-cell>
+        <mat-cell *matCellDef="let logEntry">{{logEntry.ExecutionId}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Url">
+        <mat-header-cell *matHeaderCellDef>Url</mat-header-cell>
+        <mat-cell class="Url-cell" *matCellDef="let logEntry">{{logEntry.Url}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ExecutionTime">
+        <mat-header-cell *matHeaderCellDef>Execution Time</mat-header-cell>
+        <mat-cell class="ExecutionTime-cell" *matCellDef="let logEntry">{{logEntry.ExecutionTime}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell class="Status-cell" *matCellDef="let logEntry">{{logEntry.Status}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="StartDateTime">
+        <mat-header-cell *matHeaderCellDef>Started</mat-header-cell>
+        <mat-cell class="StartDateTime-cell" *matCellDef="let logEntry">{{logEntry.StartDateTime}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="CompletedDateTime">
+        <mat-header-cell *matHeaderCellDef>Completed</mat-header-cell>
+        <mat-cell class="CompletedDateTime-cell" *matCellDef="let logEntry">{{logEntry.CompletedDateTime}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="User">
+        <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+        <mat-cell class="User-cell" *matCellDef="let logEntry">{{logEntry.User}}</mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <!--<mat-paginator [length]="logEntry?.Count" [pageSize]="10" [pageSizeOptions]="[10, 50, 100]"></mat-paginator>-->
+  </div>
+</div>

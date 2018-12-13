@@ -397,12 +397,12 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Utility - Gather System Information example workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Example Executing Utility - System Information example workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExampleWorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExampleWorkflowExecution")]
-        public virtual void ExampleExecutingUtility_GatherSystemInformationExampleWorkflow()
+        public virtual void ExampleExecutingUtility_SystemInformationExampleWorkflow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - Gather System Information example workflow", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Example Executing Utility - System Information example workflow", ((string[])(null)));
 #line 91
 this.ScenarioSetup(scenarioInfo);
 #line 7

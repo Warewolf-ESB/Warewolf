@@ -11,13 +11,14 @@
 using System;
 using Dev2.Common.Container;
 using Dev2.Interfaces;
-using Dev2.Runtime.ESB.Execution.State;
+using Dev2.Runtime.Auditing;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     public class LogManager : IDisposable
     {
         private static LogManager _instance;
+
         readonly Dev2StateAuditLogger _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
 
         private static LogManager Instance
@@ -57,16 +58,16 @@ namespace Dev2.Runtime.ESB.Execution
             _logger.Flush();
         }
 
-        private bool isDisposed = false;
+        private bool _isDisposed = false;
         protected virtual void Dispose(bool disposing)
         {
-            if (!isDisposed)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _logger.Dispose();
                 }
-                isDisposed = true;
+                _isDisposed = true;
             }
         }
 

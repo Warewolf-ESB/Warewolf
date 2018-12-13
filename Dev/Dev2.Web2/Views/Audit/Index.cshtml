@@ -1,0 +1,329 @@
+﻿@model Tuple<List<Dev2.Runtime.Auditing.AuditLog>, AuditingViewModel>
+@using Dev2.Web2.Models.Auditing;
+@{
+	ViewBag.Title = "Warewolf";
+}
+<form id="frmAudit">
+	<div id="ExecutionFilters" style="padding-top: 6px;">
+		<table id="filterTable">
+			<tr>
+				<td class="serverName">
+					@Html.LabelFor(model => model.Item2.Server)
+				</td>
+				<td class="protocol">
+					@Html.DropDownListFor(m => m.Item2.Protocol, Model.Item2.Protocols, new { id = "protocolDropdown", @class = "form-control" })
+				</td>
+				<td class="serverDesc">://</td>
+				<td class="serverText">@Html.EditorFor(model => model.Item2.Server, new { htmlAttributes = new { id = "serverName", @class = "form-control" } })</td>
+				<td class="serverDesc">:</td>
+				<td>@Html.EditorFor(model => model.Item2.Port, new { htmlAttributes = new { id = "port", @class = "form-control" } })</td>
+				<td><button title="Update Server" id="updateServer" class="btn btn-default">Update</button></td>
+			</tr>
+		</table>
+	</div>
+	<div style="padding-top: 3px;">
+		<div id="auditFilters" class="auditFilters">
+			<div class='filter-container filterExecutionID'>
+				<input id="ExecutionID" autocomplete='off' class='filter' name='ExecutionID' placeholder='Execution ID' data-col='ExecutionID' />
+			</div>
+			<div class='filter-container filterWorkflowID'>
+				<input id="WorkflowID" autocomplete='off' class='filter' name='WorkflowID' placeholder='Workflow ID' data-col='WorkflowID' />
+			</div>
+			<div class='filter-container filterExecutingUser'>
+				<input id="PreviousActivityId" autocomplete='off' class='filter' name='PreviousActivityId' placeholder='Activity ID' data-col='PreviousActivityId' />
+			</div>
+			<div class='filter-container filterWorkflowName'>
+				<input id="WorkflowName" autocomplete='off' class='filter' name='WorkflowName' placeholder='Workflow Name' data-col='WorkflowName' />
+			</div>
+
+			<div class='filter-container filterAuditType'>
+				<input id="AuditType" autocomplete='off' class='filter' name='AuditType' placeholder='Audit Type' data-col='AuditType' />
+			</div>
+
+			<div style="display:none;" class='filter-container filterServerID'>
+				<input id="ServerID" autocomplete='off' class='filter' name='ServerID' placeholder='Server ID' data-col='ServerID' />
+			</div>
+			<div style="display:none;" class='filter-container filterParentID'>
+				<input id="ParentID" autocomplete='off' class='filter' name='ParentID' placeholder='Parent ID' data-col='ParentID' />
+			</div>
+
+			<div style="display:none;" class='filter-container filterIsSubExecution'>
+				<input id="IsSubExecution" autocomplete='off' class='filter' name='IsSubExecution' placeholder='Is Sub Execution' data-col='IsSubExecution' />
+			</div>
+			<div style="display:none;" class='filter-container filterIsRemoteWorkflow'>
+				<input id="IsRemoteWorkflow" autocomplete='off' class='filter' name='IsRemoteWorkflow' placeholder='Is Remote Workflow' data-col='IsRemoteWorkflow' />
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div id="auditFilters" class="auditFilters">
+			<div class='filter-container filterContainStart'>
+				<input id="StartDateTime" class='filter' name='StartDateTime' type="text" placeholder='Start Date' data-col='StartDateTime' />
+			</div>
+			<div class='filter-container filterContainComplete'>
+				<input id="CompletedDateTime" class='filter' type="text" name='CompletedDateTime' placeholder='End Date' data-col='CompletedDateTime' />
+			</div>
+			<div class='filter-container filterContainReset'>
+				<button title="Filter List" type="button" class="btn btn-default" id="FilterButton">Filter</button>
+			</div>
+			<div class='filter-container filterContainReset'>
+				<button title="Clear Filters" type="button" class="btn btn-default" id="ResetButton">Clear</button>
+			</div>
+		</div>
+	</div>
+	<div id="divAuditList" class="animate-bottom">
+	</div>
+	<div id="loader">
+		<div id="loader_1" class="loader"></div>
+		<div id="loader_2" class="loader"></div>
+		<div id="loader_3" class="loader"></div>
+		<div id="loader_4" class="loader"></div>
+		<div id="loader_5" class="loader"></div>
+		<div id="loader_6" class="loader"></div>
+		<div id="loader_7" class="loader"></div>
+		<div id="loader_8" class="loader"></div>
+	</div>
+	<div id="generalMessageDiv" class="generalMessageWrap">
+		<div class="generalMessage">
+			<div class="generalMessageContent">
+				<p class="generalMessageText"></p>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade environmentPopup" tabindex="-1" role="dialog" id="environmentPopup">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn warewolf-orange" data-dismiss="modal">Cancel</button>
+					<button id="dialogYes" title="Cancel"
+							 data-Environment="0"
+								 data-WorkflowID="0"
+								 data-ActivityID="0"
+							type="button" title="Resume Workflow" class="btn warewolf-orange" data-dismiss="modal">Resume Workflow</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	var browserType;
+	browserType = browser();
+
+	$("#auditList").tablesorter();
+	$('.filter').multifilter();
+	$("#StartDateTime").datetimepicker({
+		format: 'Y/m/d H:i:s',
+		defaultDate: new Date()
+	});
+	$("#CompletedDateTime").datetimepicker({
+		format: 'Y/m/d H:i:s',
+		defaultDate: new Date()
+	});
+
+	function showExecutionList() {
+		document.getElementById("loader").style.display = "none";
+		document.getElementById("divAuditList").style.display = "block";
+		document.getElementById("generalMessageDiv").style.display = "none";
+	}
+
+	function hideExecutionList() {
+		document.getElementById("loader").style.display = "block";
+		document.getElementById("divAuditList").style.display = "none";
+		document.getElementById("generalMessageDiv").style.display = "none";
+	}
+
+	function hideExecutionAndLoader() {
+		document.getElementById("loader").style.display = "none";
+		document.getElementById("divAuditList").style.display = "none";
+	}
+
+	function getServerUrl() {
+		var protocol = document.getElementById("protocolDropdown").value;
+		var serverName = document.getElementById("serverName").value;
+		var port = document.getElementById("port").value;
+		var serverUrl = protocol + "://" + serverName + ":" + port;
+		return serverUrl;
+	}
+
+	function reset() {
+		document.getElementById("protocolDropdown").value = "http";
+		document.getElementById("serverName").value = "localhost";
+		document.getElementById("port").value = "3142";
+	}
+
+	function getLogData() {
+		$.support.cors = true;
+		var serverUrl = getServerUrl().toLowerCase();
+		var wareWolfUrl = serverUrl + "/services/GetLogDataService";
+		var pingUrl = serverUrl + "/secure/ping";
+
+		var result = {};
+		var startdate = $('#StartDateTime').val();
+		var enddate = $('#CompletedDateTime').val();
+
+		$.each($('.filter-container :input').serializeArray(), function () {
+			var keyName = this.name.toString();;
+			var keyValue = this.value.toString();
+
+			if (keyName == 'StartDateTime' && startdate != '') {
+				result[keyName] = startdate;
+			}
+			else if (keyName == 'CompletedDateTime' && enddate != '') {
+				result[keyName] = enddate;
+			}
+			else {
+				result[keyName] = keyValue.toString();
+			}
+		});
+
+		$.ajax({
+			type: "POST",
+			url: wareWolfUrl,
+			cache: false,
+			'Content-Type': "application/json; charset=utf-8",
+			data: result,
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function (response) {
+				if (Object.prototype.toString.call(response) != "[object String]") {
+					response = JSON.stringify(response);
+				}
+				$.ajax({
+					type: "POST",
+					url: "/Audit/AuditList",
+					async: false,
+					'Content-Type': "application/json; charset=utf-8",
+					data: { 'jsonData': response },
+					success: function (executionListHTML) {
+						showExecutionList();
+						$("#divAuditList").html(executionListHTML);
+					},
+					error: OnErrorCall
+				});
+			},
+			fail: OnFailCall,
+			error: OnErrorCall
+		});
+	}
+
+	var OnFailCall = function (request, status, error) {
+		var serverName = document.getElementById("serverName").value;
+		reset();
+		hideExecutionAndLoader();
+		if (request.status == 0) {
+			alert("Local Warewolf Server Not Found");
+		}
+		else if (request.status == 200) {
+			alert("Service not found: " + serverName + " - check server version");
+			getLogData();
+		}
+	}
+
+	var OnErrorCall = function (request, status, error) {
+		var serverName = document.getElementById("serverName").value;
+		reset();
+		hideExecutionAndLoader();
+		if (request.status == 0) {
+			alert("Local Warewolf Server Not Found");
+		}
+		else if (request.status == 200) {
+			alert("Service not found: " + serverName + " - check server version");
+			getLogData();
+		}
+	}
+
+	$(document).on("keypress", "#serverName", function (e) {
+		if (e.keyCode == 13)
+			$('#updateServer').click();
+	});
+
+	$(document).on("click", "#ResetButton", function (e) {
+		$('#auditFilters input').val("").keyup();
+	});
+
+	$(document).on("click", "#FilterButton", function (e) {
+		getLogData();
+	});
+
+	$(document).on("click", "#openEnvdetails", function (e) {
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
+		$('#environmentPopup .modal-title').text('Environment');
+		$('#environmentPopup .modal-body').html(Environment);
+		$('#environmentPopup #dialogYes').hide();
+		$('#environmentPopup').modal('toggle');
+	})
+
+	$(document).on("click", "#resumeWorkflow", function (e) {
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
+
+		var message = "<p><b>WorkflowID: </b>" + WorkflowID + "</p>";
+		message += "<p><b>ActivityID: </b>" + ActivityID + "</p>";
+		message += "<p><b>Environment: </b></p>";
+		message += "<p>" + Environment + "</p>";
+		$('#environmentPopup .modal-title').text('Are you sure you would like to resume this workflow?');
+		$('#environmentPopup .modal-body').html(message);
+		$('#environmentPopup #dialogYes').attr('data-Environment', Environment);
+		$('#environmentPopup #dialogYes').attr('data-WorkflowID', WorkflowID);
+		$('#environmentPopup #dialogYes').attr('data-ActivityID', ActivityID);
+		$('#environmentPopup #dialogYes').show();
+		$('#environmentPopup').modal('toggle');
+	})
+	
+	$(document).on("click", "#dialogYes", function () {
+		$.support.cors = true;
+		var serverUrl = getServerUrl().toLowerCase();
+		var wareWolfUrl = serverUrl + "/services/WorkflowResume";
+		var pingUrl = serverUrl + "/secure/ping";
+		var Environment = $(this).attr('data-Environment');
+		var WorkflowID = $(this).attr('data-WorkflowID');
+		var ActivityID = $(this).attr('data-ActivityID');
+
+		$.ajax({
+			type: "POST",
+            url: "/Audit/PerformResume",
+			cache: false,
+			'Content-Type': "application/json; charset=utf-8",
+            data: { 'resourceID': WorkflowID, 'environment': Environment, 'startActivityId': ActivityID, 'wareWolfResumeUrl': wareWolfUrl},			
+			success: function (response) {
+				alert('success');
+			},
+			fail: OnFailCall,
+			error: OnErrorCall
+		});
+	});	
+
+	$('#updateServer').on('click', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		browserType = browser();
+		hideExecutionList();
+		getLogData();
+	});
+
+	$("#protocolDropdown").change(function () {
+		var value = document.getElementById("protocolDropdown").value;
+		if (value == "https") {
+			$("#port").val("3143");
+		}
+		else {
+			$("#port").val("3142");
+		}
+	});
+
+	$(document).ready(function () {
+		$("#StartDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
+		$("#CompletedDateTime").val(moment().format("YYYY/MM/DD hh:mm:ss"));
+		getLogData();
+	});
+
+</script>

@@ -318,11 +318,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                var resourceId = dataObject.ResourceID;
-                if (resourceId != Guid.Empty)
-                {
-                    dataObject.ResourceID = resourceId;
-                }
+
                 parentServiceName = dataObject.ParentServiceName;
                 serviceName = dataObject.ServiceName;
                 dataObject.ParentServiceName = serviceName;

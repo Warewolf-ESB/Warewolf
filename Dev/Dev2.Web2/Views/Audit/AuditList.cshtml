@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Dev2.Runtime.Auditing.AuditLog>
+<div>
+	@if (Model != null)
+	{
+		<table id="auditList" class="table-hover table-condensed table-striped tablesorter">
+			<thead>
+				<tr>
+					<th class="auExecutionID" title="ExecutionID" name="ExecutionID">ExecutionID</th>
+					<th class="auWorkflowID" title="WorkflowID" name="WorkflowID">WorkflowID</th>
+					<th class="auPreviousActivityId" title="PreviousActivityId" name="PreviousActivityId">ActivityID</th>
+					<th class="auWorkflowName" title="WorkflowName" name="WorkflowName">WorkflowName</th>
+					<th class="auVersionNumber" title="VersionNumber" name="VersionNumber">Version</th>
+					<th class="auAuditType" title="AuditType" name="AuditType">AuditType</th>
+					<th class="auAuditDate" title="AuditDate" name="AuditDate">AuditDate</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+				<tr>
+					<td class="exRow auExecutionID">
+						@Html.DisplayFor(modelItem => item.ExecutionID)
+					</td>
+					<td class="exRow auWorkflowID">
+						@Html.DisplayFor(modelItem => item.WorkflowID)
+					</td>
+					<td class="exRow auWorkflowID">
+						@Html.DisplayFor(modelItem => item.PreviousActivityId)
+					</td>
+					<td class="exRow auWorkflowName">
+						@Html.DisplayFor(modelItem => item.WorkflowName)
+					</td>
+					<td class="exRow auVersionNumber">
+						@Html.DisplayFor(modelItem => item.VersionNumber)
+					</td>
+					<td class="exRow auAuditType">
+						@Html.DisplayFor(modelItem => item.AuditType)
+					</td>
+					<td class="exRow auAuditDate">
+						@Html.DisplayFor(modelItem => item.AuditDate)
+					</td>
+					<td>
+						<div id="openEnvdetails" class="btn warewolf-orange" title="View Environment Details"
+							 data-Environment="@item.Environment"
+							 data-WorkflowID="@item.WorkflowID"
+							 data-ActivityID="@item.PreviousActivityId"><i class="fa fa-ellipsis-h"></i></div>
+						@*<div data-Environment="@item.Environment" title="Resume Workflow"
+							 data-WorkflowID="@item.WorkflowID"
+							 data-ActivityID="@item.PreviousActivityId"
+							 id="resumeWorkflow" class="btn warewolf-orange"><i class="fa fa-play"></i></div>*@
+					</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	}
+</div>

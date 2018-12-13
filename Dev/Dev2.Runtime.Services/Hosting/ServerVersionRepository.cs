@@ -45,6 +45,8 @@ namespace Dev2.Runtime.Hosting
         readonly string _envVersionFolder;
         readonly string _resourcePath;
 
+        public static IServerVersionRepository Instance { get; private set; }
+
         public ServerVersionRepository(IVersionStrategy versionStrategy, IResourceCatalog catalogue, IDirectory directory, string rootPath, IFile file, IFilePath filePath)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>
@@ -63,6 +65,7 @@ namespace Dev2.Runtime.Hosting
             _filePath = filePath;
             _envVersionFolder = EnvironmentVariables.VersionsPath;
             _resourcePath = EnvironmentVariables.ResourcePath;
+            Instance = this;
         }
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)
@@ -310,6 +313,14 @@ namespace Dev2.Runtime.Hosting
             {
                 Dev2Logger.Error(e, "Warewolf Error");
             }
+        }
+
+        public int GetLatestVersionNumber(Guid resourceId)
+        {
+            // TODO: bugfix: version number can not be defined by the total count of version files in a directory
+            var path = GetVersionFolderPath(resourceId.ToString());
+            var files = _directory.GetFiles(path);
+            return files.Count() + 1;
         }
     }
 }
