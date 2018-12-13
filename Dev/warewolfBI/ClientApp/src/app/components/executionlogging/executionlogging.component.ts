@@ -47,7 +47,7 @@ export class ExecutionLoggingComponent implements OnInit, AfterViewInit {
   serverURL: string;
   serverName: string = "localhost";
   port: string = "3142";
-  protocol: string = 'http';;
+  protocol: string = 'http';
   loading: boolean = true;
   portSelect = 'http';
   displayedColumns = ["ExecutionId", "Url", "ExecutionTime", "Status", "StartDateTime", "CompletedDateTime", "User"];
