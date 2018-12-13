@@ -445,7 +445,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
+        [Owner("Siphamandla Dube")]
         [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenNonAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
         {
