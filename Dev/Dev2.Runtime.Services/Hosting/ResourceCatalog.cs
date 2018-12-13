@@ -100,7 +100,12 @@ namespace Dev2.Runtime.Hosting
 
         public int GetResourceCount(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResourceCount(workspaceID);
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
-        public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, resourceType, version);
+        public IResource GetResource(Guid workspaceID, string resourceName, string resourceType, string version)
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, resourceType, version);
+        public IResource GetResource(Guid workspaceID, Guid resourceId, string resourceType, string version)
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceId, resourceType, version);
+        public IResource GetResource(Guid workspaceID, Guid resourceID, string version)
+            => _catalogPluginContainer.LoadProvider.GetResource(workspaceID,resourceID,version);
         public StringBuilder GetResourceContents(IResource resource) => _catalogPluginContainer.LoadProvider.GetResourceContents(resource);
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResourceContents(workspaceID, resourceID);
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType) => _catalogPluginContainer.LoadProvider.GetModels(workspaceID, sourceType);
@@ -413,21 +418,28 @@ namespace Dev2.Runtime.Hosting
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId)
         {
+            return Parse(workspaceID, resourceID, executionId, null);
+        }
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId, IResource resourceOverride)
+        {
+
             IResourceActivityCache parser = null;
             Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", string.IsNullOrEmpty(executionId) ? GlobalConstants.WarewolfDebug : executionId);
+            // get workspace cache entries
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
-                 {
-                     if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
-                     {
-                         return existingCache;
-                     }
-                     return cache;
-                 });
+                {
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
+                    {
+                        return existingCache;
+                    }
+                    return cache;
+                });
             }
-            if (parser != null && parser.HasActivityInCache(resourceID))
+            // get activity cache entry from workspace cache entry
+            if (parser != null && parser.HasActivityInCache(resourceID) && resourceOverride == null)
             {
                 var dev2Activity = parser.GetActivity(resourceID);
                 if (dev2Activity != null)
@@ -436,7 +448,13 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            var resource = GetResource(workspaceID, resourceID);
+            // load resource
+            var resource = resourceOverride;
+            if (resourceOverride is null)
+            {
+                resource = GetResource(workspaceID, resourceID);
+            }
+            // get first activity for resource and initialize it
             var service = GetService(workspaceID, resourceID, resource.ResourceName);
             if (service != null)
             {

@@ -1,0 +1,255 @@
+body {
+  font-family: 'Open Sans',sans-serif;
+  font-size: 10px;
+  line-height: 1.42857143;
+  margin: 0;
+  color: #333;
+}
+navbar-brand > img {
+  display: block;
+}
+.navbar-inverse .navbar-brand {
+  color: #9d9d9d;
+}
+
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}
+.navbar-brand, .navbar > .container-fluid .navbar-brand {
+  margin-left: -15px;
+}
+#brandLogo {
+  border: 0;
+  margin-top: -27px;
+}
+.img-thumbnail, body {
+  background-color: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
+
+
+:focus {
+  outline-style: none;
+}
+
+a
+a:-webkit-any-link {
+  color: #555;
+  text-decoration: none;
+}
+
+.mat-primary {
+  background-color: #ab4e08;
+}
+
+a:focus,
+a:hover {
+  color: #ab4e08;
+  text-decoration: none;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+
+  a {
+    color: #fff;
+  }
+
+  a:hover, a:active {
+    color: #f3700d;
+  }
+}
+
+.mat-primary {
+  background: #333;
+  color: #fff;
+}
+
+.sidenav-toolbar img,
+.sidenav img {
+  width: auto;
+  max-height: 62px;
+}
+
+mat-sidenav {
+  background-color: #333;
+}
+
+.sidenav-tree-invisible {
+  display: none;
+}
+
+.sidenav-tree ul,
+.sidenav-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  min-width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  a {
+    color: #fff;
+  }
+
+  a:hover,
+  a:active {
+    color: #f3700d;
+  }
+
+  .icon-large-orange {
+    color: #fff;
+    margin-right: 10px;
+    font-size: 24px;
+  }
+
+  .icon-large-orange:hover {
+    color: #f3700d;
+  }
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+.sidenav-toolbar {
+  min-height: 80px;
+  padding-top: 10px;
+  padding-left: 100px;
+  padding-right: 100px;
+  position: fixed;
+  z-index: 2;
+}
+.sidenav-is-mobile .sidenav-toolbar {
+
+  position: fixed;
+  z-index: 2;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.sidenav-is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+main {
+  min-height: 500px;
+}
+
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100%;
+}
+
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover,
+a:active {
+  color: lightgray;
+}
+
+.navigation-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.icon {
+  display: inline-block;
+  height: 30px;
+  margin: 0 auto;
+  padding-right: 5px;
+  text-align: center;
+  vertical-align: middle;
+  width: 15%;
+}
+
+.label {
+  display: inline-block;
+  line-height: 30px;
+  margin: 0;
+  width: 85%;
+}
+
+
+/*FOOTER*/
+.footerWrap {
+  width: 100%;
+  bottom: 0px;
+  margin-top: 20px;
+}
+
+.footer {
+  width: 100%;
+  margin: auto;
+}
+
+.footerContent {
+  float: left;
+  width: 100%;
+  background-color: black;
+  padding: 20px 0;
+}
+
+.footer p {
+  float: left;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+/*FOOTER*/
+
+
+.generalMessageWrap {
+  width: 100%;
+  bottom: 0px;
+  margin-top: 20px;
+}
+
+.generalMessage {
+  width: 100%;
+  margin: auto;
+}
+
+.generalMessageContent {
+  float: left;
+  width: 100%;
+  background-color: gray;
+  padding: 20px 0;
+}
+
+.generalMessage p {
+  float: left;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+}

@@ -33,7 +33,7 @@ namespace Dev2.Services.Security
                 _permissionsLock.EnterReadLock();
                 try
                 {
-                    return _permissions;
+                    return _permissions.ToList();
                 }
                 finally
                 {

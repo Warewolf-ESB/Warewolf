@@ -75,7 +75,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             try
             {
-                // Execute in its own thread to give proper context ;)
+                // Execute in its own thread to give proper context
                 var t = new Thread(() =>
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
@@ -85,7 +85,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 });
 
                 t.Start();
-
                 t.Join();
             }
             catch (Exception e)
@@ -142,7 +141,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (!dataObject.ExecutionID.HasValue)
             {
                 dataObject.ExecutionID = Guid.NewGuid();
-            }
+            }            
             dataObject.QueryString = queryString;
 
             if (isDebug)
@@ -196,20 +195,31 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             try
             {
+                // Execute in its own thread to give proper context
                 var t = new Thread(() =>
                 {
-                    TryExecuteRequest(request, workspaceId, channel, dataObject, isManagementResource);
+                    Thread.CurrentPrincipal = ExecutingUser;
+                    if (isManagementResource)
+                    {
+                        Thread.CurrentPrincipal = Common.Utilities.ServerUser;
+                        ExecutingUser = Common.Utilities.ServerUser;
+                        dataObject.ExecutingUser = Common.Utilities.ServerUser;
+                    }
+                    else
+                    {
+                        IsAuthorizedForServiceTestRun(dataObject);
+                    }
+
+                    TryExecuteRequest(request, workspaceId, channel, dataObject);
                 });
 
                 t.Start();
-
                 t.Join();
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
             }
-
 
             if (request.ExecuteResult.Length > 0)
             {
@@ -219,20 +229,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             return new StringBuilder();
         }
 
-        private void TryExecuteRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource)
+        private void TryExecuteRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject)
         {
-            Thread.CurrentPrincipal = ExecutingUser;
-            if (isManagementResource)
-            {
-                Thread.CurrentPrincipal = Common.Utilities.ServerUser;
-                ExecutingUser = Common.Utilities.ServerUser;
-                dataObject.ExecutingUser = Common.Utilities.ServerUser;
-            }
-            else
-            {
-                IsAuthorizedForServiceTestRun(dataObject);
-            }
-
             channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
         }
 
@@ -241,13 +239,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (dataObject.IsServiceTestExecution && _authorizationService != null)
             {
                 var authorizationService = _authorizationService;
-                var hasContribute =
-                    authorizationService.IsAuthorized(AuthorizationContext.Contribute,
-                        Guid.Empty.ToString());
+                var hasContribute = authorizationService.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString());
                 if (!hasContribute)
                 {
-                    throw new UnauthorizedAccessException(
-                        "The user does not have permission to execute tests.");
+                    throw new UnauthorizedAccessException("The user does not have permission to execute tests.");
                 }
             }
         }

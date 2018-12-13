@@ -88,7 +88,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
-Scenario: Example Executing Utility - Gather System Information example workflow
+Scenario: Example Executing Utility - System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
 	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |

@@ -279,6 +279,20 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
             CustomContainer.Register(mockMainViewModel.Object);
 
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            var recordSetItemModel = new RecordSetItemModel("person", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("age", recordSetItemModel),
+                new RecordSetFieldItemModel("address_id", recordSetItemModel)
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+
+            DataListSingleton.SetDataList(dataListViewModel);
+
             var act = new AdvancedRecordsetActivity();
 
             const string query = "select p.name as username,p.address_id as address from person p";

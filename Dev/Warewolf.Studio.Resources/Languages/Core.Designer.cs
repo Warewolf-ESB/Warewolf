@@ -766,7 +766,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://my.warewolf.io/ExecutionLogging.
+        ///   Looks up a localized string similar to http://my.warewolf.io/Audit.
         /// </summary>
         public static string MyWarewolfUrl {
             get {
@@ -919,7 +919,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Revulytics sdk error.
+        ///   Looks up a localized string similar to Revulytics Sdk Error.
         /// </summary>
         public static string RevulyticsSdkError {
             get {

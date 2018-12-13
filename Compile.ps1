@@ -64,11 +64,19 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     if (Test-Path $MSBuildPath.Replace("Enterprise", "BuildTools")) {
         $MSBuildPath = $MSBuildPath.Replace("Enterprise", "BuildTools")
     }
+	if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+		$MSBuildPath = $env:MSBuildPath
+	}
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-	Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
-    sleep 10
-    exit 1
+	$env:MSBuildPath = Read-Host 'Please enter the path to MSBuild.exe. For example: C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\MSBuild.exe. Or change the value of the MSBuildPath environment varialbe to be the path to MSBuild.exe'
+	if ("$env:MSBuildPath" -ne "" -and (Test-Path "$env:MSBuildPath")) {
+		$MSBuildPath = $env:MSBuildPath
+	} else {
+		Write-Host MSBuild not found. Download from: https://aka.ms/vs/15/release/vs_buildtools.exe
+		sleep 10
+		exit 1
+	}
 }
 
 #Find NuGet
@@ -269,6 +277,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
                 $OutputProperty = ""
             }
             &"$NuGet" "restore" "$SolutionFile"
+            &"dotnet" "restore" "$SolutionFile"
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target "/nodeReuse:false"
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorch.bat' to thoroughly clean your workspace. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
