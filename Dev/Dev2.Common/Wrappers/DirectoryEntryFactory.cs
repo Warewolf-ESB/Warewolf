@@ -1,21 +1,13 @@
 ﻿using Dev2.Common.Interfaces.Wrappers;
-using System;
 using System.DirectoryServices;
 
 namespace Dev2.Common.Wrappers
 {
-    public class DirectoryEntryFactory : IDirectoryEntryFactory, IDisposable
+    public class DirectoryEntryFactory : IDirectoryEntryFactory
     {
-        protected IDirectoryEntry _directoryEntry;
-        protected IDirectoryEntries _directoryEnties;
         public IDirectoryEntry Create(string path)
         {
-            return _directoryEntry = new Dev2DirectoryEntry(path);
-        }
-        public IDirectoryEntry Instance => _directoryEntry;
-        public void Dispose()
-        {
-            Instance.Dispose();
+            return new Dev2DirectoryEntry(path);
         }
 
         public IDirectoryEntry Create<T>(T member)

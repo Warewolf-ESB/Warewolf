@@ -8,13 +8,6 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class DirectoryEntryFactoryTest
     {
-        public DirectoryEntryFactoryTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory("DirectoryEntryTest_Create")]
@@ -28,6 +21,13 @@ namespace Dev2.Common.Tests
             //-----------------Assert------------------
             Assert.IsNotNull(entry);
             Assert.AreEqual(Environment.MachineName, entry.Name);
+
+            var count = 0;
+            foreach (var child in entry.Children)
+            {
+                count++;
+            }
+            Assert.IsTrue(count > 0);
         }
 
         [TestMethod]
