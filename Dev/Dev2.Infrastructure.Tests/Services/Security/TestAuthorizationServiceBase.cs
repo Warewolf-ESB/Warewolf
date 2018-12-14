@@ -10,21 +10,41 @@
 
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Services.Security;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     public class TestAuthorizationServiceBase : AuthorizationServiceBase
     {
+        private readonly bool _overrideIsAdminMember;
         public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
             : base(securityService, isLocalConnection)
         {
-            if(!overrideAreAdminsFn)
+            if (!overrideAreAdminsFn)
             {
                 AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
             }
         }
+        public TestAuthorizationServiceBase(IDirectoryEntryFactory directoryEntryFactory, ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false, bool overrideIsAdminMember = true)
+            : base(directoryEntryFactory, securityService, isLocalConnection)
+        {
+            _overrideIsAdminMember = overrideIsAdminMember;
+            if (overrideAreAdminsFn)
+            {
+                AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
+            }
+        }
+        protected override bool IsGroupNameAdministrators<T>(T member, string adGroup)
+        {
+            if(!_overrideIsAdminMember)
+            {
+                return base.IsGroupNameAdministrators(member, adGroup);
+            }
+            return MemberOfAdminOverride;
+        }
 
+        public bool MemberOfAdminOverride { get; set; }
         public int RaisePermissionsChangedHitCount { get; private set; }
         public int RaisePermissionsModifiedHitCount { get; private set; }
 
