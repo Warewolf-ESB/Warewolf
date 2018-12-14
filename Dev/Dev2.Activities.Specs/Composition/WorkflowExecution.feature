@@ -1423,28 +1423,27 @@ Scenario: Workflow with ForEach and Manual Loop
 
 	
 @WorkflowExecution
-Scenario: Audit Log Query Expect 3 Items Search on Activity Display Name
+Scenario: Audit Log Query Expect 2 Items Search on Activity Display Name
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
-	| AuditType               | WorkflowName | PreviousActivityType        | NextActivityType            |
-	| LogPreExecuteState      | Hello World  | null                        | Dev2.Activities.DsfDecision |
-	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
-	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
+	And The audit database has "3" search results containing "Assign a value to Name if blank" with type "" for "Hello World" as 
+	| AuditType           | WorkflowName | PreviousActivityType                                                          | NextActivityType                                                              |
+	| LogPostExecuteState | Hello World  | Dev2.Activities.DsfDecision                                                   | Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity |
+	| LogPreExecuteState  | Hello World  | null                                                                          | Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity |
+	| LogPostExecuteState | Hello World  | Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity | Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity |
 
 @WorkflowExecution
-Scenario: Audit Log Query Expect 3 Items Search on Activity Type
+Scenario: Audit Log Query Expect 2 Items Search on Activity Type
 	Given I have a server at "localhost" with workflow "Hello World"
 	And the audit database is empty
 	When "localhost" is the active environment used to execute "Hello World"
     Then the workflow execution has "No" error
-	And The audit database has "3" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as 
+	And The audit database has "2" search results containing "Dev2.Activities.DsfDecision" with type "" for "Hello World" as
 	| AuditType               | WorkflowName | PreviousActivityType        | NextActivityType            |
 	| LogPreExecuteState      | Hello World  | null                        | Dev2.Activities.DsfDecision |
-	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | null                        |
-	| LogExecuteCompleteState | Hello World  | Dev2.Activities.DsfDecision | null                        |
+	| LogPostExecuteState     | Hello World  | Dev2.Activities.DsfDecision | Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity                        |
 
 @WorkflowExecution
 Scenario: Audit Log Query Expect No Results

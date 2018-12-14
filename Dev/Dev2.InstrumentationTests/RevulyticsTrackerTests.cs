@@ -4,17 +4,12 @@ using System.IO;
 using System.Reflection;
 using RUISDK_5_3_1;
 using System.Configuration;
-using System.Threading;
 
 namespace Dev2.Instrumentation.Tests
 {
     [TestClass()]
     public class RevulyticsTrackerTests
     {
-        /// <summary>
-        /// This method is used to read correct config needed in test cases
-        /// </summary>
-        /// <returns>RevulyticsTracker object</returns>
         private RevulyticsTracker GetRevulyticsTracker()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -27,11 +22,7 @@ namespace Dev2.Instrumentation.Tests
 
             return tracker;
         }
-
-        /// <summary>
-        /// This method is used to read incorrect config needed in test cases
-        /// </summary>
-        /// <returns>RevulyticsTracker object</returns>
+        
         private RevulyticsTracker GetRevulyticsTrackerWithIncorrectConfig()
         {
             var tracker = new RevulyticsTracker();
@@ -45,11 +36,6 @@ namespace Dev2.Instrumentation.Tests
             return tracker;
         }
 
-        /// <summary>
-        /// This exception occcur when require revulytics dll is not present or version is different
-        /// in the running application directory below are the dlls.
-        /// ruiSDK_5.1.0.x86.dll ruiSDK_5.1.0.x64.dll
-        /// </summary>
         [TestMethod()]
         public void CreateRevulyticsConfigTestSdkException()
         {
@@ -57,10 +43,7 @@ namespace Dev2.Instrumentation.Tests
             var result = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(result, RUIResult.ok);
         }
-
-        /// <summary>
-        /// This test check to revulytics config is valid or not
-        /// </summary>
+        
         [TestMethod()]
         public void CreateRevulyticsConfigTest()
         {
@@ -68,12 +51,7 @@ namespace Dev2.Instrumentation.Tests
             var configResult = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(configResult, RUIResult.ok, "configNotCreated");
         }
-
-        /// <summary>
-        /// This Test case check the status of StartSdk method to ensure revultyics
-        /// sdk is started.
-        /// Test case will fail when status in other than ok.
-        /// </summary>
+        
         [TestMethod()]
         public void StartSdkTest()
         {
@@ -82,12 +60,7 @@ namespace Dev2.Instrumentation.Tests
             var startSdkResult = tracker.StartSdk();
             Assert.AreEqual(startSdkResult, RUIResult.ok, "sdkNotStarted");
         }
-
-        /// <summary>
-        /// This Test case check the status of StopSdk method to ensure revultyics
-        /// started sdk is stopped.
-        /// Test case will fail when status in other than ok.
-        /// </summary>
+        
         [TestMethod()]
         public void StopSdkTest()
         {
@@ -97,12 +70,7 @@ namespace Dev2.Instrumentation.Tests
             var stopResult = tracker.StopSdk();
             Assert.AreEqual(stopResult, RUIResult.ok, "sdkAlreadyStopped");
         }
-
-        /// <summary>
-        /// This Test case check the status of StartSession method to ensure revultyics
-        /// session is started.
-        /// Test case will fail when status in other than ok.
-        /// </summary>
+        
         [TestMethod()]
         public void StartSessionTest()
         {
@@ -113,12 +81,7 @@ namespace Dev2.Instrumentation.Tests
             var startSessionResult = tracker.StartSession();
             Assert.AreEqual(startSessionResult, RUIResult.ok, "sdkSuspended");
         }
-
-        /// <summary>
-        /// This Test case check the status of StopSession method to ensure revultyics
-        /// started session is stopped.
-        /// Test case will fail when status in other than ok.
-        /// </summary>
+        
         [TestMethod()]
         public void StopSessionTest()
         {
@@ -131,12 +94,7 @@ namespace Dev2.Instrumentation.Tests
             var stopSessionResult = tracker.StopSession();
             Assert.AreEqual(stopSessionResult, RUIResult.ok, "sdkAlreadyStopped");
         }
-
-        /// <summary>
-        /// Before logging any events to revulytics,product version need to be set.
-        /// This test set the product version and check the status.
-        /// Test case will fail when status in other than ok.
-        /// </summary>
+        
         [TestMethod()]
         public void SetProductVersionTest()
         {
@@ -147,12 +105,7 @@ namespace Dev2.Instrumentation.Tests
             var result = tracker.SetProductVersion();
             Assert.AreEqual(result, RUIResult.ok, "Error in setting product version");
         }
-
-        /// <summary>
-        /// This exception occcur when require revulytics dll is not present or version is different
-        /// in the running application directory below are the dlls.
-        /// ruiSDK_5.1.0.x86.dll ruiSDK_5.1.0.x64.dll
-        /// </summary>
+        
         [TestMethod()]
         public void EnableAppplicationTrackerSdkException()
         {
@@ -162,11 +115,7 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, username);
             Assert.AreEqual(tracker.EnableApplicationResultStatus, RUIResult.ok);
         }
-
-        /// <summary>
-        /// This exception occur whenever paramerter required for the revulytics config is
-        /// null or empty.
-        /// </summary>
+        
         [TestMethod()]
         public void EnableAppplicationTrackerArgumentNullException()
         {
@@ -177,27 +126,17 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, username);
             Assert.AreEqual(RUIResult.invalidConfigPath, tracker.EnableApplicationResultStatus);
         }
-
-        /// <summary>
-        /// Revulytics config must be created and sdk must be started before logging any event.
-        /// This Test will check the status of revultics with correct config provided.
-        /// The outcome must be running to validate the test case.
-        /// </summary>
+        
         [TestMethod()]
-        public void EnableAppplicationTrackerTestWithCorrectonfig()
+        public void EnableApplicationTrackerTestWithCorrectConfig()
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, username);
-            Assert.AreEqual(tracker.RuiSdk.GetState(), RUIState.running, "Revulytics Started");
+            Assert.IsTrue(tracker.RuiSdk.GetState() == RUIState.running || tracker.RuiSdk.GetState() == RUIState.startedNewRegRunning, "Revulytics Started");
         }
-        /// <summary>
-        /// Revulytics config must be created and sdk must be started before logging any event.
-        /// This Test will check the status of revultics config creation with
-        /// in correct config provided.
-        /// </summary>
-        [TestMethod()]
+
         public void EnableAppplicationTrackerTestWithInCorrectonfig()
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
@@ -206,10 +145,7 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, username);
             Assert.AreNotEqual(tracker.EnableApplicationResultStatus, RUIResult.ok, "Config is not created");
         }
-
-        /// <summary>
-        /// This test is to track application event
-        /// </summary>
+        
         [TestMethod()]
         public void TrackEventTest()
         {
@@ -219,10 +155,7 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, username);
             tracker.TrackEvent("Test Event", "Unit Test");
         }
-
-        /// <summary>
-        /// This test is to track custom event
-        /// </summary>
+        
         [TestMethod()]
         public void TrackCustomEventTest()
         {
@@ -232,11 +165,7 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, username);
             tracker.TrackCustomEvent("Test Event", "Unit Test", "custom values");
         }
-
-        /// <summary>
-        /// Revulytics logging must be stopped once application closed.
-        /// This Test will check the status of revultics logging to stopped.
-        /// </summary>
+        
         [TestMethod()]
         public void DisableAppplicationTrackerTest()
         {
@@ -247,11 +176,7 @@ namespace Dev2.Instrumentation.Tests
             tracker.DisableApplicationTracker();
             Assert.AreEqual(RUIState.stopped,tracker.RuiSdk.GetState(), "Revulytics stopped");
         }
-
-        /// <summary>
-        /// Revulytics logging must be stopped once application closed.
-        /// This Test will ensure exception is handled.
-        /// </summary>
+        
         [TestMethod()]
         [ExpectedException(typeof(NullReferenceException))]
         public void DisableAppplicationTrackerExceptionTest()

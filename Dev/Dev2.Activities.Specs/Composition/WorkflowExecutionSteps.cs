@@ -1184,6 +1184,37 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
+        [Given(@"the tool ""(.*)"" with Guid of ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
+        [When(@"the tool ""(.*)"" with Guid of ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
+        [Then(@"the tool ""(.*)"" with Guid of ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
+        public void ThenTheToolWithGuidOfInWorkFlowDebugInputsAs(string toolName, string toolGuid, string workflowName, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = Guid.Empty;
+
+            if (parentWorkflowName != workflowName)
+            {
+                if (workflowName != null)
+                {
+                    workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Could not find workflow.");
+                }
+            }
+
+            var toolSpecificDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId &&
+                                                            GetMatchingNames(toolName, ds.DisplayName) &&
+                                                            ds.ID.Equals(Guid.Parse(toolGuid))).ToList();
+
+            _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
+                                                    .SelectMany(s => s.Inputs)
+                                                    .SelectMany(s => s.ResultsList).ToList());
+        }
+
         [Then(@"the ""(.*)"" has a start and end duration")]
         public void ThenTheHasAStartAndEndDuration(string workflowName)
         {
@@ -1414,6 +1445,73 @@ namespace Dev2.Activities.Specs.Composition
             {
                 toolSpecificDebug =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            IDebugState outputState;
+            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
+            {
+                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+            }
+            else
+            {
+                outputState = toolSpecificDebug.FirstOrDefault();
+            }
+
+            if (outputState != null && outputState.Outputs != null)
+            {
+                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                if (SelectResults != null && SelectResults.ToList() != null)
+                {
+                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+                    return;
+                }
+                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+            }
+            Assert.Fail("No debug output found for " + workflowName + ".");
+        }
+
+        [Then(@"the tool ""(.*)"" with Guid of ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        public void ThenTheToolWithGuidOfInWorkflowDebugOutputsAs(string toolName, string toolGuid, string workflowName, Table table)
+        {
+            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = Guid.Empty;
+
+            if (parentWorkflowName != workflowName)
+            {
+                if (workflowName != null)
+                {
+                    var debugState = debugStates.FirstOrDefault(wf => wf.DisplayName.Equals(workflowName));
+                    if (debugState != null)
+                    {
+                        workflowId = debugState.ID;
+                    }
+                    else
+                    {
+                        var errors = debugStates.Where(wf => wf.ErrorMessage != "");
+                        var errorsMessage = "";
+                        if (errors != null)
+                        {
+                            errorsMessage = " There were one or more errors found in other tools on the same workflow though: " + string.Join(", ", errors.Select(wf => wf.ErrorMessage).Distinct().ToArray());
+                        }
+                        Assert.Fail($"Debug output for {toolName} not found in {workflowName}.{errorsMessage}");
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException("Could not find workflow.");
+                }
+            }
+
+            var toolSpecificDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId &&
+                                                            GetMatchingNames(toolName, ds.DisplayName) &&
+                                                            ds.ID.Equals(Guid.Parse(toolGuid))).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug = debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -4706,6 +4804,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The audit database has ""(.*)"" search results containing ""(.*)"" with type ""(.*)"" for ""(.*)"" as")]
         public void ThenTheAuditDatabaseHasSearchResultsContainingWithTypeWithActivityForAs(int expectedCount, string activityName, string auditType, string workflowName, Table table)
         {
+            Thread.Sleep(1000);
             var results = Dev2StateAuditLogger.Query(item =>
                (workflowName == "" || item.WorkflowName.Equals(workflowName)) &&
                (auditType == "" || item.AuditType.Equals(auditType)) &&
@@ -4716,9 +4815,9 @@ namespace Dev2.Activities.Specs.Composition
                    (item.PreviousActivityType != null && item.PreviousActivityType.Contains(activityName))
                ))
             );
-            Assert.AreEqual(expectedCount, results.Count());
+            Assert.AreEqual(expectedCount, results.Count(), string.Join(" ", results.Select(entry => entry.WorkflowName + " " + entry.AuditDate + " " + entry.AdditionalDetail).ToList()));
 
-            if (results.Count() > 0 && table.Rows.Count > 0)
+            if (results.Any() && table.Rows.Count > 0)
             {
                 var index = 0;
                 foreach (var row in table.Rows)
@@ -4748,6 +4847,26 @@ namespace Dev2.Activities.Specs.Composition
                ))
            );
             Assert.AreEqual(expectedCount, results.Count());
+        }
+
+        private static bool GetMatchingNames(string toolName, string displayName)
+        {
+            var updateDisplayName = GetMatchingName(displayName);
+            var updateToolName = GetMatchingName(toolName);
+
+            return updateDisplayName.Equals(updateToolName);
+        }
+
+        private static string GetMatchingName(string name)
+        {
+            var updateName = name;
+            if (name.Contains("("))
+            {
+                var endIdx = name.IndexOf("(");
+                updateName = name.Substring(0, endIdx).TrimEnd();
+            }
+
+            return updateName;
         }
 
         class DetailLogInfo

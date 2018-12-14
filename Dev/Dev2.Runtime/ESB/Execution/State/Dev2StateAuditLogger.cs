@@ -30,6 +30,7 @@ namespace Dev2.Runtime.ESB.Execution
     {
         public SQLiteConfiguration()
         {
+            SQLiteLog.Enabled = false;
             SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
             SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
             SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
@@ -74,12 +75,8 @@ namespace Dev2.Runtime.ESB.Execution
         public static void ClearAuditLog()
         {
             var db = new DatabaseContext();
-            foreach (var id in db.Audits.Select(e => e.Id))
-            {
-                var entity = new AuditLog { Id = id };
-                db.Audits.Attach(entity);
-                db.Audits.Remove(entity);
-            }
+            db.Database.ExecuteSqlCommand("DELETE FROM AuditLog");
+
             db.SaveChanges();
         }
 
@@ -99,65 +96,97 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void Flush(IAuditDatabaseContext database, int reTry)
         {
-            var userPrinciple = Common.Utilities.ServerUser;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
+            
+            try
             {
-                try
+                database.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                if (reTry == 0)
                 {
-                    database.SaveChanges();
+                    throw;
                 }
-                catch (Exception e)
-                {
-                    if (reTry == 0)
-                    {
-                        throw;
-                    }
-                    reTry--;
-                    Thread.Sleep(DATABASE_RETRY_DELAY);
-                    Flush(database, reTry);
-                }
-            });
+                reTry--;
+                Thread.Sleep(DATABASE_RETRY_DELAY);
+                Flush(database, reTry);
+            }
         }
 
         public void Flush()
         {
-            IAuditDatabaseContext database = null;
-            int count = MAX_DATABASE_TRIES;
-            do
+            bool AddLogsToDatabase(IAuditDatabaseContext databaseContext)
             {
-                try
-                {
-                    database = _databaseContextFactory.Get();
-                }
-                catch (Exception)
-                {
-                    count--;
-                    if (count <= 0)
-                    {
-                        throw;
-                    }
-                }
-                Thread.Sleep(DATABASE_RETRY_DELAY);
-            } while (database is null && --count >= 0);
-
-            using (database)
-            {
+                var _hadLogs = false;
                 using (var session = _warewolfQueue.OpenSession())
                 {
-                    do
+                    for (int insertCount = 0; insertCount <= 250; insertCount++)
                     {
                         var auditLog = session.Dequeue<AuditLog>();
                         if (auditLog is null)
                         {
                             break;
                         }
-                        database.Audits.Add(auditLog);
+                        databaseContext.Audits.Add(auditLog);
+                        _hadLogs = true;
                     }
-                    while (true);
                 }
-
-                Flush(database, MAX_DATABASE_TRIES);
+                return _hadLogs;
             }
+            void TryGetDatabaseContext(ref IAuditDatabaseContext databaseContext)
+            {
+                int count = MAX_DATABASE_TRIES;
+                do
+                {
+                    try
+                    {
+                        databaseContext = _databaseContextFactory.Get();
+                    }
+                    catch (Exception)
+                    {
+                        count--;
+                        if (count <= 0)
+                        {
+                            throw;
+                        }
+                    }
+                    Thread.Sleep(DATABASE_RETRY_DELAY);
+                } while (databaseContext is null && --count >= 0);
+            }
+
+            if (_warewolfQueue.IsEmpty())
+            {
+                return;
+            }
+
+            IAuditDatabaseContext database = null;
+            var hadLogs = false;
+            do
+            {
+                TryGetDatabaseContext(ref database);
+
+                using (database)
+                {
+                    using (var transaction = database.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            try
+                            {
+                                hadLogs = AddLogsToDatabase(database);
+                            }
+                            finally
+                            {
+                                Flush(database, MAX_DATABASE_TRIES);
+                            }
+                            transaction.Commit();
+                        } catch
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+                }
+            } while (hadLogs);
         }
     }
 
@@ -165,6 +194,7 @@ namespace Dev2.Runtime.ESB.Execution
     {
         DbSet<AuditLog> Audits { get; set; }
         int SaveChanges();
+        Database Database { get; }
     }
     interface IDatabaseContextFactory
     {
@@ -193,12 +223,16 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Common.Utilities.ServerUser;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
+                this.Configuration.AutoDetectChangesEnabled = false;
+                this.Configuration.ValidateOnSaveEnabled = false;
                 var directoryWrapper = new DirectoryWrapper();
                 directoryWrapper.CreateIfNotExists(Config.Server.AuditFilePath);
                 DbConfiguration.SetConfiguration(new SQLiteConfiguration());
                 this.Database.CreateIfNotExists();
                 this.Database.Initialize(false);
                 this.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS \"AuditLog\" ( `Id` INTEGER PRIMARY KEY AUTOINCREMENT, `WorkflowID` TEXT, `WorkflowName` TEXT, `ExecutionID` TEXT, `AuditType` TEXT, `PreviousActivity` TEXT, `PreviousActivityType` TEXT, `PreviousActivityID` TEXT, `NextActivity` TEXT, `NextActivityType` TEXT, `NextActivityID` TEXT, `ServerID` TEXT, `ParentID` TEXT, `ClientID` TEXT, `ExecutingUser` TEXT, `ExecutionOrigin` INTEGER, `ExecutionOriginDescription` TEXT, `ExecutionToken` TEXT, `AdditionalDetail` TEXT, `IsSubExecution` INTEGER, `IsRemoteWorkflow` INTEGER, `Environment` TEXT, `AuditDate` TEXT )");
+                this.Configuration.AutoDetectChangesEnabled = false;
+                this.Configuration.ValidateOnSaveEnabled = false;
             });
         }
 

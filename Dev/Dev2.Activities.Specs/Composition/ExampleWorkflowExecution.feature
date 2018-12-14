@@ -60,41 +60,41 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Date and Time Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Date and Time(1)" in WorkFlow "Utility - Date and Time" debug inputs as
+	  And the tool "Date and Time(1)" with Guid of "d19fbd64-204b-4ecf-8259-b61dd000b504" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format           | =                      |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
-	  And the "Date and Time(1)" in Workflow "Utility - Date and Time" debug outputs as    
+	  And the tool "Date and Time(1)" with Guid of "d19fbd64-204b-4ecf-8259-b61dd000b504" in Workflow "Utility - Date and Time" debug outputs as
 	  |                       |
 	  | [[nowish]] = DateTime |   
-	 And the "Date and Time(2)" in WorkFlow "Utility - Date and Time" debug inputs as
+	 And the tool "Date and Time(2)" with Guid of "094c9aa9-fdff-4641-ab9a-8796520df264" in WorkFlow "Utility - Date and Time" debug inputs as
 	 | Input                 | Input Format            | =                      | Add Time |  | Output Format          |
 	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | mm/dd/yy 12h:min am/pm |
-	  And the "Date and Time(2)" in Workflow "Utility - Date and Time" debug outputs as    
+	  And the tool "Date and Time(2)" with Guid of "094c9aa9-fdff-4641-ab9a-8796520df264" in Workflow "Utility - Date and Time" debug outputs as    
 	  |                       |
 	  | [[nowishNewFormat]] = DateTime |  
-	  And the "Date and Time(3)" in WorkFlow "Utility - Date and Time" debug inputs as
+	  And the tool "Date and Time(3)" with Guid of "c53000c1-f61f-4173-acae-d31a828e2394" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input              | Input Format | Add Time |       | Output Format            |
 	  | Sunday, 23 July 78 | DW, dd MM yy | Minutes  | 46664 | mm/dd/yyyy 12h:min am/pm |	
-	  And the "Date and Time(3)" in Workflow "Utility - Date and Time" debug outputs as    
+	  And the tool "Date and Time(3)" with Guid of "c53000c1-f61f-4173-acae-d31a828e2394" in Workflow "Utility - Date and Time" debug outputs as    
 	  |                             |
 	  | [[SomeTimeBack]] = DateTime |  
-	 And the "Date and Time(4)" in WorkFlow "Utility - Date and Time" debug inputs as
+	 And the tool "Date and Time(4)" with Guid of "2c7ff7e0-5632-47d0-8224-0ef8e16cd74c" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input | Input Format | Add Time |  | Output Format                  |
 	  | am    | am/pm        | ""       |  | mm/dd/yyyy 12h:min:ss.sp am/pm |
-	  And the "Date and Time(4)" in Workflow "Utility - Date and Time" debug outputs as    
+	  And the tool "Date and Time(4)" with Guid of "2c7ff7e0-5632-47d0-8224-0ef8e16cd74c" in Workflow "Utility - Date and Time" debug outputs as    
 	  |                               |
 	  | [[TheDefaultDate]] = DateTime |  
-	  And the "Date and Time(5)" in WorkFlow "Utility - Date and Time" debug inputs as
+	  And the tool "Date and Time(5)" with Guid of "4b14ed3c-0f6a-41ce-8e24-3a5c1fc0d625" in WorkFlow "Utility - Date and Time" debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |  | Output Format                                 |
 	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       |  | "'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Example Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
-	  And "Utility - System Information Test" contains "Utility - Gather System Info" from server "localhost" with mapping as
+	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - System Information Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Gather System Information (17)" in WorkFlow "Utility - Gather System Info" debug inputs as
+	  And the tool "Gather System Information (17)" with Guid of "87dbf079-4142-4160-9ada-763a72b0700d" in WorkFlow "Utility - System Information" debug inputs as
 	 | #  |                     |                     |
 	 | 1  | [[DateTime]] =      | Date & Time         |
 	 | 2  | [[OpSystem]]  =     | Operating System    |
@@ -112,7 +112,7 @@ Scenario: Example Executing Utility - Gather System Information example workflow
 	 | 14 | [[UserRoles]] =     | User Roles          |
 	 | 15 | [[UserName]] =      | User Name           |
 	 | 16 | [[Domain]] =        | Domain              |	 
-	 And the "Gather System Information (17)" in Workflow "Utility - Gather System Info" debug outputs as    
+	 And the tool "Gather System Information (17)" with Guid of "87dbf079-4142-4160-9ada-763a72b0700d" in Workflow "Utility - System Information" debug outputs as    
 	   | #  |                               |
 	   | 1  | [[DateTime]]      =    String |
 	   | 2  | [[OpSystem]]      =    String |

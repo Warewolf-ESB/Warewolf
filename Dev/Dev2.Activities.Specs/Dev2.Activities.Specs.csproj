@@ -172,6 +172,7 @@
       <DependentUpon>StudioTestFramework.feature</DependentUpon>
     </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkSteps.cs" />
+    <Compile Include="DatasplitCompositionLoadTests.cs" />
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -566,6 +567,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
       <Project>{9b669d51-14ce-44a3-9407-8251ba3bad19}</Project>
