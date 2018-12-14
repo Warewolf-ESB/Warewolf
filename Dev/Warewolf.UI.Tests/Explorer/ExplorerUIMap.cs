@@ -593,6 +593,12 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
+        [When(@"First Remote Server has loaded")]
+        public void WhenFirstRemoteServerHasLoaded()
+        {
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
+        }
+
         [When(@"I validate and delete the existing resource with ""(.*)""")]
         public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {

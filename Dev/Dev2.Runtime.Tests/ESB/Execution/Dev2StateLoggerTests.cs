@@ -206,17 +206,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         }
 
         [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [ExpectedException(typeof(SQLiteException))]
-        public void Dev2StateAuditLogger_Flush_SaveChanges_ExpectedSQLiteException_Tests()
-        {
-            var expectedWorkflowId = Guid.NewGuid();
-            var expectedWorkflowName = "LogPreExecuteState_Workflow";
-            TestMockDatabaseContextFactoryWithMockDbContext<SQLiteException>(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
-            // test
-            _dev2StateAuditLogger.Flush();
-        }
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentException))]
         public void Dev2StateAuditLogger_LogAuditState_Exception_Tests()
         {
@@ -292,6 +281,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             {
                 public DbSet<AuditLog> Audits { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
                 public bool IsDisposed { get; private set; }
+
+                public Database Database => throw new NotImplementedException();
+
                 public void Dispose()
                 {
                     IsDisposed = true;

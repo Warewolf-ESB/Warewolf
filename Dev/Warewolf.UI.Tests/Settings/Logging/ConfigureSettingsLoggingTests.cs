@@ -46,36 +46,47 @@ namespace Warewolf.UI.Tests
         [TestCategory("Settings")]
         public void ChangeAuditsFilePath_ThenSave_PersistsChanges_UITest()
         {
+            //Prepare for test
             var DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-
             var defaultPath = Path.Combine(DataPath, @"Audits");
             var changedPath = Path.Combine(DataPath, @"NewAudits");
+            GivenAuditsFilePathIsDefaultValue(defaultPath);
+            GivenDirectoryExistsAndIsEmpty(changedPath);
 
-            if (!Directory.Exists(changedPath))
-            {
-                Directory.CreateDirectory(changedPath);
-                Assert.IsTrue(Directory.Exists(changedPath));
-            }
-
+            //Execute test
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Assert_Audits_File_Path(defaultPath);
             SettingsUIMap.Update_Audits_File_Path(changedPath);
             UIMap.Click_Save_RibbonButton();
             SettingsUIMap.Click_Close_Settings_Tab_Button();
+
+            //Assert
             UIMap.Click_ConfigureSetting_From_Menu();
             SettingsUIMap.Select_LoggingTab();
-            // ASSERT CHANGE HAPPENED AFTER CLOSING THE SETTINGS TAB
             SettingsUIMap.Assert_Audits_File_Path(changedPath);
+        }
+
+        private void GivenAuditsFilePathIsDefaultValue(string defaultPath)
+        {
             // RESET TO DEFAULT
+            UIMap.Click_ConfigureSetting_From_Menu();
+            SettingsUIMap.Select_LoggingTab();
             SettingsUIMap.Update_Audits_File_Path(defaultPath);
             UIMap.Click_Save_RibbonButton();
+            SettingsUIMap.Click_Close_Settings_Tab_Button();
+        }
 
-            if (Directory.Exists(changedPath))
+        private static void GivenDirectoryExistsAndIsEmpty(string dirPath)
+        {
+            if (Directory.Exists(dirPath))
             {
-                Directory.Delete(changedPath);
-                Assert.IsFalse(Directory.Exists(changedPath));
+                Directory.Delete(dirPath, true);
+                Assert.IsFalse(Directory.Exists(dirPath));
             }
+            
+            Directory.CreateDirectory(dirPath);
+            Assert.IsTrue(Directory.Exists(dirPath));
         }
 
         #region Additional test attributes
