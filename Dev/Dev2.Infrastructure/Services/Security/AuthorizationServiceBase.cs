@@ -50,23 +50,22 @@ namespace Dev2.Services.Security
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
             {
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
-                using(var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
+                using (var ad = directoryEntryFactory.Create("WinNT://" + Environment.MachineName + ",computer"))
                 {
                     ad.Children.SchemaFilter.Add("group");
-                    foreach(IDirectoryEntry dChildEntry in ad.Children)
+                    foreach (IDirectoryEntry dChildEntry in ad.Children)
                     {
                         if (dChildEntry.Name != "Warewolf Administrators")
                         {
-                            return false;
+                            continue;
                         }
-                        // Now check group membership ;)
                         var members = dChildEntry.Invoke("Members");
 
                         if (members == null)
                         {
-                            return false;
+                            continue;
                         }
-                        foreach(var member in (IEnumerable)members)
+                        foreach (var member in (IEnumerable)members)
                         {
                             if (IsGroupNameAdministrators(member, adGroup))
                             {
@@ -119,13 +118,11 @@ namespace Dev2.Services.Security
         {
             add
             {
-               _permissionsModifedHandler += value;
+                _permissionsModifedHandler += value;
             }
             remove
             {
-                
                 _permissionsModifedHandler -= value;
-                
             }
         }
 
@@ -189,7 +186,7 @@ namespace Dev2.Services.Security
             }
         }
 
-        bool IsAuthorized(AuthorizationContext context,IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
+        bool IsAuthorized(AuthorizationContext context, IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
             var groupPermissions = getGroupPermissions?.Invoke();
@@ -206,19 +203,18 @@ namespace Dev2.Services.Security
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
             var groupPermissions = new List<WindowsGroupPermission>();
-            
-            foreach(var permission in serverPermissions)
+
+            foreach (var permission in serverPermissions)
             {
-                if(resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
+                if (resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
                 {
                     continue;
                 }
-                if(IsInRole(principal, permission) && permission.Matches(resource))
+                if (IsInRole(principal, permission) && permission.Matches(resource))
                 {
                     groupPermissions.Add(permission);
                 }
             }
-            
 
             groupPermissions.AddRange(resourcePermissions);
             return groupPermissions;
@@ -283,7 +279,6 @@ namespace Dev2.Services.Security
             if (windowsPrincipal != null)
             {
                 isInRole = IsInRole(windowsGroup, sid, windowsPrincipal, windowsIdentity);
-
             }
             else
             {
