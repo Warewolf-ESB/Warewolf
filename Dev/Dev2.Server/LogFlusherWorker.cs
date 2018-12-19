@@ -53,15 +53,15 @@ namespace Dev2
                 Interlocked.Decrement(ref _flushing);
             }
         }
-        void PerformLogFlushTimerPause()
+        public void PerformLogFlushTimerPause()
         {
-            _loggerFlushTimer.Change(0, Timeout.Infinite);
+            _loggerFlushTimer.Change(-1, Timeout.Infinite);
             while (Interlocked.Read(ref _flushing) > 0)
             {
                 Thread.Sleep(100);
             }
         }
-        void PerformLogFlushTimerResume()
+        public void PerformLogFlushTimerResume()
         {
             _loggerFlushTimer.Change(TimerDueTime, Config.Server.LogFlushInterval);
         }
