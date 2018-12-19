@@ -105,10 +105,4 @@ namespace Dev2.Common.Interfaces
         IWebServiceSource FetchSource(Guid id);
     }
 
-    public interface INameValue: INotifyPropertyChanged
-    {
-        string Name { get; set; }
-        string Value { get; set; }
-
-    }
 }

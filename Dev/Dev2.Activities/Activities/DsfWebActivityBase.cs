@@ -65,7 +65,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public virtual HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        public virtual HttpClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)
@@ -106,7 +106,7 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
             var headerValues = head as NameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
@@ -154,7 +154,7 @@ namespace Dev2.Activities
             return null;
         }
 
-        private static string PerformPut(string putData, NameValue[] headerValues, HttpClient httpClient, string address)
+        private static string PerformPut(string putData, INameValue[] headerValues, HttpClient httpClient, string address)
         {
             HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
             var contentType = headerValues.FirstOrDefault(value => value.Name.ToLowerInvariant() == "Content-Type".ToLowerInvariant());
