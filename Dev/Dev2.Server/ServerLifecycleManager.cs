@@ -13,18 +13,14 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime;
 using System.Security.Principal;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xml;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -35,7 +31,6 @@ using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
-using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
@@ -80,8 +75,7 @@ namespace Dev2
             _pulseLogger.Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
             _pulseTracker.Start();
-            SetWorkingDirectory();
-            MoveSettingsFiles();
+            CopySettingsFiles();
             var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
             if (!File.Exists(settingsConfigFile))
             {
@@ -101,7 +95,7 @@ namespace Dev2
             SetupTempCleanupSetting();
         }
 
-        static void MoveSettingsFiles()
+        static void CopySettingsFiles()
         {
             if (File.Exists("Settings.config"))
             {
@@ -155,7 +149,6 @@ namespace Dev2
             try
             {
                 RegisterDependencies();
-                SetWorkingDirectory();
                 Config.Server.SaveIfNotExists();
 
                 LoadHostSecurityProvider();
@@ -175,7 +168,10 @@ namespace Dev2
                 StartWebServer();
                 RegisterDependencies();
                 LoadTestCatalog();
-                ServerLoop(InteractiveMode);
+                if (InteractiveMode)
+                {
+                    WaitForUserExit();
+                }
             }
             catch (Exception e)
             {
@@ -280,34 +276,21 @@ namespace Dev2
             Write($"Exiting with exitcode {result}");
         }
 
-        void ServerLoop(bool interactiveMode)
+        void WaitForUserExit()
         {
-            if (interactiveMode)
+            
+            Write("Press <ENTER> to terminate service and/or web server if started");
+            if (EnvironmentVariables.IsServerOnline)
             {
-                Write("Press <ENTER> to terminate service and/or web server if started");
-                if (EnvironmentVariables.IsServerOnline)
-                {
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Write("Failed to start Server");
-                }
-                Stop(false, 0);
+                Console.ReadLine();
             }
+            else
+            {
+                Write("Failed to start Server");
+            }
+            Stop(false, 0);
         }
 
-        static void SetWorkingDirectory()
-        {
-            try
-            {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            }
-            catch (Exception e)
-            {
-                Fail("Unable to set working directory.", e);
-            }
-        }
         void InitializeServer()
         {
             try
