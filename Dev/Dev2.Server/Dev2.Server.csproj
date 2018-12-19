@@ -341,6 +341,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="IWriter.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="IServerLifecycleWorker.cs" />
     <Compile Include="LogFlusherWorker.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="ServerLifecycleManagerService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Writer.cs" />
     <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
