@@ -31,5 +31,62 @@ namespace Dev2.Server.Tests
             mockLogManager.Verify();
             
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogFlusherWorker")]
+        public void LogFlusherWorker_PerformLogFlushTimerPause()
+        {
+            //----------------------Arrange-------------------
+            var mockLogManager = new Mock<ILogManager>();
+            mockLogManager.Setup(a => a.FlushLogs()).Verifiable();
+            //----------------------Act-------------------
+            var worker = new LogFlusherWorker(mockLogManager.Object)
+            {
+                TimerDueTime = 200
+            };
+            using (worker)
+            {
+                worker.Execute();
+                Thread.Sleep(220);
+                worker.PerformLogFlushTimerPause();
+                mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
+
+                Thread.Sleep(300);
+            }
+            //----------------------Assert-------------------
+            mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogFlusherWorker")]
+        public void LogFlusherWorker_PerformLogFlushTimerResume()
+        {
+            //----------------------Arrange-------------------
+            var mockLogManager = new Mock<ILogManager>();
+            mockLogManager.Setup(a => a.FlushLogs()).Verifiable();
+            //----------------------Act-------------------
+            var worker = new LogFlusherWorker(mockLogManager.Object)
+            {
+                TimerDueTime = 200
+            };
+            using (worker)
+            {
+                worker.Execute();
+                Thread.Sleep(220);
+                worker.PerformLogFlushTimerPause();
+                mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
+
+                Thread.Sleep(300);
+                //----------------------Assert-------------------
+                mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
+                worker.PerformLogFlushTimerResume();
+                Thread.Sleep(500);
+                mockLogManager.Verify(a => a.FlushLogs(), Times.AtLeast(3));
+
+            }
+
+        }
     }
 }
