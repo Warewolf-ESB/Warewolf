@@ -39,6 +39,8 @@ using Dev2.Data.Util;
 using static LanguageAST.LanguageExpression;
 using System.Text;
 using Dev2.Studio.Interfaces.DataList;
+using Dev2.Common;
+using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.AdvancedRecordset
 {
