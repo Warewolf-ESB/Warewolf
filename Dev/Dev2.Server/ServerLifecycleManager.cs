@@ -57,7 +57,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    sealed class ServerLifecycleManager : IServerLifecycleManager, IDisposable
+    public sealed class ServerLifecycleManager : IServerLifecycleManager, IDisposable
     {
         public bool InteractiveMode { get; set; } = true;
 
@@ -67,7 +67,6 @@ namespace Dev2
 
         Dev2Endpoint[] _endpoints;
         Timer _timer;
-        Timer _loggerFlushTimer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
         int _daysToKeepTempFiles;
@@ -169,7 +168,7 @@ namespace Dev2
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                ConfigureLogFlushing();
+                new LogFlusherWorker(new LogManagerImplementation()).Execute();
                 StartPulseLogger();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
@@ -217,50 +216,6 @@ namespace Dev2
             {
                 DeleteTempFiles();
             }
-        }
-
-        private void ConfigureLogFlushing()
-        {
-            if (Config.Server.EnableDetailedLogging)
-            {
-                Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
-                Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
-                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
-            }
-        }
-
-        long _flushing;
-        void PerformLoggerFlushActions(object state)
-        {
-            if (Interlocked.Exchange(ref _flushing, 1) != 0)
-            {
-                return;
-            }
-
-            try
-            {
-                LogManager.FlushLogs();
-            }
-            catch (Exception e)
-            {
-                //
-            }
-            finally
-            {
-                Interlocked.Decrement(ref _flushing);
-            }
-        }
-        void PerformLogFlushTimerPause()
-        {
-            _loggerFlushTimer.Change(0, Timeout.Infinite);
-            while (Interlocked.Read(ref _flushing) > 0)
-            {
-                Thread.Sleep(100);
-            }
-        }
-        void PerformLogFlushTimerResume()
-        {
-            _loggerFlushTimer.Change(10000, Config.Server.LogFlushInterval);
         }
 
         static void PreloadReferences()
