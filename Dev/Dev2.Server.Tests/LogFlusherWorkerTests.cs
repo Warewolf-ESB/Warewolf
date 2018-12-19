@@ -1,0 +1,35 @@
+﻿using Dev2.Common.Interfaces.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Threading;
+
+namespace Dev2.Server.Tests
+{
+    [TestClass]
+    public class LogFlusherWorkerTests
+    {
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("LogFlusherWorker")]
+        public void LogFlusherWorker_Execute()
+        {
+            //----------------------Arrange-------------------
+            var mockLogManager = new Mock<ILogManager>();
+            mockLogManager.Setup(a => a.FlushLogs()).Callback(() => Console.WriteLine("FlushLogs Invoked")).Verifiable();
+            //----------------------Act-------------------
+            var worker = new LogFlusherWorker(mockLogManager.Object)
+            {
+                TimerDueTime = 200
+            };
+            using (worker)
+            {
+                worker.Execute();
+                Thread.Sleep(500);
+            }
+            //----------------------Assert-------------------
+            mockLogManager.Verify();
+            
+        }
+    }
+}
