@@ -84,10 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="AuditFilter.cs" />
     <Compile Include="AuditLog.cs" />
     <Compile Include="Dev2StateAuditLogger.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State\StateListener.cs" />
     <Compile Include="State\StateNotifier.cs" />
   </ItemGroup>
