@@ -1,11 +1,10 @@
 ﻿using Dev2.Common;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dev2
 {
@@ -33,6 +32,8 @@ namespace Dev2
 
         internal static int RunMain(string[] arguments)
         {
+            SetWorkingDirectory();
+
             const int Result = 0;
 
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
@@ -54,6 +55,20 @@ namespace Dev2
                 }
             }
             return Result;
+        }
+
+        static void SetWorkingDirectory()
+        {
+            try
+            {
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                throw new Exception("booaosdf");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unable to set working directory.");
+                Console.WriteLine(e);
+            }
         }
     }
 }
