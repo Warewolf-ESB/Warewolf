@@ -49,76 +49,17 @@ using WarewolfCOMIPC.Client;
 
 namespace Dev2
 {
-    sealed class ServerLifecycleManager : IDisposable
+    public interface IServerLifecycleManager : IDisposable
     {
-        static ServerLifecycleManager _singleton;
+        bool InteractiveMode { get; set; }
 
-        static int Main(string[] arguments)
-        {
-            try
-            {
-                using (new MemoryFailPoint(2048))
-                {
-                    return RunMain(arguments);
-                }
-            }
-            catch (InsufficientMemoryException)
-            {
-                return RunMain(arguments);
-            }
+        void Run();
+        void Stop(bool didBreak, int result);
+    }
 
-        }
-
-        static int RunMain(string[] arguments)
-        {
-            const int Result = 0;
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
-            };
-            if (Environment.UserInteractive || (arguments.Count() > 0 && arguments[0] == "--interactive"))
-            {
-                Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                using (_singleton = new ServerLifecycleManager(arguments))
-                {
-                    _singleton.Run(true);
-                }
-
-                _singleton = null;
-            }
-            else
-            {
-                Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
-                using (var service = new ServerLifecycleManagerService())
-                {
-                    ServiceBase.Run(service);
-                }
-            }
-            return Result;
-        }
-
-
-        public class ServerLifecycleManagerService : ServiceBase
-        {
-            public ServerLifecycleManagerService()
-            {
-                CanPauseAndContinue = false;
-            }
-
-            protected override void OnStart(string[] args)
-            {
-                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
-                _singleton = new ServerLifecycleManager(null);
-                _singleton.Run(false);
-            }
-
-            protected override void OnStop()
-            {
-                Dev2Logger.Info("** Service Stopped **", GlobalConstants.WarewolfInfo);
-                _singleton.Stop(false, 0);
-                _singleton = null;
-            }
-        }
+    sealed class ServerLifecycleManager : IServerLifecycleManager, IDisposable
+    {
+        public bool InteractiveMode { get; set; } = true;
 
         bool _isDisposed;
         bool _isWebServerEnabled;
@@ -134,7 +75,7 @@ namespace Dev2
         IpcClient _ipcIpcClient;
 
 
-        ServerLifecycleManager(string[] arguments)
+        public ServerLifecycleManager()
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
@@ -197,7 +138,7 @@ namespace Dev2
 
         }
 
-        void Run(bool interactiveMode)
+        public void Run()
         {
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
@@ -235,7 +176,7 @@ namespace Dev2
                 StartWebServer();
                 RegisterDependencies();
                 LoadTestCatalog();
-                ServerLoop(interactiveMode);
+                ServerLoop(InteractiveMode);
             }
             catch (Exception e)
             {
@@ -374,7 +315,7 @@ namespace Dev2
             }
         }
 
-        void Stop(bool didBreak, int result)
+        public void Stop(bool didBreak, int result)
         {
             if (!didBreak)
             {
