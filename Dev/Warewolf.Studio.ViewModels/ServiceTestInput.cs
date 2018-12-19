@@ -11,7 +11,6 @@ namespace Warewolf.Studio.ViewModels
         string _value;
         bool _emptyIsNull;
 
-
         public ServiceTestInput()
         {
             
@@ -19,24 +18,14 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestInput(string variableName, string value)
         {
-            if (variableName == null)
-            {
-                throw new ArgumentNullException(nameof(variableName));
-            }
-
             EmptyIsNull = false;
-            Variable = variableName;
+            Variable = variableName ?? throw new ArgumentNullException(nameof(variableName));
             Value = value;
         }
 
-        #region Implementation of IServiceTestInput
-
         public string Variable
         {
-            get
-            {
-                return _variable;
-            }
+            get => _variable;
             set
             {
                 _variable = value;
@@ -45,10 +34,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 _value = value;
@@ -61,10 +47,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool EmptyIsNull
         {
-            get
-            {
-                return _emptyIsNull;
-            }
+            get => _emptyIsNull;
             set
             {
                 _emptyIsNull = value;
@@ -74,8 +57,5 @@ namespace Warewolf.Studio.ViewModels
         }
         [JsonIgnore]
         public Action AddNewAction { get; set; }
-
-        #endregion
-       
     }
 }

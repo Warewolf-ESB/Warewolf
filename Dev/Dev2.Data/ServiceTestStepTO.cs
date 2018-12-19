@@ -2,10 +2,9 @@
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
 
-
 namespace Dev2.Data
 {
-    public class ServiceTestStepTO:IServiceTestStep
+    public class ServiceTestStepTO : IServiceTestStep
     {
         public ServiceTestStepTO(Guid stepUniqueId, string stepActivityType, ObservableCollection<IServiceTestOutput> outputs, StepType stepType)
         {
@@ -29,5 +28,8 @@ namespace Dev2.Data
         public ObservableCollection<IServiceTestStep> Children { get; set; }
         public string StepDescription { get; set; }
         public TestRunResult Result { get; set; }
+        public bool MockSelected { get; set; }
+        public bool AssertSelected { get; set; }
+        public void AddNewOutput(string varName) { }
     }
 }

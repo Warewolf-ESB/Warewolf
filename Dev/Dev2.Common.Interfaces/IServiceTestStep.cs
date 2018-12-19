@@ -9,6 +9,8 @@ namespace Dev2.Common.Interfaces
     {
         Guid UniqueId { get; set; }
         string ActivityType { get; set; }
+        bool MockSelected { get; set; }
+        bool AssertSelected { get; set; }
         StepType Type { get; set; }
         ObservableCollection<IServiceTestOutput> StepOutputs { get; set; }
         [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
@@ -17,5 +19,6 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<IServiceTestStep> Children { get; set; }
         string StepDescription { get; set; }
         TestRunResult Result { get; set; }
+        void AddNewOutput(string varName);
     }
 }
