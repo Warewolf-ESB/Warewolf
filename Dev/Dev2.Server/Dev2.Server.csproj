@@ -344,13 +344,14 @@
     <Compile Include="Main.cs" />
     <Compile Include="IServerLifecycleWorker.cs" />
     <Compile Include="LogFlusherWorker.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="ServerEnvironmentPreparer.cs" />
     <Compile Include="ServerLifecycleManagerService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TempFileDeleter.cs" />
     <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

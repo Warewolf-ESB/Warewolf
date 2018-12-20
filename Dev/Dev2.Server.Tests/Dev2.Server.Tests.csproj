@@ -67,8 +67,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="TempFileDeleterTests.cs" />
     <Compile Include="ServerLifecycleManagerServiceTests.cs" />
-    <Compile Include="ServerlifeCycleManagerTest.cs" />
+    <Compile Include="ServerEnvironmentPreparerTests.cs" />
+    <Compile Include="ServerlifeCycleManagerTests.cs" />
     <Compile Include="LogFlusherWorkerTests.cs" />
   </ItemGroup>
   <ItemGroup>

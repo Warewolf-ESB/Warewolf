@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,10 +14,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Dev2.Activities;
@@ -39,7 +36,6 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
-using log4net.Config;
 using WarewolfCOMIPC.Client;
 
 namespace Dev2
@@ -55,6 +51,7 @@ namespace Dev2
     public sealed class ServerLifecycleManager : IServerLifecycleManager, IDisposable
     {
         public bool InteractiveMode { get; set; } = true;
+        IServerEnvironmentPreparer _serverEnvironmentPreparer;
 
         bool _isDisposed;
         bool _isWebServerEnabled;
@@ -64,71 +61,18 @@ namespace Dev2
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
-        int _daysToKeepTempFiles;
         readonly PulseTracker _pulseTracker;
         IpcClient _ipcIpcClient;
 
 
-        public ServerLifecycleManager()
+        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
+            _serverEnvironmentPreparer = serverEnvironmentPreparer;
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
             _pulseTracker.Start();
-            CopySettingsFiles();
-            var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
-            if (!File.Exists(settingsConfigFile))
-            {
-                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
-            }
-            try
-            {
-                Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
-                Dev2Logger.UpdateFileLoggerToProgramData(settingsConfigFile);
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error in startup.", e, GlobalConstants.WarewolfError);
-            }
-            Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            SetupTempCleanupSetting();
-        }
-
-        static void CopySettingsFiles()
-        {
-            if (File.Exists("Settings.config"))
-            {
-                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
-                {
-                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
-                }
-                if (!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
-                {
-                    File.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
-                }
-            }
-            if (File.Exists("secure.config"))
-            {
-                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
-                {
-                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
-                }
-                if (!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
-                {
-                    File.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
-                }
-            }
-        }
-
-        void SetupTempCleanupSetting()
-        {
-            var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
-            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue) && int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
-            {
-                _daysToKeepTempFiles = daysToKeepTempFiles;
-            }
-
+            _serverEnvironmentPreparer.PrepareEnvironment();
         }
 
         public void Run()
@@ -208,10 +152,6 @@ namespace Dev2
         void PerformTimerActions(object state)
         {
             GetComputerNames.GetComputerNamesList();
-            if (_daysToKeepTempFiles != 0)
-            {
-                DeleteTempFiles();
-            }
         }
 
         static void PreloadReferences()
@@ -234,34 +174,6 @@ namespace Dev2
                     inspected.Add(toLoad.Name);
                     var loaded = AppDomain.CurrentDomain.Load(toLoad);
                     LoadReferences(loaded, inspected);
-                }
-            }
-        }
-
-        void DeleteTempFiles()
-        {
-            var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            DeleteTempFiles(tempPath);
-            var schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
-            DeleteTempFiles(schedulerTempPath);
-        }
-
-        void DeleteTempFiles(string tempPath)
-        {
-            if (Directory.Exists(tempPath))
-            {
-                var dir = new DirectoryInfo(tempPath);
-                var files = dir.GetFiles();
-                var filesToDelete = files.Where(info =>
-                {
-                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles, 0, 0, 0);
-                    var time = DateTime.Now.Subtract(info.CreationTime);
-                    return time > maxDaysToKeepTimeSpan;
-                }).ToList();
-
-                foreach (var fileInfo in filesToDelete)
-                {
-                    fileInfo.Delete();
                 }
             }
         }
@@ -433,6 +345,12 @@ namespace Dev2
             {
                 _timer.Dispose();
                 _timer = null;
+            }
+
+            if (_serverEnvironmentPreparer != null)
+            {
+                _serverEnvironmentPreparer.Dispose();
+                _serverEnvironmentPreparer = null;
             }
 
             _owinServer = null;
