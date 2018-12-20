@@ -2,8 +2,6 @@
 using Dev2.ServerLifeCycleWorkers;
 
 using Dev2.Runtime;
-using Dev2.Activities;
-using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Server.Tests
 {
@@ -17,9 +15,9 @@ namespace Dev2.Server.Tests
         {
             var worker = new RegisterDependenciesWorker();
             worker.Execute();
-            Assert.IsNotNull(CustomContainer.Get<ActivityParser>());
+            Assert.IsNotNull(CustomContainer.Get<IActivityParser>());
             Assert.IsNotNull(CustomContainer.Get<IExecutionManager>());
-            Assert.IsNotNull(CustomContainer.Get<ResumableExecutionContainerFactory>());
+            Assert.IsNotNull(CustomContainer.Get<IResumableExecutionContainerFactory>());
         }
     }
 }

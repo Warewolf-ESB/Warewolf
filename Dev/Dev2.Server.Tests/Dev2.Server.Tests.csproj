@@ -103,10 +103,6 @@
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
-      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
-      <Name>Dev2.Runtime</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
       <Name>Dev2.Server</Name>
