@@ -67,6 +67,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="WebServerConfigurationTests.cs" />
     <Compile Include="ServerLifecycleManagerServiceTests.cs" />
     <Compile Include="ServerlifeCycleManagerTest.cs" />
     <Compile Include="LogFlusherWorkerTests.cs" />
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.WebServer\Dev2.Runtime.WebServer.csproj">
+      <Project>{4D0919C0-8FA4-480C-8629-00EB128DDEE9}</Project>
+      <Name>Dev2.Runtime.WebServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>

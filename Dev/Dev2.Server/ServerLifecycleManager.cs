@@ -60,7 +60,8 @@ namespace Dev2
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
 
-        Dev2Endpoint[] _endpoints;
+        public IWebServerConfiguration WebServerConfiguration { get; private set; }
+
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
@@ -155,7 +156,7 @@ namespace Dev2
                 LoadPerformanceCounters();
                 CheckExampleResources();
                 MigrateOldTests();
-                InitializeServer();
+                new WebServerConfiguration(this).Execute();
                 LoadSettingsProvider();
                 ConfigureLoggging();
                 OpenCOMStream();
@@ -291,80 +292,6 @@ namespace Dev2
             Stop(false, 0);
         }
 
-        void InitializeServer()
-        {
-            try
-            {
-                string webServerSslPort;
-                string webServerPort;
-                GlobalConstants.CollectUsageStats = ConfigurationManager.AppSettings["CollectUsageStats"];
-                GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
-
-                _isWebServerEnabled = false;
-                bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
-                bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
-
-                if (_isWebServerEnabled)
-                {
-                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
-                    {
-                        throw new ArgumentException("Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
-                    }
-
-
-                    if (!int.TryParse(webServerPort, out int realPort))
-                    {
-                        throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
-                    }
-
-                    var endpoints = new List<Dev2Endpoint>();
-
-                    var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
-                    var httpUrl = $"http://*:{webServerPort}/";
-                    endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-
-                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-                    EnableSslForServer(webServerSslPort, endpoints);
-
-                    _endpoints = endpoints.ToArray();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Fail("Server initialization failed", ex);
-            }
-        }
-
-
-        void EnableSslForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
-        {
-            if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
-            {
-                int.TryParse(webServerSslPort, out int realWebServerSslPort);
-
-                var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
-
-                if (!string.IsNullOrEmpty(sslCertPath))
-                {
-                    var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                    var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
-
-                    if (canEnableSsl)
-                    {
-                        endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
-                    }
-                    else
-                    {
-                        WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
-                    }
-                }
-            }
-        }
-
-
         internal void CleanupServer()
         {
             try
@@ -387,7 +314,7 @@ namespace Dev2
             }
         }
 
-        void Fail(string message, Exception e)
+        public void Fail(string message, Exception e)
         {
             var ex = e;
             var errors = new StringBuilder();
@@ -624,10 +551,11 @@ namespace Dev2
 
         void LogEndpoints()
         {
-            _owinServer = WebServerStartup.Start(_endpoints);
+            var endPoints = WebServerConfiguration.EndPoints;
+            _owinServer = WebServerStartup.Start(endPoints);
             EnvironmentVariables.IsServerOnline = true;
             WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in _endpoints)
+            foreach (var endpoint in endPoints)
             {
                 WriteLine($"Web server listening at {endpoint.Url}");
             }
