@@ -526,6 +526,8 @@
     <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\IDomain.cs" />
     <Compile Include="Wrappers\IDropboxClientWrapper.cs" />
+    <Compile Include="Wrappers\IFileInfo.cs" />
+    <Compile Include="Wrappers\ITimer.cs" />
     <Compile Include="Wrappers\IZipFile.cs" />
     <Compile Include="Wrappers\IFilePath.cs" />
     <Compile Include="Wrappers\IFile.cs" />
