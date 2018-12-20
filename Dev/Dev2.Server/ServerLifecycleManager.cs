@@ -53,13 +53,11 @@ namespace Dev2
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
 
         bool _isDisposed;
-        bool _isWebServerEnabled;
-        bool _isWebServerSslEnabled;
 
         public IWebServerConfiguration WebServerConfiguration { get; private set; }
 
         Timer _timer;
-        IDisposable _owinServer;
+        IStartWebServer _startWebServer;
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IpcClient _ipcIpcClient;
@@ -71,6 +69,7 @@ namespace Dev2
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
+            _startWebServer = new StartWebServer(this);
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
@@ -99,7 +98,8 @@ namespace Dev2
                 LoadPerformanceCounters();
                 CheckExampleResources();
                 MigrateOldTests();
-                new WebServerConfiguration(this).Execute();
+                var webServerConfig = new WebServerConfiguration(this);
+                webServerConfig.Execute();
                 LoadSettingsProvider();
                 ConfigureLoggging();
                 OpenCOMStream();
@@ -108,7 +108,10 @@ namespace Dev2
                 new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
-                StartWebServer();
+                _startWebServer.Execute(webServerConfig);
+#if DEBUG
+                SetAsStarted();
+#endif
                 LoadTestCatalog();
                 if (InteractiveMode)
                 {
@@ -192,10 +195,10 @@ namespace Dev2
         {
             try
             {
-                if (_owinServer != null)
+                if (_startWebServer != null)
                 {
-                    _owinServer.Dispose();
-                    _owinServer = null;
+                    _startWebServer.Dispose();
+                    _startWebServer = null;
                 }
                 if (_ipcIpcClient != null)
                 {
@@ -206,7 +209,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
         }
 
@@ -264,7 +267,7 @@ namespace Dev2
                 _serverEnvironmentPreparer = null;
             }
 
-            _owinServer = null;
+            _startWebServer = null;
         }
 
         static void LoadPerformanceCounters()
@@ -414,25 +417,8 @@ namespace Dev2
 
         }
 
-        void StartWebServer()
-        {
-            if (_isWebServerEnabled || _isWebServerSslEnabled)
-            {
-                try
-                {
-                    LogEndpoints();
-                }
-                catch (Exception e)
-                {
-                    LogException(e);
-                    EnvironmentVariables.IsServerOnline = false;
-                    Fail("Webserver failed to start", e);
-                    Console.ReadLine();
-                }
-            }
+       
 #if DEBUG
-            SetAsStarted();
-        }
 
         static void SetAsStarted()
         {
@@ -451,17 +437,7 @@ namespace Dev2
 #endif
         }
 
-        void LogEndpoints()
-        {
-            var endPoints = WebServerConfiguration.EndPoints;
-            _owinServer = WebServerStartup.Start(endPoints);
-            EnvironmentVariables.IsServerOnline = true;
-            WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in endPoints)
-            {
-                WriteLine($"Web server listening at {endpoint.Url}");
-            }
-        }
+       
 
         public void WriteLine(string message)
         {
@@ -490,10 +466,68 @@ namespace Dev2
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
+        
+    }
 
-        static void LogException(Exception ex)
+    public interface IStartWebServer : IDisposable
+    {
+        void Execute(IWebServerConfiguration webServerConfig);
+    }
+
+    public class StartWebServer : IStartWebServer
+    {
+        private readonly IWriter _writer;
+
+        IDisposable _owinServer;
+
+
+        public StartWebServer(IWriter writer)
         {
-            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
+            _writer = writer;
+        }
+
+        public void Execute(IWebServerConfiguration webServerConfig)
+        {
+            if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
+            {
+                try
+                {
+                    DoStartWebServer(webServerConfig);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
+                    EnvironmentVariables.IsServerOnline = false;
+                    _writer.Fail("Webserver failed to start", e);
+                    Console.ReadLine();
+                }
+            }
+        }
+        public void DoStartWebServer(IWebServerConfiguration webServerConfig)
+        {
+            var endPoints = webServerConfig.EndPoints;
+            _owinServer = WebServerStartup.Start(endPoints);
+            EnvironmentVariables.IsServerOnline = true;
+            _writer.WriteLine("\r\nWeb Server Started");
+            foreach (var endpoint in endPoints)
+            {
+                _writer.WriteLine($"Web server listening at {endpoint.Url}");
+            }
+        }
+        public void Dispose()
+        {
+            try
+            {
+                if (_owinServer != null)
+                {
+                    _owinServer.Dispose();
+                    _owinServer = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
+            }
         }
     }
 }
