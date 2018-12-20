@@ -10,9 +10,10 @@ namespace Dev2
         public bool RunSuccessful { get; private set; }
 
         public ServerLifecycleManagerService()
-            :this(new ServerLifecycleManager())
+            :this(new ServerLifecycleManager(new ServerEnvironmentPreparer()))
         {
         }
+
         public ServerLifecycleManagerService(IServerLifecycleManager serverLifecycleManager)
         {
             serverLifecycleManager.InteractiveMode = false;
@@ -24,7 +25,7 @@ namespace Dev2
         {
             Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
             RunSuccessful = true;
-            _serverLifecycleManager.Run();
+            _serverLifecycleManager.Run(new LifeCycleInitializationList());
         }
 
         protected override void OnStop()

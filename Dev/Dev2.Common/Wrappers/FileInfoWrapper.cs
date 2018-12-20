@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -9,20 +8,26 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using Dev2.Common.Interfaces.Wrappers;
 
-namespace Dev2.Server.Tests
+namespace Dev2.Common.Wrappers
 {
-    [TestClass]
-    public class ServerTests
+    public class FileInfoWrapper : IFileInfo
     {
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory("ServerLifecycleMananger")]
-        public void ServerLifecycleMananger_Starts()
+        readonly FileInfo _fileInfo;
+
+        public FileInfoWrapper(FileInfo fileInfo)
         {
-            var serverLifecycleManager = new ServerLifecycleManager();
-            
+            _fileInfo = fileInfo;
+        }
+
+        public DateTime CreationTime => _fileInfo.CreationTime;
+
+        public void Delete()
+        {
+            _fileInfo.Delete();
         }
     }
 }
