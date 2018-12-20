@@ -18,7 +18,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -44,7 +43,7 @@ namespace Dev2
     {
         bool InteractiveMode { get; set; }
 
-        void Run();
+        void Run(IEnumerable<IServerLifecycleWorker> initWorkers);
         void Stop(bool didBreak, int result);
     }
 
@@ -95,9 +94,6 @@ namespace Dev2
                     worker.Execute();
                 }
 
-                RegisterDependencies();
-                Config.Server.SaveIfNotExists();
-
                 LoadHostSecurityProvider();
                 LoadPerformanceCounters();
                 CheckExampleResources();
@@ -112,7 +108,6 @@ namespace Dev2
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
                 StartWebServer();
-                RegisterDependencies();
                 LoadTestCatalog();
                 if (InteractiveMode)
                 {
@@ -129,13 +124,6 @@ namespace Dev2
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
-        }
-
-        private void RegisterDependencies()
-        {
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
-            CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
         }
 
         void OpenCOMStream()

@@ -25,7 +25,7 @@ namespace Dev2
         {
             Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
             RunSuccessful = true;
-            _serverLifecycleManager.Run();
+            _serverLifecycleManager.Run(new LifeCycleInitializationList());
         }
 
         protected override void OnStop()

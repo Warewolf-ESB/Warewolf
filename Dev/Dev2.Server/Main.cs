@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.ServerLifeCycleWorkers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,8 +51,7 @@ namespace Dev2
             if (Environment.UserInteractive || (arguments.Any() && arguments[0] == "--interactive"))
             {
                 Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                var initWorkers = new List<IServerLifecycleWorker>();
-                new ServerLifecycleManager(new ServerEnvironmentPreparer()).Run(initWorkers);
+                new ServerLifecycleManager(new ServerEnvironmentPreparer()).Run(new LifeCycleInitializationList());
             }
             else
             {

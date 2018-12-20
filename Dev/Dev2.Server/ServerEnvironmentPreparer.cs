@@ -54,6 +54,8 @@ namespace Dev2
 
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
+
+            Config.Server.SaveIfNotExists();
         }
 
         protected void PrepareLogging(string settingsConfigFile)

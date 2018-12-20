@@ -372,7 +372,7 @@
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
     <Compile Include="IPluginSource.cs" />
-    <Compile Include="IPulseLogger.cs" />
+    <Compile Include="IStartTimer.cs" />
     <Compile Include="IQueryManager.cs" />
     <Compile Include="IRabbitMQ.cs" />
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
