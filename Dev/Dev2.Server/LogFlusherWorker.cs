@@ -14,18 +14,21 @@ namespace Dev2
     {
         Timer _loggerFlushTimer;
         readonly ILogManager _logManager;
+        readonly IWriter _writer;
 
         public int TimerDueTime { get; set; } = 10000;
 
-        public LogFlusherWorker(ILogManager logManager)
+        public LogFlusherWorker(ILogManager logManager, IWriter writer)
         {
             _logManager = logManager;
+            _writer = writer;
         }
 
         private void ConfigureLogFlushing()
         {
             if (Config.Server.EnableDetailedLogging)
             {
+                _writer.Write("Detailed Logging Enabled");
                 Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
                 Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
                 _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, TimerDueTime, Config.Server.LogFlushInterval);

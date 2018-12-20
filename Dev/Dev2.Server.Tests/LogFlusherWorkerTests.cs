@@ -15,10 +15,11 @@ namespace Dev2.Server.Tests
         public void LogFlusherWorker_Execute()
         {
             //----------------------Arrange-------------------
+            var mockWriter = new Mock<IWriter>();
             var mockLogManager = new Mock<ILogManager>();
             mockLogManager.Setup(a => a.FlushLogs()).Callback(() => Console.WriteLine("FlushLogs Invoked")).Verifiable();
             //----------------------Act-------------------
-            var worker = new LogFlusherWorker(mockLogManager.Object)
+            var worker = new LogFlusherWorker(mockLogManager.Object, mockWriter.Object)
             {
                 TimerDueTime = 200
             };
@@ -38,10 +39,11 @@ namespace Dev2.Server.Tests
         public void LogFlusherWorker_PerformLogFlushTimerPause()
         {
             //----------------------Arrange-------------------
+            var mockWriter = new Mock<IWriter>();
             var mockLogManager = new Mock<ILogManager>();
             mockLogManager.Setup(a => a.FlushLogs()).Verifiable();
             //----------------------Act-------------------
-            var worker = new LogFlusherWorker(mockLogManager.Object)
+            var worker = new LogFlusherWorker(mockLogManager.Object, mockWriter.Object)
             {
                 TimerDueTime = 200
             };
@@ -56,6 +58,7 @@ namespace Dev2.Server.Tests
             }
             //----------------------Assert-------------------
             mockLogManager.Verify(a => a.FlushLogs(), Times.Once);
+            mockWriter.Verify(o => o.Write("Detailed Logging Enabled"), Times.Once);
         }
 
         [TestMethod]
@@ -64,10 +67,11 @@ namespace Dev2.Server.Tests
         public void LogFlusherWorker_PerformLogFlushTimerResume()
         {
             //----------------------Arrange-------------------
+            var mockWriter = new Mock<IWriter>();
             var mockLogManager = new Mock<ILogManager>();
             mockLogManager.Setup(a => a.FlushLogs()).Verifiable();
             //----------------------Act-------------------
-            var worker = new LogFlusherWorker(mockLogManager.Object)
+            var worker = new LogFlusherWorker(mockLogManager.Object, mockWriter.Object)
             {
                 TimerDueTime = 200
             };

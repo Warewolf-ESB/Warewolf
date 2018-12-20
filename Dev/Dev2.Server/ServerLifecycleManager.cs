@@ -52,7 +52,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    public sealed class ServerLifecycleManager : IServerLifecycleManager, IDisposable
+    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter, IDisposable
     {
         public bool InteractiveMode { get; set; } = true;
 
@@ -161,7 +161,7 @@ namespace Dev2
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                new LogFlusherWorker(new LogManagerImplementation()).Execute();
+                new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
                 StartPulseLogger();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
@@ -214,7 +214,7 @@ namespace Dev2
             }
         }
 
-        static void PreloadReferences()
+        void PreloadReferences()
         {
             Write("Preloading assemblies...  ");
             var currentAsm = typeof(ServerLifecycleManager).Assembly;
@@ -387,7 +387,7 @@ namespace Dev2
             }
         }
 
-        static void Fail(string message, Exception e)
+        void Fail(string message, Exception e)
         {
             var ex = e;
             var errors = new StringBuilder();
@@ -461,7 +461,7 @@ namespace Dev2
             }
         }
 
-        static ResourceCatalog LoadResourceCatalog()
+        ResourceCatalog LoadResourceCatalog()
         {
             MigrateOldResources();
             ValidateResourceFolder();
@@ -477,7 +477,7 @@ namespace Dev2
             ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
         }
 
-        static void LoadTestCatalog()
+        void LoadTestCatalog()
         {
 
             Write("Loading test catalog...  ");
@@ -485,7 +485,7 @@ namespace Dev2
             WriteLine("done.");
         }
 
-        static void LoadActivityCache(ResourceCatalog catalog)
+        void LoadActivityCache(ResourceCatalog catalog)
         {
             PreloadReferences();
             Write("Loading resource activity cache...  ");
@@ -536,14 +536,14 @@ namespace Dev2
             }
         }
 
-        static void LoadSettingsProvider()
+        void LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
             Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             WriteLine("done.");
         }
 
-        static void ConfigureLoggging()
+        void ConfigureLoggging()
         {
             try
             {
@@ -562,7 +562,7 @@ namespace Dev2
             }
         }
 
-        static void LoadServerWorkspace()
+        void LoadServerWorkspace()
         {
 
             Write("Loading server workspace...  ");
@@ -574,7 +574,7 @@ namespace Dev2
             }
         }
 
-        static void LoadHostSecurityProvider()
+        void LoadHostSecurityProvider()
         {
             Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
@@ -633,7 +633,7 @@ namespace Dev2
             }
         }
 
-        internal static void WriteLine(string message)
+        public void WriteLine(string message)
         {
             if (Environment.UserInteractive)
             {
@@ -648,7 +648,7 @@ namespace Dev2
         }
 
 
-        internal static void Write(string message)
+        public void Write(string message)
         {
             if (Environment.UserInteractive)
             {

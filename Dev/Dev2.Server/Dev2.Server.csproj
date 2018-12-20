@@ -352,7 +352,6 @@
     <Compile Include="ServerLifecycleManagerService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Writer.cs" />
     <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
