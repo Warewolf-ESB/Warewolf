@@ -34,7 +34,7 @@ namespace Dev2
         {
         }
         private ServerEnvironmentPreparer(IFile fileWrapper, IDirectory directoryWrapper)
-            :this(new TempFileDeleter(directoryWrapper), fileWrapper, directoryWrapper)
+            :this(new TempFileDeleter(directoryWrapper, new TimerWrapperFactory()), fileWrapper, directoryWrapper)
         {
         }
 

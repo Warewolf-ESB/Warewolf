@@ -10,9 +10,10 @@ namespace Dev2
         public bool RunSuccessful { get; private set; }
 
         public ServerLifecycleManagerService()
-            :this(new ServerLifecycleManager())
+            :this(new ServerLifecycleManager(new ServerEnvironmentPreparer()))
         {
         }
+
         public ServerLifecycleManagerService(IServerLifecycleManager serverLifecycleManager)
         {
             serverLifecycleManager.InteractiveMode = false;
