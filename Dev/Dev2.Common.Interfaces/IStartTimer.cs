@@ -11,9 +11,9 @@
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IPulseLogger
+    public interface IStartTimer
     {
         double Interval { get; }
-        bool Start();
+        IStartTimer Start();
     }
 }

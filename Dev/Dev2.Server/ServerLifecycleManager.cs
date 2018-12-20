@@ -60,18 +60,16 @@ namespace Dev2
         Dev2Endpoint[] _endpoints;
         Timer _timer;
         IDisposable _owinServer;
-        readonly IPulseLogger _pulseLogger;
-        readonly PulseTracker _pulseTracker;
+        readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
+        readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IpcClient _ipcIpcClient;
 
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
             _serverEnvironmentPreparer = serverEnvironmentPreparer;
-            _pulseLogger = new PulseLogger(60000);
-            _pulseLogger.Start();
-            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
-            _pulseTracker.Start();
+            _pulseLogger = new PulseLogger(60000).Start();
+            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
         }
 
@@ -106,7 +104,6 @@ namespace Dev2
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
-                StartPulseLogger();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
                 StartWebServer();
@@ -141,12 +138,6 @@ namespace Dev2
             Write("Opening named pipe client stream for COM IPC... ");
             _ipcIpcClient = IpcClient.GetIPCExecutor();
             WriteLine("done.");
-        }
-
-        void StartPulseLogger()
-        {
-            _pulseLogger.Start();
-            _pulseTracker.Start();
         }
 
         void PerformTimerActions(object state)
