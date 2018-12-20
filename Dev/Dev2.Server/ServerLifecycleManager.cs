@@ -73,7 +73,7 @@ namespace Dev2
             _serverEnvironmentPreparer.PrepareEnvironment();
         }
 
-        public void Run()
+        public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
@@ -90,6 +90,11 @@ namespace Dev2
 
             try
             {
+                foreach (var worker in initWorkers)
+                {
+                    worker.Execute();
+                }
+
                 RegisterDependencies();
                 Config.Server.SaveIfNotExists();
 
