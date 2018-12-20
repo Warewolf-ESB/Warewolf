@@ -21,14 +21,27 @@ namespace Dev2
     public interface IWebServerConfiguration
     {
         Dev2Endpoint[] EndPoints { get; }
-
+        bool IsWebServerEnabled { get; }
+        bool IsWebServerSslEnabled { get; }
     }
 
     public class WebServerConfiguration : IWebServerConfiguration
     {
+        bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
         readonly IWriter _writer;
         public Dev2Endpoint[] EndPoints { get; private set; }
+        public bool IsWebServerEnabled {
+            get => _isWebServerEnabled;
+            private set => _isWebServerEnabled = value;
+        }
+
+        
+
+        public bool IsWebServerSslEnabled {
+            get => _isWebServerSslEnabled;
+            private set => _isWebServerSslEnabled = value; 
+                }
 
         public WebServerConfiguration(IWriter writer)
         {
@@ -44,7 +57,6 @@ namespace Dev2
                 GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
 
-                var _isWebServerEnabled = false;
                 bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
