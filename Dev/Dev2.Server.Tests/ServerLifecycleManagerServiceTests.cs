@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Dev2.Server.Tests
@@ -45,7 +46,7 @@ namespace Dev2.Server.Tests
 
                 serverLifecycleManagerServiceTest.TestStart();
                 Assert.IsTrue(serverLifecycleManagerServiceTest.RunSuccessful);
-                mockServerLifeManager.Verify(o => o.Run(), Times.Once);
+                mockServerLifeManager.Verify(o => o.Run(It.IsAny<IEnumerable<IServerLifecycleWorker>>()), Times.Once);
             }
         }
 

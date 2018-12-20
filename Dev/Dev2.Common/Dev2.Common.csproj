@@ -241,7 +241,9 @@
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
+    <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
+    <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
   </ItemGroup>

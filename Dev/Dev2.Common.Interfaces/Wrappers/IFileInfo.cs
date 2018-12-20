@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -7,13 +7,14 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+using System;
 
-
-namespace Dev2.Common.Interfaces
+namespace Dev2.Common.Interfaces.Wrappers
 {
-    public interface IPulseLogger
+    public interface IFileInfo
     {
-        double Interval { get; }
-        bool Start();
+        DateTime CreationTime { get; }
+
+        void Delete();
     }
 }
