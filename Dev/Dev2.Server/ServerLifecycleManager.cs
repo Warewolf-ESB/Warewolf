@@ -98,7 +98,7 @@ namespace Dev2
                 LoadPerformanceCounters();
                 CheckExampleResources();
                 MigrateOldTests();
-                var webServerConfig = new WebServerConfiguration(this);
+                var webServerConfig = new WebServerConfiguration(this, new FileWrapper());
                 webServerConfig.Execute();
                 LoadSettingsProvider();
                 ConfigureLoggging();

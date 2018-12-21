@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using System;
@@ -30,22 +31,25 @@ namespace Dev2
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
         readonly IWriter _writer;
+        readonly IFile _fileWrapper;
         public Dev2Endpoint[] EndPoints { get; private set; }
-        public bool IsWebServerEnabled {
+
+        public bool IsWebServerEnabled
+        {
             get => _isWebServerEnabled;
             private set => _isWebServerEnabled = value;
         }
 
-        
-
-        public bool IsWebServerSslEnabled {
+        public bool IsWebServerSslEnabled
+        {
             get => _isWebServerSslEnabled;
-            private set => _isWebServerSslEnabled = value; 
-                }
+            private set => _isWebServerSslEnabled = value;
+        }
 
-        public WebServerConfiguration(IWriter writer)
+        public WebServerConfiguration(IWriter writer, IFile fileWrapper)
         {
             _writer = writer;
+            _fileWrapper = fileWrapper;
         }
         public void Execute()
         {
@@ -97,7 +101,10 @@ namespace Dev2
         {
             if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
             {
-                int.TryParse(webServerSslPort, out int realWebServerSslPort);
+                if (!int.TryParse(webServerSslPort, out int realWebServerSslPort))
+                {
+                    throw new ArgumentException("Web server ssl port is not valid. Please set the webServerSslPort value in the configuration file.");
+                }
 
                 var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
@@ -105,7 +112,7 @@ namespace Dev2
                 {
                     var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                     var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
+                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(_fileWrapper, sslCertPath, httpsEndpoint);
 
                     if (canEnableSsl)
                     {
