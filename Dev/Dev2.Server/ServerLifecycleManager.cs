@@ -11,10 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -69,7 +67,7 @@ namespace Dev2
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
-            _startWebServer = new StartWebServer(this);
+            _startWebServer = new StartWebServer(this, WebServerStartup.Start);
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
@@ -108,7 +106,7 @@ namespace Dev2
                 new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
-                _startWebServer.Execute(webServerConfig);
+                _startWebServer.Execute(webServerConfig, new PauseHelper());
 #if DEBUG
                 SetAsStarted();
 #endif
@@ -469,66 +467,5 @@ namespace Dev2
         
     }
 
-    public interface IStartWebServer : IDisposable
-    {
-        void Execute(IWebServerConfiguration webServerConfig);
-    }
-
-    public class StartWebServer : IStartWebServer
-    {
-        private readonly IWriter _writer;
-
-        IDisposable _owinServer;
-
-
-        public StartWebServer(IWriter writer)
-        {
-            _writer = writer;
-        }
-
-        public void Execute(IWebServerConfiguration webServerConfig)
-        {
-            if (webServerConfig.IsWebServerEnabled || webServerConfig.IsWebServerSslEnabled)
-            {
-                try
-                {
-                    DoStartWebServer(webServerConfig);
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error("Dev2.ServerLifecycleManager", e, GlobalConstants.WarewolfError);
-                    EnvironmentVariables.IsServerOnline = false;
-                    _writer.Fail("Webserver failed to start", e);
-                    Console.ReadLine();
-                }
-            }
-        }
-        public void DoStartWebServer(IWebServerConfiguration webServerConfig)
-        {
-            var endPoints = webServerConfig.EndPoints;
-            _owinServer = WebServerStartup.Start(endPoints);
-            EnvironmentVariables.IsServerOnline = true;
-            _writer.WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in endPoints)
-            {
-                _writer.WriteLine($"Web server listening at {endpoint.Url}");
-            }
-        }
-        public void Dispose()
-        {
-            try
-            {
-                if (_owinServer != null)
-                {
-                    _owinServer.Dispose();
-                    _owinServer = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(nameof(StartWebServer), ex, GlobalConstants.WarewolfError);
-            }
-        }
-    }
 }
 
