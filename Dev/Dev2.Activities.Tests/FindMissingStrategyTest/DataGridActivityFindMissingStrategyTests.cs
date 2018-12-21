@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.WcfEndPoint;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.DB;
