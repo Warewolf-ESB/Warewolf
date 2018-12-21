@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="RegisterDependenciesWorker.cs" />
     <Compile Include="TempFileDeleterTests.cs" />
+    <Compile Include="StartWebServerTests.cs" />
     <Compile Include="WebServerConfigurationTests.cs" />
     <Compile Include="ServerLifecycleManagerServiceTests.cs" />
     <Compile Include="ServerEnvironmentPreparerTests.cs" />
