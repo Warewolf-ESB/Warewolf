@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Factories;
 using Dev2.Util;
-using Dropbox.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +30,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         public OauthSource SelectedSource { get; set; }
 
         public List<string> Files { get; set; }
-        DropboxClient _dropboxClient;
         IDropboxClientWrapper _dropboxClientWrapper;
         public Exception Exception { get; set; }
 
@@ -57,7 +55,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-        DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
+        protected DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
             DropboxFactory = dropboxFactory;
 
@@ -74,19 +72,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
         }
 
-        protected DsfDropboxFileListActivity(IDropboxClientWrapper dropboxClientWrapper)
-            :this()
+        protected IDropboxClientWrapper GetDropboxClient()
         {
-            _dropboxClientWrapper = dropboxClientWrapper;
-        }
-        public DropboxClient GetDropboxClient()
-        {
-            if (_dropboxClient != null)
+            if (_dropboxClientWrapper != null)
             {
-                return _dropboxClient;
+                return _dropboxClientWrapper;
             }
-            _dropboxClient = DropboxFactory.CreateWithSecret(SelectedSource.AccessToken);
-            return _dropboxClient;
+            return _dropboxClientWrapper ?? (_dropboxClientWrapper = DropboxFactory.CreateWithSecret(SelectedSource.AccessToken));
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -106,8 +98,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
-            _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
-            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
+            var dropboxClientWrapper = GetDropboxClient();
+            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(dropboxClientWrapper);
             if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
@@ -200,17 +192,18 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
-            return base.Equals(other) 
-                && isSourceEqual
-                && Files.SequenceEqual(other.Files, StringComparer.Ordinal) 
-                && IncludeMediaInfo == other.IncludeMediaInfo
-                && IsRecursive == other.IsRecursive
-                && IncludeDeleted == other.IncludeDeleted 
-                && string.Equals(ToPath, other.ToPath) 
-                && string.Equals(DisplayName, other.DisplayName) 
-                && IsFilesSelected == other.IsFilesSelected
-                && IsFoldersSelected == other.IsFoldersSelected
-                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
+            var eq = base.Equals(other);
+            eq &= isSourceEqual;
+            eq &= Files.SequenceEqual(other.Files, StringComparer.Ordinal);
+            eq &= IncludeMediaInfo == other.IncludeMediaInfo;
+            eq &= IsRecursive == other.IsRecursive;
+            eq &= IncludeDeleted == other.IncludeDeleted;
+            eq &= string.Equals(ToPath, other.ToPath);
+            eq &= string.Equals(DisplayName, other.DisplayName);
+            eq &= IsFilesSelected == other.IsFilesSelected;
+            eq &= IsFoldersSelected == other.IsFoldersSelected;
+            eq &= IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
+            return eq;
         }
 
         public override bool Equals(object obj)
