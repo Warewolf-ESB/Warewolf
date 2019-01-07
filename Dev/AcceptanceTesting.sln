@@ -308,6 +308,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing", "De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Auditing.Tests", "Dev2.Runtime.Auditing.Tests\Dev2.Runtime.Auditing.Tests.csproj", "{5345796F-4EFB-4E8E-8308-0C26420333E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server.Tests", "Dev2.Server.Tests\Dev2.Server.Tests.csproj", "{80BDDE97-6513-4309-9EAE-0730ED5685D6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A} = {84405FDF-0FF8-49A2-8925-8A4AEBA8104A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1163,6 +1168,14 @@ Global
 		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{5345796F-4EFB-4E8E-8308-0C26420333E4}.Release|x86.Build.0 = Release|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Debug|x86.Build.0 = Debug|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{80BDDE97-6513-4309-9EAE-0730ED5685D6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

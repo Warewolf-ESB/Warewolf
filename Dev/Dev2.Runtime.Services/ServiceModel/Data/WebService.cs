@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             Recordsets = CreateOutputsRecordsetList(action);
         }
 
-        public List<NameValue> Headers { get; set; } 
+        public List<INameValue> Headers { get; set; } 
 
         #endregion
 

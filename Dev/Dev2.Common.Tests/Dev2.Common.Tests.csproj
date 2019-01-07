@@ -87,6 +87,8 @@
     <Compile Include="WarewolfQueue\WarewolfQueueTests.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />
+    <Compile Include="Wrappers\TimerWrapperTests.cs" />
+    <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>

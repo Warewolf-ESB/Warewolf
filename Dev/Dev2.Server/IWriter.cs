@@ -1,3 +1,4 @@
+﻿
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,12 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2
 {
-    public interface IPulseLogger
+    public interface IWriter
     {
-        double Interval { get; }
-        bool Start();
+        void Write(string message);
+        void WriteLine(string message);
+        void Fail(string message, Exception e);
     }
 }
