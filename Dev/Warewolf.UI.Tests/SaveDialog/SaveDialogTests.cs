@@ -96,6 +96,19 @@ namespace Warewolf.UI.Tests.SaveDialog
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory("Save Dialog")]
+        public void SaveDialogServiceNameOnLoadedTextIsSelected()
+        {
+            Keyboard.SendKeys("{BACK}");
+            Assert.AreEqual("", DialogsUIMap.SaveDialogWindow.ServiceNameTextBox.Text, "Error is not the same as expected");
+
+            DialogsUIMap.SaveDialogWindow.ServiceNameTextBox.Text = "RandomResourceName";
+            Assert.AreEqual("RandomResourceName", DialogsUIMap.SaveDialogWindow.ServiceNameTextBox.Text, "Error is not the same as expected");
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
+        [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithNumber()
         {
             DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("TestingWF1");
