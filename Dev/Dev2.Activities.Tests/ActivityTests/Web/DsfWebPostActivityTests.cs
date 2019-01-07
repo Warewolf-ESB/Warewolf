@@ -568,7 +568,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 PostData = "This is post:[[Post]]"
             };
 
-            var headers = new List<NameValue>
+            var headers = new List<INameValue>
             {
                 new NameValue("Content","text/json")
             };
@@ -624,7 +624,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
@@ -637,7 +637,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string QueryRes { get; private set; }
 
-        public IEnumerable<NameValue> Head { get; private set; }
+        public IEnumerable<INameValue> Head { get; private set; }
 
         #endregion
 
