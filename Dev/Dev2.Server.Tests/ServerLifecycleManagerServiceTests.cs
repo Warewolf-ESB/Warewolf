@@ -1,9 +1,6 @@
-﻿using Dev2.Common.Interfaces.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Dev2.Server.Tests
 {
