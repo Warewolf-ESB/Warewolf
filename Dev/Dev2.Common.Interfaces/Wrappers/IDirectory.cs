@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Wrappers
     {
         DirectoryInfo GetParent(string path);
         string[] GetFiles(string path);
+        IEnumerable<IFileInfo> GetFileInfos(string path);
         string CreateIfNotExists(string path);
         string[] GetLogicalDrives();
         bool Exists(string path);

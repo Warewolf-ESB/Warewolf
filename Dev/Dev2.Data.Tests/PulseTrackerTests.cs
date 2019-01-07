@@ -13,7 +13,7 @@ namespace Dev2.Data
             var prObj = new PrivateObject(pulseTracker);
             Assert.IsNotNull(prObj);
             var start = pulseTracker.Start();
-            Assert.IsTrue(start);
+            Assert.IsNotNull(start);
             var timer = prObj.GetField("_timer") as System.Timers.Timer;
             Assert.IsTrue(timer != null && timer.Enabled);
         }

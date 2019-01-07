@@ -26,6 +26,13 @@ namespace Dev2.Common.Wrappers
             }
             return Directory.GetFiles(path);
         }
+        public IEnumerable<IFileInfo> GetFileInfos(string path)
+        {
+            foreach (var info in new DirectoryInfo(path).GetFiles())
+            {
+                yield return new FileInfoWrapper(info);
+            }
+        }
 
         public string CreateIfNotExists(string path)
         {
