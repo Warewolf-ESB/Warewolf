@@ -11,9 +11,6 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Interfaces;
 
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
@@ -211,11 +208,14 @@ namespace Warewolf.Studio.ViewModels
             selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
             selectedServiceTest.TestInvalid = res.Result.RunTestResult == RunResult.TestInvalid ||
                                               res.Result.RunTestResult == RunResult.TestResourceDeleted;
-            selectedServiceTest.TestPending = res.Result.RunTestResult != RunResult.TestFailed &&
-                                              res.Result.RunTestResult != RunResult.TestPassed &&
-                                              res.Result.RunTestResult != RunResult.TestInvalid &&
-                                              res.Result.RunTestResult != RunResult.TestResourceDeleted &&
-                                              res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+            var testPending = res.Result.RunTestResult != RunResult.TestFailed;
+            testPending &= res.Result.RunTestResult != RunResult.TestPassed;
+            testPending &= res.Result.RunTestResult != RunResult.TestInvalid;
+            testPending &= res.Result.RunTestResult != RunResult.TestResourceDeleted;
+            testPending &= res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+            selectedServiceTest.TestPending = testPending;
         }
 
         void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
@@ -255,8 +255,6 @@ namespace Warewolf.Studio.ViewModels
                     OptionsForValue = serviceTestOutput?.OptionsForValue ?? new List<string>(),
                     Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending }
                 };
-
-
 
                 if (testStep.MockSelected)
                 {
