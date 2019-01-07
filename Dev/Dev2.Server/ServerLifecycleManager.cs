@@ -98,8 +98,7 @@ namespace Dev2
                 MigrateOldTests();
                 var webServerConfig = new WebServerConfiguration(this, new FileWrapper());
                 webServerConfig.Execute();
-                LoadSettingsProvider();
-                ConfigureLoggging();
+                new LoadRuntimeConfigurations(this).Execute();                
                 OpenCOMStream();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -366,31 +365,7 @@ namespace Dev2
             }
         }
 
-        void LoadSettingsProvider()
-        {
-            Write("Loading settings provider...  ");
-            Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
-            WriteLine("done.");
-        }
-
-        void ConfigureLoggging()
-        {
-            try
-            {
-                Write("Configure logging...  ");
-
-                var instance = Runtime.Configuration.SettingsProvider.Instance;
-                var settings = instance.Configuration;
-                WorkflowLoggger.LoggingSettings = settings.Logging;
-
-                WriteLine("done.");
-            }
-            catch (Exception e)
-            {
-                Write("fail.");
-                WriteLine(e.Message);
-            }
-        }
+       
 
         void LoadServerWorkspace()
         {
@@ -466,6 +441,6 @@ namespace Dev2
         }
         
     }
-
+    
 }
 
