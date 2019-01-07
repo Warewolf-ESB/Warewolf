@@ -47,9 +47,6 @@ namespace Warewolf.Studio.ViewModels
         string _errorContainsText;
         bool _isTestLoading;
         bool _isValidatingIsDirty;
-#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
-        bool _isDirty;
-#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
         public string NeverRunString
         {
@@ -412,7 +409,7 @@ namespace Warewolf.Studio.ViewModels
                     return false;
                 }
                 _isValidatingIsDirty = true;
-                _isDirty = false;
+                var _isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
                 {
