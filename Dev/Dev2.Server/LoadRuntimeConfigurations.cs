@@ -10,6 +10,7 @@
 
 using Dev2.Common;
 using Dev2.Diagnostics.Logging;
+using Dev2.Runtime.Configuration;
 using System;
 
 namespace Dev2
@@ -17,10 +18,20 @@ namespace Dev2
     public class LoadRuntimeConfigurations
     {
         private readonly IWriter _writer;
-        public LoadRuntimeConfigurations(IWriter writer)
+        ISettingsProvider _settingsProvider;
+
+        public LoadRuntimeConfigurations(IWriter writer) 
+            :this(writer, null)
+        {
+            
+        }
+
+        public LoadRuntimeConfigurations(IWriter writer, ISettingsProvider settingsProvider)
         {
             _writer = writer;
+            _settingsProvider = settingsProvider;
         }
+
         void LoadSettingsProvider()
         {
             _writer.Write("Loading settings provider...  ");
@@ -40,9 +51,11 @@ namespace Dev2
             try
             {
                 _writer.Write("Configure logging...  ");
-
-                var instance = Runtime.Configuration.SettingsProvider.Instance;
-                var settings = instance.Configuration;
+                if (_settingsProvider is null)
+                {
+                    _settingsProvider = Runtime.Configuration.SettingsProvider.Instance;
+                }
+                var settings = _settingsProvider.Configuration;
                 WorkflowLoggger.LoggingSettings = settings.Logging;
 
                 _writer.WriteLine("done.");
