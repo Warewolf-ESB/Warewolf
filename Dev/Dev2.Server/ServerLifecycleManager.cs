@@ -45,7 +45,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter, IDisposable
+    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter
     {
         public bool InteractiveMode { get; set; } = true;
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
@@ -390,7 +390,7 @@ namespace Dev2
 
         }
 
-       
+
 #if DEBUG
 
         static void SetAsStarted()
@@ -407,10 +407,10 @@ namespace Dev2
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
-#endif
         }
+#endif
 
-       
+
 
         public void WriteLine(string message)
         {
