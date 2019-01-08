@@ -1,18 +1,28 @@
-﻿using Dev2.Common;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dev2
 {
-    
+
     public interface ILoadResources
     {
         void CheckExampleResources();
@@ -29,40 +39,52 @@ namespace Dev2
 
     public class LoadResources : ILoadResources
     {
+        readonly string _resourceDirectory;
         readonly IWriter _writer;
-        private ResourceCatalog _catalog;
+        readonly IDirectory _directory;
+        private IResourceCatalog _catalog;
+        private readonly IResourceCatalogFactory _resourceCatalogFactory;
 
-        public LoadResources(IWriter writer)
+        public LoadResources(string resourceDirectory, IWriter writer)
+            :this(resourceDirectory, writer, new DirectoryWrapper(), new ResourceCatalogFactory())
+        {
+            
+        }
+        public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory )
         {
             _writer = writer;
+            _directory = directory;
+            _resourceDirectory = resourceDirectory;
+            _resourceCatalogFactory = resourceCatalogFactory;
+            _catalog = _resourceCatalogFactory.New();
+
         }
 
         public void CheckExampleResources()
         {
-            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverReleaseResources))
+            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
+            if (_directory.Exists(EnvironmentVariables.ResourcePath) && _directory.Exists(serverReleaseResources))
             {
-                ResourceCatalog.Instance.LoadExamplesViaBuilder(serverReleaseResources);
+                _catalog.LoadExamplesViaBuilder(serverReleaseResources);
             }
         }
-
-
+        
         public void LoadResourceCatalog()
         {
             MigrateOldResources();
             ValidateResourceFolder();
             _writer.Write("Loading resource catalog...  ");
-            var catalog = ResourceCatalog.Instance;
+            var catalog = _resourceCatalogFactory.New();
             MethodsToBeDepricated();
             _writer.WriteLine("done.");
             _catalog = catalog;
         }
 
-
         public void MethodsToBeDepricated()
         {
-            ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
+            _catalog.CleanUpOldVersionControlStructure();
         }
+
         public void LoadActivityCache()
         {
             PreloadReferences();
@@ -74,17 +96,16 @@ namespace Dev2
         public void ValidateResourceFolder()
         {
             var folder = EnvironmentVariables.ResourcePath;
-            if (!Directory.Exists(folder))
+            if (!_directory.Exists(folder))
             {
-                Directory.CreateDirectory(folder);
+                _directory.CreateDirectory(folder);
             }
         }
-
 
         public void MigrateOldResources()
         {
             var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
+            if (!_directory.Exists(EnvironmentVariables.ResourcePath) && _directory.Exists(serverBinResources))
             {
                 var dir = new DirectoryHelper();
                 dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
@@ -97,27 +118,26 @@ namespace Dev2
             _writer.Write("Preloading assemblies...  ");
             var currentAsm = typeof(ServerLifecycleManager).Assembly;
             var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected);
+            LoadReferences(currentAsm, inspected, new AssemblyLoader());
             _writer.WriteLine("done.");
         }
 
-        public void LoadReferences(Assembly asm, HashSet<string> inspected)
+        public void LoadReferences(Assembly asm, HashSet<string> inspected, AssemblyLoader assemblyLoader)
         {
-            var allReferences = asm.GetReferencedAssemblies();
+            var allReferences = assemblyLoader.assemblyNames(asm);
 
             foreach (var toLoad in allReferences)
             {
                 if (!inspected.Contains(toLoad.Name))
                 {
                     inspected.Add(toLoad.Name);
-                    var loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
+                    LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected,new AssemblyLoader());
                 }
             }
         }
+        
         public void LoadServerWorkspace()
         {
-
             _writer.Write("Loading server workspace...  ");
 
             var instance = WorkspaceRepository.Instance;
@@ -126,18 +146,21 @@ namespace Dev2
                 _writer.WriteLine("done.");
             }
         }
-
-
+        
         public void MigrateOldTests()
         {
             var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
+            if (!_directory.Exists(EnvironmentVariables.TestPath) && _directory.Exists(serverBinTests))
             {
                 var dir = new DirectoryHelper();
                 dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
                 dir.CleanUp(serverBinTests);
             }
         }
-        
+
+        public void LoadReferences(Assembly asm, HashSet<string> inspected)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
