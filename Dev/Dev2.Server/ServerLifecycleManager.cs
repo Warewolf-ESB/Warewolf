@@ -390,7 +390,7 @@ namespace Dev2
 
         }
 
-       
+
 #if DEBUG
 
         static void SetAsStarted()
@@ -407,10 +407,10 @@ namespace Dev2
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
-#endif
         }
+#endif
 
-       
+
 
         public void WriteLine(string message)
         {
