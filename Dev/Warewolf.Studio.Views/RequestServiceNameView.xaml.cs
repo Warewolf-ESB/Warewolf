@@ -35,6 +35,7 @@ namespace Warewolf.Studio.Views
                     new Action(delegate
                     {
                         ServiceNameTextBox.Focus();
+                        ServiceNameTextBox.SelectAll();
                     }));
             };
             Closing += WindowClosing;
