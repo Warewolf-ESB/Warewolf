@@ -5,6 +5,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Dev2.Common.Interfaces.Core.Graph;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
