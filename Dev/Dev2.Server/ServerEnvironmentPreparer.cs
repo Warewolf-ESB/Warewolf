@@ -23,7 +23,7 @@ namespace Dev2
     {
         void PrepareEnvironment();
     }
-    public class ServerEnvironmentPreparer : IServerEnvironmentPreparer, IDisposable
+    public class ServerEnvironmentPreparer : IServerEnvironmentPreparer
     {
         readonly IFile _fileWrapper;
         readonly IDirectory _directoryWrapper;

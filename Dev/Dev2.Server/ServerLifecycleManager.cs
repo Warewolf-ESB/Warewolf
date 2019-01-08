@@ -45,7 +45,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter, IDisposable
+    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter
     {
         public bool InteractiveMode { get; set; } = true;
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
