@@ -59,6 +59,7 @@ namespace Dev2
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IpcClient _ipcIpcClient;
+        private readonly ILoadResources _loadResources;
 
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
@@ -68,6 +69,8 @@ namespace Dev2
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = new StartWebServer(this, WebServerStartup.Start);
+            _loadResources = new LoadResources(this);
+
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
@@ -94,17 +97,17 @@ namespace Dev2
 
                 LoadHostSecurityProvider();
                 LoadPerformanceCounters();
-                CheckExampleResources();
-                MigrateOldTests();
+                _loadResources.CheckExampleResources();
+                _loadResources.MigrateOldTests();
                 var webServerConfig = new WebServerConfiguration(this, new FileWrapper());
                 webServerConfig.Execute();
-                new LoadRuntimeConfigurations(this).Execute();                
+                new LoadRuntimeConfigurations(this).Execute();
                 OpenCOMStream();
-                var catalog = LoadResourceCatalog();
+                _loadResources.LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
-                LoadServerWorkspace();
-                LoadActivityCache(catalog);
+                _loadResources.LoadServerWorkspace();
+                _loadResources.LoadActivityCache();
                 _startWebServer.Execute(webServerConfig, new PauseHelper());
 #if DEBUG
                 SetAsStarted();
@@ -139,30 +142,6 @@ namespace Dev2
             GetComputerNames.GetComputerNamesList();
         }
 
-        void PreloadReferences()
-        {
-            Write("Preloading assemblies...  ");
-            var currentAsm = typeof(ServerLifecycleManager).Assembly;
-            var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected);
-            WriteLine("done.");
-        }
-
-        static void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            var allReferences = asm.GetReferencedAssemblies();
-
-            foreach (var toLoad in allReferences)
-            {
-                if (!inspected.Contains(toLoad.Name))
-                {
-                    inspected.Add(toLoad.Name);
-                    var loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
-                }
-            }
-        }
-
         public void Stop(bool didBreak, int result)
         {
             if (!didBreak)
@@ -175,7 +154,7 @@ namespace Dev2
 
         void WaitForUserExit()
         {
-            
+
             Write("Press <ENTER> to terminate service and/or web server if started");
             if (EnvironmentVariables.IsServerOnline)
             {
@@ -289,23 +268,7 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-
-        ResourceCatalog LoadResourceCatalog()
-        {
-            MigrateOldResources();
-            ValidateResourceFolder();
-            Write("Loading resource catalog...  ");
-            var catalog = ResourceCatalog.Instance;
-            MethodsToBeDepricated();
-            WriteLine("done.");
-            return catalog;
-        }
-
-        static void MethodsToBeDepricated()
-        {
-            ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
-        }
-
+        
         void LoadTestCatalog()
         {
 
@@ -314,69 +277,9 @@ namespace Dev2
             WriteLine("done.");
         }
 
-        void LoadActivityCache(ResourceCatalog catalog)
-        {
-            PreloadReferences();
-            Write("Loading resource activity cache...  ");
-            catalog.LoadServerActivityCache();
-            WriteLine("done.");
-        }
         public static IDirectoryHelper DirectoryHelperInstance()
         {
             return new DirectoryHelper();
-        }
-        static void MigrateOldResources()
-        {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
-            {
-                var dir = DirectoryHelperInstance();
-                dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
-                dir.CleanUp(serverBinResources);
-            }
-        }
-
-        static void CheckExampleResources()
-        {
-            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverReleaseResources))
-            {
-                ResourceCatalog.Instance.LoadExamplesViaBuilder(serverReleaseResources);
-            }
-        }
-
-        static void MigrateOldTests()
-        {
-            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
-            {
-                var dir = DirectoryHelperInstance();
-                dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
-                dir.CleanUp(serverBinTests);
-            }
-        }
-
-        static void ValidateResourceFolder()
-        {
-            var folder = EnvironmentVariables.ResourcePath;
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
-        }
-
-       
-
-        void LoadServerWorkspace()
-        {
-
-            Write("Loading server workspace...  ");
-
-            var instance = WorkspaceRepository.Instance;
-            if (instance != null)
-            {
-                WriteLine("done.");
-            }
         }
 
         void LoadHostSecurityProvider()
@@ -389,7 +292,6 @@ namespace Dev2
             }
 
         }
-
 
 #if DEBUG
 
@@ -409,9 +311,7 @@ namespace Dev2
             }
         }
 #endif
-
-
-
+        
         public void WriteLine(string message)
         {
             if (Environment.UserInteractive)
@@ -425,8 +325,7 @@ namespace Dev2
             }
 
         }
-
-
+        
         public void Write(string message)
         {
             if (Environment.UserInteractive)
@@ -439,8 +338,7 @@ namespace Dev2
                 Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
-        
+
     }
-    
 }
 
