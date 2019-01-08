@@ -69,7 +69,7 @@ namespace Dev2
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
             _startWebServer = new StartWebServer(this, WebServerStartup.Start);
-            _loadResources = new LoadResources(this);
+            _loadResources = new LoadResources("Resources", this);
 
         }
 
