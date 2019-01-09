@@ -361,6 +361,7 @@
     <Compile Include="WebServerConfiguration.cs" />
     <Compile Include="TempFileDeleter.cs" />
     <Compile Include="ServerLifeCycleWorkers\RegisterDependenciesWorker.cs" />
+    <Compile Include="Writer.cs" />
     <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
