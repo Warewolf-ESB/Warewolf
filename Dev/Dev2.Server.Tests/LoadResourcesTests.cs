@@ -79,7 +79,6 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, resourceDirectory);
             
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             //------------------Act-------------------
@@ -102,7 +101,6 @@ namespace Dev2.Server.Tests
             var mockDirectory = new Mock<IDirectory>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, resourceDirectory);
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             mockDirectoryHelper.Setup(o => o.Copy(It.IsAny<string>(), It.IsAny<string>(), true))
@@ -232,7 +230,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
 
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
 
@@ -258,7 +255,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
@@ -283,7 +279,6 @@ namespace Dev2.Server.Tests
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
-            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
 
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
