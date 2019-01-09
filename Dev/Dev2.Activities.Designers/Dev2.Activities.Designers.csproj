@@ -1203,7 +1203,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Dev2.Activities.Designers.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

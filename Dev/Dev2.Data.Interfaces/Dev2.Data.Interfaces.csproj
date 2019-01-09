@@ -45,9 +45,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
-	</AdditionalFiles>
+    </AdditionalFiles>
     <None Include="Dev2.Data.Interfaces.ruleset" />
     <None Include="packages.config" />
     <Reference Include="Ionic.Zip.Reduced">
@@ -145,9 +145,6 @@
       <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
       <Name>Warewolf.TestingDotnetDllCascading</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />
