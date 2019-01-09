@@ -10,6 +10,7 @@
 
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Hosting;
@@ -26,14 +27,12 @@ namespace Dev2
     public interface ILoadResources
     {
         void CheckExampleResources();
-        void LoadActivityCache();
-        void LoadReferences(Assembly asm, HashSet<string> inspected);
+        void LoadActivityCache(IAssemblyLoader assemblyLoader);
         void LoadResourceCatalog();
         void LoadServerWorkspace();
         void MethodsToBeDepricated();
         void MigrateOldResources();
         void MigrateOldTests();
-        void PreloadReferences();
         void ValidateResourceFolder();
     }
 
@@ -44,20 +43,21 @@ namespace Dev2
         readonly IDirectory _directory;
         private IResourceCatalog _catalog;
         private readonly IResourceCatalogFactory _resourceCatalogFactory;
+        private readonly IDirectoryHelper _directoryHelper;
 
         public LoadResources(string resourceDirectory, IWriter writer)
-            :this(resourceDirectory, writer, new DirectoryWrapper(), new ResourceCatalogFactory())
+            :this(resourceDirectory, writer, new DirectoryWrapper(), new ResourceCatalogFactory(), new DirectoryHelper())
         {
             
         }
-        public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory )
+        public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory, IDirectoryHelper directoryHelper)
         {
             _writer = writer;
             _directory = directory;
             _resourceDirectory = resourceDirectory;
             _resourceCatalogFactory = resourceCatalogFactory;
             _catalog = _resourceCatalogFactory.New();
-
+            _directoryHelper = directoryHelper;
         }
 
         public void CheckExampleResources()
@@ -85,12 +85,35 @@ namespace Dev2
             _catalog.CleanUpOldVersionControlStructure();
         }
 
-        public void LoadActivityCache()
+        public void LoadActivityCache(IAssemblyLoader assemblyLoader)
         {
-            PreloadReferences();
+            PreloadReferences(assemblyLoader);
             _writer.Write("Loading resource activity cache...  ");
             _catalog.LoadServerActivityCache();
             _writer.WriteLine("done.");
+        }
+
+        private void PreloadReferences(IAssemblyLoader assemblyLoader)
+        {
+            _writer.Write("Preloading assemblies...  ");
+            var currentAsm = typeof(ServerLifecycleManager).Assembly;
+            var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+            LoadReferences(currentAsm, inspected, assemblyLoader);
+            _writer.WriteLine("done.");
+        }
+
+        private void LoadReferences(Assembly asm, HashSet<string> inspected, IAssemblyLoader assemblyLoader)
+        {
+            var allReferences = assemblyLoader.AssemblyNames(asm);
+
+            foreach (var toLoad in allReferences)
+            {
+                if (!inspected.Contains(toLoad.Name))
+                {
+                    inspected.Add(toLoad.Name);
+                    LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected, assemblyLoader);
+                }
+            }
         }
 
         public void ValidateResourceFolder()
@@ -104,35 +127,12 @@ namespace Dev2
 
         public void MigrateOldResources()
         {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!_directory.Exists(EnvironmentVariables.ResourcePath) && _directory.Exists(serverBinResources))
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, _resourceDirectory);
+            if (!_directory.Exists(EnvironmentVariables.ResourcePath) && !_directory.Exists(serverBinResources))
             {
-                var dir = new DirectoryHelper();
+                var dir = _directoryHelper;
                 dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
                 dir.CleanUp(serverBinResources);
-            }
-        }
-
-        public void PreloadReferences()
-        {
-            _writer.Write("Preloading assemblies...  ");
-            var currentAsm = typeof(ServerLifecycleManager).Assembly;
-            var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected, new AssemblyLoader());
-            _writer.WriteLine("done.");
-        }
-
-        public void LoadReferences(Assembly asm, HashSet<string> inspected, AssemblyLoader assemblyLoader)
-        {
-            var allReferences = assemblyLoader.assemblyNames(asm);
-
-            foreach (var toLoad in allReferences)
-            {
-                if (!inspected.Contains(toLoad.Name))
-                {
-                    inspected.Add(toLoad.Name);
-                    LoadReferences(assemblyLoader.LoadAndReturn(toLoad), inspected,new AssemblyLoader());
-                }
             }
         }
         
@@ -150,17 +150,12 @@ namespace Dev2
         public void MigrateOldTests()
         {
             var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!_directory.Exists(EnvironmentVariables.TestPath) && _directory.Exists(serverBinTests))
+            if (!_directory.Exists(EnvironmentVariables.TestPath) && !_directory.Exists(serverBinTests))
             {
-                var dir = new DirectoryHelper();
+                var dir = _directoryHelper;
                 dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
                 dir.CleanUp(serverBinTests);
             }
-        }
-
-        public void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            throw new NotImplementedException();
         }
     }
 }

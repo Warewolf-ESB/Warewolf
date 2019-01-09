@@ -107,7 +107,7 @@ namespace Dev2
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
                 _loadResources.LoadServerWorkspace();
-                _loadResources.LoadActivityCache();
+                _loadResources.LoadActivityCache(new AssemblyLoader());
                 _startWebServer.Execute(webServerConfig, new PauseHelper());
 #if DEBUG
                 SetAsStarted();
