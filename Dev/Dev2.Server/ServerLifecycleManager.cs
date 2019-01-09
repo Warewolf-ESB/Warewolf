@@ -45,7 +45,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    public sealed class ServerLifecycleManager : IServerLifecycleManager
+    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter
     {
         public bool InteractiveMode { get; set; } = true;
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
@@ -60,17 +60,16 @@ namespace Dev2
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
         IpcClient _ipcIpcClient;
         private readonly ILoadResources _loadResources;
-        private readonly Writer _writer;
+
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
-            _writer = new Writer();
             _serverEnvironmentPreparer = serverEnvironmentPreparer;
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
-            _startWebServer = new StartWebServer(_writer, WebServerStartup.Start);
-            _loadResources = new LoadResources("Resources", _writer);
+            _startWebServer = new StartWebServer(this, WebServerStartup.Start);
+            _loadResources = new LoadResources("Resources", this);
 
         }
 
@@ -100,13 +99,13 @@ namespace Dev2
                 LoadPerformanceCounters();
                 _loadResources.CheckExampleResources();
                 _loadResources.MigrateOldTests();
-                var webServerConfig = new WebServerConfiguration(_writer, new FileWrapper());
+                var webServerConfig = new WebServerConfiguration(this, new FileWrapper());
                 webServerConfig.Execute();
-                new LoadRuntimeConfigurations(_writer).Execute();
+                new LoadRuntimeConfigurations(this).Execute();
                 OpenCOMStream();
                 _loadResources.LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
+                new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
                 _loadResources.LoadServerWorkspace();
                 _loadResources.LoadActivityCache(new AssemblyLoader());
                 _startWebServer.Execute(webServerConfig, new PauseHelper());
@@ -133,9 +132,9 @@ namespace Dev2
 
         void OpenCOMStream()
         {
-            _writer.Write("Opening named pipe client stream for COM IPC... ");
+            Write("Opening named pipe client stream for COM IPC... ");
             _ipcIpcClient = IpcClient.GetIPCExecutor();
-            _writer.WriteLine("done.");
+            WriteLine("done.");
         }
 
         void PerformTimerActions(object state)
@@ -150,20 +149,20 @@ namespace Dev2
                 Dispose();
             }
 
-            _writer.Write($"Exiting with exitcode {result}");
+            Write($"Exiting with exitcode {result}");
         }
 
         void WaitForUserExit()
         {
 
-            _writer.Write("Press <ENTER> to terminate service and/or web server if started");
+            Write("Press <ENTER> to terminate service and/or web server if started");
             if (EnvironmentVariables.IsServerOnline)
             {
                 Console.ReadLine();
             }
             else
             {
-                _writer.Write("Failed to start Server");
+                Write("Failed to start Server");
             }
             Stop(false, 0);
         }
@@ -190,7 +189,22 @@ namespace Dev2
             }
         }
 
-       
+        public void Fail(string message, Exception e)
+        {
+            var ex = e;
+            var errors = new StringBuilder();
+            while (ex != null)
+            {
+                errors.AppendLine(ex.Message);
+                errors.AppendLine(ex.StackTrace);
+                ex = ex.InnerException;
+            }
+
+            WriteLine("Critical Failure: " + message);
+            WriteLine(errors.ToString());
+
+            WriteLine("");
+        }
 
         ~ServerLifecycleManager()
         {
@@ -258,9 +272,9 @@ namespace Dev2
         void LoadTestCatalog()
         {
 
-            _writer.Write("Loading test catalog...  ");
+            Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
-            _writer.WriteLine("done.");
+            WriteLine("done.");
         }
 
         public static IDirectoryHelper DirectoryHelperInstance()
@@ -270,11 +284,11 @@ namespace Dev2
 
         void LoadHostSecurityProvider()
         {
-            _writer.Write("Loading security provider...  ");
+            Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
             if (instance != null)
             {
-                _writer.WriteLine("done.");
+                WriteLine("done.");
             }
 
         }
@@ -298,9 +312,33 @@ namespace Dev2
         }
 #endif
         
+        public void WriteLine(string message)
+        {
+            if (Environment.UserInteractive)
+            {
+                Console.WriteLine(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
+            }
+            else
+            {
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
+            }
+
+        }
         
+        public void Write(string message)
+        {
+            if (Environment.UserInteractive)
+            {
+                Console.Write(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
+            }
+            else
+            {
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
+            }
+        }
 
     }
-
 }
 
