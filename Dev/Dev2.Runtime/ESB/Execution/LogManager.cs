@@ -18,6 +18,7 @@ namespace Dev2.Runtime.ESB.Execution
     public class LogManager : IDisposable
     {
         private static LogManager _instance;
+        private static readonly object _lock = new object();
 
         readonly Dev2StateAuditLogger _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
 
@@ -25,9 +26,15 @@ namespace Dev2.Runtime.ESB.Execution
         {
             get
             {
-                if (_instance == null)
+                if (_instance is null)
                 {
-                    _instance = new LogManager();
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new LogManager();
+                        }
+                    }
                 }
                 return _instance;
             }
