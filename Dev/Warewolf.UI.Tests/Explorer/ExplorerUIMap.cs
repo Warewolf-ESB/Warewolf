@@ -651,7 +651,6 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
         {
-            Select_RemoteContainer_From_Explorer();
             Filter_Explorer(ResourceName);
             try
             {
