@@ -23,7 +23,7 @@ Scenario: Workflow with an assign and remote workflow
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "Remote Container" with mapping as
+	And "TestAssignWithRemoteWF" contains "WorkflowUsedBySpecs" from server "tst-ci-remote.dev2.local" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| inputData        | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).up        | [[values().up]]  |
@@ -76,7 +76,7 @@ Scenario: Error from workflow service is expected to buble out
 	  And "TestAssignWithRemoteOutputsErrors" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Container" with mapping as
+	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "tst-ci-remote.dev2.local" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  | inputData        | [[inputData]] | output              | [[output]]       |
 	  |                  |               | values(*).up        | [[values().&up]] |
@@ -241,7 +241,7 @@ Scenario: Plugin connector backward Compatiblity
 @UsingRemoteResources
 Scenario: Executing WF on a remote server 
          Given I have a workflow "Testing - TestRemoteTools"
-         And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "Remote Container" with mapping as
+         And "Testing - TestRemoteTools" contains "TestRemoteTools" from server "tst-ci-remote.dev2.local" with mapping as
          | Input to Service | From Variable | Output from Service | To Variable      |
          When "Testing - TestRemoteTools" is executed
          Then the workflow execution has "NO" error     
