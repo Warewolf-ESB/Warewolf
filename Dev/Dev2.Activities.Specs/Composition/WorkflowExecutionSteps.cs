@@ -2219,7 +2219,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Delete
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2283,7 +2283,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Post
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2348,7 +2348,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Get
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2415,7 +2415,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Put
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
