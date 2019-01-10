@@ -205,7 +205,6 @@
     <Compile Include="VerifyArgument.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Infrastructure.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
