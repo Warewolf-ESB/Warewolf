@@ -2,6 +2,7 @@
 using Dev2.Activities.Designers.Tests.WebGetTool;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
@@ -353,7 +354,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(vm.PasteResponseVisible);
             vm.PasteResponseAvailable = true;
             Assert.IsTrue(vm.PasteResponseAvailable);
-            var b = new WebServiceDefinition() { Headers = new List<NameValue>() { new NameValue("a", "b") } };
+            var b = new WebServiceDefinition() { Headers = new List<INameValue>() { new NameValue("a", "b") } };
             vm.Model = b;
             Assert.IsNotNull(vm.Model);
         }
