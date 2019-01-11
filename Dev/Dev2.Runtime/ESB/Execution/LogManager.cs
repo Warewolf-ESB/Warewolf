@@ -58,21 +58,28 @@ namespace Dev2.Runtime.ESB.Execution
     public class LogManager : IDisposable
     {
         private static LogManagerImplementation _instance;
+        private static readonly object _lock = new object();
 
 
         private static LogManagerImplementation Instance
         {
             get
             {
-                if (_instance == null)
+                if (_instance is null)
                 {
-                    _instance = new LogManagerImplementation();
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new LogManagerImplementation();
+                        }
+                    }
                 }
                 return _instance;
             }
         }
 
-        
+
         internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
         {
             return Instance.CreateStateNotifierImpl(dsfDataObject);

@@ -80,7 +80,6 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="TrackerEventGroup.cs" />
-    <None Include="app.config" />
     <None Include="Dev2.Instrumentation.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
