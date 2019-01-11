@@ -96,7 +96,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
   testRunner.Given("I Load workflow \"AssignOnlyWithNoOutput\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-  testRunner.And("I Load workflow \"AssignOnlyWithNoOutput\" from \"tst-ci-remote.dev2.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow \"AssignOnlyWithNoOutput\" from \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
   testRunner.When("Merge Window is opened with remote \"AssignOnlyWithNoOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
@@ -129,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
   testRunner.Given("I Load workflow \"MergeHelloWorld\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
-  testRunner.And("I Load workflow \"VersionHelloWorld\" from \"tst-ci-remote.dev2.local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow \"VersionHelloWorld\" from \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
   testRunner.When("Merge Window is opened with remote \"VersionHelloWorld\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
