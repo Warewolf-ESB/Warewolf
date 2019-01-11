@@ -521,14 +521,14 @@ this.EnterANumberOrVariableThatDoesNotExistAsURL("[[y]]", "", "", "Invalid URI: 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Header", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Value [[y]] for TimeoutSeconds Text could not be interpreted as a numeric value.")]
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL_Variant2()
         {
 #line 126
-this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", "", "Value [[y]] for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
+this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", "", "Value [[y]] for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
 #line hidden
         }
         
@@ -537,14 +537,14 @@ this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Header", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Value    for TimeoutSeconds Text could not be interpreted as a numeric value.")]
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL_Variant3()
         {
 #line 126
-this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", "", "Value    for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
+this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", "", "Value    for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
 #line hidden
         }
         
@@ -553,14 +553,14 @@ this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Header", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Value sdf for TimeoutSeconds Text could not be interpreted as a numeric value.")]
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL_Variant4()
         {
 #line 126
-this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", "", "Value sdf for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
+this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", "", "Value sdf for TimeoutSeconds Text could not be interpreted as a numeric value.", ((string[])(null)));
 #line hidden
         }
         
@@ -569,14 +569,14 @@ this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Header", "21245")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Index was outside the bounds of the array")]
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL_Variant5()
         {
 #line 126
-this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", "21245", "Index was outside the bounds of the array", ((string[])(null)));
+this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", "21245", "Index was outside the bounds of the array", ((string[])(null)));
 #line hidden
         }
         
@@ -585,14 +585,14 @@ this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Header", "[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Object reference not set to instance  of object")]
         public virtual void EnterANumberOrVariableThatDoesNotExistAsURL_Variant6()
         {
 #line 126
-this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", "[[var]]", "Object reference not set to instance  of object", ((string[])(null)));
+this.EnterANumberOrVariableThatDoesNotExistAsURL("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", "[[var]]", "Object reference not set to instance  of object", ((string[])(null)));
 #line hidden
         }
         
@@ -692,13 +692,13 @@ this.ScenarioSetup(scenarioInfo);
             "te-obsolete:3142/Public/Wait?WaitSeconds=150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=150")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=150")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote_Obsolete3142PublicWaitWaitSeconds150()
         {
 #line 167
-this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=150", "10", ((string[])(null)));
+this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150", "10", ((string[])(null)));
 #line hidden
         }
         
@@ -707,13 +707,13 @@ this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote-o
             "te-obsolete:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Utility")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:url", "http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:timeoutSeconds", "10")]
         public virtual void EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort_HttpTst_Ci_Remote_Obsolete3142PublicWaitWaitSeconds15()
         {
 #line 167
-this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote-obsolete:3142/Public/Wait?WaitSeconds=15", "10", ((string[])(null)));
+this.EnterAURLToDownloadHtmlWithTimeoutSpecifiedTooShort("http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15", "10", ((string[])(null)));
 #line hidden
         }
         
@@ -750,7 +750,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx",
                         ""});
             table25.AddRow(new string[] {
-                        "[[urls(2).url]] = http://tst-ci-remote-obsolete:3142/secure/Wait?WaitSeconds=15",
+                        "[[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15",
                         ""});
 #line 190
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
