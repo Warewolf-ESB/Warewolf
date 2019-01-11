@@ -249,12 +249,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
    testRunner.When("I Connect To Remote Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 58
-   testRunner.And("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Try Remove \"LocalWorkflowWithRemoteSubworkflowToDelete\" From Remote Server Expl" +
+                    "orer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
    testRunner.And("I validate and delete the existing resource with \"LocalWorkflowWithRemoteSubworkf" +
                     "lowToDelete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
-   testRunner.And("I Refresh Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
    testRunner.And("I Filter the Explorer with \"GenericResource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
