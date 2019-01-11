@@ -175,8 +175,8 @@ this.FeatureBackground();
                         "values(*).low",
                         "[[values().low]]"});
 #line 26
- testRunner.And("\"TestAssignWithRemoteWF\" contains \"WorkflowUsedBySpecs\" from server \"tst-ci-remot" +
-                    "e.dev2.local\" with mapping as", ((string)(null)), table4, "And ");
+ testRunner.And("\"TestAssignWithRemoteWF\" contains \"WorkflowUsedBySpecs\" from server \"Remote Conne" +
+                    "ction Integration\" with mapping as", ((string)(null)), table4, "And ");
 #line 31
    testRunner.When("\"TestAssignWithRemoteWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
@@ -358,8 +358,8 @@ this.FeatureBackground();
                         "values(*).low",
                         "[[values().low]]"});
 #line 79
-   testRunner.And("\"TestAssignWithRemoteOutputsErrors\" contains \"WorkflowUsedBySpecs\" from server \"t" +
-                    "st-ci-remote.dev2.local\" with mapping as", ((string)(null)), table15, "And ");
+   testRunner.And("\"TestAssignWithRemoteOutputsErrors\" contains \"WorkflowUsedBySpecs\" from server \"R" +
+                    "emote Connection Integration\" with mapping as", ((string)(null)), table15, "And ");
 #line 84
    testRunner.When("\"TestAssignWithRemoteOutputsErrors\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 85
@@ -1126,8 +1126,8 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 244
-         testRunner.And("\"Testing - TestRemoteTools\" contains \"TestRemoteTools\" from server \"tst-ci-remote" +
-                    ".dev2.local\" with mapping as", ((string)(null)), table44, "And ");
+         testRunner.And("\"Testing - TestRemoteTools\" contains \"TestRemoteTools\" from server \"Remote Connec" +
+                    "tion Integration\" with mapping as", ((string)(null)), table44, "And ");
 #line 246
          testRunner.When("\"Testing - TestRemoteTools\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 247
