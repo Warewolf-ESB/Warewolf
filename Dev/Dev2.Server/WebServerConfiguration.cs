@@ -24,6 +24,7 @@ namespace Dev2
         Dev2Endpoint[] EndPoints { get; }
         bool IsWebServerEnabled { get; }
         bool IsWebServerSslEnabled { get; }
+        void Execute();
     }
 
     public class WebServerConfiguration : IWebServerConfiguration

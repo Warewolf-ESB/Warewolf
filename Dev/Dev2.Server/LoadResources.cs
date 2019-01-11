@@ -50,13 +50,14 @@ namespace Dev2
         {
             
         }
+
         public LoadResources(string resourceDirectory, IWriter writer, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory, IDirectoryHelper directoryHelper)
         {
             _writer = writer;
             _directory = directory;
             _resourceDirectory = resourceDirectory;
             _resourceCatalogFactory = resourceCatalogFactory;
-            _catalog = _resourceCatalogFactory.New();
+            _catalog = resourceCatalogFactory.New();
             _directoryHelper = directoryHelper;
         }
 

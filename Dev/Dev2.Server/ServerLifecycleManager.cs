@@ -8,9 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -34,6 +32,9 @@ using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 using WarewolfCOMIPC.Client;
+using Dev2.Common.Interfaces.Wrappers;
+using System.Collections.Generic;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2
 {
@@ -45,7 +46,7 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
-    public sealed class ServerLifecycleManager : IServerLifecycleManager, IWriter
+    public sealed class ServerLifecycleManager : IServerLifecycleManager
     {
         public bool InteractiveMode { get; set; } = true;
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
@@ -58,19 +59,39 @@ namespace Dev2
         IStartWebServer _startWebServer;
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
-        IpcClient _ipcIpcClient;
+        IIpcClient _ipcIpcClient;
+        
         private readonly ILoadResources _loadResources;
-
+        private readonly IAssemblyLoader _assemblyLoader;
+        private readonly IWebServerConfiguration _webServerConfiguration;
+        private readonly IWriter _writer;
+        private readonly IPauseHelper _pauseHelper;
 
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
+            : this(serverEnvironmentPreparer, new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)), new AssemblyLoader())
+        {
+
+        }
+
+        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer, IIpcClient ipcClient, IAssemblyLoader assemblyLoader)
+            :this(serverEnvironmentPreparer, new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)), new AssemblyLoader(), new DirectoryWrapper(), new ResourceCatalogFactory(), new DirectoryHelper(), new WebServerConfiguration( new Writer(), new FileWrapper()), new Writer(), new PauseHelper(), new StartWebServer(new Writer(), WebServerStartup.Start))
+        {
+
+        }
+
+        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer, IIpcClient ipcClient, IAssemblyLoader assemblyLoader, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory, IDirectoryHelper directoryHelper, IWebServerConfiguration webServerConfiguration, IWriter writer,IPauseHelper pauseHelper, IStartWebServer startWebServer)
         {
             _serverEnvironmentPreparer = serverEnvironmentPreparer;
+            _ipcIpcClient = ipcClient;
+            _assemblyLoader = assemblyLoader;
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
-            _startWebServer = new StartWebServer(this, WebServerStartup.Start);
-            _loadResources = new LoadResources("Resources", this);
-
+            _startWebServer = startWebServer;
+            _loadResources = new LoadResources("Resources", writer, directory, resourceCatalogFactory, directoryHelper);
+            _webServerConfiguration = webServerConfiguration;
+            _writer = writer;
+            _pauseHelper = pauseHelper;
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
@@ -99,16 +120,16 @@ namespace Dev2
                 LoadPerformanceCounters();
                 _loadResources.CheckExampleResources();
                 _loadResources.MigrateOldTests();
-                var webServerConfig = new WebServerConfiguration(this, new FileWrapper());
+                var webServerConfig = _webServerConfiguration;
                 webServerConfig.Execute();
-                new LoadRuntimeConfigurations(this).Execute();
-                OpenCOMStream();
+                new LoadRuntimeConfigurations(_writer).Execute();
+                OpenCOMStream(null);
                 _loadResources.LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                new LogFlusherWorker(new LogManagerImplementation(), this).Execute();
+                new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
                 _loadResources.LoadServerWorkspace();
-                _loadResources.LoadActivityCache(new AssemblyLoader());
-                _startWebServer.Execute(webServerConfig, new PauseHelper());
+                _loadResources.LoadActivityCache(_assemblyLoader);
+                _startWebServer.Execute(webServerConfig, _pauseHelper);
 #if DEBUG
                 SetAsStarted();
 #endif
@@ -130,11 +151,11 @@ namespace Dev2
             }
         }
 
-        void OpenCOMStream()
+        void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
-            Write("Opening named pipe client stream for COM IPC... ");
-            _ipcIpcClient = IpcClient.GetIPCExecutor();
-            WriteLine("done.");
+            _writer.Write("Opening named pipe client stream for COM IPC... ");
+            _ipcIpcClient = _ipcIpcClient.GetIPCExecutor(clientStreamWrapper);
+            _writer.WriteLine("done.");
         }
 
         void PerformTimerActions(object state)
@@ -149,20 +170,20 @@ namespace Dev2
                 Dispose();
             }
 
-            Write($"Exiting with exitcode {result}");
+            _writer.Write($"Exiting with exitcode {result}");
         }
 
         void WaitForUserExit()
         {
 
-            Write("Press <ENTER> to terminate service and/or web server if started");
+            _writer.Write("Press <ENTER> to terminate service and/or web server if started");
             if (EnvironmentVariables.IsServerOnline)
             {
-                Console.ReadLine();
+                _pauseHelper.Pause();
             }
             else
             {
-                Write("Failed to start Server");
+                _writer.Write("Failed to start Server");
             }
             Stop(false, 0);
         }
@@ -189,22 +210,7 @@ namespace Dev2
             }
         }
 
-        public void Fail(string message, Exception e)
-        {
-            var ex = e;
-            var errors = new StringBuilder();
-            while (ex != null)
-            {
-                errors.AppendLine(ex.Message);
-                errors.AppendLine(ex.StackTrace);
-                ex = ex.InnerException;
-            }
-
-            WriteLine("Critical Failure: " + message);
-            WriteLine(errors.ToString());
-
-            WriteLine("");
-        }
+        
 
         ~ServerLifecycleManager()
         {
@@ -272,9 +278,9 @@ namespace Dev2
         void LoadTestCatalog()
         {
 
-            Write("Loading test catalog...  ");
+            _writer.Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
-            WriteLine("done.");
+            _writer.WriteLine("done.");
         }
 
         public static IDirectoryHelper DirectoryHelperInstance()
@@ -284,11 +290,11 @@ namespace Dev2
 
         void LoadHostSecurityProvider()
         {
-            Write("Loading security provider...  ");
+            _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
             if (instance != null)
             {
-                WriteLine("done.");
+                _writer.WriteLine("done.");
             }
 
         }
@@ -312,6 +318,12 @@ namespace Dev2
         }
 #endif
         
+       
+
+    }
+
+    class Writer : IWriter
+    {
         public void WriteLine(string message)
         {
             if (Environment.UserInteractive)
@@ -325,7 +337,7 @@ namespace Dev2
             }
 
         }
-        
+
         public void Write(string message)
         {
             if (Environment.UserInteractive)
@@ -339,6 +351,22 @@ namespace Dev2
             }
         }
 
+        public void Fail(string message, Exception e)
+        {
+            var ex = e;
+            var errors = new StringBuilder();
+            while (ex != null)
+            {
+                errors.AppendLine(ex.Message);
+                errors.AppendLine(ex.StackTrace);
+                ex = ex.InnerException;
+            }
+
+            WriteLine("Critical Failure: " + message);
+            WriteLine(errors.ToString());
+
+            WriteLine("");
+        }
     }
 }
 
