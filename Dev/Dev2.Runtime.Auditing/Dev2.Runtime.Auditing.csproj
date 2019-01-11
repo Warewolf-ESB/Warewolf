@@ -94,7 +94,6 @@
     <Compile Include="State\StateNotifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Dev2.Runtime.Auditing.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -109,10 +108,6 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common.Tests\Dev2.Common.Tests.csproj">
-      <Project>{b0564c7a-9da8-4751-b5d4-d446138e0987}</Project>
-      <Name>Dev2.Common.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
