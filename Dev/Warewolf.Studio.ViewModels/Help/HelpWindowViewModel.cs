@@ -27,7 +27,7 @@ namespace Warewolf.Studio.ViewModels.Help
 
         public string HelpName => CurrentHelpText.Name;
 
-        public DrawingImage HelpImage => CurrentHelpText.Icon;
+        public DrawingImage HelpImage => CurrentHelpText.Icon as DrawingImage;
 
         void OnHelpTextReceived(object sender, IHelpDescriptor desc)
         {
