@@ -15,7 +15,7 @@ namespace Dev2.Common.Interfaces.Help
         /// <summary>
         /// Icon
         /// </summary>
-        DrawingImage Icon { get; }
+        object Icon { get; }
     }
 
     public delegate  void HelpTextReceived(object sender,IHelpDescriptor desc);
