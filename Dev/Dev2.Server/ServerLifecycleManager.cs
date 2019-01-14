@@ -11,7 +11,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
@@ -22,7 +21,6 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
-using Dev2.Diagnostics.Logging;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
@@ -30,7 +28,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
-using Dev2.Workspaces;
 using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
@@ -46,6 +43,39 @@ namespace Dev2
         void Stop(bool didBreak, int result);
     }
 
+    public class StartupConfiguration
+    {
+        public IServerEnvironmentPreparer ServerEnvironmentPreparer { get; set; }
+        public IIpcClient IpcClient { get; set; }
+        public IAssemblyLoader AssemblyLoader { get; set; }
+        public IDirectory Directory { get; set; }
+        public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
+        public IDirectoryHelper DirectoryHelper { get; set; }
+        public IWebServerConfiguration WebServerConfiguration { get; set; }
+        public IWriter Writer { get; set; }
+        public IPauseHelper PauseHelper { get; set; }
+        public IStartWebServer StartWebServer { get; set; }
+
+        public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
+        {
+            var writer = new Writer();
+
+            return new StartupConfiguration
+            {
+                ServerEnvironmentPreparer = serverEnvironmentPreparer,
+                IpcClient = new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)),
+                AssemblyLoader = new AssemblyLoader(),
+                Directory = new DirectoryWrapper(),
+                ResourceCatalogFactory = new ResourceCatalogFactory(),
+                DirectoryHelper = new DirectoryHelper(),
+                WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
+                Writer = writer,
+                PauseHelper = new PauseHelper(),
+                StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
+            };
+        }
+    }
+
     public sealed class ServerLifecycleManager : IServerLifecycleManager
     {
         public bool InteractiveMode { get; set; } = true;
@@ -59,43 +89,44 @@ namespace Dev2
         IStartWebServer _startWebServer;
         readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
         readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
-        IIpcClient _ipcIpcClient;
+        IIpcClient _ipcClient;
         
         private readonly ILoadResources _loadResources;
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IWebServerConfiguration _webServerConfiguration;
         private readonly IWriter _writer;
         private readonly IPauseHelper _pauseHelper;
-
+        
         public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
-            : this(serverEnvironmentPreparer, new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)), new AssemblyLoader())
+            :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
 
         }
 
-        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer, IIpcClient ipcClient, IAssemblyLoader assemblyLoader)
-            :this(serverEnvironmentPreparer, new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)), new AssemblyLoader(), new DirectoryWrapper(), new ResourceCatalogFactory(), new DirectoryHelper(), new WebServerConfiguration( new Writer(), new FileWrapper()), new Writer(), new PauseHelper(), new StartWebServer(new Writer(), WebServerStartup.Start))
+        public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
-
-        }
-
-        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer, IIpcClient ipcClient, IAssemblyLoader assemblyLoader, IDirectory directory, IResourceCatalogFactory resourceCatalogFactory, IDirectoryHelper directoryHelper, IWebServerConfiguration webServerConfiguration, IWriter writer,IPauseHelper pauseHelper, IStartWebServer startWebServer)
-        {
-            _serverEnvironmentPreparer = serverEnvironmentPreparer;
-            _ipcIpcClient = ipcClient;
-            _assemblyLoader = assemblyLoader;
+            _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
+            _ipcClient = startupConfiguration.IpcClient;
+            _assemblyLoader = startupConfiguration.AssemblyLoader;
             _pulseLogger = new PulseLogger(60000).Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
             _serverEnvironmentPreparer.PrepareEnvironment();
-            _startWebServer = startWebServer;
-            _loadResources = new LoadResources("Resources", writer, directory, resourceCatalogFactory, directoryHelper);
-            _webServerConfiguration = webServerConfiguration;
-            _writer = writer;
-            _pauseHelper = pauseHelper;
+            _startWebServer = startupConfiguration.StartWebServer;
+            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory, startupConfiguration.DirectoryHelper);
+            _webServerConfiguration = startupConfiguration.WebServerConfiguration;
+            _writer = startupConfiguration.Writer;
+            _pauseHelper = startupConfiguration.PauseHelper;
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
         {
+            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
+            {
+                _writer.Write("Opening named pipe client stream for COM IPC... ");
+                _ipcClient = _ipcClient.GetIPCExecutor(clientStreamWrapper);
+                _writer.WriteLine("done.");
+            }
+
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
             try
@@ -125,7 +156,7 @@ namespace Dev2
                 new LoadRuntimeConfigurations(_writer).Execute();
                 OpenCOMStream(null);
                 _loadResources.LoadResourceCatalog();
-                _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                _timer = new Timer((state)=> GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
                 _loadResources.LoadServerWorkspace();
                 _loadResources.LoadActivityCache(_assemblyLoader);
@@ -150,19 +181,7 @@ namespace Dev2
                 Stop(true, 0);
             }
         }
-
-        void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
-        {
-            _writer.Write("Opening named pipe client stream for COM IPC... ");
-            _ipcIpcClient = _ipcIpcClient.GetIPCExecutor(clientStreamWrapper);
-            _writer.WriteLine("done.");
-        }
-
-        void PerformTimerActions(object state)
-        {
-            GetComputerNames.GetComputerNamesList();
-        }
-
+        
         public void Stop(bool didBreak, int result)
         {
             if (!didBreak)
@@ -197,10 +216,10 @@ namespace Dev2
                     _startWebServer.Dispose();
                     _startWebServer = null;
                 }
-                if (_ipcIpcClient != null)
+                if (_ipcClient != null)
                 {
-                    _ipcIpcClient.Dispose();
-                    _ipcIpcClient = null;
+                    _ipcClient.Dispose();
+                    _ipcClient = null;
                 }
                 DebugDispatcher.Instance.Shutdown();
             }
@@ -209,9 +228,7 @@ namespace Dev2
                 Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
         }
-
         
-
         ~ServerLifecycleManager()
         {
             Dispose(false);
@@ -241,6 +258,15 @@ namespace Dev2
             {
                 _timer.Dispose();
                 _timer = null;
+            }
+
+            if (_pulseLogger != null)
+            {
+                _pulseLogger.Dispose();
+            }
+            if (_pulseTracker != null)
+            {
+                _pulseTracker.Dispose();
             }
 
             if (_serverEnvironmentPreparer != null)
@@ -282,11 +308,7 @@ namespace Dev2
             TestCatalog.Instance.Load();
             _writer.WriteLine("done.");
         }
-
-        public static IDirectoryHelper DirectoryHelperInstance()
-        {
-            return new DirectoryHelper();
-        }
+        
 
         void LoadHostSecurityProvider()
         {
@@ -317,9 +339,6 @@ namespace Dev2
             }
         }
 #endif
-        
-       
-
     }
 
     class Writer : IWriter

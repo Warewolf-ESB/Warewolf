@@ -9,9 +9,11 @@
 */
 
 
+using System;
+
 namespace Dev2.Common.Interfaces
 {
-    public interface IStartTimer
+    public interface IStartTimer : IDisposable
     {
         double Interval { get; }
         IStartTimer Start();
