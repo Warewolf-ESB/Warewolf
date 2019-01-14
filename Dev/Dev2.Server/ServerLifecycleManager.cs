@@ -71,7 +71,7 @@ namespace Dev2
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 PauseHelper = new PauseHelper(),
-                StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
+                StartWebServer = new StartWebServer(writer, WebServerStartup.Start)
             };
         }
     }
@@ -82,8 +82,6 @@ namespace Dev2
         IServerEnvironmentPreparer _serverEnvironmentPreparer;
 
         bool _isDisposed;
-
-        public IWebServerConfiguration WebServerConfiguration { get; private set; }
 
         Timer _timer;
         IStartWebServer _startWebServer;
