@@ -26,7 +26,7 @@ namespace Warewolf.Core
         /// <summary>
         /// Icon
         /// </summary>
-        public DrawingImage Icon { get; private set; }
+        public object Icon { get; private set; }
 
         #endregion
     }
