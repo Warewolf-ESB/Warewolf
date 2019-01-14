@@ -320,7 +320,6 @@
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
-    <Compile Include="Dev2DialogueTest.cs" />
     <Compile Include="Diagnostics\AppExceptionHandlerTests.cs" />
     <Compile Include="Diagnostics\ExceptionFactoryTests.cs" />
     <Compile Include="Diagnostics\FileHelperTests.cs" />

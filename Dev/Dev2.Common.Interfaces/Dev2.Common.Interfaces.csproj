@@ -142,7 +142,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -456,7 +455,6 @@
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
     <Compile Include="Studio\Core\Enums.cs" />
-    <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="TestSaveResult.cs" />
@@ -531,7 +529,6 @@
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Common.Interfaces.ruleset" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
