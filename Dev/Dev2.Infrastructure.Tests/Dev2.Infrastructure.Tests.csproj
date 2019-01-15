@@ -104,6 +104,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
