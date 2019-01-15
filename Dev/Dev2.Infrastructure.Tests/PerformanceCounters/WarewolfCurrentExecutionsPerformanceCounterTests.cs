@@ -19,6 +19,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
             var performanceCounterFactory = mockPerformanceCounterFactory.Object;
             IPerformanceCounter counter = new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory);
 
+            Assert.IsTrue(counter.IsActive);
             Assert.AreEqual(WarewolfPerfCounterType.ConcurrentRequests, counter.PerfCounterType);
             Assert.AreEqual(GlobalConstants.Warewolf, counter.Category);
             Assert.AreEqual(CounterName, counter.Name);
