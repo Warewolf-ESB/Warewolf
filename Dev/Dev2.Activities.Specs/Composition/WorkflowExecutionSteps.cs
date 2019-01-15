@@ -349,13 +349,16 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Assert.IsNotNull(e);
                 }
+
+                var performanceCounterFactory = new PerformanceCounterFactory();
+
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                new WarewolfNumberOfAuthErrors(),
-                                                                new WarewolfServicesNotFoundCounter()
+                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfErrors(performanceCounterFactory),
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfAuthErrors(performanceCounterFactory),
+                                                                new WarewolfServicesNotFoundCounter(performanceCounterFactory)
                                                             }, new List<IResourcePerformanceCounter>());
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
             }

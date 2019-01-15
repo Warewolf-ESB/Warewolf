@@ -8,15 +8,12 @@ using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
-
-
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
     public class TestPerfCounters
     {
-        public static Guid guid = Guid.NewGuid();
+        public static Guid CounterGuid = Guid.NewGuid();
         [TestInitialize]
         public void Init()
         {
@@ -32,28 +29,28 @@ namespace Dev2.Diagnostics.Test
                 {
 
                 }
-
+                var performanceCounterFactory = new Mock<IRealPerformanceCounterFactory>().Object;
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),    
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                new WarewolfNumberOfAuthErrors(),
-                                                                new WarewolfServicesNotFoundCounter(),
+                                                                new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfErrors(performanceCounterFactory),    
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfAuthErrors(performanceCounterFactory),
+                                                                new WarewolfServicesNotFoundCounter(performanceCounterFactory),
 
                                                             }, new List<IResourcePerformanceCounter>{
-                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, ""),
-                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, ""),
+                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, "", performanceCounterFactory),
+                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, "", performanceCounterFactory),
+                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, "", performanceCounterFactory),
+                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, "", performanceCounterFactory),
 
                                                     });
                 var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
-                manager.CreateCounter( guid,WarewolfPerfCounterType.ExecutionErrors, "bob");
-                manager.CreateCounter(guid, WarewolfPerfCounterType.AverageExecutionTime, "bob");
-                manager.CreateCounter(guid, WarewolfPerfCounterType.RequestsPerSecond, "bob");
-                manager.CreateCounter(guid, WarewolfPerfCounterType.ConcurrentRequests, "bob");
+                manager.CreateCounter( CounterGuid,WarewolfPerfCounterType.ExecutionErrors, "bob");
+                manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.AverageExecutionTime, "bob");
+                manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.RequestsPerSecond, "bob");
+                manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.ConcurrentRequests, "bob");
                                                                 
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(manager);
             }
@@ -95,7 +92,7 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         public void ConcurrentCounterTestByResource()
         {
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(CounterGuid,WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
             Assert.AreEqual(counter.Name, "Concurrent requests currently executing");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             var po = new PrivateObject(counter);
@@ -111,7 +108,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 3);
             if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
-                Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
+                Assert.AreEqual(CounterGuid, resourcePerformanceCounter.ResourceId);
             }
             else
             {
@@ -147,7 +144,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("WarewolfErrorCounter_TestOps")]
         public void WarewolfErrorCounterResource_TestOps_Valid_ExpectValidValues()
         {
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ExecutionErrors).FromSafe(); ;
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(CounterGuid,WarewolfPerfCounterType.ExecutionErrors).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Total Errors");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             var po = new PrivateObject(counter);
@@ -163,7 +160,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 3);
             if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
-                Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
+                Assert.AreEqual(CounterGuid, resourcePerformanceCounter.ResourceId);
             }
             else
             {
@@ -221,7 +218,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("WarewolfRequestsPerSecondCounter_TestOps")]
         public void WarewolfRequestPerSecondCounterResource_TestOps_Valid_ExpectValidValues()
         {
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid, WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(CounterGuid, WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Request Per Second");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             var po = new PrivateObject(counter);
@@ -237,7 +234,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerCounter.RawValue, 3);
             if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
-                Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
+                Assert.AreEqual(CounterGuid, resourcePerformanceCounter.ResourceId);
             }
             else
             {
@@ -271,7 +268,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("WarewolfAverageExectionTimeCounter_TestOps")]
         public void WarewolfServicesNotFound_NotCauseErrorForResource_TestOps_Valid_ExpectValidValues()
         {
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ServicesNotFound).FromSafe(); ;
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(CounterGuid,WarewolfPerfCounterType.ServicesNotFound).FromSafe(); ;
             Assert.IsTrue(counter is EmptyCounter);
         }
 
@@ -336,7 +333,7 @@ namespace Dev2.Diagnostics.Test
         public void WarewolfAverageExectionTimeCounterResource_TestOps_Valid_ExpectValidValues()
         {
             //------------Setup for test--------------------------
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
+            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(CounterGuid,WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Average workflow execution time");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
             var po = new PrivateObject(counter);
@@ -358,7 +355,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(innerBase.RawValue, 1);
             if (counter is IResourcePerformanceCounter resourcePerformanceCounter)
             {
-                Assert.AreEqual(guid, resourcePerformanceCounter.ResourceId);
+                Assert.AreEqual(CounterGuid, resourcePerformanceCounter.ResourceId);
             }
             else
             {

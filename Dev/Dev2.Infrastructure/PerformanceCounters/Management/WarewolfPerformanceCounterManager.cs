@@ -7,7 +7,7 @@ using Dev2.PerformanceCounters.Counters;
 
 namespace Dev2.PerformanceCounters.Management
 {
-    public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory,IPerformanceCounterRepository
+    public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater, Common.Interfaces.Monitoring.IPerformanceCounterFactory, IPerformanceCounterRepository
     {
         IList<IPerformanceCounter> _counters;
         readonly IPerformanceCounterPersistence _perf;
@@ -65,19 +65,21 @@ namespace Dev2.PerformanceCounters.Management
             if (GetCounter(resourceId, type) == EmptyCounter)
             {
                 IResourcePerformanceCounter counter = new EmptyCounter();
+                var counterFactory = new PerformanceCounterFactory();
+
                 switch (type)
                 {
                     case WarewolfPerfCounterType.ExecutionErrors:
-                        counter = new WarewolfNumberOfErrorsByResource(resourceId, name);
+                        counter = new WarewolfNumberOfErrorsByResource(resourceId, name, counterFactory);
                         break;
                     case WarewolfPerfCounterType.AverageExecutionTime:
-                        counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourceId, name);
+                        counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourceId, name, counterFactory);
                         break;
                     case WarewolfPerfCounterType.ConcurrentRequests:
-                        counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourceId, name);
+                        counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourceId, name, counterFactory);
                         break;
                     case WarewolfPerfCounterType.RequestsPerSecond:
-                        counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name);
+                        counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourceId, name, counterFactory);
                         break;
                     case WarewolfPerfCounterType.ServicesNotFound:
                     case WarewolfPerfCounterType.NotAuthorisedErrors:
