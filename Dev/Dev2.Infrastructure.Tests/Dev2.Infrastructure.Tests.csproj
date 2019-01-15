@@ -103,6 +103,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
