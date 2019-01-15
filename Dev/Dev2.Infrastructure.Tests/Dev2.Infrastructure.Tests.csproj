@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfServicesNotFoundCounterTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfAuthErrorsTests.cs" />
