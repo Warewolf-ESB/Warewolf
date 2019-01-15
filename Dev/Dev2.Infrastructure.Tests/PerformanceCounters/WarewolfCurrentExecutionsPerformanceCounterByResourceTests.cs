@@ -23,6 +23,7 @@ namespace Dev2.Infrastructure.Tests.PerformanceCounters
             var originalCounter = new WarewolfCurrentExecutionsPerformanceCounterByResource(_resourceGuid, _categoryInstanceName, performanceCounterFactory);
             IPerformanceCounter counter = originalCounter;
 
+            Assert.IsTrue(counter.IsActive);
             Assert.AreEqual(WarewolfPerfCounterType.ConcurrentRequests, counter.PerfCounterType);
             Assert.AreEqual(GlobalConstants.WarewolfServices, counter.Category);
             Assert.AreEqual(CounterName, counter.Name);
