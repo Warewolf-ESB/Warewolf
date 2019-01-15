@@ -149,7 +149,13 @@ namespace Warewolf.UI.Load.Specs
         [Then("I wait for Studio to release its Mutex")]
         public void WaitForStudioMutex()
         {
-            Playback.Wait(60000);
+            Process[] studioProcess;
+            do
+            {
+                Playback.Wait(100);
+                studioProcess = Process.GetProcessesByName("Warewolf Studio");
+            }
+            while (studioProcess != null && studioProcess.Length > 0); 
         }
 
         [When("I start the Studio")]
