@@ -103,6 +103,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfAuthErrorsTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterByResourceTests.cs" />
