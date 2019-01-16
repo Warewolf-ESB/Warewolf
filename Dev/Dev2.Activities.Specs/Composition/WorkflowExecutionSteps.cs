@@ -360,7 +360,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                 new WarewolfNumberOfAuthErrors(performanceCounterFactory),
                                                                 new WarewolfServicesNotFoundCounter(performanceCounterFactory)
                                                             }, new List<IResourcePerformanceCounter>());
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory));
             }
             catch (Exception ex)
             {
