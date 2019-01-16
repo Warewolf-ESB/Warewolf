@@ -17,7 +17,7 @@ using Moq;
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
     [TestClass]
-	[TestCategory("Studio Resource Core")]
+	[TestCategory("Studio Resources Core")]
     public class ContexttualResourceModelEqualityComparerTests
     {
         [TestMethod]
