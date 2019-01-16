@@ -14,9 +14,10 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Studio.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Core.Tests.ConverterTests
+namespace Dev2.Core.Tests.AppResources.Converters
 {
     [TestClass]
+	[TestCategory("Studio Resource Core")]
     public class NavigationViewModelPermissionVisibilityConverterTests
     {
 

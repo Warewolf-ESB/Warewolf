@@ -18,9 +18,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 
-namespace Dev2.Core.Tests.ConverterTests
+namespace Dev2.Core.Tests.AppResources.Converters
 {
     [TestClass]
+	[TestCategory("Studio Resource Core")]
     public class DeployViewConnectedToVisiblityConverterTest
     {
         [TestMethod]

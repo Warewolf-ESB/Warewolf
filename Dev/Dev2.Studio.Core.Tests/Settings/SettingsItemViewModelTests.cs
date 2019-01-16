@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
+    [TestCategory("Studio Settings Core")]
     public class SettingsItemViewModelTests
     {
         [TestMethod]

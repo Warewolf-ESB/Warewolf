@@ -13,9 +13,10 @@ using System.Windows;
 using Dev2.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Core.Tests.ConverterTests
+namespace Dev2.Core.Tests.AppResources.Converters
 {
     [TestClass]
+	[TestCategory("Studio Resource Core")]
     
     public class PaddingThicknessConverterTests
     {
