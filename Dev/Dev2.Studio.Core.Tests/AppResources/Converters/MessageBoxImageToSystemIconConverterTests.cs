@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.AppResources.Converters
 {
     [TestClass]
+	[TestCategory("Studio Resource Core")]
     public class MessageBoxImageToSystemIconConverterTests
     {
         #region Tests

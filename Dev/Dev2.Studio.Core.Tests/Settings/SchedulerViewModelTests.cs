@@ -49,9 +49,9 @@ using Dev2.Services.Events;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
+    [TestCategory("Studio Settings Core")]
     public class SchedulerViewModelTests
     {
-
         [TestInitialize]
         public void SetupForTest()
         {

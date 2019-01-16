@@ -56,8 +56,8 @@ using Dev2.Instrumentation;
 
 namespace Dev2.Core.Tests.Workflows
 {
-
     [TestClass]
+    [TestCategory("Studio Workflows Core")]
     public partial class WorkflowDesignerUnitTest
     {
         static bool _isDesignerInited;

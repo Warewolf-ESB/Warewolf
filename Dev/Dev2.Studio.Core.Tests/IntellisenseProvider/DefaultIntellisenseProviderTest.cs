@@ -32,6 +32,7 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
+    [TestCategory("Intellisense Provider")]
     public class DefaultIntellisenseProviderTest
     {
 

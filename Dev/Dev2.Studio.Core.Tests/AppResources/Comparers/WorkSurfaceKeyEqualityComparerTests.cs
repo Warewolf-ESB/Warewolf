@@ -24,6 +24,7 @@ using Dev2.Studio.AppResources.Comparers;
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
     [TestClass]
+	[TestCategory("Studio Resource Core")]
     public class WorkSurfaceKeyEqualityComparerTests
     {
         public TestContext TestContext { get; set; }

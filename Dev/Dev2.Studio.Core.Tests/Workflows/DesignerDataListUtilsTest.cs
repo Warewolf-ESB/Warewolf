@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
+    [TestCategory("Studio Workflows Core")]
     public class DesignerDataListUtilsTest
     {
 

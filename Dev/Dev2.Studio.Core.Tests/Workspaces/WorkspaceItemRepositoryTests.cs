@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 namespace Dev2.Core.Tests.Workspaces
 {
     [TestClass]
+    [TestCategory("Studio Workspaces Core")]
     public class WorkspaceItemRepositoryTests
     {
         #region Static Class Init
@@ -444,7 +445,5 @@ namespace Dev2.Core.Tests.Workspaces
         }
 
         #endregion
-
-
     }
 }

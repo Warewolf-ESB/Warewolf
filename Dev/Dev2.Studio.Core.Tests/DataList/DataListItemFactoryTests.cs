@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.DataList
 {
     [TestClass]
+	[TestCategory("Studio Datalist Core")]
     public class DataListItemFactoryTests
     {
         [TestMethod]

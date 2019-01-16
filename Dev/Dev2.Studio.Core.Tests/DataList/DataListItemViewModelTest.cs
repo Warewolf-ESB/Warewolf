@@ -14,17 +14,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {
-
-    
-
-    /// <summary>
-    ///This is a test class for DataListItemViewModelTest and is intended
-    ///to contain all DataListItemViewModelTest Unit Tests
-    ///</summary>
     [TestClass]
+    [TestCategory("Studio Datalist Core")]
     public class DataListItemViewModelTest
     {
-
         #region Locals
 
         IDataListItemModel _dataListItemModel;
@@ -32,7 +25,6 @@ namespace Dev2.Core.Tests
 
 
         #endregion
-
 
         #region Additional test attributes
 

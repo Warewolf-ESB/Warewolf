@@ -17,16 +17,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.DataList
 {
-    /// <summary>
-    /// Summary description for ActivityDataMappingBuilderTest
-    /// </summary>
     [TestClass]
+	[TestCategory("Studio Datalist Core")]
     public class ActivityDataMappingBuilderTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         #region Test
