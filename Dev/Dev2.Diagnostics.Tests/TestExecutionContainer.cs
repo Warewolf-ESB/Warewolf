@@ -19,38 +19,36 @@ namespace Dev2.Diagnostics.Test
     [TestClass]
     public class TestExecutionContainer
     {
+        Mock<IRealPerformanceCounterFactory> _mockPerformanceCounterFactory;
+        IRealPerformanceCounterFactory _performanceCounterFactory;
+        IWarewolfPerformanceCounterLocater _performanceCounterLocater;
+
         [TestInitialize]
         public void Init()
         {
             try
             {
-                try
-                {
-                    PerformanceCounterCategory.Delete("Warewolf");
-                }
-                
-                catch
-                {
-                    //Do Nothing
-                }
-                var performanceCounterFactory = new Mock<IRealPerformanceCounterFactory>().Object;
-                var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {
-                                                                new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfNumberOfErrors(performanceCounterFactory),
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
-                                                                new WarewolfNumberOfAuthErrors(performanceCounterFactory),
-                                                                new WarewolfServicesNotFoundCounter(performanceCounterFactory),
-                                                            }, new List<IResourcePerformanceCounter>());
+                PerformanceCounterCategory.Delete("Warewolf");
+            }
 
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(),  register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory));
-            }
-            catch (Exception err)
+            catch
             {
-                // ignored
-                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+                //Do Nothing
             }
+            _mockPerformanceCounterFactory = new Mock<IRealPerformanceCounterFactory>();
+            _performanceCounterFactory = _mockPerformanceCounterFactory.Object;
+            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                                                        {
+                                                            new WarewolfCurrentExecutionsPerformanceCounter(_performanceCounterFactory),
+                                                            new WarewolfNumberOfErrors(_performanceCounterFactory),
+                                                            new WarewolfRequestsPerSecondPerformanceCounter(_performanceCounterFactory),
+                                                            new WarewolfAverageExecutionTimePerformanceCounter(_performanceCounterFactory),
+                                                            new WarewolfNumberOfAuthErrors(_performanceCounterFactory),
+                                                            new WarewolfServicesNotFoundCounter(_performanceCounterFactory),
+                                                        }, new List<IResourcePerformanceCounter>());
+
+            _performanceCounterLocater = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, _performanceCounterFactory);
+            CustomContainer.Register<IWarewolfPerformanceCounterLocater>(_performanceCounterLocater);
         }
 
         [TestMethod]
@@ -84,6 +82,15 @@ namespace Dev2.Diagnostics.Test
         public void PerfmonContainer_Ctor_WrappedMethods()
         {
             var cont = new Cont();
+            var mockPerformanceCounter = new Mock<IBobsPerformanceCounter>();
+            var mockPerformanceCounter2 = new Mock<IBobsPerformanceCounter>();
+            var mockPerformanceCounter3 = new Mock<IBobsPerformanceCounter>();
+            var mockPerformanceCounter4 = new Mock<IBobsPerformanceCounter>();
+            _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, It.IsAny<string>(), GlobalConstants.GlobalCounterName)).Throws(new Exception("no other counters expected to be created"));
+            _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Request Per Second", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter.Object);
+            _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Concurrent requests currently executing", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter2.Object);
+            _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "Average workflow execution time", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter3.Object);
+            _mockPerformanceCounterFactory.Setup(o => o.New(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName)).Returns(mockPerformanceCounter4.Object);
 
             //------------Setup for test--------------------------
             var perfmonContainer = new PerfmonExecutionContainer(cont);
@@ -94,21 +101,18 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(1, cont.CallCount);
             Assert.AreEqual(perfmonContainer.InstanceInputDefinition, "bob");
             Assert.AreEqual(perfmonContainer.InstanceOutputDefinition, "dave");
-            var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
+            var counter = _performanceCounterLocater.GetCounter(WarewolfPerfCounterType.RequestsPerSecond).FromSafe();
 
-            var po = new PrivateObject(counter);
-            po.Invoke("Setup", new object[0]);
-            var innerCounter = po.GetField("_counter") as PerformanceCounter;
-            Assert.IsNotNull(innerCounter);
-            Assert.AreNotEqual(0, innerCounter.RawValue);
+            _mockPerformanceCounterFactory.Verify(o => o.New(GlobalConstants.Warewolf, "Request Per Second", GlobalConstants.GlobalCounterName), Times.Once);
+            _mockPerformanceCounterFactory.Verify(o => o.New(GlobalConstants.Warewolf, "Concurrent requests currently executing", GlobalConstants.GlobalCounterName), Times.Once);
+            _mockPerformanceCounterFactory.Verify(o => o.New(GlobalConstants.Warewolf, "Average workflow execution time", GlobalConstants.GlobalCounterName), Times.Once);
+            _mockPerformanceCounterFactory.Verify(o => o.New(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName), Times.Once);
+            mockPerformanceCounter.Verify(o => o.Increment(), Times.Once);
+            mockPerformanceCounter2.Verify(o => o.Increment(), Times.Once);
+            mockPerformanceCounter3.Verify(o => o.IncrementBy(It.IsAny<long>()), Times.Once);
+            mockPerformanceCounter4.Verify(o => o.Increment(), Times.Once);
 
-            counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.AverageExecutionTime).FromSafe();
-
-            po = new PrivateObject(counter);
-            po.Invoke("Setup", new object[0]);
-            innerCounter = po.GetField("_counter") as PerformanceCounter;
-            Assert.IsNotNull(innerCounter);
-            Assert.AreNotEqual(0, innerCounter.RawValue);
+            counter = _performanceCounterLocater.GetCounter(WarewolfPerfCounterType.AverageExecutionTime).FromSafe();
         }
     }
 
