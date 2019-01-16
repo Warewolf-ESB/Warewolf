@@ -17,9 +17,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Responses
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class StatusResponseWriterTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StatusResponseWriter_Write")]
         public void StatusResponseWriter_Write_WebServerContext_WritesTheStatus()

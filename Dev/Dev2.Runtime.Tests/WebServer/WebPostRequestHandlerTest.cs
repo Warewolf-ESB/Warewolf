@@ -26,6 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebPostRequestHandlerTest
     /// </summary>
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class WebPostRequestHandlerTest
     {
         [ClassInitialize]
@@ -43,7 +44,7 @@ namespace Dev2.Tests.Runtime.WebServer
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebPostRequestHandler_ProcessRequest")]
         public void WebPostRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()

@@ -21,12 +21,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class WebSourcesTests
     {
         
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesTestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new WebSources();
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesTestWithInvalidAddressExpectedInvalidValidationResult()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous }.ToString();
@@ -59,7 +60,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesAssertUserAgentHeaderSet()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
@@ -71,7 +72,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(agent);
             Assert.AreEqual(agent, GlobalConstants.UserAgentString);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesAssertUserAgentHeaderSet_SetsOtherHeaders()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
 
         public void WebSourcesAssertUserAgentHeaderSet_SetsUserNameAndPassword()
 
@@ -106,7 +107,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Get
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesGetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
@@ -116,7 +117,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourcesGetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
@@ -126,7 +127,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
         {
@@ -143,7 +144,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
         {

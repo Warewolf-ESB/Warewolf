@@ -19,6 +19,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class DatabaseServiceContainerTests
     {
         #region ClassInitialize
@@ -32,8 +33,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [TestCategory("MSSql")]
+        [TestMethod]
         public void DatabaseServiceContainer_UnitTest_ExecuteWhereHasDatabaseServiceExecution_Guid()
         {
             //------------Setup for test--------------------------

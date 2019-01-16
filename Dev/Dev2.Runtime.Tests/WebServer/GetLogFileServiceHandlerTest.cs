@@ -20,6 +20,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebsiteResourceHandlerTest
     /// </summary>
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class GetLogFileServiceHandlerTest
     {
         NameValueCollection LocalQueryString => new NameValueCollection
@@ -30,7 +31,7 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GiveQueryStrignHasNoKeys()
         {
@@ -45,7 +46,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GiveQueryStrignHasKeys()
         {

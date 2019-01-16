@@ -21,9 +21,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class AuthorizationRequestHelperTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_HttpActionContext_RequestTypeIsParsedCorrectly()
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             });
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_HubDescriptor_RequestTypeIsParsedCorrectly()
@@ -53,7 +54,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             }, WebServerRequestType.HubConnect);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationRequestHelper_GetAuthorizationRequest")]
         public void AuthorizationRequestHelper_GetAuthorizationRequest_IHubIncomingInvokerContext_RequestTypeIsParsedCorrectly()

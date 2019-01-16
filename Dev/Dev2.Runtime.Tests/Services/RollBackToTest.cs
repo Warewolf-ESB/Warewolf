@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.Services
     public class RollBackToTest
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Name")]
 
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("RollbackTo",rolbackTo.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_CreateServiceEntry")]
         public void RolbackTo_CreateServiceEntry_ExpectCorrectDL()
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Execute")]
         public void RolbackTo_Execute_InvalidParams()
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Execute")]
         public void RolbackTo_Execute_InvalidParams_NoVersion()
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(des.HasError, true);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RolbackTo_Execute")]
         public void RolbackTo_Execute_Valid_ExpectServerCalled()

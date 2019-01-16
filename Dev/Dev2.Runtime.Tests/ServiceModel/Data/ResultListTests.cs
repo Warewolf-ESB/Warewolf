@@ -16,9 +16,10 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ResultListTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_Default_HasErrorsIsFalse()
@@ -34,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(resultList.Errors);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithNoArgs_HasErrorsIsTrue()
@@ -50,7 +51,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello", resultList.Errors);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithArgs_HasErrorsIsTrue()
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello world", resultList.Errors);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNull_HasErrorsIsTrue()
@@ -82,7 +83,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("", resultList.Errors);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNotNull_HasErrorsIsTrue()
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_ToString")]
         public void ResultList_ToString_Json()

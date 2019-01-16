@@ -12,6 +12,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class WcfSourceTests
     {
         public WcfSource GetSource()
@@ -19,7 +20,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             return new WcfSource(new FakeWcfProxyService()) {Name = "WcfSource", EndpointUrl = "TestUrl"};
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_InstantiateNewSource_ReturnsSuccess()
         {
             var source = GetSource();
@@ -27,7 +28,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_InitializeProperties_ReturnsSuccess()
         {
             var source = GetSource();
@@ -47,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(source.Type);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_Equals_ReturnsSuccess()
         {
             var source = GetSource();
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_ToXml_ReturnsSuccess()
         {
             var source = GetSource();
@@ -67,14 +68,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(source.ResourceType, actual.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_Execute_ReturnsSuccess()
         {
             var source = GetSource();
            source.Execute();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_ExecuteWithService_ReturnsSuccess()
         {
             var source = GetSource();
@@ -83,7 +84,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_ExecuteWithAction_ReturnsSuccess()
         {
             var source = GetSource();
@@ -92,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WcfSource_DataList_ReturnsSuccess()
         {
             var source = GetSource();

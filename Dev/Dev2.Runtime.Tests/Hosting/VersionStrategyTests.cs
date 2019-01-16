@@ -18,10 +18,11 @@ using Moq;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class VersionStrategyTests
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetNextVersion_OldResourceNull_ExpectVersion1()
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(output.DateTimeStamp.Date,DateTime.Today);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetNextVersion_OldResourceNull_Expectincremented()
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(output.DateTimeStamp.Date, DateTime.Today);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetNextVersion_OldResource_Old_ExpectNewVersion()
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(output.DateTimeStamp.Date, DateTime.Today);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetCurrentVersion_OldResource_Old_ExpectNewVersion()
@@ -108,7 +109,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetCurrentVersion_OldResource_AlwaysIncrementsLastVersion()
@@ -129,7 +130,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetCurrentVersion_OldResourceNull_GetVersion1()
@@ -150,7 +151,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionStrategy_GetNextVersion")]
         public void VersionStrategy_GetCurrentVersion_OldResource_hasVersion_ExpectExistingVersion()

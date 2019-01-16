@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
         
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             _matchAndReplaceWhereAppropriate(_beforeContainingSource, _beforeWithoutSource, _connectionString);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
         public void EncryptionResourceUpgrader_Upgrade_HasMatchin_DsfFileWrite()
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
         
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
             DpapiWrapper.Decrypt(x).Should().Be(_connectionString);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
         

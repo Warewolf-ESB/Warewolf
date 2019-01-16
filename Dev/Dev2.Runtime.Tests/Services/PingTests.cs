@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class PingTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("Ping_Constructor")]
         public void Ping_Constructor_InitializesProperties()
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(ping.Now);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [Description("HandlesType() MUST return Ping otherwise Server connection tests will fail with a Serviec Not Found exception.")]
         [TestCategory("Ping_HandlesType")]
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Ping", handlesType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("Ping_Execute")]
         public void Ping_Execute_Returns_Pong()
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(expected, msg.Message.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("Ping_CreateServiceEntry")]
         public void Ping_CreateServiceEntry_Correct()
