@@ -13,17 +13,17 @@ namespace Dev2.Diagnostics.Test
     [TestClass]
     public class PerfCounterBuilderTest
     {
+        const string CategoryName = "Warewolf";
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
-
         public void PerformanceCounterBuilder_CtorBuildCounters_Valid_ExpectNewCounters()
         {
             try
             {
-                PerformanceCounterCategory.Delete("Warewolf");
+                PerformanceCounterCategory.Delete(CategoryName);
             }
-            
             catch
             {
 
@@ -37,17 +37,16 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(counterFactory.Object),
                 new WarewolfServicesNotFoundCounter(counterFactory.Object)
             };
-            
+
             new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
-            var cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory(CategoryName);
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
             {
                 if (performanceCounter.CounterName != "average time per operation base")
                 {
-                    //Assert.AreEqual(performanceCounter.RawValue, 0);
-                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName));
-                    Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
+                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName), "PerformanceCounter CounterName: " + performanceCounter.CounterName + " die not match any criteria.");
+                    Assert.AreEqual(CategoryName, performanceCounter.CategoryName);
                 }
             }
         }
@@ -60,9 +59,8 @@ namespace Dev2.Diagnostics.Test
         {
             try
             {
-                PerformanceCounterCategory.Delete("Warewolf");
+                PerformanceCounterCategory.Delete(CategoryName);
             }
-            
             catch
             {
 
@@ -76,22 +74,22 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(counterFactory.Object),
                 new WarewolfServicesNotFoundCounter(counterFactory.Object)
             };
-            var register = new WarewolfPerformanceCounterRegister(lst,new List<IResourcePerformanceCounter>());
+            var register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment();
             }
 
             register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
-            var cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory(CategoryName);
             var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {
                 if (performanceCounter.CounterName != "average time per operation base")
                 {
-                    Assert.AreEqual(performanceCounter.RawValue, 1);
-                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName));
-                    Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
+                    Assert.AreEqual(1, performanceCounter.RawValue);
+                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName), "PerformanceCounter CounterName: " + performanceCounter.CounterName + " die not match any criteria.");
+                    Assert.AreEqual(CategoryName, performanceCounter.CategoryName);
                 }
             }
         }
@@ -102,9 +100,8 @@ namespace Dev2.Diagnostics.Test
         {
             try
             {
-                PerformanceCounterCategory.Delete("Warewolf");
+                PerformanceCounterCategory.Delete(CategoryName);
             }
-            
             catch
             {
 
@@ -171,19 +168,16 @@ namespace Dev2.Diagnostics.Test
             {
                 performanceCounter.ToSafe().Increment(); // increment causes instance to be created on windows side
             }
-            var cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory(CategoryName);
             var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {
                 if (performanceCounter.CounterName != "average time per operation base")
                 {
-
-                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName));
-                    Assert.AreEqual(performanceCounter.CategoryName, "Warewolf");
+                    Assert.IsTrue(lst.Any(a => a.Name == performanceCounter.CounterName), "PerformanceCounter CounterName: " + performanceCounter.CounterName + " die not match any criteria.");
+                    Assert.AreEqual(CategoryName, performanceCounter.CategoryName);
                 }
             }
         }
-      
-    
     }
 }
