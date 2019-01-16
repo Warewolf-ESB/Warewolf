@@ -11,9 +11,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class WfExecutionContainerTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_ShouldNotThrowException()
         {

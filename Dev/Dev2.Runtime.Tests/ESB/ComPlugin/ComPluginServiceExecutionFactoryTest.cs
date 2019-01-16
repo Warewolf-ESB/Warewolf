@@ -20,20 +20,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
-    /// <summary>
-    /// Summary description for PluginServiceExecutionFactory
-    /// </summary>
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class ComPluginServiceExecutionFactoryTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         public void PluginRuntimeHandler_GetNamespaces_WhenValidDll_ExpectNamespaces()
@@ -49,7 +43,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -61,7 +55,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("Warewolf.COMIPC.exe")]
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()

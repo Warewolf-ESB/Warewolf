@@ -26,6 +26,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebsiteResourceHandlerTest
     /// </summary>
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class GetApisJsonServiceHandlerTest
     {
         NameValueCollection LocalQueryString => new NameValueCollection
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GiveNoPathAndNonPublicRequest()
         {
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GivePublicRequest()
         {

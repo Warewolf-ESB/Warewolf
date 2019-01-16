@@ -14,12 +14,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ServiceDefinitionLoaderTest
     {
-
         // GenerateServiceGraph
-
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingSource_SourceIsLoaded()
@@ -32,7 +31,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkflow_WorkflowIsLoaded()
@@ -45,7 +44,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkerService_ServiceIsLoaded()

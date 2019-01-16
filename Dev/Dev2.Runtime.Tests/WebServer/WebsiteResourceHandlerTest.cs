@@ -30,6 +30,7 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebsiteResourceHandlerTest
     /// </summary>
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class WebsiteResourceHandlerTest
     {
         [ClassInitialize]

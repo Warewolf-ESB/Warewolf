@@ -18,7 +18,7 @@ namespace Dev2.Tests.Runtime.Util
 {
     public partial class ScrubberTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubJsonWithNonArrayDefinitionExpectedReturnsSameJson()
         {
             //------------------------Setup ----------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(JsonData,scrub);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubJsonWhereDataIsArrayWithNoNameExpectNamedArray()
         {
             //------------Setup for test--------------------------
@@ -51,7 +51,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(ExpectedData, scrub);
         }      
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubJsonWhereDataIsArrayWithNameExpectSameJson()
         {
             //------------Setup for test--------------------------
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(JsonData, scrub);            
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void VerifyScrubWhereRegularJsonExpectCorrectOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(JsonData,paths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void VerifyScrubJsonWhereDataIsArrayWithNameExpectCorrectOutputDescription()
         {
             //------------Setup for test--------------------------
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(JsonData, paths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void VerifyScrubJsonWhereComplexStructureExpectCorrectOutputDescription()
         {
             //------------Setup for test--------------------------

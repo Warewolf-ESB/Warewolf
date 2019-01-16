@@ -17,9 +17,10 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class RecordsetListHelperTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingRecordset_SingleLevel_ShouldConvertToField()
@@ -34,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
         }  
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingField_SingleLevel_ShouldConvertToField()
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
         }        
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingRecordset_MultiLevel_ShouldConvertToField()
@@ -64,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsEndingField_MultiLevel_ShouldConvertToField()
@@ -79,7 +80,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RecordsetListHelper_SplitRecordsetAndFieldNames")]
         public void RecordsetListHelper_SplitRecordsetAndFieldNames_WhenPathContainsScalar_SingleLevel_ShouldConvertToField()

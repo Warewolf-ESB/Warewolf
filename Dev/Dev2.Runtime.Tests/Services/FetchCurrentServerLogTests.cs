@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogConstructorWithDefaultExpectedInitializesServerLogPath()
         {
             var serverLogPath = EnvironmentVariables.ServerLogFile;
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogExecuteWithNonExistingLogExpectedReturnsEmptyString()
         {
             var serverLogPath = Path.Combine(_testDir, string.Format("ServerLog_{0}.txt", Guid.NewGuid()));
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogExecuteWithExistingLogExpectedReturnsContentsOfLog()
         {
             const string Expected = "Hello world";
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogHandlesTypeExpectedReturnsFetchCurrentServerLogService()
         {
             var esb = new FetchCurrentServerLog();
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new FetchCurrentServerLog();
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()

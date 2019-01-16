@@ -18,9 +18,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Responses
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class DynamicFileResponseWriterTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DynamicFileResponseWriter_Write")]
         public void DynamicFileResponseWriter_Write_WebServerContext_WritesContent()

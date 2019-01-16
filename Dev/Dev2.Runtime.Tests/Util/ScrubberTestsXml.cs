@@ -24,14 +24,14 @@ namespace Dev2.Tests.Runtime.Util
     {
         #region Scrub Xml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithValidFormatExpectedGeneratesValidOutputDescription()
         {
             var expectedPaths = CreateCurrentWeatherExpectedPaths();
             VerifyScrub(XmlResource.Fetch("Bug9519_1").ToString(), expectedPaths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithNamespacesExpectedGeneratesValidOutputDescription()
         {
             var expectedPaths = CreateCurrentWeatherExpectedPaths();
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(XmlResource.Fetch("Bug9519_2").ToString(), expectedPaths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithSoapEnvelopeExpectedGeneratesValidOutputDescription()
         {
             var expectedPaths = new List<IPath>(new[]
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(XmlResource.Fetch("Bug9519_3").ToString(), expectedPaths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithAttributesExpectedGeneratesValidOutputDescription()
         {
             var expectedPaths = CreateCurrentWeatherExpectedPaths();
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(XmlResource.Fetch("Bug9519_5").ToString(), expectedPaths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithInvalidXmlDeclarationExpectedGeneratesValidOutputDescription()
         {
             const string Response = "<?xml version=\"1.0\" encoding=\"utf-16\"?><string xmlns=\"http://www.webserviceX.NET\"><?xml version=\"1.0\" encoding=\"utf-16\"?><CurrentWeather>Sunny Skies</CurrentWeather></string>";
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.Util
             VerifyScrub(Response, expectedPaths);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ScrubberScrubXmlWithMalformedXmlExpectedGeneratesErrorOutputDescription()
         {
             const string Response = "<string><CurrentWeather>Sunny Skies</string>";

@@ -20,10 +20,11 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ConnectionTests
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Connections_GetTestConnectionAddress")]
         public void Connection_GetTestConnectionAddress_WhenDsfPresent_ExpectSameAddress()
@@ -45,7 +46,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Connections_GetTestConnectionAddress")]
         public void Connection_GetTestConnectionAddress_WhenOnlySlashPresent_ExpectDsfAdded()
@@ -68,7 +69,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             StringAssert.Contains(result, expected);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Connections_GetTestConnectionAddress")]
         public void Connection_GetTestConnectionAddress_WhenNoSlashPresent_ExpectSlashAndDsfAdded()
@@ -94,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToString Tests
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ToString_FullySetupObject_Expected_JSONSerializedObjectReturnedAsString()
         {
             var testConnection = SetupDefaultConnection();
@@ -103,7 +104,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expected, actualConnectionToString);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ToString_EmptyObject_Expected_()
         {
             var testConnection = new Connection();
@@ -116,7 +117,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml Tests
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ToXml_AllPropertiesSetup_Expected_XElementContainingAllObjectInformation()
         {
 
@@ -135,7 +136,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ToXml_EmptyObject_Expected_XElementContainingNoInformationRegardingSource()
         {
             var testConnection = new Connection();

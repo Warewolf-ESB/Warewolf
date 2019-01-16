@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchResourceDuplicatesTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("FetchResourceDuplicates_HandlesType")]
         public void FetchResourceDuplicates_HandlesType_ExpectName()
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("FetchResourceDuplicates", FetchResourceDuplicates.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("FetchResourceDuplicates_HandlesType")]
         public void FetchResourceDuplicates_Execute_ExpectName()
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.LoadDuplicate());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("FetchResourceDuplicates_HandlesType")]
         public void FetchResourceDuplicates_CreateServiceEntry_ExpectProperlyFormedDynamicService()
