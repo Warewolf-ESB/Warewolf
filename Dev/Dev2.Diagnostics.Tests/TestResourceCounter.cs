@@ -60,5 +60,9 @@ namespace Dev2.Diagnostics.Test
         public void Reset()
         {
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
