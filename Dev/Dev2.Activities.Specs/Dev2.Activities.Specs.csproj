@@ -370,6 +370,10 @@
       <HintPath>..\packages\TimeSpan2.2.1.4\lib\net40\TimeSpan2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Warewolf.Launcher\bin\Debug\Warewolf.Launcher.exe</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -590,10 +594,6 @@
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
-      <Project>{9b669d51-14ce-44a3-9407-8251ba3bad19}</Project>
-      <Name>Warewolf.Launcher</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
       <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
