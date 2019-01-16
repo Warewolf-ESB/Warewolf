@@ -56,7 +56,6 @@ namespace Dev2.PerformanceCounters.Counters
                 _counter = _counterFactory.New(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName);
                 _started = true;
             }
-
         }
 
         public void Decrement()

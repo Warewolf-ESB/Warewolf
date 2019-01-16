@@ -52,7 +52,7 @@ namespace Dev2.Diagnostics.Test
                     new WarewolfServicesNotFoundCounter(performanceCounterFactory),
 
                 }, new List<IResourcePerformanceCounter>());
-            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
+            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory);
 
             var counter = manager.GetCounter(WarewolfPerfCounterType.ConcurrentRequests).FromSafe(); ;
             var counter2 = manager.GetCounter("Concurrent requests currently executing").FromSafe(); ;
@@ -76,7 +76,7 @@ namespace Dev2.Diagnostics.Test
                     new WarewolfServicesNotFoundCounter(performanceCounterFactory),
 
                 }, new List<IResourcePerformanceCounter>());
-            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
+            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory);
             manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.ExecutionErrors, "bob");
             var counter = manager.GetCounter(CounterGuid, WarewolfPerfCounterType.ExecutionErrors).FromSafe() as IResourcePerformanceCounter;
             Assert.IsNotNull(manager.EmptyCounter);
@@ -102,7 +102,7 @@ namespace Dev2.Diagnostics.Test
                     new WarewolfServicesNotFoundCounter(performanceCounterFactory),
 
                 }, new List<IResourcePerformanceCounter>());
-            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
+            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory);
             manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.NotAuthorisedErrors, "bob");
             var counter = manager.GetCounter(CounterGuid, WarewolfPerfCounterType.NotAuthorisedErrors).FromSafe() as IResourcePerformanceCounter;
             Assert.IsTrue(counter is EmptyCounter);
@@ -124,7 +124,7 @@ namespace Dev2.Diagnostics.Test
                     new WarewolfServicesNotFoundCounter(performanceCounterFactory),
 
                 }, new List<IResourcePerformanceCounter>());
-            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object);
+            var manager = new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory);
             manager.CreateCounter(CounterGuid, WarewolfPerfCounterType.ExecutionErrors, "bob");
             manager.RemoverCounter(CounterGuid, WarewolfPerfCounterType.ExecutionErrors,"bob");
             var counter = manager.GetCounter(CounterGuid, WarewolfPerfCounterType.ExecutionErrors).FromSafe() as IResourcePerformanceCounter;
