@@ -96,7 +96,7 @@ namespace Dev2.Studio.Views.DataList
 
         void WriteToResourceModel()
         {
-            if (DataContext is IDataListViewModel vm && !vm.IsSorting)
+            if (DataContext is IDataListViewModel vm && !vm.IsSorting && !vm.HasErrors)
             {
                 vm.WriteToResourceModel();
             }

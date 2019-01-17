@@ -1312,6 +1312,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem4.ScrollViewerPane.NameTextbox.Text = strings?[3];
         }
 
+        [When(@"I Add A Variable The Variable List")]
+        [Given(@"I Add A Variable The Variable List")]
+        [Then(@"I Add A Variable The Variable List")]
+        public void Add_Variable(string variable)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text = variable;
+        }
+
         [When(@"I Add Recordset The Recordset List")]
         [Given(@"I Add Recordset The Recordset List")]
         [Then(@"I Add Recordset The Recordset List")]
@@ -1322,6 +1330,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text = strings?[1];
         }
 
+        [When(@"I Add A Recordset The Recordset List")]
+        [Given(@"I Add A Recordset The Recordset List")]
+        [Then(@"I Add A Recordset The Recordset List")]
+        public void Add_Recordset(string variable)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text = variable;
+        }
 
         [When(@"I Add Recordset Fields The Recordset List")]
         [Given(@"I Add Recordset Fields The Recordset List")]
