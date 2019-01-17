@@ -72,7 +72,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="PerfCounterBuilderTest.cs" />
-    <Compile Include="PerfCounterOps.cs" />
+    <Compile Include="PerfCountersOpsTests.cs" />
     <Compile Include="PerformanceCounterPersistenceTest.cs" />
     <Compile Include="TestExecutionContainer.cs" />
     <Compile Include="TestPerfCounterManager.cs" />

@@ -2141,6 +2141,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void UpdateDataListWithMissingParts(bool isLoadEvent)
         {
+            if (DataListViewModel.HasErrors)
+            {
+                return;
+            }
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
             if (OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
             {
@@ -2150,7 +2154,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workflowFields = BuildWorkflowFields();
             DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
-        
+
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e) => e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
         
         bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
