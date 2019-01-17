@@ -37,7 +37,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void WorkflowWithSequenceToolLoadsAllContainedTools()
         {
-            ExplorerUIMap.Filter_Explorer("Control Flow - Sequence");
+            ExplorerUIMap.Filter_Explorer("Control Flow - Sequence - UI");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Press_F6();

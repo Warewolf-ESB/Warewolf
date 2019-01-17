@@ -978,7 +978,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 result.Append("/>");
             }
 
-            foreach (var recSet in RecsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
+            foreach (var recSet in RecsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError))
             {
                 IEnumerable<IDataListItemModel> filledRecordSet = recSet.Children.Where(c => !c.IsBlank && !c.HasError);
                 IList<Dev2Column> cols = filledRecordSet.Select(child => DataListFactory.CreateDev2Column(child.DisplayName, child.Description, child.IsEditable, child.ColumnIODirection)).ToList();
@@ -999,7 +999,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 result.Append(recSet.DisplayName);
                 result.Append(">");
             }
-            
+
             var complexObjectItemModels = ComplexObjectCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError);
             foreach (var complexObjectItemModel in complexObjectItemModels)
             {
