@@ -20,7 +20,7 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    [TestCategory("Intellisense Provider")]
+    [TestCategory("Intellisense Provider Core")]
     public class DateTimeIntellisenseProviderTests
     {
         [TestMethod]
