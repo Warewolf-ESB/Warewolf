@@ -15,7 +15,7 @@ namespace Dev2.PerformanceCounters.Management
             : this(new PerformanceCounterCategoryWrapper(), counters, resourcePerformanceCounters)
         {
         }
-        public WarewolfPerformanceCounterRegister(IPerformanceCounterCategory performanceCounterCategory, IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters  )
+        public WarewolfPerformanceCounterRegister(IPerformanceCounterCategory performanceCounterCategory, IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters)
         {
             _performanceCounterCategory = performanceCounterCategory;
 
@@ -28,7 +28,7 @@ namespace Dev2.PerformanceCounters.Management
         public IList<IResourcePerformanceCounter> ResourceCounters { get; set; }
 
         public IList<IPerformanceCounter> Counters { get; set; }
-        public IList<IPerformanceCounter> DefaultCounters { get; set; }
+        public IList<IPerformanceCounter> DefaultCounters { get; set; } // TODO: remove me?
 
         public void RegisterCountersOnMachine(IList<IPerformanceCounter> counters,string Category)
         {

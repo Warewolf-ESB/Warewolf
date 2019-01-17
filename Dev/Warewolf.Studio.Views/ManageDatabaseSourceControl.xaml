@@ -202,62 +202,66 @@
                 </ig:XamComboEditor>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="5" 
-                    Margin="{StaticResource ControlBorderTop}"
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    VerticalAlignment="Center">
-            <fa:ImageAwesome Width="14" 
-                             Height="14" 
-                             Margin="{StaticResource ControlBorderRight}" 
-                             Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
-                             Icon="Check" 
-                             HorizontalAlignment="Right" />
-            <fa:ImageAwesome Width="14" 
-                             Height="14" 
-                             Margin="{StaticResource ControlBorderRight}" 
-                             Foreground="{StaticResource WareWolfOrangeBrush}" 
-                             Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
-                             Icon="Ban" 
-                             HorizontalAlignment="Right" />
-            <views:CircularProgressBar Width="14"
-                                       Height="14"
-                                       Margin="{StaticResource ControlBorderRight}" 
-                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
-            <Button x:Name="TestConnectionButton" 
-                    Width="120" 
-                    Height="30" 
-                    Margin="{StaticResource ControlBorderRight}"
-                    Command="{Binding TestCommand}" 
-                    Content="{x:Static languages:Core.TestConnectionLabel}" 
-                    ToolTip="{x:Static languages:Tooltips.ManageDbSourceTestTooltip}">
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox TextWrapping="WrapWithOverflow" 
+                     Grid.Column="0"
+                     x:Name="ErrorTextBlock" 
+                     Text="{Binding TestMessage}" 
+                     Style="{StaticResource ErrorMessageTextboxStyle}"
+                     Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
+                    <doubleClickBehavior:DoubleClickBehavior/>
                 </i:Interaction.Behaviors>
-            </Button>
-            <Button Width="120" 
-                    Height="30" 
-                    Command="{Binding CancelTestCommand}" 
-                    Content="{x:Static languages:Core.CancelTest}" 
-                    x:Name="CancelTestButton"
-                    ToolTip="{x:Static languages:Tooltips.ManageDbSourceCancelTestTooltip}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceCancelHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-        </StackPanel>
-        <TextBox TextWrapping="WrapWithOverflow" 
-                 Grid.Row="5"
-                 VerticalAlignment="Top"
-                 HorizontalAlignment="Left"
-                 x:Name="ErrorTextBlock" 
-                 Text="{Binding TestMessage}" 
-                 Style="{StaticResource ErrorMessageTextboxStyle}"
-                 Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
-            <i:Interaction.Behaviors>
-                <doubleClickBehavior:DoubleClickBehavior/>
-            </i:Interaction.Behaviors>
-        </TextBox>
+            </TextBox>
+            <StackPanel Margin="{StaticResource ControlBorderTop}"
+                        Grid.Column="1"
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top">
+                <fa:ImageAwesome Width="14" 
+                                 Height="14" 
+                                 Margin="{StaticResource ControlBorderRight}" 
+                                 Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                 Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                 Icon="Check" 
+                                 HorizontalAlignment="Right" />
+                <fa:ImageAwesome Width="14" 
+                                 Height="14" 
+                                 Margin="{StaticResource ControlBorderRight}" 
+                                 Foreground="{StaticResource WareWolfOrangeBrush}" 
+                                 Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" 
+                                 Icon="Ban" 
+                                 HorizontalAlignment="Right" />
+                <views:CircularProgressBar Width="14"
+                                           Height="14"
+                                           Margin="{StaticResource ControlBorderRight}" 
+                                           Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+                <Button x:Name="TestConnectionButton" 
+                        Width="120" 
+                        Height="30" 
+                        Margin="{StaticResource ControlBorderRight}"
+                        Command="{Binding TestCommand}" 
+                        Content="{x:Static languages:Core.TestConnectionLabel}" 
+                        ToolTip="{x:Static languages:Tooltips.ManageDbSourceTestTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceTestConnectionHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+                <Button Width="120" 
+                        Height="30" 
+                        Command="{Binding CancelTestCommand}" 
+                        Content="{x:Static languages:Core.CancelTest}" 
+                        x:Name="CancelTestButton"
+                        ToolTip="{x:Static languages:Tooltips.ManageDbSourceCancelTestTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.DatabaseSourceCancelHelp}" DataContext="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
