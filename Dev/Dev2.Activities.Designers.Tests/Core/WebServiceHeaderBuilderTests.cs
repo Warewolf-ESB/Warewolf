@@ -108,8 +108,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new NameValue("Content-Type", "application/xml");
-            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
+            var jsonHeader = new ObservableNameValue("Content-Type", "application/xml");
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             var content = "<DataList><a>2</a></DataList>";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(newMock.Object.Headers);
@@ -135,8 +135,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new NameValue("Content-Type", "application/json");
-            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
+            var jsonHeader = new ObservableNameValue("Content-Type", "application/json");
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             var content = "{\"NormalText\":\"\"}";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(newMock.Object.Headers);
