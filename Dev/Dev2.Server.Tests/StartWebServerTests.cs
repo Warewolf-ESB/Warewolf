@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Dev2.Common;
 using Dev2.Runtime.WebServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,9 +23,13 @@ namespace Dev2.Server.Tests
             mockWebServerConfiguration.Setup(o => o.IsWebServerEnabled).Returns(true);
             mockWebServerConfiguration.Setup(o => o.IsWebServerSslEnabled).Returns(true);
 
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { null });
             mockWriter.Setup(o => o.Fail(It.IsAny<string>(), It.IsAny<Exception>()));
             //-------------------Act-------------------------
-            new StartWebServer(mockWriter.Object, WebServerStartup.Start).Execute(mockWebServerConfiguration.Object, mockPauseHelper.Object);
+            using (var start = new StartWebServer(mockWriter.Object, StartAction))
+            {
+                start.Execute(mockWebServerConfiguration.Object, mockPauseHelper.Object);
+            }
             //-------------------Assert----------------------
             mockPauseHelper.Verify(o => o.Pause(), Times.Once);
         }
