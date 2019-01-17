@@ -22,6 +22,7 @@ namespace Dev2.Tests.Runtime
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
+        [Ignore]
         public void RevulyticsCollectUsageStats_WhenNoConfigSetting_ShouldUseGlobalConstantValue()
         {
             GlobalConstants.CollectUsageStats = "True";
