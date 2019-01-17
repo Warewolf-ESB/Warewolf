@@ -83,9 +83,13 @@ namespace WarewolfCOMIPC.Client
        
         public  IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
-            return new IpcClientImpl(clientStreamWrapper); 
+            if (clientStreamWrapper != null)
+            {
+                return new IpcClientImpl(clientStreamWrapper);
+            }
+            return IpcClient.Instance;
         }
-        
+
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
