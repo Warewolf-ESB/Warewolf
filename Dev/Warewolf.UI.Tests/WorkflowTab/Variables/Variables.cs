@@ -205,6 +205,18 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DialogsUIMap.EditObjectDialog.CloseButton.Exists, "Close Button does not exist on Edit Object Dialog");
         }
 
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
+        [TestCategory("Variables")]
+        public void Special_Characters_Should_Keep_Studio_Responsive()
+        {
+            WorkflowTabUIMap.Add_Variable("Person1@");
+            WorkflowTabUIMap.Add_Recordset("Person1@");
+            Keyboard.SendKeys("{TAB}");
+            WorkflowTabUIMap.Add_Recordsets_Fields("Name,Surname,Age,Race,Gender");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
