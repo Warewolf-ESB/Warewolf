@@ -48,7 +48,6 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [TestCategory("PerfcounterViewModel_Constructor")]
-        [Ignore]
         public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
@@ -63,6 +62,7 @@ namespace Dev2.Core.Tests.Settings
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
             var counters = new PrivateType(typeof(PerfcounterViewModel));
+            CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
             var invokeStatic = counters.InvokeStatic("GetEnvironment");
