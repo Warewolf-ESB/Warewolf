@@ -20,7 +20,7 @@ using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
 
