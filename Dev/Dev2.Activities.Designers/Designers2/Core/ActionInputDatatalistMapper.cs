@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
@@ -9,8 +8,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ActionInputDatatalistMapper : IActionInputDatatalistMapper
     {
-        #region Implementation of IActionInputDatatalistMapper
-
         public void MapInputsToDatalist(IEnumerable<IServiceInput> inputs)
         {
             if (inputs != null)
@@ -50,7 +47,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
             {
-                var value = serviceInput?.Name;
+                var value = serviceInput.Name;
                 if (value != null)
                 {
                     value = value.Split('(').First().TrimEnd(' ');
@@ -65,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             if (DataListSingleton.ActiveDataList.ScalarCollection != null)
             {
-                var value = serviceInput?.Name;
+                var value = serviceInput.Name;
                 if (value != null)
                 {
                     var variable = DataListUtil.AddBracketsToValueIfNotExist(value.Split('(').First().TrimEnd(' '));
@@ -73,7 +70,5 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
         }
-
-        #endregion
     }
 }
