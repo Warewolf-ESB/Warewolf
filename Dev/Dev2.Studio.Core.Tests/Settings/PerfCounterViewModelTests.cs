@@ -48,6 +48,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [TestCategory("PerfcounterViewModel_Constructor")]
+        [Ignore]
         public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
         {
             CommonSetupHelper.RegisterServerRepository();
