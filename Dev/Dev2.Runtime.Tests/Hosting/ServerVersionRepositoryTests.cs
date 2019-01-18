@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,10 +29,11 @@ using Dev2.Common.Interfaces.Versioning;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class ServerVersionRepositoryTests
     {
-        [TestMethod]
+
+
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -80,7 +81,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -104,7 +105,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -127,7 +128,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, items.Count);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -159,7 +160,7 @@ namespace Dev2.Tests.Runtime.Hosting
             return serverVersionRepostory;
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_GetVersions")]
         public void ServerVersionRepostory_GetVersions_CatologueHasNoResource_ReturnEmpty()
@@ -183,7 +184,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_GetVersions")]
         public void ServerVersionRepostory_GetVersions_CatologueResource_ResourceIsNotVersioned()
@@ -208,7 +209,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, items.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_GetVersions")]
         public void ServerVersionRepostory_GetVersions_CatologueResource_ResourceIsVersioned()
@@ -237,7 +238,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_GetVersions")]
         public void ServerVersionRepostory_StoreVersion_CatologueResource_ResourceIsVersioned()
@@ -274,7 +275,7 @@ namespace Dev2.Tests.Runtime.Hosting
             dir.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
             strat.Verify(p => p.GetCurrentVersion(It.IsAny<IResource>(), It.IsAny<IVersionInfo>(), It.IsAny<string>(), It.IsAny<string>()));
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_GetVersions")]
         public void ServerVersionRepostory_StoreVersion_CatologueResource_ResourceIsNotVersioned()
@@ -309,7 +310,7 @@ namespace Dev2.Tests.Runtime.Hosting
             file.Verify(a => a.Copy(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Rollback")]
         [ExpectedException(typeof(VersionNotFoundException))]
@@ -347,7 +348,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Rollback")]
         public void ServerVersionRepostory_Rollback_VersionDoesExist_DifferentNames()
@@ -388,7 +389,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Rollback")]
         public void ServerVersionRepostory_Rollback_VersionDoesExist_SameName()
@@ -428,7 +429,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServerVersionRepostory_Rollback")]
         public void ServerVersionRepostory_Rollback_Version_GetSavePath()
@@ -469,7 +470,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", false), Times.Never());
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Rollback")]
         public void ServerVersionRepostory_Delete_VersionDoesExist()
@@ -508,7 +509,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Delete")]
         public void ServerVersionRepostory_Delete_VersionDoesNotExist()

@@ -19,7 +19,6 @@ using Action = System.Action;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {
         Action VerifyAction;

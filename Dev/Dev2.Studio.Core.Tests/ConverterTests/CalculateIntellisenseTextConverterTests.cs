@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,10 +12,10 @@ using Dev2.Common;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Core.Tests.AppResources.Converters
+namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]
-	[TestCategory("Studio Resources Core")]    
+    
     public class CalculateIntellisenseTextConverterTests
     {
         [TestMethod]

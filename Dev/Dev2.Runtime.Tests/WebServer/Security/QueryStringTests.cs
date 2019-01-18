@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,10 +18,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class QueryStringTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -35,7 +34,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_GetEnumerator")]
         public void QueryString_GetEnumerator_ItemsEnumerator()
@@ -61,7 +60,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(1, count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_GetEnumerator")]
         public void QueryString_IEnumerableGetEnumerator_ItemsEnumerator()
@@ -89,7 +88,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(1, count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_GetValues")]
         public void QueryString_GetValues_KeyFound_ValuesForKey()
@@ -111,7 +110,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_GetValues")]
         public void QueryString_GetValues_KeyNotFound_EmptyEnumerable()
@@ -128,7 +127,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(0, values.Count());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_Get")]
         public void QueryString_Get_KeyFound_ValuesForKey()
@@ -145,7 +144,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual("value1; value2", values);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_Get")]
         public void QueryString_Get_KeyNotFound_EmptyString()
@@ -162,7 +161,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(string.Empty, values);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_Item")]
         public void QueryString_Item_KeyFound_ValuesForKey()
@@ -179,7 +178,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual("value1; value2", values);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("QueryString_Item")]
         public void QueryString_Item_KeyNotFound_EmptyString()

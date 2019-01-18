@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,6 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
-    [TestCategory("Runtime ESB")]
     public class RemoteWorkflowExecutionContainerTests
     {
         static XElement _connectionXml;
@@ -47,7 +46,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("RemoteWorkflowExecutionContainer_Constructor")]
         [Description("RemoteWorkflowExecutionContainer cannot be constructed without a resource catalog.")]
         [Owner("Trevor Williams-Ros")]
@@ -65,7 +64,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
         public void RemoteWorkflowExecutionContainer_UnitTest_ServerIsUp_PongNotReturned_ShouldError()
         {
@@ -105,7 +104,7 @@ namespace Dev2.Tests.Runtime.ESB
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
         public void RemoteWorkflowExecutionContainer_UnitTest_ServerIsUp_PongReturned_ShouldNotError()
         {
@@ -143,7 +142,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.IsTrue(errors.Any(p => !p.Contains("Asynchronous execution failed: Remote server unreachable")));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [TestCategory("RemoteWorkflowExecutionContainer_Execute")]
         [Description("RemoteWorkflowExecutionContainer execute must return an error when the connection cannot be retrieved from the resource catalog.")]
         [Owner("Trevor Williams-Ros")]
@@ -159,7 +158,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual("Service not found", errors.MakeDisplayReady(), "Execute did not return an error for a non-existent resource catalog connection.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
         public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenNoDataListFragments_HasProvidedUriToExecute()
@@ -175,7 +174,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual(LogUri, container.LogExecutionUrl);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
         public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenScalarDataListFragments_HasEvaluatedUriToExecute()
@@ -193,7 +192,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
         public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenRecordsetDataListFragments_HasEvaluatedUriToExecute()

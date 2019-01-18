@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,10 +14,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {
+
+    
+
+    /// <summary>
+    ///This is a test class for DataListItemViewModelTest and is intended
+    ///to contain all DataListItemViewModelTest Unit Tests
+    ///</summary>
     [TestClass]
-    [TestCategory("Studio Datalist Core")]
     public class DataListItemViewModelTest
     {
+
         #region Locals
 
         IDataListItemModel _dataListItemModel;
@@ -25,6 +32,7 @@ namespace Dev2.Core.Tests
 
 
         #endregion
+
 
         #region Additional test attributes
 

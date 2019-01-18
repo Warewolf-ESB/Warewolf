@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,6 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for InternalServiceRequestHandlerTest
     /// </summary>
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class InternalServiceRequestHandlerTest
     {
         /// <summary>
@@ -38,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         [ExpectedException(typeof(FormatException))]
@@ -58,7 +57,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         [ExpectedException(typeof(Exception))]
@@ -79,7 +78,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         public void InternalServiceRequestHandler_ProcessRequest_WhenExecutingUser()
@@ -101,7 +100,7 @@ namespace Dev2.Tests.Runtime.WebServer
             internalServiceRequestHandler.ProcessRequest(ctx.Object);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         [ExpectedException(typeof(Exception))]
@@ -124,7 +123,7 @@ namespace Dev2.Tests.Runtime.WebServer
             internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
 
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         public void InternalServiceRequestHandler_ProcessRequest()
@@ -148,7 +147,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void BuildStudioUrl_GivenPayLoad_BuildCorrect_WebURL()
         {
@@ -169,7 +168,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsFalse(invoke.Contains(Environment.NewLine));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void BuildStudioUrl_GivenPayLoad_BuildCorrect_WebURL_StripDebugInfo()
         {
@@ -197,7 +196,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         public void InternalServiceRequestHandler_ProcessRequestGivenIsServiceTestExecution()
@@ -226,7 +225,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(processRequest);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]
         public void InternalServiceRequestHandler_ProcessRequestGivenUnAuthorizedPermission()
