@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
 
         public DotNetMethodRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
-            : this(CustomContainer.Get<IShellViewModel>(), new ActionInputDatatalistMapper())
+            : this(CustomContainer.Get<IShellViewModel>(), new ActionInputDatalistMapper())
         {
             try
             {
