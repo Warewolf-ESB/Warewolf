@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,6 @@ using Newtonsoft.Json;
 namespace Dev2.Core.Tests.Workspaces
 {
     [TestClass]
-    [TestCategory("Studio Workspaces Core")]
     public class WorkspaceItemRepositoryTests
     {
         #region Static Class Init
@@ -445,5 +444,7 @@ namespace Dev2.Core.Tests.Workspaces
         }
 
         #endregion
+
+
     }
 }

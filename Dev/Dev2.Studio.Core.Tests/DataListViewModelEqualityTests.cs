@@ -10,7 +10,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [TestCategory("Studio Datalist Core")]
     public class DataListViewModelEqualityTests
     {
         [TestMethod]

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,10 +16,9 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class ResultListTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_Default_HasErrorsIsFalse()
@@ -35,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithNoArgs_HasErrorsIsTrue()
@@ -51,7 +50,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ErrorFormatWithArgs_HasErrorsIsTrue()
@@ -67,7 +66,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Hello world", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNull_HasErrorsIsTrue()
@@ -83,7 +82,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("", resultList.Errors);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_Constructor")]
         public void ResultList_Constructor_ExceptionIsNotNull_HasErrorsIsTrue()
@@ -101,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResultList_ToString")]
         public void ResultList_ToString_Json()

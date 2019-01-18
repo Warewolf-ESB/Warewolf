@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,10 +21,9 @@ using System.IO;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class WebServerContextTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -38,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -52,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Constructor_PropertiesInitialized()
@@ -71,7 +70,7 @@ namespace Dev2.Tests.Runtime.WebServer
             WebServerRequestTests.VerifyProperties(request, (WebServerRequest)context.Request, content, queryStr, boundVars);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -90,7 +89,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Send_ResponseIsNotNull_InvokesWriteOnResponse()
@@ -112,7 +111,7 @@ namespace Dev2.Tests.Runtime.WebServer
             response.Verify(r => r.Write(It.IsAny<WebServerContext>()));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         [TestCategory("WebServerContext")]
         public void WebServerContext_Dispose_InputStreamIsClosed()

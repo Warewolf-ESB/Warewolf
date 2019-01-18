@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,12 +17,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class EmailSourcesTests
     {
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EmailSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -34,7 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesTestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new EmailSources();
@@ -42,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesTestWithInvalidHostExpectedInvalidValidationResult()
         {
             var source = new EmailSource { Host = "smtp.foobar.com", Port = 25 }.ToString();
@@ -56,7 +55,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Get
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesGetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new EmailSources();
@@ -66,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void EmailSourcesGetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new EmailSources();
