@@ -24,6 +24,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ActionInputDatatalistMapper))]
         public void MapInputsToDatalist_Should_MapToScalar()
         {
             var serviceInputs = new List<IServiceInput>();
@@ -37,6 +39,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ActionInputDatatalistMapper))]
         public void MapInputsToDatalist_Should_MapToObject()
         {
             var serviceInputs = new List<IServiceInput>();
@@ -55,6 +59,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ActionInputDatatalistMapper))]
         public void MapInputsToDatalist_IsNullOrEmpty_Should_Continue()
         {
             var serviceInputs = new List<IServiceInput>();
