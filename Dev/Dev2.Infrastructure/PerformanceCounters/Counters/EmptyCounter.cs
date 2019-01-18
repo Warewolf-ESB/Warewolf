@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
@@ -33,7 +32,7 @@ namespace Dev2.PerformanceCounters.Counters
         public string Name { get;  set; }
         public WarewolfPerfCounterType PerfCounterType { get;  set; }
 
-        public IList<CounterCreationData> CreationData() => null;
+        public IEnumerable<(string CounterName, string CounterHelp, PerformanceCounterType CounterType)> CreationData() => null;
 
         public bool IsActive { get; set; }
 
@@ -45,6 +44,12 @@ namespace Dev2.PerformanceCounters.Counters
         public void Reset()
         {            
         }
+
+        public void Dispose()
+        {
+
+        }
+
         #region Implementation of IResourcePerformanceCounter
 
         public Guid ResourceId { get;  set; }

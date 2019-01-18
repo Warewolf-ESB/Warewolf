@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public IWarewolfType Activity => Tool.Activity;
 
-        public DataObject ActivityType => _activityType;
+        public object ActivityType => _activityType;
 
         public bool IsEnabled
         {

@@ -15,8 +15,20 @@ namespace Dev2.Common.Interfaces.Core
         public string ResourceType { get; set; }
 
         #region Equality members
-        
-        public bool Equals(WcfServiceSourceDefinition other)
+        public override bool Equals(object obj)
+        {
+            if (obj is WcfServiceSourceDefinition wsd)
+            {
+                return Equals(wsd);
+            }
+            if (obj is IWcfServerSource wcfServerSource)
+            {
+                return Equals(wcfServerSource);
+            }
+            return false;
+        }
+
+    public bool Equals(WcfServiceSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
             {
