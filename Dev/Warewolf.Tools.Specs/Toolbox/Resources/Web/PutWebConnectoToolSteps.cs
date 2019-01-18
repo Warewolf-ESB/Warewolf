@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Dev2.Activities.Designers2.Web_Service_Put;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
@@ -228,7 +229,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             {
                 var name = tableRow["Name"];
                 var value = tableRow["Value"];
-                headers.Add(new NameValue(name, value));
+                headers.Add(new ObservableNameValue(name, value));
             }
         }
 

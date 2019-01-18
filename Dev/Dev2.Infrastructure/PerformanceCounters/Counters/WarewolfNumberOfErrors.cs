@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrors : IPerformanceCounter, IDisposable
+    public class WarewolfNumberOfErrors : MyPerfCounter, IPerformanceCounter
     {
-
-        PerformanceCounter _counter;
         bool _started;
         readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfNumberOfErrors()
+        public WarewolfNumberOfErrors(IRealPerformanceCounterFactory performanceCounterFactory)
+            :base(performanceCounterFactory)
         {
             _started = false;
             IsActive = true;
@@ -22,19 +20,17 @@ namespace Dev2.PerformanceCounters.Counters
 
         public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
-        public IList<CounterCreationData> CreationData()
+        public IEnumerable<(string CounterName, string CounterHelp, PerformanceCounterType CounterType)> CreationData()
         {
 
-            var totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
-            };
-            return new[] { totalOps };
+            yield return
+            (
+                Name,
+                Name,
+                PerformanceCounterType.NumberOfItems32
+            );
         }
 
-        public bool IsActive { get; set; }
         public void Reset()
         {
             if (_counter != null)
@@ -46,8 +42,7 @@ namespace Dev2.PerformanceCounters.Counters
 
         public void Increment()
         {
-
-                if (IsActive)
+            if (IsActive)
             {
                 _counter.Increment();
             }
@@ -66,12 +61,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName)
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
-                };
+                _counter = _counterFactory.New(GlobalConstants.Warewolf, Name, GlobalConstants.GlobalCounterName);
                 _started = true;
             }
         }
@@ -85,9 +75,12 @@ namespace Dev2.PerformanceCounters.Counters
             }
         }
 
-        public void Dispose()
+        new public void Dispose()
         {
-            _counter.Dispose();
+            if (_counter != null)
+            {
+                _counter.Dispose();
+            }
         }
 
         public string Category => "Warewolf";

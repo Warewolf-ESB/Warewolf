@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -90,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
-            regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
+            regionToRestore.Headers = new ObservableCollection<INameValue>{new ObservableNameValue("a","b")};
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------

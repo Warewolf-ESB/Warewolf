@@ -2,6 +2,7 @@
 using System.Activities.Presentation;
 using System.Activities.Statements;
 using System.IO;
+using System.Windows;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -127,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _target = new ToolDescriptorViewModel(_toolMock.Object, false);
 
             //act
-            var value = _target.ActivityType;
+            var value = _target.ActivityType as DataObject;
 
             //assert
             var formats = value.GetFormats();
@@ -145,7 +146,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _target = new ToolDescriptorViewModel(_toolMock.Object, false);
 
             //act
-            var value = _target.ActivityType;
+            var value = _target.ActivityType as DataObject;
 
             //assert
             var formats = value.GetFormats();
@@ -163,7 +164,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             _target = new ToolDescriptorViewModel(_toolMock.Object, false);
 
             //act
-            var value = _target.ActivityType;
+            var value = _target.ActivityType as DataObject;
 
             //assert
             var formats = value.GetFormats();
