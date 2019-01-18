@@ -135,6 +135,7 @@ namespace Dev2.Server.Tests
             var mockPauseHelper = new Mock<IPauseHelper>();
             mockWebServerConfiguration.Setup(o => o.IsWebServerEnabled).Returns(false);
             mockWebServerConfiguration.Setup(o => o.IsWebServerSslEnabled).Returns(true);
+            mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { null });
 
             mockWriter.Setup(o => o.Fail(It.IsAny<string>(), It.IsAny<Exception>()));
             //-------------------Act-------------------------
