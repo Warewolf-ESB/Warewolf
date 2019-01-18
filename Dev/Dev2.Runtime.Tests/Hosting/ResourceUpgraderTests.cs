@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,9 +19,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-   public class ResourceUpgraderTests
+    [TestCategory("Runtime Hosting")]
+    public class ResourceUpgraderTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [ExpectedException(typeof(ArgumentNullException ))]
         [TestCategory("ResourceUpgrader_Ctor")]
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Properties")]
         public void ResourceUpgrader_Properties()
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
         }
-         [TestMethod, DeploymentItem("EnableDocker.txt")]
+         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_NoDictionary()
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Runtime.Hosting
            Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
 
-               [TestMethod, DeploymentItem("EnableDocker.txt")]
+               [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_EmptyDictionary()
@@ -78,7 +79,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(upgraded.ToString(), "<a></a>");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionaryDictionary()
@@ -103,7 +104,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<b ServerVersion=\"" +upgrader.GetType().Assembly.GetName().Version + "\"></b>");
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionary_TwoUpgrades()
@@ -136,7 +137,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(upgraded.ToString(), "<c ServerVersion=\"" + upgrader.GetType().Assembly.GetName().Version + "\"></c>");
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceUpgrader_Ctor")]
         public void ResourceUpgrader_Upgrade_HasDictionary_TwoUpgrades_Only1Matches()

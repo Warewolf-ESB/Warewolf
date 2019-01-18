@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,11 +19,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class WebSourceTests
     {
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceContructorWithDefaultExpectedInitializesProperties()
         {
             var source = new WebSource();
@@ -31,14 +32,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebSource", source.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             var source = new WebSource(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WebSource", source.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceContructorWithValidXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("WebSource");
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceToXmlExpectedSerializesProperties()
         {
             var expected = new WebSource
@@ -94,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region Dispose
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceDisposeClientExpectedDisposesAndNullsClient()
         {
             var source = new WebSource { Client = new WebClient() };
@@ -104,7 +105,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(source.Client);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void WebSourceDisposeExpectedDisposesAndNullsClient()
         {
             var source = new WebSource { Client = new WebClient() };

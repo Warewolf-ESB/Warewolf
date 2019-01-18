@@ -11,7 +11,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchComPluginActionsTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void BuildServiceInputName_GivenTypeNames_ShouldConcatinateTypeWithName()
         {
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Class2 (Project1.Class2)", invoke.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void BuildServiceInputName_GivenCursorLocationEnumGetCorrectEnumName()
         {

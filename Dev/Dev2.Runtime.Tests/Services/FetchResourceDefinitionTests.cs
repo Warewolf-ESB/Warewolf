@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.Services
     public class FetchResourceDefinitionTests
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnCorreclty()
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(resourceId.ToGuid(), resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void DecryptAllPasswords_ShouldReturnVerifyCall()
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.Services
             mock.Verify(authorizer => authorizer.DecryptAllPasswords(It.IsAny<StringBuilder>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -112,7 +112,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.View, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DirectDeploy_HandlesType")]
         public void FetchResourceDefinition_HandlesType_ExpectName()
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("FetchResourceDefinitionService", fetchResourceDefinition.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DirectDeploy_CreateServiceEntry")]
         public void CreateServiceEntry_PassThrough()
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("FetchResourceDefinitionService", serviceEntry.Actions.Single().Name);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("FetchResourceDefinition_Execute")]
         public void FetchResourceDefinition_Execute_PassThrough()
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.Services
             mock.Verify(p => p.GetResourceDefinition(true, It.IsAny<Guid>(), It.IsAny<StringBuilder>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FetchResourceDefinition_Execute")]
         public void FetchResourceDefinition_Execute_WhenForDeployment_ShouldDecryptPassword()

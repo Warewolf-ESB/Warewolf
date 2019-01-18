@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,11 +21,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ServicesTests
     {
         #region CreateInputsMethod
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_Plugin_EmptyType()
@@ -127,7 +128,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(typeof(object).FullName, sm.Parameters[0].TypeName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_Plugin_StringType()
@@ -229,7 +230,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(typeof(string).FullName, sm.Parameters[0].TypeName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_Plugin_NameCorrect()
@@ -331,7 +332,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("EmitStringData", sm.Name);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginEmptyToNullNotSet_EmptyToNullFalse()
@@ -433,7 +434,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(false, sm.Parameters[0].EmptyToNull);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginEmptyToNullSet_EmptyToNullTrue()
@@ -535,7 +536,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(true, sm.Parameters[0].EmptyToNull);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginRequiredNotSet_RequiredFalse()
@@ -636,7 +637,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(false, sm.Parameters[0].IsRequired);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginRequiredSet_RequiredTrue()
@@ -738,7 +739,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(true, sm.Parameters[0].IsRequired);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginDefaultValueNotSet_DefaultValueEmpty()
@@ -840,7 +841,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(string.Empty, sm.Parameters[0].DefaultValue);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Service_CreateInputsMethods")]
         public void Service_CreateInputsMethods_PluginDefaultValueSet_DefaultValueReturned()
@@ -944,7 +945,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Test")]
         public void Services_Test_WhenTestingPluginHavingARecordSetFieldWithEmptyName_ExpectNotAdded()
@@ -984,7 +985,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Test")]
         public void Services_Test_WhenTestingPluginHavingARecordSetFieldNotInOutput_ExpectNotAdded()
@@ -1033,7 +1034,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Services_Test")]
         public void Services_Test_WhenWebServiceWithResponse_FetchRecordset_ExpectRecordset()

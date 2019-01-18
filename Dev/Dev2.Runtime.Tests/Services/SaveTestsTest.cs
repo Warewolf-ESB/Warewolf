@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class SaveTestsTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_HandlesType")]
         public void SaveTests_HandlesType_ExpectName()
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("SaveTests", saveTests.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_NullValues_ErrorResult()
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_ResourceIDNotPresent_ErrorResult()
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_ResourceIDNotGuid_ErrorResult()
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_TestDefinitionsNotInValues_ErrorResult()
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_ItemToDeleteNotListOfServiceTestTO_ErrorResult()
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoPath_ShouldReturnNoPathMsg()
         {
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("resourcePath is missing", result.Message.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourceDefination_ShouldReturnResourceDefinationMsg()
         {
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("testDefinition is missing", result.Message.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SaveTests_Execute")]
         public void SaveTests_Execute_ExpectName()
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNullResource_ShouldReturnResourceDeletedMsg()
         {
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourceMoved_ShouldReturnResourceMovedMsg()
         {
@@ -342,7 +342,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourceMoved_ShouldSaveTests()
         {
