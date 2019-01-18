@@ -186,6 +186,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -255,7 +256,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetWithTimeoutActivityComparerTests.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetWithTimeoutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetRequestActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
@@ -386,7 +387,7 @@
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
-    <Compile Include="ActivityTests\Web\WebGetRequestActivityTests.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\WebGetRequestActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
