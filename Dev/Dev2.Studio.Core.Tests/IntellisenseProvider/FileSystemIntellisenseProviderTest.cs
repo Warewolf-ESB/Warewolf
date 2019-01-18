@@ -35,12 +35,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestInitialize]
         public void Init()
         {
-            Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
-
-
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
-
-
 
             _resourceModel = new ResourceModel(testEnvironmentModel.Object)
             {
@@ -62,12 +57,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
             DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
         }
 
         #endregion Test Initialization

@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
         readonly IActionInputDatatalistMapper _datatalistMapper;
         public WcfInputRegion(ModelItem modelItem, IActionToolRegion<IWcfAction> action)
-                   : this(new ActionInputDatatalistMapper())
+                   : this(new ActionInputDatalistMapper())
         {
             ToolRegionName = "WcfInputRegion";
             _modelItem = modelItem;
