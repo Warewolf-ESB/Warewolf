@@ -16,9 +16,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class TestDbSourceServiceTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -33,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -47,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("TestDbSourceService_HandlesType")]
         public void TestDbSourceService_HandlesType_ExpectName()
@@ -62,7 +63,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("TestDbSourceService", service.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("TestDbSourceService_HandlesType")]
         public void Execute_Problemtestingconnection_GivenNullBrokerResult_ReturnsError()

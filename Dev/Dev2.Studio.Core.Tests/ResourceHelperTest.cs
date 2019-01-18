@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,6 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-
-    // Sashen - 18-10-2012 - This class needs to be excluded
-    /// <summary>
-    ///This is a test class for ResourceHelperTest and is intended
-    ///to contain all ResourceHelperTest Unit Tests
-    ///</summary>
     [TestClass]
     public class ResourceHelperTest
     {
@@ -62,7 +56,7 @@ namespace Dev2.Core.Tests
             var name = ResourceHelper.GetDisplayName(null);
 
             //Assert
-            Assert.AreEqual(String.Empty, name);
+            Assert.AreEqual(string.Empty, name);
         }
 
         [TestMethod]

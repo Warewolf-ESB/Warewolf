@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Services
 
 
         Mock<IServerSchedulerFactory> _factory;
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
 
         public void GetScheduledResources_Execute_ReturnsScheduledResources()
 
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Runtime.Services
         }
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetScheduledResources_ServiceName()
         {
             var esbMethod = new GetScheduledResources();
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
         }
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetScheduledResourcesReturnsDynamicService()
         {
             var esb = new GetScheduledResources();
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetScheduledResources_Execute_ReturnsTrigger()
         {
             var output = RunOutput();
