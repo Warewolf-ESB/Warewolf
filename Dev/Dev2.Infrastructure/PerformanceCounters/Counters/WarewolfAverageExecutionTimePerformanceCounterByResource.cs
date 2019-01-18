@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
+    public class WarewolfAverageExecutionTimePerformanceCounterByResource : MyPerfCounter, IResourcePerformanceCounter
     {
-
-        PerformanceCounter _counter;
-        PerformanceCounter _baseCounter;
+        IBobsPerformanceCounter _baseCounter;
         bool _started;
         readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfAverageExecutionTimePerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
+        public WarewolfAverageExecutionTimePerformanceCounterByResource(Guid resourceId, string categoryInstanceName, IRealPerformanceCounterFactory performanceCounterFactory)
+            :base(performanceCounterFactory)
         {
             ResourceId = resourceId;
             CategoryInstanceName = categoryInstanceName;
@@ -25,25 +23,20 @@ namespace Dev2.PerformanceCounters.Counters
 
         public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
-        public IList<CounterCreationData> CreationData()
+        public IEnumerable<(string CounterName, string CounterHelp, PerformanceCounterType CounterType)> CreationData()
         {
-            var totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.AverageTimer32,
-
-
-            };
-            var avgDurationBase = new CounterCreationData
-            {
-                CounterName = "average time per operation base",
-                CounterHelp = "Average duration per operation execution base",
-                CounterType = PerformanceCounterType.AverageBase
-            };
-
-            return new[] { totalOps, avgDurationBase };
-
+            yield return
+            (
+                Name,
+                Name,
+                PerformanceCounterType.AverageTimer32
+            );
+            yield return
+            (
+                "average time per operation base",
+                "Average duration per operation execution base",
+                PerformanceCounterType.AverageBase
+            );
         }
 
         public bool IsActive { get; set; }
@@ -75,20 +68,8 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name,CategoryInstanceName)
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-                
-
-                };
-                _baseCounter = new PerformanceCounter(GlobalConstants.WarewolfServices, "average time per operation base", CategoryInstanceName)
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
-
-                };
+                _counter = _counterFactory.New(GlobalConstants.WarewolfServices, Name, CategoryInstanceName);
+                _baseCounter = _counterFactory.New(GlobalConstants.WarewolfServices, "average time per operation base", CategoryInstanceName);
                 _started = true;
             }
         }
@@ -120,9 +101,9 @@ namespace Dev2.PerformanceCounters.Counters
             }
         }
 
-        public void Dispose()
+        new public void Dispose()
         {
-            _counter.Dispose();
+            base.Dispose();
             _baseCounter.Dispose();
         }
         #endregion
