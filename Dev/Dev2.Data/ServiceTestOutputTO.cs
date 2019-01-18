@@ -3,8 +3,6 @@ using System.ComponentModel;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 
-
-
 namespace Dev2.Data
 {
     public class ServiceTestOutputTO : IServiceTestOutput
@@ -19,5 +17,6 @@ namespace Dev2.Data
         public bool HasOptionsForValue { get; set; }
         public List<string> OptionsForValue { get; set; }
         public TestRunResult Result { get; set; }
+        public void OnSearchTypeChanged() { }
     }
 }

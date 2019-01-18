@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,15 +18,48 @@ using System.Reflection;
 
 namespace WarewolfCOMIPC.Client
 {
-    public class IpcClient : IDisposable, IDev2IpcClient
+    public interface IIpcClient : IDisposable
+    {
+        IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper);
+        object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args);
+    }
+
+    public static class IpcClient
+    {
+        static IpcClientImpl _ipcClient;
+        static readonly object _lock = new object();
+
+        public static IIpcClient GetIPCExecutor() => Instance;
+        public static IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper) => Instance.GetIPCExecutor(clientStreamWrapper);
+        
+        public static IIpcClient Instance
+        {
+            get
+            {
+                if (_ipcClient == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_ipcClient == null)
+                        {
+                            _ipcClient = new IpcClientImpl();
+                        }
+                    }
+                }
+                return _ipcClient;
+            }
+        }
+
+    }
+
+    public class IpcClientImpl : IIpcClient, IDev2IpcClient
     {
         bool _disposed;
         readonly INamedPipeClientStreamWrapper _pipeWrapper;
         readonly Process _process;
-        static IpcClient _ipcClient;
-        static readonly object padlock = new object();
 
-        IpcClient()
+
+        internal IpcClientImpl()
         {
             var token = Guid.NewGuid().ToString();
             var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
@@ -35,22 +78,18 @@ namespace WarewolfCOMIPC.Client
             _pipeWrapper.Connect();
         }
 
-        public IpcClient(INamedPipeClientStreamWrapper clientStreamWrapper) => _pipeWrapper = clientStreamWrapper;
+        public IpcClientImpl(INamedPipeClientStreamWrapper clientStreamWrapper) => _pipeWrapper = clientStreamWrapper;
 
-        public static IpcClient GetIPCExecutor() => GetIPCExecutor(null);
-
-        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
+       
+        public  IIpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
             if (clientStreamWrapper != null)
             {
-                return new IpcClient(clientStreamWrapper);
+                return new IpcClientImpl(clientStreamWrapper);
             }
-            lock (padlock)
-            {
-                return _ipcClient ?? (_ipcClient = new IpcClient());
-            }
+            return IpcClient.Instance;
         }
-        
+
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
@@ -159,7 +198,7 @@ namespace WarewolfCOMIPC.Client
             _process?.Kill();
         }
 
-        ~IpcClient()
+        ~IpcClientImpl()
         {
             Dispose(false);
         }
