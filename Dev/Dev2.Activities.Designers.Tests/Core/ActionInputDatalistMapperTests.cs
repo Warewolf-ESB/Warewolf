@@ -4,29 +4,30 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
 using Warewolf.Core;
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
     [TestClass]
-    public class ActionInputDatatalistMapperTests
+    public class ActionInputDatalistMapperTests
     {
-        ActionInputDatatalistMapper _actionInputDatalistMapper;
+        ActionInputDatalistMapper _actionInputDatalistMapper;
 
         [TestInitialize]
         public void Initialize()
         {
             IDataListViewModel setupDatalist = new DataListViewModel();
-            DataListSingleton.SetDataList(setupDatalist);
-
-            _actionInputDatalistMapper = new ActionInputDatatalistMapper();
+            var mockActiveDataList = new Mock<IActiveDataList>();
+            mockActiveDataList.Setup(a => a.ActiveDataList).Returns(setupDatalist);
+            _actionInputDatalistMapper = new ActionInputDatalistMapper(mockActiveDataList.Object);
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ActionInputDatatalistMapper))]
-        public void MapInputsToDatalist_Should_MapToScalar()
+        [TestCategory(nameof(ActionInputDatalistMapper))]
+        public void ActionInputDatalistMapper_MapInputsToDatalist_Should_MapToScalar()
         {
             var serviceInputs = new List<IServiceInput>();
             var serviceInput = new ServiceInput("[[a]]", "");
@@ -40,8 +41,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ActionInputDatatalistMapper))]
-        public void MapInputsToDatalist_Should_MapToObject()
+        [TestCategory(nameof(ActionInputDatalistMapper))]
+        public void ActionInputDatalistMapper_MapInputsToDatalist_Should_MapToObject()
         {
             var serviceInputs = new List<IServiceInput>();
             var serviceInput = new ServiceInput("[[a]]", "")
@@ -60,8 +61,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(ActionInputDatatalistMapper))]
-        public void MapInputsToDatalist_IsNullOrEmpty_Should_Continue()
+        [TestCategory(nameof(ActionInputDatalistMapper))]
+        public void ActionInputDatalistMapper_MapInputsToDatalist_IsNullOrEmpty_Should_Continue()
         {
             var serviceInputs = new List<IServiceInput>();
             var serviceInput = new ServiceInput("[[a]]", "");

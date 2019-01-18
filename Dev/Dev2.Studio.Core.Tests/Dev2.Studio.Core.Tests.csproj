@@ -315,7 +315,7 @@
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
-    <Compile Include="DataListSingletonTest.cs" />
+    <Compile Include="DataListSingletonTests.cs" />
     <Compile Include="DataListViewModelTests.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
