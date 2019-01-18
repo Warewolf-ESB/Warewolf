@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Threading;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,60 +19,22 @@ namespace Dev2.Core.Tests
     /// A set of test cases to test the functionality of the DataListSingleton
     /// </summary>
     [TestClass]
-    public class DataListSingletonTest
+    public class DataListSingletonTests
     {
-
-        public static readonly object DataListSingletonTestGuard = new object();
-        TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-
-        [TestInitialize]
-        public void Init()
-        {
-            Monitor.Enter(DataListSingletonTestGuard);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Monitor.Exit(DataListSingletonTestGuard);
-        }
-
-        #endregion
-
-        #region SetDataList Tests
-
         [TestMethod]
-        public void SetDataList_Expected_CurrentDataListSetInSingleton()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataListSingleton))]
+        public void DataListSingleton_SetDataList_Expected_CurrentDataListSetInSingleton()
         {
             var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
             Assert.AreEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
         }
 
-        #endregion SetDataList Tests
-
-        #region UpdateActiveDataList Tests
-
         [TestMethod]
-        public void UpdateActiveDataList_Expected_NewActiveDataList()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataListSingleton))]
+        public void DataListSingleton_UpdateActiveDataList_Expected_NewActiveDataList()
         {
             var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
@@ -82,7 +43,5 @@ namespace Dev2.Core.Tests
             DataListSingleton.SetDataList(mock_newDataListViewModel.Object);
             Assert.AreNotEqual(DataListSingleton.ActiveDataList, mockdataListViewModel);
         }
-
-        #endregion UpdateActiveDataList Tests
     }
 }
