@@ -265,7 +265,6 @@
     <Compile Include="Environments\TestServer.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
-    <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
