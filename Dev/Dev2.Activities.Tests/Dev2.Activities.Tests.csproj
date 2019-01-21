@@ -391,7 +391,6 @@
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
-    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\WebGetRequestActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
