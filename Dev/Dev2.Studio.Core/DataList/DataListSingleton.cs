@@ -19,7 +19,6 @@ namespace Dev2.Studio.Core
     /// </summary>
     public static class DataListSingleton
     {
-
         #region Locals
 
         static IDataListViewModel _activeDataList;
