@@ -12,8 +12,13 @@ namespace Dev2.Data
         string Description { get; set; }
         bool IsEditable { get; set; }
         string Value { get; set; }
-    }
 
+    }
+    public class ScalarEqualityComparer : IEqualityComparer<IScalar>
+    {
+        public int GetHashCode(IScalar obj) => obj.Name.GetHashCode();
+        public bool Equals(IScalar x, IScalar y) => throw new NotImplementedException();
+    }
     public class Scalar : IScalar, IEquatable<IScalar>
     {
         public string Name { get; set; }
@@ -84,7 +89,7 @@ namespace Dev2.Data
 
         #region ComparerEqualityComparer
 
-        sealed class ComparerEqualityComparer : IEqualityComparer<IScalar>
+        public class ScalarEqualityComparer : IEqualityComparer<IScalar>
         {
             public bool Equals(IScalar x, IScalar y)
             {
@@ -100,17 +105,14 @@ namespace Dev2.Data
                 {
                     return false;
                 }
-                if (x.GetType() != y.GetType())
-                {
-                    return false;
-                }
                 return string.Equals(x.Name, y.Name);
             }
 
             public int GetHashCode(IScalar obj) => obj.Name?.GetHashCode() ?? 0;
-        }
 
-        static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();
+        }
+       
+        static readonly IEqualityComparer<IScalar> ComparerInstance = new ScalarEqualityComparer();
         public static IEqualityComparer<IScalar> Comparer => ComparerInstance;
 
         #endregion

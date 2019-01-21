@@ -547,7 +547,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
@@ -605,7 +605,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
