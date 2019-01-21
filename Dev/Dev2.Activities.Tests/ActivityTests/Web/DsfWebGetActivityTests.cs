@@ -190,7 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource url)
         {
             return ResponseFromWeb;
         }

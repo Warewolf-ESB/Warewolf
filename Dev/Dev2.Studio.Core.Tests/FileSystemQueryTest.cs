@@ -10,20 +10,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Intellisense.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Launcher;
 
 namespace Dev2.Core.Tests
 {
     [TestClass]
-
     public class FileSystemQueryTest
     {
         [TestMethod]

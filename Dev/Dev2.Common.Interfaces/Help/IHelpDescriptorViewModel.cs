@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.Help
         /// <summary>
         /// The icon to display
         /// </summary>
-        DrawingImage Icon { get; }
+        object Icon { get; }
 
         /// <summary>
         /// Is this help enabled.

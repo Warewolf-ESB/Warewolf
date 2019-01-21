@@ -46,10 +46,10 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            IEnumerable<NameValue> head = null;
+            IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+                head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             }
             var query = "";
             if (QueryString != null)
@@ -68,7 +68,7 @@ namespace Dev2.Activities
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
-        public override HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        public override HttpClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)

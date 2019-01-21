@@ -17,7 +17,7 @@ using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
-    public class PulseLogger : IPulseLogger, IDisposable
+    public class PulseLogger : IStartTimer, IDisposable
     {
         internal readonly Timer _timer;
 
@@ -50,17 +50,17 @@ namespace Dev2.Data
 
         #region Implementation of IPulseLogger
 
-        public bool Start()
+        public IStartTimer Start()
         {
             try
             {
                 _timer.Start();
-                return true;
+                return this;
             }
             catch(Exception)
             {
 
-                return false;
+                return null;
             }
             
         }
@@ -75,7 +75,7 @@ namespace Dev2.Data
         #endregion
     }
 
-    public class PulseTracker : IPulseLogger, IDisposable
+    public class PulseTracker : IStartTimer, IDisposable
     {
         readonly Timer _timer;
 
@@ -103,16 +103,16 @@ namespace Dev2.Data
 
         #region Implementation of IPulseLogger
 
-        public bool Start()
+        public IStartTimer Start()
         {
             try
             {
                 _timer.Start();
-                return true;
+                return this;
             }
             catch(Exception)
             {
-                return false;
+                return null;
             }
         }
 

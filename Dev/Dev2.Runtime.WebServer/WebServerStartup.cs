@@ -20,7 +20,11 @@ using Owin;
 
 namespace Dev2.Runtime.WebServer
 {
-    public class WebServerStartup
+    public interface IWebServerStartup
+    {
+
+    }
+    public class WebServerStartup : IWebServerStartup
     {
         public const double SizeCapForDownload = 51200; // 50 KB size limit
 
