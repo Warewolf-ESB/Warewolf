@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IToolConflictItem : IConflictItem
     {
-        ImageSource MergeIcon { get; set; }
+        object MergeIcon { get; set; }
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
         FlowNode FlowNode { get; set; }

@@ -21,7 +21,7 @@ using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 

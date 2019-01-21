@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter, IDisposable
+    public class WarewolfNumberOfErrorsByResource : MyPerfCounter, IResourcePerformanceCounter, IDisposable
     {
-        PerformanceCounter _counter;
         bool _started;
         readonly WarewolfPerfCounterType _perfCounterType;
 
-        public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName)
+        public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName, IRealPerformanceCounterFactory performanceCounterFactory)
+            :base(performanceCounterFactory)
         {
             ResourceId = resourceId;
             CategoryInstanceName = categoryInstanceName;
@@ -23,18 +22,15 @@ namespace Dev2.PerformanceCounters.Counters
 
         public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
-        public IList<CounterCreationData> CreationData()
+        public IEnumerable<(string CounterName, string CounterHelp, Common.Interfaces.Monitoring.PerformanceCounterType CounterType)> CreationData()
         {
-            var totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.NumberOfItems32
-            };
-            return new[] { totalOps };
+            yield return
+            (
+                Name,
+                Name,
+                PerformanceCounterType.NumberOfItems32
+            );
         }
-
-        public bool IsActive { get; set; }
 
         #region Implementation of IPerformanceCounter
 
@@ -59,12 +55,7 @@ namespace Dev2.PerformanceCounters.Counters
         {
             if (!_started)
             {
-                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name, CategoryInstanceName)
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
-                };
+                _counter = _counterFactory.New(GlobalConstants.WarewolfServices, Name, CategoryInstanceName);
                 _started = true;
             }
         }
@@ -91,9 +82,12 @@ namespace Dev2.PerformanceCounters.Counters
             }
         }
 
-        public void Dispose()
+        new public void Dispose()
         {
-            _counter.Dispose();
+            if (_counter != null)
+            {
+                _counter.Dispose();
+            }
         }
 
         #region Implementation of IResourcePerformanceCounter

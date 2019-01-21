@@ -24,7 +24,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 
 namespace Dev2.Tests.Runtime.Services
 {

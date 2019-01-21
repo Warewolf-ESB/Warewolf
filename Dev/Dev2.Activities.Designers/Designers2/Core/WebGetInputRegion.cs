@@ -6,6 +6,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Activities.Utils;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
@@ -40,7 +42,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                     {
                         _modelItem.SetProperty("Headers",
-                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                            _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
                     }));
             }
             else
@@ -51,7 +53,7 @@ namespace Dev2.Activities.Designers2.Core
                     Headers.Add(new ObservableAwareNameValue(Headers, s =>
                     {
                         _modelItem.SetProperty("Headers",
-                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                            _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
                     }));
                 }
             }
@@ -59,7 +61,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty("Headers", _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -88,7 +90,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
                     _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                        _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
                 IsEnabled = true;
             }
@@ -162,7 +164,7 @@ namespace Dev2.Activities.Designers2.Core
             var headers2 =  new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
-                headers2.Add(new NameValue(nameValue.Name,nameValue.Value));
+                headers2.Add(new ObservableNameValue(nameValue.Name,nameValue.Value));
             }
             return new WebGetInputRegion
             {
@@ -184,7 +186,7 @@ namespace Dev2.Activities.Designers2.Core
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
                     _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                        _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
                 if (region.Headers != null)
                 {
@@ -193,7 +195,7 @@ namespace Dev2.Activities.Designers2.Core
                         Headers.Add(new ObservableAwareNameValue(Headers, s =>
                         {
                             _modelItem.SetProperty("Headers",
-                                _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                                _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
                         })
                         { Name = nameValue.Name, Value = nameValue.Value });
                     }

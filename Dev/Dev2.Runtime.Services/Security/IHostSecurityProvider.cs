@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Wrappers;
 using System;
 using System.Net;
 using System.Text;
@@ -44,6 +45,6 @@ namespace Dev2.Runtime.Security
         /// <param name="certPath">The cert path.</param>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        bool EnsureSsl(string certPath, IPEndPoint endPoint);
+        bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint);
     }
 }
