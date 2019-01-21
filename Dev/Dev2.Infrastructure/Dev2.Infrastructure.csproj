@@ -140,7 +140,6 @@
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterManager.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterRegister.cs" />
     <Compile Include="PerformanceCounters\PerformanceCounterCategoryWrapper.cs" />
-    <Compile Include="PerformanceCounters\Type.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
