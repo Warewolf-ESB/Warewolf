@@ -12,33 +12,15 @@ using System;
 using Dev2.Common.Container;
 using Dev2.Interfaces;
 using Dev2.Runtime.Auditing;
+using Dev2.Common.Interfaces.Logging;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    public class LogManager : IDisposable
+    public class LogManagerImplementation : ILogManager, IDisposable
     {
-        private static LogManager _instance;
-
         readonly Dev2StateAuditLogger _logger = new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
 
-        private static LogManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new LogManager();
-                }
-                return _instance;
-            }
-        }
-
-        internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
-        {
-            return Instance.CreateStateNotifierImpl(dsfDataObject);
-        }
-
-        private IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
+        public IStateNotifier CreateStateNotifierImpl(IDSFDataObject dsfDataObject)
         {
             var stateNotifier = new StateNotifier();
 
@@ -49,11 +31,7 @@ namespace Dev2.Runtime.ESB.Execution
             return stateNotifier;
         }
 
-        public static void FlushLogs()
-        {
-            Instance.FlushLogsImpl();
-        }
-        private void FlushLogsImpl()
+        public void FlushLogs()
         {
             _logger.Flush();
         }
@@ -74,6 +52,48 @@ namespace Dev2.Runtime.ESB.Execution
         public void Dispose()
         {
             Dispose(true);
+        }
+    }
+
+    public class LogManager : IDisposable
+    {
+        private static LogManagerImplementation _instance;
+        private static readonly object _lock = new object();
+
+
+        private static LogManagerImplementation Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new LogManagerImplementation();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+
+        internal static IStateNotifier CreateStateNotifier(IDSFDataObject dsfDataObject)
+        {
+            return Instance.CreateStateNotifierImpl(dsfDataObject);
+        }
+
+
+        public static void FlushLogs()
+        {
+            Instance.FlushLogs();
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_instance).Dispose();
         }
     }
 }

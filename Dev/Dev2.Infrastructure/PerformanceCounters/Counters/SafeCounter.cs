@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class SafeCounter:IPerformanceCounter
+    public class SafeCounter : IPerformanceCounter
     {
         readonly IPerformanceCounter _counter;
 
@@ -68,7 +67,7 @@ namespace Dev2.PerformanceCounters.Counters
         public string Name => _counter.Name;
         public WarewolfPerfCounterType PerfCounterType => _counter.PerfCounterType;
 
-        public IList<CounterCreationData> CreationData() => _counter.CreationData();
+        public IEnumerable<(string, string, PerformanceCounterType)> CreationData() => _counter.CreationData();
 
         public bool IsActive { get => _counter.IsActive; set => _counter.IsActive = value; }
         public IPerformanceCounter InnerCounter => _counter;
@@ -83,6 +82,11 @@ namespace Dev2.PerformanceCounters.Counters
             _counter.Reset();
         }
         #endregion
+
+        public void Dispose()
+        {
+            _counter.Dispose();
+        }
     }
 
 

@@ -329,7 +329,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = new TestDsfWebPostActivity
             {
-                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
@@ -420,7 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = new TestDsfWebPostActivity
             {
-                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
@@ -568,9 +568,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 PostData = "This is post:[[Post]]"
             };
 
-            var headers = new List<NameValue>
+            var headers = new List<INameValue>
             {
-                new NameValue("Content","text/json")
+                new ObservableNameValue("Content","text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebPostActivity);
@@ -624,7 +624,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected override string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             Head = head;
             QueryRes = query;
@@ -637,7 +637,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string QueryRes { get; private set; }
 
-        public IEnumerable<NameValue> Head { get; private set; }
+        public IEnumerable<INameValue> Head { get; private set; }
 
         #endregion
 

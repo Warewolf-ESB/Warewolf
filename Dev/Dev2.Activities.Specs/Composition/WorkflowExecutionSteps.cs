@@ -88,7 +88,8 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.ESB.Execution;
-using Warewolf.Launcher;
+using System.Linq.Expressions;
+using Warewolf.Test.Agent;
 using System.Reflection;
 using Dev2.Runtime.Auditing;
 using Warewolf.Storage;
@@ -306,6 +307,7 @@ namespace Dev2.Activities.Specs.Composition
             var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
+            // TODO: move this to a spec command something like "I get a valid MySQL host called 'mysqlhost1'"
             if (workflowName == "TestMySqlWFWithMySqlCountries" ||
                 workflowName == "TestMySqlWFWithMySqlLastIndex" ||
                 workflowName == "TestMySqlWFWithMySqlScalar" ||
@@ -349,15 +351,18 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Assert.IsNotNull(e);
                 }
+
+                var performanceCounterFactory = new PerformanceCounterFactory();
+
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                new WarewolfNumberOfAuthErrors(),
-                                                                new WarewolfServicesNotFoundCounter()
+                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfErrors(performanceCounterFactory),
+                                                                new WarewolfRequestsPerSecondPerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfAverageExecutionTimePerformanceCounter(performanceCounterFactory),
+                                                                new WarewolfNumberOfAuthErrors(performanceCounterFactory),
+                                                                new WarewolfServicesNotFoundCounter(performanceCounterFactory)
                                                             }, new List<IResourcePerformanceCounter>());
-                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object, performanceCounterFactory));
             }
             catch (Exception ex)
             {
@@ -2219,7 +2224,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Delete
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2283,7 +2288,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Post
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2348,7 +2353,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Get
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2383,7 +2388,7 @@ namespace Dev2.Activities.Specs.Composition
             dsfWebGetActivity.Outputs = outputMapping;
             dsfWebGetActivity.Headers = new List<INameValue>
             {
-                new NameValue("Content-Type","text/html")
+                new ObservableNameValue("Content-Type","text/html")
             };
             dsfWebGetActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);
@@ -2415,7 +2420,7 @@ namespace Dev2.Activities.Specs.Composition
                 OutputMappings = new List<IServiceOutputMapping>(),
                 QueryString = "",
                 Id = a.Id,
-                Headers = new List<NameValue>(),
+                Headers = new List<INameValue>(),
                 Method = WebRequestMethod.Put
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2452,7 +2457,7 @@ namespace Dev2.Activities.Specs.Composition
             webPutActivity.Outputs = outputMapping;
             webPutActivity.Headers = new List<INameValue>()
             {
-                new NameValue("Content-Type","text/html")
+                new ObservableNameValue("Content-Type","text/html")
             };
             webPutActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);

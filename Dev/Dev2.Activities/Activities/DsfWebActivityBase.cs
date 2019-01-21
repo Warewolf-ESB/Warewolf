@@ -44,7 +44,7 @@ namespace Dev2.Activities
             }
             base.GetDebugInputs(env, update);
 
-            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -65,7 +65,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public virtual HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        public virtual HttpClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)
@@ -106,9 +106,9 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
-            var headerValues = head as NameValue[] ?? head.ToArray();
+            var headerValues = head as ObservableNameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {
@@ -154,7 +154,7 @@ namespace Dev2.Activities
             return null;
         }
 
-        private static string PerformPut(string putData, NameValue[] headerValues, HttpClient httpClient, string address)
+        private static string PerformPut(string putData, INameValue[] headerValues, HttpClient httpClient, string address)
         {
             HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
             var contentType = headerValues.FirstOrDefault(value => value.Name.ToLowerInvariant() == "Content-Type".ToLowerInvariant());
