@@ -85,11 +85,20 @@ namespace Dev2.Tests.ExtMethods
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
-        public void StringExtension_IsJSON_WhenValidJSON_ExpectTrue()
+        public void StringExtension_IsJSON_CurlyBrackets_ExpectTrue()
         {
             const string fragment = "{}";
             var result = fragment.IsJSON();
             Assert.IsTrue(result, "{} is valid JSON");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_IsJSON_SquareBrackets_ExpectTrue()
+        {
+            const string fragment = "[]";
+            var result = fragment.IsJSON();
+            Assert.IsTrue(result, "[] is valid JSON");
         }
 
         [TestMethod]
@@ -172,16 +181,36 @@ namespace Dev2.Tests.ExtMethods
             {
                 result = true;
             }
-            Assert.AreEqual(true,isFragment);
+            Assert.AreEqual(true, isFragment);
             Assert.AreEqual(false, result);
         }
-       
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_XmlFragment_IsXml_WithCData()
+        {
+            bool isFragment = false;
+            bool result = false;
+            if (StringExtension.IsXml("<![CDATA[An in-depth look at creating applications with XML, using <, >,]]>", out isFragment))
+            {
+                result = true;
+            }
+            Assert.AreEqual(false, isFragment);
+            Assert.AreEqual(false, result);
+        }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("StringExtension")]
         public void StringExtension_XmlFragment_IsXml_ValidXML()
         {
             Assert.IsTrue("<xml><frag>ment</frag><ment>frag</ment></xml>".IsXml(), "Is valid XML not a fragment");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_XmlFragment_IsXml_inValidXML()
+        {
+            Assert.IsFalse("xml><frag>ment</frag><ment>frag</ment></xml>".IsXml(), "Is valid XML not a fragment");
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -508,6 +537,44 @@ namespace Dev2.Tests.ExtMethods
         {
             var stringToSearchIn = "hElL o";
             Assert.IsFalse(stringToSearchIn.SpaceCaseInsenstiveComparision("helloworld"));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_SpaceCaseInsenstiveComparisions_BothNull_False()
+        {
+            string stringToSearchIn = null;
+            Assert.IsTrue(stringToSearchIn.SpaceCaseInsenstiveComparision(null));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_SpaceCaseInsenstiveComparisions_ExceptChars_True()
+        {
+            var stringToSearchIn = "\n32 16\t54\r";
+            Assert.IsTrue(stringToSearchIn.SpaceCaseInsenstiveComparision("321654"));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_SpaceCaseInsenstiveComparisions_ExceptChars_False()
+        {
+            string stringa = null;
+            Assert.IsFalse(stringa.SpaceCaseInsenstiveComparision("321654"));
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_IsAlphaNumericRegex_False()
+        {
+            Assert.IsFalse("&lt;&gt;dfdg 444".IsAlphaNumeric(), "IsAlphaNumericRegex is False");
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("StringExtension")]
+        public void StringExtension_IsAlphaNumericRegex_True()
+        {
+            Assert.IsFalse(" 223 eeddd23".IsAlphaNumeric(), "IsAlphaNumericRegex is True");
         }
     }
 }
