@@ -29,5 +29,12 @@ namespace Dev2.Runtime.Interfaces
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath);
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason);
+        IList<IResource> LoadExamplesViaBuilder(string releasePath);
+        void LoadServerActivityCache();
+    }
+
+    public interface IResourceCatalogFactory
+    {
+        IResourceCatalog New();
     }
 }

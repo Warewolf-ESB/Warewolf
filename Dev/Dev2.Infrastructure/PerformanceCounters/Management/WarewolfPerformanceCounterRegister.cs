@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
@@ -10,9 +9,16 @@ namespace Dev2.PerformanceCounters.Management
 {
     public class WarewolfPerformanceCounterRegister : IWarewolfPerformanceCounterRegister
     {
-        
-        public  WarewolfPerformanceCounterRegister(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters  )
+        readonly IPerformanceCounterCategory _performanceCounterCategory;
+
+        public WarewolfPerformanceCounterRegister(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters)
+            : this(new PerformanceCounterCategoryWrapper(), counters, resourcePerformanceCounters)
         {
+        }
+        public WarewolfPerformanceCounterRegister(IPerformanceCounterCategory performanceCounterCategory, IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters)
+        {
+            _performanceCounterCategory = performanceCounterCategory;
+
             RegisterCountersOnMachine(counters, GlobalConstants.Warewolf);
             RegisterCountersOnMachine(resourcePerformanceCounters.Cast<IPerformanceCounter>().ToList(), GlobalConstants.WarewolfServices);
             Counters = counters;
@@ -22,22 +28,22 @@ namespace Dev2.PerformanceCounters.Management
         public IList<IResourcePerformanceCounter> ResourceCounters { get; set; }
 
         public IList<IPerformanceCounter> Counters { get; set; }
-        public IList<IPerformanceCounter> DefaultCounters { get; set; }
+        public IList<IPerformanceCounter> DefaultCounters { get; set; } // TODO: remove me?
 
         public void RegisterCountersOnMachine(IList<IPerformanceCounter> counters,string Category)
         {
             try
             {
-                if (!PerformanceCounterCategory.Exists(Category))
+                if (!_performanceCounterCategory.Exists(Category))
                 {
                     CreateAllCounters(counters, Category);
                 }
                 else
                 {
-                    var cat = new PerformanceCounterCategory(Category);
+                    var cat = _performanceCounterCategory.New(Category);
                     if (!counters.All(a => cat.CounterExists(a.Name)))
                     {
-                        PerformanceCounterCategory.Delete(Category);
+                        _performanceCounterCategory.Delete(Category);
                         CreateAllCounters(counters, Category);
 
                     }
@@ -54,18 +60,9 @@ namespace Dev2.PerformanceCounters.Management
 
 
 
-        static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
+        void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
         {
-            var counterCreationDataCollection = new CounterCreationDataCollection();
-            foreach (var counterl in counters)
-            {
-                foreach (var counter in counterl.CreationData())
-                {
-                    counterCreationDataCollection.Add(counter);
-                }
-
-            }
-            PerformanceCounterCategory.Create(category, "Warewolf Performance Counters", PerformanceCounterCategoryType.MultiInstance, counterCreationDataCollection);
+            _performanceCounterCategory.Create(category, "Warewolf Performance Counters", counters);
         }
     }
 }

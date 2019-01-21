@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -258,7 +259,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var dsfWebDeleteActivity = CreateTestDeleteActivity();
-            dsfWebDeleteActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
+            dsfWebDeleteActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
             dsfWebDeleteActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
@@ -364,7 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebDeleteActivity = CreateTestDeleteActivity();
-            dsfWebDeleteActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
+            dsfWebDeleteActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
             dsfWebDeleteActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             dsfWebDeleteActivity.Outputs = serviceOutputs;
@@ -430,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
             Head = head;
             QueryRes = query;
@@ -439,7 +440,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string QueryRes { get; private set; }
 
-        public IEnumerable<NameValue> Head { get; private set; }
+        public IEnumerable<INameValue> Head { get; private set; }
 
         #endregion
 

@@ -1,10 +1,9 @@
-﻿using Dropbox.Api;
+﻿using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Common.Interfaces.Dropbox
 {
     public interface IDropboxFactory
     {
-        DropboxClient CreateWithSecret(string secret);
+        IDropboxClientWrapper CreateWithSecret(string secret);
     }
-
 }

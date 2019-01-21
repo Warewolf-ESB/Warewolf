@@ -8,6 +8,6 @@ namespace Dev2.Common.Interfaces.Toolbox
         bool IsEnabled { get; }
         IWarewolfType Designer { get; }
         IWarewolfType Activity { get; }
-        DataObject ActivityType { get; }
+        object ActivityType { get; }
     }
 }

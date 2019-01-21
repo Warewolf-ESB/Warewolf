@@ -16,6 +16,7 @@ using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Runtime.Security
 {
@@ -171,17 +172,17 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSSL
 
-        public bool EnsureSsl(string certPath, IPEndPoint endPoint)
+        public bool EnsureSsl(IFile fileWrapper, string certPath, IPEndPoint endPoint)
         {
             var result = false;
 
-            if (!File.Exists(certPath))
+            if (!fileWrapper.Exists(certPath))
             {
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
                     certificateBuilder.EnsureSslCertificate(certPath, endPoint);
-                    result = File.Exists(certPath);
+                    result = fileWrapper.Exists(certPath);
                 }
                 catch (Exception e)
                 {
