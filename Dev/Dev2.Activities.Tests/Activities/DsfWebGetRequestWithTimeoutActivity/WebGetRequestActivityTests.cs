@@ -15,7 +15,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -43,8 +42,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
+        
         static readonly object TestGuard = new object();
         [TestInitialize]
         public void TestInit()
@@ -58,21 +56,10 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             Monitor.Exit(TestGuard);
         }
 
-        #endregion
-
         [TestMethod]
-        public void WebGetRequestActivityWhereWebRequestInvokerIsNullExpectConcreateImplementation()
-        {
-            //------------Setup for test--------------------------
-            var activity = GetWebGetRequestWithTimeoutActivity();
-            //------------Execute Test---------------------------
-            var requestInvoker = activity.WebRequestInvoker;
-            //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(requestInvoker, typeof(WebRequestInvoker));
-        }
-
-        [TestMethod]
-        public void WebGetRequestActivityWhereConstructedExpectIsAbstractString()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Constructed_Expect_IsAbstractString()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -83,7 +70,22 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
-        public void WebGetRequestWhereGivenAnIWebRequestInvokerExpectGetGivenValue()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_WebRequestInvoker_IsNull_Expect_ConcreateImplementation()
+        {
+            //------------Setup for test--------------------------
+            var activity = GetWebGetRequestWithTimeoutActivity();
+            //------------Execute Test---------------------------
+            var requestInvoker = activity.WebRequestInvoker;
+            //------------Assert Results-------------------------
+            Assert.IsInstanceOfType(requestInvoker, typeof(WebRequestInvoker));
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_WebRequestInvoker_Expect_GetGivenValue()
         {
             //------------Setup for test--------------------------
             var activity = GetWebGetRequestWithTimeoutActivity();
@@ -95,10 +97,11 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             Assert.AreEqual(webRequestInvoker, actual);
             Assert.IsNotInstanceOfType(actual, typeof(WebRequestInvoker));
         }
-
-
+        
         [TestMethod]
-        public void GetFindMissingTypeExpectStaticActivityType()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_GetFindMissingType_Expect_StaticActivityType()
         {
             //------------Setup for test--------------------------
             var activity = GetWebGetRequestWithTimeoutActivity();
@@ -110,7 +113,9 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
 
         [TestMethod]
-        public void WebGetRequestExecuteWhereStaticValuesExpectCorrectResults()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithStaticValues_Expect_CorrectResults()
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
@@ -121,7 +126,6 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             {
                 Action = activity
             };
-            TestData = "<root><testVar /></root>";
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
@@ -129,14 +133,17 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WebGetRequestActivity_Errors")]
-        public void WebGetRequestExecuteWhereErrorExpectErrorAdded()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_ExpectErrorAdded()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IWebRequestInvoker>();
             const string Message = "This is a forced exception";
+
+            var mock = new Mock<IWebRequestInvoker>();
+
             mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
+
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -144,7 +151,6 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             {
                 Action = activity
             };
-            TestData = "<root><testVar /></root>";
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
@@ -154,15 +160,18 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
-        [Owner("Kerneels Roos")]
-        [TestCategory("WebGetRequestActivity_Errors")]
-        public void WebGetRequestExecuteWhereErrorExpectErrorAdded_TimeoutSecondsOutOfRange()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_Expect_ErrorAdded_TimeoutSecondsOutOfRange()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IWebRequestInvoker>();
             const string Url = "http://localhost";
             const string ExpectedResult = "Request Made";
+
+            var mock = new Mock<IWebRequestInvoker>();
+
             mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -172,8 +181,6 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             {
                 Action = activity
             };
-            TestData = string.Format("<root><Url>{0}</Url></root>", Url);
-            CurrentDl = "<ADL><Res></Res><Url></Url></ADL>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
@@ -182,16 +189,20 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             Assert.AreNotEqual(ExpectedResult, actual);
             Assert.IsNotNull(error);
         }
-
-
+        
         [TestMethod]
-        public void WebGetRequestExecuteWhereScalarValuesExpectCorrectResults()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithScalarValues_Expect_CorrectResults()
         {
             //------------Setup for test--------------------------
-            var mock = new Mock<IWebRequestInvoker>();
             const string Url = "http://localhost";
             const string ExpectedResult = "Request Made";
+
+            var mock = new Mock<IWebRequestInvoker>();
+
             mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -201,7 +212,6 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
                 Action = activity
             };
             TestData = string.Format("<root><Url>{0}</Url></root>", Url);
-            CurrentDl = "<ADL><Res></Res><Url></Url></ADL>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
@@ -211,13 +221,14 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("GetOutputs")]
-        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_GetOutputs_Called_Expect_ListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
             const string Url = "[[CompanyName]]";
             const string result = "[[res]]";
+
             var act = new DsfWebGetRequestWithTimeoutActivity { Url = Url, Result = result };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -225,13 +236,13 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[res]]", outputs[0]);
         }
-
         
         [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DsfWebGetRequestActivity_Execute")]
-        public void WebGetRequestExecuteWithHeaders()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders()
         {
+            //------------Setup for test--------------------------
             const string response = "[\"value1\",\"value2\"]";
             var dsfWebGetActivity = new DsfWebGetRequestActivity
             {
@@ -240,8 +251,11 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
                 Headers = "Authorization: Basic 321654987"
             };
             var environment = new ExecutionEnvironment();
-            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+
             var dataObjectMock = new Mock<IDSFDataObject>();
+
+            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new MockEsb());
@@ -252,10 +266,13 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("DsfWebGetRequestActivity_Execute")]
-        public void WebGetRequestWithTimeoutActivity_ExecuteWithHeaders()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Execute_WithHeaders_WithTimeoutActivity()
         {
+            //------------Setup for test--------------------------
+            var dataObjectMock = new Mock<IDSFDataObject>();
+
             var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
             {
                 Url = "[[URL]]",
@@ -264,8 +281,9 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
                 Headers = "Authorization: Basic 321654987"
             };
             var environment = new ExecutionEnvironment();
+            
             environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
-            var dataObjectMock = new Mock<IDSFDataObject>();
+
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
             dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new MockEsb());
@@ -274,6 +292,39 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual("Value hhh for TimeoutSecondsText could not be interpreted as a numeric value.\r\nExecution aborted - see error messages.", environment.FetchErrors().ToString());
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Equals_dsfWebGetActivity_Null_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity();
+            //------------Execute Test---------------------------
+            var actual = dsfWebGetActivity.Equals(null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Equals_dsfWebGetActivity_NotNull_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Method = "GET",
+                Headers = string.Empty,
+                TimeoutSeconds = 100,  // default of 100 seconds
+                TimeOutText = "100",
+            };
+            //------------Execute Test---------------------------
+            var actual = dsfWebGetActivity.Equals(dsfWebGetActivity);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual);
+        }
+
         static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestWithTimeoutActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
             var webRequestInvoker = mockWebRequestInvoker.Object;
@@ -289,11 +340,9 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         }
         
     }
+
     public class MockEsb : IEsbChannel
     {
-
-        #region Not Implemented
-
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
                                    out ErrorResultTO errors)
         {
@@ -349,12 +398,9 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         {
         }
 
-        #endregion
-
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
                                       out ErrorResultTO errors, int update, bool b)
         {
-
             errors = new ErrorResultTO();
             return dataObject.Environment;
         }
