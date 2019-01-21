@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Permissions
     [Binding]
     public class SettingsPermissionsSteps
     {
-        readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.Permissions
                 throw new ArgumentNullException(nameof(scenarioContext));
             }
 
-            this.scenarioContext = scenarioContext;
+            this._scenarioContext = scenarioContext;
         }
 
 
@@ -213,7 +213,7 @@ namespace Dev2.Activities.Specs.Permissions
             FeatureContext.Current["currentEnvironment"] = reconnectModel;
         }
 
-        IServer LoadResources()
+        static IServer LoadResources()
         {
             var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
@@ -226,7 +226,7 @@ namespace Dev2.Activities.Specs.Permissions
         }
 
         [Then(@"resources should have ""(.*)""")]
-        public void ThenResourcesShouldHave(string resourcePerms)
+        public static void ThenResourcesShouldHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
             var resourcePermissions = SecPermissions.None;
@@ -343,7 +343,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             AppUsageStats.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = ServerRepository.Instance.Source;
-            scenarioContext.Add("environment", environmentModel);
+            _scenarioContext.Add("environment", environmentModel);
         }
     }
 }

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.WcfEndPoint;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.DB;
@@ -105,7 +106,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]"
             };
@@ -138,7 +139,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]"
             };
@@ -171,7 +172,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 PutData = "[[putdata]]"
@@ -449,7 +450,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 PostData = "[[data]]"
@@ -484,7 +485,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 PostData = "[[data]]",
@@ -510,7 +511,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 IsObject = true,
@@ -535,7 +536,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 PutData = "[[putdata]]",
@@ -561,7 +562,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
                 Inputs = new List<IServiceInput> { new ServiceInput("Input1", "[[InputValue1]]"), new ServiceInput("Input2", "[[InputValue2]]"), new ServiceInput("Input3", "[[InputValue3]]") },
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Output1", "OutputValue1", "rec"), new ServiceOutputMapping("Output2", "OutputValue2", "rec") },
                 QueryString = "[[qstring]]",
-                Headers = new List<INameValue> { new NameValue("Content-Type", "[[ctype]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Content-Type", "[[ctype]]") },
                 OnErrorVariable = "[[err]]",
                 OnErrorWorkflow = "[[errSvc]]",
                 IsObject = true,

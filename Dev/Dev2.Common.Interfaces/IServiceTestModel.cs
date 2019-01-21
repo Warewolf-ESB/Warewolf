@@ -70,5 +70,6 @@ namespace Dev2.Common.Interfaces
         bool HasOptionsForValue { get; set; }
         List<string> OptionsForValue { get; set; }
         TestRunResult Result { get; set; }
+        void OnSearchTypeChanged();
     }
 }

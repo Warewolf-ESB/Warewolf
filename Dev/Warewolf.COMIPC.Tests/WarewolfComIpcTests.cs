@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfCOMIPC.Client;
@@ -82,6 +92,21 @@ namespace WarewolfCOMIPC.Test
             //---------------Test Result -----------------------
 
             Assert.IsNotNull(execute.Value);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfCOMIPC))]
+        [DeploymentItem("Dev2.Runtime.Tests.dll")]
+        [DeploymentItem("Warewolf.COMIPC.exe"), DeploymentItem("Warewolf.COMIPC.pdb")]
+        public void ExecuteSpecifiedMethod_Instance_IsNotNull()
+        {
+            //---------------Arrange----------------------------
+            var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            //---------------Act--------------------------------
+            var execute = IpcClient.Instance; 
+            //---------------Assert-----------------------------
+            Assert.IsNotNull(execute);
         }
     }
 }

@@ -44,10 +44,10 @@ namespace Dev2.Activities
 
             base.GetDebugInputs(env, update);
 
-            IEnumerable<NameValue> head = null;
+            IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+                head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
@@ -83,10 +83,10 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            IEnumerable<NameValue> head = null;
+            IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+                head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             }
             var query = "";
             if (QueryString != null)
@@ -112,12 +112,12 @@ namespace Dev2.Activities
 
         
 
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
-        public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        public WebClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             var webclient = new WebClient();
