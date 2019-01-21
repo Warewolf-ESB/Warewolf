@@ -140,6 +140,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
+    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
@@ -186,6 +190,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
@@ -255,7 +260,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetWithTimeoutActivityComparerTests.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetWithTimeoutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetRequestActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
@@ -386,7 +391,6 @@
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
-    <Compile Include="ActivityTests\Web\WebGetRequestActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
@@ -517,10 +521,6 @@
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
       <Name>Warewolf.Language.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
-      <Project>{9b669d51-14ce-44a3-9407-8251ba3bad19}</Project>
-      <Name>Warewolf.Launcher</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

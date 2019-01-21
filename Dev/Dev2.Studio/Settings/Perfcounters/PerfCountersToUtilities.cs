@@ -7,8 +7,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 
-
-
 namespace Dev2.Settings.Perfcounters
 {
     public static class PerfCountersToUtilities
@@ -65,26 +63,27 @@ namespace Dev2.Settings.Perfcounters
         {
             var res = new List<IResourcePerformanceCounter>();
             var performanceCountersByResources = to.Where(resource => !resource.IsDeleted && !string.IsNullOrEmpty(resource.CounterName));
+            var performanceCounterFactory = new PerformanceCounterFactory();
             foreach (var resourcePerformanceCounter in performanceCountersByResources)
             {
                 if (resourcePerformanceCounter.TotalErrors)
                 {
-                    var counter = new WarewolfNumberOfErrorsByResource(resourcePerformanceCounter.ResourceId,resourcePerformanceCounter.CounterName);
+                    var counter = new WarewolfNumberOfErrorsByResource(resourcePerformanceCounter.ResourceId,resourcePerformanceCounter.CounterName, performanceCounterFactory);
                     res.Add(counter);
                 }
                 if (resourcePerformanceCounter.AverageExecutionTime)
                 {
-                    var counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName);
+                    var counter = new WarewolfAverageExecutionTimePerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName, performanceCounterFactory);
                     res.Add(counter);
                 }
                 if (resourcePerformanceCounter.ConcurrentRequests)
                 {
-                    var counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName);
+                    var counter = new WarewolfCurrentExecutionsPerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName, performanceCounterFactory);
                     res.Add(counter);
                 }
                 if (resourcePerformanceCounter.RequestPerSecond)
                 {
-                    var counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName);
+                    var counter = new WarewolfRequestsPerSecondPerformanceCounterByResource(resourcePerformanceCounter.ResourceId, resourcePerformanceCounter.CounterName, performanceCounterFactory);
                     res.Add(counter);
                 }
             }

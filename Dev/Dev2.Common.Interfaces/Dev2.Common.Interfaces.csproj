@@ -142,7 +142,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -372,7 +371,7 @@
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
     <Compile Include="IPluginSource.cs" />
-    <Compile Include="IPulseLogger.cs" />
+    <Compile Include="IStartTimer.cs" />
     <Compile Include="IQueryManager.cs" />
     <Compile Include="IRabbitMQ.cs" />
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
@@ -408,6 +407,7 @@
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebSource.cs" />
+    <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\IWarewolfLogWriter.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
@@ -416,6 +416,7 @@
     <Compile Include="Monitoring\IPerformanceCounterTo.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterRegister.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterLocater.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterCategory.cs" />
     <Compile Include="Monitoring\WarewolfPerfCounterType.cs" />
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
@@ -456,7 +457,6 @@
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
     <Compile Include="Studio\Core\Enums.cs" />
-    <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="TestSaveResult.cs" />
@@ -525,6 +525,8 @@
     <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\IDomain.cs" />
     <Compile Include="Wrappers\IDropboxClientWrapper.cs" />
+    <Compile Include="Wrappers\IFileInfo.cs" />
+    <Compile Include="Wrappers\ITimer.cs" />
     <Compile Include="Wrappers\IZipFile.cs" />
     <Compile Include="Wrappers\IFilePath.cs" />
     <Compile Include="Wrappers\IFile.cs" />

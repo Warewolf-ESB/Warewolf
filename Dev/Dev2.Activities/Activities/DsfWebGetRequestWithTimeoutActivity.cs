@@ -30,16 +30,12 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-
-
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-GetWebRequest", "Web Request", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Get")]
     public class DsfWebGetRequestWithTimeoutActivity : DsfActivityAbstract<string>,IEquatable<DsfWebGetRequestWithTimeoutActivity>
     {
         IWebRequestInvoker _webRequestInvoker;
-
 
         public IWebRequestInvoker WebRequestInvoker
         {
@@ -67,6 +63,7 @@ namespace Dev2.Activities
         public string Url { get; set; }
         [FindMissing]
         public string Headers { get; set; }
+
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
@@ -114,10 +111,7 @@ namespace Dev2.Activities
         }
 
         public override List<string> GetOutputs() => new List<string> { Result };
-
-
-        #region Overrides of DsfNativeActivity<string>
-
+        
         /// <summary>
         ///     When overridden runs the activity's execution logic
         /// </summary>
@@ -169,6 +163,7 @@ namespace Dev2.Activities
         ErrorResultTO TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             allErrors.MergeErrors(_errorsTo);
+
             if (dataObject.IsDebugMode())
             {
                 var debugItem = new DebugItem();
@@ -178,9 +173,12 @@ namespace Dev2.Activities
             var colItr = new WarewolfListIterator();
             var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
             var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
+
             colItr.AddVariableToIterateOn(urlitr);
             colItr.AddVariableToIterateOn(headerItr);
+
             var counter = 1;
+
             while (colItr.HasMoreData())
             {
                 var c = colItr.FetchNextValue(urlitr);
@@ -191,37 +189,51 @@ namespace Dev2.Activities
 
                 var headersEntries = new List<Tuple<string, string>>();
 
-                AddHeaderDebug(dataObject, update, headers, headersEntries);
-                var timeoutSecondsError = false;
-                if (!string.IsNullOrEmpty(TimeOutText))
-                {
-                    timeoutSecondsError = SetTimeoutSecondsError(dataObject, update, allErrors, timeoutSecondsError);
+                counter = DebugInputItemsAdd(dataObject, update, allErrors, counter, c, headers, headersEntries);
+            }
 
-                    if (dataObject.IsDebugMode())
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment, update), debugItem);
-                        _debugInputs.Add(debugItem);
-                    }
-                }
+            return allErrors;
+        }
 
-                if (!timeoutSecondsError)
-                {
-                    var result = WebRequestInvoker.ExecuteRequest(Method,
-                        c,
-                        headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
-                        );
+        private int DebugInputItemsAdd(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, string[] headers, List<Tuple<string, string>> headersEntries)
+        {
+            AddHeaderDebug(dataObject, update, headers, headersEntries);
+            var timeoutSecondsError = false;
+            if (!string.IsNullOrEmpty(TimeOutText))
+            {
+                timeoutSecondsError = SetTimeoutSecondsError(dataObject, update, allErrors, timeoutSecondsError);
 
-                    allErrors.MergeErrors(_errorsTo);
-                    PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
-                    counter++;
-                }
-                else
+                if (dataObject.IsDebugMode())
                 {
-                    throw new ApplicationException("Execution aborted - see error messages.");
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment, update), debugItem);
+                    _debugInputs.Add(debugItem);
                 }
             }
-            return allErrors;
+            var NewCount = IncrementDataListCounter(dataObject, update, allErrors, counter, c, headersEntries, timeoutSecondsError);
+
+            return NewCount;
+        }
+
+        private int IncrementDataListCounter(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, List<Tuple<string, string>> headersEntries, bool timeoutSecondsError)
+        {
+            if (!timeoutSecondsError)
+            {
+                var result = WebRequestInvoker.ExecuteRequest(Method,
+                    c,
+                    headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
+                    );
+
+                allErrors.MergeErrors(_errorsTo);
+                PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
+                counter++;
+            }
+            else
+            {
+                throw new ApplicationException("Execution aborted - see error messages.");
+            }
+
+            return counter;
         }
 
         private bool SetTimeoutSecondsError(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, bool timeoutSecondsError)
@@ -280,11 +292,7 @@ namespace Dev2.Activities
                 environment.Assign(region, result,update);
             }
         }
-
-        #region Get Debug Inputs/Outputs
-
-        #region GetDebugInputs
-
+        
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
@@ -294,10 +302,6 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        #endregion
-
-        #region GetDebugOutputs
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -306,10 +310,6 @@ namespace Dev2.Activities
             }
             return _debugOutputs;
         }
-
-        #endregion
-
-        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -334,16 +334,11 @@ namespace Dev2.Activities
                 Result = itemUpdate.Item2;
             }
         }
-
-        #region GetForEachInputs/Outputs
-
+        
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Url);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
-
-        #endregion
-        #endregion
-
+        
         public bool Equals(DsfWebGetRequestWithTimeoutActivity other)
         {
             if (ReferenceEquals(null, other))

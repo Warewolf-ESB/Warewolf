@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
+    public class WarewolfRequestsPerSecondPerformanceCounterByResource : MyPerfCounter, IResourcePerformanceCounter
     {
-
-        PerformanceCounter _counter;
-        Stopwatch _stopwatch;
+        System.Diagnostics.Stopwatch _stopwatch;
 
 
         const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
-        public WarewolfRequestsPerSecondPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
+        public WarewolfRequestsPerSecondPerformanceCounterByResource(Guid resourceId, string categoryInstanceName, IRealPerformanceCounterFactory performanceCounterFactory)
+            :base(performanceCounterFactory)
         {
             ResourceId = resourceId;
             CategoryInstanceName = categoryInstanceName;
@@ -27,15 +25,9 @@ namespace Dev2.PerformanceCounters.Counters
 
             if (_counter == null)
             {
-                _stopwatch = new Stopwatch();
+                _stopwatch = new System.Diagnostics.Stopwatch();
                 _stopwatch.Start();
-                _counter = new PerformanceCounter(GlobalConstants.WarewolfServices, Name, CategoryInstanceName)
-                {
-                    MachineName = ".",
-                    ReadOnly = false,
-                    InstanceLifetime = PerformanceCounterInstanceLifetime.Global
-              
-                };
+                _counter = _counterFactory.New(GlobalConstants.WarewolfServices, Name, CategoryInstanceName);
             }
         }
         public void Reset()
@@ -78,23 +70,15 @@ namespace Dev2.PerformanceCounters.Counters
 
         public WarewolfPerfCounterType PerfCounterType => _perfCounterType;
 
-        public IList<CounterCreationData> CreationData()
+        public IEnumerable<(string CounterName, string CounterHelp, PerformanceCounterType CounterType)> CreationData()
         {
-            var totalOps = new CounterCreationData
-            {
-                CounterName = Name,
-                CounterHelp = Name,
-                CounterType = PerformanceCounterType.RateOfCountsPerSecond32
-            };
-            return new[] { totalOps };
+            yield return 
+            (
+                Name,
+                Name,
+                PerformanceCounterType.RateOfCountsPerSecond32
+            );
         }
-
-        public void Dispose()
-        {
-            _counter.Dispose();
-        }
-
-        public bool IsActive { get; set; }
 
         #endregion
 

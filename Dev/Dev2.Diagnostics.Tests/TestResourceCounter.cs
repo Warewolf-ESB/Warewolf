@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.Diagnostics.Test
@@ -42,10 +41,7 @@ namespace Dev2.Diagnostics.Test
         public string Name { get; private set; }
         public WarewolfPerfCounterType PerfCounterType { get; private set; }
 
-        public IList<CounterCreationData> CreationData()
-        {
-            return null;
-        }
+        public IEnumerable<(string CounterName, string CounterHelp, PerformanceCounterType CounterType)> CreationData() => null;
 
         public bool IsActive { get; set; }
 
@@ -62,6 +58,10 @@ namespace Dev2.Diagnostics.Test
 
         #endregion
         public void Reset()
+        {
+        }
+
+        public void Dispose()
         {
         }
     }
