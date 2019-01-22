@@ -22,8 +22,79 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract
 {
+    public interface IDataListFactory
+    {
+        IDev2LanguageParser CreateOutputParser();
+        IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput);
+        IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput);
+        IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput);
+    }
+    public class DataListFactoryImplementation : IDataListFactory
+    {
+        public IDev2LanguageParser CreateOutputParser() => new OutputLanguageParser();
+        public IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput) => RecordSetCollection(parsedOutput, isOutput, false);
+        static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
+        {
+            var b = new RecordSetCollectionBuilder();
+
+            b.SetParsedOutput(parsedOutput);
+            b.IsOutput = isOutput;
+            b.IsDbService = isDbService;
+            var result = b.Generate();
+
+            return result;
+        }
+        public IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
+            foreach (IDev2Definition def in parsedOutput)
+            {
+                if (isOutput)
+                {
+
+                    if (!def.IsRecordSet && !def.IsObject)
+                    {
+                        result.Add(def);
+                    }
+                }
+                else
+                {
+
+                    if (!def.IsRecordSet && !def.IsObject)
+                    {
+                        result.Add(def);
+                    }
+                }
+            }
+
+            return result;
+        }
+        public IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput) => parsedOutput.Where(def => def.IsObject).ToList();
+    }
+
     public static class DataListFactory
     {
+        static IDataListFactory _instance;
+        static readonly object _lock = new object();
+        public static IDataListFactory Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new DataListFactoryImplementation();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
 
         /// <summary>
         /// Creates the language parser. 
