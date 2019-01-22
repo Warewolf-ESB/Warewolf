@@ -422,6 +422,7 @@
     <Compile Include="TOTests\JsonMappingEvaluatedTests.cs" />
     <Compile Include="TOTests\JsonMappingToTest.cs" />
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
+    <Compile Include="TOTests\DataColumnMappingTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="ServiceTestHelperTests.cs" />
     <Compile Include="TestMockStepTests.cs" />
