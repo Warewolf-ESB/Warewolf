@@ -413,7 +413,7 @@ namespace Dev2.Data.Util
                     var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                     if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
                     {
-                        result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                        result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
                                                                     false, "", false));
                     }
                 }
@@ -422,7 +422,8 @@ namespace Dev2.Data.Util
             {
                 // scalar value, make it as such
                 var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
-                var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
+                //var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "")
+                var dev2Definition = new Dev2Definition(name, "", "", false, "", false, "");
                 dev2Definition.IsObject = jsonAttribute;
                 result.Add(dev2Definition);
             }
@@ -486,7 +487,7 @@ namespace Dev2.Data.Util
             var isArray = IsArray(tmpNode);
             if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, false) && tmpNode.HasChildNodes && !isObject)
             {
-                result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "", false, "", false));
+                result.Add(DataListFactory.CreateDefinition_Recordset("", "", "", tmpNode.Name, false, "", false, "", false));
             }
             else if (tmpNode.HasChildNodes && !isObject)
             {
@@ -498,7 +499,7 @@ namespace Dev2.Data.Util
                     var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                     if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, false))
                     {
-                        result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                        result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
                                                                     false, "", false));
                     }
                 }
@@ -507,7 +508,9 @@ namespace Dev2.Data.Util
             {
                 if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, false))
                 {
-                    var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                    var dev2Definition = isObject
+                        ? DataListFactory.CreateDefinition_JsonArray("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray)
+                        : new Dev2Definition(tmpNode.Name, "", "", false, "", false, "");
                     result.Add(dev2Definition);
                 }
             }
