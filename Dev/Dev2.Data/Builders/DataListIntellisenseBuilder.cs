@@ -98,7 +98,7 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        bool IsValidChildNode(XmlNode tmpNode)
+        static bool IsValidChildNode(XmlNode tmpNode)
         {
             var result = false;
 
@@ -123,7 +123,7 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        string ExtractDescription(XmlNode node)
+        static string ExtractDescription(XmlNode node)
         {
             var result = string.Empty;            
             var attribute = node.Attributes?[DescAttribute];
