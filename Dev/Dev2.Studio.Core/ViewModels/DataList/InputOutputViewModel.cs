@@ -302,7 +302,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Methods
         public IDev2Definition GetGenerationTO()
         {
-            var result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
+            var result = DataListFactory.CreateDefinition_Recordset(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
             result.IsObject = IsObject;
             return result;
         }

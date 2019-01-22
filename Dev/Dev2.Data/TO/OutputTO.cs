@@ -26,7 +26,7 @@ namespace Dev2.DataList.Contract
         internal OutputTO(string outputDescription, IList<string> outputStrings) {
             _outPutDescription = outputDescription;
             _outputStrings = outputStrings;
-            
+
 
         }
 
@@ -36,9 +36,15 @@ namespace Dev2.DataList.Contract
 
 
         }
-        
+
         public string OutPutDescription => _outPutDescription;
 
         public IList<string> OutputStrings => _outputStrings;
+    }
+    public static class OutputTO_Factory {
+        public static OutputTO OutputTO(string outputDescription)
+        {
+            return new OutputTO(outputDescription);
+        }
     }
 }
