@@ -351,13 +351,15 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) 
-                && TimeoutSeconds == other.TimeoutSeconds 
-                && string.Equals(Method, other.Method) 
-                && string.Equals(TimeOutText, other.TimeOutText) 
-                && string.Equals(Url, other.Url) 
-                && string.Equals(Headers, other.Headers) 
-                && string.Equals(Result, other.Result);
+            var isEqual = base.Equals(other);
+            isEqual &= TimeoutSeconds == other.TimeoutSeconds;
+            isEqual &= Method == other.Method;
+            isEqual &= TimeOutText == other.TimeOutText;
+            isEqual &= Url == other.Url;
+            isEqual &= Headers == other.Headers;
+            isEqual &= Result == other.Result;
+
+            return isEqual;
         }
 
         public override bool Equals(object obj)

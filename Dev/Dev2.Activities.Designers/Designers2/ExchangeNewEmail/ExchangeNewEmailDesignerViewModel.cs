@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
@@ -23,11 +33,14 @@ using Dev2.Threading;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers2.ExchangeNewEmail
 {
     public class ExchangeNewEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
     {
+        string _statusMessage;
+        bool _testing;
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
@@ -36,13 +49,20 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
+        private readonly IShellViewModel _shellViewModel;
+        readonly IActiveDataList _activeDataList;
+
+        [ExcludeFromCodeCoverage]
         public ExchangeNewEmailDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator, CustomContainer.Get<IShellViewModel>(), DataListSingleton.Instance)
         {
         }
 
-        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model, IEventAggregator eventPublisher) : base(modelItem)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model, IEventAggregator eventPublisher, IShellViewModel shellViewModel, IActiveDataList activeDataList)
+            : base(modelItem)
         {
+            _shellViewModel = shellViewModel;
+            _activeDataList = activeDataList;
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
             _eventPublisher = eventPublisher;
@@ -51,7 +71,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             SetupCommonProperties();
         }
 
-        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher, IShellViewModel shellViewModel, IActiveDataList activeDataList)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -66,7 +86,8 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            _shellViewModel = shellViewModel;
+            _activeDataList = activeDataList;
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             SetupCommonProperties();
@@ -76,13 +97,8 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
         void SetupCommonProperties()
         {
             Testing = false;
-            AddTitleBarMappingToggle();
-            InitialiseViewModel();
-        }
-
-        void AddTitleBarMappingToggle()
-        {
             HasLargeView = true;
+            InitialiseViewModel();
         }
 
         void InitialiseViewModel()
@@ -116,7 +132,6 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             }
         }
 
-        string _statusMessage;
         public string StatusMessage
         {
             get => _statusMessage;
@@ -126,8 +141,6 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
                 OnPropertyChanged("StatusMessage");
             }
         }
-
-        bool _testing;
 
         public bool Testing
         {
@@ -168,6 +181,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
 
         public bool IsAttachmentsFocused { get => (bool)GetValue(IsAttachmentsFocusedProperty); set => SetValue(IsAttachmentsFocusedProperty, value); }
         public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+
         string To => GetProperty<string>();
 
         string Cc => GetProperty<string>();
@@ -204,13 +218,25 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             if (string.IsNullOrEmpty(To))
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired } };
+                Errors = new List<IActionableErrorInfo>
+                {
+                    new ActionableErrorInfo(() => IsToFocused = true)
+                    {
+                        Message = ErrorResource.ToAddressRequired
+                    }
+                };
                 return;
             }
             if (SourceRegion.SelectedSource == null)
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.InvalidSource } };
+                Errors = new List<IActionableErrorInfo>
+                {
+                    new ActionableErrorInfo(() => IsToFocused = true)
+                    {
+                        Message = ErrorResource.InvalidSource
+                    }
+                };
                 return;
             }
 
@@ -218,13 +244,13 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             {
                 AutoDiscoverUrl = SourceRegion.SelectedSource.AutoDiscoverUrl,
                 Password = SourceRegion.SelectedSource.Password,
-                UserName = SourceRegion.SelectedSource.UserName,
+                UserName = SourceRegion.SelectedSource.UserName
             };
 
             var testMessage = new ExchangeTestMessage
             {
                 Body = Body,
-                Subject = Subject,
+                Subject = Subject
             };
 
             if (!string.IsNullOrEmpty(Attachments))
@@ -298,7 +324,6 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
                         Attachments += Separator + string.Join(Separator, message.SelectedFiles);
                     }
                 }
-
             };
             _eventPublisher.Publish(message);
         }
@@ -307,38 +332,43 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
         {
             var result = new List<IActionableErrorInfo>();
             result.AddRange(ValidateThis());
+            result.AddRange(ValidateRecipients());
             Errors = result.Count == 0 ? null : result;
         }
 
-        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
-
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            foreach (var error in GetRuleSet("EmailSource", GetDatalistString?.Invoke()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
+            var datalist = _activeDataList.ActiveDataList.Resource.DataList;
+            foreach (var error in GetRuleSet("EmailSource", datalist).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Recipients", GetDatalistString?.Invoke()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("SubjectAndBody", datalist).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("To", GetDatalistString?.Invoke()).ValidateRules("'To'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("Attachments", datalist).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Cc", GetDatalistString?.Invoke()).ValidateRules("'Cc'", () => IsCcFocused = true))
+        }
+
+        IEnumerable<IActionableErrorInfo> ValidateRecipients()
+        {
+            var datalist = _activeDataList.ActiveDataList.Resource.DataList;
+            foreach (var error in GetRuleSet("Recipients", datalist).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Bcc", GetDatalistString?.Invoke()).ValidateRules("'Bcc'", () => IsBccFocused = true))
+            foreach (var error in GetRuleSet("To", datalist).ValidateRules("'To'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("SubjectAndBody", GetDatalistString?.Invoke()).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
+            foreach (var error in GetRuleSet("Cc", datalist).ValidateRules("'Cc'", () => IsCcFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Attachments", GetDatalistString?.Invoke()).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
+            foreach (var error in GetRuleSet("Bcc", datalist).ValidateRules("'Bcc'", () => IsBccFocused = true))
             {
                 yield return error;
             }
@@ -387,8 +417,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
+            _shellViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
     }
 }
