@@ -57,7 +57,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BrowserDebug.feature</DependentUpon>
     </Compile>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="Composition\CompositionLoadTests.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
