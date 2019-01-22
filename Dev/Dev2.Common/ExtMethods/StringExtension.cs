@@ -267,7 +267,7 @@ namespace Dev2.Common.ExtMethods
             {
                 return false;
             }
-            return (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload));
+            return (IsAlpha(payload)  || IsAlphaNumericRegex.IsMatch(payload)) || IsNumeric(payload);
         }
 
         public static bool IsEmail(this string payload)
@@ -350,7 +350,9 @@ namespace Dev2.Common.ExtMethods
 
         public static bool SpaceCaseInsenstiveComparision(this string stringa, string stringb)
         {
-            return stringa == null && stringb == null || stringa != null && stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
+            return stringa == null && stringb == null ||
+                stringa != null &&
+                stringa.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLowerInvariant().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
         }
     }
 }
