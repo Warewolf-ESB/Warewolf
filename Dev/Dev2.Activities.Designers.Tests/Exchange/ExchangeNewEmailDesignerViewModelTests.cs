@@ -15,14 +15,17 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Providers.Errors;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Activities.Designers.Tests.Exchange
 {
@@ -41,7 +44,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var activity = new DsfExchangeEmailNewActivity
             {
-                To = "bernardt81@gmail.com",
+                To = "test@gmail.com",
                 Subject = "Test Exchange",
                 Body = "Test email from exchange"
             };
@@ -92,56 +95,68 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             return result;
         }
 
-        static TestExchangeNewEmailDesignerViewModel CreateViewModel(ModelItem modelItem, IEventAggregator eve, bool isemptySource = false)
+        static ExchangeNewEmailDesignerViewModel CreateViewModel(IShellViewModel shellViewModel, ModelItem modelItem, IEventAggregator eve, bool isemptySource = false)
         {
             var mockModel = new TestExchangeServiceModel(isemptySource);
-
-            return CreateViewModel(modelItem, mockModel, eve);
+            return CreateViewModel(shellViewModel, modelItem, mockModel, eve);
         }
 
-        static TestExchangeNewEmailDesignerViewModel CreateViewModel(ModelItem modelItem, IExchangeServiceModel model, IEventAggregator eve)
+        static ExchangeNewEmailDesignerViewModel CreateViewModel(IShellViewModel shellViewModel, ModelItem modelItem, IExchangeServiceModel model, IEventAggregator eve)
         {
-            var testEmailDesignerViewModel = new TestExchangeNewEmailDesignerViewModel(modelItem, model, eve)
-            {
-                
-            };
-
+            var mockActiveDataList = SetupActiveDataList();
+            var testEmailDesignerViewModel = new ExchangeNewEmailDesignerViewModel(modelItem, new AsyncWorker(), model, eve, shellViewModel, mockActiveDataList.Object);
             testEmailDesignerViewModel.SourceRegion.SelectedSource = model.RetrieveSources().First();
 
             return testEmailDesignerViewModel;
         }
 
-        void Verify_ChooseAttachments(List<string> selectedFiles)
+        static ExchangeNewEmailDesignerViewModel CreateNewViewModel(IShellViewModel shellViewModel, ModelItem modelItem, IEventAggregator eve, bool isemptySource = false)
         {
-            //------------Setup for test--------------------------
-            var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
+            var mockModel = new TestExchangeServiceModel(isemptySource);
+            mockModel.Sources = mockModel.RetrieveSources();
+            return CreateNewViewModel(shellViewModel, modelItem, mockModel, eve);
+        }
 
-            var expectedFiles = new List<string>();
-            expectedFiles.AddRange(existingFiles);
-            if (selectedFiles != null)
+        static ExchangeNewEmailDesignerViewModel CreateNewViewModel(IShellViewModel shellViewModel, ModelItem modelItem, IExchangeServiceModel model, IEventAggregator eve)
+        {
+            var mockActiveDataList = SetupActiveDataList();
+            var mockServer = new Mock<IServer>();
+            var mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
+            mockServer.SetupGet(it => it.UpdateRepository).Returns(mockStudioUpdateManager.Object);
+            var mockQueryManager = new Mock<IQueryManager>();
+
+            var mockExchangeServiceModel = new Mock<IExchangeServiceModel>();
+            mockExchangeServiceModel.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IExchangeSource> { new ExchangeSourceDefinition { Id = Guid.NewGuid() } });
+
+            mockQueryManager.Setup(query => query.FetchExchangeSources()).Returns(new ObservableCollection<IExchangeSource> { new ExchangeSourceDefinition { Id = Guid.NewGuid() } });
+            mockServer.SetupGet(it => it.QueryProxy).Returns(mockQueryManager.Object);
+            ServerRepository.Instance.ActiveServer = mockServer.Object;
+            CustomContainer.LoadedTypes = new List<Type>
             {
-                expectedFiles.AddRange(selectedFiles);
-            }
+                typeof(ExchangeServiceModel)
+            };
+            CustomContainer.Register(model);
 
+            var testEmailDesignerViewModel = new ExchangeNewEmailDesignerViewModel(modelItem, new AsyncWorker(), mockServer.Object, eve, shellViewModel, mockActiveDataList.Object);
+            testEmailDesignerViewModel.SourceRegion.SelectedSource = model.RetrieveSources().First();
 
-            var modelItem = CreateModelItem();
-            modelItem.SetProperty("Attachments", string.Join(";", existingFiles));
+            return testEmailDesignerViewModel;
+        }
 
-            var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
-            {
-                ((FileChooserMessage)m).SelectedFiles = selectedFiles;
-            });
+        private static Mock<IActiveDataList> SetupActiveDataList()
+        {
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = $"<DataList><var Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /><a Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /><b Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /><h Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /><r Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /><rec Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" ><set Description=\"\" IsEditable=\"{trueString}\" ColumnIODirection=\"{noneString}\" /></rec></DataList>";
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var resourceModel = new Mock<IResourceModel>();
+            resourceModel.Setup(res => res.DataList).Returns(datalist);
 
-            //------------Execute Test---------------------------
-            viewModel.ChooseAttachmentsCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
-            var attachments = modelItem.GetProperty<string>("Attachments");
-            Assert.AreEqual(string.Join(";", expectedFiles), attachments);
+            IDataListViewModel setupDatalist = new DataListViewModel();
+            setupDatalist.InitializeDataListViewModel(resourceModel.Object);
+            var mockActiveDataList = new Mock<IActiveDataList>();
+            mockActiveDataList.Setup(a => a.ActiveDataList).Returns(setupDatalist);
+            return mockActiveDataList;
         }
 
         void Verify_Constructor_DoesNotAutoCopyEmailSourceUserNameIntoFromAccount(string to)
@@ -157,7 +172,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             };
             var modelItem = ModelItemUtils.CreateModelItem(activity);
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
 
             //------------Execute Test---------------------------
             viewModel.SourceRegion.SelectedSource = emailSource;
@@ -175,8 +191,10 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockActiveDataList = SetupActiveDataList();
+
             //------------Execute Test---------------------------
-            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object, null, mockShellViewModel.Object))
+            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object, null, mockShellViewModel.Object, mockActiveDataList.Object))
             {
                 //
             }
@@ -191,8 +209,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockActiveDataList = SetupActiveDataList();
             //------------Execute Test---------------------------
-            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), null, (IServer)null, null, mockShellViewModel.Object))
+            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), null, (IServer)null, null, mockShellViewModel.Object, mockActiveDataList.Object))
             {
                 //
             }
@@ -207,8 +226,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
+            var mockActiveDataList = SetupActiveDataList();
             //------------Execute Test---------------------------
-            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null, mockShellViewModel.Object))
+            using (new ExchangeNewEmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null, mockShellViewModel.Object, mockActiveDataList.Object))
             {
                 //
             }
@@ -231,7 +251,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
 
             var eventPublisher = new Mock<IEventAggregator>();
             //------------Execute Test---------------------------
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             viewModel.Validate();
 
             //------------Assert Results-------------------------
@@ -255,13 +276,12 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             var modelItem = CreateModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
 
-            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
-            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
-            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
-            CustomContainer.Register(mockMainViewModel.Object);
+            mockHelpViewModel.Setup(help => help.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockShellViewModel.Setup(help => help.HelpViewModel).Returns(mockHelpViewModel.Object);
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateNewViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
@@ -287,9 +307,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 propertyChanged = true;
             };
             var eventPublisher = new Mock<IEventAggregator>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
             //------------Execute Test---------------------------
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
-
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
@@ -323,8 +343,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
 
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
 
             //------------Execute Test---------------------------
             viewModel.ChooseAttachmentsCommand.Execute(null);
@@ -349,6 +370,39 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             Verify_ChooseAttachments(null);
         }
 
+        void Verify_ChooseAttachments(List<string> selectedFiles)
+        {
+            //------------Setup for test--------------------------
+            var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
+
+            var expectedFiles = new List<string>();
+            expectedFiles.AddRange(existingFiles);
+            if (selectedFiles != null)
+            {
+                expectedFiles.AddRange(selectedFiles);
+            }
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Attachments", string.Join(";", existingFiles));
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
+            {
+                ((FileChooserMessage)m).SelectedFiles = selectedFiles;
+            });
+
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.ChooseAttachmentsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
+            var attachments = modelItem.GetProperty<string>("Attachments");
+            Assert.AreEqual(string.Join(";", expectedFiles), attachments);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ExchangeNewEmailDesignerViewModel))]
@@ -358,8 +412,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
 
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateNewViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
 
             viewModel.TestEmailAccount();
         }
@@ -372,8 +427,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             var modelItem = CreateModelItem();
 
             var eventPublisher = new Mock<IEventAggregator>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
 
             viewModel.CanTestEmailAccount = true;
             viewModel.IsEmailSourceFocused = true;
@@ -412,8 +468,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             var modelItem = CreateModelItem();
 
             var eventPublisher = new Mock<IEventAggregator>();
+            var mockShellViewModel = new Mock<IShellViewModel>();
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             viewModel.TestEmailAccountCommand.Execute(null);
             viewModel.CanTestEmailAccount = true;
             viewModel.Errors = null;
@@ -431,7 +488,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var modelItem = CreateNullToModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             viewModel.TestEmailAccount();
 
             Assert.IsNotNull(viewModel.Errors);
@@ -445,7 +503,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var modelItem = CreateFullToModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object, true);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object, true);
             viewModel.Errors = new List<IActionableErrorInfo>
             {
                 new ActionableErrorInfo(() => viewModel.IsToFocused = true)
@@ -466,7 +525,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var modelItem = CreateFullToModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object, true);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object, true);
 
             viewModel.TestEmailAccount();
             viewModel.SetStatusMessage("Passed");
@@ -484,7 +544,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var modelItem = CreateFullToModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             viewModel.TestEmailAccount();
 
             Assert.IsNull(viewModel.Errors);
@@ -498,7 +559,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange
         {
             var modelItem = CreateModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             viewModel.UpdateHelpDescriptor("Testing");
 
             Assert.IsNull(viewModel.HelpText);
@@ -518,7 +580,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "Please supply at least one of the following: 'To', 'Cc' or 'Bcc'", ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
+            ValidateThis(activity, "Please supply at least one of the following: 'To', 'Cc' or 'Bcc'", ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
         }
 
         [TestMethod]
@@ -535,7 +597,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -552,7 +614,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -569,7 +631,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -586,7 +648,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "",
             };
-            Verify_ValidateThis(activity, "Please supply at least one of the following: 'Subject' or 'Body'", ExchangeNewEmailDesignerViewModel.IsSubjectFocusedProperty);
+            ValidateThis(activity, "Please supply at least one of the following: 'Subject' or 'Body'", ExchangeNewEmailDesignerViewModel.IsSubjectFocusedProperty);
         }
 
         [TestMethod]
@@ -603,7 +665,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -620,7 +682,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The Body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -637,7 +699,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailToInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
+            ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailToInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
         }
 
         [TestMethod]
@@ -654,7 +716,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -671,7 +733,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'To' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
+            ValidateThis(activity, "'To' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsToFocusedProperty);
         }
 
         [TestMethod]
@@ -688,7 +750,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailCcInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsCcFocusedProperty);
+            ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailCcInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsCcFocusedProperty);
         }
 
         [TestMethod]
@@ -705,7 +767,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -722,7 +784,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Cc' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsCcFocusedProperty);
+            ValidateThis(activity, "'Cc' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsCcFocusedProperty);
         }
 
         [TestMethod]
@@ -739,7 +801,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailBccInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsBccFocusedProperty);
+            ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailBccInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsBccFocusedProperty);
         }
 
         [TestMethod]
@@ -756,7 +818,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -773,7 +835,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Bcc' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsBccFocusedProperty);
+            ValidateThis(activity, "'Bcc' contains an invalid email address", ExchangeNewEmailDesignerViewModel.IsBccFocusedProperty);
         }
 
         [TestMethod]
@@ -790,7 +852,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "h]]",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailAttachmentsInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsAttachmentsFocusedProperty);
+            ValidateThis(activity, Warewolf.Resource.Errors.ErrorResource.EmailAttachmentsInvalidExpressionErrorTest, ExchangeNewEmailDesignerViewModel.IsAttachmentsFocusedProperty);
         }
 
         [TestMethod]
@@ -807,7 +869,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "[[h]]",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity);
+            ValidateThis(activity);
         }
 
         [TestMethod]
@@ -824,10 +886,10 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 Attachments = "c:\\logs",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, "'Attachments' contains an invalid file name", ExchangeNewEmailDesignerViewModel.IsAttachmentsFocusedProperty);
+            ValidateThis(activity, "'Attachments' contains an invalid file name", ExchangeNewEmailDesignerViewModel.IsAttachmentsFocusedProperty);
         }
 
-        void Verify_ValidateThis(DsfExchangeEmailNewActivity activity, string expectedErrorMessage = null, DependencyProperty isFocusedProperty = null, bool setSelectedEmailSource = true)
+        void ValidateThis(DsfExchangeEmailNewActivity activity, string expectedErrorMessage = null, DependencyProperty isFocusedProperty = null, bool setSelectedEmailSource = true)
         {
             var sources = CreateEmailSources(1);
             if (setSelectedEmailSource)
@@ -839,8 +901,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
 
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
 
-            var viewModel = CreateViewModel(modelItem, eventPublisher.Object);
+            var viewModel = CreateViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
             //------------Execute Test---------------------------
             viewModel.Validate();
 
@@ -858,22 +921,6 @@ namespace Dev2.Activities.Designers.Tests.Exchange
                 viewModel.Errors[0].Do();
                 var isFocused = isFocusedProperty != null && (bool)viewModel.GetValue(isFocusedProperty);
                 Assert.IsTrue(isFocused);
-            }
-        }
-    }
-    public class TestExchangeNewEmailDesignerViewModel : ExchangeNewEmailDesignerViewModel
-    {
-        public TestExchangeNewEmailDesignerViewModel(ModelItem modelItem, IExchangeServiceModel model, IEventAggregator eventPublisher)
-            : base(modelItem, new AsyncWorker(), model, eventPublisher, CustomContainer.Get<IShellViewModel>())
-        {
-        }
-
-        public ExchangeSource SelectedEmailSourceModelItemValue
-        {
-            get => GetProperty<ExchangeSource>("SelectedEmailSource");
-            set
-            {
-                SetProperty(value, "SelectedEmailSource");
             }
         }
     }
@@ -909,15 +956,9 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             return _sources;
         }
 
-        public void CreateNewSource()
-        {
+        public void CreateNewSource() { }
 
-        }
-
-        public void EditSource(IExchangeSource selectedSource)
-        {
-
-        }
+        public void EditSource(IExchangeSource selectedSource) { }
 
         public IStudioUpdateManager UpdateRepository { get; set; }
     }
