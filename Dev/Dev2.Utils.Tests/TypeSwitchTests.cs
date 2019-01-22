@@ -19,7 +19,7 @@ namespace Dev2.Core.Tests.Helpers
     {
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TypeSwitch_Do_WhenNullCases_ExpectArgumentNullException()
         {
@@ -28,7 +28,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         [ExpectedException(typeof(Exception))]
         public void TypeSwitch_Do_WhenNullCases_ExpectException()
         {
@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         [ExpectedException(typeof(NullReferenceException))]
         public void TypeSwitch_Do_WhenCaseActionNull_ExpectException()
         {
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Do_WhenCaseActionNotNull_ExpectActionSet()
         {
             var wasCalled = false;
@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Do_WhenCaseActionNull_ExpectCallAction_Success()
         {
             Action action = null;
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         [ExpectedException(typeof(Exception))]
         public void TypeSwitch_Do_WhenSourceNullAndNoDefaultAction_ExpectException()
         {
@@ -90,7 +90,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Do_WhenSourceNullAndDefaultActionNotNull_ExpectNullActionValue()
         {
             var act = new Action<object>(delegate { });
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Do_WhenDefault_ExpectActionCalled()
         {
             var wasCalled = false;
@@ -116,7 +116,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Case_Generic_ActionIsNotNull_Success()
         {
             var result = TypeSwitch.Case(delegate(object o) { });
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Case_Generic_ActionIsNull_Success()
         {
             Action<object> action = null;
@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Default_ActionNotNull_Success()
         {
             var result = TypeSwitch.Default(delegate { });
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Helpers
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("TypeSwitch")]
+        [TestCategory(nameof(TypeSwitch))]
         public void TypeSwitch_Default_ActionNull_Success()
         {
             var result = TypeSwitch.Default(null);
