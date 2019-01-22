@@ -30,14 +30,15 @@ namespace Dev2.Activities.Designers.Tests.DeleteRecords
             //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
-            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             using (var viewModel = new DeleteRecordsDesignerViewModel(CreateModelItem(), mockMainViewModel.Object))
             {
                 //------------Execute Test---------------------------
                 viewModel.UpdateHelpDescriptor("help");
                 //------------Assert Results-------------------------
-                mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+                mockHelpViewModel.Verify(model => model.UpdateHelpText("help"), Times.Once());
+                Assert.AreEqual(Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Delete, viewModel.HelpText);
+                Assert.IsTrue(viewModel.HasLargeView);
             }
         }
 
