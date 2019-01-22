@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,10 +17,13 @@ using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.TO;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 {
@@ -100,7 +113,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
             
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            sharepointCopyFileActivity.SharepointSource = mockSharepointSource;
             //------------Execute Test---------------------------
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             //------------Assert Result--------------------------
@@ -108,6 +120,48 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             Assert.IsNotNull(result);
             Assert.AreEqual("Success", result[0]);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_SharepointSource_Exists_OnResourceCatalog_NumericRecordSet_ExpextErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+
+            var resourceId = Guid.NewGuid();
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointHelper = new Mock<ISharepointHelper>();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "12",
+                ServerInputPathFrom = @"C:\ProgramData\Warewolf\Resources\Hello World.bite",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true
+            };
+            
+            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+
+            var mockSharepointSource = new MockSharepointSource
+            {
+                MockSharepointHelper = mockSharepointHelper.Object
+            };
+
+            mockSharepointHelper.Setup(helper => helper.CopyFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns("Success");
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
+
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            //------------Execute Test---------------------------
+            privateObject.Invoke("ExecuteTool", dataObj, 0);
+            //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+            
+            Assert.AreEqual("variable not found", error);
         }
 
         [TestMethod]
@@ -132,8 +186,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 ServerInputPathTo = "Hello World.bite",
                 Overwrite = true
             };
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
 
+            var privateObject = new PrivateObject(sharepointCopyFileActivity);
             var mockSharepointSource = new MockSharepointSource
             {
                 MockSharepointHelper = mockSharepointHelper.Object
@@ -143,7 +197,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource);
 
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            sharepointCopyFileActivity.SharepointSource = mockSharepointSource;
             //------------Execute Test---------------------------
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             //------------Assert Result--------------------------
@@ -152,7 +205,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             Assert.IsNotNull(result);
             Assert.AreEqual("Success", result[0]);
         }
-
+        
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
@@ -164,7 +217,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 
             var resourceCatalog = new Mock<IResourceCatalog>();
 
-            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
             var mockSharepointSource = new Mock<SharepointSource>();
             var sharepointCopyFileActivity = new SharepointCopyFileActivity
             {
@@ -179,14 +231,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
             
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-            sharepointCopyFileActivity.SharepointSource = mockSharepointSource.Object;
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
@@ -202,7 +249,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             var mockSharepointSource = new Mock<SharepointSource>();
 
             var resourceId = Guid.NewGuid();
-            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
             var sharepointCopyFileActivity = new SharepointCopyFileActivity
             {
                 DisplayName = activityName,
@@ -221,20 +267,20 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         [ExpectedException(typeof(TargetInvocationException))]
-        public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathTo_IsEmpty()
+        public void SharepointCopyFileActivity_ValidateRequest_ServerInputPathTo_IsEmpty_Expect_Exception()
         {
             //------------Setup for test--------------------------
             const string activityName = "SharepointCopyFile";
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointSource = new Mock<SharepointSource>();
+
             var resourceId = Guid.NewGuid();
             var sharepointCopyFileActivity = new SharepointCopyFileActivity
             {
@@ -243,32 +289,164 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Result = "[[Files(*).Name]]",
                 ServerInputPathFrom = @"C:\ProgramData\Warewolf\Resources\Hello World.bite",
                 Overwrite = true,
-
             };
 
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            var mockSharepointSource = new Mock<SharepointSource>();
-
+           var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
-            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
-            var privateObject = new PrivateObject(sharepointCopyFileActivity);
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
             sharepointCopyFileActivity.SharepointSource = mockSharepointSource.Object;
-
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("SharepointCopyFileActivity_GetState")]
-        public void SharepointCopyFileActivity_GetState_ReturnsStateVariable()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_TryExecuteConcreteAction_DSFDataObject_IsEmpty_Expect_ErrorVariableNotFound()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var mockSharepointSource = new Mock<SharepointSource>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[path]]", @"C:\ProgramData\Warewolf\Resources\Hello World.bite", 0);
+
+            mockDSFDataObject.Setup(o => o.Environment).Returns(env);
+
+            mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+
+            var resourceId = Guid.NewGuid();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "[[Files(*).Name]]",
+                ServerInputPathFrom = "[[path]]",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true,
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            object[] args = new object[] { mockDSFDataObject.Object, new ErrorResultTO(), 0 };
+
+            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+
+            resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
+
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            //------------Execute Test---------------------------
+            privateObject.Invoke("TryExecuteConcreteAction", args);
+            //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.AreEqual("variable not found", error);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_GetDebugInputs_ExecutionEnvironment_IsEmpty_Expect_ResultCountZero()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[path]]", @"C:\ProgramData\Warewolf\Resources\Hello World.bite", 0);
+
+            var resourceId = Guid.NewGuid();
+
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "[[Files(*).Name]]",
+                ServerInputPathFrom = "[[path]]",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true,
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            //------------Execute Test---------------------------
+            sharepointCopyFileActivity.GetDebugInputs(null, 0);
+            //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.AreEqual( 0, result.Count);
+            Assert.AreEqual("variable not found", error);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_GetDebugOutputs_ExecutionEnvironment_IsEmpty_Expect_ResultCountZero()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+            
+            var env = new ExecutionEnvironment();
+            env.Assign("[[path]]", @"C:\ProgramData\Warewolf\Resources\Hello World.bite", 0);
+            
+            var resourceId = Guid.NewGuid();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "[[Files(*).Name]]",
+                ServerInputPathFrom = "[[path]]",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true,
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            //------------Execute Test---------------------------
+            sharepointCopyFileActivity.GetDebugOutputs(null, 0);
+            //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.AreEqual(0, result.Count);
+            Assert.AreEqual("variable not found", error);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_GetHashCode_IsNotNull_Expect_True()
+        {
+            //------------Setup for test--------------------------
+            const string activityName = "SharepointCopyFile";
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[path]]", @"C:\ProgramData\Warewolf\Resources\Hello World.bite", 0);
+
+            var resourceId = Guid.NewGuid();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity
+            {
+                DisplayName = activityName,
+                SharepointServerResourceId = resourceId,
+                Result = "[[Files(*).Name]]",
+                ServerInputPathFrom = "[[path]]",
+                ServerInputPathTo = "Hello World.bite",
+                Overwrite = true,
+            };
+
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+            //------------Execute Test---------------------------
+            var hashCode = sharepointCopyFileActivity.GetHashCode();
+            //------------Assert Result--------------------------
+            Assert.IsNotNull(hashCode);
+            Assert.AreNotEqual(0, hashCode);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_GetState_ReturnsStateVariable_Expect_AreEqualTrue()
         {
             //------------Setup for test--------------------------
             const string activityName = "SharepointCopyFile";
@@ -302,11 +480,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             Assert.AreEqual("[[Files(*).Name]]", stateItems.ToList()[3].Value);
         }
 
-        //--------------------
-
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDEquals_EmptySharepointCopyFile_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_UniqueIDEquals_EmptySharepointCopyFile_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -321,8 +498,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDDifferent_EmptySharepointCopyFile_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_UniqueIDDifferent_EmptySharepointCopyFile_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -337,8 +515,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -353,8 +532,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -369,8 +549,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -383,10 +564,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
-
+        
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathFrom_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathFrom_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -401,8 +583,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathFrom_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathFrom_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -417,8 +600,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathFrom_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathFrom_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -431,11 +615,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
-
-
+        
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathTo_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathTo_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -450,8 +634,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathTo_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathTo_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -466,8 +651,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void SharepointServerResourceId_Same_Object_IsEqual()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_SharepointServerResourceId_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid();
@@ -482,8 +668,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void SharepointServerResourceId_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_SharepointServerResourceId_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -498,8 +685,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ServerInputPathTo_Different_Object_Is_Not_Equal_CaseSensitive()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ServerInputPathTo_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -514,8 +702,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Overwrite_Different_Object_Is_Not_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Overwrite_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -532,8 +721,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Overwrite_Same_Object_Is_Equal()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Overwrite_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -545,6 +735,64 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             sharepointCopyFileActivity.Overwrite = true;
             sharepoint.Overwrite = true;
             var @equals = sharepointCopyFileActivity.Equals(sharepoint);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Equals_IsNull_Expect_IsFalse()
+        {
+            //---------------Set up test pack-------------------
+            var dsfSelectAndApplyActivity = new SharepointCopyFileActivity();
+            //---------------Execute Test ----------------------
+            var @equals = dsfSelectAndApplyActivity.Equals(null);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_Equals_IsThis_Expect_IsTrue()
+        {
+            //---------------Set up test pack-------------------
+            var dsfSelectAndApplyActivity = new SharepointCopyFileActivity();
+            //---------------Execute Test ----------------------
+            var @equals = dsfSelectAndApplyActivity.Equals(dsfSelectAndApplyActivity);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ObjectEquals_IsNull_Expect_IsFalse()
+        {
+            //---------------Set up test pack-------------------
+            var dsfSelectAndApplyActivity = new SharepointCopyFileActivity();
+
+            object obj = new object();
+            obj = null;
+            //---------------Execute Test ----------------------
+            var @equals = dsfSelectAndApplyActivity.Equals(obj);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(equals);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(SharepointCopyFileActivity))]
+        public void SharepointCopyFileActivity_ObjectEquals_IsNotNull_Expect_IsFalse()
+        {
+            //---------------Set up test pack-------------------
+            var dsfSelectAndApplyActivity = new SharepointCopyFileActivity();
+
+            object obj = new object();
+            obj = dsfSelectAndApplyActivity;
+            //---------------Execute Test ----------------------
+            var @equals = dsfSelectAndApplyActivity.Equals(obj);
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
         }
