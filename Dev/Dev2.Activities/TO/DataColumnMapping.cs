@@ -8,14 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Interfaces;
-using Dev2.Comparer;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using System;
 
 namespace Dev2.TO
 {
@@ -30,21 +28,15 @@ namespace Dev2.TO
 
         public IDbColumn OutputColumn { get => _outputColumn; set => OnPropertyChanged(ref _outputColumn, value); }
 
-        #region Implementation of IDev2TOFn
-
         public int IndexNumber { get => _indexNumber; set => OnPropertyChanged(ref _indexNumber, value); }
 
         public bool CanRemove() => false;
 
         public bool CanAdd() => false;
 
-        public void ClearRow()
-        {
-        }
+        public void ClearRow() { }
 
         public bool Inserted { get; set; }
-
-        #endregion
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist) => new RuleSet();
 
