@@ -22,41 +22,18 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract
 {
-    public static class DataListFactory
+    public interface IDataListFactory
     {
+        IDev2LanguageParser CreateOutputParser();
+        IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput);
+        IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput);
+        IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput);
+    }
+    public class DataListFactoryImplementation : IDataListFactory
+    {
+        public IDev2LanguageParser CreateOutputParser() => new OutputLanguageParser();
 
-        /// <summary>
-        /// Creates the language parser. 
-        /// </summary>
-        /// <returns></returns>
-        public static IDev2DataLanguageParser CreateLanguageParser() => new Dev2DataLanguageParser();
-
-        /// <summary>
-        /// Creates the studio language parser.
-        /// </summary>
-        /// <returns></returns>
-        public static IDev2StudioDataLanguageParser CreateStudioLanguageParser() => new Dev2DataLanguageParser();
-
-        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
-        {
-            var b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
-
-            return b.Generate();
-        }
-        public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue) => new Dev2Definition(name, mapsTo, value, isEval, defaultValue, isRequired, rawValue);
-
-        public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull, bool isArray)
-        {
-            var dev2Definition = CreateDefinition(name, mapsTo, value, isEval, defaultValue, isRequired, rawValue, emptyToNull);
-            dev2Definition.IsJsonArray = isArray;
-            return dev2Definition;
-        }
-
-        public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull) => new Dev2Definition(name, mapsTo, value, string.Empty, isEval, defaultValue, isRequired, rawValue, emptyToNull);
-
-        public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, string recordSet, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull) => new Dev2Definition(name, mapsTo, value, recordSet, isEval, defaultValue, isRequired, rawValue, emptyToNull);
-
-        public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput) => RecordSetCollection(parsedOutput, isOutput, false);
+        public IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput) => RecordSetCollection(parsedOutput, isOutput, false);
 
         static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
         {
@@ -70,36 +47,60 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public static IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput)
+        public IEnumerable<IDev2Definition> CreateScalarList(IEnumerable<IDev2Definition> parsedOutput, bool isOutput)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
             foreach (IDev2Definition def in parsedOutput)
             {
-                if (isOutput)
+                if (!def.IsRecordSet && !def.IsObject)
                 {
-
-                    if (!def.IsRecordSet && !def.IsObject)
-                    {
-                        result.Add(def);
-                    }
+                    result.Add(def);
                 }
-                else
-                {
-
-                    if (!def.IsRecordSet && !def.IsObject)
-                    {
-                        result.Add(def);
-                    }
-                }
-
             }
 
             return result;
         }
+        public IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput) => parsedOutput.Where(def => def.IsObject).ToList();
+    }
+
+    public static class DataListFactory
+    {
+        static IDataListFactory _instance;
+        static readonly object _lock = new object();
+        public static IDataListFactory Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new DataListFactoryImplementation();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
 
 
-        public static IEnumerable<IDev2Definition> CreateObjectList(IEnumerable<IDev2Definition> parsedOutput) => parsedOutput.Where(def => def.IsObject).ToList();
+        /// <summary>
+        /// Creates the language parser. 
+        /// </summary>
+        /// <returns></returns>
+        public static IDev2DataLanguageParser CreateLanguageParser() => new Dev2DataLanguageParser();
+
+        public static IDev2Definition CreateDefinition_JsonArray(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull, bool isArray)
+        {
+            var dev2Definition = Dev2Definition.NewObject(name, mapsTo, value, isEval, defaultValue, isRequired, rawValue, emptyToNull);
+            dev2Definition.IsJsonArray = isArray;
+            return dev2Definition;
+        }
+
+        public static IDev2Definition CreateDefinition_Recordset(string name, string mapsTo, string value, string recordSet, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull) => new Dev2Definition(name, mapsTo, value, recordSet, isEval, defaultValue, isRequired, rawValue, emptyToNull);
 
         public static IDev2LanguageParser CreateOutputParser() => new OutputLanguageParser();
 
@@ -124,9 +125,6 @@ namespace Dev2.DataList.Contract
 
         public static OutputTO CreateOutputTO(string outputDescription, string outputString) => new OutputTO(outputDescription, new List<string> { outputString });
 
-        /// <summary>
-        /// Creates a new Dev2Column object for a recordset
-        /// </summary>
         public static Dev2Column CreateDev2Column(string columnName, string columnDescription, bool isEditable, enDev2ColumnArgumentDirection colIODir) => new Dev2Column(columnName, columnDescription, isEditable, colIODir);
     }
 }
