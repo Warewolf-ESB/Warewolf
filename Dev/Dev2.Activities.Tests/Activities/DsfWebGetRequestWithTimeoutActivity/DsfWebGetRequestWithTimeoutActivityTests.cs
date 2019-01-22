@@ -262,6 +262,49 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_ExpectTimeOut_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            const string Message = "This is a forced exception";
+
+            var mock = new Mock<IWebRequestInvoker>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockErrorResultTO = new Mock<ErrorResultTO>();
+
+
+            var environment = new ExecutionEnvironment();
+
+            var activity = GetWebGetRequestWithTimeoutActivity(mock);
+            activity.Method = "GET";
+            activity.Url = "BodyValue";
+            activity.TimeOutText = "-1";
+
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
+
+            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+            
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+            mockDSFDataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new MockEsb());
+
+            bool timeoutSecondsError = false;
+            PrivateObject obj = new PrivateObject(activity);
+            object[] args = new object[] { mockDSFDataObject.Object, 0, mockErrorResultTO.Object, timeoutSecondsError };
+
+            //------------Execute Test---------------------------
+            var act = obj.Invoke("SetTimeoutSecondsError", args);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(true, act);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
         public void DsfWebGetRequestWithTimeoutActivity_ExecuteRequest_WithError_Expect_ErrorAdded_TimeoutSecondsOutOfRange()
         {
             //------------Setup for test--------------------------
@@ -289,7 +332,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             Assert.AreNotEqual(ExpectedResult, actual);
             Assert.IsNotNull(error);
         }
-
+        
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
@@ -421,6 +464,67 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             };
             //------------Execute Test---------------------------
             var actual = dsfWebGetActivity.Equals(dsfWebGetActivity);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Equals_ObjectType_NotEqualToThis_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Method = "GET",
+                Headers = string.Empty,
+                TimeoutSeconds = 100,  // default of 100 seconds
+                TimeOutText = "100",
+            };
+            //------------Execute Test---------------------------
+            var actual = dsfWebGetActivity.Equals(new object());
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Equals_Object_IsNull_IsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Method = "GET",
+                Headers = string.Empty,
+                TimeoutSeconds = 100,  // default of 100 seconds
+                TimeOutText = "100",
+            };
+            var obj = new object();
+            obj = null;
+            //------------Execute Test---------------------------
+            var actual = dsfWebGetActivity.Equals(obj);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_Equals_ObjectType_IsEqualToThis_IsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Method = "GET",
+                Headers = string.Empty,
+                TimeoutSeconds = 100,  // default of 100 seconds
+                TimeOutText = "100",
+            };
+            var obj = new object();
+            obj = dsfWebGetActivity;
+            //------------Execute Test---------------------------
+            var actual = dsfWebGetActivity.Equals(obj);
             //------------Assert Results-------------------------
             Assert.IsTrue(actual);
         }
