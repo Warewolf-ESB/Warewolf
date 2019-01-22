@@ -50,17 +50,19 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
         private readonly IShellViewModel _shellViewModel;
+        readonly IActiveDataList _activeDataList;
 
         [ExcludeFromCodeCoverage]
         public ExchangeNewEmailDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator, CustomContainer.Get<IShellViewModel>())
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator, CustomContainer.Get<IShellViewModel>(), DataListSingleton.Instance)
         {
         }
 
-        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model, IEventAggregator eventPublisher, IShellViewModel shellViewModel)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model, IEventAggregator eventPublisher, IShellViewModel shellViewModel, IActiveDataList activeDataList)
             : base(modelItem)
         {
             _shellViewModel = shellViewModel;
+            _activeDataList = activeDataList;
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
             _eventPublisher = eventPublisher;
@@ -69,7 +71,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             SetupCommonProperties();
         }
 
-        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher, IShellViewModel shellViewModel)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher, IShellViewModel shellViewModel, IActiveDataList activeDataList)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -85,6 +87,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             _shellViewModel = shellViewModel;
+            _activeDataList = activeDataList;
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             SetupCommonProperties();
@@ -94,13 +97,8 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
         void SetupCommonProperties()
         {
             Testing = false;
-            AddTitleBarMappingToggle();
-            InitialiseViewModel();
-        }
-
-        void AddTitleBarMappingToggle()
-        {
             HasLargeView = true;
+            InitialiseViewModel();
         }
 
         void InitialiseViewModel()
@@ -246,13 +244,13 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
             {
                 AutoDiscoverUrl = SourceRegion.SelectedSource.AutoDiscoverUrl,
                 Password = SourceRegion.SelectedSource.Password,
-                UserName = SourceRegion.SelectedSource.UserName,
+                UserName = SourceRegion.SelectedSource.UserName
             };
 
             var testMessage = new ExchangeTestMessage
             {
                 Body = Body,
-                Subject = Subject,
+                Subject = Subject
             };
 
             if (!string.IsNullOrEmpty(Attachments))
@@ -340,7 +338,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            var datalist = DataListSingleton.ActiveDataList.Resource.DataList;
+            var datalist = _activeDataList.ActiveDataList.Resource.DataList;
             foreach (var error in GetRuleSet("EmailSource", datalist).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
                 yield return error;
@@ -357,7 +355,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
 
         IEnumerable<IActionableErrorInfo> ValidateRecipients()
         {
-            var datalist = DataListSingleton.ActiveDataList.Resource.DataList;
+            var datalist = _activeDataList.ActiveDataList.Resource.DataList;
             foreach (var error in GetRuleSet("Recipients", datalist).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
