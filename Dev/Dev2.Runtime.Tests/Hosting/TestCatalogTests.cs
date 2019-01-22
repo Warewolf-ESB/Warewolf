@@ -786,8 +786,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_Scalars()
         {
             //------------Setup for test--------------------------
-            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false) };
-            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false) };
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("Gender", "", "", "", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("MessageForUser", "", "", "", false, "", false, "", false) };
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var serviceTestModelTos = new List<IServiceTestModelTO>
@@ -889,8 +889,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateBasedOnChange_RecordSets()
         {
             //------------Setup for test--------------------------
-            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("f", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("g", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("i", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition("set", "", "", "rec", false, "", false, "", false) };
-            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("out", "", "", "res", false, "", false, "", false) };
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("Gender", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("f", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("g", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("i", "", "", "rs", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("set", "", "", "rec", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("MessageForUser", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("out", "", "", "res", false, "", false, "", false) };
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var serviceTestModelTos = new List<IServiceTestModelTO>
@@ -1021,8 +1021,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void TestCatalog_UpdateTestsBasedOnIOChange_WhenTestsFound_ShouldUpdateStepsToInvalid()
         {
             //------------Setup for test--------------------------
-            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition("Gender", "", "", "", false, "", false, "", false) };
-            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition("MessageForUser", "", "", "", false, "", false, "", false) };
+            var inputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("Age", "", "", "", false, "", false, "", false), DataListFactory.CreateDefinition_Recordset("Gender", "", "", "", false, "", false, "", false) };
+            var outputDefs = new List<IDev2Definition> { DataListFactory.CreateDefinition_Recordset("MessageForUser", "", "", "", false, "", false, "", false) };
             var testCatalog = new TestCatalog();
             var resourceID = Guid.NewGuid();
             var serviceTestModelTos = new List<IServiceTestModelTO>
