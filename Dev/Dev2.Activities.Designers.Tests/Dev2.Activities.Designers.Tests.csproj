@@ -158,7 +158,6 @@
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="ComDll\ComDllViewModelTests.cs" />
     <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="DotNetDll\DotNetDllEnhancedViewModelTests.cs" />
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="ReadFolderNew\ReadFolderNewDesignerViewModelTests.cs" />
     <Compile Include="ReadFolderNew\TestReadFolderNewDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\RecordsLengthNullHandlerDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecordsNullHandler\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\TestRecordsLengthnullHandlerDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />

@@ -354,7 +354,7 @@ namespace Dev2.Activities.Designers2.Core
         public static readonly DependencyProperty IsValidProperty =
             DependencyProperty.Register("IsValid", typeof(bool), typeof(ActivityDesignerViewModel), new PropertyMetadata(true));
 
-        public abstract void Validate();
+        public virtual void Validate() { }
 
         #endregion
 
