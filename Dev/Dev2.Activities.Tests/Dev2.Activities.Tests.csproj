@@ -276,7 +276,6 @@
     <Compile Include="ActivityComparerTests\Scripting\DsfRubyActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCopyFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
