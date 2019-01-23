@@ -25,6 +25,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
     {
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]        
         public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_NoOutputs_NoErrors_Success()
         {
             var outputDefinition = "";
@@ -73,6 +74,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs_WithErrorsHandled_Success()
         {
             EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs(true);
@@ -80,6 +82,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs_WithErrorsNotHandled_Success()
         {
             EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs(false);
@@ -95,7 +98,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
                "<Output Name=\"@obj.a\" MapsTo=\"[[a]]\" Value=\"[[@obj.a]]\" IsObject=\"True\" DefaultValue=\"1\" />" +
             "</Outputs>";
             var parser = new OutputLanguageParser();
-            var outputs = parser.Parse(outputDefinition);
 
             var dataObject = new DsfDataObject("", Guid.NewGuid());
 
@@ -154,6 +156,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment()
         {
             //---------------Set up test pack-------------------
@@ -174,6 +177,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenEnvHasErrors_ShouldAddErrorsToResultTo()
         {
             //---------------Set up test pack-------------------
@@ -199,6 +203,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EvalAssignRecordSets_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -230,6 +235,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EvalAssignScalars_GivenRecordsetWithoutItems_ShouldEvaluate()
         {
             //---------------Set up test pack-------------------
@@ -247,6 +253,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EvalAssignScalars_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -275,6 +282,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("EnvironmentOutputMappingManager")]
         public void EvalAssignComplexObjects_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
