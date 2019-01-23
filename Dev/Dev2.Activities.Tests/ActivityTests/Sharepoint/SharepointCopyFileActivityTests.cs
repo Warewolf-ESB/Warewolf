@@ -28,6 +28,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 {
     //TODO : Remove [ExpectedException(typeof(TargetInvocationException))] and manually assert each method below
+    //TODO : Test each method without using PrivateObject
     [TestClass]
     public partial class SharepointCopyFileActivityTests : BaseActivityUnitTest
     {
