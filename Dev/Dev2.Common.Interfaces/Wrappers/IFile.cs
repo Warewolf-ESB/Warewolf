@@ -13,6 +13,11 @@ using System.IO;
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
+    public enum FileOverwrite {
+        No,
+        Yes
+    }
+
     public interface IFile
     {
         string ReadAllText(string fileName);
