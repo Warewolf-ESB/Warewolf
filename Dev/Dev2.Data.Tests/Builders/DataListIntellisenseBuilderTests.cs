@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +22,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_NoDataList()
         {
             var builder = new DataListIntellisenseBuilder();
@@ -38,6 +38,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_InvalidData_DoesNotThrow()
         {
             var builder = new DataListIntellisenseBuilder();
@@ -52,6 +53,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_WithDataList()
         {
             var dataList = "<DataList><scalar1>s1</scalar1><rs><f1>f1Value</f1><f2>f2Value</f2></rs></DataList>";
@@ -81,6 +83,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_WithDataList_FilterOnlyScalars()
         {
             var filterTo = new IntellisenseFilterOpsTO()
@@ -103,6 +106,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_WithDataList_FilterOnlyRecordsets()
         {
             var filterTo = new IntellisenseFilterOpsTO()
@@ -126,6 +130,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_WithDataList_FilterOnlyFields()
         {
             var filterTo = new IntellisenseFilterOpsTO()
@@ -158,6 +163,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_Given_DataList()
         {
             var intellisenseBuilder = new DataListIntellisenseBuilder
@@ -172,6 +178,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_Given_DataList_And_FilterType_RecordsetOnly()
         {
             var intellisenseBuilder = new DataListIntellisenseBuilder
@@ -190,6 +197,7 @@ namespace Dev2.Data.Tests.Builders
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        [TestCategory("DataListIntellisenseBuilder")]
         public void DataListIntellisenseBuilder_Generate_Given_DataList_And_FilterType_RecordsetFields()
         {
             var intellisenseBuilder = new DataListIntellisenseBuilder
