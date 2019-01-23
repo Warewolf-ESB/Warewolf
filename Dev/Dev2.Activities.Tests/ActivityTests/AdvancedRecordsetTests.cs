@@ -320,81 +320,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var Worker = CreatePersonAddressWorkers();
             Assert.ThrowsException<Exception>(() => Worker.ExecuteQuery(query));
         }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_GetHashCode()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity();
-
-            advancedRecordsetActivity.SqlQuery = "Select * from Person";
-            var actual = advancedRecordsetActivity.GetHashCode();
-            Assert.IsNotNull(actual);
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_Object_Equals_ReturnFalse()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity();
-            var other = new object();
-            var dataColumnEqual = advancedRecordsetActivity.Equals(other);
-            Assert.IsFalse(dataColumnEqual);
-        }
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_Object_Equals_ReturnTrue()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity();
-            object other = advancedRecordsetActivity;
-            var dataColumnEqual = advancedRecordsetActivity.Equals(other);
-            Assert.IsTrue(dataColumnEqual);
-        }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_Equal_Null()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { };
-            var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(null);
-            Assert.IsFalse(advancedRecordsetActivityEqual);
-        }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_Equal_ReferenceEquals_ReturnTrue()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { };
-            var advancedRecordsetActivityOther = advancedRecordsetActivity;
-            var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(advancedRecordsetActivityOther);
-            Assert.IsTrue(advancedRecordsetActivityEqual);
-        }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_Equal_ReferenceEquals_SqlQuery_ReturnFalse()
-        {
-
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from Person" };
-            var advancedRecordsetActivityOther = new AdvancedRecordsetActivity { SqlQuery = "Select * from Person" };
-            var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(advancedRecordsetActivityOther);
-            Assert.IsFalse(advancedRecordsetActivityEqual);
-        }
-
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_Equal_ReferenceEquals_SqlQuery_ReturnTrue()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from Person" };
-            var advancedRecordsetActivityOther = new AdvancedRecordsetActivity { SqlQuery = "Select * from Address" };
-            var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(advancedRecordsetActivityOther);
-            Assert.IsFalse(advancedRecordsetActivityEqual);
-        }
+      
+       
+      
+       
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
@@ -415,14 +344,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var advancedRecordset = new AdvancedRecordset { RecordsetName = "TestRecordsetName" };
             Assert.AreEqual("TestRecordsetName", advancedRecordset.RecordsetName);
         }
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_SetRecordsetNameOnActivity()
-        {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { RecordsetName = "TestRecordsetName" };
-            Assert.AreEqual("TestRecordsetName", advancedRecordsetActivity.RecordsetName);
-        }
+       
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
