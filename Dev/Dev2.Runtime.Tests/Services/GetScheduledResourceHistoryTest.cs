@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class GetScheduledResourceHistoryTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         
         public void SaveScheduledResourceTest_ServiceName()
         {
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Services_ScheduledResource_ReturnsDynamicService()
         {
             SchedulerTestBaseStaticMethods.GetScheduledResourcesReturnsDynamicService(new GetScheduledResourceHistory());
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Services
         }
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Services_ScheduledResourceHistory_GetValid()
         {
             var output = RunOutput(true);
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.Services
         }
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Services_ScheduledResource_GetIncorrectResources()
         {
             var output = RunOutput(false);

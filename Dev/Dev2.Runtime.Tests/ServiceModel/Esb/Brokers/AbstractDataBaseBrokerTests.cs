@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class AbstractDataBaseBrokerTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -42,7 +43,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
 
@@ -61,7 +62,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
 
@@ -92,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             Assert.AreEqual("bob", result[0].Name);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
 
@@ -119,7 +120,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -137,7 +138,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -157,7 +158,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
 
@@ -239,7 +240,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             Assert.AreEqual("row1__COMMA__row2__COMMA__", result.DataSourceShapes[0].Paths[1].SampleData);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetDatabases")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -256,7 +257,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetDatabases")]
 
