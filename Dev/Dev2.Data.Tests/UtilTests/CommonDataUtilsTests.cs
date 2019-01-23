@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
@@ -20,7 +21,7 @@ namespace Dev2.Data.Tests.UtilTests
     public class CommonDataUtilsTests
     {
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateEndPoint_EmptyPath_ExpectException()
         {
@@ -48,7 +49,7 @@ namespace Dev2.Data.Tests.UtilTests
             mockPath.Verify(o => o.Path, Times.Once);
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateEndPoint_NullPath_ExpectException()
         {
@@ -73,7 +74,7 @@ namespace Dev2.Data.Tests.UtilTests
             mockEndPoint.Verify(o => o.IOPath, Times.Once);
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateEndPoint_ValidPath_OverwriteFalse_ExpectException()
         {
@@ -108,7 +109,7 @@ namespace Dev2.Data.Tests.UtilTests
             mockEndPoint.Verify(o => o.PathExist(mockPath.Object), Times.Once);
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateEndPoint_ValidPath_Success()
         {
@@ -133,7 +134,7 @@ namespace Dev2.Data.Tests.UtilTests
             mockEndPoint.Verify(o => o.PathExist(mockPath.Object), Times.Once);
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateEndPoint_ValidPathNotExists_Success()
         {
@@ -164,7 +165,119 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ExtractFile_NullZip_DoesNotThrow()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            IIonicZipFileWrapper wrapper = null;
+            commonDataUtils.ExtractFile(null, wrapper, null);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ExtractFile_NoPassword()
+        {
+            const string path = "some path";
+
+            var mockUnzipOpTo = new Mock<IDev2UnZipOperationTO>();
+
+            var commonDataUtils = new CommonDataUtils();
+            var mockZipFileWrapper = new Mock<IIonicZipFileWrapper>();
+            var mockZipEntry = new Mock<IZipEntry>();
+            mockZipFileWrapper.Setup(o => o.GetEnumerator()).Returns(new List<IZipEntry>() {
+                mockZipEntry.Object
+            }.GetEnumerator());
+
+            commonDataUtils.ExtractFile(mockUnzipOpTo.Object, mockZipFileWrapper.Object, path);
+            mockZipFileWrapper.Verify(o => o.Dispose(), Times.Once);
+            mockZipEntry.Verify(o => o.Extract(path, FileOverwrite.No), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ExtractFile_WithPassword_OverwriteTrue()
+        {
+            const string somePath = "some path";
+            const string somePassword = "some password";
+
+            var mockUnzipOpTo = new Mock<IDev2UnZipOperationTO>();
+            mockUnzipOpTo.Setup(o => o.ArchivePassword).Returns(somePassword);
+            mockUnzipOpTo.Setup(o => o.Overwrite).Returns(true);
+
+            var commonDataUtils = new CommonDataUtils();
+            var mockZipFileWrapper = new Mock<IIonicZipFileWrapper>();
+            var mockZipEntry = new Mock<IZipEntry>();
+            mockZipFileWrapper.Setup(o => o.GetEnumerator()).Returns(new List<IZipEntry>() {
+                mockZipEntry.Object
+            }.GetEnumerator());
+
+            commonDataUtils.ExtractFile(mockUnzipOpTo.Object, mockZipFileWrapper.Object, somePath);
+
+            mockUnzipOpTo.VerifyGet(o => o.ArchivePassword, Times.Exactly(2));
+            mockZipFileWrapper.VerifySet(o => o.Password = somePassword, Times.Once);
+            mockZipFileWrapper.Verify(o => o.Dispose(), Times.Once);
+            mockZipEntry.Verify(o => o.Extract(somePath, FileOverwrite.Yes), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ExtractFile_Extract_Fails()
+        {
+            const string somePath = "some path";
+            const string somePassword = "some password";
+
+            var mockUnzipOpTo = new Mock<IDev2UnZipOperationTO>();
+            mockUnzipOpTo.Setup(o => o.ArchivePassword).Returns(somePassword);
+
+            var commonDataUtils = new CommonDataUtils();
+            var mockZipFileWrapper = new Mock<IIonicZipFileWrapper>();
+            var mockZipEntry = new Mock<IZipEntry>();
+            mockZipEntry.Setup(o => o.Extract(somePath, FileOverwrite.No)).Throws(new Ionic.Zip.BadPasswordException("some exception"));
+
+            mockZipFileWrapper.Setup(o => o.GetEnumerator()).Returns(new List<IZipEntry>() {
+                mockZipEntry.Object
+            }.GetEnumerator());
+
+            var hadException = false;
+            try
+            {
+                commonDataUtils.ExtractFile(mockUnzipOpTo.Object, mockZipFileWrapper.Object, somePath);
+            } catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.InvalidArchivePassword, e.Message);
+            }
+            Assert.IsTrue(hadException);
+
+            mockUnzipOpTo.VerifyGet(o => o.ArchivePassword, Times.Exactly(2));
+            mockZipFileWrapper.VerifySet(o => o.Password = somePassword, Times.Once);
+            mockZipFileWrapper.Verify(o => o.Dispose(), Times.Once);
+            mockZipEntry.Verify(o => o.Extract(somePath, FileOverwrite.No), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AppendToTemp()
+        {
+            var file = new FileWrapper();
+            var filename1 = CommonDataUtils.TempFile("txt");
+            file.WriteAllText(filename1, "some string");
+
+            var destinationFile = CommonDataUtils.TempFile("txt");
+
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.AppendToTemp(File.OpenRead(filename1), destinationFile);
+
+            Assert.AreEqual("some string", file.ReadAllText(destinationFile));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_CreateScalarInputs_Should()
         {
@@ -190,7 +303,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GivenRecSet_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
@@ -215,7 +328,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GivenVariable_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
@@ -240,7 +353,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GivenJSon_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
@@ -265,7 +378,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         [ExpectedException(typeof(Exception))]
         public void CommonDataUtils_GivenNullSource_AddMissingFileDirectoryParts_ShouldRetunError()
@@ -282,7 +395,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GivenNullDestination_AddMissingFileDirectoryParts_ShouldRetunError()
         {
@@ -298,7 +411,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_ValidateSourceAndDestinationPaths_GivenIsPathRooted_ShouldReturnFalse()
         {
@@ -325,7 +438,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsNotDirectory()
         {
@@ -353,7 +466,7 @@ namespace Dev2.Data.Tests.UtilTests
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsDirectory()
         {
@@ -382,7 +495,7 @@ namespace Dev2.Data.Tests.UtilTests
             dstPath.VerifySet(p => p.Path = @"C:\Parent\Child\a.txt");
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_CreateRecordSetsInputs_GivenNullValue()
         {
@@ -427,7 +540,7 @@ namespace Dev2.Data.Tests.UtilTests
             env.Verify(p => p.AssignDataShape("[[Person().Age]]"), Times.AtLeastOnce);
         }
         [TestMethod]
-        [Owner("Sanele Mthembu")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenNullValue()
         {            

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces.Enums;
 using Ionic.Zip;
 using Ionic.Zlib;
@@ -12,7 +13,7 @@ namespace Dev2.Data.Interfaces
     public interface ICommon
     {
         void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args);
-        void ExtractFile(IDev2UnZipOperationTO args, ZipFile zip, string extractFromPath);
+        void ExtractFile(IDev2UnZipOperationTO args, IIonicZipFileWrapper zip, string extractFromPath);
         void AppendToTemp(Stream originalFileStream, string temp);
         CompressionLevel ExtractZipCompressionLevel(string lvl);
         bool IsNotFtpTypePath(IActivityIOPath src);

@@ -6,7 +6,9 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Utils;
+using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
@@ -23,6 +25,18 @@ namespace Dev2.Data.Util
 
     public class CommonDataUtils : ICommon
     {
+        readonly IIonicZipFileWrapper _ionicZipFileWrapper;
+        public CommonDataUtils()
+            : this(new IonicZipFileWrapper())
+        {
+
+        }
+        public CommonDataUtils(IIonicZipFileWrapper ionicZipFileWrapper)
+        {
+            _ionicZipFileWrapper = ionicZipFileWrapper;
+        }
+
+
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
         {
             var path = endPoint.IOPath?.Path;
@@ -37,7 +51,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void ExtractFile(IDev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
+        public void ExtractFile(IDev2UnZipOperationTO args, IIonicZipFileWrapper zip, string extractFromPath)
         {
             if (zip != null)
             {
@@ -54,8 +68,8 @@ namespace Dev2.Data.Util
                         {
                             ze.Extract(extractFromPath,
                                        args.Overwrite
-                                           ? ExtractExistingFileAction.OverwriteSilently
-                                           : ExtractExistingFileAction.DoNotOverwrite);
+                                           ? FileOverwrite.Yes
+                                           : FileOverwrite.No);
                         }
                         catch (BadPasswordException bpe)
                         {
@@ -64,6 +78,13 @@ namespace Dev2.Data.Util
                     }
                 }
             }
+        }
+
+        public static string TempFile(string extension)
+        {
+            var path = System.IO.Path.GetTempPath();
+            var guid = Guid.NewGuid().ToString();
+            return $"{path}/{guid}.{extension}";
         }
 
         public void AppendToTemp(Stream originalFileStream, string temp)
