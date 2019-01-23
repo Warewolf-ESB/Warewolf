@@ -157,7 +157,7 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
             "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -168,7 +168,7 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         public virtual void ReadFileAtLocation_2()
         {
 #line 8
-this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
+this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
                     "t", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -181,7 +181,7 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemSha
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
             "read.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -192,7 +192,7 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemSha
         public virtual void ReadFileAtLocation_3()
         {
 #line 8
-this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
+this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
                     "read.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -336,7 +336,7 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
             "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -347,7 +347,7 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         public virtual void ReadFileAtLocationNull_2()
         {
 #line 32
-this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
+this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.tx" +
                     "t", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
@@ -360,7 +360,7 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSyste
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
             "read.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -371,7 +371,7 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSyste
         public virtual void ReadFileAtLocationNull_3()
         {
 #line 32
-this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
+this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\fileto" +
                     "read.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
