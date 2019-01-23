@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Activities.Designers2.ExchangeNewEmail;
 using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces;
@@ -131,11 +132,6 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             mockQueryManager.Setup(query => query.FetchExchangeSources()).Returns(new ObservableCollection<IExchangeSource> { new ExchangeSourceDefinition { Id = Guid.NewGuid() } });
             mockServer.SetupGet(it => it.QueryProxy).Returns(mockQueryManager.Object);
             ServerRepository.Instance.ActiveServer = mockServer.Object;
-            CustomContainer.LoadedTypes = new List<Type>
-            {
-                typeof(ExchangeServiceModel)
-            };
-            CustomContainer.Register(model);
 
             var testEmailDesignerViewModel = new ExchangeNewEmailDesignerViewModel(modelItem, new AsyncWorker(), mockServer.Object, eve, shellViewModel, mockActiveDataList.Object);
             testEmailDesignerViewModel.SourceRegion.SelectedSource = model.RetrieveSources().First();
@@ -415,8 +411,31 @@ namespace Dev2.Activities.Designers.Tests.Exchange
             var mockShellViewModel = new Mock<IShellViewModel>();
 
             var viewModel = CreateNewViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
+            var mockModel = new TestExchangeServiceModel(true);
+            viewModel.SourceRegion = new ExchangeSourceRegion(mockModel, modelItem, "ExchangeSource");
 
             viewModel.TestEmailAccount();
+
+            Assert.IsFalse(viewModel.Testing);
+            Assert.AreEqual("", viewModel.StatusMessage);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual("Please select valid source", viewModel.Errors[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ExchangeNewEmailDesignerViewModel))]
+        public void ExchangeNewEmailDesignerViewModel_AddTitleBarLargeToggle()
+        {
+            var modelItem = CreateModelItem();
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
+            var mockShellViewModel = new Mock<IShellViewModel>();
+
+            var viewModel = CreateNewViewModel(mockShellViewModel.Object, modelItem, eventPublisher.Object);
+
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

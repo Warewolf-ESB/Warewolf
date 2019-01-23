@@ -27,24 +27,23 @@ using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
 {
+    //TODO : Remove [ExpectedException(typeof(TargetInvocationException))] and manually assert each method below
+    //TODO : Test each method without using PrivateObject
     [TestClass]
     public partial class SharepointCopyFileActivityTests : BaseActivityUnitTest
     {
-        SharepointCopyFileActivity CreateActivity()
-        {
-            return new SharepointCopyFileActivity();
-        }
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SharepointCopyFileActivity))]
         public void SharepointCopyFileActivity_Construct_GivenInstance_ShouldNotBeNull()
         {
             //------------Setup for test--------------------------
-            var sharepointCopyFileActivity = CreateActivity();
+            var sharepointCopyFileActivity = new SharepointCopyFileActivity();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointCopyFileActivity);
+            Assert.AreEqual(string.Empty, sharepointCopyFileActivity.ServerInputPathFrom);
+            Assert.AreEqual(string.Empty, sharepointCopyFileActivity.ServerInputPathTo);
         }
 
         [TestMethod]
@@ -227,6 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true
             };
             var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
             
@@ -234,6 +234,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
@@ -259,6 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             };
 
             var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
 
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
@@ -267,6 +272,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
@@ -291,8 +300,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
                 Overwrite = true,
             };
 
-           var privateObject = new PrivateObject(sharepointCopyFileActivity);
-            
+            var privateObject = new PrivateObject(sharepointCopyFileActivity);
+            var dataObj = new DsfDataObject("", Guid.NewGuid(), "");
+
             resourceCatalog.Setup(r => r.GetResource<SharepointSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockSharepointSource.Object);
 
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
@@ -300,6 +310,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Sharepoint
             //------------Execute Test---------------------------
             privateObject.Invoke("ValidateRequest");
             //------------Assert Result--------------------------
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "Files", "Name", out IList<string> result, out string error);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Success", result[0]);
         }
 
         [TestMethod]
