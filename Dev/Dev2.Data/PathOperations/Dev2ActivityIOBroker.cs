@@ -263,14 +263,14 @@ namespace Dev2.PathOperations
                     if (dst.RequiresLocalTmpStorage())
                     {
                         var tempPath = _common.CreateTmpDirectory();
-                        _common.ExtractFile(args, zip, tempPath);
+                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), tempPath);
                         var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, string.Empty);
                         var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
                         Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
                     }
                     else
                     {
-                        _common.ExtractFile(args, zip, dst.IOPath.Path);
+                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), dst.IOPath.Path);
                     }
 
                     if (src.RequiresLocalTmpStorage())

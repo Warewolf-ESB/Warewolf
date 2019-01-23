@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
@@ -675,7 +676,7 @@ namespace Dev2.Data.Tests.Operations
             {
                 var commonDataUtils = new Util.CommonDataUtils();
                 file.Save(tempFileName);
-                commonDataUtils.ExtractFile(operationTO, file, tempPath);
+                commonDataUtils.ExtractFile(operationTO, new IonicZipFileWrapper(file), tempPath);
             }
             catch(Exception ex)
             {
