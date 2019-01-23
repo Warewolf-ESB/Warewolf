@@ -1301,6 +1301,10 @@
       <Project>{1BD5CC42-66C7-4A1B-AF1F-E6F2D4372B44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{A62DA168-5BF3-4C14-B880-4AD83478E3A7}</Project>
+      <Name>Warewolf.Studio.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>

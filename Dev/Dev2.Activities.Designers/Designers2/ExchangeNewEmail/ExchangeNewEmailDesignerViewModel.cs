@@ -34,6 +34,7 @@ using Dev2.Validation;
 using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using Warewolf.Studio.Models;
 
 namespace Dev2.Activities.Designers2.ExchangeNewEmail
 {
@@ -88,7 +89,7 @@ namespace Dev2.Activities.Designers2.ExchangeNewEmail
 
             _shellViewModel = shellViewModel;
             _activeDataList = activeDataList;
-            var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            var model = new ExchangeServiceModel(_server, _shellViewModel);
             Model = model;
             SetupCommonProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_Exchange_Send;
