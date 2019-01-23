@@ -25,7 +25,8 @@ namespace Dev2.Data.Util
     {
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
         {
-            if (endPoint.IOPath?.Path.Trim().Length == 0)
+            var path = endPoint.IOPath?.Path;
+            if (path is null || path.Trim().Length == 0)
             {
                 throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
             }

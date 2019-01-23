@@ -10,17 +10,163 @@ using Dev2.DataList.Contract;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.Tests.UtilTests
 {
     [TestClass]
-    public class CommonDataUtilTests
+    public class CommonDataUtilsTests
     {
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void CreateScalarInputs_Should()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateEndPoint_EmptyPath_ExpectException()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            var mockEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockPath = new Mock<IActivityIOPath>();
+            mockPath.Setup(o => o.Path).Returns("");
+            mockEndPoint.Setup(o => o.IOPath).Returns(mockPath.Object);
+            var endPoint = mockEndPoint.Object;
+            IDev2CRUDOperationTO dev2CRUDOperationTO = null;
+
+            bool hadException = false;
+            try
+            {
+                commonDataUtils.ValidateEndPoint(endPoint, dev2CRUDOperationTO);
+            }
+            catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, e.Message);
+            }
+            Assert.IsTrue(hadException, "expected exception");
+
+            mockEndPoint.Verify(o => o.IOPath, Times.Once);
+            mockPath.Verify(o => o.Path, Times.Once);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateEndPoint_NullPath_ExpectException()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            var mockEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            mockEndPoint.Setup(o => o.IOPath).Returns(() => null);
+            var endPoint = mockEndPoint.Object;
+            IDev2CRUDOperationTO dev2CRUDOperationTO = null;
+
+            bool hadException = false;
+            try
+            {
+                commonDataUtils.ValidateEndPoint(endPoint, dev2CRUDOperationTO);
+            }
+            catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, e.Message);
+            }
+            Assert.IsTrue(hadException, "expected exception");
+
+            mockEndPoint.Verify(o => o.IOPath, Times.Once);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateEndPoint_ValidPath_OverwriteFalse_ExpectException()
+        {
+            const string expectedPath = "c:\\somePath";
+            var commonDataUtils = new CommonDataUtils();
+            var mockEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockPath = new Mock<IActivityIOPath>();
+            mockPath.Setup(o => o.Path).Returns(expectedPath);
+            mockEndPoint.Setup(o => o.IOPath).Returns(mockPath.Object);
+
+            mockEndPoint.Setup(o => o.PathExist(mockPath.Object)).Returns(true);
+
+            var endPoint = mockEndPoint.Object;
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(o => o.Overwrite).Returns(false);
+
+            var hadException = false;
+            try
+            {
+                commonDataUtils.ValidateEndPoint(endPoint, mockDev2CRUDOperationTO.Object);
+            }
+            catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.DestinationDirectoryExist, e.Message);
+            }
+            Assert.IsTrue(hadException, "expected exception");
+
+            mockEndPoint.Verify(o => o.IOPath, Times.Exactly(2));
+            mockPath.Verify(o => o.Path, Times.Once);
+
+            mockEndPoint.Verify(o => o.PathExist(mockPath.Object), Times.Once);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateEndPoint_ValidPath_Success()
+        {
+            const string expectedPath = "c:\\somePath";
+            var commonDataUtils = new CommonDataUtils();
+            var mockEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockPath = new Mock<IActivityIOPath>();
+            mockPath.Setup(o => o.Path).Returns(expectedPath);
+            mockEndPoint.Setup(o => o.IOPath).Returns(mockPath.Object);
+
+            mockEndPoint.Setup(o => o.PathExist(mockPath.Object)).Returns(true);
+
+            var endPoint = mockEndPoint.Object;
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(o => o.Overwrite).Returns(true);
+
+            commonDataUtils.ValidateEndPoint(endPoint, mockDev2CRUDOperationTO.Object);
+            
+            mockEndPoint.Verify(o => o.IOPath, Times.Exactly(2));
+            mockPath.Verify(o => o.Path, Times.Once);
+
+            mockEndPoint.Verify(o => o.PathExist(mockPath.Object), Times.Once);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateEndPoint_ValidPathNotExists_Success()
+        {
+            const string expectedPath = "c:\\somePath";
+            var commonDataUtils = new CommonDataUtils();
+            var mockEndPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var mockPath = new Mock<IActivityIOPath>();
+            mockPath.Setup(o => o.Path).Returns(expectedPath);
+            mockEndPoint.Setup(o => o.IOPath).Returns(mockPath.Object);
+
+            mockEndPoint.Setup(o => o.PathExist(mockPath.Object)).Returns(false);
+
+            var endPoint = mockEndPoint.Object;
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(o => o.Overwrite).Returns(true);
+            try
+            {
+                commonDataUtils.ValidateEndPoint(endPoint, mockDev2CRUDOperationTO.Object);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, e.Message);
+            }
+            mockEndPoint.Verify(o => o.IOPath, Times.Exactly(2));
+            mockPath.Verify(o => o.Path, Times.Once);
+
+            mockEndPoint.Verify(o => o.PathExist(mockPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateScalarInputs_Should()
         {
             var commonDataUtils = new CommonDataUtils();
             Assert.IsNotNull(commonDataUtils);
@@ -45,7 +191,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GivenRecSet_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GivenRecSet_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
             var commonDataUtils = new CommonDataUtils();
             Assert.IsNotNull(commonDataUtils);
@@ -69,7 +216,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GivenVariable_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GivenVariable_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
             var commonDataUtils = new CommonDataUtils();
             Assert.IsNotNull(commonDataUtils);
@@ -93,7 +241,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GivenJSon_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GivenJSon_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
         {
             var commonDataUtils = new CommonDataUtils();
             Assert.IsNotNull(commonDataUtils);
@@ -117,8 +266,9 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [TestCategory(nameof(CommonDataUtils))]
         [ExpectedException(typeof(Exception))]
-        public void GivenNullSource_AddMissingFileDirectoryParts_ShouldRetunError()
+        public void CommonDataUtils_GivenNullSource_AddMissingFileDirectoryParts_ShouldRetunError()
         {
             var commonDataUtils = new CommonDataUtils();
             var tempFile = Path.GetTempFileName();
@@ -133,7 +283,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GivenNullDestination_AddMissingFileDirectoryParts_ShouldRetunError()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GivenNullDestination_AddMissingFileDirectoryParts_ShouldRetunError()
         {
             var commonDataUtils = new CommonDataUtils();
             var tempFile = Path.GetTempFileName();
@@ -148,7 +299,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ValidateSourceAndDestinationPaths_GivenIsPathRooted_ShouldReturnFalse()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ValidateSourceAndDestinationPaths_GivenIsPathRooted_ShouldReturnFalse()
         {
             const string txt = "C:\\Home\\a.txt";
             var srcPath = new Mock<IActivityIOPath>();
@@ -174,7 +326,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsNotDirectory()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsNotDirectory()
         {
             const string file = "C:\\Home\\a.txt";
             var srcPath = new Mock<IActivityIOPath>();
@@ -201,7 +354,8 @@ namespace Dev2.Data.Tests.UtilTests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsDirectory()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsDirectory()
         {
             const string file = "C:\\Parent\\a.txt";
             const string dstfile = "C:\\Parent\\Child\\";
@@ -229,7 +383,8 @@ namespace Dev2.Data.Tests.UtilTests
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void CreateRecordSetsInputs_GivenNullValue()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateRecordSetsInputs_GivenNullValue()
         {
             var outerEnvironment = new Mock<IExecutionEnvironment>();
             var inputRecSets = new Mock<IRecordSetCollection>();
@@ -273,7 +428,8 @@ namespace Dev2.Data.Tests.UtilTests
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void GenerateDefsFromDataListForDebug_GivenNullValue()
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenNullValue()
         {            
             const string trueString = "True";
             var datalist = string.Format("<DataList><Person Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"Both\" ><Name Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"Input\" /></Person></DataList>", trueString);
