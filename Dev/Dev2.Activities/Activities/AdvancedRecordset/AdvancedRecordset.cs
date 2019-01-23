@@ -219,7 +219,7 @@ namespace Dev2.Activities
                 }
                 return newVariableValue.ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception(variableName + " is not declared.");
             }
