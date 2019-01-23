@@ -261,6 +261,7 @@
     <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointReadListTests.cs" />
     <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
+    <Compile Include="Sharepoint\SharePointDeleteFileDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
