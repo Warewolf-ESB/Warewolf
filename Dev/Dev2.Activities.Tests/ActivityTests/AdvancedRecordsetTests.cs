@@ -88,7 +88,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_Converter_FromRecordset()
+        public void AdvancedRecordset_FromRecordset()
         {
             var Worker = CreatePersonAddressWorkers();
             Assert.IsNotNull(Worker);
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_Converter_ConvertDataTableToRecordset_ExpectDataInIEnvironment()
+        public void AdvancedRecordset_ConvertDataTableToRecordset_ExpectDataInIEnvironment()
         {
             string returnRecordsetName = "person";
             string query = "select * from person";
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var e = internalResult.GetEnumerator();
             if (e.MoveNext())
             {
-                Assert.AreEqual("bob", e.Current);
+                Assert.AreEqual("bob", e.Current.ToString());
             }
             else
             {
