@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,6 +25,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class WebGetRequestHandlerTest
     {
         [ClassInitialize]
@@ -37,7 +38,7 @@ namespace Dev2.Tests.Runtime.WebServer
             CustomContainer.Register(pCounter.Object);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebGetRequestHandler_ProcessRequest")]
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()
@@ -80,7 +81,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebGetRequestHandler_ProcessRequest")]
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContextWhenNullDataListID_ExpectExecution()

@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FindDependenciesConstructor()
         {
             var esb = new FindDependencies();
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -61,7 +61,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         
@@ -161,7 +161,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         
@@ -220,7 +220,7 @@ namespace Dev2.Tests.Runtime.Services
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("FindDependencies_Execute")]
         
@@ -284,7 +284,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FindDependenciesLogHandlesTypeExpectedReturnsFindDependencyService()
         {
             var esb = new FindDependencies();
@@ -296,7 +296,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void FetchCurrentServerLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new FindDependencies();
@@ -313,7 +313,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -327,7 +327,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,11 +18,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class EmailSourceTests
     {
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EmailSourceContructorWithDefaultExpectedInitializesProperties()
         {
             var source = new EmailSource();
@@ -32,14 +33,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EmailSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             var source = new EmailSource(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EmailSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -52,7 +53,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EmailSourceContructorWithValidXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("EmailSource");
@@ -68,7 +69,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("1234", source.Password);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EmailSourceContructorWithCorruptXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("EmailSourceCorrupt");
@@ -88,7 +89,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region ToXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EmailSourceToXmlExpectedSerializesProperties()
         {
             var expected = new EmailSource
