@@ -21,7 +21,6 @@ using Dev2.DataList.Contract;
 using Dev2.Util;
 using Warewolf.Storage;
 using Dev2.Data;
-using System.Globalization;
 
 namespace Dev2.Activities
 {
@@ -70,7 +69,6 @@ namespace Dev2.Activities
             }
             finally
             {
-                // Handle Errors
                 var hasErrors = allErrors.HasErrors();
 
                 if (hasErrors)
@@ -143,7 +141,6 @@ namespace Dev2.Activities
             {
                 AdvancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
             }
-
         }
 
         private void ExecuteSql(int update, ref bool started)
@@ -292,7 +289,6 @@ namespace Dev2.Activities
         int _recordsAffected;
         void LoadRecordset(string tableName)
         {
-
             AdvancedRecordset.LoadRecordsetAsTable(tableName);
         }
 
@@ -316,7 +312,6 @@ namespace Dev2.Activities
                 }
                 return match.Value;
             });
-
 
 
         void InsertIntoVariableTable(string varName, string value)
@@ -391,9 +386,9 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SourceId.GetHashCode());
-                if (ExecuteActionString != null)
+                if (SqlQuery != null)
                 {
-                    hashCode = (hashCode * 397) ^ (ExecuteActionString.GetHashCode());
+                    hashCode = (hashCode * 397) ^ (SqlQuery.GetHashCode());
                 }
                 return hashCode;
             }
