@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
