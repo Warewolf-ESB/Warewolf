@@ -9,19 +9,15 @@
 */
 
 using System.Net.Mail;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities
 {
     public class EmailSender : IEmailSender
     {
-        #region Implementation of IEmailSender
-
-        public void Send(EmailSource emailSource, MailMessage mailMessage)
+        public void Send(IEmailSource emailSource, MailMessage mailMessage)
         {
             emailSource.Send(mailMessage);
         }
-
-        #endregion
     }
 }
