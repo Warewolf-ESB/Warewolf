@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.UI.Tests;
 
 namespace Warewolf.UISpecs
