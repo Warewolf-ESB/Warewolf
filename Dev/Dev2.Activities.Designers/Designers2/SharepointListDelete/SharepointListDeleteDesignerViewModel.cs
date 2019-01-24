@@ -10,7 +10,9 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.SharepointListRead;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
@@ -21,27 +23,31 @@ namespace Dev2.Activities.Designers2.SharepointListDelete
 {
     public class SharepointListDeleteDesignerViewModel : SharepointListDesignerViewModelBase
     {
+        private readonly IShellViewModel _shellViewModel;
+
+        [ExcludeFromCodeCoverage]
         public SharepointListDeleteDesignerViewModel(ModelItem modelItem)
-            : base(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator,false)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, CustomContainer.Get<IShellViewModel>())
         {
+        }
+
+        public SharepointListDeleteDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer envModel, IShellViewModel shellViewModel)
+            : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator,false)
+        {
+            _shellViewModel = shellViewModel;
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Delete_List_Item;
         }
 
-        public override string CollectionName => "FilterCriteria";
-
         public ObservableCollection<string> WhereOptions { get; private set; }
-
-        #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            _shellViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        #endregion
+        public override string CollectionName => "FilterCriteria";
     }
 }
