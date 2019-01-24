@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -262,152 +263,220 @@ namespace Dev2.Data.Tests.UtilTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_AppendToTemp()
+        public void CommonDataUtils_TempFile()
         {
-            var file = new FileWrapper();
-            var filename1 = CommonDataUtils.TempFile("txt");
-            file.WriteAllText(filename1, "some string");
-
-            var destinationFile = CommonDataUtils.TempFile("txt");
-
-            var commonDataUtils = new CommonDataUtils();
-            commonDataUtils.AppendToTemp(File.OpenRead(filename1), destinationFile);
-
-            Assert.AreEqual("some string", file.ReadAllText(destinationFile));
+            var filename = CommonDataUtils.TempFile("ext");
+            Assert.IsTrue(filename.EndsWith(".ext"));
+            Assert.IsFalse(File.Exists(filename));
+            Assert.IsTrue(filename.Length > 36);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_CreateScalarInputs_Should()
+        public void CommonDataUtils_ExtractZipCompressionLevel()
         {
-            var commonDataUtils = new CommonDataUtils();
-            Assert.IsNotNull(commonDataUtils);
+            //---------------Set up test pack-------------------
+            var commonDataUtils = new Util.CommonDataUtils();
+            var level = commonDataUtils.ExtractZipCompressionLevel("BestCompression");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
 
-            var outerExeEnv = new ExecutionEnvironment();
-            var recUsername = "[[rec(1).UserName]]";
-            outerExeEnv.Assign(recUsername, "Sanele", 0);
-            var inputScalarList = new List<IDev2Definition>
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(level);
+            Assert.AreEqual(Ionic.Zlib.CompressionLevel.BestCompression, level);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_ExtractZipCompressionLevel_UnknownLevel_ShouldUseDefault()
+        {
+            //---------------Set up test pack-------------------
+            var commonDataUtils = new Util.CommonDataUtils();
+            var level = commonDataUtils.ExtractZipCompressionLevel("Test");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(level);
+            Assert.AreEqual(Ionic.Zlib.CompressionLevel.Default, level);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CommonDataUtils_IsNotFtpTypePath()
+        {
+            bool IsNotFtpTypePathTest(string fileName)
             {
-                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
-            };
-            Assert.IsNotNull(inputScalarList);
-            var innerExecEnv = new ExecutionEnvironment();
-            Assert.IsNotNull(innerExecEnv);
-            var prObj = new PrivateObject(innerExecEnv);
-            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
-            commonDataUtils.CreateScalarInputs(outerExeEnv, inputScalarList, innerExecEnv, 0);
-            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 1);
+                var pathMock = new Mock<IActivityIOPath>();
+                pathMock.Setup(path => path.Path).Returns(fileName);
+
+                var commonDataUtils = new Util.CommonDataUtils();
+                var value = commonDataUtils.IsNotFtpTypePath(pathMock.Object);
+                return bool.Parse(value.ToString());
+            }
+
+            Assert.IsTrue(IsNotFtpTypePathTest("C:\\Home\\a.txt"));
+
+            Assert.IsFalse(IsNotFtpTypePathTest("ftp://Home//a.txt"));
+            Assert.IsFalse(IsNotFtpTypePathTest("ftps://Home//a.txt"));
+            Assert.IsFalse(IsNotFtpTypePathTest("sftp://Home//a.txt"));
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_GivenRecSet_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        public void CommonDataUtils_ValidateSourceAndDestinationPaths_EmptySourceThrows()
         {
-            var commonDataUtils = new CommonDataUtils();
-            Assert.IsNotNull(commonDataUtils);
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.Setup(path => path.Path).Returns("");
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.Setup(path => path.Path).Returns("some relative path");
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
 
-            var outerExeEnv = new ExecutionEnvironment();
-            var recUsername = "[[rec(1).UserName]]";
-            outerExeEnv.Assign(recUsername, "Sanele", 0);
-            var definitions = new List<IDev2Definition>
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var commonDataUtils = new CommonDataUtils();
+            var hadException = false;
+            try
             {
-                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
-            };
-            Assert.IsNotNull(definitions);
-            var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
-            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
-            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
-            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 1);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_GivenVariable_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
-        {
-            var commonDataUtils = new CommonDataUtils();
-            Assert.IsNotNull(commonDataUtils);
-
-            var outerExeEnv = new ExecutionEnvironment();
-            var recUsername = "[[UserName]]";
-            outerExeEnv.Assign(recUsername, "Sanele", 0);
-            var definitions = new List<IDev2Definition>
+                commonDataUtils.ValidateSourceAndDestinationPaths(src.Object, dst.Object);
+            }
+            catch (Exception e)
             {
-                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
-            };
-            Assert.IsNotNull(definitions);
-            var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
-            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
-            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
-            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 1);
+                hadException = true;
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, e.Message);
+            }
+            Assert.IsTrue(hadException, "expected exception");
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_GivenJSon_CreateObjectInputs_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        public void CommonDataUtils_ValidateSourceAndDestinationPaths_EmptyDestinationBecomesSource()
         {
-            var commonDataUtils = new CommonDataUtils();
-            Assert.IsNotNull(commonDataUtils);
+            const string srcPathString = "C:\\Home\\a.txt";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.SetupGet(o => o.Path).Returns(srcPathString);
+            var pathSet = false;
 
-            var outerExeEnv = new ExecutionEnvironment();
-            var recUsername = "[[@Person().UserName]]";
-            outerExeEnv.Assign(recUsername, "Sanele", 0);
-            var definitions = new List<IDev2Definition>
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.SetupGet(path => path.Path).Returns(() => pathSet ? srcPath.Object.Path : "");
+            dstPath.SetupSet(path => path.Path = srcPathString).Callback<string>((s) => pathSet = true);
+
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var commonDataUtils = new CommonDataUtils();
+            var hadException = false;
+            try
             {
-                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
-            };
-            Assert.IsNotNull(definitions);
-            var innerExecEnv = new ExecutionEnvironment();
-            var prObj = new PrivateObject(innerExecEnv);
-            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.JsonObjects.Count == 0);
-            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
-            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
-            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.JsonObjects.Count == 1);
+                commonDataUtils.ValidateSourceAndDestinationPaths(src.Object, dst.Object);
+            }
+            catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.DestinationDirectoryCannotBeAChild, e.Message);
+            }
+            Assert.IsTrue(hadException);
+            Assert.IsTrue(pathSet);
+            dstPath.VerifySet(o => o.Path = srcPathString, Times.Once);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        [ExpectedException(typeof(Exception))]
-        public void CommonDataUtils_GivenNullSource_AddMissingFileDirectoryParts_ShouldRetunError()
+        public void CommonDataUtils_ValidateSourceAndDestinationPaths_DestinationIsSubdir_Fails()
         {
+            const string srcPathString = @"C:\Home\Subdir";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.SetupGet(o => o.Path).Returns(srcPathString);
+            var pathSet = false;
+
+            const string dstPathString = @"C:\Home\Subdir\MoreSubDir\MoreSubDir\a.txt";
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.SetupGet(path => path.Path).Returns(() => pathSet ? srcPath.Object.Path : dstPathString);
+            dstPath.SetupSet(path => path.Path = srcPathString).Callback<string>((s) => pathSet = true);
+
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+
             var commonDataUtils = new CommonDataUtils();
-            var tempFile = Path.GetTempFileName();
-            const string newFileName = "ZippedTempFile";
-            var zipPathName = Path.GetTempPath() + newFileName + ".zip";
-            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
-            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
-            Assert.IsNotNull(commonDataUtils);
-            scrEndPoint.IOPath.Path = string.Empty;
-            commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);
+            var hadException = false;
+            try
+            {
+                commonDataUtils.ValidateSourceAndDestinationPaths(src.Object, dst.Object);
+            }
+            catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.DestinationDirectoryCannotBeAChild, e.Message);
+            }
+            Assert.IsTrue(hadException);
+
+            Assert.IsFalse(pathSet);
         }
+
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_GivenNullDestination_AddMissingFileDirectoryParts_ShouldRetunError()
+        public void CommonDataUtils_ValidateSourceAndDestinationPaths_UncDestination()
         {
+            const string srcPathString = "C:\\Home\\a.txt";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.SetupGet(o => o.Path).Returns(srcPathString);
+            var pathSet = false;
+
+            const string dstPathString = @"\\Home\Subdir\MoreSubDir\a.txt";
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.SetupGet(path => path.Path).Returns(() => pathSet ? srcPath.Object.Path : dstPathString);
+            dstPath.SetupSet(path => path.Path = srcPathString).Callback<string>((s) => pathSet = true);
+
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+
             var commonDataUtils = new CommonDataUtils();
-            var tempFile = Path.GetTempFileName();
-            const string newFileName = "ZippedTempFile";
-            var zipPathName = Path.GetTempPath() + newFileName + ".zip";
-            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
-            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
-            Assert.IsNotNull(commonDataUtils);
-            dstEndPoint.IOPath.Path = string.Empty;
-            commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);
+            commonDataUtils.ValidateSourceAndDestinationPaths(src.Object, dst.Object);
+
+            Assert.IsFalse(pathSet);
         }
 
         [TestMethod]
@@ -435,6 +504,51 @@ namespace Dev2.Data.Tests.UtilTests
             var commonDataUtils = new CommonDataUtils();
             commonDataUtils.ValidateSourceAndDestinationPaths(src.Object, dst.Object);
 
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_IsUncFileTypePath()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            Assert.IsTrue(commonDataUtils.IsUncFileTypePath(@"\\Home\a.txt"));
+            Assert.IsFalse(commonDataUtils.IsUncFileTypePath(@"\Home\a.txt"));
+            Assert.IsFalse(commonDataUtils.IsUncFileTypePath(@"C:\Home\a.txt"));
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        [ExpectedException(typeof(Exception))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenNullSource_ShouldReturnError()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            var tempFile = Path.GetTempFileName();
+            const string newFileName = "ZippedTempFile";
+            var zipPathName = Path.GetTempPath() + newFileName + ".zip";
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
+            Assert.IsNotNull(commonDataUtils);
+            scrEndPoint.IOPath.Path = string.Empty;
+            commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenNullDestination_ShouldReturnError()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            var tempFile = Path.GetTempFileName();
+            const string newFileName = "ZippedTempFile";
+            var zipPathName = Path.GetTempPath() + newFileName + ".zip";
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
+            Assert.IsNotNull(commonDataUtils);
+            dstEndPoint.IOPath.Path = string.Empty;
+            commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);
         }
 
         [TestMethod]
@@ -468,7 +582,7 @@ namespace Dev2.Data.Tests.UtilTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsDirectory()
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsFile()
         {
             const string file = "C:\\Parent\\a.txt";
             const string dstfile = "C:\\Parent\\Child\\";
@@ -494,6 +608,346 @@ namespace Dev2.Data.Tests.UtilTests
             commonDataUtils.AddMissingFileDirectoryParts(src.Object, dst.Object);
             dstPath.VerifySet(p => p.Path = @"C:\Parent\Child\a.txt");
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectoryOfSource_SourcePathIsDirectory()
+        {
+            const string file = @"C:\Parent\";
+            const string dstfile = @"C:\Parent\Child1\Child2\";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.Setup(path => path.Path).Returns(file);
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.Setup(path => path.Path).Returns(dstfile);
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+            src.Setup(p => p.PathIs(srcPath.Object)).Returns(enPathType.Directory);
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+            dst.Setup(p => p.PathIs(dstPath.Object)).Returns(enPathType.Directory);
+
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.AddMissingFileDirectoryParts(src.Object, dst.Object);
+            dstPath.VerifySet(p => p.Path = @"C:\Parent\Child1\Child2\Parent");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsDirectory()
+        {
+            const string file = @"C:\Parent1\";
+            const string dstfile = @"C:\Parent2\";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.Setup(path => path.Path).Returns(file);
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.Setup(path => path.Path).Returns(dstfile);
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+            src.Setup(p => p.PathIs(srcPath.Object)).Returns(enPathType.Directory);
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+            dst.Setup(p => p.PathIs(dstPath.Object)).Returns(enPathType.Directory);
+
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.AddMissingFileDirectoryParts(src.Object, dst.Object);
+            dstPath.VerifySet(p => p.Path = @"C:\Parent2\Parent1");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsSubDirectory_SourcePathIsFile()
+        {
+            const string file = @"C:\Parent\file1.txt";
+            const string dstfile = @"C:\Parent\Child1\Child2\";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.Setup(path => path.Path).Returns(file);
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.Setup(path => path.Path).Returns(dstfile);
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+            src.Setup(p => p.PathIs(srcPath.Object)).Returns(enPathType.Directory);
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+            dst.Setup(p => p.PathIs(dstPath.Object)).Returns(enPathType.Directory);
+
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.AddMissingFileDirectoryParts(src.Object, dst.Object);
+            dstPath.VerifySet(p => p.Path = @"C:\Parent\Child1\Child2\file1.txt");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_AddMissingFileDirectoryParts_GivenDestinationPathIsDirectory_SourcePathIsFile1()
+        {
+            const string file = @"C:\Parent1\file1.txt";
+            const string dstfile = @"C:\Parent2\Child1\Child2\";
+            var srcPath = new Mock<IActivityIOPath>();
+            srcPath.Setup(path => path.Path).Returns(file);
+            var dstPath = new Mock<IActivityIOPath>();
+            dstPath.Setup(path => path.Path).Returns(dstfile);
+            var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
+
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            src.Setup(p => p.IOPath).Returns(srcPath.Object);
+            src.Setup(p => p.PathSeperator()).Returns("\\");
+            src.Setup(p => p.PathIs(srcPath.Object)).Returns(enPathType.Directory);
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.Setup(p => p.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+            dst.Setup(p => p.IOPath).Returns(dstPath.Object);
+            dst.Setup(p => p.PathSeperator()).Returns("\\");
+            dst.Setup(p => p.PathIs(dstPath.Object)).Returns(enPathType.Directory);
+
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.AddMissingFileDirectoryParts(src.Object, dst.Object);
+            dstPath.VerifySet(p => p.Path = @"C:\Parent2\Child1\Child2\file1.txt");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateTmpDirectory_ShouldCreateFolderInTheCorrectLocation()
+        {
+            string fullName = "";
+            var mockDirectoryInfo = new Mock<IDirectoryInfo>();
+            mockDirectoryInfo.Setup(o => o.FullName).Returns(() => fullName);
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(o => o.CreateDirectory(It.IsAny<string>())).Returns<string>(s => { fullName = s; return mockDirectoryInfo.Object; });
+            var commonDataUtils = new CommonDataUtils(mockDirectoryWrapper.Object);
+            var path = commonDataUtils.CreateTmpDirectory();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(fullName, path);
+            StringAssert.Contains(path, GlobalConstants.TempLocation);
+            mockDirectoryWrapper.Verify(o => o.CreateDirectory(fullName), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateTmpDirectory_ShouldPropagateExceptions()
+        {
+            var expectedException = new Exception("some exception");
+            var mockDirectoryInfo = new Mock<IDirectoryInfo>();
+            var mockDirectoryWrapper = new Mock<IDirectory>();
+            mockDirectoryWrapper.Setup(o => o.CreateDirectory(It.IsAny<string>())).Throws(expectedException);
+            var commonDataUtils = new CommonDataUtils(mockDirectoryWrapper.Object);
+
+            Exception actualException = null;
+            try
+            {
+                var path = commonDataUtils.CreateTmpDirectory();
+            } catch (Exception e)
+            {
+                actualException = e;
+            }
+            Assert.AreEqual(expectedException, actualException);
+            //---------------Test Result -----------------------
+            mockDirectoryWrapper.Verify(o => o.CreateDirectory(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateObjectInputs_GivenRecSet_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            Assert.IsNotNull(commonDataUtils);
+
+            var outerExeEnv = new ExecutionEnvironment();
+            var recUsername = "[[rec(1).UserName]]";
+            outerExeEnv.Assign(recUsername, "Sanele", 0);
+            var definitions = new List<IDev2Definition>
+            {
+                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
+            };
+            Assert.IsNotNull(definitions);
+            var innerExecEnv = new ExecutionEnvironment();
+            var prObj = new PrivateObject(innerExecEnv);
+            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
+            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
+            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 1);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateObjectInputs_GivenVariable_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            Assert.IsNotNull(commonDataUtils);
+
+            var outerExeEnv = new ExecutionEnvironment();
+            var recUsername = "[[UserName]]";
+            outerExeEnv.Assign(recUsername, "Sanele", 0);
+            var definitions = new List<IDev2Definition>
+            {
+                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
+            };
+            Assert.IsNotNull(definitions);
+            var innerExecEnv = new ExecutionEnvironment();
+            var prObj = new PrivateObject(innerExecEnv);
+            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 0);
+            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
+            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.Scalar.Count == 1);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateObjectInputs_GivenJSon_ShouldCreateObjectInput_OnTheInnerEnvToo()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            Assert.IsNotNull(commonDataUtils);
+
+            var outerExeEnv = new ExecutionEnvironment();
+            var recUsername = "[[@Person().UserName]]";
+            outerExeEnv.Assign(recUsername, "Sanele", 0);
+            var definitions = new List<IDev2Definition>
+            {
+                new Dev2Definition("Name", "UserName", "Sanele", false, "NoName", false, recUsername)
+            };
+            Assert.IsNotNull(definitions);
+            var innerExecEnv = new ExecutionEnvironment();
+            var prObj = new PrivateObject(innerExecEnv);
+            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.JsonObjects.Count == 0);
+            commonDataUtils.CreateObjectInputs(outerExeEnv, definitions, innerExecEnv, 0);
+            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.IsTrue(warewolfEnvironment != null && warewolfEnvironment.JsonObjects.Count == 1);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateScalarInputs_ShouldMapToOuterEnvironment()
+        {
+            var commonDataUtils = new CommonDataUtils();
+            Assert.IsNotNull(commonDataUtils);
+
+            var outerExeEnv = new ExecutionEnvironment();
+            outerExeEnv.Assign("[[rec(1).UserName]]", "username1 v1", 0);
+            outerExeEnv.Assign("[[rec(2).UserName]]", "username2 v2", 0);
+            var inputScalarList = new List<IDev2Definition>
+            {
+                new Dev2Definition("UserName", "UserName", "UserName", false, "NoName", false, ""),
+                new Dev2Definition("Input2", "Input2", "Input2", false, "NoInput2", false, "inpv2"),
+                new Dev2Definition("Input3", "Input3", "Input3", false, "1234", false, "4321"),
+                new Dev2Definition("UserName2", "UserName2", "UserName2", false, "NoNames", false, "[[rec(*).UserName]]"),
+            };
+            Assert.IsNotNull(inputScalarList);
+            var innerExecEnv = new ExecutionEnvironment();
+            Assert.IsNotNull(innerExecEnv);
+            var prObj = new PrivateObject(innerExecEnv);
+            var warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.AreEqual(0, warewolfEnvironment.Scalar.Count);
+            commonDataUtils.CreateScalarInputs(outerExeEnv, inputScalarList, innerExecEnv, 0);
+            warewolfEnvironment = prObj.GetField("_env") as DataStorage.WarewolfEnvironment;
+            Assert.AreEqual(4, warewolfEnvironment.Scalar.Count);
+
+            Assert.IsTrue(warewolfEnvironment.Scalar["UserName"].IsNothing);
+
+            var v2 = warewolfEnvironment.Scalar["Input2"] as DataStorage.WarewolfAtom.DataString;
+            Assert.AreEqual("inpv2", v2.Item);
+
+            var v3 = warewolfEnvironment.Scalar["Input3"] as DataStorage.WarewolfAtom.Int;
+            Assert.AreEqual(4321, v3.Item);
+
+            var v4 = warewolfEnvironment.Scalar["UserName2"] as DataStorage.WarewolfAtom.DataString;
+            Assert.AreEqual("username2 v2", v4.Item);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_CreateRecordSetsInputs()
+        {
+            var mockOuterEnvironment = new Mock<IExecutionEnvironment>();
+            var outerEnv = new ExecutionEnvironment();
+            outerEnv.Assign("[[rec().Name]]", "someval1", 0);
+            outerEnv.Assign("[[rec().Name]]", "someval2", 0);
+            outerEnv.Assign("[[rec().Age]]", "25", 0);
+            outerEnv.Assign("[[rec().Age]]", "26", 0);
+
+            mockOuterEnvironment.Setup(o => o.AssignDataShape("[[rec().Name]]")).Callback<string>(s => outerEnv.AssignDataShape(s));
+            mockOuterEnvironment.Setup(o => o.AssignDataShape("[[rec().Age]]")).Callback<string>(s => outerEnv.AssignDataShape(s));
+            mockOuterEnvironment.Setup(o => o.Eval(It.IsAny<string>(), 0)).Returns<string, int>((s, i) => outerEnv.Eval(s, i));
+
+            var inputRecSets = new Mock<IRecordSetCollection>();
+            var mockedInput = new Mock<IRecordSetDefinition>();
+            var nameColumn = new Mock<IDev2Definition>();
+            var ageColumn = new Mock<IDev2Definition>();
+
+
+            mockedInput.Setup(p => p.SetName).Returns("rec");
+
+            nameColumn.Setup(p => p.Name).Returns("Name");
+            nameColumn.Setup(p => p.IsRecordSet).Returns(true);
+            nameColumn.Setup(p => p.RecordSetName).Returns("rec");
+            nameColumn.Setup(p => p.RawValue).Returns("[[rec().Name]]");
+            nameColumn.Setup(p => p.Value).Returns("[[rec().Name]]");
+            ageColumn.Setup(p => p.Name).Returns("Age");
+            ageColumn.Setup(p => p.IsRecordSet).Returns(true);
+            ageColumn.Setup(p => p.RecordSetName).Returns("rec");
+            ageColumn.Setup(p => p.RawValue).Returns("v2");
+
+            mockedInput.Setup(p => p.Columns).Returns(new List<IDev2Definition> { nameColumn.Object, ageColumn.Object });
+            inputRecSets.Setup(p => p.RecordSets).Returns(new List<IRecordSetDefinition> { mockedInput.Object });
+
+
+            var input1 = new Dev2Definition("Name", "rec().Name", "Name", "rec", false, "NoName", false, "[[rec(*).Name]]");
+            var input2 = new Dev2Definition("Age", "rec().Age", "Age", "rec", false, "0", false, "[[rec(*).Age]]");
+
+
+            var inputs = new List<IDev2Definition>
+             {
+                input1, input2
+            };
+
+            var env = new ExecutionEnvironment();
+            env.Assign("[[rec().Name]]", "someval", 0);
+            env.Assign("[[rec().Age]]", "25", 0);
+            var mockEnv = new Mock<IExecutionEnvironment>();
+            mockEnv.Setup(o => o.AssignDataShape("[[rec().Name]]")).Callback<string>(s => env.AssignDataShape(s));
+            mockEnv.Setup(o => o.AssignDataShape("[[rec().Age]]")).Callback<string>(s => env.AssignDataShape(s));
+            mockEnv.Setup(o => o.Eval(It.IsAny<string>(), 0)).Returns<string, int>((s, i) => env.Eval(s, i));
+
+            int update = 0;
+            var commonDataUtils = new CommonDataUtils();
+            commonDataUtils.CreateRecordSetsInputs(mockOuterEnvironment.Object, inputRecSets.Object, inputs, mockEnv.Object, update);
+            mockEnv.Verify(o => o.AssignWithFrame(It.IsAny<WarewolfParserInterop.AssignValue>(), 0), Times.Once);
+            mockEnv.Verify(o => o.EvalAssignFromNestedStar("[[rec(*).Name]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 0), Times.Once);
+        }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
@@ -503,7 +957,7 @@ namespace Dev2.Data.Tests.UtilTests
             var inputRecSets = new Mock<IRecordSetCollection>();
             var mockedInput = new Mock<IRecordSetDefinition>();
             var nameColumn = new Mock<IDev2Definition>();
-            var ageColumn = new Mock<IDev2Definition>();            
+            var ageColumn = new Mock<IDev2Definition>();
             var input1 = new Mock<IDev2Definition>();
             var input2 = new Mock<IDev2Definition>();
 
@@ -511,18 +965,18 @@ namespace Dev2.Data.Tests.UtilTests
 
             nameColumn.Setup(p => p.Name).Returns("Name");
             nameColumn.Setup(p => p.IsRecordSet).Returns(true);
-            nameColumn.Setup(p => p.RecordSetName).Returns("Person");            
+            nameColumn.Setup(p => p.RecordSetName).Returns("Person");
             ageColumn.Setup(p => p.Name).Returns("Age");
             ageColumn.Setup(p => p.IsRecordSet).Returns(true);
             ageColumn.Setup(p => p.RecordSetName).Returns("Person");
-            
+
             mockedInput.Setup(p => p.Columns).Returns(new List<IDev2Definition> { nameColumn.Object, ageColumn.Object });
             inputRecSets.Setup(p => p.RecordSets).Returns(new List<IRecordSetDefinition> { mockedInput.Object });
 
-            
+
             input1.Setup(p => p.IsRecordSet).Returns(true);
             input1.Setup(p => p.MapsTo).Returns("[[Person().Name]]");
-            input1.Setup(p => p.RecordSetName).Returns("Person");            
+            input1.Setup(p => p.RecordSetName).Returns("Person");
             input2.Setup(p => p.IsRecordSet).Returns(true);
             input2.Setup(p => p.MapsTo).Returns("[[Person().Age]]");
             input2.Setup(p => p.RecordSetName).Returns("Person");
@@ -539,6 +993,7 @@ namespace Dev2.Data.Tests.UtilTests
             env.Verify(p => p.AssignDataShape("[[Person().Name]]"), Times.AtLeastOnce);
             env.Verify(p => p.AssignDataShape("[[Person().Age]]"), Times.AtLeastOnce);
         }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
@@ -551,5 +1006,83 @@ namespace Dev2.Data.Tests.UtilTests
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("Name", results[0].Name);
         }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataList_GivenDataList_ShouldReurnList()
+        {
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+
+            try
+            {
+                var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                Assert.IsNotNull(generateDefsFromDataList);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataList_GivenDataList_ShouldReurnListWithEntries()
+        {
+            const string trueString = "True";
+            const string noneString = "Input";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+
+            try
+            {
+                var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                Assert.IsNotNull(generateDefsFromDataList);
+                Assert.AreNotEqual(0, generateDefsFromDataList.Count);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenEmpty_ShouldReturnEmptyList()
+        {
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug("", enDev2ColumnArgumentDirection.Output);
+
+            Assert.AreEqual(0, generateDefsFromDataListForDebug.Count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenEmptyDataList_ShouldReturnEmptyList()
+        {
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug("<Datalist></Datalist>", enDev2ColumnArgumentDirection.Output);
+
+            Assert.AreEqual(0, generateDefsFromDataListForDebug.Count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenLoadedDataList_ShouldReturnDebugList()
+        {
+            const string datalist = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug(datalist, enDev2ColumnArgumentDirection.Output);
+
+            Assert.AreNotEqual(0, generateDefsFromDataListForDebug.Count);
+            Assert.AreEqual(2, generateDefsFromDataListForDebug.Count);
+        }
+
     }
 }
