@@ -7,36 +7,6 @@ using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IManagePluginServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IPluginService>
-    {
-        ICollection<IServiceInput> Inputs { get; set; }
-        string TestResults { get; set; }
-        bool OkSelected { get; set; }
-        IGenerateOutputArea OutputArea { get; }
-        IOutputDescription Description { get; set; }
-        IGenerateInputArea InputArea { get; }
-        bool PasteResponseVisible { get; set; }
-        bool PasteResponseAvailable { get; }
-        bool OutputCountExpandAllowed { get; set; }
-        bool InputCountExpandAllowed { get; set; }
-        bool IsGenerateInputsEmptyRows { get; set; }
-    }
-
-    public interface IManageEnhancedPluginServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IPluginService>
-    {
-        ICollection<IConstructorParameter> Inputs { get; set; }
-        string TestResults { get; set; }
-        bool OkSelected { get; set; }
-        IGenerateOutputArea OutputArea { get; set; }
-        IOutputDescription Description { get; set; }
-        IGenerateInputArea InputArea { get; set; }
-        bool PasteResponseVisible { get; set; }
-        bool PasteResponseAvailable { get; }
-        bool OutputCountExpandAllowed { get; set; }
-        bool InputCountExpandAllowed { get; set; }
-        bool IsGenerateInputsEmptyRows { get; set; }
-    }
-
     public interface IManageComPluginServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IComPluginService>
     {
         ICollection<IServiceInput> Inputs { get; set; }
