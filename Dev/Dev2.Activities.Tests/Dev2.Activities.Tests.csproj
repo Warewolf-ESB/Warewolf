@@ -192,6 +192,7 @@
     </None>
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
+    <Compile Include="Activities\EmailSenderTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
