@@ -265,6 +265,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 return location.Replace(getExtention, GetGuid + getExtention);
             }
+            else if (location.EndsWith(@"\\"))
+            {
+                return location.TrimEnd('\\') + GetGuid + @"\\";
+            }
+            else if (location.EndsWith("\\"))
+            {
+                return location.TrimEnd('\\') + GetGuid + "\\";
+            }
             return location + GetGuid;
         }
 
