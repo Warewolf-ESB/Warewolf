@@ -1393,7 +1393,7 @@
         </Grid>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="NewGenerateOutputsViewDotNet"  d:DataContext="{d:DesignInstance core1:ManagePluginServiceInputViewModel}">
+    <ControlTemplate x:Key="NewGenerateOutputsViewDotNet" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition>

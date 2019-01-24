@@ -65,7 +65,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>..\..\..\Warewolf\Dev\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>

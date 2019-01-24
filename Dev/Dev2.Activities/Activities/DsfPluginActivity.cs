@@ -16,14 +16,9 @@ namespace Dev2.Activities
 {
     public class DsfPluginActivity : DsfActivity
     {
-
-        #region Overrides of DsfActivity
-
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
         }
-
-        #endregion
     }
 }
