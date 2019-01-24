@@ -9,12 +9,12 @@
 */
 
 using System.Net.Mail;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities
 {
     public interface IEmailSender
     {
-        void Send(EmailSource emailSource, MailMessage mailMessage);
+        void Send(IEmailSource emailSource, MailMessage mailMessage);
     }
 }
