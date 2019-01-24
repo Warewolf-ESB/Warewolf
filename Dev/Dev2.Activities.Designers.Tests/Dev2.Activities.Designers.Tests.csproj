@@ -264,6 +264,7 @@
     <Compile Include="Sharepoint\SharePointDeleteFileDesignerViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointListCreateDesignerViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointListDeleteDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointListUpdateDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
