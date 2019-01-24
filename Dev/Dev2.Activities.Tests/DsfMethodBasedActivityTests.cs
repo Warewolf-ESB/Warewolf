@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,14 +19,12 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Warewolf.Core;
 using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities
 {
     [TestClass]
-    public class DsfMethodBasedActivityTests 
+    public class DsfMethodBasedActivityTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -37,7 +35,7 @@ namespace Dev2.Tests.Activities
             var itrCollection = new WarewolfListIterator();
             var itrs = new List<IWarewolfIterator>(5);
             var dSFDataObject = new DsfDataObject("", Guid.NewGuid());
-            var methodParameters = new List<MethodParameter>(); 
+            var methodParameters = new List<MethodParameter>();
             var testDsfMethodBasedActivity = new TestDsfMethodBasedActivity();
 
             var mockServiceInput = new Mock<IServiceInput>();
@@ -47,7 +45,7 @@ namespace Dev2.Tests.Activities
             //-------------------Act----------------------------
             testDsfMethodBasedActivity.TestBuildParameterIterators(0, methodParameters.ToList(), itrCollection, itrs, dSFDataObject);
             //-------------------Assert-------------------------
-            Assert.AreEqual(0,itrs.Count);
+            Assert.AreEqual(0, itrs.Count);
             Assert.AreEqual(0, itrCollection.FieldCount);
         }
 
@@ -59,14 +57,14 @@ namespace Dev2.Tests.Activities
             //-------------------Arrange------------------------
             var itrs = new List<IWarewolfIterator>(5);
             var mockDSFDataObject = new Mock<IDSFDataObject>();
-            
+
             var testDsfMethodBasedActivity = new TestDsfMethodBasedActivity();
             var inputList = new List<MethodParameter>();
             var environment = new ExecutionEnvironment();
             var dataListID = Guid.NewGuid();
             var itrCollection = new WarewolfListIterator();
             var dSFDataObject = new DsfDataObject("", Guid.NewGuid());
-            
+
             mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
             mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
 
@@ -97,7 +95,6 @@ namespace Dev2.Tests.Activities
             var environment = new ExecutionEnvironment();
             var dataListID = Guid.NewGuid();
             var itrCollection = new WarewolfListIterator();
-            var dSFDataObject = new DsfDataObject("", Guid.NewGuid());
 
             mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
             mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
