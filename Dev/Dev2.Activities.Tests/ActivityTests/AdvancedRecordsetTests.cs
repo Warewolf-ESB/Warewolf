@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using TSQL;
 using TSQL.Statements;
+using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
@@ -107,9 +108,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var results = worker.ExecuteQuery(updatedQuery);
             var started = false;
-
+            var serviceOutputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("person", "[[person().name]]", "bob")
+            };
             worker.ApplyResultToEnvironment(returnRecordsetName,
-                new List<IServiceOutputMapping>(),
+                serviceOutputs,
                 results.Tables[0].Rows.Cast<DataRow>().ToList(),
                 false, 0, ref started);
 
@@ -320,10 +324,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var Worker = CreatePersonAddressWorkers();
             Assert.ThrowsException<Exception>(() => Worker.ExecuteQuery(query));
         }
-      
-       
-      
-       
+
+
+
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
@@ -344,7 +348,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var advancedRecordset = new AdvancedRecordset { RecordsetName = "TestRecordsetName" };
             Assert.AreEqual("TestRecordsetName", advancedRecordset.RecordsetName);
         }
-       
+
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
@@ -493,9 +497,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             statements = TSQLStatementReader.ParseStatements(query);
             updatedQuery = worker.UpdateSqlWithHashCodes(statements[0]);
             var results = worker.ExecuteQuery(updatedQuery);
+            var serviceOutputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("person", "[[person().name]]", "bob")
+            };
             foreach (DataTable dt in results.Tables)
             {
-                worker.ApplyResultToEnvironment(returnRecordsetName, new List<IServiceOutputMapping>(), dt.Rows.Cast<DataRow>().ToList(), true, 0, ref started);
+                worker.ApplyResultToEnvironment(returnRecordsetName, serviceOutputs, dt.Rows.Cast<DataRow>().ToList(), true, 0, ref started);
             }
             var internalResult = worker.Environment.EvalAsList("[[person(*).age]]", 0);
             var e = internalResult.GetEnumerator();
@@ -532,6 +540,71 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AdvancedRecordset")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AdvancedRecordset_AddRecordsetAsTable_ExecuteStatement_Select()
+        {
+            var l = new List<string>();
+            l.Add("name");
+            l.Add("age");
+            l.Add("address_id");
+
+            var advancedRecordset = new AdvancedRecordset();
+            advancedRecordset.AddRecordsetAsTable(("person", l));
+
+            var statements = TSQLStatementReader.ParseStatements("Select * from person");
+            var results = advancedRecordset.ExecuteStatement(statements[0], "Select * from person");
+            Assert.AreEqual("name", results.Tables[0].Columns[1].ColumnName);
+            Assert.AreEqual("age", results.Tables[0].Columns[2].ColumnName);
+            Assert.AreEqual("address_id", results.Tables[0].Columns[3].ColumnName);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AdvancedRecordset")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AdvancedRecordset_AddRecordsetAsTable_ExecuteStatement_Insert()
+        {
+            var l = new List<string>();
+            l.Add("name");
+            l.Add("age");
+            l.Add("address_id");
+
+            var advancedRecordset = new AdvancedRecordset();
+            advancedRecordset.AddRecordsetAsTable(("person", l));
+
+            const string query = "INSERT OR REPLACE INTO person VALUES (1,'testName', 10, 1);";
+
+            var statements = TSQLStatementReader.ParseStatements(query);
+            var results = advancedRecordset.ExecuteStatement(statements[0], query);
+            Assert.AreEqual(1, results.Tables[0].Rows[0]["records_affected"]);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AdvancedRecordset")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void AdvancedRecordset_LoadRecordsetAsTable_LoadIntoSqliteDb_BuildInsertStatement_colTypeTests()
+        {
+            var personRecordsetName = "person";
+
+            var l = new List<AssignValue>();
+            l.Add(new AssignValue("[[person().datatypesFloat]]", "4.5f"));
+            l.Add(new AssignValue("[[person().testNothing]]", ""));
+            l.Add(new AssignValue("[[person().testWarewolfAtom]]", "1"));
+
+            var env = CreateExecutionEnvironment();
+            env.AssignWithFrame(l, 0);
+            env.CommitAssign();
+
+            var advancedRecordset = new AdvancedRecordset(env);
+            advancedRecordset.LoadRecordsetAsTable(personRecordsetName);
+
+            Assert.IsNotNull(advancedRecordset);
         }
     }
 }

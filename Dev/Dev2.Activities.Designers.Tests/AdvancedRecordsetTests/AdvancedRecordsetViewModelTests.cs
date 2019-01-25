@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_MethodName_ClearErrors()
+        public void AdvancedRecordsetViewModel_MethodName_ClearErrors()
         {
             CustomContainer.LoadedTypes = new List<Type>
             {
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Pieter Terblanche")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ValidateSql_ReturnCorrectFormat()
+        public void AdvancedRecordsetViewModel_ValidateSql_ReturnCorrectFormat()
         {
             CustomContainer.LoadedTypes = new List<Type>
             {
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Pieter Terblanche")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ValidateSql_ShowsCorrectErrorFormat()
+        public void AdvancedRecordsetViewModel_ValidateSql_ShowsCorrectErrorFormat()
         {
             CustomContainer.LoadedTypes = new List<Type>
             {
@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
+        public void AdvancedRecordsetViewModel_TestActionSetSourceAndTestClickOkHasMappingsErrorFromServer()
         {
             CustomContainer.LoadedTypes = new List<Type>
             {
@@ -206,7 +206,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_1_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_1_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_2_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_2_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_3_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_3_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -374,7 +374,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_4_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_4_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -428,7 +428,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_6_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_6_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -489,7 +489,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_5_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_5_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -542,7 +542,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_ParseTSQL_SelectStatementWithAllias_7_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_ParseTSQL_SelectStatementWithAllias_7_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -602,7 +602,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
         [TestCategory("AdvancedRecordset")]
-        public void AdvancedRecordset_UpdateHelp_ShouldCallToHelpViewMode()
+        public void AdvancedRecordsetViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
             CustomContainer.LoadedTypes = new List<Type>
@@ -639,7 +639,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_SelectStatement_WhenTwoRecordsetsDifferentCased_Should_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_SelectStatement_WhenTwoRecordsetsDifferentCased_Should_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
@@ -699,7 +699,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
         [Owner("Candice Daniel")]
         [TestCategory("AdvancedRecordset")]
         [DeploymentItem(@"x86\SQLite.Interop.dll")]
-        public void AdvancedRecordset_SelectStatement_WhenJoinedTwoRecordsetsDifferentCased_Should_ReturnOutputs()
+        public void AdvancedRecordsetViewModel_SelectStatement_WhenJoinedTwoRecordsetsDifferentCased_Should_ReturnOutputs()
         {
             //------------Setup for test--------------------------
             CustomContainer.LoadedTypes = new List<Type>
