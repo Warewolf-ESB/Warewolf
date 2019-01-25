@@ -14,11 +14,10 @@ namespace Dev2.Data.Interfaces
     {
         void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args);
         void ExtractFile(IDev2UnZipOperationTO args, IIonicZipFileWrapper zip, string extractFromPath);
-        void AppendToTemp(Stream originalFileStream, string temp);
         CompressionLevel ExtractZipCompressionLevel(string lvl);
         bool IsNotFtpTypePath(IActivityIOPath src);
         void ValidateSourceAndDestinationPaths(IActivityIOOperationsEndPoint src,IActivityIOOperationsEndPoint dst);
-        bool IsUncFileTypePath(IActivityIOPath src);
+        bool IsUncFileTypePath(string path);
         void AddMissingFileDirectoryParts(IActivityIOOperationsEndPoint src,IActivityIOOperationsEndPoint dst);
         string CreateTmpDirectory();
         void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, IExecutionEnvironment env, int update);

@@ -18,13 +18,13 @@ using Warewolf.Storage;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Com_DLL")]
-    public class DsfComDllActivity : DsfMethodBasedActivity,ISimpePlugin
+    public class DsfComDllActivity : DsfMethodBasedActivity, ISimpePlugin
     {
         internal string _result;
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }
-
+       
         public DsfComDllActivity()
         {
             Type = "Com DLL Connector";
@@ -123,6 +123,8 @@ namespace Dev2.Activities
         }
 
         public IResponseManager ResponseManager { get; set; }
+        
+
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)
@@ -144,22 +146,12 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfComDllActivity dsfComDllActivity)
             {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
+                Equals(dsfComDllActivity);
                 return true;
             }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((ISimpePlugin)obj);
+            return false;
         }
 
         public override int GetHashCode()
