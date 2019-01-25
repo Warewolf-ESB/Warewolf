@@ -1,24 +1,27 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Converters.Graph.DataTable;
-using Dev2.Data.TO;
-using Dev2.Interfaces;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
-using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
 {
@@ -223,7 +226,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_Method_SameIsObject_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
@@ -433,7 +437,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             };
             var activity1 = new DsfComDllActivity()
             {
-                UniqueID = uniqueId ,
+                UniqueID = uniqueId,
                 DisplayName = "AAA",
                 Method = pluginActiona
             };
@@ -945,7 +949,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
                                 DisplayPath = "a",
                                 OutputExpression = "a",
                                 SampleData = "Data"
-                                
+
                             }
                         }
                     }
@@ -968,7 +972,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
                                 OutputExpression = "a",
                                 SampleData = "Data"
 
-                            }, 
+                            },
                         }
                     }
                 }
@@ -1635,8 +1639,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Test Result -----------------------
             Assert.IsFalse(equals);
         }
+
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_NameSpace_DifferentMethodName_Object_Is_not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -1774,202 +1780,5 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             Assert.IsFalse(equals);
         }
 
-        static IEsbChannel mockEsbChannel => new Mock<IEsbChannel>().Object;
-        static IDSFDataObject mockDSFDataObject = new Mock<IDSFDataObject>().Object;
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Method_IsNull_Expect_Error()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            dsfComDllActivity.TestExecutionImpl(mockEsbChannel, mockDSFDataObject, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
-            //-----------------------Assert----------------------
-            Assert.AreEqual(1, errorResult.FetchErrors().Count);
-            Assert.AreEqual("No Method Selected", errorResult.FetchErrors()[0]);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Method_IsNull_Expect_Error1()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            
-            //-----------------------Assert----------------------
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ExecutionImpl_Inputs_IsNull_Expect_Error()
-        {
-            //-----------------------Arrange---------------------
-            var mockPluginAction = new Mock<IPluginAction>();
-            var mockComPluginSource = new Mock<ComPluginSource>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            
-            var dsfComDllActivity = new TestDsfComDllActivity()
-            {
-                ResourceCatalog = mockResourceCatalog.Object,
-                Method = mockPluginAction.Object
-            };
-
-            mockPluginAction.Setup(o => o.Method).Returns("TestMethod");
-            mockResourceCatalog.Setup(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockComPluginSource.Object);
-            //-----------------------Act-------------------------
-            dsfComDllActivity.TestExecutionImpl(mockEsbChannel, mockDSFDataObject, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
-            //-----------------------Assert----------------------
-            Assert.AreEqual(1, errorResult.FetchErrors().Count);
-            Assert.AreEqual("Object reference not set to an instance of an object.", errorResult.FetchErrors()[0]);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ExecutionImpl_Inputs_IsNotNull_Expect_Error()
-        {
-            //-----------------------Arrange---------------------
-            var mockPluginAction = new Mock<IPluginAction>();
-            var mockComPluginSource = new Mock<ComPluginSource>();
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockDsfActivity = new Mock<DsfActivity>();
-            var mockServiceInput = new Mock <ICollection<IServiceInput>>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-
-            var inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "asa") };
-
-            IOutputDescription description = new OutputDescription()
-            {
-                Format = OutputFormats.ShapedXML
-            };
-
-            var dsfComDllActivity = new TestDsfComDllActivity()
-            {
-                ResourceCatalog = mockResourceCatalog.Object,
-                Method = mockPluginAction.Object,
-                Inputs = inputs, 
-                Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping() },
-                OutputDescription = description
-
-            };
-
-            mockPluginAction.Setup(o => o.Method).Returns("TestMethod");
-            mockResourceCatalog.Setup(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockComPluginSource.Object);
-
-            var inputList = new List<MethodParameter>();
-            var methodParamList = new MethodParameter { EmptyToNull = false, IsRequired = false, Name = null, Value = "TestValue", TypeName = "TestTypeName" };
-
-            inputList.Add(methodParamList);
-
-            var methodParameters = inputList?.Select(a => new MethodParameter { EmptyToNull = a.EmptyToNull, IsRequired = a.IsRequired, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
-
-            var environment = new ExecutionEnvironment();
-            var dataListID = Guid.NewGuid();
-
-            mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
-            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
-            //-----------------------Act-------------------------
-            dsfComDllActivity.TestExecutionImpl(mockEsbChannel, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
-            //-----------------------Assert----------------------
-            Assert.AreEqual(1, errorResult.FetchErrors().Count);
-            Assert.AreEqual("Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index", errorResult.FetchErrors()[0]);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_GetHashCode_IsNotNull_Expect_True()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            var hashCode = dsfComDllActivity.GetHashCode();
-            //-----------------------Assert----------------------
-            Assert.IsNotNull(hashCode);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Equals_IsNotNull_Expect_True()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            var equals = dsfComDllActivity.Equals(dsfComDllActivity);
-            //-----------------------Assert----------------------
-            Assert.IsTrue(equals);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Equals_IsNull_Expect_False()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            var equals = dsfComDllActivity.Equals(null);
-            //-----------------------Assert----------------------
-            Assert.IsFalse(equals);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Equals_NotSame_Expect_False()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-            var equals = dsfComDllActivity.Equals(new TestDsfComDllActivity());
-            //-----------------------Assert----------------------
-            Assert.IsFalse(equals);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ObjectEquals_IsNotNull_Expect_True()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            var obj = new object();
-            obj = new DsfComDllActivity();
-            //-----------------------Act-------------------------
-            var equals = dsfComDllActivity.Equals(obj);
-            //-----------------------Assert----------------------
-            Assert.IsTrue(equals);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ObjectEquals_IsNull_Expect_False()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            var obj = new object();
-            obj = null;
-            //-----------------------Act-------------------------
-            var equals = dsfComDllActivity.Equals(obj);
-            //-----------------------Assert----------------------
-            Assert.IsFalse(equals);
-        }
-        
-
-    }
-
-    class TestDsfComDllActivity : DsfComDllActivity
-    {
-        public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
-        {
-            base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
-        }
     }
 }
