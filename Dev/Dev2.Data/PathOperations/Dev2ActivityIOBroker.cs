@@ -263,14 +263,14 @@ namespace Dev2.PathOperations
                     if (dst.RequiresLocalTmpStorage())
                     {
                         var tempPath = _common.CreateTmpDirectory();
-                        _common.ExtractFile(args, zip, tempPath);
+                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), tempPath);
                         var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, string.Empty);
                         var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
                         Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
                     }
                     else
                     {
-                        _common.ExtractFile(args, zip, dst.IOPath.Path);
+                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), dst.IOPath.Path);
                     }
 
                     if (src.RequiresLocalTmpStorage())
@@ -303,7 +303,10 @@ namespace Dev2.PathOperations
                     using (var s = dst.Get(dst.IOPath, _filesToDelete))
                     {
                         _fileWrapper.WriteAllText(tmp, args.FileContents);
-                        _common.AppendToTemp(s, tmp);
+                        using (var temp = new FileStream(tmp, FileMode.Append))
+                        {
+                            s.CopyTo(temp);
+                        }
                         result = MoveTmpFileToDestination(dst, tmp, result);
                     }
                     break;
@@ -333,7 +336,10 @@ namespace Dev2.PathOperations
                     using (var s = dst.Get(dst.IOPath, _filesToDelete))
                     {
                         _fileWrapper.WriteAllText(tmp, args.FileContents);
-                        _common.AppendToTemp(s, tmp);
+                        using (var temp = new FileStream(tmp, FileMode.Append))
+                        {
+                            s.CopyTo(temp);
+                        }
                     }
                     break;
                 default:
@@ -501,7 +507,7 @@ namespace Dev2.PathOperations
                         var splitValues = path.Path.Split(new[] { @"://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
                         builderPath = splitValues[0] + @"://" + builderPath;
                     }
-                    result.Add(_common.IsUncFileTypePath(path) ? @"\\" + builderPath : builderPath);
+                    result.Add(_common.IsUncFileTypePath(path.Path) ? @"\\" + builderPath : builderPath);
                 }
             }
             return result;
