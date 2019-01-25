@@ -25,22 +25,15 @@ namespace Dev2.Data.Util
 
     public class CommonDataUtils : ICommon
     {
-        readonly IIonicZipFileWrapper _ionicZipFileWrapper;
         readonly IDirectory _directory;
         public CommonDataUtils()
-            : this(new IonicZipFileWrapper(), new DirectoryWrapper())
+            : this(new DirectoryWrapper())
         {
         }
         public CommonDataUtils(IDirectory directory)
-            : this(new IonicZipFileWrapper(), directory)
         {
-        }
-        public CommonDataUtils(IIonicZipFileWrapper ionicZipFileWrapper, IDirectory directory)
-        {
-            _ionicZipFileWrapper = ionicZipFileWrapper;
             _directory = directory;
         }
-
 
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
         {
@@ -106,7 +99,7 @@ namespace Dev2.Data.Util
             return CompressionLevel.Default;
         }
 
-        public bool IsNotFtpTypePath(IActivityIOPath src) => !src.Path.ToLower().StartsWith("ftp://".ToLower())
+        public static bool IsNotFtpTypePath(IActivityIOPath src) => !src.Path.ToLower().StartsWith("ftp://".ToLower())
                 && !src.Path.ToLower().StartsWith("ftps://".ToLower())
                 && !src.Path.ToLower().StartsWith("sftp://".ToLower());
 
@@ -155,35 +148,74 @@ namespace Dev2.Data.Util
             }
         }
 
-        public bool IsUncFileTypePath(string path) => path.StartsWith(@"\\");
+        public static bool IsUncFileTypePath(string path) => path.StartsWith(@"\\");
 
         public void AddMissingFileDirectoryParts(IActivityIOOperationsEndPoint src,
                                                  IActivityIOOperationsEndPoint dst)
         {
-            if (src.IOPath.Path.Trim().Length == 0)
-            {
-                throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
-            }
-            var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                                                    StringSplitOptions.RemoveEmptyEntries).ToList();
+            AddMissingFileDirectoryPartsImpl.Execute(src, dst);
+        }
 
-            if (dst.IOPath.Path.Trim().Length == 0)
+        static class AddMissingFileDirectoryPartsImpl
+        {
+            static internal void Execute(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
             {
-                dst.IOPath.Path = src.IOPath.Path;
-            }
-            else
-            {
-                // TODO: verify if this condition is possible, UNC paths start with @"\\" but @"\\file" is always rooted
-                if (!Path.IsPathRooted(dst.IOPath.Path) && IsNotFtpTypePath(dst.IOPath) && IsUncFileTypePath(dst.IOPath.Path))
+                var sourceParts = VerifyAndCleanInputs(src, dst);
+
+                if (IsDestinationSubdirectoryOfSource(dst, sourceParts))
                 {
-                    var lastPart = sourceParts.Last();
-                    dst.IOPath.Path =
-                        Path.Combine(src.PathIs(dst.IOPath) == enPathType.Directory
-                                         ? src.IOPath.Path
-                                         : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
+                    if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+                    {
+                        var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                                 StringSplitOptions.RemoveEmptyEntries);
+                        var lastPart = strings.Last();
+                        dst.IOPath.Path = src.PathIs(src.IOPath) == enPathType.Directory
+                                              ? Path.Combine(dst.IOPath.Path, lastPart)
+                                              : dst.IOPath.Path.Replace(lastPart, "");
+                    }
+                }
+                else
+                {
+                    if (dst.PathIs(dst.IOPath) == enPathType.Directory && src.PathIs(src.IOPath) == enPathType.Directory)
+                    {
+                        var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                                 StringSplitOptions.RemoveEmptyEntries);
+                        var lastPart = strings.Last();
+                        dst.IOPath.Path = dst.Combine(lastPart);
+                    }
                 }
             }
-            bool isDestinationSubdirectoryOfSource()
+
+            static List<string> VerifyAndCleanInputs(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
+            {
+                if (src.IOPath.Path.Trim().Length == 0)
+                {
+                    throw new Exception(ErrorResource.SourceCannotBeAnEmptyString);
+                }
+                var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                        StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                if (dst.IOPath.Path.Trim().Length == 0)
+                {
+                    dst.IOPath.Path = src.IOPath.Path;
+                }
+                else
+                {
+                    // TODO: verify if this condition is possible, UNC paths start with @"\\" but @"\\file" is always rooted
+                    if (!Path.IsPathRooted(dst.IOPath.Path) && IsNotFtpTypePath(dst.IOPath) && IsUncFileTypePath(dst.IOPath.Path))
+                    {
+                        var lastPart = sourceParts.Last();
+                        dst.IOPath.Path =
+                            Path.Combine(src.PathIs(dst.IOPath) == enPathType.Directory
+                                             ? src.IOPath.Path
+                                             : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
+                    }
+                }
+
+                return sourceParts;
+            }
+
+            static bool IsDestinationSubdirectoryOfSource(IActivityIOOperationsEndPoint dst, List<string> sourceParts)
             {
                 var destinationParts = dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(),
                                                          StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -194,30 +226,8 @@ namespace Dev2.Data.Util
                 }
                 return destinationParts.OrderBy(i => i).SequenceEqual(sourceParts.OrderBy(i => i));
             }
-
-            if (isDestinationSubdirectoryOfSource())
-            {
-                if (dst.PathIs(dst.IOPath) == enPathType.Directory)
-                {
-                    var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                                                             StringSplitOptions.RemoveEmptyEntries);
-                    var lastPart = strings.Last();
-                    dst.IOPath.Path = src.PathIs(src.IOPath) == enPathType.Directory
-                                          ? Path.Combine(dst.IOPath.Path, lastPart)
-                                          : dst.IOPath.Path.Replace(lastPart, "");
-                }
-            }
-            else
-            {
-                if (dst.PathIs(dst.IOPath) == enPathType.Directory && src.PathIs(src.IOPath) == enPathType.Directory)
-                {
-                    var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                                                             StringSplitOptions.RemoveEmptyEntries);
-                    var lastPart = strings.Last();
-                    dst.IOPath.Path = dst.Combine(lastPart);
-                }
-            }
         }
+
 
         public string CreateTmpDirectory()
         {
@@ -282,7 +292,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        private void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IDev2Definition dev2Definition, IExecutionEnvironment env, int update)
+        static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IDev2Definition dev2Definition, IExecutionEnvironment env, int update)
         {
             void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
             {
@@ -321,27 +331,60 @@ namespace Dev2.Data.Util
         {
             foreach (var recordSetDefinition in inputRecSets.RecordSets)
             {
-                CreateRecordSetsInputs(outerEnvironment, recordSetDefinition, inputs, env, update);
+                CreateRecordSetsInputsImpl.CreateRecordSetsInputs(outerEnvironment, recordSetDefinition, inputs, env, update);
             }
         }
 
-        void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetDefinition recordSetDefinition, IList<IDev2Definition> inputs, IExecutionEnvironment env, int update)
+        static class CreateRecordSetsInputsImpl
         {
-            var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && DataListUtil.ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
-            if (outPutRecSet != null)
+            static internal void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetDefinition recordSetDefinition, IList<IDev2Definition> inputs, IExecutionEnvironment env, int update)
             {
-                CreateRecordSetsInputs(outerEnvironment, recordSetDefinition, env, update);
+                var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && DataListUtil.ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
+                if (outPutRecSet != null)
+                {
+                    CreateRecordSetsInputs(outerEnvironment, recordSetDefinition, env, update);
+                }
             }
-        }
 
-        void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetDefinition recordSetDefinition, IExecutionEnvironment env, int update)
-        {
-            void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition)
+            static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetDefinition recordSetDefinition, IExecutionEnvironment env, int update)
             {
-                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                // TODO: why is this called but the return never used?
+                var emptyList = new List<string>();
+                foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
+                {
+                    if (dev2ColumnDefinition.IsRecordSet)
+                    {
+                        var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
+
+
+                        if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue) && !emptyList.Contains(defn))
+                        {
+                            emptyList.Add(defn);
+                            continue;
+                        }
+
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
+
+                        if (warewolfEvalResult.IsWarewolfAtomListresult)
+                        {
+                            AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                        }
+                        if (warewolfEvalResult.IsWarewolfAtomResult)
+                        {
+                            AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                        }
+                    }
+                }
+                foreach (var defn in emptyList)
+                {
+                    env.AssignDataShape(defn);
+                }
+            }
+            static void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
+            {
+                // TODO: why is this called but the return never used? can we remove this?
                 DataListUtil.GetRecordsetIndexType(dev2ColumnDefinition.Value);
-                if (recsetResult != null)
+
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
                 {
                     var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
 
@@ -349,7 +392,7 @@ namespace Dev2.Data.Util
                 }
             }
 
-            void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition)
+            static void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
             {
                 var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (dev2ColumnDefinition.IsRecordSet && recsetResult != null)
@@ -358,147 +401,171 @@ namespace Dev2.Data.Util
                     env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)), 0);
                 }
             }
-
-            var emptyList = new List<string>();
-            foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
-            {
-                if (dev2ColumnDefinition.IsRecordSet)
-                {
-                    var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-
-
-                    if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue) && !emptyList.Contains(defn))
-                    {
-                        emptyList.Add(defn);
-                        continue;
-                    }
-
-                    var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
-
-                    if (warewolfEvalResult.IsWarewolfAtomListresult)
-                    {
-                        AtomListInputs(warewolfEvalResult, dev2ColumnDefinition);
-                    }
-                    if (warewolfEvalResult.IsWarewolfAtomResult)
-                    {
-                        AtomInputs(warewolfEvalResult, dev2ColumnDefinition);
-                    }
-                }
-            }
-            foreach (var defn in emptyList)
-            {
-                env.AssignDataShape(defn);
-            }
         }
 
         public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, false, null);
 
         public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters)
         {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                var xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
-
-                var tmpRootNl = xDoc.ChildNodes;
-                var nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    GenerateDefsFromXmlNodeList(dev2ColumnArgumentDirection, includeNoneDirection, searchParameters, result, nl, i);
-                }
-            }
-
-            return result;
-        }
-
-        static void GenerateDefsFromXmlNodeList(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters, IList<IDev2Definition> result, XmlNodeList nl, int i)
-        {
-            var tmpNode = nl[i];
-
-            var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
-
-            bool ioDirectionMatch = DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, includeNoneDirection);
-            var wordMatch = true;
-            if (searchParameters != null)
-            {
-                wordMatch = SearchUtils.FilterText(tmpNode.Name, searchParameters);
-            }
-            if (ioDirectionMatch && wordMatch)
-            {
-                GenerateDefsFromXmlNodeList(dev2ColumnArgumentDirection, includeNoneDirection, result, tmpNode);
-            }
-        }
-
-        static void GenerateDefsFromXmlNodeList(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, IList<IDev2Definition> result, XmlNode tmpNode)
-        {
-            var jsonAttribute = false;
-            var xmlAttribute = tmpNode.Attributes?["IsJson"];
-            if (xmlAttribute != null)
-            {
-                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-            }
-            if (tmpNode.HasChildNodes && !jsonAttribute)
-            {
-                // it is a record set, make it as such
-                var recordsetName = tmpNode.Name;
-                // now extract child node defs
-                var childNl = tmpNode.ChildNodes;
-                for (int q = 0; q < childNl.Count; q++)
-                {
-                    var xmlNode = childNl[q];
-                    if (xmlNode == null)
-                    {
-                        continue;
-                    }
-
-                    var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
-                    {
-                        result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                    false, "", false));
-                    }
-                }
-            }
-            else
-            {
-                // scalar value, make it as such
-                var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
-                //var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "")
-                var dev2Definition = new Dev2Definition(name, "", "", false, "", false, "");
-                dev2Definition.IsObject = jsonAttribute;
-                result.Add(dev2Definition);
-            }
+            return new GenerateDefsFromXmlNodeListImpl(dataList, dev2ColumnArgumentDirection, includeNoneDirection, searchParameters).Execute();
         }
 
         public IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
-            IList<IDev2Definition> result = new List<IDev2Definition>();
+            return new GenerateDefsFromXmlNodeListForDebugImpl(dataList, dev2ColumnArgumentDirection, false, null).Execute();
+        }
 
-            if (!string.IsNullOrEmpty(dataList))
+        abstract class GenerateDefsFromXmlCommon
+        {
+            protected readonly IList<IDev2Definition> _result = new List<IDev2Definition>();
+            protected readonly string _dataList;
+            protected readonly enDev2ColumnArgumentDirection _dev2ColumnArgumentDirection;
+            protected readonly bool _includeNoneDirection;
+            protected readonly ISearch _searchParameters;
+
+            protected GenerateDefsFromXmlCommon(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters)
             {
-                var xDoc = new XmlDocument();
-                xDoc.LoadXml(dataList);
+                this._dataList = dataList;
+                this._dev2ColumnArgumentDirection = dev2ColumnArgumentDirection;
+                this._includeNoneDirection = includeNoneDirection;
+                this._searchParameters = searchParameters;
+            }
 
-                var tmpRootNl = xDoc.ChildNodes;
-                var nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
+            internal IList<IDev2Definition> Execute()
+            {
+                if (!string.IsNullOrEmpty(_dataList))
                 {
-                    GenerateDefsFromXmlNodeListForDebug(dev2ColumnArgumentDirection, result, nl, i);
+                    var xDoc = new XmlDocument();
+                    xDoc.LoadXml(_dataList);
+
+                    var tmpRootNl = xDoc.ChildNodes;
+                    var nl = tmpRootNl[0].ChildNodes;
+
+                    for (int i = 0; i < nl.Count; i++)
+                    {
+                        GenerateDefsFromXmlNodeList(nl, i);
+                    }
+                }
+
+                return _result;
+            }
+
+            protected abstract void GenerateDefsFromXmlNodeList(XmlNodeList nl, int i);
+        }
+
+        class GenerateDefsFromXmlNodeListImpl : GenerateDefsFromXmlCommon
+        {
+            public GenerateDefsFromXmlNodeListImpl(string dataList, enDev2ColumnArgumentDirection enDev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters)
+                : base(dataList, enDev2ColumnArgumentDirection, includeNoneDirection, searchParameters)
+            {
+            }
+
+            protected override void GenerateDefsFromXmlNodeList(XmlNodeList nl, int i)
+            {
+                var tmpNode = nl[i];
+
+                var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
+
+                bool ioDirectionMatch = DataListUtil.CheckIODirection(_dev2ColumnArgumentDirection, ioDirection, _includeNoneDirection);
+                var wordMatch = true;
+                if (_searchParameters != null)
+                {
+                    wordMatch = SearchUtils.FilterText(tmpNode.Name, _searchParameters);
+                }
+                if (ioDirectionMatch && wordMatch)
+                {
+                    GenerateDefsFromXmlNodeList(_dev2ColumnArgumentDirection, _includeNoneDirection, _result, tmpNode);
                 }
             }
 
-            return result;
+            static void GenerateDefsFromXmlNodeList(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, IList<IDev2Definition> result, XmlNode tmpNode)
+            {
+                var isJson = false;
+                var xmlAttribute = tmpNode.Attributes?["IsJson"];
+                if (xmlAttribute != null)
+                {
+                    bool.TryParse(xmlAttribute.Value, out isJson);
+                }
+
+                var isRecordset = tmpNode.HasChildNodes && !isJson;
+                if (isRecordset)
+                {
+                    var recordsetName = tmpNode.Name;
+                    var childNl = tmpNode.ChildNodes;
+                    for (int q = 0; q < childNl.Count; q++)
+                    {
+                        var xmlNode = childNl[q];
+                        // is it possible for their to be childnodes that are null?
+                        if (xmlNode == null)
+                        {
+                            continue;
+                        }
+
+                        var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
+                        {
+                            result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                        false, "", false));
+                        }
+                    }
+                }
+                else
+                {
+                    var name = isJson ? "@" + tmpNode.Name : tmpNode.Name;
+
+                    var dev2Definition = new Dev2Definition(name, "", "", false, "", false, "")
+                    {
+                        IsObject = isJson
+                    };
+                    result.Add(dev2Definition);
+                }
+            }
         }
 
-        void GenerateDefsFromXmlNodeListForDebug(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IList<IDev2Definition> result, XmlNodeList nl, int i)
+        private class GenerateDefsFromXmlNodeListForDebugImpl : GenerateDefsFromXmlCommon
         {
-            var tmpNode = nl[i];
+            public GenerateDefsFromXmlNodeListForDebugImpl(string dataList, enDev2ColumnArgumentDirection enDev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters)
+                : base(dataList, enDev2ColumnArgumentDirection, includeNoneDirection, searchParameters)
+            {
+            }
+            protected override void GenerateDefsFromXmlNodeList(XmlNodeList nl, int i)
+            {
+                var tmpNode = nl[i];
 
-            bool IsObject()
+                var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
+                var isObject = IsObject(tmpNode);
+                var isArray = IsArray(tmpNode);
+                if (DataListUtil.CheckIODirection(_dev2ColumnArgumentDirection, ioDirection, false) && tmpNode.HasChildNodes && !isObject)
+                {
+                    _result.Add(DataListFactory.CreateDefinition_Recordset("", "", "", tmpNode.Name, false, "", false, "", false));
+                }
+                else if (tmpNode.HasChildNodes && !isObject)
+                {
+                    var recordsetName = tmpNode.Name;
+                    var childNl = tmpNode.ChildNodes;
+                    for (int q = 0; q < childNl.Count; q++)
+                    {
+                        var xmlNode = childNl[q];
+                        var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                        if (DataListUtil.CheckIODirection(_dev2ColumnArgumentDirection, fieldIoDirection, false))
+                        {
+                            _result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                        false, "", false));
+                        }
+                    }
+                }
+                else
+                {
+                    if (DataListUtil.CheckIODirection(_dev2ColumnArgumentDirection, ioDirection, false))
+                    {
+                        var dev2Definition = isObject
+                            ? DataListFactory.CreateDefinition_JsonArray("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray)
+                            : new Dev2Definition(tmpNode.Name, "", "", false, "", false, "");
+                        _result.Add(dev2Definition);
+                    }
+                }
+            }
+            static bool IsObject(XmlNode tmpNode)
             {
                 var isObjectAttribute = tmpNode.Attributes?["IsJson"];
 
@@ -509,7 +576,7 @@ namespace Dev2.Data.Util
                 return false;
             }
 
-            bool IsArray()
+            static bool IsArray(XmlNode tmpNode)
             {
                 var isObjectAttribute = tmpNode.Attributes?["IsArray"];
 
@@ -520,39 +587,6 @@ namespace Dev2.Data.Util
                 return false;
             }
 
-
-            var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
-            var isObject = IsObject();
-            var isArray = IsArray();
-            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, false) && tmpNode.HasChildNodes && !isObject)
-            {
-                result.Add(DataListFactory.CreateDefinition_Recordset("", "", "", tmpNode.Name, false, "", false, "", false));
-            }
-            else if (tmpNode.HasChildNodes && !isObject)
-            {
-                var recordsetName = tmpNode.Name;
-                var childNl = tmpNode.ChildNodes;
-                for (int q = 0; q < childNl.Count; q++)
-                {
-                    var xmlNode = childNl[q];
-                    var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, false))
-                    {
-                        result.Add(DataListFactory.CreateDefinition_Recordset(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                    false, "", false));
-                    }
-                }
-            }
-            else
-            {
-                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, false))
-                {
-                    var dev2Definition = isObject
-                        ? DataListFactory.CreateDefinition_JsonArray("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray)
-                        : new Dev2Definition(tmpNode.Name, "", "", false, "", false, "");
-                    result.Add(dev2Definition);
-                }
-            }
         }
     }
 }
