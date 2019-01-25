@@ -19,79 +19,60 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
-    public class Dev2ActivityIOBrokerTests
+    public class Dev2ActivityIOBrokerTests_old
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateInstance_GivenThrowsNoExpetion_ShouldBeIActivityOperationsBroker()
+        public void Dev2ActivityIOBroker_CreateInstance_GivenThrowsNoExpetion_ShouldBeIActivityOperationsBroker()
         {
-            //---------------Set up test pack-------------------
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                var activityOperationsBroker = CreateBroker();
-                Assert.IsInstanceOfType(activityOperationsBroker, typeof(IActivityOperationsBroker));
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
-            //---------------Test Result -----------------------
+            var activityOperationsBroker = CreateBroker();
+            Assert.IsInstanceOfType(activityOperationsBroker, typeof(IActivityOperationsBroker));
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Get_GivenPath_ShouldReturnFileEncodingContents()
+        public void Dev2ActivityIOBroker_Get_GivenPath_ShouldReturnFileEncodingContents()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var fileMock = new Mock<IActivityIOOperationsEndPoint>();
             fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new ByteBuffer(Encoding.ASCII.GetBytes("")));
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var stringEncodingContents = activityOperationsBroker.Get(fileMock.Object, true);
-            //---------------Test Result -----------------------
             Assert.IsNotNull(stringEncodingContents);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Get_GivenPath_ShouldReturnFileDecodedContents()
+        public void Dev2ActivityIOBroker_Get_GivenPath_ShouldReturnFileDecodedContents()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var fileMock = new Mock<IActivityIOOperationsEndPoint>();
 
             const string iAmGood = "I am good";
             fileMock.Setup(point => point.Get(It.IsAny<IActivityIOPath>(), It.IsAny<List<string>>())).Returns(new ByteBuffer(Encoding.ASCII.GetBytes(iAmGood)));
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var stringEncodingContents = activityOperationsBroker.Get(fileMock.Object, true);
-            //---------------Test Result -----------------------
+
             Assert.IsNotNull(stringEncodingContents);
             Assert.AreEqual(iAmGood, stringEncodingContents);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsBase64_GivenStartsWithBase64_ShouldReturnTrue()
+        public void Dev2ActivityIOBroker_IsBase64_GivenStartsWithBase64_ShouldReturnTrue()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var obj = new PrivateObject(activityOperationsBroker);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var invoke = obj.Invoke("IsBase64", "Content-Type:BASE64SomeJunkdata");
-            //---------------Test Result -----------------------
+
             Assert.IsTrue(bool.Parse(invoke.ToString()));
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName()
+        public void Dev2ActivityIOBroker_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var obj = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
@@ -100,18 +81,16 @@ namespace Dev2.Data.Tests.Operations
             mockActIo.Setup(p => p.Path).Returns(path);
             mockEndpoint.Setup(point => point.PathSeperator()).Returns(",");
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var pathReturned = obj.InvokeStatic("GetFileNameFromEndPoint", mockEndpoint.Object);
-            //---------------Test Result -----------------------
+
             Assert.AreEqual(path, pathReturned);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName_Overload()
+        public void Dev2ActivityIOBroker_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName_Overload()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var prType = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
@@ -120,61 +99,54 @@ namespace Dev2.Data.Tests.Operations
             mockActIo.Setup(p => p.Path).Returns(path);
             mockEndpoint.Setup(point => point.PathSeperator()).Returns(",");
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var args = new object[]
             {
                 mockEndpoint.Object, mockActIo.Object
             };
             var pathReturned = prType.InvokeStatic("GetFileNameFromEndPoint", args);
-            //---------------Test Result -----------------------
+
             Assert.AreEqual(path, pathReturned);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ListDirectory_GivenFilesAndFolders_ShouldReturnEmptyList()
+        public void Dev2ActivityIOBroker_ListDirectory_GivenFilesAndFolders_ShouldReturnEmptyList()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
             var mock = new Mock<IList<IActivityIOPath>>();
             endPoint.Setup(point => point.ListDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var activityIOPaths = activityOperationsBroker.ListDirectory(endPoint.Object, ReadTypes.FilesAndFolders);
-            //---------------Test Result -----------------------
+
             Assert.AreEqual(0, activityIOPaths.Count);
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ListDirectory_GivenFiles_ShouldReturnEmptyList()
+        public void Dev2ActivityIOBroker_ListDirectory_GivenFiles_ShouldReturnEmptyList()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
             var mock = new Mock<IList<IActivityIOPath>>();
             endPoint.Setup(point => point.ListFilesInDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var activityIOPaths = activityOperationsBroker.ListDirectory(endPoint.Object, ReadTypes.Files);
-            //---------------Test Result -----------------------
+
             Assert.AreEqual(0, activityIOPaths.Count);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ListDirectory_GivenFolders_ShouldReturnEmptyList()
+        public void Dev2ActivityIOBroker_ListDirectory_GivenFolders_ShouldReturnEmptyList()
         {
-            //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
             var mock = new Mock<IList<IActivityIOPath>>();
             endPoint.Setup(point => point.ListFoldersInDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
             var activityIOPaths = activityOperationsBroker.ListDirectory(endPoint.Object, ReadTypes.Folders);
-            //---------------Test Result -----------------------
+
             Assert.AreEqual(0, activityIOPaths.Count);
         }
 
@@ -190,25 +162,22 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateDirectory_GivenValidInterfaces_ShouldCallsCreateDirectoryCorrectly()
+        public void Dev2ActivityIOBroker_CreateDirectory_GivenValidInterfaces_ShouldCallsCreateDirectoryCorrectly()
         {
-            //---------------Set up test pack-------------------
-            var activityOperationsBroker = CreateBroker();
             var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
-            endPoint.Setup(point => point.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
-            var privateObject = new PrivateObject(activityOperationsBroker);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var invoke = privateObject.Invoke("CreateDirectory", endPoint.Object, dev2CrudOperationTO);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(bool.Parse(invoke.ToString()));
-            endPoint.Verify(point => point.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO));
+            endPoint.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
+
+            var driver = new ActivityIOBrokerDriverBase();
+            var result = driver.CreateDirectory(endPoint.Object, dev2CrudOperationTO);
+
+            Assert.IsTrue(result);
+            endPoint.Verify(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO));
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateEndPoint_GivenEmptyPath_ShouldThrowValidExc()
+        public void Dev2ActivityIOBroker_ValidateEndPoint_GivenEmptyPath_ShouldThrowValidExc()
         {
             //---------------Set up test pack-------------------
             var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
@@ -231,7 +200,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateEndPoint_GivenPathAndOverwriteFalse_ShouldThrowValidExc()
+        public void Dev2ActivityIOBroker_ValidateEndPoint_GivenPathAndOverwriteFalse_ShouldThrowValidExc()
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
@@ -256,7 +225,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void RemoveTmpFile_GivenEmptyFile_ShouldThrowAndLogException()
+        public void Dev2ActivityIOBroker_RemoveTmpFile_GivenEmptyFile_ShouldThrowAndLogException()
         {
             //---------------Set up test pack-------------------
             var file = new Mock<IFile>();
@@ -276,7 +245,7 @@ namespace Dev2.Data.Tests.Operations
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void RemoveTmpFile_GivenFileFile_ShouldDeleteFile()
+        public void Dev2ActivityIOBroker_RemoveTmpFile_GivenFileFile_ShouldDeleteFile()
         {
             //---------------Set up test pack-------------------
             var file = new Mock<IFile>();
@@ -293,7 +262,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Create_GivenDestination_ShouldCreateFileCorrectly()
+        public void Dev2ActivityIOBroker_Create_GivenDestination_ShouldCreateFileCorrectly()
         {
             //Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
             //---------------Set up test pack-------------------
@@ -328,7 +297,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Delete_GivenDeleteIsTrue_ShouldReturnResulOk()
+        public void Dev2ActivityIOBroker_Delete_GivenDeleteIsTrue_ShouldReturnResulOk()
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
@@ -343,7 +312,7 @@ namespace Dev2.Data.Tests.Operations
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Delete_GivenDeleteIsFalse_ShouldReturnResulBad()
+        public void Dev2ActivityIOBroker_Delete_GivenDeleteIsFalse_ShouldReturnResulBad()
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
@@ -359,7 +328,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ValidateUnzipSourceDestinationFileOperation_GivenPathNotFile_ShouldThrowValidExc()
+        public void Dev2ActivityIOBroker_ValidateUnzipSourceDestinationFileOperation_GivenPathNotFile_ShouldThrowValidExc()
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
@@ -430,7 +399,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DoFileTransfer_GivenValidArgs_ShouldtransferCorrectly()
+        public void Dev2ActivityIOBroker_DoFileTransfer_GivenValidArgs_ShouldtransferCorrectly()
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
@@ -479,7 +448,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Rename_GivenSoureAndDestinationDifferentPathType_ShouldThrowExc()
+        public void Dev2ActivityIOBroker_Rename_GivenSoureAndDestinationDifferentPathType_ShouldThrowExc()
         {
             //Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args)
             //---------------Set up test pack-------------------
@@ -505,7 +474,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Rename_GivenSoureAndDestinationSamePathTypePathExistsOverwriteFalse_ShouldThrowException()
+        public void Dev2ActivityIOBroker_Rename_GivenSoureAndDestinationSamePathTypePathExistsOverwriteFalse_ShouldThrowException()
         {
             //Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args)
             //---------------Set up test pack-------------------
@@ -532,7 +501,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Rename_GivenSoureAndDestinationSamePathTypePathExistsOverwriteTrue_ShouldDeleteDestFile()
+        public void Dev2ActivityIOBroker_Rename_GivenSoureAndDestinationSamePathTypePathExistsOverwriteTrue_ShouldDeleteDestFile()
         {
             //Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args)
             //---------------Set up test pack-------------------
@@ -565,7 +534,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExtractFile_GivenGivenValidArgs_ShouldNotThrowExc()
+        public void Dev2ActivityIOBroker_ExtractFile_GivenGivenValidArgs_ShouldNotThrowExc()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
@@ -596,7 +565,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void MoveTmpFileToDestination_GiventmpFile_ShouldReturnSucces()
+        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GiventmpFile_ShouldReturnSucces()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
@@ -633,7 +602,7 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EnsureFilesDontExists_GivenPathExistsAndPasthIsFile_ShouldThrowException()
+        public void Dev2ActivityIOBroker_EnsureFilesDontExists_GivenPathExistsAndPasthIsFile_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
