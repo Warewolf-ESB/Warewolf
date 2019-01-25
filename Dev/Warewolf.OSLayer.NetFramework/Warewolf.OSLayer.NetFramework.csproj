@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net47</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <RootNamespace>Warewolf.OSLayer</RootNamespace>
+  </PropertyGroup>
+
+</Project>

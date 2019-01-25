@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>netcoreapp2.1;net47</TargetFrameworks>
+    <RootNamespace>Warewolf.OSLayer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Warewolf.OSLayer.NetCore">
+      <HintPath>..\Warewolf.OSLayer.NetCore\bin\Debug\netcoreapp2.1\Warewolf.OSLayer.NetCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Warewolf.OSLayer.NetFramework">
+      <HintPath>..\Warewolf.OSLayer.NetFramework\bin\Debug\net47\Warewolf.OSLayer.NetFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
