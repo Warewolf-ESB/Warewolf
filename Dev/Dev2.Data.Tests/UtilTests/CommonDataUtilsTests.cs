@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Search;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -313,8 +315,7 @@ namespace Dev2.Data.Tests.UtilTests
                 var pathMock = new Mock<IActivityIOPath>();
                 pathMock.Setup(path => path.Path).Returns(fileName);
 
-                var commonDataUtils = new Util.CommonDataUtils();
-                var value = commonDataUtils.IsNotFtpTypePath(pathMock.Object);
+                var value = CommonDataUtils.IsNotFtpTypePath(pathMock.Object);
                 return bool.Parse(value.ToString());
             }
 
@@ -511,10 +512,9 @@ namespace Dev2.Data.Tests.UtilTests
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_IsUncFileTypePath()
         {
-            var commonDataUtils = new CommonDataUtils();
-            Assert.IsTrue(commonDataUtils.IsUncFileTypePath(@"\\Home\a.txt"));
-            Assert.IsFalse(commonDataUtils.IsUncFileTypePath(@"\Home\a.txt"));
-            Assert.IsFalse(commonDataUtils.IsUncFileTypePath(@"C:\Home\a.txt"));
+            Assert.IsTrue(CommonDataUtils.IsUncFileTypePath(@"\\Home\a.txt"));
+            Assert.IsFalse(CommonDataUtils.IsUncFileTypePath(@"\Home\a.txt"));
+            Assert.IsFalse(CommonDataUtils.IsUncFileTypePath(@"C:\Home\a.txt"));
         }
 
 
@@ -998,7 +998,7 @@ namespace Dev2.Data.Tests.UtilTests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenNullValue()
-        {            
+        {
             const string trueString = "True";
             var datalist = string.Format("<DataList><Person Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"Both\" ><Name Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"Input\" /></Person></DataList>", trueString);
             var commonDataUtils = new CommonDataUtils();
@@ -1007,11 +1007,10 @@ namespace Dev2.Data.Tests.UtilTests
             Assert.AreEqual("Name", results[0].Name);
         }
 
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
-        public void CommonDataUtils_GenerateDefsFromDataList_GivenDataList_ShouldReurnList()
+        public void CommonDataUtils_GenerateDefsFromDataList_GivenDataList_ShouldReturnList()
         {
             const string trueString = "True";
             const string noneString = "None";
@@ -1032,25 +1031,64 @@ namespace Dev2.Data.Tests.UtilTests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataList_GivenDataListAndSearchFilter_ShouldReturnList()
+        {
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+
+            var mockSearchParameters = new Mock<ISearch>();
+            mockSearchParameters.Setup(o => o.SearchInput).Returns("");
+            var mockSearchOptions = new Mock<ISearchOptions>();
+            mockSearchParameters.Setup(o => o.SearchOptions).Returns(mockSearchOptions.Object);
+
+            var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Both, true, mockSearchParameters.Object);
+            Assert.IsNotNull(generateDefsFromDataList);
+
+            mockSearchParameters.Verify(o => o.SearchInput, Times.AtLeastOnce);
+            mockSearchParameters.Verify(o => o.SearchOptions, Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
         public void CommonDataUtils_GenerateDefsFromDataList_GivenDataList_ShouldReurnListWithEntries()
         {
             const string trueString = "True";
             const string noneString = "Input";
-            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" IsJson=\"True\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
 
-            try
-            {
-                var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
-                Assert.IsNotNull(generateDefsFromDataList);
-                Assert.AreNotEqual(0, generateDefsFromDataList.Count);
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+            var generateDefsFromDataList = DataListUtil.GenerateDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+            Assert.AreEqual(3, generateDefsFromDataList.Count);
 
-            }
+            var expected = new Dev2Definition("@var", "", "", false, "", false, "");
+            Assert.AreEqual(expected.Name, generateDefsFromDataList[0].Name);
+            Assert.AreEqual(expected.MapsTo, generateDefsFromDataList[0].MapsTo);
+            Assert.AreEqual(expected.Value, generateDefsFromDataList[0].Value);
+            Assert.AreEqual(expected.IsEvaluated, generateDefsFromDataList[0].IsEvaluated);
+            Assert.AreEqual(expected.DefaultValue, generateDefsFromDataList[0].DefaultValue);
+            Assert.AreEqual(expected.IsRequired, generateDefsFromDataList[0].IsRequired);
+            Assert.AreEqual(expected.RawValue, generateDefsFromDataList[0].RawValue);
+            Assert.IsTrue(generateDefsFromDataList[0].IsObject);
+
+            expected.Name = "a";
+            Assert.AreEqual(expected.Name, generateDefsFromDataList[1].Name);
+            Assert.AreEqual(expected.MapsTo, generateDefsFromDataList[1].MapsTo);
+            Assert.AreEqual(expected.Value, generateDefsFromDataList[1].Value);
+            Assert.AreEqual(expected.IsEvaluated, generateDefsFromDataList[1].IsEvaluated);
+            Assert.AreEqual(expected.DefaultValue, generateDefsFromDataList[1].DefaultValue);
+            Assert.AreEqual(expected.IsRequired, generateDefsFromDataList[1].IsRequired);
+            Assert.AreEqual(expected.RawValue, generateDefsFromDataList[1].RawValue);
+
+            expected.Name = "set";
+            Assert.AreEqual(expected.Name, generateDefsFromDataList[2].Name);
+            Assert.AreEqual(expected.MapsTo, generateDefsFromDataList[2].MapsTo);
+            Assert.AreEqual(expected.Value, generateDefsFromDataList[2].Value);
+            Assert.AreEqual(expected.IsEvaluated, generateDefsFromDataList[2].IsEvaluated);
+            Assert.AreEqual(expected.DefaultValue, generateDefsFromDataList[2].DefaultValue);
+            Assert.AreEqual(expected.IsRequired, generateDefsFromDataList[2].IsRequired);
+            Assert.AreEqual(expected.RawValue, generateDefsFromDataList[2].RawValue);
         }
-
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -1080,8 +1118,35 @@ namespace Dev2.Data.Tests.UtilTests
             const string datalist = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
             var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug(datalist, enDev2ColumnArgumentDirection.Output);
 
-            Assert.AreNotEqual(0, generateDefsFromDataListForDebug.Count);
             Assert.AreEqual(2, generateDefsFromDataListForDebug.Count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(CommonDataUtils))]
+        public void CommonDataUtils_GenerateDefsFromDataListForDebug_GivenLoadedDataList_ShouldReturnDebugListWithObject()
+        {
+            const string datalist = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" IsJson=""True"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
+            var generateDefsFromDataListForDebug = DataListUtil.GenerateDefsFromDataListForDebug(datalist, enDev2ColumnArgumentDirection.Output);
+
+            Assert.AreEqual(2, generateDefsFromDataListForDebug.Count);
+            Assert.IsTrue(generateDefsFromDataListForDebug[0].IsRecordSet);
+            Assert.AreEqual("Car", generateDefsFromDataListForDebug[0].RecordSetName);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[0].MapsTo);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[0].Value);
+            Assert.IsFalse(generateDefsFromDataListForDebug[0].IsEvaluated);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[0].DefaultValue);
+            Assert.IsFalse(generateDefsFromDataListForDebug[0].IsRequired);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[0].RawValue);
+
+            Assert.IsFalse(generateDefsFromDataListForDebug[1].IsObject);
+            Assert.AreEqual("@Country", generateDefsFromDataListForDebug[1].Name);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[1].MapsTo);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[1].Value);
+            Assert.IsFalse(generateDefsFromDataListForDebug[1].IsEvaluated);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[1].DefaultValue);
+            Assert.IsFalse(generateDefsFromDataListForDebug[1].IsRequired);
+            Assert.AreEqual("", generateDefsFromDataListForDebug[1].RawValue);
         }
 
     }
