@@ -190,54 +190,6 @@ namespace Dev2.Data.Tests.Operations
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsNotFtpTypePath_GivenFileSysPath_ShouldReturnFalse()
-        {
-            //---------------Set up test pack-------------------
-            const string txt = "C:\\Home\\a.txt";
-            var pathMock = new Mock<IActivityIOPath>();
-            pathMock.Setup(path => path.Path).Returns(txt);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var commonDataUtils = new Util.CommonDataUtils();
-            var value = commonDataUtils.IsNotFtpTypePath( pathMock.Object);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(bool.Parse(value.ToString()));
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsNotFtpTypePath_GivenFtpPath_ShouldReturnTrue()
-        {
-            //---------------Set up test pack-------------------
-            const string txt = "ftp://Home//a.txt";
-            var pathMock = new Mock<IActivityIOPath>();
-            pathMock.Setup(path => path.Path).Returns(txt);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var commonDataUtils = new Util.CommonDataUtils();
-            var value = commonDataUtils.IsNotFtpTypePath(pathMock.Object);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(bool.Parse(value.ToString()));
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsUncFileTypePath_GivenUNCPath_ShouldReturnTrue()
-        {
-            //---------------Set up test pack-------------------
-            const string txt = "\\\\Home\\a.txt";
-            var pathMock = new Mock<IActivityIOPath>();
-            pathMock.Setup(path => path.Path).Returns(txt);
-            var commonDataUtils = new Util.CommonDataUtils();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var value = commonDataUtils.IsUncFileTypePath(pathMock.Object);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(bool.Parse(value.ToString()));
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void CreateDirectory_GivenValidInterfaces_ShouldCallsCreateDirectoryCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -372,55 +324,6 @@ namespace Dev2.Data.Tests.Operations
                 Assert.AreEqual("Success".ToUpper(), success.ToString().ToUpper());
                 File.Delete(tempFileName);
             }
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateTmpDirectory_GivenObject_ShouldCreateFolderInTheCorrectLocation()
-        {
-            //---------------Set up test pack-------------------
-            var activityOperationsBroker = CreateBroker();
-            var privateObject = new PrivateObject(activityOperationsBroker);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var commonDataUtils = new Util.CommonDataUtils();
-            var path = commonDataUtils.CreateTmpDirectory();
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(path);
-            Assert.IsTrue(Directory.Exists(path));
-            StringAssert.Contains(path, GlobalConstants.TempLocation);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ExtractZipCompressionLevel_GivenLevel_ShouldCorreclty()
-        {
-            //---------------Set up test pack-------------------
-            var commonDataUtils = new Util.CommonDataUtils();
-            var level = commonDataUtils.ExtractZipCompressionLevel("Test");
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(level);
-            Assert.AreEqual(CompressionLevel.Default, level);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void AppendToTemp_GivenStreamAndTempString_ShouldNotThroException()
-        {
-            //---------------Set up test pack-------------------
-            var activityOperationsBroker = CreateBroker();
-            var  commonDataUtils = new Util.CommonDataUtils();
-            const string dispatcherInvoke = "Dispatcher.Invoke";
-            Stream stream = new MemoryStream(Encoding.ASCII.GetBytes(dispatcherInvoke));
-            const string ranString = "Rando.net";
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            commonDataUtils.AppendToTemp( stream, ranString);
-
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]

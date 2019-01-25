@@ -14,6 +14,10 @@ using System.IO;
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
+    public interface IDirectoryInfo
+    {
+        string FullName { get; }
+    }
     public interface IDirectory
     {
         DirectoryInfo GetParent(string path);
@@ -28,7 +32,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         string[] GetDirectories(string path, string pattern);
         void Move(string directoryStructureFromPath, string directoryStructureToPath);
         void Delete(string directoryStructureFromPath, bool recursive);
-        DirectoryInfo CreateDirectory(string dir);
+        IDirectoryInfo CreateDirectory(string dir);
         IEnumerable<string> EnumerateFiles(string path);
         IEnumerable<string> EnumerateFileSystemEntries(string path);
         IEnumerable<string> EnumerateDirectories(string path);
