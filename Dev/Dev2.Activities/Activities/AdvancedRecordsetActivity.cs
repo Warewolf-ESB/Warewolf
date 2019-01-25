@@ -1,44 +1,340 @@
-﻿using System;
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data;
+using Dev2.Data.TO;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
+using Dev2.Interfaces;
+using Dev2.Util;
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Data.TO;
-using Dev2.Data.Util;
-using Dev2.Diagnostics;
-using Dev2.Interfaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Core;
+using System.Text.RegularExpressions;
 using TSQL;
 using TSQL.Statements;
-using Warewolf.Storage.Interfaces;
-using Dev2.Common.Interfaces;
-using System.Text.RegularExpressions;
-using Dev2.DataList.Contract;
-using Dev2.Util;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 using Warewolf.Storage;
-using Dev2.Data;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {
 
     [ToolDescriptorInfo("AdvancedRecordset", "Advanced Recordset", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_AdvancedRecordset")]
-    public class AdvancedRecordsetActivity : DsfActivity, IEquatable<AdvancedRecordsetActivity>
+    public class AdvancedRecordsetActivity : DsfActivity, IEquatable<AdvancedRecordsetActivity>, IDisposable
     {
+        int _recordsAffected;
         public IExecutionEnvironment ExecutionEnvironment { get; protected set; }
-        private AdvancedRecordset AdvancedRecordset { get; set; }
         public string SqlQuery { get; set; }
         public string RecordsetName { get; set; }
         public IList<INameValue> DeclareVariables { get; set; }
         public string ExecuteActionString { get; set; }
         public AdvancedRecordsetActivity()
+            : this(new Worker())
         {
+        }
+        public AdvancedRecordsetActivity(IWorker worker)
+        {
+            WorkerInvoker = worker;
             Type = "Advanced Recordset";
             DisplayName = "Advanced Recordset";
             DeclareVariables = new List<INameValue>();
+        }
+
+        IWorker _worker;
+        public interface IWorker : IDisposable
+        {
+            IAdvancedRecordset AdvancedRecordset { get; set; }
+            void LoadRecordset(string tableName);
+            void AddDeclarations(string varName, string varValue);
+            void AddValidationErrors(ErrorResultTO allErrors);
+            void ExecuteSql(int update, ref bool started);
+            void ExecuteRecordset(IDSFDataObject dataObject, int update);
+            void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update);
+        }
+
+        public IWorker WorkerInvoker
+        {
+            get
+            {
+                return _worker ?? (_worker = new Worker());
+            }
+            set
+            {
+                _worker = value;
+            }
+        }
+        internal class Worker : IWorker
+        {
+            AdvancedRecordsetActivity _activity;
+            private IAdvancedRecordset _advancedRecordset;
+            public Worker()
+            {
+            }
+            public Worker(IAdvancedRecordset advancedrecordset)
+            {
+                _advancedRecordset = advancedrecordset;
+            }
+            public Worker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset)
+            {
+                _activity = activity;
+                _advancedRecordset = advancedrecordset;
+            }
+            public IAdvancedRecordset AdvancedRecordset
+            {
+                get => _advancedRecordset;
+                set => _advancedRecordset = value;
+            }
+            public void LoadRecordset(string tableName)
+            {
+                _advancedRecordset.LoadRecordsetAsTable(tableName);
+            }
+            public void AddDeclarations(string varName, string varValue)
+            {
+                try
+                {
+                    _advancedRecordset.CreateVariableTable();
+                    InsertIntoVariableTable(varName, varValue);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("AdvancedRecorset", e, GlobalConstants.WarewolfError);
+                }
+            }
+            string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match =>
+            {
+                if (_activity.DeclareVariables.FirstOrDefault(nv => "@" + nv.Name == match.Value) != null)
+                {
+                    return _advancedRecordset.GetVariableValue(match.Value);
+                }
+                return match.Value;
+            });
+            void InsertIntoVariableTable(string varName, string value)
+            {
+                try
+                {
+                    _advancedRecordset.InsertIntoVariableTable(varName, value);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("AdvancedRecorset", e, GlobalConstants.WarewolfError);
+                }
+            }
+            void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update, ref bool started)
+            {
+                var sqlQuery = _advancedRecordset.UpdateSqlWithHashCodes(selectStatement);
+                var results = _advancedRecordset.ExecuteQuery(sqlQuery);
+                foreach (DataTable dt in results.Tables)
+                {
+                    _advancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
+                }
+
+            }
+            void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+            {
+                var tokens = complexStatement.Tokens;
+                for (int i = 0; i < complexStatement.Tokens.Count; i++)
+                {
+                    if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "TABLE"))
+                    {
+                        ProcessCreateTableStatement(complexStatement);
+                    }
+                    if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
+                    {
+                        ProcessUpdateStatement(complexStatement, update, ref started);
+                    }
+                    if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                    {
+                        ProcessUpdateStatement(complexStatement, update, ref started);
+                    }
+                    if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                    {
+                        ProcessUpdateStatement(complexStatement, update, ref started);
+                    }
+                    if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                    {
+                        ProcessUpdateStatement(complexStatement, update, ref started);
+                    }
+                }
+            }
+            void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
+            {
+                var recordset = new DataTable();
+                recordset.Columns.Add("records_affected", typeof(int));
+                recordset.Rows.Add(_advancedRecordset.ExecuteNonQuery(_advancedRecordset.ReturnSql(complexStatement.Tokens)));
+                var outputName = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
+                _advancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
+            }
+            void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+            {
+                var tokens = complexStatement.Tokens;
+                var outputRecordsetName = "";
+                for (int i = 0; i < complexStatement.Tokens.Count; i++)
+                {
+                    if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "UPDATE"))
+                    {
+                        outputRecordsetName = tokens[i].Text;
+                    }
+                    if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                    {
+                        outputRecordsetName = tokens[i + 2].Text;
+                    }
+                    if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                    {
+                        outputRecordsetName = tokens[i + 2].Text;
+                    }
+                    if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                    {
+                        outputRecordsetName = tokens[i + 2].Text;
+                    }
+                }
+
+                var sqlQuery = _advancedRecordset.UpdateSqlWithHashCodes(complexStatement);
+
+                var recordset = new DataTable();
+                recordset.Columns.Add("records_affected", typeof(int));
+                recordset.Rows.Add(_advancedRecordset.ExecuteNonQuery(sqlQuery));
+                object sumObject;
+                sumObject = recordset.Compute("Sum(records_affected)", "");
+                _activity._recordsAffected += Convert.ToInt16(sumObject.ToString());
+                var mapping = _activity.Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
+
+
+                if (mapping != null)
+                {
+                    _advancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _activity._recordsAffected);
+                }
+                var results = _advancedRecordset.ExecuteQuery("SELECT * FROM " + _advancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
+                foreach (DataTable dt in results.Tables)
+                {
+                    _advancedRecordset.ApplyResultToEnvironment(outputRecordsetName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
+                }
+            }
+            public void AddValidationErrors(ErrorResultTO allErrors)
+            {
+                if (DataListUtil.HasNegativeIndex(_activity.SqlQuery))
+                {
+                    allErrors.AddError(string.Format("Negative Recordset Index for SqlQuery: {0}", _activity.SqlQuery));
+                }
+            }
+            public void ExecuteSql(int update, ref bool started)
+            {
+                var queryText = AddSqlForVariables(_activity.SqlQuery);
+                var statements = TSQLStatementReader.ParseStatements(queryText);
+
+                if (queryText.Contains("UNION") && statements.Count == 2)
+                {
+                    var tables = statements[0].GetAllTables();
+                    foreach (var table in tables)
+                    {
+                        LoadRecordset(table.TableName);
+                    }
+                    var sqlQueryToUpdate = queryText;
+                    foreach (var item in _advancedRecordset.HashedRecSets)
+                    {
+                        sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet, item.hashCode);
+                    }
+                    var results = _advancedRecordset.ExecuteQuery(sqlQueryToUpdate);
+                    foreach (DataTable dt in results.Tables)
+                    {
+                        _advancedRecordset.ApplyResultToEnvironment(dt.TableName, _activity.Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
+                    }
+                }
+                else
+                {
+                    ExecuteAllSqlStatements(update, statements, ref started);
+                }
+            }
+            private void ExecuteAllSqlStatements(int update, List<TSQLStatement> statements, ref bool started)
+            {
+                foreach (var statement in statements)
+                {
+                    var tables = statement.GetAllTables();
+                    foreach (var table in tables)
+                    {
+                        LoadRecordset(table.TableName);
+                    }
+                    if (statement.Type == TSQLStatementType.Select)
+                    {
+                        var selectStatement = statement as TSQLSelectStatement;
+                        ProcessSelectStatement(selectStatement, update, ref started);
+                    }
+                    else
+                    {
+                        var unknownStatement = statement as TSQLUnknownStatement;
+                        ProcessComplexStatement(unknownStatement, update, ref started);
+                    }
+                }
+            }
+            public void ExecuteRecordset(IDSFDataObject dataObject, int update)
+            {
+                var env = dataObject.Environment;
+                AdvancedRecordset = new AdvancedRecordset(env);
+                var iter = new WarewolfListIterator();
+                var started = false;
+                var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
+                if (_activity.DeclareVariables == null || _activity.DeclareVariables.All(d => String.IsNullOrEmpty(d.Value)))
+                {
+                    ExecuteSql(update, ref started);
+                }
+                else
+                {
+                    _activity._recordsAffected = 0;
+                    foreach (var declare in _activity.DeclareVariables)
+                    {
+                        if (string.IsNullOrEmpty(declare.Value))
+                        {
+                            continue;
+                        }
+                        var res = new WarewolfIterator(env.Eval(declare.Value, update));
+                        iter.AddVariableToIterateOn(res);
+                        itemsToIterateOver.Add(declare.Name, res);
+                    }
+
+                    while (iter.HasMoreData())
+                    {
+                        foreach (var item in itemsToIterateOver)
+                        {
+                            AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
+                        }
+                        ExecuteSql(update, ref started);
+                        started = true;
+                    }
+                }
+                foreach (var hashedRecSet in _advancedRecordset.HashedRecSets)
+                {
+                    _advancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
+                }
+            }
+            public void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
+            {
+                var resDebug = new DebugEvalResult(_activity.SqlQuery, "Query", dataObject.Environment, update);
+                _activity.AddDebugInputItem(resDebug);
+                if (_activity.DeclareVariables != null)
+                {
+                    foreach (var item in _activity.DeclareVariables)
+                    {
+                        if (!string.IsNullOrEmpty(item.Name))
+                        {
+                            var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
+                            _activity.AddDebugInputItem(decVarDebug);
+                        }
+                    }
+                }
+            }
+            public void Dispose()
+            {
+                if (_activity != null)
+                {
+                    _activity = null;
+                }
+            }
         }
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
         protected override void OnExecute(NativeActivityContext context)
@@ -52,14 +348,14 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                AddValidationErrors(allErrors);
+                _worker.AddValidationErrors(allErrors);
                 if (!allErrors.HasErrors())
                 {
                     if (dataObject.IsDebugMode())
                     {
-                        ExecuteToolAddDebugItems(dataObject, update);
+                        _worker.ExecuteToolAddDebugItems(dataObject, update);
                     }
-                    ExecuteRecordset(dataObject, update);
+                    _worker.ExecuteRecordset(dataObject, update);
                 }
             }
             catch (Exception e)
@@ -84,254 +380,6 @@ namespace Dev2.Activities
                 }
             }
         }
-
-        private void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
-        {
-            var resDebug = new DebugEvalResult(SqlQuery, "Query", dataObject.Environment, update);
-            AddDebugInputItem(resDebug);
-            if (DeclareVariables != null)
-            {
-                foreach (var item in DeclareVariables)
-                {
-                    if (!string.IsNullOrEmpty(item.Name))
-                    {
-                        var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
-                        AddDebugInputItem(decVarDebug);
-                    }
-                }
-            }
-        }
-
-        void ExecuteRecordset(IDSFDataObject dataObject, int update)
-        {
-            var env = dataObject.Environment;
-            AdvancedRecordset = new AdvancedRecordset(env);
-            var iter = new WarewolfListIterator();
-            var started = false;
-            var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
-            if (DeclareVariables == null || DeclareVariables.All(d => String.IsNullOrEmpty(d.Value)))
-            {
-                ExecuteSql(update, ref started);
-            }
-            else
-            {
-                _recordsAffected = 0;
-                foreach (var declare in DeclareVariables)
-                {
-                    if (string.IsNullOrEmpty(declare.Value))
-                    {
-                        continue;
-                    }
-                    var res = new WarewolfIterator(env.Eval(declare.Value, update));
-                    iter.AddVariableToIterateOn(res);
-                    itemsToIterateOver.Add(declare.Name, res);
-                }
-
-                while (iter.HasMoreData())
-                {
-                    foreach (var item in itemsToIterateOver)
-                    {
-                        AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
-                    }
-                    ExecuteSql(update, ref started);
-                    started = true;
-                }
-            }
-            foreach (var hashedRecSet in AdvancedRecordset.HashedRecSets)
-            {
-                AdvancedRecordset.DeleteTableInSqlite(hashedRecSet.hashCode);
-            }
-        }
-
-        private void ExecuteSql(int update, ref bool started)
-        {
-            var queryText = AddSqlForVariables(SqlQuery);
-            var statements = TSQLStatementReader.ParseStatements(queryText);
-
-            if (queryText.Contains("UNION") && statements.Count == 2)
-            {
-                var tables = statements[0].GetAllTables();
-                foreach (var table in tables)
-                {
-                    LoadRecordset(table.TableName);
-                }
-                var sqlQueryToUpdate = queryText;
-                foreach (var item in AdvancedRecordset.HashedRecSets)
-                {
-                    sqlQueryToUpdate = sqlQueryToUpdate.Replace(item.recSet, item.hashCode);
-                }
-                var results = AdvancedRecordset.ExecuteQuery(sqlQueryToUpdate);
-                foreach (DataTable dt in results.Tables)
-                {
-                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
-                }
-            }
-            else
-            {
-                ExecuteAllSqlStatements(update, statements, ref started);
-            }
-        }
-
-        private void ExecuteAllSqlStatements(int update, List<TSQLStatement> statements, ref bool started)
-        {
-            foreach (var statement in statements)
-            {
-                var tables = statement.GetAllTables();
-                foreach (var table in tables)
-                {
-                    LoadRecordset(table.TableName);
-                }
-                if (statement.Type == TSQLStatementType.Select)
-                {
-                    var selectStatement = statement as TSQLSelectStatement;
-                    ProcessSelectStatement(selectStatement, update, ref started);
-                }
-                else
-                {
-                    var unknownStatement = statement as TSQLUnknownStatement;
-                    ProcessComplexStatement(unknownStatement, update, ref started);
-                }
-            }
-        }
-
-        
-
-        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update, ref bool started)
-        {
-            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(selectStatement);
-            var results = AdvancedRecordset.ExecuteQuery(sqlQuery);
-            foreach (DataTable dt in results.Tables)
-            {
-                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
-            }
-
-        }
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
-        {
-            var tokens = complexStatement.Tokens;
-            for (int i = 0; i < complexStatement.Tokens.Count; i++)
-            {
-                if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "TABLE"))
-                {
-                    ProcessCreateTableStatement(complexStatement);
-                }
-                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
-                {
-                    ProcessUpdateStatement(complexStatement, update, ref started);
-                }
-                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
-                {
-                    ProcessUpdateStatement(complexStatement, update, ref started);
-                }
-                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
-                {
-                    ProcessUpdateStatement(complexStatement, update, ref started);
-                }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
-                {
-                    ProcessUpdateStatement(complexStatement, update, ref started);
-                }
-            }
-        }
-        void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
-        {
-            var recordset = new DataTable();
-            recordset.Columns.Add("records_affected", typeof(int));
-            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
-            var outputName = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
-            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
-        }
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
-        {
-            var tokens = complexStatement.Tokens;
-            var outputRecordsetName = "";
-            for (int i = 0; i < complexStatement.Tokens.Count; i++)
-            {
-                if (i == 1 && tokens[i].Type.ToString() == "Identifier" && (tokens[i - 1].Text.ToUpper() == "UPDATE"))
-                {
-                    outputRecordsetName = tokens[i].Text;
-                }
-                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
-                {
-                    outputRecordsetName = tokens[i + 2].Text;
-                }
-                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
-                {
-                    outputRecordsetName = tokens[i + 2].Text;
-                }
-                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
-                {
-                    outputRecordsetName = tokens[i + 2].Text;
-                }
-            }
-
-            var sqlQuery = AdvancedRecordset.UpdateSqlWithHashCodes(complexStatement);
-
-            var recordset = new DataTable();
-            recordset.Columns.Add("records_affected", typeof(int));
-            recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(sqlQuery));
-            object sumObject;
-            sumObject = recordset.Compute("Sum(records_affected)", "");
-            _recordsAffected += Convert.ToInt16(sumObject.ToString());
-            var mapping = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
-            
-
-            if (mapping != null)
-            {
-                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
-            }
-            var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + AdvancedRecordset.HashedRecSets.FirstOrDefault(x => x.recSet == outputRecordsetName).hashCode);
-            foreach (DataTable dt in results.Tables)
-            {
-                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
-            }
-        }
-        int _recordsAffected;
-        void LoadRecordset(string tableName)
-        {
-            AdvancedRecordset.LoadRecordsetAsTable(tableName);
-        }
-
-        void AddDeclarations(string varName, string varValue)
-        {
-            try
-            {
-                AdvancedRecordset.CreateVariableTable();
-                InsertIntoVariableTable(varName, varValue);
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("AdvancedRecorset", e, GlobalConstants.WarewolfError);
-            }
-        }
-        string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => 
-            {
-                if (DeclareVariables.FirstOrDefault(nv => "@"+nv.Name == match.Value) != null)
-                {
-                    return AdvancedRecordset.GetVariableValue(match.Value);
-                }
-                return match.Value;
-            });
-
-
-        void InsertIntoVariableTable(string varName, string value)
-        {
-            try
-            {
-                AdvancedRecordset.InsertIntoVariableTable(varName, value);
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("AdvancedRecorset", e, GlobalConstants.WarewolfError);
-            }
-        }
-        void AddValidationErrors(ErrorResultTO allErrors)
-        {
-            if (DataListUtil.HasNegativeIndex(SqlQuery))
-            {
-                allErrors.AddError(string.Format("Negative Recordset Index for SqlQuery: {0}", SqlQuery));
-            }
-        }
         public override List<string> GetOutputs()
         {
             if (Outputs == null)
@@ -346,6 +394,7 @@ namespace Dev2.Activities
             }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
         }
+        [ExcludeFromCodeCoverage]
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             throw new NotImplementedException();
@@ -391,6 +440,14 @@ namespace Dev2.Activities
                     hashCode = (hashCode * 397) ^ (SqlQuery.GetHashCode());
                 }
                 return hashCode;
+            }
+        }
+        public void Dispose()
+        {
+            if (_worker != null)
+            {
+                _worker.Dispose();
+                _worker = null;
             }
         }
     }
