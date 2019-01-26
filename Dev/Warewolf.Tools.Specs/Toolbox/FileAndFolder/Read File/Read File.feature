@@ -23,7 +23,7 @@ Scenario Outline: Read File at location
 	| NO | Name       | source   | sourceLocation                                                                           | username          | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | c:\filetoread.txt                                                                        | ""                | ""       | [[result]] | Guid   | NO           |                      |
 	| 2  | UNC        | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                | ""       | [[result]] | Guid   | NO           |                      |
-	| 3  | UNC Secure | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | ""                | I73573r0 | [[result]] | Guid   | NO           |                      |
+	| 3  | UNC Secure | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | ""                | ""       | [[result]] | Guid   | NO           |                      |
 	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                | ""                | ""       | [[result]] | Guid   | NO           |                      |
 	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodele.txt                                        | IntegrationTester | I73573r0 | [[result]] | ""     | NO           |                      |
 	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                       | dev2              | Q/ulw&]  | [[result]] | Guid   | NO           |                      |
@@ -37,14 +37,14 @@ Scenario Outline: Read File at locationNull
 	When the read file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
-	| NO | Name       | source   | sourceLocation                                                                                         | username                     | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-	| 1  | Local      | [[path]] | NULL                                                                                                   | ""                           | ""       | [[result]] | Error  | AN           |                      |
-	| 2  | UNC        | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                      |
-	| 3  | UNC Secure | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | "" | I73573r0 | [[result]] | Guid   | NO           |                      |
-	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                              | ""                           | ""       | [[result]] | Guid   | NO           |                      |
-	| 5  | FTPS       | [[path]] | ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt                                             | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                      |
-	| 7  | SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetoread1.txt                                                                    | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| NO | Name       | source   | sourceLocation                                                                           | username          | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+	| 1  | Local      | [[path]] | NULL                                                                                     | ""                | ""       | [[result]] | Error  | AN           |                      |
+	| 2  | UNC        | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt        | ""                | ""       | [[result]] | Guid   | NO           |                      |
+	| 3  | UNC Secure | [[path]] | \\\\TEST-LOAD\FileSystemShareTestingSite\ReadFileSharedTestingSite\Secure\filetoread.txt | ""                | ""       | [[result]] | Guid   | NO           |                      |
+	| 4  | FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORREADFILETESTING/filetoread.txt                                | ""                | ""       | [[result]] | Guid   | NO           |                      |
+	| 5  | FTPS       | [[path]] | ftps://rsaklfsvrpdc:1002/FORREADFILETESTING/filetodele.txt                               | IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP       | [[path]] | sftp://rsaklfsvrdev/filetoread.txt                                                       | dev2              | Q/ulw&]  | [[result]] | Guid   | NO           |                      |
+	| 7  | SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetoread1.txt                                                      | dev2              | Q/ulw&]  | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 	
 Scenario Outline: Read File validation
