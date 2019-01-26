@@ -283,8 +283,7 @@ this.CopyFileAtLocation("4", "[[sourcePath]]", "c:\\copyfile3.txt", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -296,8 +295,7 @@ this.CopyFileAtLocation("4", "[[sourcePath]]", "c:\\copyfile3.txt", "\"\"", "\"\
         public virtual void CopyFileAtLocation_5()
         {
 #line 7
-this.CopyFileAtLocation("5", "[[sourcePath]]", "c:\\copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("5", "[[sourcePath]]", "c:\\copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -335,10 +333,9 @@ this.CopyFileAtLocation("6", "[[sourcePath]]", "c:\\copyfile5.txt", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile0.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\copied10.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -352,8 +349,7 @@ this.CopyFileAtLocation("6", "[[sourcePath]]", "c:\\copyfile5.txt", "\"\"", "\"\
         public virtual void CopyFileAtLocation_7()
         {
 #line 7
-this.CopyFileAtLocation("7", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile0.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[destPath]]", "C:\\copied10.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("7", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied10.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -364,10 +360,9 @@ this.CopyFileAtLocation("7", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
@@ -381,8 +376,7 @@ this.CopyFileAtLocation("7", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         public virtual void CopyFileAtLocation_8()
         {
 #line 7
-this.CopyFileAtLocation("8", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile1.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("8", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -393,10 +387,9 @@ this.CopyFileAtLocation("8", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
@@ -410,8 +403,7 @@ this.CopyFileAtLocation("8", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         public virtual void CopyFileAtLocation_9()
         {
 #line 7
-this.CopyFileAtLocation("9", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile2.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
+this.CopyFileAtLocation("9", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -422,10 +414,9 @@ this.CopyFileAtLocation("9", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
@@ -439,8 +430,7 @@ this.CopyFileAtLocation("9", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fil
         public virtual void CopyFileAtLocation_10()
         {
 #line 7
-this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile3.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[destPath]]", "sftp://rsaklfsvrdev/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -451,13 +441,11 @@ this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fi
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile5.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile5.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -469,9 +457,7 @@ this.CopyFileAtLocation("10", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\Fi
         public virtual void CopyFileAtLocation_11()
         {
 #line 7
-this.CopyFileAtLocation("11", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile5.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("11", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -513,10 +499,9 @@ this.CopyFileAtLocation("12", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPY
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -526,8 +511,7 @@ this.CopyFileAtLocation("12", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPY
         public virtual void CopyFileAtLocation_13()
         {
 #line 7
-this.CopyFileAtLocation("13", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied2.txt", "dev2\\IntegrationTester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("13", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied2.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -650,10 +634,9 @@ this.CopyFileAtLocation("17", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPY
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -663,8 +646,7 @@ this.CopyFileAtLocation("17", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPY
         public virtual void CopyFileAtLocation_18()
         {
 #line 7
-this.CopyFileAtLocation("18", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied3.txt", "dev2\\IntegrationTester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("18", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied3.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -787,10 +769,9 @@ this.CopyFileAtLocation("22", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile0.t
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied4.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -800,8 +781,7 @@ this.CopyFileAtLocation("22", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile0.t
         public virtual void CopyFileAtLocation_23()
         {
 #line 7
-this.CopyFileAtLocation("23", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied4.txt", "dev2\\IntegrationTester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocation("23", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1136,8 +1116,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("4", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1149,8 +1128,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("4", "[[sourcePath]]", "c:\\copyfil
         public virtual void CopyFileAtLocationWithOverwriteDisabled_5()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("5", "[[sourcePath]]", "c:\\copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("5", "[[sourcePath]]", "c:\\copyfile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1188,8 +1166,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("6", "[[sourcePath]]", "c:\\copyfil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1205,8 +1182,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("6", "[[sourcePath]]", "c:\\copyfil
         public virtual void CopyFileAtLocationWithOverwriteDisabled_7()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied10.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\copied10.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1217,8 +1193,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1234,8 +1209,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("7", "[[sourcePath]]", "\\\\RSAKLFS
         public virtual void CopyFileAtLocationWithOverwriteDisabled_8()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1246,8 +1220,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1263,8 +1236,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("8", "[[sourcePath]]", "\\\\RSAKLFS
         public virtual void CopyFileAtLocationWithOverwriteDisabled_9()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copied1.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "\"C:\\Temp\\key.opk\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1275,8 +1247,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\RSAKLFS
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1292,8 +1263,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("9", "[[sourcePath]]", "\\\\RSAKLFS
         public virtual void CopyFileAtLocationWithOverwriteDisabled_10()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/copied1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1304,13 +1274,11 @@ this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\RSAKLF
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pyfile5.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile5.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1322,9 +1290,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("10", "[[sourcePath]]", "\\\\RSAKLF
         public virtual void CopyFileAtLocationWithOverwriteDisabled_11()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("11", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("11", "[[sourcePath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copyfile5.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1366,8 +1332,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("12", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1379,8 +1344,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("12", "[[sourcePath]]", "ftp://rsak
         public virtual void CopyFileAtLocationWithOverwriteDisabled_13()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("13", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("13", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORCOPYFILETESTING/copyfile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1503,8 +1467,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("17", "[[sourcePath]]", "ftp://rsak
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1516,8 +1479,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("17", "[[sourcePath]]", "ftp://rsak
         public virtual void CopyFileAtLocationWithOverwriteDisabled_18()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("18", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("18", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORCOPYFILETESTING/copyfile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1640,8 +1602,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("22", "[[sourcePath]]", "sftp://rsa
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-            "pied4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1653,8 +1614,7 @@ this.CopyFileAtLocationWithOverwriteDisabled("22", "[[sourcePath]]", "sftp://rsa
         public virtual void CopyFileAtLocationWithOverwriteDisabled_23()
         {
 #line 56
-this.CopyFileAtLocationWithOverwriteDisabled("23", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\co" +
-                    "pied4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.CopyFileAtLocationWithOverwriteDisabled("23", "[[sourcePath]]", "sftp://rsaklfsvrdev/copyfile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\FileCopySharedTestingSite\\copied4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         

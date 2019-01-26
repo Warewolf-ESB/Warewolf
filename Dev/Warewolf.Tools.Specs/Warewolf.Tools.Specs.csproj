@@ -261,6 +261,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Read File.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read File\ReadFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature.cs">
       <DependentUpon>Read Folder New.feature</DependentUpon>
