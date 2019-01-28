@@ -183,7 +183,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -446,7 +446,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -509,7 +509,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -572,7 +572,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals); ;
+            Assert.IsFalse(equals);
         }
 
         [TestMethod]
@@ -655,7 +655,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -738,7 +738,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals); ;
+            Assert.IsFalse(equals);
         }
 
         [TestMethod]
@@ -819,7 +819,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(equals); ;
+            Assert.IsFalse(equals);
         }
 
         [TestMethod]
@@ -1002,7 +1002,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -1083,7 +1083,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -1231,7 +1231,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -1296,7 +1296,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
         [TestMethod]
         [Owner("Siphamandla Dube")]
@@ -1362,7 +1362,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -1434,7 +1434,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]
@@ -1505,7 +1505,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.ComDll
             //---------------Execute Test ----------------------
             var equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsTrue(equals); ;
+            Assert.IsTrue(equals);
         }
 
         [TestMethod]

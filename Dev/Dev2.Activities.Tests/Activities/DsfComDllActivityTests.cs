@@ -101,7 +101,6 @@ namespace Dev2.Tests.Activities.Activities
             var mockEsbChannel = new Mock<IEsbChannel>();
             var mockPluginAction = new Mock<IPluginAction>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var mockServiceInput = new Mock<ICollection<IServiceInput>>();
             var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockOutputDescription = new Mock<IOutputDescription>();
             var mockPath = new Mock<IPath>();
@@ -111,7 +110,6 @@ namespace Dev2.Tests.Activities.Activities
             {
                 ClsId = "some ClsID"
             };
-            var dsfActivity = new DsfActivity();
 
             Thread.CurrentPrincipal = null;
             var identity = new GenericIdentity("User");
@@ -141,7 +139,7 @@ namespace Dev2.Tests.Activities.Activities
             //-----------------------Act-------------------------
             dsfComDllActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
             //-----------------------Assert----------------------
-            Assert.AreEqual(comPluginSource.ClsId, dsfComDllActivity.comPluginInvokeArgs.ClsId);
+            Assert.AreEqual(comPluginSource.ClsId, dsfComDllActivity._comPluginInvokeArgs.ClsId);
             Assert.AreEqual(0, errorResult.FetchErrors().Count);
         }
 
@@ -235,10 +233,10 @@ namespace Dev2.Tests.Activities.Activities
             base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
         }
 
-        public ComPluginInvokeArgs comPluginInvokeArgs;
+        public ComPluginInvokeArgs _comPluginInvokeArgs;
         protected override void ExecuteInsideImpersonatedContext(ComPluginInvokeArgs args)
         {
-            comPluginInvokeArgs = args;
+            _comPluginInvokeArgs = args;
         }
     }
 
