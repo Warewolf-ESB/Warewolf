@@ -26,13 +26,21 @@ namespace Dev2.Studio.ViewModels.Workflow
         RelayCommand _executeCommmand;
         DelegateCommand _cancelComand;
 
+        private readonly IServerRepository _serverRepository;
+
         IContextualResourceModel _selectedResource;
 
         public DsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
+            : this(explorerViewModel, dsfActivityType, ServerRepository.Instance)
+        {
+        }
+        public DsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType, IServerRepository serverRepository)
         {
             SingleEnvironmentExplorerViewModel = explorerViewModel;
             SingleEnvironmentExplorerViewModel.SelectedItemChanged += SingleEnvironmentExplorerViewModel_SelectedItemChanged;
             ActivityType = dsfActivityType;
+
+            _serverRepository = serverRepository;
 
             Init();
             EventPublishers.Aggregator.Subscribe(this);
@@ -90,7 +98,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ICommand CancelCommand => _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
 
-        readonly Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
 
         public void Okay()
         {
@@ -100,7 +107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            var environment = GetEnvironmentRepository().FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
+            var environment = _serverRepository.FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
             if (environment == null)
             {
                 return;
