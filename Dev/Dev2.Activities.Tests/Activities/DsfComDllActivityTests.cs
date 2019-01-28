@@ -34,7 +34,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.Activities
 {
     [TestClass]
-    public class DsfPluginActivityTests
+    public class DsfComDllActivityTests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
