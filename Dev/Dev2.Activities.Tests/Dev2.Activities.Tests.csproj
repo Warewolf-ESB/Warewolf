@@ -345,6 +345,7 @@
     <Compile Include="ActivityTests\Sharepoint\SharepointReadListActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointUpdateListItemActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDotNetGatherSystemInformationActivityTests.cs" />
+    <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
@@ -465,6 +466,10 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Tests\Dev2.Common.Tests.csproj">
+      <Project>{B0564C7A-9DA8-4751-B5D4-D446138E0987}</Project>
+      <Name>Dev2.Common.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
