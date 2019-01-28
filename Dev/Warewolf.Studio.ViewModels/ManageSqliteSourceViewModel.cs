@@ -8,9 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -19,6 +16,9 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -75,36 +75,55 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = AuthenticationType,
             ServerName = GetServerName(),
             Password = Password,
+            Path = Path,
             UserName = UserName,
-            Type = enSourceType.SqlDatabase,
+            Type = enSourceType.SQLiteDatabase,
             Name = ResourceName,
             DbName = DatabaseName,
-            Id = DbSource?.Id ?? Guid.NewGuid()
+            Id = GetDbSourceId()
         };
+        private Guid GetDbSourceId()
+        {
+            if (DbSource?.Id == null)
+            {
+                if (SelectedGuid != Guid.Empty)
+                {
+                    return SelectedGuid;
+                }
+                else
+                {
+                    return Guid.NewGuid();
+                }
+            }
+            else
+            {
+                return DbSource.Id;
+            }
+        }
 
-        protected override IDbSource ToDbSource() => DbSource == null ? new DbSourceDefinition
+        protected override IDbSource ToDbSource()
         {
-            AuthenticationType = AuthenticationType,
-            ServerName = GetServerName(),
-            Password = Password,
-            UserName = UserName,
-            Type = enSourceType.SqlDatabase,
-            Path = Path,
-            Name = ResourceName,
-            DbName = DatabaseName,
-            Id = DbSource?.Id ?? SelectedGuid
-        } : new DbSourceDefinition
-        {
-            AuthenticationType = AuthenticationType,
-            ServerName = GetServerName(),
-            Password = Password,
-            UserName = UserName,
-            Type = enSourceType.SqlDatabase,
-            Path = Path,
-            Name = ResourceName,
-            DbName = DatabaseName,
-            Id = (Guid)DbSource?.Id
-        };
+            if (DbSource == null)
+            {
+                return ToNewDbSource();
+            }
+            else
+            {
+                return new DbSourceDefinition
+                {
+                    AuthenticationType = AuthenticationType,
+                    ServerName = GetServerName(),
+                    Password = Password,
+                    UserName = UserName,
+                    Type = enSourceType.SQLiteDatabase,
+                    Path = Path,
+                    Name = ResourceName,
+                    DbName = DatabaseName,
+                    Id = GetDbSourceId()
+                };
+
+            }
+        }
 
         protected override IDbSource ToSourceDefinition() => new DbSourceDefinition
         {
@@ -116,28 +135,15 @@ namespace Warewolf.Studio.ViewModels
             Path = DbSource.Path,
             ServerName = DbSource.ServerName,
             UserName = DbSource.UserName,
-            Type = enSourceType.SqlDatabase
+            Type = enSourceType.SQLiteDatabase
         };
 
         public override IDbSource ToModel()
         {
-            if (Item == null)
-            {
-                Item = ToDbSource();
-                return Item;
-            }
 
-            return new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = GetServerName(),
-                Password = Password,
-                UserName = UserName,
-                Type = enSourceType.SqlDatabase,
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = Item.Id
-            };
+            Item = ToDbSource();
+            return Item;
+
         }
     }
 }
