@@ -134,7 +134,13 @@ namespace Dev2.Common.Wrappers
         {
             return PerformActionAsServerUser(() => File.GetLastWriteTime(filePath).Date);
         }
+
+        public IFileInfo Info(string path)
+        {
+            return new FileInfoWrapper(new FileInfo(path));
+        }
     }
+
     class RefCountedStreamWriter : IDev2StreamWriter
     {
         public int _count;
