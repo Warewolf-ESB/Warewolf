@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -27,12 +27,11 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class AdvancedRecordsetActivityTests : BaseActivityTests
     {
-
         static AdvancedRecordsetActivity CreateAdvancedRecordsetActivity()
         {
             return new AdvancedRecordsetActivity();
         }
-        static AdvancedRecordsetActivity GetAdvancedRecordsetActivity(Mock<IWorker> worker)
+        static AdvancedRecordsetActivity GetAdvancedRecordsetActivity(Mock<IAdvancedRecordsetActivityWorker> worker)
         {
             var activity = new AdvancedRecordsetActivity(worker.Object);
             return activity;
@@ -41,15 +40,15 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             return new ExecutionEnvironment();
         }
-        static Worker GetAdvancedRecordsetWorker(Mock<IAdvancedRecordset> worker)
+        static AdvancedRecordsetActivityWorker GetAdvancedRecordsetWorker(Mock<IAdvancedRecordset> worker)
         {
-            var advancedRecordset = new Worker(worker.Object);
+            var advancedRecordset = new AdvancedRecordsetActivityWorker(worker.Object, null);
             return advancedRecordset;
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherIsNull()
         {
             var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
@@ -59,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherisEqual()
         {
             var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
@@ -70,91 +69,103 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_OtherisObjectofAdvancedRecordsetActivity()
         {
             var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
-            object other = new AdvancedRecordsetActivity { };
+            object other = new AdvancedRecordsetActivity();
             var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(other);
             Assert.IsFalse(advancedRecordsetActivityEqual);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Equal_BothareObjects()
         {
             object advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
-            object other = new object { };
+            var other = new object();
             var advancedRecordsetActivityEqual = advancedRecordsetActivity.Equals(other);
             Assert.IsFalse(advancedRecordsetActivityEqual);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_RecordsetName()
         {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { RecordsetName = "TestRecordsetName" };
-            Assert.AreEqual("TestRecordsetName", advancedRecordsetActivity.RecordsetName);
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { RecordsetName = "TestRecordsetName" })
+            {
+                Assert.AreEqual("TestRecordsetName", advancedRecordsetActivity.RecordsetName);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_SqlQuery()
         {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" };
-            Assert.AreEqual("Select * from person", advancedRecordsetActivity.SqlQuery);
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" })
+            {
+                Assert.AreEqual("Select * from person", advancedRecordsetActivity.SqlQuery);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_DeclareVariables()
         {
             var declareVariables = new List<INameValue>();
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { DeclareVariables = declareVariables };
-            Assert.AreEqual(declareVariables, advancedRecordsetActivity.DeclareVariables);
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { DeclareVariables = declareVariables })
+            {
+                Assert.AreEqual(declareVariables, advancedRecordsetActivity.DeclareVariables);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_SetGet_ExecuteActionString()
         {
-            var executeActionString = "exec StoredProc";
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { ExecuteActionString = executeActionString };
-            Assert.AreEqual(executeActionString, advancedRecordsetActivity.ExecuteActionString);
+            const string executeActionString = "exec StoredProc";
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { ExecuteActionString = executeActionString })
+            {
+                Assert.AreEqual(executeActionString, advancedRecordsetActivity.ExecuteActionString);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetFindMissingType_Expect_DataGridActivity()
         {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" };
-            var findMissingType = advancedRecordsetActivity.GetFindMissingType();
-            Assert.AreEqual(enFindMissingType.DataGridActivity, findMissingType);
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" })
+            {
+                var findMissingType = advancedRecordsetActivity.GetFindMissingType();
+                Assert.AreEqual(enFindMissingType.DataGridActivity, findMissingType);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetHashCode()
         {
-            var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" };
-            var hashCode = advancedRecordsetActivity.GetHashCode();
-            Assert.IsNotNull(hashCode);
+            using (var advancedRecordsetActivity = new AdvancedRecordsetActivity { SqlQuery = "Select * from person" })
+            {
+                var hashCode = advancedRecordsetActivity.GetHashCode();
+                Assert.IsNotNull(hashCode);
+            }
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_WorkerInvoker_Expect_WorkertobeReturned()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
-            var workerInvoker = new Mock<IWorker>().Object;
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
+            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>().Object;
             activity.WorkerInvoker = workerInvoker;
             var actual = activity.WorkerInvoker;
             Assert.AreEqual(workerInvoker, actual);
@@ -163,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_LoadRecordset()
         {
             var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
@@ -175,7 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_AddDeclarations()
         {
             var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
@@ -190,11 +201,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_Dispose()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
-            var workerInvoker = new Mock<IWorker>();
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
+            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>();
             workerInvoker.Setup(o => o.Dispose());
             activity.WorkerInvoker = workerInvoker.Object;
             activity.WorkerInvoker.Dispose();
@@ -206,11 +217,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetDebugInputs()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
-            var workerInvoker = new Mock<IWorker>();
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
+            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>();
             workerInvoker.Setup(o => o.Dispose());
             activity.WorkerInvoker = workerInvoker.Object;
 
@@ -234,14 +245,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsisNull()
         {
             var serviceOutputs = new List<IServiceOutputMapping>
             {
                 new ServiceOutputMapping("Location", "[[weather().Location]]", "weather")
             };
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             activity.Outputs = serviceOutputs;
             var outputs = activity.GetOutputs();
             Assert.AreEqual(1, outputs.Count);
@@ -250,10 +261,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsnotNull()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             activity.Outputs = null;
             var outputs = activity.GetOutputs();
             Assert.AreEqual(0, outputs.Count);
@@ -261,20 +272,20 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_GetOutputs_OutputsIsObject()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IWorker>());
+            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             activity.Outputs = null;
             activity.IsObject = true;
             var outputs = activity.GetOutputs();
-           
+
             Assert.AreEqual(1, outputs.Count);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_ExecuteSql()
         {
             var started = false;
@@ -291,7 +302,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
-        [TestCategory("AdvancedRecordsetActivity")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_ExecuteRecordset()
         {
             var started = false;
@@ -315,14 +326,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 SqlQuery = "Select * from person",
             };
-            var worker = new Worker(activity, recordset);
+            var worker = new AdvancedRecordsetActivityWorker(activity, recordset);
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
             dataObject.Setup(o => o.Environment).Returns(env);
             dataObject.Object.Environment = env;
             //TODO: this is failing as it needs a mock of the recorset
-          //  worker.ExecuteRecordset(dataObject.Object, 0)
+            //  worker.ExecuteRecordset(dataObject.Object, 0)
+        }
+
+        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(AdvancedRecordsetActivity))]
+        public void AdvancedRecordsetActivity_OnExecute()
+        {
+            //IDSFDataObject
+
+            var activity = new AdvancedRecordsetActivity();
+            //activity.Execute()
         }
     }
 }

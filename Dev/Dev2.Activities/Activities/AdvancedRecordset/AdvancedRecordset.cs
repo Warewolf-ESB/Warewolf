@@ -25,6 +25,16 @@ using System.Linq;
 
 namespace Dev2.Activities
 {
+    public interface IAdvancedRecordsetFactory
+    {
+        IAdvancedRecordset New(IExecutionEnvironment env);
+    }
+
+    public class AdvancedRecordsetFactory : IAdvancedRecordsetFactory
+    {
+        public IAdvancedRecordset New(IExecutionEnvironment env) => new AdvancedRecordset(env);
+    }
+
     public class AdvancedRecordset : IAdvancedRecordset
     {
         readonly SqliteServer _dbManager = new SqliteServer("Data Source=:memory:");
