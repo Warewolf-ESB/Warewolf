@@ -11,19 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
-using Dev2.Data.Util;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
@@ -35,21 +30,27 @@ namespace Dev2.PathOperations
         readonly ICommon _common;
         static readonly ReaderWriterLockSlim FileLock = new ReaderWriterLockSlim();
         readonly List<string> _filesToDelete;
-        readonly IActivityIOBrokerDriver _implementation;
+        void RemoveAllTmpFiles()
+        {
+            _implementation.RemoveAllTmpFiles();
+            _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+        }
+
+        readonly IActivityIOBrokerMainDriver _implementation;
         readonly IActivityIOBrokerValidatorDriver _validator;
 
         public Dev2ActivityIOBroker()
-            : this(new FileWrapper(), new Data.Util.CommonDataUtils(), new ActivityIOBrokerDriver(), new ActivityIOBrokerValidatorDriver())
+            : this(new FileWrapper(), new Data.Util.CommonDataUtils(), new ActivityIOBrokerMainDriver(), new ActivityIOBrokerValidatorDriver())
         {
             _filesToDelete = new List<string>();
         }
 
         public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common)
-            :this(fileWrapper, common, new ActivityIOBrokerDriver(), new ActivityIOBrokerValidatorDriver())
+            :this(fileWrapper, common, new ActivityIOBrokerMainDriver(), new ActivityIOBrokerValidatorDriver())
         {
         }
 
-        public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common, IActivityIOBrokerDriver implementation, IActivityIOBrokerValidatorDriver validator)
+        public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common, IActivityIOBrokerMainDriver implementation, IActivityIOBrokerValidatorDriver validator)
         {
             _implementation = implementation;
             _validator = validator;
@@ -78,13 +79,13 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
         }
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)
         {
-            var result = ActivityIOBrokerDriverBase.ResultOk;
+            var result = ActivityIOBrokerBaseDriver.ResultOk;
             try
             {
                 FileLock.EnterWriteLock();
@@ -104,22 +105,33 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        var newArgs = new Dev2CRUDOperationTO(true);
-                        _implementation.CreateEndPoint(dst, newArgs, true);
-                        _implementation.WriteDataToFile(args, dst);
+                        result = CreateEndPointAndWriteData(dst, args);
                     }
                 }
             }
             finally
             {
                 FileLock.ExitWriteLock();
-                for (var index = _filesToDelete.Count - 1; index > 0; index--)
-                {
-                    var name = _filesToDelete[index];
-                    _implementation.RemoveTmpFile(name);
-                }
+                RemoveAllTmpFiles();
             }
             return result;
+        }
+
+        private string CreateEndPointAndWriteData(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)
+        {
+            var newArgs = new Dev2CRUDOperationTO(true);
+
+            var endPointCreated = _implementation.CreateEndPoint(dst, newArgs, true) == ActivityIOBrokerBaseDriver.ResultOk;
+            if (endPointCreated)
+            {
+                return _implementation.WriteDataToFile(args, dst)
+                    ? ActivityIOBrokerBaseDriver.ResultOk
+                    : ActivityIOBrokerBaseDriver.ResultBad;
+            }
+            else
+            {
+                return ActivityIOBrokerBaseDriver.ResultBad;
+            }
         }
 
         public string Delete(IActivityIOOperationsEndPoint src)
@@ -128,18 +140,18 @@ namespace Dev2.PathOperations
             {
                 if (!src.Delete(src.IOPath))
                 {
-                    return ActivityIOBrokerDriverBase.ResultBad;
+                    return ActivityIOBrokerBaseDriver.ResultBad;
                 }
             }
             catch
             {
-                return ActivityIOBrokerDriverBase.ResultBad;
+                return ActivityIOBrokerBaseDriver.ResultBad;
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
-            return ActivityIOBrokerDriverBase.ResultOk;
+            return ActivityIOBrokerBaseDriver.ResultOk;
         }
 
         public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes)
@@ -156,7 +168,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
         }
 
@@ -186,7 +198,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
         }
 
@@ -213,7 +225,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        var sourceFile = new FileInfo(src.IOPath.Path);
+                        var sourceFile = _fileWrapper.Info(src.IOPath.Path);
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                         {
                             dst.IOPath.Path = dst.Combine(sourceFile.Name);
@@ -221,18 +233,21 @@ namespace Dev2.PathOperations
 
                         using (var s = src.Get(src.IOPath, _filesToDelete))
                         {
+                            // why don't we copy if we can't get directory
                             if (sourceFile.Directory != null)
                             {
                                 result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
+                                // the -1 return should only be checked and then return ok here 
                             }
                         }
                     }
-                    return result == -1 ? ActivityIOBrokerDriverBase.ResultBad : ActivityIOBrokerDriverBase.ResultOk;
+                    // why return ok if we can't get directory
+                    return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
                 });
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
             return status;
         }
@@ -243,14 +258,14 @@ namespace Dev2.PathOperations
             try
             {
                 result = Copy(src, dst, args);
-                if (result.Equals(ActivityIOBrokerDriverBase.ResultOk))
+                if (result.Equals(ActivityIOBrokerBaseDriver.ResultOk))
                 {
                     src.Delete(src.IOPath);
                 }
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
 
             return result;
@@ -301,12 +316,12 @@ namespace Dev2.PathOperations
                         _fileWrapper.Delete(tempFile);
                     }
 
-                    return ActivityIOBrokerDriverBase.ResultOk;
+                    return ActivityIOBrokerBaseDriver.ResultOk;
                 });
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
 
             return status;
@@ -329,7 +344,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(_implementation.RemoveTmpFile);
+                RemoveAllTmpFiles();
             }
             return status;
         }
