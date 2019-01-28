@@ -170,10 +170,6 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
                 : base(explorerViewModel, dsfActivityType)
             {
             }
-            public void TestSingleEnvironmentExplorerViewModel_SelectedItemChanged(object sender1, IExplorerTreeItem e1)
-            {
-                    base.SingleEnvironmentExplorerViewModel_SelectedItemChanged(sender1, e1);
-            }
         }
 
     }
