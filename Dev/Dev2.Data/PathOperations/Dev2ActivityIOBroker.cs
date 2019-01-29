@@ -38,22 +38,23 @@ namespace Dev2.PathOperations
 
         readonly IActivityIOBrokerMainDriver _implementation;
         readonly IActivityIOBrokerValidatorDriver _validator;
+        readonly IIonicZipFileWrapperFactory _zipFileFactory;
 
         public Dev2ActivityIOBroker()
-            : this(new FileWrapper(), new Data.Util.CommonDataUtils(), new ActivityIOBrokerMainDriver(), new ActivityIOBrokerValidatorDriver())
+            : this(new FileWrapper(), new Data.Util.CommonDataUtils())
         {
-            _filesToDelete = new List<string>();
         }
 
         public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common)
-            :this(fileWrapper, common, new ActivityIOBrokerMainDriver(), new ActivityIOBrokerValidatorDriver())
+            :this(fileWrapper, common, new ActivityIOBrokerMainDriver(), new ActivityIOBrokerValidatorDriver(), new IonicZipFileWrapperFactory())
         {
         }
 
-        public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common, IActivityIOBrokerMainDriver implementation, IActivityIOBrokerValidatorDriver validator)
+        public Dev2ActivityIOBroker(IFile fileWrapper, ICommon common, IActivityIOBrokerMainDriver implementation, IActivityIOBrokerValidatorDriver validator, IIonicZipFileWrapperFactory zipFileFactory)
         {
             _implementation = implementation;
             _validator = validator;
+            _zipFileFactory = zipFileFactory;
 
             _fileWrapper = fileWrapper;
             _common = common;
@@ -209,7 +210,6 @@ namespace Dev2.PathOperations
             {
                 status = _validator.ValidateCopySourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    var result = -1;
                     if (src.RequiresLocalTmpStorage())
                     {
                         if (dst.PathIs(dst.IOPath) == enPathType.Directory)
@@ -219,8 +219,9 @@ namespace Dev2.PathOperations
 
                         using (var s = src.Get(src.IOPath, _filesToDelete))
                         {
-                            result = dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
+                            var result = dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
                             s.Close();
+                            return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
                         }
                     }
                     else
@@ -233,16 +234,15 @@ namespace Dev2.PathOperations
 
                         using (var s = src.Get(src.IOPath, _filesToDelete))
                         {
-                            // why don't we copy if we can't get directory
                             if (sourceFile.Directory != null)
                             {
-                                result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
-                                // the -1 return should only be checked and then return ok here 
+                                var result = dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
+
+                                return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
                             }
                         }
                     }
-                    // why return ok if we can't get directory
-                    return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
+                    return ActivityIOBrokerBaseDriver.ResultBad;
                 });
             }
             finally
@@ -279,7 +279,7 @@ namespace Dev2.PathOperations
             {
                 status = _validator.ValidateUnzipSourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    ZipFile zip;
+                    IIonicZipFileWrapper zip;
                     var tempFile = string.Empty;
 
                     if (src.RequiresLocalTmpStorage())
@@ -291,24 +291,24 @@ namespace Dev2.PathOperations
                         }
 
                         tempFile = tmpZip;
-                        zip = ZipFile.Read(tempFile);
+                        zip = _zipFileFactory.Read(tempFile);
                     }
                     else
                     {
-                        zip = ZipFile.Read(src.Get(src.IOPath, _filesToDelete));
+                        zip = _zipFileFactory.Read(src.Get(src.IOPath, _filesToDelete));
                     }
 
                     if (dst.RequiresLocalTmpStorage())
                     {
                         var tempPath = _common.CreateTmpDirectory();
-                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), tempPath);
+                        _common.ExtractFile(args, zip, tempPath);
                         var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, string.Empty);
                         var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
                         Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
                     }
                     else
                     {
-                        _common.ExtractFile(args, new IonicZipFileWrapper(zip), dst.IOPath.Path);
+                        _common.ExtractFile(args, zip, dst.IOPath.Path);
                     }
 
                     if (src.RequiresLocalTmpStorage())
