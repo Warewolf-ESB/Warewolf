@@ -8,13 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Dev2.Common.Interfaces
 {
+    [ExcludeFromCodeCoverage]
     public class ComputerName : IComputerName
     {
         public string Name { get; set; }
-
-        #region Overrides of Object
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -23,7 +24,5 @@ namespace Dev2.Common.Interfaces
         /// A string that represents the current object.
         /// </returns>
         public override string ToString() => Name;
-
-        #endregion
     }
 }

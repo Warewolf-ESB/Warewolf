@@ -170,7 +170,6 @@
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
-    <Compile Include="PathOperations\Interfaces\IPutOperationArguments.cs" />
     <Compile Include="PathOperations\LogonProvider.cs" />
     <Compile Include="PathOperations\Operations\DoCreateDirectory.cs" />
     <Compile Include="PathOperations\Operations\DoDeleteOperation.cs" />
