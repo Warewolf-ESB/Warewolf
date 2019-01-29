@@ -254,5 +254,24 @@ namespace Dev2.Tests.Activities.Activities
             ResourceCat = resourceCatalog;
         }
     }
+
+
+    class TestServiceInput : IServiceInput
+    {
+        public string Name { get; set; }
+        string _value;
+        public string Value { get => _value; set { _value = value; throw new Exception("Service input value"); } }
+        public bool RequiredField { get; set; }
+        public bool EmptyIsNull { get; set; }
+        public string TypeName { get; set; }
+        public enIntellisensePartType IntellisenseFilter { get; set; }
+        public bool IsObject { get; set; }
+        public string Dev2ReturnType { get; set; }
+        public string ShortTypeName { get; set; }
+
+        public string FullName { get; set; }
+
+        public string ActionName { get; set; }
+    }
 }
 
