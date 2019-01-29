@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.Activities
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ObjectEquals_IsNotNull_Expect_True()
+        public void DsfComDllActivity_ObjectEquals_NotSame_Expect_False()
         {
             //-----------------------Arrange---------------------
             var dsfComDllActivity = new TestDsfComDllActivity();
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.Activities
             //-----------------------Act-------------------------
             var equals = dsfComDllActivity.Equals(obj);
             //-----------------------Assert----------------------
-            Assert.IsTrue(equals);
+            Assert.IsFalse(equals);
         }
 
         [TestMethod]
