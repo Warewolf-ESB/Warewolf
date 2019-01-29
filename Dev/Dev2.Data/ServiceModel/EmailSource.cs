@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
-
+        //TODO: Add SmtpClientFactory so that we can test it without failing
         public void Send(MailMessage mailMessage)
         {
             var userParts = UserName.Split('@');
