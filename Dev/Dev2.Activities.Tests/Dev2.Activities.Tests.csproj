@@ -194,6 +194,7 @@
     <Compile Include="Activities\DsfComDllActivityTests.cs" />
     <Compile Include="Activities\EmailSenderTests.cs" />
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
+    <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
@@ -580,6 +581,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
