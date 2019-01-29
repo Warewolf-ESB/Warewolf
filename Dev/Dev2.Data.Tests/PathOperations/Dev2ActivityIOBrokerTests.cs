@@ -96,7 +96,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var dst = mockDst.Object;
@@ -128,7 +129,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             mockDst.Setup(o => o.PathExist(It.IsAny<Dev2ActivityIOPath>())).Returns(true);
@@ -162,7 +164,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var dst = mockDst.Object;
@@ -190,7 +193,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var dst = mockDst.Object;
@@ -218,7 +222,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var dst = mockDst.Object;
@@ -247,7 +252,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstMock = new Mock<IActivityIOOperationsEndPoint>();
             var ioPath = new Mock<IActivityIOPath>().Object;
@@ -274,7 +280,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstMock = new Mock<IActivityIOOperationsEndPoint>();
             var ioPath = new Mock<IActivityIOPath>().Object;
@@ -299,7 +306,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstMock = new Mock<IActivityIOOperationsEndPoint>();
             var ioPath = new Mock<IActivityIOPath>().Object;
@@ -323,7 +331,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommonData = new Mock<ICommon>();
             var mockImplementation = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFileWrapper.Object, mockCommonData.Object, mockImplementation.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var endPoint = new Mock<IActivityIOOperationsEndPoint>().Object;
             var expectedList = new List<IActivityIOPath>();
@@ -347,7 +356,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstPath = new Mock<IActivityIOPath>();
             var args = new Dev2CRUDOperationTO(true);
@@ -379,7 +389,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstPath = new Mock<IActivityIOPath>();
             var args = new Dev2CRUDOperationTO(true);
@@ -413,7 +424,8 @@ namespace Dev2.Data.Tests.PathOperations
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var dstPath = new Mock<IActivityIOPath>();
             var args = new Dev2CRUDOperationTO(true);
@@ -447,14 +459,16 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Rename_GivenSourceAndDestinationDifferentPathType_ShouldThrowExc()
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var args = new Dev2CRUDOperationTO(true);
             var src = new Mock<IActivityIOOperationsEndPoint>();
@@ -479,14 +493,16 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Rename_GivenSourceAndDestinationSamePathTypePathExistsOverwriteFalse_ShouldThrowException()
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var args = new Dev2CRUDOperationTO(false);
             var src = new Mock<IActivityIOOperationsEndPoint>();
@@ -509,14 +525,16 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Rename_GivenSourceAndDestinationSamePathTypePathExistsOverwriteTrue_ShouldDeleteDestFile()
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var args = new Dev2CRUDOperationTO(true);
 
@@ -544,14 +562,16 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
         public void Dev2ActivityIOBroker_Rename_GivenSourceAndDestinationTypesNotEqual()
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var args = new Dev2CRUDOperationTO(true);
 
@@ -584,13 +604,44 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        public void Dev2ActivityIOBroker_Copy()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_SourceDirectoryInfoFails()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultBad;
+            IDirectoryInfo directoryInfo = null;
+            Dev2ActivityIOBroker_Copy_DestinationPutFails_Implementation(directoryInfo, 0, expectedOutcome);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_DestinationPut()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultOk;
+            var srcDirectory = new Mock<IDirectoryInfo>().Object;
+            Dev2ActivityIOBroker_Copy_DestinationPutFails_Implementation(srcDirectory, 0, expectedOutcome);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_DestinationPutFails()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultBad;
+            var srcDirectory = new Mock<IDirectoryInfo>().Object;
+
+            Dev2ActivityIOBroker_Copy_DestinationPutFails_Implementation(srcDirectory, -1, expectedOutcome);
+        }
+
+        void Dev2ActivityIOBroker_Copy_DestinationPutFails_Implementation(IDirectoryInfo srcDirectory, int putReturnCode, string expectedOutcome)
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
             var mockSrcIoPath = new Mock<IActivityIOPath>();
@@ -607,52 +658,98 @@ namespace Dev2.Data.Tests.PathOperations
             var mockArgs = new Mock<IDev2CRUDOperationTO>();
             var srcFileInfo = new Mock<IFileInfo>();
             srcFileInfo.Setup(o => o.Name).Returns("src file name");
-            srcFileInfo.Setup(o => o.Directory).Returns(new Mock<IDirectoryInfo>().Object);
+            if (srcDirectory != null)
+            {
+                srcFileInfo.Setup(o => o.Directory).Returns(srcDirectory);
+            }
             mockFile.Setup(o => o.Info("src path")).Returns(srcFileInfo.Object);
 
             var stream = new MemoryStream();
 
             mockSrc.Setup(o => o.Get(srcIoPath, It.IsAny<List<string>>())).Returns(stream);
 
+
             var src = mockSrc.Object;
             var dst = mockDst.Object;
             var args = mockArgs.Object;
 
-            int putReturnCode = 1;
+            var srcDirString = srcDirectory?.ToString();
+            mockDst.Setup(o => o.Put(stream, dst.IOPath, args, srcDirString, It.IsAny<List<string>>())).Returns(putReturnCode);
 
-            mockDst.Setup(o => o.Put(stream, dst.IOPath, args, "Mock<Dev2.Common.Interfaces.Wrappers.IDirectoryInfo:00000001>.Object", It.IsAny<List<string>>())).Returns(putReturnCode);
+            string ok = null;
 
             mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()))
-                .Callback<IActivityIOOperationsEndPoint, IActivityIOOperationsEndPoint, IDev2CRUDOperationTO,Func<string>>((src1, dst1, args1, func) => {
-                    func();
+                .Callback<IActivityIOOperationsEndPoint, IActivityIOOperationsEndPoint, IDev2CRUDOperationTO, Func<string>>((src1, dst1, args1, func) => {
+                    ok = func();
                 })
-                .Returns(ActivityIOBrokerBaseDriver.ResultOk);
+                .Returns(() => ok);
 
 
             var result = broker.Copy(src, dst, args);
 
-            Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+            Assert.AreEqual(expectedOutcome, result);
 
             mockSrc.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
-            mockDst.Verify(o => o.Put(stream, dst.IOPath, args, "Mock<Dev2.Common.Interfaces.Wrappers.IDirectoryInfo:00000001>.Object", It.IsAny<List<string>>()), Times.Once);
 
             mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.Once);
         }
 
         [TestMethod]
-        public void Dev2ActivityIOBroker_Copy_SourceDirectoryInfoFails()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultOk;
+            var putReturnCode = 0;
+            IDirectoryInfo srcDirectory = null;
+            bool srcHasRoot = false;
+            Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage(srcDirectory, putReturnCode, expectedOutcome, srcHasRoot);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage_SrcHasRoot()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultOk;
+            var putReturnCode = 0;
+            IDirectoryInfo srcDirectory = null;
+            bool srcHasRoot = true;
+            Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage(srcDirectory, putReturnCode, expectedOutcome, srcHasRoot);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage_PutFails()
+        {
+            string expectedOutcome = ActivityIOBrokerBaseDriver.ResultBad;
+            var putReturnCode = -1;
+            IDirectoryInfo srcDirectory = null;
+            bool srcHasRoot = true;
+            Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage(srcDirectory, putReturnCode, expectedOutcome, srcHasRoot);
+        }
+
+        void Dev2ActivityIOBroker_Copy_RequiresLocalTmpStorage(IDirectoryInfo srcDirectory, int putReturnCode, string expectedOutcome, bool srcHasRoot)
         {
             var mockFile = new Mock<IFile>();
             var mockCommon = new Mock<ICommon>();
             var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
             var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
-            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object);
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
             var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
             var mockSrcIoPath = new Mock<IActivityIOPath>();
-            mockSrcIoPath.Setup(o => o.Path).Returns("src path");
+            if (srcHasRoot) {
+                mockSrcIoPath.Setup(o => o.Path).Returns(@"c:\src path");
+            } else
+            {
+                mockSrcIoPath.Setup(o => o.Path).Returns("src path");
+            }
             var srcIoPath = mockSrcIoPath.Object;
             mockSrc.Setup(o => o.IOPath).Returns(srcIoPath);
+            mockSrc.Setup(o => o.RequiresLocalTmpStorage()).Returns(true);
             var mockDst = new Mock<IActivityIOOperationsEndPoint>();
             var mockDstIoPath = new Mock<IActivityIOPath>();
             mockDstIoPath.Setup(o => o.Path).Returns("dst path");
@@ -663,6 +760,10 @@ namespace Dev2.Data.Tests.PathOperations
             var mockArgs = new Mock<IDev2CRUDOperationTO>();
             var srcFileInfo = new Mock<IFileInfo>();
             srcFileInfo.Setup(o => o.Name).Returns("src file name");
+            if (srcDirectory != null)
+            {
+                srcFileInfo.Setup(o => o.Directory).Returns(srcDirectory);
+            }
             mockFile.Setup(o => o.Info("src path")).Returns(srcFileInfo.Object);
 
             var stream = new MemoryStream();
@@ -674,31 +775,356 @@ namespace Dev2.Data.Tests.PathOperations
             var dst = mockDst.Object;
             var args = mockArgs.Object;
 
-            int putReturnCode = 0;
+            if (srcHasRoot)
+            {
+                mockDst.Setup(o => o.Put(stream, dst.IOPath, args, @"c:\", It.IsAny<List<string>>())).Returns(putReturnCode);
+            } else {
+                mockDst.Setup(o => o.Put(stream, dst.IOPath, args, null, It.IsAny<List<string>>())).Returns(putReturnCode);
+            }
 
-            mockDst.Setup(o => o.Put(stream, dst.IOPath, args, "Mock<Dev2.Common.Interfaces.Wrappers.IDirectoryInfo:00000001>.Object", It.IsAny<List<string>>())).Returns(putReturnCode);
+            string ok = null;
 
             mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()))
                 .Callback<IActivityIOOperationsEndPoint, IActivityIOOperationsEndPoint, IDev2CRUDOperationTO, Func<string>>((src1, dst1, args1, func) => {
-                    func();
+                    ok = func();
                 })
-                .Returns(ActivityIOBrokerBaseDriver.ResultOk);
+                .Returns(() => ok);
 
 
             var result = broker.Copy(src, dst, args);
 
-            Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultBad, result);
+            Assert.AreEqual(expectedOutcome, result);
 
             mockSrc.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
-            mockDst.Verify(o => o.Put(stream, dst.IOPath, args, "Mock<Dev2.Common.Interfaces.Wrappers.IDirectoryInfo:00000001>.Object", It.IsAny<List<string>>()), Times.Once);
 
+            if (srcHasRoot)
+            {
+                mockDst.Verify(o => o.Put(stream, dst.IOPath, args, @"c:\", It.IsAny<List<string>>()), Times.Once);
+            } else
+            {
+                mockDst.Verify(o => o.Put(stream, dst.IOPath, args, null, It.IsAny<List<string>>()), Times.Once);
+            }
             mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.Once);
         }
 
-        // Move
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Move()
+        {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
 
-        // UnZip
 
-        // Zip
+            var args = new Dev2CRUDOperationTO(true);
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var srcPath = new Mock<IActivityIOPath>().Object;
+            mockSrc.Setup(o => o.IOPath).Returns(srcPath);
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dstPath = new Mock<IActivityIOPath>().Object;
+            mockDst.Setup(o => o.IOPath).Returns(dstPath);
+            mockDst.Setup(o => o.PathExist(dstPath)).Returns(true);
+
+            var src = mockSrc.Object;
+            var dst = mockDst.Object;
+
+            mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>())).Returns(ActivityIOBrokerBaseDriver.ResultOk);
+
+
+            broker.Move(mockSrc.Object, mockDst.Object, args);
+
+            mockValidator.Verify(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()), Times.Once);
+            mockSrc.Verify(o => o.Delete(srcPath), Times.Once);
+
+            mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Move_Fails()
+        {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
+
+
+            var args = new Dev2CRUDOperationTO(true);
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var srcPath = new Mock<IActivityIOPath>().Object;
+            mockSrc.Setup(o => o.IOPath).Returns(srcPath);
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dstPath = new Mock<IActivityIOPath>().Object;
+            mockDst.Setup(o => o.IOPath).Returns(dstPath);
+            mockDst.Setup(o => o.PathExist(dstPath)).Returns(true);
+
+            var src = mockSrc.Object;
+            var dst = mockDst.Object;
+
+            mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>())).Returns(ActivityIOBrokerBaseDriver.ResultBad);
+
+            broker.Move(mockSrc.Object, mockDst.Object, args);
+
+            mockValidator.Verify(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()), Times.Once);
+            mockSrc.Verify(o => o.Delete(srcPath), Times.Never);
+
+            mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Move_CopyThrows()
+        {
+            var exception = new Exception("some exception");
+
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
+
+
+            var args = new Dev2CRUDOperationTO(true);
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var srcPath = new Mock<IActivityIOPath>().Object;
+            mockSrc.Setup(o => o.IOPath).Returns(srcPath);
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dstPath = new Mock<IActivityIOPath>().Object;
+            mockDst.Setup(o => o.IOPath).Returns(dstPath);
+            mockDst.Setup(o => o.PathExist(dstPath)).Returns(true);
+
+            var src = mockSrc.Object;
+            var dst = mockDst.Object;
+
+            mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>())).Throws(exception);
+
+            var hadException = false;
+            try
+            {
+                broker.Move(mockSrc.Object, mockDst.Object, args);
+            } catch (Exception e)
+            {
+                hadException = true;
+                Assert.AreEqual(exception, e);
+            }
+            Assert.IsTrue(hadException);
+
+            mockValidator.Verify(o => o.ValidateCopySourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()), Times.Once);
+            mockSrc.Verify(o => o.Delete(srcPath), Times.Never);
+
+            mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_UnZip()
+        {
+            Dev2ActivityIOBroker_UnZip_Implementation(ActivityIOBrokerBaseDriver.ResultOk, false, false);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_UnZip_SrcRequiresLocalStorage()
+        {
+            Dev2ActivityIOBroker_UnZip_Implementation(ActivityIOBrokerBaseDriver.ResultOk, true, false);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_UnZip_DstRequiresLocalStorage()
+        {
+            Dev2ActivityIOBroker_UnZip_Implementation(ActivityIOBrokerBaseDriver.ResultOk, false, true);
+        }
+
+        void Dev2ActivityIOBroker_UnZip_Implementation(string expectedStatus, bool srcRequiresLocalTempStorage, bool dstRequiresLocalTempStorage)
+        {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
+
+            var args = new Dev2UnZipOperationTO("some password", true);
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var mockSrcPath = new Mock<IActivityIOPath>();
+            mockSrcPath.Setup(o => o.Path).Returns("some src path");
+            var srcPath = mockSrcPath.Object;
+            mockSrc.Setup(o => o.IOPath).Returns(srcPath);
+            mockSrc.Setup(o => o.RequiresLocalTmpStorage()).Returns(srcRequiresLocalTempStorage);
+            var stream = new MemoryStream();
+            mockSrc.Setup(o => o.Get(srcPath, It.IsAny<List<string>>())).Returns(stream);
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dstPath = new Mock<IActivityIOPath>().Object;
+            mockDst.Setup(o => o.IOPath).Returns(dstPath);
+            mockDst.Setup(o => o.PathExist(dstPath)).Returns(true);
+            mockDst.Setup(o => o.RequiresLocalTmpStorage()).Returns(dstRequiresLocalTempStorage);
+
+            var src = mockSrc.Object;
+            var dst = mockDst.Object;
+
+
+            string ok = null;
+            mockValidator.Setup(o => o.ValidateUnzipSourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()))
+                .Callback<IActivityIOOperationsEndPoint, IActivityIOOperationsEndPoint, IDev2UnZipOperationTO, Func<string>>((src1, dst1, args1, func) => {
+                    ok = func();
+                })
+                .Returns(() => ok);
+
+            if (dstRequiresLocalTempStorage)
+            {
+                mockValidator.Setup(o => o.ValidateCopySourceDestinationFileOperation(It.IsAny<IActivityIOOperationsEndPoint>(), dst, It.IsAny<IDev2CRUDOperationTO>(), It.IsAny<Func<string>>())).Returns(ActivityIOBrokerBaseDriver.ResultOk);
+            }
+
+            var zip = new Mock<IIonicZipFileWrapper>().Object;
+            if (srcRequiresLocalTempStorage)
+            {
+                mockDriver.Setup(o => o.CreateTmpFile()).Returns("tmp file name");
+                mockZipFileFactory.Setup(o => o.Read("tmp file name")).Returns(zip);
+            }
+            else
+            {
+                mockZipFileFactory.Setup(o => o.Read(stream)).Returns(zip);
+            }
+
+            if (dstRequiresLocalTempStorage)
+            {
+                mockCommon.Setup(o => o.CreateTmpDirectory()).Returns(@"c:\mock tmp dir name");
+
+            }
+
+            var result = broker.UnZip(src, dst, args);
+
+            Assert.AreEqual(expectedStatus, result);
+
+            if (srcRequiresLocalTempStorage)
+            {
+                mockZipFileFactory.Verify(o => o.Read("tmp file name"), Times.Once);
+                mockFile.Verify(o => o.Delete("tmp file name"), Times.Once);
+                mockDriver.Verify(o => o.CreateTmpFile(), Times.Once);
+            }
+            else
+            {
+                mockZipFileFactory.Verify(o => o.Read(stream), Times.Once);
+            }
+            if (dstRequiresLocalTempStorage)
+            {
+                mockValidator.Verify(o => o.ValidateCopySourceDestinationFileOperation(It.IsAny<IActivityIOOperationsEndPoint>(), dst, It.IsAny<IDev2CRUDOperationTO>(), It.IsAny<Func<string>>()), Times.Once);
+            }
+            else
+            {
+                mockCommon.Verify(o => o.ExtractFile(args, zip, dstPath.Path), Times.Once);
+                mockValidator.Verify(o => o.ValidateUnzipSourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()), Times.Once);
+            }
+
+            mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.AtLeastOnce);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Zip()
+        {
+            var path = @"c:\some src path";
+            Dev2ActivityIOBroker_Zip_Implementation(false, path);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Zip_Directory()
+        {
+            var path = @"c:\some src path";
+            Dev2ActivityIOBroker_Zip_Implementation(true, path);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_Zip_StarWildcard()
+        {
+            var path = @"c:\some src path\*";
+            Dev2ActivityIOBroker_Zip_Implementation(false, path);
+        }
+
+        void Dev2ActivityIOBroker_Zip_Implementation(bool isDirectory, string srcPathString) {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+            var mockDriver = new Mock<IActivityIOBrokerMainDriver>();
+            var mockValidator = new Mock<IActivityIOBrokerValidatorDriver>();
+            var mockZipFileFactory = new Mock<IIonicZipFileWrapperFactory>();
+            var broker = new Dev2ActivityIOBroker(mockFile.Object, mockCommon.Object, mockDriver.Object, mockValidator.Object, mockZipFileFactory.Object);
+
+            var args = new Dev2ZipOperationTO("some ratio", "some password", "some name", true);
+
+            var mockSrc = new Mock<IActivityIOOperationsEndPoint>();
+            var mockSrcPath = new Mock<IActivityIOPath>();
+            mockSrcPath.Setup(o => o.Path).Returns(srcPathString);
+            var srcPath = mockSrcPath.Object;
+            if (isDirectory)
+            {
+                mockSrc.Setup(o => o.PathIs(srcPath)).Returns(enPathType.Directory);
+            }
+            mockSrc.Setup(o => o.IOPath).Returns(srcPath);
+            var stream = new MemoryStream();
+            mockSrc.Setup(o => o.Get(srcPath, It.IsAny<List<string>>())).Returns(stream);
+            var mockDst = new Mock<IActivityIOOperationsEndPoint>();
+            var dstPath = new Mock<IActivityIOPath>().Object;
+            mockDst.Setup(o => o.IOPath).Returns(dstPath);
+
+            var src = mockSrc.Object;
+            var dst = mockDst.Object;
+
+            string ok = null;
+            mockValidator.Setup(o => o.ValidateZipSourceDestinationFileOperation(src, dst, args, It.IsAny<Func<string>>()))
+                .Callback<IActivityIOOperationsEndPoint, IActivityIOOperationsEndPoint, IDev2ZipOperationTO, Func<string>>((src1, dst1, args1, func) =>
+                {
+                    ok = func();
+                })
+                .Returns(() => ok)
+                .Verifiable();
+
+            if (isDirectory)
+            {
+                mockDriver.Setup(o => o.ZipDirectoryToALocalTempFile(src, args)).Returns("some result one");
+            }
+            else
+            {
+                mockDriver.Setup(o => o.ZipFileToALocalTempFile(src, args)).Returns("some result two");
+            }
+
+            broker.Zip(src, dst, args);
+
+            if (isDirectory || srcPathString.Contains("*"))
+            {
+                mockDriver.Verify(o => o.ZipDirectoryToALocalTempFile(src, args), Times.Once);
+            }
+            else
+            {
+                mockDriver.Verify(o => o.ZipFileToALocalTempFile(src, args), Times.Once);
+            }
+            mockDriver.Verify(o => o.TransferTempZipFileToDestination(src, dst, args, It.IsAny<string>()), Times.Once);
+            mockValidator.Verify();
+
+            mockDriver.Verify(o => o.RemoveAllTmpFiles(), Times.AtLeastOnce);
+        }
     }
 }
