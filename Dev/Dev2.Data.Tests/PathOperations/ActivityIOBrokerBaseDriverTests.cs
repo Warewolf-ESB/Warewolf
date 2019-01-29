@@ -21,11 +21,11 @@ namespace Dev2.Data.Tests.PathOperations
     public class ActivityIOBrokerMainDriverTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
-            var obj = new PrivateType(broker.GetType());
+            var driver = new ActivityIOBrokerBaseDriver();
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -33,17 +33,17 @@ namespace Dev2.Data.Tests.PathOperations
             mockEndpoint.Setup(point => point.PathSeperator()).Returns(",");
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
 
-            var pathReturned = obj.InvokeStatic("GetFileNameFromEndPoint", mockEndpoint.Object);
+            var pathReturned = driver.GetFileNameFromEndPoint(mockEndpoint.Object);
 
             Assert.AreEqual(path, pathReturned);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName_Overload()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_GetFileNameFromEndPoint_GivenEndPoint_ShouldReturnFileName_Overload()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
-            var prType = new PrivateType(broker.GetType());
+            var driver = new ActivityIOBrokerBaseDriver();
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -51,69 +51,88 @@ namespace Dev2.Data.Tests.PathOperations
             mockEndpoint.Setup(point => point.PathSeperator()).Returns(",");
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
 
-            var args = new object[]
-            {
-                mockEndpoint.Object, mockActIo.Object
-            };
-            var pathReturned = prType.InvokeStatic("GetFileNameFromEndPoint", args);
+            var pathReturned = driver.GetFileNameFromEndPoint(mockEndpoint.Object, mockActIo.Object);
 
             Assert.AreEqual(path, pathReturned);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_ListDirectory_GivenFilesAndFolders_ShouldReturnEmptyList()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+
+        public void ActivityIOBrokerBaseDriver_ListDirectory_FilesAndFolders()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
+            var broker = new ActivityIOBrokerBaseDriver();
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
-            var mock = new Mock<IList<IActivityIOPath>>();
-            endPoint.Setup(point => point.ListDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
+            var ioPath = new Mock<IActivityIOPath>().Object;
+            endPoint.Setup(o => o.IOPath).Returns(ioPath);
+            var mockList = new Mock<IList<IActivityIOPath>>();
+            endPoint.Setup(point => point.ListDirectory(It.IsAny<IActivityIOPath>())).Returns(mockList.Object);
 
-            var activityIOPaths = broker.ListDirectory(endPoint.Object, ReadTypes.FilesAndFolders);
+            var returnedList = broker.ListDirectory(endPoint.Object, ReadTypes.FilesAndFolders);
 
-            Assert.AreEqual(0, activityIOPaths.Count);
-        }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_ListDirectory_GivenFiles_ShouldReturnEmptyList()
-        {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
-            var endPoint = new Mock<IActivityIOOperationsEndPoint>();
-            var mock = new Mock<IList<IActivityIOPath>>();
-            endPoint.Setup(point => point.ListFilesInDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
+            Assert.AreEqual(0, returnedList.Count);
+            Assert.AreEqual(mockList.Object, returnedList);
 
-            var activityIOPaths = broker.ListDirectory(endPoint.Object, ReadTypes.Files);
-
-            Assert.AreEqual(0, activityIOPaths.Count);
+            endPoint.Verify(o => o.ListDirectory(ioPath), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_ListDirectory_GivenFolders_ShouldReturnEmptyList()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_ListDirectory_Files()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
+            var broker = new ActivityIOBrokerBaseDriver();
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
-            var mock = new Mock<IList<IActivityIOPath>>();
-            endPoint.Setup(point => point.ListFoldersInDirectory(It.IsAny<IActivityIOPath>())).Returns(mock.Object);
+            var ioPath = new Mock<IActivityIOPath>().Object;
+            endPoint.Setup(o => o.IOPath).Returns(ioPath);
+            var mockList = new Mock<IList<IActivityIOPath>>();
+            endPoint.Setup(point => point.ListFilesInDirectory(It.IsAny<IActivityIOPath>())).Returns(mockList.Object);
 
-            var activityIOPaths = broker.ListDirectory(endPoint.Object, ReadTypes.Folders);
+            var returnedList = broker.ListDirectory(endPoint.Object, ReadTypes.Files);
 
-            Assert.AreEqual(0, activityIOPaths.Count);
+            Assert.AreEqual(0, returnedList.Count);
+            Assert.AreEqual(mockList.Object, returnedList);
+
+            endPoint.Verify(o => o.ListFilesInDirectory(ioPath), Times.Once);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_CreateDirectory_GivenValidInterfaces_ShouldCallsCreateDirectoryCorrectly()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_ListDirectory_Folders()
+        {
+            var broker = new ActivityIOBrokerBaseDriver();
+            var endPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var ioPath = new Mock<IActivityIOPath>().Object;
+            endPoint.Setup(o => o.IOPath).Returns(ioPath);
+            var mockList = new Mock<IList<IActivityIOPath>>();
+            endPoint.Setup(point => point.ListFoldersInDirectory(It.IsAny<IActivityIOPath>())).Returns(mockList.Object);
+
+            var returnedList = broker.ListDirectory(endPoint.Object, ReadTypes.Folders);
+
+            Assert.AreEqual(0, returnedList.Count);
+            Assert.AreEqual(mockList.Object, returnedList);
+
+            endPoint.Verify(o => o.ListFoldersInDirectory(ioPath), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_CreateDirectory_GivenValidInterfaces_ShouldCallsCreateDirectoryCorrectly()
         {
             var dev2CrudOperationTO = new Dev2CRUDOperationTO(true);
             var endPoint = new Mock<IActivityIOOperationsEndPoint>();
+            var ioPath = new Mock<IActivityIOPath>().Object;
+            endPoint.Setup(o => o.IOPath).Returns(ioPath);
             endPoint.Setup(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO)).Returns(true);
 
             var driver = new ActivityIOBrokerBaseDriver();
             var result = driver.CreateDirectory(endPoint.Object, dev2CrudOperationTO);
 
             Assert.IsTrue(result);
-            endPoint.Verify(o => o.CreateDirectory(It.IsAny<IActivityIOPath>(), dev2CrudOperationTO));
+            endPoint.Verify(o => o.CreateDirectory(ioPath, dev2CrudOperationTO));
         }
     }
 }

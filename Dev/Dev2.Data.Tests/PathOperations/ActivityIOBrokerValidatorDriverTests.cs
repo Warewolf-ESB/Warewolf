@@ -23,8 +23,9 @@ namespace Dev2.Data.Tests.PathOperations
     public class ActivityIOBrokerValidatorDriverTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_ValidateUnzipSourceDestinationFileOperation_GivenPathNotFile_ShouldThrowValidExc()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateUnzipSourceDestinationFileOperation_InvalidSource()
         {
             //---------------Set up test pack-------------------
             var driver = new ActivityIOBrokerValidatorDriver();
@@ -41,57 +42,143 @@ namespace Dev2.Data.Tests.PathOperations
             var args = new Dev2UnZipOperationTO("password", false);
             Func<string> performAfterValidation = () => "Success";
             var privateObject = driver;
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
+
+            var hadException = false;
             try
             {
                 driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, ex.InnerException.Message);
-                src.Setup(point => point.IOPath.Path).Returns(srcPath);
-                dst.Setup(point => point.IOPath.Path).Returns("");
-                try
-                {
-                    driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
-                }
-                catch (Exception ex1)
-                {
-                    Assert.AreEqual(ErrorResource.DestinationMustBeADirectory, ex1.InnerException.Message);
-                    dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
-                    src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
-
-                    try
-                    {
-                        driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
-                    }
-                    catch (Exception ex2)
-                    {
-                        Assert.AreEqual(ErrorResource.SourceMustBeAFile, ex2.InnerException.Message);
-                        src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.File);
-                        dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
-
-                        try
-                        {
-                            driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
-                        }
-                        catch (Exception ex3)
-                        {
-                            Assert.AreEqual(ErrorResource.DestinationDirectoryExist, ex3.InnerException.Message);
-                            args = new Dev2UnZipOperationTO("pa", true);
-
-                            var invoke = driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
-                            Assert.AreEqual(performAfterValidation.Invoke(), invoke.ToString());
-
-                        }
-
-                    }
-                }
+                hadException = true;
+                Assert.AreEqual(ErrorResource.SourceCannotBeAnEmptyString, ex.Message);
             }
+            Assert.IsTrue(hadException);
+        }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateUnzipSourceDestinationFileOperation_DestinationNotADirectory()
+        {
+            //---------------Set up test pack-------------------
+            var driver = new ActivityIOBrokerValidatorDriver();
 
-            //---------------Test Result -----------------------
+            var srcPath = Path.GetTempPath();
+            var dstPath = Path.GetTempPath();
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(point => point.IOPath.Path).Returns("");
+            src.Setup(point => point.PathSeperator()).Returns(",");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.SetupProperty(point => point.IOPath.Path);
+            dst.Setup(point => point.PathSeperator()).Returns(",");
+            var args = new Dev2UnZipOperationTO("password", false);
+            Func<string> performAfterValidation = () => "Success";
+            var privateObject = driver;
+
+            src.Setup(point => point.IOPath.Path).Returns(srcPath);
+            dst.Setup(point => point.IOPath.Path).Returns("");
+
+            var hadException = false;
+            try
+            {
+                driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
+            }
+            catch (Exception ex1)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.DestinationMustBeADirectory, ex1.Message);
+            }
+            Assert.IsTrue(hadException);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateUnzipSourceDestinationFileOperation_SourceNotAFile()
+        {
+            //---------------Set up test pack-------------------
+            var driver = new ActivityIOBrokerValidatorDriver();
+
+            var srcPath = Path.GetTempPath();
+            var dstPath = Path.GetTempPath();
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(point => point.IOPath.Path).Returns("");
+            src.Setup(point => point.PathSeperator()).Returns(",");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.SetupProperty(point => point.IOPath.Path);
+            dst.Setup(point => point.PathSeperator()).Returns(",");
+            var args = new Dev2UnZipOperationTO("password", false);
+            Func<string> performAfterValidation = () => "Success";
+            var privateObject = driver;
+
+            src.Setup(point => point.IOPath.Path).Returns(srcPath);
+            dst.Setup(point => point.IOPath.Path).Returns("");
+
+            dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+            src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+
+            var hadException = false;
+            try
+            {
+                driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
+            }
+            catch (Exception ex2)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.SourceMustBeAFile, ex2.Message);
+            }
+            Assert.IsTrue(hadException);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerValidatorDriver))]
+        public void ActivityIOBrokerValidatorDriver_ValidateUnzipSourceDestinationFileOperation_DestinationDirectoryExists()
+        {
+            //---------------Set up test pack-------------------
+            var driver = new ActivityIOBrokerValidatorDriver();
+
+            var srcPath = Path.GetTempPath();
+            var dstPath = Path.GetTempPath();
+            var src = new Mock<IActivityIOOperationsEndPoint>();
+            src.Setup(point => point.IOPath.Path).Returns("");
+            src.Setup(point => point.PathSeperator()).Returns(",");
+
+            var dst = new Mock<IActivityIOOperationsEndPoint>();
+            dst.SetupProperty(point => point.IOPath.Path);
+            dst.Setup(point => point.PathSeperator()).Returns(",");
+            var args = new Dev2UnZipOperationTO("password", false);
+            Func<string> performAfterValidation = () => "Success";
+            var privateObject = driver;
+
+            src.Setup(point => point.IOPath.Path).Returns(srcPath);
+            dst.Setup(point => point.IOPath.Path).Returns("");
+
+            dst.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+            src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.Directory);
+
+            
+            src.Setup(point => point.PathIs(It.IsAny<IActivityIOPath>())).Returns(enPathType.File);
+            dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(true);
+
+            var hadException = false;
+            try
+            {
+                driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
+            }
+            catch (Exception ex3)
+            {
+                hadException = true;
+                Assert.AreEqual(ErrorResource.DestinationDirectoryExist, ex3.Message);
+                args = new Dev2UnZipOperationTO("pa", true);
+
+                var invoke = driver.ValidateUnzipSourceDestinationFileOperation(src.Object, dst.Object, args, performAfterValidation);
+                Assert.AreEqual(performAfterValidation.Invoke(), invoke.ToString());
+            }
+            Assert.IsTrue(hadException);
         }
     }
 }
