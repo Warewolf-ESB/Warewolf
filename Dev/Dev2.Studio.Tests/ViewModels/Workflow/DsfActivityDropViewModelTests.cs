@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System.Windows.Input;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
@@ -20,18 +29,17 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
             //---------------------Arrange---------------------
             var mockServer = new Mock<IServer>();
             var mockExplorerViewModel = new Mock<IExplorerViewModel>();
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            
+
             mockExplorerViewModel.Setup(o => o.SelectedItem.Server).Returns(mockServer.Object);
 
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;  
+            var closeRequested = false;
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new DsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Service))
             {
                 dsfActivityDropViewModel.Okay();
                 dialogResult = dsfActivityDropViewModel.DialogResult;
-                closeRequested =  dsfActivityDropViewModel.CloseRequested;
+                closeRequested = dsfActivityDropViewModel.CloseRequested;
             }
             //---------------------Assert----------------------
             Assert.AreEqual(ViewModelDialogResults.Okay, dialogResult);
@@ -44,12 +52,10 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
         public void DsfActivityDropViewModel_Okay_SelectedItem_IsNull_ExpectDialogResult_Cancel()
         {
             //---------------------Arrange---------------------
-            var mockServer = new Mock<IServer>();
             var mockExplorerViewModel = new Mock<IExplorerViewModel>();
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            
+
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;
+            var closeRequested = false;
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new DsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Service))
             {
@@ -75,7 +81,7 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
             mockExplorerViewModel.Setup(o => o.SelectedItem.Server).Returns(mockServer.Object);
 
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;
+            var closeRequested = false;
             IContextualResourceModel selectedResourceModel;
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new TestDsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Workflow))
@@ -103,8 +109,8 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
             mockExplorerViewModel.Setup(o => o.SelectedItem.Server).Returns(mockServer.Object);
 
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;
-            bool canOkay = false;
+            var closeRequested = false;
+            var canOkay = false;
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new TestDsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Workflow))
             {
@@ -131,10 +137,10 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
             mockExplorerViewModel.Setup(o => o.SelectedItem.Server).Returns(mockServer.Object);
 
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;
+            var closeRequested = false;
             var tittle = "";
             var imageSource = "";
-            object sender = new object();
+            var sender = new object();
             ICommand cancelCommand;
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new TestDsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Workflow, sender, mockExplorerTreeItem.Object))
@@ -158,21 +164,13 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
         public void DsfActivityDropViewModel_Okay_ActivityType_Workflow_ExpectDialogResult_Okayq()
         {
             //---------------------Arrange---------------------
-            var mockServer = new Mock<IServer>();
             var mockExplorerViewModel = new Mock<IExplorerViewModel>();
-            var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            var mockServerRepository = new Mock<IServerRepository>();
-            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
-
-            //mockExplorerViewModel.Setup(o => o.SelectedItem.Server).Returns(mockServer.Object);
-            //mockExplorerViewModel.Setup(o => o.SelectedItem.Server.EnvironmentID).Returns(null);
-            //mockExplorerTreeItem.Setup(o => o.SelectItem(Guid.NewGuid(), ()=> )).re
 
             var dialogResult = new ViewModelDialogResults();
-            bool closeRequested = false;
+            var closeRequested = false;
             var tittle = "";
             var imageSource = "";
-            object sender = new object();
+            var sender = new object();
             //---------------------Act-------------------------
             using (var dsfActivityDropViewModel = new TestDsfActivityDropViewModel(mockExplorerViewModel.Object, Enums.enDsfActivityType.Workflow, sender, null, null))
             {
@@ -193,7 +191,7 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
             private object sender;
             private IExplorerTreeItem @object;
 
-            public TestDsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType) 
+            public TestDsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
                 : base(explorerViewModel, dsfActivityType)
             {
             }
@@ -204,7 +202,7 @@ namespace Dev2.Studio.Tests.ViewModels.Workflow
                 this.@object = @object;
             }
 
-            public TestDsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType, object sender, IExplorerTreeItem e, IServerRepository @object) 
+            public TestDsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType, object sender, IExplorerTreeItem e, IServerRepository @object)
                 : base(explorerViewModel, dsfActivityType)
             {
             }
