@@ -44,7 +44,8 @@ namespace Dev2.Studio.Tests.ViewModels
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(shellViewModel => shellViewModel.SaveCommand).Returns(mockAuthorizeCommand.Object);
 
-            using (var searchModel = new SearchModel(mockEventAggregator.Object, searchViewModel, mockView.Object, mockShellViewModel.Object))
+            SearchModel searchModel = null;
+            using (searchModel = new SearchModel(mockEventAggregator.Object, searchViewModel, mockView.Object, mockShellViewModel.Object))
             {
                 searchModel.HelpText = "test";
 
@@ -65,9 +66,9 @@ namespace Dev2.Studio.Tests.ViewModels
                 searchViewModel.TestPropertyChangedEvent("DisplayName");
                 mockShellViewModel.Verify(shellViewModel => shellViewModel.SaveCommand, Times.Once);
             }
+            mockEventAggregator.Verify(o => o.Unsubscribe(searchModel), Times.AtLeastOnce);
         }
 
-        /// <summary>Supports all classes in the .NET Framework class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all classes in the .NET Framework; it is the root of the type hierarchy.To browse the .NET Framework source code for this type, see the Reference Source.</summary>
         class MockSearchViewModel : ISearchViewModel
         {
             public event PropertyChangedEventHandler PropertyChanged;
