@@ -46,10 +46,14 @@ namespace Dev2.Activities
         IAdvancedRecordsetActivityWorker _worker;
 
         public AdvancedRecordsetActivity()
-            : this(new AdvancedRecordsetActivityWorker())
         {
+            Construct(new AdvancedRecordsetActivityWorker(this));
         }
         public AdvancedRecordsetActivity(IAdvancedRecordsetActivityWorker worker)
+        {
+            Construct(worker);
+        }
+        private void Construct(IAdvancedRecordsetActivityWorker worker)
         {
             WorkerInvoker = worker;
             Type = "Advanced Recordset";
@@ -59,7 +63,7 @@ namespace Dev2.Activities
 
         public IAdvancedRecordsetActivityWorker WorkerInvoker
         {
-            get => _worker ?? (_worker = new AdvancedRecordsetActivityWorker());
+            get => _worker ?? (_worker = new AdvancedRecordsetActivityWorker(this));
             set => _worker = value;
         }
 
@@ -223,21 +227,16 @@ namespace Dev2.Activities
         private readonly IAdvancedRecordsetFactory _advancedRecordsetFactory;
 
         [ExcludeFromCodeCoverage]
-        public AdvancedRecordsetActivityWorker()
-            : this(new AdvancedRecordset(), new AdvancedRecordsetFactory())
+        public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity)
+            : this(activity, new AdvancedRecordset(), new AdvancedRecordsetFactory())
         {
         }
         //TODO: Merge constructors
-        public AdvancedRecordsetActivityWorker(IAdvancedRecordset advancedrecordset, IAdvancedRecordsetFactory advancedRecordsetFactory)
-        {
-            _advancedRecordset = advancedrecordset;
-            _advancedRecordsetFactory = advancedRecordsetFactory;
-        }
-        //TODO: Merge constructors
-        public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset)
+        public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset, IAdvancedRecordsetFactory advancedRecordsetFactory)
         {
             _activity = activity;
             _advancedRecordset = advancedrecordset;
+            _advancedRecordsetFactory = advancedRecordsetFactory;
         }
 
         public IAdvancedRecordset AdvancedRecordset

@@ -17,9 +17,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-
-
-
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -994,7 +992,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedName, _targetRequestServiceViewModel.Item.Name);
             Assert.AreEqual(expectedPath, _targetRequestServiceViewModel.Item.ResourcePath);
             Assert.AreNotEqual(Guid.Empty, _targetRequestServiceViewModel.Item.ID);
-            _updateManagerMock.Verify(it => it.Save(It.IsAny<IServerSource>()));
+            _updateManagerMock.Verify(it => it.Save(It.IsAny<ServerSource>()));
             Assert.AreEqual(expectedHeaderText, _targetRequestServiceViewModel.HeaderText);
         }
 
