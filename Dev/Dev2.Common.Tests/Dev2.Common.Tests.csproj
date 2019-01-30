@@ -85,6 +85,7 @@
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
+    <Compile Include="ComputerNameTests.cs" />
     <Compile Include="WarewolfQueue\WarewolfQueueTests.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />
