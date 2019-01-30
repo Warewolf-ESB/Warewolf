@@ -231,6 +231,12 @@ namespace Dev2.Activities
             : this(activity, new AdvancedRecordset(), new AdvancedRecordsetFactory())
         {
         }
+
+        public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset recordset)
+            : this(activity, recordset, new AdvancedRecordsetFactory())
+        {
+        }
+
         //TODO: Merge constructors
         public AdvancedRecordsetActivityWorker(AdvancedRecordsetActivity activity, IAdvancedRecordset advancedrecordset, IAdvancedRecordsetFactory advancedRecordsetFactory)
         {
