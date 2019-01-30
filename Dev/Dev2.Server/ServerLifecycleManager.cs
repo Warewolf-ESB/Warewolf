@@ -103,6 +103,8 @@ namespace Dev2
 
         public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
+            LoadPerformanceCounters();
+
             _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
             _ipcClient = startupConfiguration.IpcClient;
             _assemblyLoader = startupConfiguration.AssemblyLoader;
@@ -146,7 +148,6 @@ namespace Dev2
                 }
 
                 LoadHostSecurityProvider();
-                LoadPerformanceCounters();
                 _loadResources.CheckExampleResources();
                 _loadResources.MigrateOldTests();
                 var webServerConfig = _webServerConfiguration;
