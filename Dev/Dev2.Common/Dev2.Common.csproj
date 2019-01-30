@@ -137,8 +137,8 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
-    <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
+    <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
     <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
