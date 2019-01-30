@@ -21,7 +21,7 @@ namespace Warewolf.UIBindingTests.ServerSource
     [Binding]
     public class NewServerSourceSteps
     {
-        string connectionErrorUnauthorized = "Connection Error: Unauthorized";
+        string _connectionErrorUnauthorized = "Connection Error: Unauthorized";
 
         [BeforeFeature("ServerSource")]
         public static void SetupForSystem()
@@ -197,7 +197,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
 
-            var serverSourceDefinition = new Dev2.Common.Interfaces.Core.ServerSource
+            var serverSourceDefinition = new Dev2.Common.ServerSource
             {
                 Name = "ServerSource",
                 Address = "https://SANDBOX-1:3143",
@@ -206,7 +206,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                 UserName = "Integrationtester",
                 Password = "I73573r0"
             };
-            var externalServerSourceDefinition = new Dev2.Common.Interfaces.Core.ServerSource
+            var externalServerSourceDefinition = new Dev2.Common.ServerSource
             {
                 Name = "TestWarewolf",
                 Address = "http://test-warewolf.cloudapp.net:3142",
@@ -214,7 +214,7 @@ namespace Warewolf.UIBindingTests.ServerSource
                 AuthenticationType = AuthenticationType.Public
             };
 
-            Dev2.Common.Interfaces.Core.ServerSource serverSource;
+            Dev2.Common.ServerSource serverSource;
 
             switch (editingServerSource)
             {
@@ -288,8 +288,8 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"the error message is ""(.*)""")]
         public void ThenTheErrorMessageIs(string errorMessage)
         {
-            errorMessage = "Exception: " + connectionErrorUnauthorized + Environment.NewLine + Environment.NewLine +
-                           "Inner Exception: " + connectionErrorUnauthorized;
+            errorMessage = "Exception: " + _connectionErrorUnauthorized + Environment.NewLine + Environment.NewLine +
+                           "Inner Exception: " + _connectionErrorUnauthorized;
 
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
@@ -383,7 +383,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IServerSource>()))
-                    .Throws(new WarewolfTestException(connectionErrorUnauthorized, new Exception(connectionErrorUnauthorized)));
+                    .Throws(new WarewolfTestException(_connectionErrorUnauthorized, new Exception(_connectionErrorUnauthorized)));
             }
             manageServerControl.TestAction();
         }
@@ -452,7 +452,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Given(@"I create new server source to Gendev as ""(.*)""")]
         public void GivenICreateNewServerSourceToGendevAs(string sourceName)
         {
-            var serverSource = new Dev2.Common.Interfaces.Core.ServerSource
+            var serverSource = new Dev2.Common.ServerSource
             {
                 Name = sourceName
             };
