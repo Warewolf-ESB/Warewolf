@@ -3295,8 +3295,8 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 return new ResourceBuilderTO
                 {
-                    FilePath = serverReleaseResources + "\\" + filename,
-                    FileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
+                    _filePath = serverReleaseResources + "\\" + filename,
+                    _fileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
                 };
             }
 
