@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,17 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
+
+    public class DirectoryInfoWrapper : IDirectoryInfo
+    {
+        readonly DirectoryInfo _info;
+        public DirectoryInfoWrapper(DirectoryInfo info)
+        {
+            _info = info;
+        }
+        public string FullName => _info.FullName;
+    }
+
     public class DirectoryWrapper : IDirectory
     {
         public string[] GetFiles(string path)
@@ -77,7 +88,9 @@ namespace Dev2.Common.Wrappers
             Directory.Delete(directoryStructureFromPath, recursive);
         }
 
-        public DirectoryInfo CreateDirectory(string dir) => Directory.CreateDirectory(dir);
+        public IDirectoryInfo CreateDirectory(string dir) {
+            return new DirectoryInfoWrapper(Directory.CreateDirectory(dir));
+        }
 
         public IEnumerable<string> EnumerateFiles(string path)
             => Directory.EnumerateFiles(path);

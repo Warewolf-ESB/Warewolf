@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,10 +17,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class WebServerResponseTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +33,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         public void WebServerResponse_Constructor_ResponseIsNotNull_PropertiesInitialized()
@@ -54,7 +53,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("true",accessControlList[0]);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerResponse_Constructor")]
         public void WebServerResponse_Constructor_ResponseWithOrigin_PropertiesInitialized()

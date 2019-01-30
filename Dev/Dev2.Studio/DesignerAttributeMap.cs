@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -104,6 +104,7 @@ using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.ExchangeNewEmail;
 using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.AdvancedRecordset;
+using Dev2.Activities.Designers2.DeleteRecords;
 
 namespace Dev2
 {
@@ -126,7 +127,7 @@ namespace Dev2
                 { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesignerViewModel) },
                 { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesignerViewModel) },
                 { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(RecordsLengthDesignerViewModel) },
-                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(DeleteRecordsDesignerViewModel) },
+                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(DeleteRecordsNullHandlerDesignerViewModel) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesignerViewModel) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesignerViewModel) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesignerViewModel) },

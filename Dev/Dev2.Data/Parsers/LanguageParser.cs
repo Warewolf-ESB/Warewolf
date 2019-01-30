@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -156,7 +156,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        var dev2Definition = DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
+                        var dev2Definition = Dev2Definition.NewObject(tmp.Attributes[_nameAttribute].Value, mapsTo, value, isEvaluated, defaultValue, isRequired, origValue, emptyToNull);
                         dev2Definition.IsObject = isObject;
                         result.Add(dev2Definition);
                     }
@@ -171,13 +171,13 @@ namespace Dev2.DataList.Contract
             {
                 var recordSet = recordSetNode.Value;
                 // we have a recordset set it as such
-                result.Add(DataListFactory.CreateDefinition(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                result.Add(DataListFactory.CreateDefinition_Recordset(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
             }
             else
             {
                 // if record set add as such
                 var recordSet = recordSetNode.Value;
-                result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
+                result.Add(DataListFactory.CreateDefinition_Recordset(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
             }
         }
 

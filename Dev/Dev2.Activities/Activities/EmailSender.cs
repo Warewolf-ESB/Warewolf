@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,19 +9,15 @@
 */
 
 using System.Net.Mail;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities
 {
     public class EmailSender : IEmailSender
     {
-        #region Implementation of IEmailSender
-
-        public void Send(EmailSource emailSource, MailMessage mailMessage)
+        public void Send(IEmailSource emailSource, MailMessage mailMessage)
         {
             emailSource.Send(mailMessage);
         }
-
-        #endregion
     }
 }

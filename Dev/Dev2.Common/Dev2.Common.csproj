@@ -64,6 +64,9 @@
       <HintPath>..\packages\Dropbox.Api.4.2.4\lib\net45\Dropbox.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -243,6 +246,7 @@
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
+    <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />

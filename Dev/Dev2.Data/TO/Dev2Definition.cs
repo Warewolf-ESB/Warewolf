@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,6 @@ namespace Dev2.DataList.Contract
 {
     public class Dev2Definition : IDev2Definition
     {
-        #region Ctor
-
         public Dev2Definition()
         {
         }
@@ -44,9 +42,7 @@ namespace Dev2.DataList.Contract
             RawValue = rawValue;
             EmptyToNull = emptyToNull;
         }
-        #endregion
 
-        #region Properties
 
         public string Name { get; set; }
 
@@ -71,6 +67,8 @@ namespace Dev2.DataList.Contract
         public bool IsObject { get; set; }
         public bool IsJsonArray { get; set; }
 
-        #endregion
+        public static Dev2Definition NewObject(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull) {
+            return new Dev2Definition(name, mapsTo, value, string.Empty, isEval, defaultValue, isRequired, rawValue, emptyToNull);
+        }
     }
 }

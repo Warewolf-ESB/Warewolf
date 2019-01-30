@@ -60,6 +60,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="Toolbox\ToolBoxModel.cs" />
     <None Include="packages.config" />
     <None Include="Warewolf.Studio.Models.ruleset" />

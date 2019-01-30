@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
 
         public DotNetInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
-            : this(new ActionInputDatatalistMapper())
+            : this(new ActionInputDatalistMapper())
         {
             ToolRegionName = "DotNetInputRegion";
             _modelItem = modelItem;

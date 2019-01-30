@@ -12,7 +12,6 @@ using System.Collections.Generic;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class ExchangeSourceTests
     {
         public const string TestOwner = "Bernardt Joubert";
@@ -31,7 +30,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             };
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
@@ -42,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, actualDbSourceToString);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ToStringEmptyObjectExpected()
@@ -53,7 +52,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, actualSerializedDbSource);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ExchangeSource_SetUpProerties_ReturnsNoErrors()
@@ -85,7 +84,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(testDbSource.Password);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ExchangeSource_Equals()
@@ -96,7 +95,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ToXmlAllPropertiesSetupExpectedXElementContainingAllObjectInformation()
@@ -117,7 +116,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNull(workflowXamlDefintion);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
@@ -137,7 +136,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ToXmlRegardingSource()
@@ -149,7 +148,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(testDbSource);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner(TestOwner)]
         [TestCategory(Category)]
         public void ExchangeSource_Send_Success()

@@ -141,6 +141,7 @@
     <Compile Include="Core\GenerateInputsRegionTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
+    <Compile Include="Core\ActionInputDatalistMapperTests.cs" />
     <Compile Include="Core\ViewPropertyBuilderTests.cs" />
     <Compile Include="Core\WcfInputRegionTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
@@ -157,7 +158,6 @@
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="ComDll\ComDllViewModelTests.cs" />
     <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="DotNetDll\DotNetDllEnhancedViewModelTests.cs" />
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
@@ -165,6 +165,7 @@
     <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
+    <Compile Include="Exchange\ExchangeNewEmailDesignerViewModelTests.cs" />
     <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
     <Compile Include="MySql\TestMySqlViewModel.cs" />
     <Compile Include="Oracle\InputViewForTest.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="ReadFolderNew\ReadFolderNewDesignerViewModelTests.cs" />
     <Compile Include="ReadFolderNew\TestReadFolderNewDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\RecordsLengthNullHandlerDesignerViewModelTests.cs" />
-    <Compile Include="DeleteRecordsNullHandler\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\TestRecordsLengthnullHandlerDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
     <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
@@ -250,6 +250,7 @@
     <Compile Include="Script_Javascript\TestScriptDesignerViewModel.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
+    <Compile Include="SelectAndApply\SelectAndApplyDesignerViewModelTests.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="Service\ValidationMemoManagerTests.cs" />
@@ -260,6 +261,10 @@
     <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointReadListTests.cs" />
     <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
+    <Compile Include="Sharepoint\SharePointDeleteFileDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointListCreateDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointListDeleteDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointListUpdateDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
@@ -267,6 +272,7 @@
     <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
     <Compile Include="Switch\SwitchDesignerViewModelTests.cs" />
     <Compile Include="TestToolBaseViewModel.cs" />
+    <Compile Include="UniqueRecords\UniqueRecordsDesignerViewModelTests.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />

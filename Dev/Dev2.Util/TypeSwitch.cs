@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             if (cases == null)
             {
-                throw new ArgumentNullException("cases");
+                throw new ArgumentNullException(nameof(cases));
             }
 
             if (source == null)
@@ -30,7 +30,7 @@ namespace Dev2.Studio.Core.Helpers
                     throw new Exception(ErrorResource.CannotDoSwitchOnNullType);
                 }
 
-                foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault))
+                foreach (var entry in cases.Where(entry => entry.IsDefault))
                 {
                     entry.Action(null);
                     break;
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.Helpers
             else
             {
                 var type = source.GetType();
-                foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
+                foreach (var entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
                 {
                     entry.Action(source);
                     break;

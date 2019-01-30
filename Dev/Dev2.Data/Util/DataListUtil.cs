@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -184,9 +184,9 @@ namespace Dev2.Data.Util
             try
             {
                 var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
-                var inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
-                var inputScalarList = DataListFactory.CreateScalarList(inputs, false);
-                var inputObjectList = DataListFactory.CreateObjectList(inputs);
+                var inputRecSets = DataListFactory.Instance.CreateRecordSetCollection(inputs, false);
+                var inputScalarList = DataListFactory.Instance.CreateScalarList(inputs, false);
+                var inputObjectList = DataListFactory.Instance.CreateObjectList(inputs);
                 Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
                 Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);

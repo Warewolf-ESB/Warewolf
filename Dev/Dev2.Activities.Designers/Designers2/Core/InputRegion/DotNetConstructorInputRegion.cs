@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
 
         public DotNetConstructorInputRegion(ModelItem modelItem, IConstructorRegion<IPluginConstructor> action)
-            : this(new ActionInputDatatalistMapper())
+            : this(new ActionInputDatalistMapper())
         {
             ToolRegionName = "DotNetConstructorInputRegion";
             _modelItem = modelItem;
