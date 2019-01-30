@@ -162,8 +162,7 @@ namespace Dev2.Activities
         {
             if (obj is DsfComDllActivity dsfComDllActivity)
             {
-                Equals(dsfComDllActivity);
-                return true;
+               return Equals(dsfComDllActivity);
             }
             return false;
         }

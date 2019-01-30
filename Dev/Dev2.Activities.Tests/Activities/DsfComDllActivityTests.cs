@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.Activities
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_ObjectEquals_IsNotNull_Expect_True()
+        public void DsfComDllActivity_ObjectEquals_NotSame_Expect_False()
         {
             //-----------------------Arrange---------------------
             var dsfComDllActivity = new TestDsfComDllActivity();
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.Activities
             //-----------------------Act-------------------------
             var equals = dsfComDllActivity.Equals(obj);
             //-----------------------Assert----------------------
-            Assert.IsTrue(equals);
+            Assert.IsFalse(equals);
         }
 
         [TestMethod]
@@ -253,6 +253,25 @@ namespace Dev2.Tests.Activities.Activities
             TstCatalog = catalog;
             ResourceCat = resourceCatalog;
         }
+    }
+
+
+    class TestServiceInput : IServiceInput
+    {
+        public string Name { get; set; }
+        string _value;
+        public string Value { get => _value; set { _value = value; throw new Exception("Service input value"); } }
+        public bool RequiredField { get; set; }
+        public bool EmptyIsNull { get; set; }
+        public string TypeName { get; set; }
+        public enIntellisensePartType IntellisenseFilter { get; set; }
+        public bool IsObject { get; set; }
+        public string Dev2ReturnType { get; set; }
+        public string ShortTypeName { get; set; }
+
+        public string FullName { get; set; }
+
+        public string ActionName { get; set; }
     }
 }
 

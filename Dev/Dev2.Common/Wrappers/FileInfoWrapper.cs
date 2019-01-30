@@ -29,5 +29,8 @@ namespace Dev2.Common.Wrappers
         {
             _fileInfo.Delete();
         }
+        public string Name => _fileInfo.Name;
+
+        public IDirectoryInfo Directory => new DirectoryInfoWrapper(_fileInfo.Directory);
     }
 }
