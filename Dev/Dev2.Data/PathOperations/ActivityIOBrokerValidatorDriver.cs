@@ -9,22 +9,12 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
-using Dev2.Data.Util;
-using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
@@ -45,14 +35,14 @@ namespace Dev2.PathOperations
                                                                  Func<string> performAfterValidation);
 
     }
-    internal class ActivityIOBrokerValidatorDriver : ActivityIOBrokerDriver, IActivityIOBrokerValidatorDriver
+    internal class ActivityIOBrokerValidatorDriver : ActivityIOBrokerMainDriver, IActivityIOBrokerValidatorDriver
     {
         public string ValidateCopySourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
                                                                   IActivityIOOperationsEndPoint dst,
                                                                   IDev2CRUDOperationTO args,
                                                                   Func<string> performAfterValidation)
         {
-            var result = ActivityIOBrokerDriverBase.ResultOk;
+            var result = ActivityIOBrokerBaseDriver.ResultOk;
             _common.ValidateSourceAndDestinationPaths(src, dst);
             var opStatus = CreateEndPoint(dst, args, dst.PathIs(dst.IOPath) == enPathType.Directory);
             if (!opStatus.Equals("Success"))
@@ -63,7 +53,7 @@ namespace Dev2.PathOperations
             {
                 if (!TransferDirectoryContents(src, dst, args))
                 {
-                    result = ActivityIOBrokerDriverBase.ResultBad;
+                    result = ActivityIOBrokerBaseDriver.ResultBad;
                 }
             }
             else
@@ -79,7 +69,7 @@ namespace Dev2.PathOperations
                 }
                 if (!TransferDirectoryContents(src, dst, args))
                 {
-                    result = ActivityIOBrokerDriverBase.ResultBad;
+                    result = ActivityIOBrokerBaseDriver.ResultBad;
                 }
             }
 
@@ -148,7 +138,7 @@ namespace Dev2.PathOperations
             }
             var opStatus = CreateEndPoint(dst, new Dev2CRUDOperationTO(args.Overwrite),
                                              dst.PathIs(dst.IOPath) == enPathType.Directory);
-            if (!opStatus.Equals(ActivityIOBrokerDriverBase.ResultOk))
+            if (!opStatus.Equals(ActivityIOBrokerBaseDriver.ResultOk))
             {
                 throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }

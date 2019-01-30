@@ -13,29 +13,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
-using Dev2.Data.Util;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
 {
-    public interface IActivityIOBrokerDriver : IActivityIOBrokerDriverBase
+    public interface IActivityIOBrokerMainDriver : IActivityIOBrokerDriver
     {
         string WriteToRemoteTempStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string result, string tmp);
         void WriteToLocalTempStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string tmp);
         string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
             IDev2ZipOperationTO args, string tmpZip);
-        void RemoveTmpFile(string path);
         string MoveTmpFileToDestination(IActivityIOOperationsEndPoint dst, string tmp, string result);
         bool WriteDataToFile(IDev2PutRawOperationTO args, IActivityIOOperationsEndPoint dst);
         /*string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint src)*/
@@ -43,8 +38,16 @@ namespace Dev2.PathOperations
         string ZipFileToALocalTempFile(IActivityIOOperationsEndPoint src, IDev2ZipOperationTO args);
     }
 
-    internal class ActivityIOBrokerDriver : ActivityIOBrokerDriverBase, IActivityIOBrokerDriver
+    internal class ActivityIOBrokerMainDriver : ActivityIOBrokerBaseDriver, IActivityIOBrokerMainDriver
     {
+        internal ActivityIOBrokerMainDriver()
+        {
+        }
+        internal ActivityIOBrokerMainDriver(IFile file, ICommon common)
+            : base (file, common)
+        {
+        }
+
         public string WriteToRemoteTempStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string result, string tmp)
         {
             switch (args.WriteType)
@@ -306,19 +309,6 @@ namespace Dev2.PathOperations
                 return Path.GetDirectoryName(src.IOPath.Path);
             }
             return null;
-        }
-
-        public void RemoveTmpFile(string path)
-        {
-            try
-            {
-                _fileWrapper.Delete(path);
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                throw;
-            }
         }
 
         public string ZipFileToALocalTempFile(IActivityIOOperationsEndPoint src, IDev2ZipOperationTO args)

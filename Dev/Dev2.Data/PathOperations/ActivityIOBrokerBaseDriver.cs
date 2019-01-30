@@ -12,40 +12,50 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Data.PathOperations.Extension;
 using Dev2.Data.Util;
-using Ionic.Zip;
-using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
 {
-    public interface IActivityIOBrokerDriverBase
+    public interface IActivityIOBrokerDriver
     {
+        void RemoveAllTmpFiles();
+
         bool CreateDirectory(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args);
         IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes);
         string CreateEndPoint(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, bool createToFile);
         string CreateTmpFile();
         string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint);
         string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint, IActivityIOPath path);
+        void RemoveTmpFile(string path);
     }
-    internal class ActivityIOBrokerDriverBase : IActivityIOBrokerDriverBase
+    internal class ActivityIOBrokerBaseDriver : IActivityIOBrokerDriver
     {
         public const string ResultOk = @"Success";
         public const string ResultBad = @"Failure";
 
         protected readonly IFile _fileWrapper;
         protected readonly ICommon _common;
-        protected readonly List<string> _filesToDelete;
+        protected readonly List<string> _filesToDelete = new List<string>();
+        public void RemoveAllTmpFiles()
+        {
+            _filesToDelete.ForEach(RemoveTmpFile);
+        }
+
+        internal ActivityIOBrokerBaseDriver()
+            : this(new FileWrapper(), new CommonDataUtils())
+        {
+        }
+
+        internal ActivityIOBrokerBaseDriver(IFile file, ICommon common)
+        {
+            _fileWrapper = file;
+            _common = common;
+        }
 
         public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes)
         {
@@ -215,6 +225,18 @@ namespace Dev2.PathOperations
         {
             var pathSeperator = endPoint.PathSeperator();
             return path.Path.Split(pathSeperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last();
+        }
+        public void RemoveTmpFile(string path)
+        {
+            try
+            {
+                _fileWrapper.Delete(path);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                throw;
+            }
         }
     }
 }
