@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_ResourceID_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_ResourceID_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var resourceCriteria = new ResourceCriteria();
@@ -37,7 +37,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_ResourceName_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_ResourceName_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var resourceCriteria = new ResourceCriteria();
@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_ResourcePath_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_ResourcePath_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var resourceCriteria = new ResourceCriteria();
@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_ResourceType_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_ResourceType_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var resourceCriteria = new ResourceCriteria();
@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_VersionInfo_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_VersionInfo_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var mockVersionInfo = new Mock<IVersionInfo>();
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_WorkspaceId_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_WorkspaceId_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var workspaceId = Guid.NewGuid();
@@ -112,7 +112,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_IsUpgraded_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_IsUpgraded_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var isUpgraded = false;
@@ -127,7 +127,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_IsNewResource_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_IsNewResource_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var isNewResource = true;
@@ -142,7 +142,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_GuidCsv_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_GuidCsv_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var guidCsv = "TestGuidCsv";
@@ -157,7 +157,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_FilePath_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_FilePath_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var filePath = "TestFilePath";
@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_FetchAll_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_FetchAll_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var fetchAll = true;
@@ -187,7 +187,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ResourceCriteria))]
-        public void ResourceCriteria_AuthorRoles_SetProperty_Expert_SetValue()
+        public void ResourceCriteria_AuthorRoles_SetProperty_Expect_SetValue()
         {
             //-----------------Arrange-------------------
             var authorRoles = "testAuthorRoles";
