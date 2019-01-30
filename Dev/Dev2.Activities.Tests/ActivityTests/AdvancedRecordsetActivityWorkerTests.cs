@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAdvancedRecordsetFactory = new Mock<IAdvancedRecordsetFactory>();
             mockAdvancedRecordsetFactory.Setup(advancedRecordsetFactory => advancedRecordsetFactory.New(It.IsAny< IExecutionEnvironment>())).Returns(mockAdvancedRecordset.Object);
 
-            using (var viewModel = new AdvancedRecordsetActivityWorker(mockAdvancedRecordset.Object, mockAdvancedRecordsetFactory.Object))
+            using (var viewModel = new AdvancedRecordsetActivityWorker(null, mockAdvancedRecordset.Object, mockAdvancedRecordsetFactory.Object))
             {
                 viewModel.LoadRecordset(tableName);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName), Times.Once);
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAdvancedRecordsetFactory = new Mock<IAdvancedRecordsetFactory>();
             mockAdvancedRecordsetFactory.Setup(advancedRecordsetFactory => advancedRecordsetFactory.New(It.IsAny<IExecutionEnvironment>())).Returns(mockAdvancedRecordset.Object);
 
-            using (var viewModel = new AdvancedRecordsetActivityWorker(mockAdvancedRecordset.Object, mockAdvancedRecordsetFactory.Object))
+            using (var viewModel = new AdvancedRecordsetActivityWorker(null, mockAdvancedRecordset.Object, mockAdvancedRecordsetFactory.Object))
             {
                 viewModel.AddDeclarations(varName, varValue);
                 mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.CreateVariableTable(), Times.Once);
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //TODO: Merge constructors
 
-            using (var viewModel = new AdvancedRecordsetActivityWorker(null, mockAdvancedRecordsetFactory.Object))
+            using (var viewModel = new AdvancedRecordsetActivityWorker(null, null, mockAdvancedRecordsetFactory.Object))
             {
                 viewModel.AddDeclarations(varName, varValue);
             }
