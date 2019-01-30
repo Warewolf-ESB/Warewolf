@@ -40,6 +40,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         IDev2StreamWriter AppendText(string filePath);
 
         DateTime GetLastWriteTime(string filePath);
+        IFileInfo Info(string path);
     }
 
     public interface IDev2StreamWriter : IDisposable
