@@ -40,6 +40,8 @@ namespace Dev2.Common.Interfaces.Wrappers
         IDev2StreamWriter AppendText(string filePath);
 
         DateTime GetLastWriteTime(string filePath);
+        void Copy(string src, string dst, bool overwrite);
+        string DirectoryName(string path);
         IFileInfo Info(string path);
     }
 

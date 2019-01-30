@@ -8,6 +8,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using ChinhDo.Transactions;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,25 +27,15 @@ using System.Reflection;
 using System.Text;
 using System.Transactions;
 using System.Xml.Linq;
-using ChinhDo.Transactions;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Hosting
 {
     class ResourceBuilderTO
     {
-        internal string FilePath;
-        internal Stream FileStream;
+        internal string _filePath;
+        internal Stream _fileStream;
     }
-
     public class ResourceCatalogBuilder
     {
         readonly List<IResource> _resources = new List<IResource>();
@@ -50,7 +51,6 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IResource> ResourceList => _resources;
         public List<DuplicateResource> DuplicateResources => _duplicateResources;
-
 
         public void TryBuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.Hosting
                 // might be disposed of before the task was complete
                 foreach (var stream in streams)
                 {
-                    stream.FileStream.Close();
+                    stream._fileStream.Close();
                 }
                 UpdateExtensions(_convertToBiteExtension);
             }
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.Hosting
                     // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                     // In many cases, this will avoid blocking a ThreadPool thread.  
                     var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                    streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
+                    streams.Add(new ResourceBuilderTO { _filePath = file, _fileStream = sourceStream });
                 }
             }
         }
@@ -132,11 +132,11 @@ namespace Dev2.Runtime.Hosting
                 XElement xml = null;
                 try
                 {
-                    xml = XElement.Load(currentItem.FileStream);
+                    xml = XElement.Load(currentItem._fileStream);
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("Resource [ " + currentItem._filePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                 }
 
                 return xml?.Attribute("ID")?.Value ?? null;
@@ -152,10 +152,10 @@ namespace Dev2.Runtime.Hosting
 
             BuildStream(releasePath, allReleaseFolders.ToArray(), programFilesBuilders);
 
-            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryHelper(), new FileHelper());
+            var foundMissingResources = CopyMissingResources(programDataIds, programFilesBuilders, new DirectoryHelper(), new FileWrapper());
             foreach (var builderTO in programDataBuilders.Concat(programFilesBuilders))
             {
-                builderTO.FileStream.Close();
+                builderTO._fileStream.Close();
             }
 
             if (foundMissingResources)
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectoryHelper directoryHelper, IFileHelper fileHelper)
+        private bool CopyMissingResources(string[] programDataIds, List<ResourceBuilderTO> programFilesBuilders, IDirectoryHelper directoryHelper, IFile fileWrapper)
         {
             var foundMissingResources = false;
 
@@ -174,11 +174,11 @@ namespace Dev2.Runtime.Hosting
                 XElement xml = null;
                 try
                 {
-                    xml = XElement.Load(programFileItem.FileStream);
+                    xml = XElement.Load(programFileItem._fileStream);
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Resource [ " + programFileItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("Resource [ " + programFileItem._filePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                 }
 
                 var id = xml?.Attribute("ID")?.Value ?? null;
@@ -193,17 +193,17 @@ namespace Dev2.Runtime.Hosting
 
                 // Only get here if the bite file does not exist in ProgramData directory
                 foundMissingResources = true;
-                programFileItem.FileStream.Close();
-                var currentPath = programFileItem.FilePath;
+                programFileItem._fileStream.Close();
+                var currentPath = programFileItem._filePath;
 
                 var appResourcesPath = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
                 var currentSubPath = currentPath.Replace(appResourcesPath, "").Replace(".xml", ".bite");
                 var MyNewInstalledFilePath = EnvironmentVariables.ResourcePath + $"{currentSubPath}";
-                directoryHelper.CreateIfNotExists(fileHelper.DirectoryName(MyNewInstalledFilePath));
+                directoryHelper.CreateIfNotExists(fileWrapper.DirectoryName(MyNewInstalledFilePath));
 
                 try
                 {
-                    fileHelper.Copy(programFileItem.FilePath, MyNewInstalledFilePath, false);
+                    fileWrapper.Copy(programFileItem._filePath, MyNewInstalledFilePath, false);
                 }
                 catch (Exception e)
                 {
@@ -239,15 +239,14 @@ namespace Dev2.Runtime.Hosting
             }
             streams.ForEach(currentItem =>
             {
-
                 XElement xml = null;
                 try
                 {
-                    xml = XElement.Load(currentItem.FileStream);
+                    xml = XElement.Load(currentItem._fileStream);
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("Resource [ " + currentItem._filePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                 }
 
                 var result = xml?.ToStringBuilder();
@@ -257,7 +256,6 @@ namespace Dev2.Runtime.Hosting
                 if (isValid)
                 {
                     //TODO: Remove this after V1 is released. All will be updated.
-                    #region old typing to be removed after V1
                     if (!IsWarewolfResource(xml))
                     {
                         return;
@@ -288,8 +286,6 @@ namespace Dev2.Runtime.Hosting
                         xml.SetAttributeValue("Type", sharepointSourceName);
                         typeName = sharepointSourceName;
                     }
-                    #endregion
-
                     Type type = null;
                     if (allTypes.Count != 0)
                     {
@@ -304,27 +300,25 @@ namespace Dev2.Runtime.Hosting
                     {
                         resource = new Resource(xml);
                     }
-                    if (currentItem.FilePath.EndsWith(".xml"))
+                    if (currentItem._filePath.EndsWith(".xml"))
                     {
-                        _convertToBiteExtension.Add(currentItem.FilePath);
-                        resource.FilePath = currentItem.FilePath.Replace(".xml", ".bite");
+                        _convertToBiteExtension.Add(currentItem._filePath);
+                        resource.FilePath = currentItem._filePath.Replace(".xml", ".bite");
                     }
                     else
                     {
-                        resource.FilePath = currentItem.FilePath;
+                        resource.FilePath = currentItem._filePath;
                     }
                     xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                     {
-
                         var fileManager = new TxFileManager();
                         using (TransactionScope tx = new TransactionScope())
                         {
                             try
                             {
-
                                 var updateXml = a.ToStringBuilder();
                                 var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                                signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
+                                signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
                                 tx.Complete();
                             }
                             catch
@@ -346,7 +340,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         // Must close the source stream first and then add a new target stream 
                         // otherwise the file will be remain locked
-                        currentItem.FileStream.Close();
+                        currentItem._fileStream.Close();
 
                         xml = resource.UpgradeXml(xml, resource);
 
@@ -357,7 +351,7 @@ namespace Dev2.Runtime.Hosting
                         {
                             try
                             {
-                                signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
+                                signedXml.WriteToFile(currentItem._filePath, Encoding.UTF8, fileManager);
                                 tx.Complete();
                             }
                             catch
@@ -370,12 +364,12 @@ namespace Dev2.Runtime.Hosting
 
                     lock (_addLock)
                     {
-                        AddResource(resource, currentItem.FilePath);
+                        AddResource(resource, currentItem._filePath);
                     }
                 }
                 else
                 {
-                    Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath), GlobalConstants.WarewolfDebug);
+                    Dev2Logger.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem._filePath), GlobalConstants.WarewolfDebug);
                 }
             });
         }
@@ -435,15 +429,11 @@ namespace Dev2.Runtime.Hosting
                     if (dupRes != null)
                     {
                         CreateDupResource(dupRes, filePath);
-                        Dev2Logger.Debug(
-                            string.Format(ErrorResource.ResourceAlreadyLoaded,
-                                res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                        Dev2Logger.Debug(string.Format(ErrorResource.ResourceAlreadyLoaded, res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
                     }
                     else
                     {
-                        Dev2Logger.Debug(string.Format(
-                                "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
-                                res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
+                        Dev2Logger.Debug(string.Format("Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.", res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
                     }
                 }
             }
@@ -451,34 +441,29 @@ namespace Dev2.Runtime.Hosting
 
         void CreateDupResource(IResource resource, string filePath)
         {
-
+            var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
+            if (dupRes != null)
             {
-                var dupRes = _resources.Find(c => c.ResourceID == resource.ResourceID);
-                if (dupRes != null)
+                if (_duplicateResources.Any(p => p.ResourceId == dupRes.ResourceID))
                 {
-                    if (_duplicateResources.Any(p => p.ResourceId == dupRes.ResourceID))
+                    var firstDup = _duplicateResources.First(p => p.ResourceId == dupRes.ResourceID);
+                    if (!firstDup.ResourcePath.Contains(filePath))
                     {
-                        var firstDup = _duplicateResources.First(p => p.ResourceId == dupRes.ResourceID);
-                        if (!firstDup.ResourcePath.Contains(filePath))
-                        {
-                            firstDup.ResourcePath.Add(filePath);
-                        }
+                        firstDup.ResourcePath.Add(filePath);
                     }
-                    var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
-                    var resourcePaths = new List<string> { dupRes.FilePath };
-                    if (!string.IsNullOrEmpty(duplicatePaths))
+                }
+                var duplicatePaths = filePath == dupRes.FilePath ? string.Empty : filePath;
+                var resourcePaths = new List<string> { dupRes.FilePath };
+                if (!string.IsNullOrEmpty(duplicatePaths))
+                {
+                    resourcePaths.Add(duplicatePaths);
+                    var dupresource = new DuplicateResource
                     {
-                        resourcePaths.Add(duplicatePaths);
-                        var dupresource = new DuplicateResource
-                        {
-                            ResourceId = resource.ResourceID
-                            ,
-                            ResourceName = resource.ResourceName
-                            ,
-                            ResourcePath = resourcePaths
-                        };
-                        _duplicateResources.Add(dupresource);
-                    }
+                        ResourceId = resource.ResourceID,
+                        ResourceName = resource.ResourceName,
+                        ResourcePath = resourcePaths
+                    };
+                    _duplicateResources.Add(dupresource);
                 }
             }
         }

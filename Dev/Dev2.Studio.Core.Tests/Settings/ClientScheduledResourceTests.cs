@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests.Settings
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_GetScheduledResources")]
+        [TestCategory("ClientScheduledResourceModel")]
         public void ClientScheduledResourceModel_GetScheduledResources_ReturnsCollectionOfIScheduledResource()
         {
             //------------Setup for test--------------------------
@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_DeleteScheduledResource")]
+        [TestCategory("ClientScheduledResourceModel")]
         public void ClientScheduledResourceModel_DeleteScheduledResource_CallsCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_SaveScheduledResource")]
+        [TestCategory("ClientScheduledResourceModel")]
         public void ClientScheduledResourceModel_SaveScheduledResource_CallsCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_SaveScheduledResource")]
+        [TestCategory("ClientScheduledResourceModel")]
         public void ClientScheduledResourceModel_SaveScheduledResource_HasError_CallsCommunicationsController()
         {
             //------------Setup for test--------------------------
@@ -132,7 +132,7 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_CreateHistory")]
+        [TestCategory("ClientScheduledResourceModel")]
         public void ClientScheduledResourceModel_CreateHistory_ReturnsListOfIResourceHistory()
         {
             //------------Setup for test--------------------------
@@ -153,45 +153,30 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()), Times.Once());
             Assert.AreEqual(1, resourceHistories.Count);
-
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ClientScheduledResourceModel_Constructor")]
+        [TestCategory("ClientScheduledResourceModel")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ClientScheduledResourceModel_Constructor_NullEnvironmentModel_ThrowsException()
         {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            
-            
             new ClientScheduledResourceModel(null, () => { });
-            
-            
-            //------------Assert Results-------------------------
         }
     }
 
     public class ResourceHistoryForTest : IResourceHistory
     {
-        #region Implementation of IResourceHistory
-
-        
         public string WorkflowOutput { get; private set; }
         public IList<IDebugState> DebugOutput { get; private set; }
         public IEventInfo TaskHistoryOutput { get; private set; }
         public string UserName { get; set; }
-
-        #endregion
     }
 
     class ScheduledResourceForTest : IScheduledResource
     {
         bool _isNewItem;
         bool _isDirty;
-
-        #region Implementation of IScheduledResource
 
         public ScheduledResourceForTest()
         {
@@ -272,15 +257,9 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        #endregion
-
-        #region Implementation of IEquatable<IScheduledResource>
-
         public bool Equals(IScheduledResource other)
         {
             return !IsDirty;
         }
-
-        #endregion
     }
 }
