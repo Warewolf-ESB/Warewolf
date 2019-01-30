@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -98,7 +98,7 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        bool IsValidChildNode(XmlNode tmpNode)
+        static bool IsValidChildNode(XmlNode tmpNode)
         {
             var result = false;
 
@@ -123,7 +123,7 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        string ExtractDescription(XmlNode node)
+        static string ExtractDescription(XmlNode node)
         {
             var result = string.Empty;            
             var attribute = node.Attributes?[DescAttribute];

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -684,7 +684,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
                 string colName = null;
-                foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+                foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
                 {
                     if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                     {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Core.Messages;
@@ -29,13 +30,10 @@ namespace Dev2.Utils
         IResourceChangeHandler Create(IEventAggregator eventPublisher);
     }
 
+    [ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerFactory : IResourceChangeHandlerFactory
     {
-        #region Implementation of IResourceChangeHandlerFactory
-
         public IResourceChangeHandler Create(IEventAggregator eventPublisher) => new ResourceChangeHandler(eventPublisher);
-
-        #endregion
     }
 
     public class ResourceChangeHandler : IResourceChangeHandler

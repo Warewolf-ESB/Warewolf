@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Windows.Input;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -26,13 +25,21 @@ namespace Dev2.Studio.ViewModels.Workflow
         RelayCommand _executeCommmand;
         DelegateCommand _cancelComand;
 
+        private readonly IServerRepository _serverRepository;
+
         IContextualResourceModel _selectedResource;
 
         public DsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
+            : this(explorerViewModel, dsfActivityType, ServerRepository.Instance)
+        {
+        }
+        public DsfActivityDropViewModel(IExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType, IServerRepository serverRepository)
         {
             SingleEnvironmentExplorerViewModel = explorerViewModel;
             SingleEnvironmentExplorerViewModel.SelectedItemChanged += SingleEnvironmentExplorerViewModel_SelectedItemChanged;
             ActivityType = dsfActivityType;
+
+            _serverRepository = serverRepository;
 
             Init();
             EventPublishers.Aggregator.Subscribe(this);
@@ -90,7 +97,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ICommand CancelCommand => _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
 
-        readonly Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
 
         public void Okay()
         {
@@ -100,7 +106,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            var environment = GetEnvironmentRepository().FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
+            var environment = _serverRepository.FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
             if (environment == null)
             {
                 return;

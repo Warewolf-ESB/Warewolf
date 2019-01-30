@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,9 +9,11 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Util.ExtensionMethods
 {
+    [ExcludeFromCodeCoverage]
     public static class StringExtensions
     {
         public static bool Contains(this string source, string toCheck, StringComparison comp) => source.IndexOf(toCheck, comp) >= 0;

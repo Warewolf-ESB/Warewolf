@@ -81,9 +81,11 @@
     <Compile Include="CommonComparerTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="DirectoryEntryFactoryTest.cs" />
+    <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
+    <Compile Include="ComputerNameTests.cs" />
     <Compile Include="WarewolfQueue\WarewolfQueueTests.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />

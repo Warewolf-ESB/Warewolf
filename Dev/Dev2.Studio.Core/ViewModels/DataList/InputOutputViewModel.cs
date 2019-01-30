@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -302,7 +302,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Methods
         public IDev2Definition GetGenerationTO()
         {
-            var result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
+            var result = DataListFactory.CreateDefinition_Recordset(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
             result.IsObject = IsObject;
             return result;
         }

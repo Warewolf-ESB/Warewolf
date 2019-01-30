@@ -154,6 +154,9 @@
     <Compile Include="Dev2Column.cs" />
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
+    <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
     <Compile Include="PathOperations\ValidateAuthorization.cs" />
     <Compile Include="Util\OperationsHelper.cs" />
     <Compile Include="IComplexObject.cs" />
@@ -167,7 +170,6 @@
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
-    <Compile Include="PathOperations\Interfaces\IPutOperationArguments.cs" />
     <Compile Include="PathOperations\LogonProvider.cs" />
     <Compile Include="PathOperations\Operations\DoCreateDirectory.cs" />
     <Compile Include="PathOperations\Operations\DoDeleteOperation.cs" />
@@ -184,7 +186,6 @@
     <Compile Include="RecordSet.cs" />
     <Compile Include="ReverseIndexIterator.cs" />
     <Compile Include="Scalar.cs" />
-    <Compile Include="ScalarNameComparer.cs" />
     <Compile Include="ServiceModel\ComPluginSource.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\RabbitMQSource.cs" />

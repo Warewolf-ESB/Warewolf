@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,11 +14,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class ServiceDefinitionLoaderTest
     {
+
         // GenerateServiceGraph
-        [TestMethod]
+
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingSource_SourceIsLoaded()
@@ -31,7 +32,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkflow_WorkflowIsLoaded()
@@ -44,7 +45,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDefinitionLoader_GenerateServiceGraph")]
         public void ServiceDefinitionLoader_GenerateServiceGraph_WhenLoadingWorkerService_ServiceIsLoaded()

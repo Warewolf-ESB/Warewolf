@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,11 @@ namespace Dev2.Studio.Core.Factories
     public static class DataMappingListFactory
     {
         public static IList<IDev2Definition> CreateListInputMapping(string xmlServiceDefintion) => DataListFactory.CreateInputParser().ParseAndAllowBlanks(xmlServiceDefintion);
-        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf) => DataListFactory.GenerateMapping(defs, typeOf);
+        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
+        {
+            var b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
+
+            return b.Generate();
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
 
@@ -16,21 +17,25 @@ namespace Dev2.Activities.Designers2.UniqueRecords
 {
     public class UniqueRecordsDesignerViewModel : ActivityDesignerViewModel
     {
-        public UniqueRecordsDesignerViewModel(ModelItem modelItem)
+        private readonly IShellViewModel _shellViewModel;
+
+        public UniqueRecordsDesignerViewModel(ModelItem modelItem, IShellViewModel shellViewModel)
             : base(modelItem)
         {
+            _shellViewModel = shellViewModel;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Unique_Records;
         }
 
-        public override void Validate()
+        [ExcludeFromCodeCoverage]
+        public UniqueRecordsDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, CustomContainer.Get<IShellViewModel>())
         {
         }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            _shellViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

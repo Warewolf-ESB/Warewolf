@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,11 +22,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     
     public class EsbHubTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("EsbHub_AddItemMessage")]
         public void EsbHub_AddItemMessage_ItemHasData_ItemAddedMessageIsPublished()
@@ -53,7 +52,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             Assert.IsTrue(messagePublished);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("EsbHub_AddItemMessage")]
         public void EsbHub_AddItemMessage_ItemIsNull_ItemAddedMessageIsNotPublished()

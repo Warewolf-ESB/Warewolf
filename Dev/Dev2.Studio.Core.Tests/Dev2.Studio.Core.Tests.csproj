@@ -222,12 +222,12 @@
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
-    <Compile Include="Worksurfaces\BaseWorkSurfaceViewModelTests.cs" />
+    <Compile Include="BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="CommonSetupHelper.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="Controller\CommunicationControllerTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
-    <Compile Include="DataList\DataListViewModelEqualityTests.cs" />
+    <Compile Include="DataListViewModelEqualityTests.cs" />
     <Compile Include="DependencyVisualiserViewModelTests.cs" />
     <Compile Include="DependencyGraph\CircularDependencyTests.cs" />
     <Compile Include="DependencyGraph\GraphTests.cs" />
@@ -245,17 +245,17 @@
     </Compile>
     <Compile Include="HelpViewModelTests.cs" />
     <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
-    <Compile Include="AppResources\Converters\BoolToStringConvertTests.cs" />
-    <Compile Include="AppResources\Converters\CalculateIntellisenseTextConverterTests.cs" />
-    <Compile Include="AppResources\Converters\GridRowNumberConverterTests.cs" />
-    <Compile Include="AppResources\Converters\PaddingThicknessConverterTests.cs" />
-    <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverterTests.cs" />
-    <Compile Include="AppResources\Converters\NavigationViewModelPermissionVisibilityConverterTests.cs" />
-    <Compile Include="AppResources\Converters\RowToIndexConverterTests.cs" />
-    <Compile Include="AppResources\Converters\DateTimeToStringConverterTests.cs" />
-    <Compile Include="AppResources\Converters\EmptyStringToVisibilityConverterTests.cs" />
-    <Compile Include="AppResources\Converters\EmptyStringToBoolConverterTests.cs" />
-    <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
+    <Compile Include="ConverterTests\CalculateIntellisenseTextConverterTests.cs" />
+    <Compile Include="ConverterTests\GridRowNumberConverterTests.cs" />
+    <Compile Include="ConverterTests\PaddingThicknessConverterTests.cs" />
+    <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
+    <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />
+    <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
+    <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
     <Compile Include="IntellisenseProvider\FileSystemIntellisenseProviderTest.cs" />
@@ -265,7 +265,6 @@
     <Compile Include="Environments\TestServer.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
-    <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
@@ -318,9 +317,9 @@
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
-    <Compile Include="DataList\DataListItemViewModelTest.cs" />
-    <Compile Include="DataList\DataListSingletonTest.cs" />
-    <Compile Include="DataList\DataListViewModelTests.cs" />
+    <Compile Include="DataListItemViewModelTest.cs" />
+    <Compile Include="DataListSingletonTests.cs" />
+    <Compile Include="DataListViewModelTests.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
@@ -343,6 +342,7 @@
     <Compile Include="ShellViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
+    <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ResourceDesignerViewModelTest.cs" />
     <Compile Include="ResourceHelperTest.cs" />
@@ -374,9 +374,9 @@
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
-    <Compile Include="Worksurfaces\WorksurfaceContextManagerTests.cs" />
-    <Compile Include="Worksurfaces\WorkSurfaceContextViewModelTests.cs" />
-    <Compile Include="Worksurfaces\WorksurfaceKeyFactoryTests.cs" />
+    <Compile Include="WorksurfaceContextManagerTests.cs" />
+    <Compile Include="WorkSurfaceContextViewModelTests.cs" />
+    <Compile Include="WorksurfaceKeyFactoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -550,7 +550,6 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\AssignOutput.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

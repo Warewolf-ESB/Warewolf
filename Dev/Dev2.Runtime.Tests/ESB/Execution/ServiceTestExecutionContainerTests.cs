@@ -25,10 +25,9 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
-    [TestCategory("Runtime ESB")]
     public class ServiceTestExecutionContainerTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Constructor_GivenArgs_ShouldPassThrough()
         {
@@ -51,7 +50,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenArgs_ShouldPassThrough_ReturnsExecutedResults()
         {
@@ -119,7 +118,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenStopExecutionAndUnAuthorized_ShouldAddFailureMessage()
         {
@@ -208,7 +207,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void CanExecute_GivenArgs_ShouldPassThrough()
         {
@@ -233,7 +232,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsTrue(execute);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
         {
@@ -291,7 +290,7 @@ Test Failed because of some reasons
             }, Times.AtLeastOnce);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetTestRunResults_Given_ThereIsNoError_And_EnvironmentHasNoErrorSetsTest_ToPass()
         {
@@ -340,7 +339,7 @@ Test Failed because of some reasons
             Assert.IsTrue(firstOrDefault != null && firstOrDefault.RunTestResult == RunResult.TestPassed);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetTestRunResults_Given_ThereIsAnError_And_EnvironmentHasError_SetsTest_ToPass()
         {
@@ -385,7 +384,7 @@ Test Failed because of some reasons
             Assert.IsTrue(firstOrDefault != null && firstOrDefault.RunTestResult == RunResult.TestPassed);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void ExecuteWf_GivenRecordSetsInputs_Should_AssignAllRecordSetItems()
         {

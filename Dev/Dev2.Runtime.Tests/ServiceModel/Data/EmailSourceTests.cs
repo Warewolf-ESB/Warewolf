@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
@@ -18,49 +19,60 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class EmailSourceTests
     {
-        #region CTOR
-
-        [TestMethod]
-        public void EmailSourceContructorWithDefaultExpectedInitializesProperties()
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_Contructor_WithDefaultExpected_InitializesProperties()
         {
             var source = new EmailSource();
             Assert.AreEqual(Guid.Empty, source.ResourceID);
-            Assert.AreEqual("EmailSource", source.ResourceType);
+            Assert.AreEqual(nameof(EmailSource), source.ResourceType);
             Assert.AreEqual(EmailSource.DefaultTimeout, source.Timeout);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
+            Assert.IsNull(source.DataList);
+            Assert.IsTrue(source.IsSource);
+            Assert.IsFalse(source.IsService);
+            Assert.IsFalse(source.IsFolder);
+            Assert.IsFalse(source.IsReservedService);
+            Assert.IsFalse(source.IsServer);
+            Assert.IsFalse(source.IsResourceVersion);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void EmailSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
+        public void EmailSource_Contructor_WithNullXmlExpected_ThrowsArgumentNullException()
         {
             var source = new EmailSource(null);
         }
 
-        [TestMethod]
-        public void EmailSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_Contructor_WithInvalidXmlExpected_DoesNotThrowException_And_InitializesProperties()
         {
             var xml = new XElement("root");
             var source = new EmailSource(xml);
             Assert.AreNotEqual(Guid.Empty, source.ResourceID);
             Assert.IsTrue(source.IsUpgraded);
-            Assert.AreEqual("EmailSource", source.ResourceType);
+            Assert.AreEqual(nameof(EmailSource), source.ResourceType);
             Assert.AreEqual(EmailSource.DefaultTimeout, source.Timeout);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
         }
 
-
-        [TestMethod]
-        public void EmailSourceContructorWithValidXmlExpectedInitializesProperties()
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_Contructor_WithValidXmlExpected_InitializesProperties()
         {
-            var xml = XmlResource.Fetch("EmailSource");
+            var xml = XmlResource.Fetch(nameof(EmailSource));
 
             var source = new EmailSource(xml);
             Assert.AreEqual(Guid.Parse("bf810e43-3633-4638-9d0a-56473ef54151"), source.ResourceID);
-            Assert.AreEqual("EmailSource", source.ResourceType);
+            Assert.AreEqual(nameof(EmailSource), source.ResourceType);
             Assert.AreEqual("smtp.gmail.com", source.Host);
             Assert.AreEqual(465, source.Port);
             Assert.AreEqual(true, source.EnableSsl);
@@ -69,14 +81,16 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("1234", source.Password);
         }
 
-        [TestMethod]
-        public void EmailSourceContructorWithCorruptXmlExpectedInitializesProperties()
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_Contructor_WithCorruptXmlExpected_InitializesProperties()
         {
             var xml = XmlResource.Fetch("EmailSourceCorrupt");
 
             var source = new EmailSource(xml);
             Assert.AreEqual(Guid.Parse("bf810e43-3633-4638-9d0a-56473ef54151"), source.ResourceID);
-            Assert.AreEqual("EmailSource", source.ResourceType);
+            Assert.AreEqual(nameof(EmailSource), source.ResourceType);
             Assert.AreEqual("smtp.gmail.com", source.Host);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
             Assert.AreEqual(false, source.EnableSsl);
@@ -85,12 +99,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("1234", source.Password);
         }
 
-        #endregion
-
-        #region ToXml
-
-        [TestMethod]
-        public void EmailSourceToXmlExpectedSerializesProperties()
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_ToXmlExpectedSerializesProperties()
         {
             var expected = new EmailSource
             {
@@ -119,6 +131,44 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(actual.TestToAddress);
         }
 
-        #endregion
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        public void EmailSource_Validate_DataList()
+        {
+            const string expectedDataList = "data list";
+
+            var source = new EmailSource
+            {
+                DataList = expectedDataList
+            };
+
+            Assert.AreEqual(expectedDataList, source.DataList);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(EmailSource))]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void EmailSource_Send_ExpectedException()
+        {
+            var expected = new EmailSource
+            {
+                Host = "smtp.mydomain.com",
+                Port = 25,
+                EnableSsl = false,
+                UserName = "user@mydomain.com",
+                Password = "mypassword",
+                Timeout = 1000,
+                TestFromAddress = "user@mydomain.com",
+                TestToAddress = "user2@mydomain2.com"
+            };
+
+            var xml = expected.ToXml();
+
+            var mailMessage = new MailMessage();
+            var emailSource = new EmailSource(xml);
+            emailSource.Send(mailMessage);
+        }
     }
 }
