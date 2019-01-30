@@ -42,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         static AdvancedRecordsetActivityWorker GetAdvancedRecordsetWorker(Mock<IAdvancedRecordset> worker)
         {
-            var advancedRecordset = new AdvancedRecordsetActivityWorker(worker.Object, null);
+            var advancedRecordset = new AdvancedRecordsetActivityWorker(null, worker.Object, null);
             return advancedRecordset;
         }
 

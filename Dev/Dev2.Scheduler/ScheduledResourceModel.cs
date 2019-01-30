@@ -8,18 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
+using Dev2.Communication;
+using Microsoft.Win32.TaskScheduler;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Scheduler.Interfaces;
-using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
-using Dev2.Communication;
-using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Scheduler
 {
@@ -31,7 +33,7 @@ namespace Dev2.Scheduler
         readonly IDev2TaskService _taskService;
         readonly string _warewolfAgentPath;
         readonly string _warewolfFolderPath;
-        IFileHelper _fileHelper;
+        IFile _file;
         IDirectoryHelper _folderHelper;
         readonly IDictionary<int, string> _taskStates;
         readonly Func<IScheduledResource, string> _pathResolve;
@@ -39,8 +41,7 @@ namespace Dev2.Scheduler
         const char NameSeperator = ':';
         const char ArgWrapper = '"';
 
-        public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath,
-                                      ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
+        public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
         {
             var nullables = new Dictionary<string, object>
                 {
@@ -64,17 +65,16 @@ namespace Dev2.Scheduler
             _taskService = taskService;
             _warewolfFolderPath = warewolfFolderId;
             _warewolfAgentPath = warewolfAgentPath;
-
             _factory = taskServiceFactory;
             _debugHistoryPath = debugHistoryPath;
             _securityWrapper = securityWrapper;
             _pathResolve = pathResolve;
         }
 
-        public IFileHelper FileHelper
+        public IFile FileWrapper
         {
-            get { return _fileHelper ?? new FileHelper(); }
-            set { _fileHelper = value; }
+            get { return _file ?? new FileWrapper(); }
+            set { _file = value; }
         }
 
         public IDirectoryHelper DirectoryHelper
@@ -143,7 +143,7 @@ namespace Dev2.Scheduler
         }
 
         public string DebugHistoryPath => _debugHistoryPath;
-        
+
         public ObservableCollection<IScheduledResource> GetScheduledResources()
         {
             try
@@ -257,16 +257,16 @@ namespace Dev2.Scheduler
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
             var evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
-            var groupings = from a in evt.Where(x => !string.IsNullOrEmpty(x.Correlation) 
+            var groupings = from a in evt.Where(x => !string.IsNullOrEmpty(x.Correlation)
                             && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
-                group a by a.Correlation into corrGroup
-                select new
-                {
-                    StartDate = corrGroup.Min(a => a.TimeCreated),
-                    EndDate = corrGroup.Max(a => a.TimeCreated),
-                    EventId = corrGroup.Max(a => a.EventId),
-                    corrGroup.Key
-                };
+                            group a by a.Correlation into corrGroup
+                            select new
+                            {
+                                StartDate = corrGroup.Min(a => a.TimeCreated),
+                                EndDate = corrGroup.Max(a => a.TimeCreated),
+                                EventId = corrGroup.Max(a => a.EventId),
+                                corrGroup.Key
+                            };
             // for each grouping get the data and debug output
             IList<IResourceHistory> eventList = groupings.OrderBy(a => a.StartDate).Reverse()
                 .Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep)
@@ -325,7 +325,7 @@ namespace Dev2.Scheduler
                 return false;
             }
 
-            return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file)).Last().HasError;
+            return serializer.Deserialize<List<IDebugState>>(_file.ReadAllText(file)).Last().HasError;
         }
 
         bool DebugHistoryExists(string debugHistoryPath, string correlationId) => DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
@@ -351,7 +351,7 @@ namespace Dev2.Scheduler
                 return new List<IDebugState>();
             }
 
-            return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file));
+            return serializer.Deserialize<List<IDebugState>>(_file.ReadAllText(file));
         }
 
         IDev2TaskDefinition CreateNewTask(IScheduledResource resource)

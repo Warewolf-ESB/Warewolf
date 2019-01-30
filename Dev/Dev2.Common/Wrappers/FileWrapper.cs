@@ -11,11 +11,13 @@
 using Dev2.Common.Interfaces.Wrappers;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 
 namespace Dev2.Common.Wrappers
-{ // not required for code coverage this is simply a pass through required for unit testing
+{
+    [ExcludeFromCodeCoverage]
     public class FileWrapper : IFile
     {
         private static T PerformActionAsServerUser<T>(Func<T> actionToPerform)
@@ -41,7 +43,7 @@ namespace Dev2.Common.Wrappers
             });
         }
 
-        public string ReadAllText(string fileName) => PerformActionAsServerUser(()=>File.ReadAllText(fileName));
+        public string ReadAllText(string fileName) => PerformActionAsServerUser(() => File.ReadAllText(fileName));
 
         public void Move(string source, string destination)
         {
@@ -139,8 +141,18 @@ namespace Dev2.Common.Wrappers
         {
             return new FileInfoWrapper(new FileInfo(path));
         }
-    }
 
+
+        public void Copy(string src, string dst, bool overwrite)
+        {
+            File.Copy(src, dst, overwrite);
+        }
+        public string DirectoryName(string path)
+        {
+            var f = new FileInfo(path);
+            return f.DirectoryName;
+        }
+    }
     class RefCountedStreamWriter : IDev2StreamWriter
     {
         public int _count;

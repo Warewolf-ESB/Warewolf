@@ -28,10 +28,16 @@ namespace Dev2.Common.Utils
 
         public static void AreNotNull(IDictionary<string, object> args)
         {
+
+            if (args == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (args.Any(a => a.Value == null))
             {
-                throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b.Key}{Environment.NewLine}")));
+                throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b}{Environment.NewLine}")));
             }
+
         }
 
         public static void IsNotNullOrWhitespace(string name, string value)
