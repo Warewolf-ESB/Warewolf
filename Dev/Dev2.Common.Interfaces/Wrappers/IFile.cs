@@ -42,6 +42,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         DateTime GetLastWriteTime(string filePath);
         void Copy(string src, string dst, bool overwrite);
         string DirectoryName(string path);
+        IFileInfo Info(string path);
     }
 
     public interface IDev2StreamWriter : IDisposable

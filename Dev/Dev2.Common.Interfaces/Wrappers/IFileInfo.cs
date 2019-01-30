@@ -13,8 +13,9 @@ namespace Dev2.Common.Interfaces.Wrappers
 {
     public interface IFileInfo
     {
+        string Name { get; }
+        IDirectoryInfo Directory { get; }
         DateTime CreationTime { get; }
-
         void Delete();
     }
 }

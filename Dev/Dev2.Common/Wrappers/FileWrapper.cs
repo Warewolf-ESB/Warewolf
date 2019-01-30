@@ -137,6 +137,11 @@ namespace Dev2.Common.Wrappers
             return PerformActionAsServerUser(() => File.GetLastWriteTime(filePath).Date);
         }
 
+        public IFileInfo Info(string path)
+        {
+            return new FileInfoWrapper(new FileInfo(path));
+        }
+
 
         public void Copy(string src, string dst, bool overwrite)
         {
