@@ -12,15 +12,11 @@ using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Communication;
 using Dev2.Data.TO;
-using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -288,40 +284,6 @@ namespace Dev2.Tests.Activities.Activities
         {
             _comPluginInvokeArgs = args;
         }
-    }
-
-    internal class ServiceTestExecutionContainerMock : ServiceTestExecutionContainer
-    {
-        public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
-            : base(sa, dataObj, theWorkspace, esbChannel, request)
-        {
-
-        }
-        public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
-            : base(sa, dataObj, theWorkspace, esbChannel, request)
-        {
-            TstCatalog = catalog;
-            ResourceCat = resourceCatalog;
-        }
-    }
-
-
-    class TestServiceInput : IServiceInput
-    {
-        public string Name { get; set; }
-        string _value;
-        public string Value { get => _value; set { _value = value; throw new Exception("Service input value"); } }
-        public bool RequiredField { get; set; }
-        public bool EmptyIsNull { get; set; }
-        public string TypeName { get; set; }
-        public enIntellisensePartType IntellisenseFilter { get; set; }
-        public bool IsObject { get; set; }
-        public string Dev2ReturnType { get; set; }
-        public string ShortTypeName { get; set; }
-
-        public string FullName { get; set; }
-
-        public string ActionName { get; set; }
     }
 }
 
