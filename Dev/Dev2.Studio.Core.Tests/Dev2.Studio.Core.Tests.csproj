@@ -364,6 +364,7 @@
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
+    <Compile Include="Utils\HelperUtilsTests.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewFactoryTests.cs" />
     <Compile Include="Workflows\MergePreviewWorkflowDesignerViewModelMock.cs" />

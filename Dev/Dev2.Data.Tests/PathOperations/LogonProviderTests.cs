@@ -1,9 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Resource.Errors;
 using System;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -11,6 +21,8 @@ namespace Dev2.Data.Tests.PathOperations
     public class LogonProviderTests
     {
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("LogonProvider")]
         public void LogonProvider_Construct()
         {
             var provider = new LogonProvider();
@@ -20,6 +32,8 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("LogonProvider")]
         public void LogonProvider_DoLogon_LogonInteractive()
         {
             bool loginReturnStatus = true;
@@ -40,6 +54,8 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("LogonProvider")]
         public void LogonProvider_DoLogon_LogonNetwork()
         {
             bool loginReturnStatus = true;
@@ -60,9 +76,10 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("LogonProvider")]
         public void LogonProvider_DoLogon_ErrorThrowsMessage()
         {
-            bool loginReturnStatus = true;
 
             var mockLoginImpl = new Mock<ILoginApi>();
 
@@ -80,7 +97,8 @@ namespace Dev2.Data.Tests.PathOperations
             try
             {
                 provider.DoLogon(ioPath);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 hadException = true;
                 Assert.AreEqual(expectedMessage, e.Message);
