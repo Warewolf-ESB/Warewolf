@@ -209,26 +209,6 @@ namespace Dev2.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ConflictTreeNode))]
-        public void ConflictTreeNode_GetHashCode_Activity_IsNull_ExpectIsNotNull()
-        {
-            //----------------------Arrange------------------------
-            var mockDev2Activity = new Mock<IDev2Activity>();
-
-            var point = new Point();
-
-            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point)
-            {
-                UniqueId = "testUniqueId"
-            };
-            //----------------------Act----------------------------
-            var hashCode = conflictTreeNode.GetHashCode();
-            //----------------------Assert-------------------------
-            Assert.IsNotNull(hashCode);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(ConflictTreeNode))]
         public void ConflictTreeNode_SetProperty_Location_and_IsInConflict_ExpectSetValue()
         {
             //----------------------Arrange------------------------

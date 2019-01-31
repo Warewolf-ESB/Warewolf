@@ -62,7 +62,7 @@ namespace Dev2.Common
         {
             var hashCode = (397) ^ UniqueId.GetHashCode();
             hashCode = (hashCode * 397) ^ (Children != null ? Children.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ (Activity != null ? Activity.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ Activity.GetHashCode();
             return hashCode;
         }
 
