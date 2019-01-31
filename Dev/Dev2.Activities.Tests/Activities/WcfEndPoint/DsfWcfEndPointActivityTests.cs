@@ -324,6 +324,53 @@ namespace Dev2.Tests.Activities.Activities.WcfEndPoint
             Assert.IsFalse(equals);
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWcfEndPointActivity))]
+        public void DsfWcfEndPointActivity_TryExecute_injectVal_IsNull_Expect_NoError()
+        {
+            //-----------------------Arrange---------------------
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockOutputDescription = new Mock<IOutputDescription>();
+            var mockPath = new Mock<IPath>();
+            var mockDataSourceShape = new Mock<IDataSourceShape>();
+            var mockWcfAction = new Mock<IWcfAction>();
+
+            var wcfSource = new WcfSource(new FakeWcfProxyService()) { Name = "WcfSource", EndpointUrl = "TestUrl" };
+            
+            Thread.CurrentPrincipal = null;
+            var identity = new GenericIdentity("User");
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+            var dataListID = Guid.NewGuid();
+            var environment = new ExecutionEnvironment();
+            var outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping() };
+            var dsfWcfEndPointActivity = new TestDsfWcfEndPointActivity()
+            {
+                ResourceCatalog = mockResourceCatalog.Object,
+                Method = mockWcfAction.Object,
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "") },
+                Outputs = outputs,
+                OutputDescription = mockOutputDescription.Object,
+            };
+            
+            mockDataSourceShape.Setup(o => o.Paths).Returns(new List<IPath> { mockPath.Object });
+            mockWcfAction.Setup(o => o.Method).Returns("TestMethod");
+            mockResourceCatalog.Setup(o => o.GetResource<WcfSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(wcfSource);
+            mockOutputDescription.Setup(o => o.DataSourceShapes).Returns(new List<IDataSourceShape> { mockDataSourceShape.Object });
+            mockOutputDescription.Setup(o => o.Format).Returns(OutputFormats.ShapedXML);
+            mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+            //-----------------------Act-------------------------
+            dsfWcfEndPointActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
+            //-----------------------Assert----------------------
+            Assert.AreEqual(0, errorResult.FetchErrors().Count);
+        }
+
         class TestDsfWcfEndPointActivity : DsfWcfEndPointActivity
         {
             public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
