@@ -2807,7 +2807,7 @@ namespace Dev2.Activities.Specs.Composition
             var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/");
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", "I73573r0", false);
                 sharepointHelper.Delete(serverPath);
             }
         }
