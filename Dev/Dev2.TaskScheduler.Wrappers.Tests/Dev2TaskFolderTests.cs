@@ -23,13 +23,11 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestInitialize]
         public void Init()
         {
-
-             _service = new TaskService();
+            _service = new TaskService();
             _folder = _service.RootFolder.SubFolders.Any(a => a.Name == "WarewolfTestFolder") ? _service.GetFolder("WarewolfTestFolder") : _service.RootFolder.CreateFolder("WarewolfTestFolder");
             var task = _service.NewTask();
-                task.Actions.Add(new ExecAction("Notepad.exe"));
-                _folder.RegisterTaskDefinition("TestTask", task);
-            
+            task.Actions.Add(new ExecAction("Notepad.exe"));
+            _folder.RegisterTaskDefinition("TestTask", task, TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
         }
 
         [TestCleanup]
