@@ -51,19 +51,11 @@ namespace Dev2.Common
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is ConflictTreeNode conflictTreeNode)
             {
-                return false;
+                return Equals(conflictTreeNode);
             }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((ConflictTreeNode)obj);
+            return false;
         }
 
         public override int GetHashCode()
