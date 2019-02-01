@@ -289,8 +289,8 @@ this.RenameFileAtLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed0.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -302,8 +302,8 @@ this.RenameFileAtLocation("4", "Local to SFTP", "[[sourcePath]]", "C:\\renamefil
         public virtual void RenameFileAtLocation_5()
         {
 #line 7
-this.RenameFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed0.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed0.tx" +
+                    "t", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -315,8 +315,8 @@ this.RenameFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile0" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -332,8 +332,8 @@ this.RenameFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile
         public virtual void RenameFileAtLocation_6()
         {
 #line 7
-this.RenameFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile0" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -345,8 +345,8 @@ this.RenameFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRP
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile1" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -362,8 +362,8 @@ this.RenameFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRP
         public virtual void RenameFileAtLocation_7()
         {
 #line 7
-this.RenameFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile1" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -375,8 +375,8 @@ this.RenameFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile2" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -392,8 +392,8 @@ this.RenameFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC
         public virtual void RenameFileAtLocation_8()
         {
 #line 7
-this.RenameFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile2" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -405,8 +405,8 @@ this.RenameFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPD
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile3" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -422,8 +422,8 @@ this.RenameFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPD
         public virtual void RenameFileAtLocation_9()
         {
 #line 7
-this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile3" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -435,13 +435,13 @@ this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPD
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile4" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed1.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -453,9 +453,9 @@ this.RenameFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPD
         public virtual void RenameFileAtLocation_10()
         {
 #line 7
-this.RenameFileAtLocation("10", "UNC to UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed1.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("10", "UNC to UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile4" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed1.tx" +
+                    "t", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -499,8 +499,8 @@ this.RenameFileAtLocation("11", "FTP to Local", "[[sourcePath]]", "ftp://rsaklfs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed2.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -512,8 +512,8 @@ this.RenameFileAtLocation("11", "FTP to Local", "[[sourcePath]]", "ftp://rsaklfs
         public virtual void RenameFileAtLocation_12()
         {
 #line 7
-this.RenameFileAtLocation("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed2.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed2.tx" +
+                    "t", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -641,8 +641,8 @@ this.RenameFileAtLocation("16", "FTPS to Local", "[[sourcePath]]", "ftp://rsaklf
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed3.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -654,8 +654,8 @@ this.RenameFileAtLocation("16", "FTPS to Local", "[[sourcePath]]", "ftp://rsaklf
         public virtual void RenameFileAtLocation_17()
         {
 #line 7
-this.RenameFileAtLocation("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed3.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed3.tx" +
+                    "t", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -783,8 +783,8 @@ this.RenameFileAtLocation("21", "SFTP to Local", "[[sourcePath]]", "sftp://rsakl
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed4.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -796,8 +796,8 @@ this.RenameFileAtLocation("21", "SFTP to Local", "[[sourcePath]]", "sftp://rsakl
         public virtual void RenameFileAtLocation_22()
         {
 #line 7
-this.RenameFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed4.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.RenameFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed4.tx" +
+                    "t", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1143,8 +1143,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed0.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1156,8 +1156,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_5()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed0.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("5", "Local to UNC", "[[sourcePath]]", "C:\\renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed0.tx" +
+                    "t", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1169,8 +1169,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile0" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1186,8 +1186,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_6()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile0" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1199,8 +1199,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile1" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1216,8 +1216,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_7()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile1" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1229,8 +1229,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile2" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1246,8 +1246,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_8()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed1.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile2" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed1.txt", "integrationtester", "I73573r0", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1259,8 +1259,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile3" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1276,8 +1276,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_9()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile3" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed1.txt", "dev2", "Q/ulw&]", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1289,13 +1289,13 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile4" +
+            ".txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed1.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1307,9 +1307,9 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_10()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("10", "UNC to UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed1.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("10", "UNC to UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamefile4" +
+                    ".txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed1.tx" +
+                    "t", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1353,8 +1353,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed2.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1366,8 +1366,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_12()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed2.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed2.tx" +
+                    "t", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1495,8 +1495,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed3.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1508,8 +1508,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_17()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed3.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed3.tx" +
+                    "t", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1637,8 +1637,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed4.tx" +
+            "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "False")]
@@ -1650,8 +1650,8 @@ this.RenameFileAtLocation("27", "Local to Local", "[[sourcePath]]", "NULL", "\"\
         public virtual void RenameFileAtLocationWithOverwriteDisabled_22()
         {
 #line 55
- this.RenameFileAtLocationWithOverwriteDisabled("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed4.txt", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+ this.RenameFileAtLocationWithOverwriteDisabled("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/renamefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed4.tx" +
+                    "t", "\"\"", "\"\"", "False", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1862,11 +1862,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: No")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "No")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "No")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -1884,70 +1884,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_1()
+        public virtual void RenameFileValidation_No()
         {
 #line 103
-this.RenameFileValidation("1", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile5.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile8.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed8.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_2()
-        {
-#line 103
-this.RenameFileValidation("2", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile8.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed8.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile9.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed9.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_3()
-        {
-#line 103
-this.RenameFileValidation("3", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile9.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed9.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("No", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile5.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
@@ -1957,36 +1897,6 @@ this.RenameFileValidation("3", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile10.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\renamed6.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_4()
-        {
-#line 103
-this.RenameFileValidation("4", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile10.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2004,19 +1914,19 @@ this.RenameFileValidation("4", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_5()
+        public virtual void RenameFileValidation_4()
         {
 #line 103
-this.RenameFileValidation("5", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile6.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed7.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("4", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile6.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed7.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2034,19 +1944,109 @@ this.RenameFileValidation("5", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_6()
+        public virtual void RenameFileValidation_5()
         {
 #line 103
-this.RenameFileValidation("6", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile7.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "Truee", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("5", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile7.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "Truee", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile8.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed8.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
+        public virtual void RenameFileValidation_1()
+        {
+#line 103
+this.RenameFileValidation("1", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile8.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed8.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile9.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed9.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
+        public virtual void RenameFileValidation_2()
+        {
+#line 103
+this.RenameFileValidation("2", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile9.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed9.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "C:\\renamefile10.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "C:\\renamed6.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
+        public virtual void RenameFileValidation_3()
+        {
+#line 103
+this.RenameFileValidation("3", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile10.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2064,19 +2064,19 @@ this.RenameFileValidation("6", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_7()
+        public virtual void RenameFileValidation_6()
         {
 #line 103
-this.RenameFileValidation("7", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile11.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("6", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile11.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed6.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2094,19 +2094,19 @@ this.RenameFileValidation("7", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_8()
+        public virtual void RenameFileValidation_7()
         {
 #line 103
-this.RenameFileValidation("8", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile12.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed10.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("7", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile12.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORFILERENAMETESTING/renamed10.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2124,19 +2124,19 @@ this.RenameFileValidation("8", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_9()
+        public virtual void RenameFileValidation_8()
         {
 #line 103
-this.RenameFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile13.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed11.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("8", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile13.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed11.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2154,19 +2154,19 @@ this.RenameFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_10()
+        public virtual void RenameFileValidation_9()
         {
 #line 103
-this.RenameFileValidation("10", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile14.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed12.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile14.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/renamed12.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2184,19 +2184,19 @@ this.RenameFileValidation("10", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_11()
+        public virtual void RenameFileValidation_10()
         {
 #line 103
-this.RenameFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile15.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed8.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("10", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile15.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed8.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2204,8 +2204,8 @@ this.RenameFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed13.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed13.t" +
+            "xt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -2215,20 +2215,20 @@ this.RenameFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_12()
+        public virtual void RenameFileValidation_11()
         {
 #line 103
-this.RenameFileValidation("12", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile16.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed13.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile16.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed13.t" +
+                    "xt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2246,19 +2246,19 @@ this.RenameFileValidation("12", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_13()
+        public virtual void RenameFileValidation_12()
         {
 #line 103
-this.RenameFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile17.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed9.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("12", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile17.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\renamed9.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2266,8 +2266,8 @@ this.RenameFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-            "renamed14.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed14.t" +
+            "xt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -2277,20 +2277,20 @@ this.RenameFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_14()
+        public virtual void RenameFileValidation_13()
         {
 #line 103
-this.RenameFileValidation("14", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile18.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\" +
-                    "renamed14.txt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile18.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileRenameSharedTestingSite\\renamed14.t" +
+                    "xt", "\"\"", "\"\"", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2308,19 +2308,19 @@ this.RenameFileValidation("14", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_15()
+        public virtual void RenameFileValidation_14()
         {
 #line 103
-this.RenameFileValidation("15", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile19.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed11.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("14", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile19.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed11.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file20.txt")]
@@ -2338,19 +2338,19 @@ this.RenameFileValidation("15", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_16()
+        public virtual void RenameFileValidation_15()
         {
 #line 103
-this.RenameFileValidation("16", "[[a]][[b]]", "c:\\rename", "file20.txt", "C:\\renamefile20.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed12.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("15", "[[a]][[b]]", "c:\\rename", "file20.txt", "C:\\renamefile20.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed12.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]\\[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "renamefile21.txt")]
@@ -2368,19 +2368,19 @@ this.RenameFileValidation("16", "[[a]][[b]]", "c:\\rename", "file20.txt", "C:\\r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_17()
+        public virtual void RenameFileValidation_16()
         {
 #line 103
-this.RenameFileValidation("17", "[[a]]\\[[b]]", "c:", "renamefile21.txt", "C:\\renamefile21.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed13.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("16", "[[a]]\\[[b]]", "c:", "renamefile21.txt", "C:\\renamefile21.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed13.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]][[b]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file22")]
@@ -2398,19 +2398,19 @@ this.RenameFileValidation("17", "[[a]]\\[[b]]", "c:", "renamefile21.txt", "C:\\r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_18()
+        public virtual void RenameFileValidation_17()
         {
 #line 103
-this.RenameFileValidation("18", "[[a]][[b]].txt", "c:\\rename", "file22", "C:\\renamefile22.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed14.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("17", "[[a]][[b]].txt", "c:\\rename", "file22", "C:\\renamefile22.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed14.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]:[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\renamefile23.txt")]
@@ -2428,19 +2428,19 @@ this.RenameFileValidation("18", "[[a]][[b]].txt", "c:\\rename", "file22", "C:\\r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_19()
+        public virtual void RenameFileValidation_18()
         {
 #line 103
-this.RenameFileValidation("19", "[[a]]:[[b]]", "c", "\\renamefile23.txt", "C:\\renamefile23.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed15.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("18", "[[a]]:[[b]]", "c", "\\renamefile23.txt", "C:\\renamefile23.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed15.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "C:[[a]][[b]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file24")]
@@ -2458,19 +2458,19 @@ this.RenameFileValidation("19", "[[a]]:[[b]]", "c", "\\renamefile23.txt", "C:\\r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_20()
+        public virtual void RenameFileValidation_19()
         {
 #line 103
-this.RenameFileValidation("20", "C:[[a]][[b]].txt", "\\rename", "file24", "C:\\renamefile24.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed16.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("19", "C:[[a]][[b]].txt", "\\rename", "file24", "C:\\renamefile24.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed16.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(1).a]][[rec(2).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file25.txt")]
@@ -2488,19 +2488,19 @@ this.RenameFileValidation("20", "C:[[a]][[b]].txt", "\\rename", "file24", "C:\\r
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_21()
+        public virtual void RenameFileValidation_20()
         {
 #line 103
-this.RenameFileValidation("21", "[[rec(1).a]][[rec(2).a]]", "c:\\rename", "file25.txt", "C:\\renamefile25.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed17.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("20", "[[rec(1).a]][[rec(2).a]]", "c:\\rename", "file25.txt", "C:\\renamefile25.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed17.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(1).a]]\\[[rec(2).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "renamefile26.txt")]
@@ -2518,19 +2518,19 @@ this.RenameFileValidation("21", "[[rec(1).a]][[rec(2).a]]", "c:\\rename", "file2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_22()
+        public virtual void RenameFileValidation_21()
         {
 #line 103
-this.RenameFileValidation("22", "[[rec(1).a]]\\[[rec(2).a]]", "c:", "renamefile26.txt", "C:\\renamefile26.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed18.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("21", "[[rec(1).a]]\\[[rec(2).a]]", "c:", "renamefile26.txt", "C:\\renamefile26.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed18.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(1).a]][[rec(2).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file27")]
@@ -2548,19 +2548,19 @@ this.RenameFileValidation("22", "[[rec(1).a]]\\[[rec(2).a]]", "c:", "renamefile2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_23()
+        public virtual void RenameFileValidation_22()
         {
 #line 103
-this.RenameFileValidation("23", "[[rec(1).a]][[rec(2).a]].txt", "c:\\rename", "file27", "C:\\renamefile27.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed19.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed19.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("22", "[[rec(1).a]][[rec(2).a]].txt", "c:\\rename", "file27", "C:\\renamefile27.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed19.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed19.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(1).a]]:[[rec(2).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\renamefile28.txt")]
@@ -2578,19 +2578,19 @@ this.RenameFileValidation("23", "[[rec(1).a]][[rec(2).a]].txt", "c:\\rename", "f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_24()
+        public virtual void RenameFileValidation_23()
         {
 #line 103
-this.RenameFileValidation("24", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\renamefile28.txt", "C:\\renamefile28.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed20.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("23", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\renamefile28.txt", "C:\\renamefile28.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed20.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "C:[[rec(1).a]][[rec(2).a]].txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "file29")]
@@ -2608,19 +2608,19 @@ this.RenameFileValidation("24", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\renamefile2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_25()
+        public virtual void RenameFileValidation_24()
         {
 #line 103
-this.RenameFileValidation("25", "C:[[rec(1).a]][[rec(2).a]].txt", "\\rename", "file29", "C:\\renamefile29.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed21.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed21.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("24", "C:[[rec(1).a]][[rec(2).a]].txt", "\\rename", "file29", "C:\\renamefile29.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed21.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed21.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2638,19 +2638,19 @@ this.RenameFileValidation("25", "C:[[rec(1).a]][[rec(2).a]].txt", "\\rename", "f
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_26()
+        public virtual void RenameFileValidation_25()
         {
 #line 103
-this.RenameFileValidation("26", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renamefile30.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed22.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("25", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renamefile30.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed22.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec([[index]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "c:\\renamefile31.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2668,19 +2668,19 @@ this.RenameFileValidation("26", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renam
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_27()
+        public virtual void RenameFileValidation_26()
         {
 #line 103
-this.RenameFileValidation("27", "[[rec([[index]]).a]]", "c:\\renamefile31.txt", "\"\"", "C:\\renamefile31.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed23.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("26", "[[rec([[index]]).a]]", "c:\\renamefile31.txt", "\"\"", "C:\\renamefile31.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed23.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "C:\\copyfile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -2698,19 +2698,19 @@ this.RenameFileValidation("27", "[[rec([[index]]).a]]", "c:\\renamefile31.txt", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_28()
+        public virtual void RenameFileValidation_27()
         {
 #line 103
-this.RenameFileValidation("28", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renamefile32.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed24.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed24.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("27", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renamefile32.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed24.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed24.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "/FORFILERENAMETESTING/renamed25.txt")]
@@ -2728,19 +2728,19 @@ this.RenameFileValidation("28", "[[a]]", "C:\\copyfile0.txt", "\"\"", "C:\\renam
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_29()
+        public virtual void RenameFileValidation_28()
         {
 #line 103
-this.RenameFileValidation("29", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/FORFILERENAMETESTING/renamed25.txt", "C:\\renamefile33.txt", "\"\"", "\"\"", "[[a]][[b]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed25.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("28", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/FORFILERENAMETESTING/renamed25.txt", "C:\\renamefile33.txt", "\"\"", "\"\"", "[[a]][[b]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed25.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "FORTESTING/renamed26.txt")]
@@ -2758,19 +2758,19 @@ this.RenameFileValidation("29", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/F
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_30()
+        public virtual void RenameFileValidation_29()
         {
 #line 103
-this.RenameFileValidation("30", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING", "FORTESTING/renamed26.txt", "C:\\renamefile34.txt", "\"\"", "\"\"", "[[a]]/[[b]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed26.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("29", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING", "FORTESTING/renamed26.txt", "C:\\renamefile34.txt", "\"\"", "\"\"", "[[a]]/[[b]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed26.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "/FORFILERENAMETESTING/renamed27.txt")]
@@ -2788,19 +2788,19 @@ this.RenameFileValidation("30", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_31()
+        public virtual void RenameFileValidation_30()
         {
 #line 103
-this.RenameFileValidation("31", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "/FORFILERENAMETESTING/renamed27.txt", "C:\\renamefile35.txt", "\"\"", "\"\"", "[[a]][[b]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed27.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("30", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "/FORFILERENAMETESTING/renamed27.txt", "C:\\renamefile35.txt", "\"\"", "\"\"", "[[a]][[b]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed27.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "1002/FORFILERENAMETESTING/renamed28.txt")]
@@ -2818,19 +2818,19 @@ this.RenameFileValidation("31", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "/
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_32()
+        public virtual void RenameFileValidation_31()
         {
 #line 103
-this.RenameFileValidation("32", "[[sourcePath]]", "ftp://rsaklfsvrpdc", "1002/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed28.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("31", "[[sourcePath]]", "ftp://rsaklfsvrpdc", "1002/FORFILERENAMETESTING/renamed28.txt", "C:\\renamefile36.txt", "\"\"", "\"\"", "[[a]]:[[b]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed28.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "//rsaklfsvrpdc:1002/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "FORTESTING/renamed29.txt")]
@@ -2848,19 +2848,19 @@ this.RenameFileValidation("32", "[[sourcePath]]", "ftp://rsaklfsvrpdc", "1002/FO
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_33()
+        public virtual void RenameFileValidation_32()
         {
 #line 103
-this.RenameFileValidation("33", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftp:[[a]][[b]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed29.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("32", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTESTING/renamed29.txt", "C:\\renamefile37.txt", "\"\"", "\"\"", "ftp:[[a]][[b]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed29.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "FORTESTING/renamed30.txt")]
@@ -2878,19 +2878,19 @@ this.RenameFileValidation("33", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_34()
+        public virtual void RenameFileValidation_33()
         {
 #line 103
-this.RenameFileValidation("34", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "FORTESTING/renamed30.txt", "C:\\renamefile38.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed30.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("33", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "FORTESTING/renamed30.txt", "C:\\renamefile38.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed30.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "/renamed31.txt")]
@@ -2908,19 +2908,19 @@ this.RenameFileValidation("34", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/", "F
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_35()
+        public virtual void RenameFileValidation_34()
         {
 #line 103
-this.RenameFileValidation("35", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING", "/renamed31.txt", "C:\\renamefile39.txt", "\"\"", "\"\"", "[[rec(1).a]]/[[rec(2).a]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed31.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("34", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING", "/renamed31.txt", "C:\\renamefile39.txt", "\"\"", "\"\"", "[[rec(1).a]]/[[rec(2).a]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed31.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "/FORFILERENAMETESTING/renamed32")]
@@ -2938,19 +2938,19 @@ this.RenameFileValidation("35", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_36()
+        public virtual void RenameFileValidation_35()
         {
 #line 103
-this.RenameFileValidation("36", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/FORFILERENAMETESTING/renamed32", "C:\\renamefile40.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed32.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("35", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/FORFILERENAMETESTING/renamed32", "C:\\renamefile40.txt", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed32.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "renamed33.txt")]
@@ -2968,19 +2968,19 @@ this.RenameFileValidation("36", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002", "/F
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_37()
+        public virtual void RenameFileValidation_36()
         {
 #line 103
-this.RenameFileValidation("37", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/", "renamed33.txt", "C:\\renamefile41.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed33.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed33.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("36", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/", "renamed33.txt", "C:\\renamefile41.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORRENAMETESTING/renamed33.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed33.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "//rsaklfsvrpdc:1002/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "FORTESTING/renamed34")]
@@ -2998,19 +2998,19 @@ this.RenameFileValidation("37", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORRE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_38()
+        public virtual void RenameFileValidation_37()
         {
 #line 103
-this.RenameFileValidation("38", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftp:[[rec(1).a]][[rec(2).a]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed34.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("37", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTESTING/renamed34", "C:\\renamefile42.txt", "\"\"", "\"\"", "ftp:[[rec(1).a]][[rec(2).a]].txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed34.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3029,20 +3029,20 @@ this.RenameFileValidation("38", "[[sourcePath]]", "//rsaklfsvrpdc:1002/", "FORTE
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Failed to authenticate with user [ integrationtester ] for resource [ C:\\copyfile" +
             "0.txt ]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_39()
+        public virtual void RenameFileValidation_38()
         {
 #line 103
-this.RenameFileValidation("39", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "C:\\copyfile0.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "False", "Failed to authenticate with user [ integrationtester ] for resource [ C:\\copyfile" +
+this.RenameFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile43.txt", "\"\"", "\"\"", "C:\\copyfile0.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed35.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "False", "Failed to authenticate with user [ integrationtester ] for resource [ C:\\copyfile" +
                     "0.txt ]", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed36.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3060,19 +3060,19 @@ this.RenameFileValidation("39", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_40()
+        public virtual void RenameFileValidation_39()
         {
 #line 103
-this.RenameFileValidation("40", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed36.txt", "\"\"", "C:\\renamefile44.txt", "\"\"", "\"\"", "[[rec([[index]]).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed36.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("39", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed36.txt", "\"\"", "C:\\renamefile44.txt", "\"\"", "\"\"", "[[rec([[index]]).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed36.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3090,19 +3090,19 @@ this.RenameFileValidation("40", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORFI
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "False")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
-        public virtual void RenameFileValidation_41()
+        public virtual void RenameFileValidation_40()
         {
 #line 103
-this.RenameFileValidation("41", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile45.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed37.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed37.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+this.RenameFileValidation("40", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile45.txt", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed37.txt", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed37.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a&]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3120,19 +3120,19 @@ this.RenameFileValidation("41", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Variable name [[a&]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_42()
+        public virtual void RenameFileValidation_41()
         {
 #line 103
-this.RenameFileValidation("42", "[[a&]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed38.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[a&]] contains invalid character(s)", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("41", "[[a&]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed38.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[a&]] contains invalid character(s)", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 43")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(**).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3150,19 +3150,19 @@ this.RenameFileValidation("42", "[[a&]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Recordset index (**) contains invalid character(s)")]
-        public virtual void RenameFileValidation_43()
+        public virtual void RenameFileValidation_42()
         {
 #line 103
-this.RenameFileValidation("43", "[[rec(**).a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed39.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset index (**) contains invalid character(s)", "1.File or Folder - Recordset index (**) contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("42", "[[rec(**).a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed39.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset index (**) contains invalid character(s)", "1.File or Folder - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "44")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3180,19 +3180,19 @@ this.RenameFileValidation("43", "[[rec(**).a]]", "\"\"", "\"\"", "C", "\"\"", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void RenameFileValidation_44()
+        public virtual void RenameFileValidation_43()
         {
 #line 103
-this.RenameFileValidation("44", "[[a]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed40.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Invalid expression: opening and closing brackets don\"t match", "1.File or Folder - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+this.RenameFileValidation("43", "[[a]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed40.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Invalid expression: opening and closing brackets don\"t match", "1.File or Folder - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "45")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "44")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec(a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3210,19 +3210,19 @@ this.RenameFileValidation("44", "[[a]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder - Recordset name [[rec(a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_45()
+        public virtual void RenameFileValidation_44()
         {
 #line 103
-this.RenameFileValidation("45", "[[rec(a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed41.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset name [[rec(a]] contains invalid character(s)", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("44", "[[rec(a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed41.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset name [[rec(a]] contains invalid character(s)", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 46")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "46")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "45")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "c(*()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3240,19 +3240,19 @@ this.RenameFileValidation("45", "[[rec(a]]", "\"\"", "\"\"", "C", "\"\"", "\"\""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
-        public virtual void RenameFileValidation_46()
+        public virtual void RenameFileValidation_45()
         {
 #line 103
-this.RenameFileValidation("46", "c(*()", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed42.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
+this.RenameFileValidation("45", "c(*()", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed42.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 47")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "47")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "46")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[rec([[inde$x]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3270,19 +3270,19 @@ this.RenameFileValidation("46", "c(*()", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder - Variable name [[inde$x]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)")]
-        public virtual void RenameFileValidation_47()
+        public virtual void RenameFileValidation_46()
         {
 #line 103
-this.RenameFileValidation("47", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed43.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[inde$x]]  contains invalid character(s)", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("46", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed43.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[inde$x]]  contains invalid character(s)", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 48")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "48")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "47")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "ghjghj")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3300,19 +3300,19 @@ this.RenameFileValidation("47", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "C", "\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
-        public virtual void RenameFileValidation_48()
+        public virtual void RenameFileValidation_47()
         {
 #line 103
-this.RenameFileValidation("48", "ghjghj", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed44.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
+this.RenameFileValidation("47", "ghjghj", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed44.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 49")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "49")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "48")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3330,19 +3330,19 @@ this.RenameFileValidation("48", "ghjghj", "\"\"", "\"\"", "C", "\"\"", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File or Folder cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder cannot be empty or only white space")]
-        public virtual void RenameFileValidation_49()
+        public virtual void RenameFileValidation_48()
         {
 #line 103
-this.RenameFileValidation("49", "\"\"", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed45.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder cannot be empty or only white space", "1.File or Folder cannot be empty or only white space", ((string[])(null)));
+this.RenameFileValidation("48", "\"\"", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed45.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "File or Folder cannot be empty or only white space", "1.File or Folder cannot be empty or only white space", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 50")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "50")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "49")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3360,19 +3360,19 @@ this.RenameFileValidation("49", "\"\"", "\"\"", "\"\"", "C", "\"\"", "\"\"", "[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Variable name [[a&]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_50()
+        public virtual void RenameFileValidation_49()
         {
 #line 103
-this.RenameFileValidation("50", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile46.txt", "\"\"", "\"\"", "[[a&]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed46.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[a&]] contains invalid character(s)", "1.Destination - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("49", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile46.txt", "\"\"", "\"\"", "[[a&]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed46.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[a&]] contains invalid character(s)", "1.Destination - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 51")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "51")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "50")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3390,19 +3390,19 @@ this.RenameFileValidation("50", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Recordset index (**) contains invalid character(s)")]
-        public virtual void RenameFileValidation_51()
+        public virtual void RenameFileValidation_50()
         {
 #line 103
-this.RenameFileValidation("51", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile47.txt", "\"\"", "\"\"", "[[rec(**).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed47.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset index (**) contains invalid character(s)", "1.Destination - Recordset index (**) contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("50", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile47.txt", "\"\"", "\"\"", "[[rec(**).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed47.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset index (**) contains invalid character(s)", "1.Destination - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 52")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "52")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "51")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3420,19 +3420,19 @@ this.RenameFileValidation("51", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void RenameFileValidation_52()
+        public virtual void RenameFileValidation_51()
         {
 #line 103
-this.RenameFileValidation("52", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile48.txt", "\"\"", "\"\"", "[[a]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed48.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Invalid expression: opening and closing brackets don\"t match", "1.Destination - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+this.RenameFileValidation("51", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile48.txt", "\"\"", "\"\"", "[[a]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed48.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Invalid expression: opening and closing brackets don\"t match", "1.Destination - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 53")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "53")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "52")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3450,19 +3450,19 @@ this.RenameFileValidation("52", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination - Recordset name [[rec(a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_53()
+        public virtual void RenameFileValidation_52()
         {
 #line 103
-this.RenameFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile49.txt", "\"\"", "\"\"", "[[rec(a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed49.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset name [[rec(a]] contains invalid character(s)", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("52", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile49.txt", "\"\"", "\"\"", "[[rec(a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed49.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Recordset name [[rec(a]] contains invalid character(s)", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 54")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "54")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "53")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3480,19 +3480,19 @@ this.RenameFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
-        public virtual void RenameFileValidation_54()
+        public virtual void RenameFileValidation_53()
         {
 #line 103
-this.RenameFileValidation("54", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile50.txt", "\"\"", "\"\"", "c(*()", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed50.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
+this.RenameFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile50.txt", "\"\"", "\"\"", "c(*()", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed50.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 55")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "55")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "54")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3510,19 +3510,19 @@ this.RenameFileValidation("54", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination - Variable name [[inde$x]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)")]
-        public virtual void RenameFileValidation_55()
+        public virtual void RenameFileValidation_54()
         {
 #line 103
-this.RenameFileValidation("55", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile51.txt", "\"\"", "\"\"", "[[rec([[inde$x]]).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed51.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[inde$x]]  contains invalid character(s)", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("54", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile51.txt", "\"\"", "\"\"", "[[rec([[inde$x]]).a]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed51.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination - Variable name [[inde$x]]  contains invalid character(s)", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 56")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "56")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "55")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3540,19 +3540,19 @@ this.RenameFileValidation("55", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Please supply a valid File or Folder")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
-        public virtual void RenameFileValidation_56()
+        public virtual void RenameFileValidation_55()
         {
 #line 103
-this.RenameFileValidation("56", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile52.txt", "\"\"", "\"\"", "ghjghj", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed52.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
+this.RenameFileValidation("55", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile52.txt", "\"\"", "\"\"", "ghjghj", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed52.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 57")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "57")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "56")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3570,19 +3570,19 @@ this.RenameFileValidation("56", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Destination cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination cannot be empty or only white space")]
-        public virtual void RenameFileValidation_57()
+        public virtual void RenameFileValidation_56()
         {
 #line 103
-this.RenameFileValidation("57", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile53.txt", "\"\"", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed53.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination cannot be empty or only white space", "1.Destination cannot be empty or only white space", ((string[])(null)));
+this.RenameFileValidation("56", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile53.txt", "\"\"", "\"\"", "\"\"", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed53.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Destination cannot be empty or only white space", "1.Destination cannot be empty or only white space", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 58")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "58")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "57")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3600,19 +3600,19 @@ this.RenameFileValidation("57", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[a&]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_58()
+        public virtual void RenameFileValidation_57()
         {
 #line 103
-this.RenameFileValidation("58", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile54.txt", "[[a&]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed54.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("57", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile54.txt", "[[a&]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed54.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 59")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "59")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "58")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3630,19 +3630,19 @@ this.RenameFileValidation("58", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Recordset index (**) contains invalid character(s)")]
-        public virtual void RenameFileValidation_59()
+        public virtual void RenameFileValidation_58()
         {
 #line 103
-this.RenameFileValidation("59", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile55.txt", "[[rec(**).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed55.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("58", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile55.txt", "[[rec(**).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed55.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 60")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "60")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "59")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3660,19 +3660,19 @@ this.RenameFileValidation("59", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void RenameFileValidation_60()
+        public virtual void RenameFileValidation_59()
         {
 #line 103
-this.RenameFileValidation("60", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile56.txt", "[[a]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed56.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+this.RenameFileValidation("59", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile56.txt", "[[a]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed56.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 61")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "61")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "60")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3690,19 +3690,19 @@ this.RenameFileValidation("60", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[rec(a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Recordset name [[rec(a]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_61()
+        public virtual void RenameFileValidation_60()
         {
 #line 103
-this.RenameFileValidation("61", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile57.txt", "[[rec(a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed57.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[rec(a]] contains invalid character(s)", "1.Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("60", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile57.txt", "[[rec(a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed57.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[rec(a]] contains invalid character(s)", "1.Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 62")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "62")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "61")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3720,19 +3720,19 @@ this.RenameFileValidation("61", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[inde$x]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[inde$x]]  contains invalid character(s)")]
-        public virtual void RenameFileValidation_62()
+        public virtual void RenameFileValidation_61()
         {
 #line 103
-this.RenameFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile58.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed58.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[inde$x]]  contains invalid character(s)", "1.Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("61", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile58.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed58.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[inde$x]]  contains invalid character(s)", "1.Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 63")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "63")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "62")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3750,19 +3750,19 @@ this.RenameFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username cannot be empty or only white space")]
-        public virtual void RenameFileValidation_63()
+        public virtual void RenameFileValidation_62()
         {
 #line 103
-this.RenameFileValidation("63", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile59.txt", "", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed59.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username cannot be empty or only white space", "1.Username cannot be empty or only white space", ((string[])(null)));
+this.RenameFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile59.txt", "", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed59.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username cannot be empty or only white space", "1.Username cannot be empty or only white space", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "64")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "63")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3780,19 +3780,19 @@ this.RenameFileValidation("63", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[a&]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Variable name [[a&]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_64()
+        public virtual void RenameFileValidation_63()
         {
 #line 103
-this.RenameFileValidation("64", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile50.txt", "[[a&]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed60.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Destination Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("63", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile50.txt", "[[a&]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed60.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[a&]] contains invalid character(s)", "1.Destination Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 65")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "65")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3810,19 +3810,19 @@ this.RenameFileValidation("64", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset index (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Recordset index (**) contains invalid character(s)")]
-        public virtual void RenameFileValidation_65()
+        public virtual void RenameFileValidation_64()
         {
 #line 103
-this.RenameFileValidation("65", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile61.txt", "[[rec(**).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed61.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Destination Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("64", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile61.txt", "[[rec(**).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed61.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset index (**) contains invalid character(s)", "1.Destination Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 66")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "66")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "65")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3841,20 +3841,20 @@ this.RenameFileValidation("65", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Invalid expression: opening and closing brackets don\"t m" +
             "atch")]
-        public virtual void RenameFileValidation_66()
+        public virtual void RenameFileValidation_65()
         {
 #line 103
-this.RenameFileValidation("66", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile62.txt", "[[a]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed62.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Destination Username - Invalid expression: opening and closing brackets don\"t m" +
+this.RenameFileValidation("65", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile62.txt", "[[a]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed62.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Destination Username - Invalid expression: opening and closing brackets don\"t m" +
                     "atch", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 67")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "67")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "66")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3872,19 +3872,19 @@ this.RenameFileValidation("66", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[rec(a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_67()
+        public virtual void RenameFileValidation_66()
         {
 #line 103
-this.RenameFileValidation("67", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile63.txt", "[[rec(a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed63.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[rec(a]] contains invalid character(s)", "1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("66", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile63.txt", "[[rec(a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed63.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[rec(a]] contains invalid character(s)", "1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 68")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "68")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "67")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3902,19 +3902,19 @@ this.RenameFileValidation("67", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[inde$x]]  contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)")]
-        public virtual void RenameFileValidation_68()
+        public virtual void RenameFileValidation_67()
         {
 #line 103
-this.RenameFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile64.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed64.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[inde$x]]  contains invalid character(s)", "1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("67", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile64.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed64.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[inde$x]]  contains invalid character(s)", "1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 69")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "69")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "68")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3932,19 +3932,19 @@ this.RenameFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username cannot be empty or only white space")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username cannot be empty or only white space")]
-        public virtual void RenameFileValidation_69()
+        public virtual void RenameFileValidation_68()
         {
 #line 103
-this.RenameFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile65.txt", "\"\"", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed65.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username cannot be empty or only white space", "1.Destination Username cannot be empty or only white space", ((string[])(null)));
+this.RenameFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile65.txt", "\"\"", "String", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed65.txt", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "AN", "True", "Username cannot be empty or only white space", "1.Destination Username cannot be empty or only white space", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 70")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "70")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "69")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3962,19 +3962,19 @@ this.RenameFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "The result field only allows a single result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.The result field only allows a single result")]
-        public virtual void RenameFileValidation_70()
+        public virtual void RenameFileValidation_69()
         {
 #line 103
-this.RenameFileValidation("70", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile66.txt", "[[a&]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed66.txt", "integrationtester", "I73573r0", "True", "[[result]][[a]]", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", ((string[])(null)));
+this.RenameFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile66.txt", "[[a&]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed66.txt", "integrationtester", "I73573r0", "True", "[[result]][[a]]", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 71")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "71")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "70")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -3992,19 +3992,19 @@ this.RenameFileValidation("70", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void RenameFileValidation_71()
+        public virtual void RenameFileValidation_70()
         {
 #line 103
-this.RenameFileValidation("71", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile67.txt", "[[a]]*]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed67.txt", "integrationtester", "I73573r0", "True", "[[a]]*]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+this.RenameFileValidation("70", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile67.txt", "[[a]]*]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed67.txt", "integrationtester", "I73573r0", "True", "[[a]]*]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 72")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "72")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "71")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4022,19 +4022,19 @@ this.RenameFileValidation("71", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_72()
+        public virtual void RenameFileValidation_71()
         {
 #line 103
-this.RenameFileValidation("72", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile68.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed68.txt", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("71", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile68.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed68.txt", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 73")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "73")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "72")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4052,19 +4052,19 @@ this.RenameFileValidation("72", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
-        public virtual void RenameFileValidation_73()
+        public virtual void RenameFileValidation_72()
         {
 #line 103
-this.RenameFileValidation("73", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile69.txt", "[[var]]00]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed69.txt", "integrationtester", "I73573r0", "True", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+this.RenameFileValidation("72", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile69.txt", "[[var]]00]]", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed69.txt", "integrationtester", "I73573r0", "True", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 74")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "74")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "73")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4082,19 +4082,19 @@ this.RenameFileValidation("73", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[1var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[1var]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_74()
+        public virtual void RenameFileValidation_73()
         {
 #line 103
-this.RenameFileValidation("74", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile70.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed70.txt", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[1var]] contains invalid character(s)", "1.Result - Variable name [[1var]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("73", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile70.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed70.txt", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[1var]] contains invalid character(s)", "1.Result - Variable name [[1var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 75")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "75")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "74")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4112,19 +4112,19 @@ this.RenameFileValidation("74", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
-        public virtual void RenameFileValidation_75()
+        public virtual void RenameFileValidation_74()
         {
 #line 103
-this.RenameFileValidation("75", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile71.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed71.txt", "integrationtester", "I73573r0", "True", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
+this.RenameFileValidation("74", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile71.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed71.txt", "integrationtester", "I73573r0", "True", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 76")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "76")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "75")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4142,19 +4142,19 @@ this.RenameFileValidation("75", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var.a]]contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_76()
+        public virtual void RenameFileValidation_75()
         {
 #line 103
-this.RenameFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile72.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed72.txt", "integrationtester", "I73573r0", "True", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("75", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile72.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed72.txt", "integrationtester", "I73573r0", "True", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 77")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "77")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "76")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4172,19 +4172,19 @@ this.RenameFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_77()
+        public virtual void RenameFileValidation_76()
         {
 #line 103
-this.RenameFileValidation("77", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile73.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed73.txt", "integrationtester", "I73573r0", "True", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile73.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed73.txt", "integrationtester", "I73573r0", "True", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 78")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "78")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "77")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4202,19 +4202,19 @@ this.RenameFileValidation("77", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_78()
+        public virtual void RenameFileValidation_77()
         {
 #line 103
-this.RenameFileValidation("78", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile74.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed74.txt", "integrationtester", "I73573r0", "True", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("77", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile74.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed74.txt", "integrationtester", "I73573r0", "True", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 79")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "79")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "78")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4232,19 +4232,19 @@ this.RenameFileValidation("78", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[rec(1).[[rec().1]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec(1).[[rec().1]]]]")]
-        public virtual void RenameFileValidation_79()
+        public virtual void RenameFileValidation_78()
         {
 #line 103
-this.RenameFileValidation("79", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile75.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed75.txt", "integrationtester", "I73573r0", "True", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec(1).[[rec().1]]]]", "1.Result - Invalid Region [[rec(1).[[rec().1]]]]", ((string[])(null)));
+this.RenameFileValidation("78", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile75.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed75.txt", "integrationtester", "I73573r0", "True", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec(1).[[rec().1]]]]", "1.Result - Invalid Region [[rec(1).[[rec().1]]]]", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 80")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "80")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "79")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4262,19 +4262,19 @@ this.RenameFileValidation("79", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_80()
+        public virtual void RenameFileValidation_79()
         {
 #line 103
-this.RenameFileValidation("80", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile76.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed76.txt", "integrationtester", "I73573r0", "True", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("79", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile76.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed76.txt", "integrationtester", "I73573r0", "True", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 81")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "81")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "80")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4292,19 +4292,19 @@ this.RenameFileValidation("80", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
-        public virtual void RenameFileValidation_81()
+        public virtual void RenameFileValidation_80()
         {
 #line 103
-this.RenameFileValidation("81", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile77.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed77.txt", "integrationtester", "I73573r0", "True", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
+this.RenameFileValidation("80", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile77.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed77.txt", "integrationtester", "I73573r0", "True", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 82")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Rename file validation: 81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Rename")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderRename")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "82")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "81")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
@@ -4322,10 +4322,10 @@ this.RenameFileValidation("81", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
-        public virtual void RenameFileValidation_82()
+        public virtual void RenameFileValidation_81()
         {
 #line 103
-this.RenameFileValidation("82", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile78.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed78.txt", "integrationtester", "I73573r0", "True", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
+this.RenameFileValidation("81", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile78.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORFILERENAMETESTING/renamed78.txt", "integrationtester", "I73573r0", "True", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
 #line hidden
         }
         
