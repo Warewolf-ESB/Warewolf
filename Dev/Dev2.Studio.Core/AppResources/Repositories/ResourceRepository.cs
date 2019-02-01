@@ -1091,7 +1091,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                     catch (SystemException exception)
                     {
-                        HelperUtils.ShowTrustRelationshipError(exception);
+                        HelperUtils.ShowTrustRelationshipError(CustomContainer.Get<IPopupController>(), exception);
                     }
                 }
             }
