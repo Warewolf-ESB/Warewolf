@@ -207,8 +207,7 @@ this.UnzipFileAtLocation("1", "Local to Local", "[[path]]", "C:\\test0.zip", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-            "est0.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test0.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
@@ -225,8 +224,7 @@ this.UnzipFileAtLocation("1", "Local to Local", "[[path]]", "C:\\test0.zip", "\"
         public virtual void UnzipFileAtLocation_2()
         {
 #line 7
-this.UnzipFileAtLocation("2", "UNC to Local", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-                    "est0.zip", "\"\"", "\"\"", "[[path1]]", "C:\\Temp\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("2", "UNC to Local", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test0.zip", "\"\"", "\"\"", "[[path1]]", "C:\\Temp\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -329,10 +327,9 @@ this.UnzipFileAtLocation("5", "SFTP to Local", "[[path]]", "sftp://rsaklfsvrdev/
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-            "IP0\\\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -343,8 +340,7 @@ this.UnzipFileAtLocation("5", "SFTP to Local", "[[path]]", "sftp://rsaklfsvrdev/
         public virtual void UnzipFileAtLocation_6()
         {
 #line 7
-this.UnzipFileAtLocation("6", "Local to UNC", "[[path]]", "C:\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-                    "IP0\\\\", "dev2\\IntegrationTester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("6", "Local to UNC", "[[path]]", "C:\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -356,15 +352,13 @@ this.UnzipFileAtLocation("6", "Local to UNC", "[[path]]", "C:\\test1.zip", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-            "est1.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test1.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-            "IP1\\\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -375,9 +369,7 @@ this.UnzipFileAtLocation("6", "Local to UNC", "[[path]]", "C:\\test1.zip", "\"\"
         public virtual void UnzipFileAtLocation_7()
         {
 #line 7
-this.UnzipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-                    "est1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-                    "IP1\\\\", "dev2\\IntegrationTester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -393,10 +385,9 @@ this.UnzipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.l
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-            "IP2\\\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -407,8 +398,7 @@ this.UnzipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.l
         public virtual void UnzipFileAtLocation_8()
         {
 #line 7
-this.UnzipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORUNZIPTESTING/test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-                    "IP2\\\\", "dev2\\IntegrationTester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORUNZIPTESTING/test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -424,10 +414,9 @@ this.UnzipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1001
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-            "IP3\\\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -438,8 +427,7 @@ this.UnzipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1001
         public virtual void UnzipFileAtLocation_9()
         {
 #line 7
-this.UnzipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORUNZIPTESTING/test1.zip", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-                    "IP3\\\\", "dev2\\IntegrationTester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORUNZIPTESTING/test1.zip", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -455,10 +443,9 @@ this.UnzipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrpdc:100
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-            "IP4\\\\")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2\\IntegrationTester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -469,8 +456,7 @@ this.UnzipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrpdc:100
         public virtual void UnzipFileAtLocation_10()
         {
 #line 7
-this.UnzipFileAtLocation("10", "SFTP to UNC", "[[path]]", "sftp://rsaklfsvrdev/test1.zip", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\Z" +
-                    "IP4\\\\", "dev2\\IntegrationTester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("10", "SFTP to UNC", "[[path]]", "sftp://rsaklfsvrdev/test1.zip", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -511,8 +497,7 @@ this.UnzipFileAtLocation("11", "Local to FTP", "[[path]]", "C:\\test2.zip", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-            "est2.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test2.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
@@ -529,8 +514,7 @@ this.UnzipFileAtLocation("11", "Local to FTP", "[[path]]", "C:\\test2.zip", "\"\
         public virtual void UnzipFileAtLocation_12()
         {
 #line 7
-this.UnzipFileAtLocation("12", "UNC to FTP", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-                    "est2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrpdc:1001/FORUNZIPTESTING/ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("12", "UNC to FTP", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrpdc:1001/FORUNZIPTESTING/ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -658,8 +642,7 @@ this.UnzipFileAtLocation("16", "Local to FTPS", "[[path]]", "C:\\test3.zip", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-            "est3.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test3.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
@@ -676,8 +659,7 @@ this.UnzipFileAtLocation("16", "Local to FTPS", "[[path]]", "C:\\test3.zip", "\"
         public virtual void UnzipFileAtLocation_17()
         {
 #line 7
-this.UnzipFileAtLocation("17", "UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-                    "est3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrpdc:1002/FORUNZIPTESTING/ZIP1", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("17", "UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrpdc:1002/FORUNZIPTESTING/ZIP1", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -805,8 +787,7 @@ this.UnzipFileAtLocation("21", "Local to SFTP", "[[path]]", "C:\\test4.zip", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-            "est4.zip")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test4.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
@@ -823,8 +804,7 @@ this.UnzipFileAtLocation("21", "Local to SFTP", "[[path]]", "C:\\test4.zip", "\"
         public virtual void UnzipFileAtLocation_22()
         {
 #line 7
-this.UnzipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRPDC.dev2.local\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\t" +
-                    "est4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/ZIP1", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+this.UnzipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileUnzipSharedTestingSite\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/ZIP1", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
