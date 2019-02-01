@@ -111,7 +111,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var task = _service.NewTask();
             task.Actions.Add(new ExecAction("b"));
                     folder.RegisterTaskDefinition("newn",
-                                                  new Dev2TaskDefinition(new TaskServiceConvertorFactory(), task));
+                                                  new Dev2TaskDefinition(new TaskServiceConvertorFactory(), task), 
+                                                  TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
             Assert.AreEqual(2, folder.ValidTasks.Count);
 
         }
