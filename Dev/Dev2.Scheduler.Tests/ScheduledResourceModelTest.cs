@@ -182,7 +182,6 @@ securityWrapper
         [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTest_CorrectTaskEventsSelected()
         {
-            // setup 
             var startTime = new DateTime(2000, 1, 1);
             var endTime = new DateTime(2003, 1, 1);
             var log = new MockTaskEventLog
@@ -193,11 +192,10 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+
             var res = new Mock<IScheduledResource>();
-            //setup expectancies
+
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
-            fileHelper.Setup(a => a.ReadAllText("b_12345_Bob")).Returns("");
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
