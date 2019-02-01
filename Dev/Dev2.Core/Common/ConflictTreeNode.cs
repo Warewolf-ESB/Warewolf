@@ -43,6 +43,7 @@ namespace Dev2.Common
             var equals = true;
             equals &= other.UniqueId == UniqueId;
             equals &= other.Activity.Equals(Activity);
+            //TODO: Children comparer does not look right
             equals &= (other.Children != null || Children == null);
             equals &= (other.Children == null || Children != null);
             equals &= (Children == null || Children.SequenceEqual(other.Children ?? new List<(string uniqueId, IConflictTreeNode node)>()));
