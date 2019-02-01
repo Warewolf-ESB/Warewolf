@@ -157,7 +157,8 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\fi" +
+            "letoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -167,7 +168,8 @@ this.ReadFileAtLocation("1", "Local", "[[path]]", "c:\\filetoread.txt", "\"\"", 
         public virtual void ReadFileAtLocation_2()
         {
 #line 8
-this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\fi" +
+                    "letoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -179,10 +181,10 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareT
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\filetorea" +
-            "d.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Se" +
+            "cure\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -190,8 +192,8 @@ this.ReadFileAtLocation("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareT
         public virtual void ReadFileAtLocation_3()
         {
 #line 8
-this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\filetorea" +
-                    "d.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocation("3", "UNC Secure", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Se" +
+                    "cure\\filetoread.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -334,7 +336,8 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\fi" +
+            "letoread.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -344,7 +347,8 @@ this.ReadFileAtLocationNull("1", "Local", "[[path]]", "NULL", "\"\"", "\"\"", "[
         public virtual void ReadFileAtLocationNull_2()
         {
 #line 32
-this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\filetoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\fi" +
+                    "letoread.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -356,10 +360,10 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemSh
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:NO", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\filetorea" +
-            "d.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Se" +
+            "cure\\filetoread.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Guid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
@@ -367,8 +371,8 @@ this.ReadFileAtLocationNull("2", "UNC", "[[path]]", "\\\\TEST-LOAD\\FileSystemSh
         public virtual void ReadFileAtLocationNull_3()
         {
 #line 32
-this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Secure\\filetorea" +
-                    "d.txt", "\"\"", "\"\"", "[[result]]", "Guid", "NO", "", ((string[])(null)));
+this.ReadFileAtLocationNull("3", "UNC Secure", "[[path]]", "\\\\TEST-LOAD\\FileSystemShareTestingSite\\ReadFileSharedTestingSite\\Se" +
+                    "cure\\filetoread.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Guid", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1837,7 +1841,7 @@ this.ReadFileAtLocationUsingIncorrectDirectory("2", "UNC", "[[variable]]", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "45454")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "45454")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
@@ -1845,7 +1849,7 @@ this.ReadFileAtLocationUsingIncorrectDirectory("2", "UNC", "[[variable]]", "\"\"
         public virtual void ReadFileAtLocationUsingIncorrectDirectory_3()
         {
 #line 121
-this.ReadFileAtLocationUsingIncorrectDirectory("3", "UNC Secure", "45454", "45454", "\"\"", "I73573r0", "[[result]]", "", "AN", ((string[])(null)));
+this.ReadFileAtLocationUsingIncorrectDirectory("3", "UNC Secure", "45454", "45454", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "", "AN", ((string[])(null)));
 #line hidden
         }
     }
