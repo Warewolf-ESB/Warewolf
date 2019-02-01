@@ -31,11 +31,11 @@ namespace Dev2.Utils
             var settingsConfigFile = Path.Combine(studioFolder, "Settings.config");
             return settingsConfigFile;
         }
-        public static void ShowTrustRelationshipError(SystemException exception)
+        public static void ShowTrustRelationshipError(IPopupController popupController, SystemException exception)
         {
             if (exception.Message.Contains("The trust relationship between this workstation and the primary domain failed"))
             {
-                var popup = CustomContainer.Get<IPopupController>();
+                var popup = popupController;
                 popup.Header = "Error connecting to server";
                 popup.Description = "This computer cannot contact the Domain Controller."
                                     + Environment.NewLine + "If it does not belong to a domain, please ensure it is removed from the domain in computer management.";
