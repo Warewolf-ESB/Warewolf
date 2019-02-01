@@ -35,7 +35,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var action = new ExecAction("bob.exe");
             newTask.Actions.Add(action);
             newTask.Triggers.Add(new DailyTrigger());
-            _taskService.RootFolder.RegisterTaskDefinition("UnitTestTask",newTask);
+            _taskService.RootFolder.RegisterTaskDefinition("UnitTestTask", newTask, TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
             _factory = new Mock<ITaskServiceConvertorFactory>();
         }
 
