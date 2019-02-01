@@ -15,6 +15,7 @@ using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -89,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -130,7 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -171,7 +172,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -210,7 +211,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -249,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -288,7 +289,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MailMessage mailMessage = null;
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 {
                     mailMessage = message;
                 });
@@ -324,7 +325,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 { });
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
@@ -370,11 +371,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ResourceID = Guid.NewGuid()
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, testSource, "");
-            EmailSource sendSource = null;
+            IEmailSource sendSource = null;
             MailMessage sendMessage = null;
             var emailSender = new Mock<IEmailSender>();
-            emailSender.Setup(sender => sender.Send(It.IsAny<EmailSource>(), It.IsAny<MailMessage>()))
-                .Callback<EmailSource, MailMessage>((source, message) =>
+            emailSender.Setup(sender => sender.Send(It.IsAny<IEmailSource>(), It.IsAny<MailMessage>()))
+                .Callback<IEmailSource, MailMessage>((source, message) =>
                 {
                     sendSource = source;
                     sendMessage = message;
@@ -410,7 +411,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             //------------Assert Results-------------------------
-            emailSender.Verify(sender => sender.Send(It.IsAny<EmailSource>(), It.IsAny<MailMessage>()), Times.Once());
+            emailSender.Verify(sender => sender.Send(It.IsAny<IEmailSource>(), It.IsAny<MailMessage>()), Times.Once());
             Assert.IsNotNull(sendSource);
             Assert.IsNotNull(sendMessage);
             Assert.AreNotSame(testSource, sendSource);
@@ -438,7 +439,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 { });
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
@@ -488,7 +489,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 { });
             var activity = GetSendEmailActivity(mock);
             activity.Result = "[[Result]]";
@@ -517,7 +518,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mock = new Mock<IEmailSender>();
             mock.Setup(sender =>
                 sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
+                Callback<IEmailSource, MailMessage>((client, message) =>
                 { });
             var act = GetSendEmailActivity(mock);
             act.Result = "[[Result]]";
