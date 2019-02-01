@@ -11,10 +11,8 @@
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using TSQL.Statements;
@@ -41,7 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName));
             var mockAdvancedRecordsetFactory = new Mock<IAdvancedRecordsetFactory>();
-            mockAdvancedRecordsetFactory.Setup(advancedRecordsetFactory => advancedRecordsetFactory.New(It.IsAny< IExecutionEnvironment>())).Returns(mockAdvancedRecordset.Object);
+            mockAdvancedRecordsetFactory.Setup(advancedRecordsetFactory => advancedRecordsetFactory.New(It.IsAny<IExecutionEnvironment>())).Returns(mockAdvancedRecordset.Object);
 
             using (var viewModel = new AdvancedRecordsetActivityWorker(null, mockAdvancedRecordset.Object, mockAdvancedRecordsetFactory.Object))
             {
@@ -424,26 +422,37 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(AdvancedRecordsetActivityWorker))]
         public void AdvancedRecordsetActivityWorker_ExecuteRecordset_With_No_DeclareVariables()
         {
-            const string tableName = "person";
-            const string hashCode = "hashCode";
             var advancedRecordsetActivity = CreateAdvancedRecordsetActivity();
             advancedRecordsetActivity.SqlQuery = "Select * from person";
 
+            const string tableName = "tableName";
+            const string sqlQuery = "sqlQuery";
+
+            var dataTable = new DataTable("myTable")
+            {
+                TableName = "table"
+            };
+            dataTable.Rows.Add();
+
+            var dataSet = new DataSet();
+            dataSet.Tables.Add(dataTable);
+
+            var started = false;
+
             var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
             mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.LoadRecordsetAsTable(tableName));
-            //mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ExecuteQuery(sqlQuery)).Returns(dataSet)
-            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.DeleteTableInSqlite(hashCode));
-
-            var executionEnvironment = new Mock<IExecutionEnvironment>();
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
-            mockDSFDataObject.Setup(dsfDataObject => dsfDataObject.Environment).Returns(executionEnvironment.Object);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>())).Returns(sqlQuery);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ExecuteQuery(sqlQuery)).Returns(dataSet);
+            mockAdvancedRecordset.Setup(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started));
 
             using (var viewModel = new AdvancedRecordsetActivityWorker(advancedRecordsetActivity, mockAdvancedRecordset.Object))
             {
-                viewModel.ExecuteRecordset(mockDSFDataObject.Object, 0);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.LoadRecordsetAsTable("person"), Times.Once);
-                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.DeleteTableInSqlite(hashCode), Times.Once);
+                viewModel.ExecuteSql(0, ref started);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.UpdateSqlWithHashCodes(It.IsAny<TSQLSelectStatement>()), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ExecuteQuery(sqlQuery), Times.Once);
+                mockAdvancedRecordset.Verify(advancedRecordset => advancedRecordset.ApplyResultToEnvironment(It.IsAny<string>(), It.IsAny<ICollection<IServiceOutputMapping>>(), It.IsAny<List<DataRow>>(), It.IsAny<bool>(), It.IsAny<int>(), ref started), Times.Once);
             }
         }
     }
 }
+

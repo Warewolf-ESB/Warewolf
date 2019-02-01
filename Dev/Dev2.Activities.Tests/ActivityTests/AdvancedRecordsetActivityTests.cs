@@ -204,17 +204,16 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_Dispose()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
-            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>();
-            workerInvoker.Setup(o => o.Dispose());
-            activity.WorkerInvoker = workerInvoker.Object;
-            activity.WorkerInvoker.Dispose();
-            workerInvoker.Verify(o => o.Dispose());
-            activity.Dispose();
+            var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
+            mockAdvancedRecordset.Setup(o => o.Dispose());
 
-            Assert.IsNull(activity.WorkerInvoker.AdvancedRecordset);
+            var workerInvoker = GetAdvancedRecordsetWorker(mockAdvancedRecordset);
+            mockAdvancedRecordset.Object.Dispose();
+            workerInvoker.Dispose();
+
+            mockAdvancedRecordset.Verify(r => r.Dispose());
         }
-
+       
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
