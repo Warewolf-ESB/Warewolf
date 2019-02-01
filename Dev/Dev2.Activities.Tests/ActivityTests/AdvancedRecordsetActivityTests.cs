@@ -240,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(0, outputResults.Count);
 
             var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
-            Assert.AreEqual(0, getDebugInputs.Count);
+            Assert.AreEqual(1, getDebugInputs.Count);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
