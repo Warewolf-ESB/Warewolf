@@ -2175,6 +2175,7 @@ namespace Dev2.Activities.Specs.TestFramework
         ServiceTestViewModel AddTestStep(string actNameToFind)
         {
             var serviceTest = GetTestFrameworkFromContext();
+
             var helper = new WorkflowHelper();
             var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
             Assert.IsNotNull(builder);
