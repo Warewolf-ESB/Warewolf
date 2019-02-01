@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.TOTests
             };
 
             var actual = dataColumnMapping.GetHashCode();
-            Assert.AreEqual(240939680, actual);
+            Assert.AreNotEqual(0, actual);
         }
         [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
