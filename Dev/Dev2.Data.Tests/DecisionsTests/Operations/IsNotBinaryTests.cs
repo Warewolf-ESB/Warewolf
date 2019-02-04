@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -11,7 +11,7 @@
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.DecisionsTests
+namespace Dev2.Data.Tests.DecisionsTests.Operations
 {
     /// <summary>
     /// Is Not Binary Decision
@@ -19,11 +19,10 @@ namespace Dev2.Data.Tests.DecisionsTests
     [TestClass]
     public class IsNotBinaryTests
     {
-
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsNotEqual_Invoke")]
-        public void IsNotBinary_Invoke_ItemsEqual_ReturnsTrue()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_ItemsEqual_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotBinary();
@@ -36,9 +35,9 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsEqual_Invoke")]
-        public void IsNotBinary_Invoke_NotEqualItems_ReturnsFalse()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_NotEqualItems_ReturnsTrue()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotBinary();
@@ -51,8 +50,23 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsEqual_HandlesType")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_EmptyColumns_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotBinary();
+            var cols = new string[1];
+            cols[0] = null;
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
         public void IsNotBinary_HandlesType_ReturnsIsEndsWithType()
         {
             var expected = enDecisionType.IsNotBinary;

@@ -123,7 +123,7 @@
     <Compile Include="DecisionsTests\IsHexTests.cs" />
     <Compile Include="DecisionsTests\IsNotAlphanumericTests.cs" />
     <Compile Include="DecisionsTests\IsNotBase64Tests.cs" />
-    <Compile Include="DecisionsTests\IsNotBinaryTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBinaryTests.cs" />
     <Compile Include="DecisionsTests\IsNotDateTests.cs" />
     <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
     <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
