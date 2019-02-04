@@ -423,7 +423,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellVMExplorer.Setup(p => p.Environments).Returns(mockEnvironments);            
             explorerVM.Setup(p => p.Environments).Returns(mockEnvironments);
             requestServiceNameVM.Setup(p => p.ShowSaveDialog()).Returns(System.Windows.MessageBoxResult.OK);
-            requestServiceNameVM.Setup(p => p.ResourceName).Returns(new Dev2.Common.Interfaces.SaveDialog.ResourceName("Some Awesome Path", "Cool Resource Name"));
+            requestServiceNameVM.Setup(p => p.ResourceName).Returns(new Dev2.Common.SaveDialog.ResourceName("Some Awesome Path", "Cool Resource Name"));
             requestServiceNameVM.Setup(p => p.SingleEnvironmentExplorerViewModel).Returns(explorerVM.Object);
             var task = Task.FromResult(requestServiceNameVM.Object);
             _manageOAuthSourceViewModel.RequestServiceNameViewModel = task;
