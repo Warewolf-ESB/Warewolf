@@ -55,16 +55,10 @@ namespace Dev2.Activities
         }
         private void Construct(IAdvancedRecordsetActivityWorker worker)
         {
-            WorkerInvoker = worker;
+            _worker = worker;
             Type = "Advanced Recordset";
             DisplayName = "Advanced Recordset";
             DeclareVariables = new List<INameValue>();
-        }
-
-        public IAdvancedRecordsetActivityWorker WorkerInvoker
-        {
-            get => _worker ?? (_worker = new AdvancedRecordsetActivityWorker(this));
-            set => _worker = value;
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;

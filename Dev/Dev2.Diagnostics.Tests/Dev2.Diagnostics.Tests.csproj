@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="Dev2LoggerTests.cs" />
     <Compile Include="DebugMessageRepoTests.cs" />
+    <Compile Include="ExtensionsTests.cs" />
     <Compile Include="WebDebugMessageRepoTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
