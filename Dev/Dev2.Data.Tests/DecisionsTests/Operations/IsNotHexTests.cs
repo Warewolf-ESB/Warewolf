@@ -11,7 +11,7 @@
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.DecisionsTests
+namespace Dev2.Data.Tests.DecisionsTests.Operations
 {
     /// <summary>
     /// Is Not Hex Decision
@@ -20,9 +20,9 @@ namespace Dev2.Data.Tests.DecisionsTests
     public class IsNotHexTests
     {
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemsEqual_ReturnsTrue()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_Invoke_ItemsEqual_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotHex();
@@ -35,9 +35,9 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemsEqual_ReturnsFalse()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_Invoke_ItemsEqual_ReturnsTrue()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotHex();
@@ -50,9 +50,9 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemWithxEqual_ReturnsTrue()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_Invoke_ItemWithxEqual_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotHex();
@@ -65,9 +65,9 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_NotEqualItems_ReturnsFalse()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_Invoke_NotEqualItems_ReturnsTrue()
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotHex();
@@ -80,9 +80,24 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_HandlesType")]
-        public void IsHex_HandlesType_ReturnsIsEndsWithType()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_Invoke_EmptyColumns_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotHex();
+            var cols = new string[1];
+            cols[0] = null;
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotHex))]
+        public void IsNotHex_HandlesType_ReturnsIsEndsWithType()
         {
             var expected = enDecisionType.IsNotHex;
             //------------Setup for test--------------------------
