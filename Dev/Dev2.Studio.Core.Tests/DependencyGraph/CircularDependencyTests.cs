@@ -24,10 +24,11 @@ namespace Dev2.Core.Tests.DependencyGraph
         [TestCategory(nameof(CircularDependency))]
         public void CircularDependency_Constructor_GivenNodes_ShouldExpectDefaults()
         {
-            //---------------Set up test pack-------------------
-            var circularDependency = new CircularDependency(new List<IDependencyVisualizationNode>());
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
+            var list = new List<IDependencyVisualizationNode>();
+
+            var circularDependency = new CircularDependency(list);
+
+            Assert.AreNotEqual(list, circularDependency.Nodes);
             Assert.AreEqual(0, circularDependency.Nodes.Count, "circularDependency.Nodes");
         }
 
