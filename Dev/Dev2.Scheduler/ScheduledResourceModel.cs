@@ -325,7 +325,7 @@ namespace Dev2.Scheduler
                 return false;
             }
 
-            return serializer.Deserialize<List<IDebugState>>(_file.ReadAllText(file)).Last().HasError;
+            return serializer.Deserialize<List<IDebugState>>(FileWrapper.ReadAllText(file)).Last().HasError;
         }
 
         bool DebugHistoryExists(string debugHistoryPath, string correlationId) => DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
@@ -351,7 +351,7 @@ namespace Dev2.Scheduler
                 return new List<IDebugState>();
             }
 
-            return serializer.Deserialize<List<IDebugState>>(_file.ReadAllText(file));
+            return serializer.Deserialize<List<IDebugState>>(FileWrapper.ReadAllText(file));
         }
 
         IDev2TaskDefinition CreateNewTask(IScheduledResource resource)
