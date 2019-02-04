@@ -35,7 +35,7 @@ namespace Dev2.Common.Utils
             }
             if (args.Any(a => a.Value == null))
             {
-                throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b}{Environment.NewLine}")));
+                throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b.Key}{Environment.NewLine}")));
             }
 
         }
