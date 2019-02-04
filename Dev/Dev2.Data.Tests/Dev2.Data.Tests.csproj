@@ -128,7 +128,7 @@
     <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
     <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
     <Compile Include="DecisionsTests\IsNotErrorTests.cs" />
-    <Compile Include="DecisionsTests\IsNotHexTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotHexTests.cs" />
     <Compile Include="DecisionsTests\IsNotNullTests.cs" />
     <Compile Include="DecisionsTests\IsNotNumericTests.cs" />
     <Compile Include="DecisionsTests\IsNotTextTests.cs" />
