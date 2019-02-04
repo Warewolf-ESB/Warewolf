@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.TOTests
             };
 
             var actual = dataColumnMapping.GetHashCode();
-            Assert.AreEqual(240939680, actual);
+            Assert.AreNotEqual(0, actual);
         }
         [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
@@ -208,13 +208,13 @@ namespace Dev2.Tests.Activities.TOTests
         {
             var dataColumnMapping = new DataColumnMapping()
             {
-                IndexNumber = 1,
+                IndexNumber = 0,
                 InputColumn = null,
                 OutputColumn = null
             };
 
             var actual = dataColumnMapping.GetHashCode();
-            Assert.AreEqual(62570773, actual);
+            Assert.AreEqual(0, actual);
         }
         [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]

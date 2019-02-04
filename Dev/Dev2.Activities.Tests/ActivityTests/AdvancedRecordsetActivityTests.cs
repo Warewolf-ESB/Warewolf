@@ -159,19 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
-        [Owner("Candice Daniel")]
-        [TestCategory(nameof(AdvancedRecordsetActivity))]
-        public void AdvancedRecordsetActivity_WorkerInvoker_Expect_WorkertobeReturned()
-        {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
-            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>().Object;
-            activity.WorkerInvoker = workerInvoker;
-            var actual = activity.WorkerInvoker;
-            Assert.AreEqual(workerInvoker, actual);
-            Assert.IsNotInstanceOfType(actual, typeof(WebRequestInvoker));
-        }
-
+       
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
@@ -204,17 +192,16 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory(nameof(AdvancedRecordsetActivity))]
         public void AdvancedRecordsetActivity_Worker_Dispose()
         {
-            var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
-            var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>();
-            workerInvoker.Setup(o => o.Dispose());
-            activity.WorkerInvoker = workerInvoker.Object;
-            activity.WorkerInvoker.Dispose();
-            workerInvoker.Verify(o => o.Dispose());
-            activity.Dispose();
+            var mockAdvancedRecordset = new Mock<IAdvancedRecordset>();
+            mockAdvancedRecordset.Setup(o => o.Dispose());
 
-            Assert.IsNull(activity.WorkerInvoker.AdvancedRecordset);
+            var workerInvoker = GetAdvancedRecordsetWorker(mockAdvancedRecordset);
+            mockAdvancedRecordset.Object.Dispose();
+            workerInvoker.Dispose();
+
+            mockAdvancedRecordset.Verify(r => r.Dispose());
         }
-
+       
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(AdvancedRecordsetActivity))]
@@ -223,7 +210,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetAdvancedRecordsetActivity(new Mock<IAdvancedRecordsetActivityWorker>());
             var workerInvoker = new Mock<IAdvancedRecordsetActivityWorker>();
             workerInvoker.Setup(o => o.Dispose());
-            activity.WorkerInvoker = workerInvoker.Object;
 
             var executionEnvironment = new ExecutionEnvironment();
             executionEnvironment.Assign("[[Switch]]", "1", 1);
@@ -240,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(0, outputResults.Count);
 
             var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
-            Assert.AreEqual(0, getDebugInputs.Count);
+            Assert.AreEqual(1, getDebugInputs.Count);
         }
 
         [TestMethod, DeploymentItem(@"x86\SQLite.Interop.dll")]
@@ -296,7 +282,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var workerInvoker = GetAdvancedRecordsetWorker(mockAdvancedRecordset);
             var activity = new AdvancedRecordsetActivity(workerInvoker);
             activity.SqlQuery = "Select * from person";
-            activity.WorkerInvoker = workerInvoker;
             //TODO: this is failing as it needs a mock of the recorset
             // workerInvoker.ExecuteSql(0, ref started);
         }

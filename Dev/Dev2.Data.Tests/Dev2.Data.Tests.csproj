@@ -173,10 +173,12 @@
     <Compile Include="PathOperations\Dev2DataListDecisionHandlerTests.cs" />
     <Compile Include="ListOfIndexTests.cs" />
     <Compile Include="ReverseIndexIteratorTests.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2SwitchTests.cs" />
     <Compile Include="TO\DateTimeVerifyPartTests.cs" />
     <Compile Include="TO\SafeTokenHandleTests.cs" />
     <Compile Include="TO\Dev2ZipOperationTOTests.cs" />
     <Compile Include="TO\Dev2PutOperationTOTests.cs" />
+    <Compile Include="TO\IntellisenseFilterOpsTOTests.cs" />
     <Compile Include="TO\UpsertTOTests.cs" />
     <Compile Include="Operations\Dev2ReplaceOperationTest.cs" />
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />

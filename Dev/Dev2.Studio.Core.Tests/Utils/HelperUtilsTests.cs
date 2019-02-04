@@ -8,11 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
+
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Controller;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
-using System.IO;
+using System.Windows;
 
 namespace Dev2.Core.Tests.Utils
 {
@@ -85,6 +88,24 @@ namespace Dev2.Core.Tests.Utils
         {
             var serverLogSettingsConfigFile = HelperUtils.GetServerLogSettingsConfigFile();
             Assert.IsTrue(serverLogSettingsConfigFile.Contains("warewolf-Server.log"));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("HelperUtils")]
+        public void HelperUtils_ShowTrustRelationshipError_ShowTrustRelationshipError_AreEqual_Expect()
+        {
+            //-----------------------Arrange--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+            
+            var vv = new SystemException("The trust relationship between this workstation and the primary domain failed");
+            //-----------------------Act------------------------------
+            HelperUtils.ShowTrustRelationshipError(mockPopupController.Object, vv);
+            //-----------------------Assert---------------------------
+            mockPopupController.VerifySet(o => o.Header = "Error connecting to server", Times.Once);
+            mockPopupController.VerifySet(o => o.ImageType = MessageBoxImage.Error, Times.Once);
+            mockPopupController.Verify(o => o.Show(), Times.Once);
+            Assert.AreEqual(MessageBoxButton.OK, mockPopupController.Object.Buttons);
         }
     }
 }
