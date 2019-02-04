@@ -189,6 +189,7 @@
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="TO\ErrorResultTOTests.cs" />
     <Compile Include="TO\CompileMessageTOTests.cs" />
+    <Compile Include="ServiceTestOutputTOTests.cs" />
     <Compile Include="UtilTests\CommonDataUtilsTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfIteratorTests.cs" />
