@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.SaveDialog;
 
 namespace Dev2.Studio.Interfaces
 {

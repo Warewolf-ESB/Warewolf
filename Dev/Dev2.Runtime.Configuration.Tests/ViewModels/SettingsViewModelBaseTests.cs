@@ -19,7 +19,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SettingsViewModelBase))]
-        public void SettingsViewModelBase_Object_SetProperty_ExpertValue()
+        public void SettingsViewModelBase_Object_SetProperty_ExpectValue()
         {
             //----------------------Arrange------------------------
             var obj = new object();
@@ -34,7 +34,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SettingsViewModelBase))]
-        public void SettingsViewModelBase_UnderlyingObjectChanged_NotCalled_ExpertFalse()
+        public void SettingsViewModelBase_UnderlyingObjectChanged_NotCalled_ExpectFalse()
         {
             //----------------------Arrange------------------------
             var isDelegateCalled = false;
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(SettingsViewModelBase))]
-        public void SettingsViewModelBase_UnderlyingObjectChanged_IsCalled_ExpertTrue()
+        public void SettingsViewModelBase_UnderlyingObjectChanged_IsCalled_ExpectTrue()
         {
             //----------------------Arrange------------------------
             var isDelegateCalled = false;

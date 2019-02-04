@@ -12,22 +12,17 @@ using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Communication;
 using Dev2.Data.TO;
-using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
-using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
@@ -146,6 +141,57 @@ namespace Dev2.Tests.Activities.Activities
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
+        public void DsfComDllActivity_TryExecute_injectVal_IsNull_Expect_NoError()
+        {
+            //-----------------------Arrange---------------------
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockPluginAction = new Mock<IPluginAction>();
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockOutputDescription = new Mock<IOutputDescription>();
+            var mockPath = new Mock<IPath>();
+            var mockDataSourceShape = new Mock<IDataSourceShape>();
+
+            var comPluginSource = new ComPluginSource()
+            {
+                ClsId = "some ClsID"
+            };
+
+            Thread.CurrentPrincipal = null;
+            var identity = new GenericIdentity("User");
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+            var dataListID = Guid.NewGuid();
+            var environment = new ExecutionEnvironment();
+            var outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping() };
+            var dsfComDllActivity = new TestDsfComDllActivity()
+            {
+                ResourceCatalog = mockResourceCatalog.Object,
+                Method = mockPluginAction.Object,
+                Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "") },
+                Outputs = outputs,
+                OutputDescription = mockOutputDescription.Object
+            };
+
+            mockDataSourceShape.Setup(o => o.Paths).Returns(new List<IPath> { mockPath.Object });
+            mockPluginAction.Setup(o => o.Method).Returns("TestMethod");
+            mockResourceCatalog.Setup(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(comPluginSource);
+            mockOutputDescription.Setup(o => o.DataSourceShapes).Returns(new List<IDataSourceShape> { mockDataSourceShape.Object });
+            mockOutputDescription.Setup(o => o.Format).Returns(OutputFormats.ShapedXML);
+            mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+            //-----------------------Act-------------------------
+            dsfComDllActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
+            //-----------------------Assert----------------------
+            Assert.AreEqual(comPluginSource.ClsId, dsfComDllActivity._comPluginInvokeArgs.ClsId);
+            Assert.AreEqual(0, errorResult.FetchErrors().Count);
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfComDllActivity))]
         public void DsfComDllActivity_GetHashCode_IsNotNull_Expect_True()
         {
             //-----------------------Arrange---------------------
@@ -238,40 +284,6 @@ namespace Dev2.Tests.Activities.Activities
         {
             _comPluginInvokeArgs = args;
         }
-    }
-
-    internal class ServiceTestExecutionContainerMock : ServiceTestExecutionContainer
-    {
-        public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
-            : base(sa, dataObj, theWorkspace, esbChannel, request)
-        {
-
-        }
-        public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
-            : base(sa, dataObj, theWorkspace, esbChannel, request)
-        {
-            TstCatalog = catalog;
-            ResourceCat = resourceCatalog;
-        }
-    }
-
-
-    class TestServiceInput : IServiceInput
-    {
-        public string Name { get; set; }
-        string _value;
-        public string Value { get => _value; set { _value = value; throw new Exception("Service input value"); } }
-        public bool RequiredField { get; set; }
-        public bool EmptyIsNull { get; set; }
-        public string TypeName { get; set; }
-        public enIntellisensePartType IntellisenseFilter { get; set; }
-        public bool IsObject { get; set; }
-        public string Dev2ReturnType { get; set; }
-        public string ShortTypeName { get; set; }
-
-        public string FullName { get; set; }
-
-        public string ActionName { get; set; }
     }
 }
 
