@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Factories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
@@ -34,14 +35,20 @@ namespace Dev2.Activities
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }
-       
+        private readonly IResponseManagerFactory _responseManagerFactory;
+        private IResponseManager ResponseManager { get; set; }
+
         public DsfComDllActivity()
+            : this(new ResponseManagerFactory())
+        { }
+
+        public DsfComDllActivity(IResponseManagerFactory responseManagerFactory)
         {
             Type = "Com DLL Connector";
             DisplayName = "Com DLL";
+            _responseManagerFactory = responseManagerFactory;
         }
-
-
+        
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
@@ -127,7 +134,10 @@ namespace Dev2.Activities
             }
             ExecuteInsideImpersonatedContext(args);
 
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager = _responseManagerFactory.New(OutputDescription);
+            ResponseManager.Outputs = Outputs;
+            ResponseManager.IsObject = IsObject;
+            ResponseManager.ObjectName = ObjectName;
             ResponseManager.PushResponseIntoEnvironment(_result, update, dataObject, false);
         }
 
@@ -135,10 +145,7 @@ namespace Dev2.Activities
         {
             Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString(); });
         }
-
-        public IResponseManager ResponseManager { get; set; }
         
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)

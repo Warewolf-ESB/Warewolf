@@ -123,12 +123,12 @@
     <Compile Include="DecisionsTests\IsHexTests.cs" />
     <Compile Include="DecisionsTests\IsNotAlphanumericTests.cs" />
     <Compile Include="DecisionsTests\IsNotBase64Tests.cs" />
-    <Compile Include="DecisionsTests\IsNotBinaryTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBinaryTests.cs" />
     <Compile Include="DecisionsTests\IsNotDateTests.cs" />
     <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
     <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
     <Compile Include="DecisionsTests\IsNotErrorTests.cs" />
-    <Compile Include="DecisionsTests\IsNotHexTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotHexTests.cs" />
     <Compile Include="DecisionsTests\IsNotNullTests.cs" />
     <Compile Include="DecisionsTests\IsNotNumericTests.cs" />
     <Compile Include="DecisionsTests\IsNotTextTests.cs" />
@@ -156,6 +156,7 @@
     <Compile Include="PathOperations\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="PathOperations\ActivityIOFactoryTests.cs" />
     <Compile Include="PathOperations\Dev2ActivityIOPathUtilsTests.cs" />
+    <Compile Include="PathOperations\Extention\PathExtensionsTests.cs" />
     <Compile Include="PathOperations\LogonProviderTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />

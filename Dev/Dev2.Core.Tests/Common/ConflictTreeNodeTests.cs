@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Windows;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -87,7 +88,7 @@ namespace Dev2.Tests
 
             var point = new Point();
             var point1 = new Point();
-            
+
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity1.Object, point1);
 
             var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point);
@@ -96,7 +97,7 @@ namespace Dev2.Tests
             //----------------------Assert-------------------------
             Assert.IsFalse(treeNode);
         }
-        
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ConflictTreeNode))]
@@ -170,11 +171,13 @@ namespace Dev2.Tests
         public void ConflictTreeNode_Equals_ChildrenSequenceEqual_ExpectTrue()
         {
             //----------------------Arrange------------------------
+            var activityId = Guid.NewGuid().ToString();
             var mockDev2Activity = new Mock<IDev2Activity>();
-            var mockDev2Activity1 = new Mock<IDev2Activity>();
+            mockDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(activityId);
 
+            var childActivityId = Guid.NewGuid().ToString();
             var mockChildDev2Activity = new Mock<IDev2Activity>();
-            var mockChild1Dev2Activity1 = new Mock<IDev2Activity>();
+            mockChildDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(childActivityId);
 
             var mockConflictTreeNode = new Mock<IConflictTreeNode>();
             var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
@@ -185,15 +188,15 @@ namespace Dev2.Tests
             {
                 UniqueId = "testUniqueId"
             };
-            var child1 = new ConflictTreeNode(mockChild1Dev2Activity1.Object, point)
+            var child1 = new ConflictTreeNode(mockChildDev2Activity.Object, point)
             {
                 UniqueId = "testUniqueId"
             };
-            
+
             mockConflictTreeNode.Setup(o => o.UniqueId).Returns("TestUniqueId");
             mockConflictTreeNode1.Setup(o => o.UniqueId).Returns("TestUniqueId");
 
-            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity1.Object, point);
+            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point);
             conflictTreeNode.AddChild(child, "test");
 
             var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
@@ -201,9 +204,54 @@ namespace Dev2.Tests
             //----------------------Act----------------------------
             var treeNode = conflictTreeNode.Equals(conflictTreeNode1);
             //----------------------Assert-------------------------
-            // FIXME: IsTrue should pass?
-            //Assert.IsTrue(treeNode);
-            Assert.IsFalse(treeNode); 
+            Assert.IsTrue(treeNode);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ConflictTreeNode))]
+        public void ConflictTreeNode_Equals_ChildrenSequenceEqual_ExpectFalse()
+        {
+            //----------------------Arrange------------------------
+            var activityId = Guid.NewGuid().ToString();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(activityId);
+
+            var childActivityId = Guid.NewGuid().ToString();
+            var mockChildDev2Activity = new Mock<IDev2Activity>();
+            mockChildDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(childActivityId);
+
+            var mockConflictTreeNode = new Mock<IConflictTreeNode>();
+            var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
+
+            var point = new Point();
+
+            var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+            var child2 = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+            var child1 = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+
+            mockConflictTreeNode.Setup(o => o.UniqueId).Returns("TestUniqueId");
+            mockConflictTreeNode1.Setup(o => o.UniqueId).Returns("TestUniqueId");
+
+            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode.AddChild(child, "test");
+            conflictTreeNode.AddChild(child2, "test");
+
+            var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode1.AddChild(child1, "test");
+            //----------------------Act----------------------------
+            var treeNode = conflictTreeNode.Equals(conflictTreeNode1);
+            //----------------------Assert-------------------------
+            Assert.IsFalse(treeNode);
         }
 
         [TestMethod]
@@ -263,7 +311,7 @@ namespace Dev2.Tests
                 IsInConflict = true
             };
             //----------------------Act----------------------------
-            
+
             //----------------------Assert-------------------------
             Assert.AreEqual(point, conflictTreeNode.Location);
             Assert.IsTrue(conflictTreeNode.IsInConflict);

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -11,68 +11,38 @@
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.DecisionsTests
+namespace Dev2.Data.Tests.DecisionsTests.Operations
 {
     /// <summary>
-    /// Is Not Hex Decision
+    /// Is Not Binary Decision
     /// </summary>
     [TestClass]
-    public class IsNotHexTests
+    public class IsNotBinaryTests
     {
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemsEqual_ReturnsTrue()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_ItemsEqual_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsNotHex();
-            var cols = new string[1];
-            cols[0] = "01";
-            //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemsEqual_ReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var endsWith = new IsNotHex();
-            var cols = new string[1];
-            cols[0] = "BBB";
-            //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_ItemWithxEqual_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var endsWith = new IsNotHex();
-            var cols = new string[1];
-            cols[0] = "0x01";
-            //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_Invoke")]
-        public void IsHex_Invoke_NotEqualItems_ReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var endsWith = new IsNotHex();
+            var endsWith = new IsNotBinary();
             var cols = new string[2];
-            cols[0] = "TestData";
+            cols[0] = "101010";
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_NotEqualItems_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var endsWith = new IsNotBinary();
+            var cols = new string[2];
+            cols[0] = "aaa1";
             //------------Execute Test---------------------------
             var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
@@ -80,13 +50,28 @@ namespace Dev2.Data.Tests.DecisionsTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("IsHex_HandlesType")]
-        public void IsHex_HandlesType_ReturnsIsEndsWithType()
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_Invoke_EmptyColumns_ReturnsFalse()
         {
-            var expected = enDecisionType.IsNotHex;
             //------------Setup for test--------------------------
-            var isEndsWith = new IsNotHex();
+            var endsWith = new IsNotBinary();
+            var cols = new string[1];
+            cols[0] = null;
+            //------------Execute Test---------------------------
+            var result = endsWith.Invoke(cols);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(IsNotBinary))]
+        public void IsNotBinary_HandlesType_ReturnsIsEndsWithType()
+        {
+            var expected = enDecisionType.IsNotBinary;
+            //------------Setup for test--------------------------
+            var isEndsWith = new IsNotBinary();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, isEndsWith.HandlesType());
