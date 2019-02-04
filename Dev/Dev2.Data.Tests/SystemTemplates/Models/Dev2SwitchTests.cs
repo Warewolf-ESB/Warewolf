@@ -11,7 +11,7 @@
 using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.System_Templates.Models
+namespace Dev2.Data.Tests.SystemTemplates.Models
 {
     [TestClass]
     public class Dev2SwitchTests
