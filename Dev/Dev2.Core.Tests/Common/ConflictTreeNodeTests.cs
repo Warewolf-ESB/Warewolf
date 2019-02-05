@@ -166,7 +166,7 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        [Owner("Siphamandla Dube")]
+        [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConflictTreeNode))]
         public void ConflictTreeNode_Equals_ChildrenSequenceEqual_ExpectTrue()
         {
@@ -210,7 +210,91 @@ namespace Dev2.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(ConflictTreeNode))]
-        public void ConflictTreeNode_Equals_ChildrenSequenceEqual_ExpectFalse()
+        public void ConflictTreeNode_Equals_ChildrenSequenceEqual_IdDifference_ExpectFalse()
+        {
+            //----------------------Arrange------------------------
+            var activityId = Guid.NewGuid().ToString();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(activityId);
+
+            var childActivityId = Guid.NewGuid().ToString();
+            var mockChildDev2Activity = new Mock<IDev2Activity>();
+            mockChildDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(childActivityId);
+
+            var mockConflictTreeNode = new Mock<IConflictTreeNode>();
+            var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
+
+            var point = new Point();
+
+            var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+            var child1 = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId1"
+            };
+
+            mockConflictTreeNode.Setup(o => o.UniqueId).Returns("TestUniqueId");
+            mockConflictTreeNode1.Setup(o => o.UniqueId).Returns("TestUniqueId");
+
+            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode.AddChild(child, "test");
+
+            var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode1.AddChild(child1, "test");
+            //----------------------Act----------------------------
+            var treeNode = conflictTreeNode.Equals(conflictTreeNode1);
+            //----------------------Assert-------------------------
+            Assert.IsFalse(treeNode);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ConflictTreeNode))]
+        public void ConflictTreeNode_Equals_ChildrenSequenceEqual_NameDifference_ExpectFalse()
+        {
+            //----------------------Arrange------------------------
+            var activityId = Guid.NewGuid().ToString();
+            var mockDev2Activity = new Mock<IDev2Activity>();
+            mockDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(activityId);
+
+            var childActivityId = Guid.NewGuid().ToString();
+            var mockChildDev2Activity = new Mock<IDev2Activity>();
+            mockChildDev2Activity.Setup(dev2Activity => dev2Activity.UniqueID).Returns(childActivityId);
+
+            var mockConflictTreeNode = new Mock<IConflictTreeNode>();
+            var mockConflictTreeNode1 = new Mock<IConflictTreeNode>();
+
+            var point = new Point();
+
+            var child = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+            var child1 = new ConflictTreeNode(mockChildDev2Activity.Object, point)
+            {
+                UniqueId = "testUniqueId"
+            };
+
+            mockConflictTreeNode.Setup(o => o.UniqueId).Returns("TestUniqueId");
+            mockConflictTreeNode1.Setup(o => o.UniqueId).Returns("TestUniqueId");
+
+            var conflictTreeNode = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode.AddChild(child, "test");
+
+            var conflictTreeNode1 = new ConflictTreeNode(mockDev2Activity.Object, point);
+            conflictTreeNode1.AddChild(child1, "test1");
+            //----------------------Act----------------------------
+            var treeNode = conflictTreeNode.Equals(conflictTreeNode1);
+            //----------------------Assert-------------------------
+            Assert.IsFalse(treeNode);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ConflictTreeNode))]
+        public void ConflictTreeNode_Equals_ChildrenSequenceEqual_ChildCountDifference_ExpectFalse()
         {
             //----------------------Arrange------------------------
             var activityId = Guid.NewGuid().ToString();
