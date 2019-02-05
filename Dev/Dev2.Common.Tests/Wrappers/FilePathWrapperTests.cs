@@ -47,19 +47,6 @@ namespace Dev2.Common.Tests.Wrappers
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(FilePathWrapper))]
-        public void FilePathWrapper_GetType_AreEqual_ToFilePathWrapper_Type_ExpectTrue()
-        {
-            //------------------------Arrange------------------------
-            var filePathWrapper = new FilePathWrapper();
-            //------------------------Act----------------------------
-            var combinedTestPaths = filePathWrapper.GetType();
-            //------------------------Assert-------------------------
-            Assert.AreEqual(typeof(FilePathWrapper), combinedTestPaths);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(FilePathWrapper))]
         public void FilePathWrapper_IsPathRooted_HasRoot_LocalDir_ExpectTrue()
         {
             //------------------------Arrange------------------------
@@ -78,7 +65,7 @@ namespace Dev2.Common.Tests.Wrappers
         public void FilePathWrapper_IsPathRooted_HasRoot_UncPath_ExpectTrue()
         {
             //------------------------Arrange------------------------
-            string UncPath = @"\\myPc\mydir\myfile";
+            var UncPath = @"\\myPc\mydir\myfile";
 
             var filePathWrapper = new FilePathWrapper();
             //------------------------Act----------------------------
@@ -93,7 +80,7 @@ namespace Dev2.Common.Tests.Wrappers
         public void FilePathWrapper_IsPathRooted_HasNoRoot_relativePath_ExpectFalse()
         {
             //------------------------Arrange------------------------
-            string relativePath = @"mydir\sudir\";
+            var relativePath = @"mydir\sudir\";
 
             var filePathWrapper = new FilePathWrapper();
             //------------------------Act----------------------------
