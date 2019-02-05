@@ -90,6 +90,7 @@
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
     <Compile Include="SingleApiTests.cs" />
+    <Compile Include="AssemblyWrapperTests.cs" />
     <Compile Include="ExternalProcessExecutorTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
@@ -132,10 +133,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
-      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
-      <Name>Warewolf.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
