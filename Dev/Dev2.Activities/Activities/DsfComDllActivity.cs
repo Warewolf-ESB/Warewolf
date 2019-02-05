@@ -36,7 +36,7 @@ namespace Dev2.Activities
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         private readonly IResponseManagerFactory _responseManagerFactory;
-        private IResponseManager ResponseManager { get; set; }
+        public IResponseManager ResponseManager { get; set; }
 
         public DsfComDllActivity()
             : this(new ResponseManagerFactory())
@@ -92,7 +92,7 @@ namespace Dev2.Activities
         {
             if (Inputs == null || Inputs.Count == 0)
             {
-                PerfromExecution(update, dataObject, args);
+                PerformExecution(update, dataObject, args);
             }
             else
             {
@@ -114,12 +114,12 @@ namespace Dev2.Activities
 
                         pos++;
                     }
-                    PerfromExecution(update, dataObject, args);
+                    PerformExecution(update, dataObject, args);
                 }
             }
         }
 
-        void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
+        void PerformExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
         {
             if (!IsObject)
             {
