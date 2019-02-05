@@ -232,9 +232,8 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-            model.DirectoryHelper = dirHelper.Object;
-            model.FileWrapper = fileHelper.Object;
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+
             var serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
             var history = model.CreateHistory(res.Object);
@@ -277,9 +276,8 @@ securityWrapper
 
             //test
 
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-            model.DirectoryHelper = dirHelper.Object;
-            model.FileWrapper = fileHelper.Object;
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+
             var history = model.CreateHistory(res.Object);
             //WE ONLY RETURN EXECUTED HISTORY
             Assert.AreEqual(0, history.Count);
@@ -312,9 +310,8 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-            model.DirectoryHelper = dirHelper.Object;
-            model.FileWrapper = fileHelper.Object;
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+
             var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
@@ -347,9 +344,8 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-            model.DirectoryHelper = dirHelper.Object;
-            model.FileWrapper = fileHelper.Object;
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName, fileHelper.Object, dirHelper.Object);
+
             var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
