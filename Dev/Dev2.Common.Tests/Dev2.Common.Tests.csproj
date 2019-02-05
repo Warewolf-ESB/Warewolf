@@ -89,6 +89,8 @@
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
+    <Compile Include="SingleApiTests.cs" />
+    <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="ObservableNameValueTests.cs" />
     <Compile Include="Utils\VerifyArgumentTests.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Utils\SearchUtilTests.cs" />
     <Compile Include="Wrappers\TimerWrapperTests.cs" />
     <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
+    <Compile Include="Wrappers\FilePathWrapperTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -128,6 +131,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
