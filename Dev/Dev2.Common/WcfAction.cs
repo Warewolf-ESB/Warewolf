@@ -10,17 +10,18 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Common
 {
-    public interface IWcfAction
+    public class WcfAction : IWcfAction
     {
-        string FullName { get; set; }
-        string Method { get; set; }
-        IList<IServiceInput> Inputs { get; set; }
-        Type ReturnType { get; set; }
-        IList<INameValue> Variables { get; set; }
-        string GetHashCodeBySource();
+        public string FullName { get; set; }
+        public string Method { get; set; }
+        public IList<IServiceInput> Inputs { get; set; }
+        public Type ReturnType { get; set; }
+        public IList<INameValue> Variables { get; set; }
+        public string GetHashCodeBySource() => FullName + Method;
     }
 }
