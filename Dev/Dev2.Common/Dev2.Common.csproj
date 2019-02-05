@@ -249,6 +249,7 @@
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
     <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
+    <Compile Include="Wrappers\ProcessWrapper.cs" />
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
