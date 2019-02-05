@@ -33,7 +33,6 @@ namespace Dev2.Data.Tests
         {
             var indexes = new List<int> { 1, 2, 3 };
             var listIndexIterator = new ListIndexIterator(indexes);
-            Assert.IsNotNull(listIndexIterator);
             var maxIndex = listIndexIterator.MaxIndex();
             Assert.AreEqual(3, maxIndex);
         }
@@ -45,7 +44,6 @@ namespace Dev2.Data.Tests
         {
             var indexes = new List<int> { 1, 2, 3 };
             var listIndexIterator = new ListIndexIterator(indexes);
-            Assert.IsNotNull(listIndexIterator);
             Assert.IsFalse(listIndexIterator.IsEmpty);
             Assert.IsTrue(listIndexIterator.HasMore());
             var fetchNextIndex = listIndexIterator.FetchNextIndex();
