@@ -17,7 +17,6 @@ namespace Dev2.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols)
         {
-
             if(!string.IsNullOrEmpty(cols[0]))
             {
                 return !cols[0].IsAlphaNumeric();
