@@ -22,11 +22,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsHex_Invoke_ItemsEqual_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsHex();
+            var isHex = new IsHex();
             var cols = new string[1];
             cols[0] = "01";
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isHex.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -37,11 +37,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsHex_Invoke_ItemWithxEqual_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsHex();
+            var isHex = new IsHex();
             var cols = new string[1];
             cols[0] = "0x01";
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isHex.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -52,11 +52,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsHex_Invoke_NotEqualItems_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsHex();
+            var isHex = new IsHex();
             var cols = new string[2];
             cols[0] = "TestData";
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isHex.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -67,11 +67,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsHex_Invoke_EmptyColumns_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsHex();
+            var isHex = new IsHex();
             var cols = new string[1];
             cols[0] = null;
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isHex.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -79,14 +79,14 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(IsHex))]
-        public void IsHex_HandlesType_ReturnsIsEndsWithType()
+        public void IsHex_HandlesType_ReturnsIsIsHexType()
         {
             var expected = enDecisionType.IsHex;
             //------------Setup for test--------------------------
-            var isEndsWith = new IsHex();
+            var isisHex = new IsHex();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected, isEndsWith.HandlesType());
+            Assert.AreEqual(expected, isisHex.HandlesType());
         }
     }
 }
