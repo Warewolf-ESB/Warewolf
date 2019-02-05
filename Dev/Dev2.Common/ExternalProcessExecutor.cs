@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces;
+using Dev2.Common.Wrappers;
 using System;
 using System.Diagnostics;
 
@@ -16,14 +17,25 @@ namespace Dev2.Common
 {
     public class ExternalProcessExecutor : IExternalProcessExecutor
     {
-        #region Implementation of IExternalProcessExecutor
+        private readonly IProcessFactory _processWrapper;
+
+        public ExternalProcessExecutor(IProcessFactory processWrapper)
+        {
+            _processWrapper = processWrapper;
+        }
+
+        public ExternalProcessExecutor()
+            :this(new Process() as IProcessFactory)
+        {
+
+        }
 
         public void OpenInBrowser(Uri url)
         {
-            Process start = null;
+            IProcess start = null;
             try
             {
-                start = Process.Start(url.ToString());
+                start = _processWrapper.Start(url.ToString()) ;
             }
             catch (TimeoutException)
             {
@@ -37,8 +49,6 @@ namespace Dev2.Common
             }
         }
 
-        public Process Start(ProcessStartInfo startInfo) => Process.Start(startInfo);
-
-        #endregion Implementation of IExternalProcessExecutor
+        public Process Start(ProcessStartInfo startInfo) => _processWrapper.Start(startInfo).Unwrap();
     }
 }
