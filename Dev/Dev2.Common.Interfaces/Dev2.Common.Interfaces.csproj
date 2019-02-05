@@ -417,7 +417,7 @@
     <Compile Include="Monitoring\IWarewolfPerformanceCounterLocater.cs" />
     <Compile Include="Monitoring\IPerformanceCounterCategory.cs" />
     <Compile Include="Monitoring\WarewolfPerfCounterType.cs" />
-    <Compile Include="NameValue.cs" />
+    <Compile Include="INameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="PluginServiceDefinition.cs" />

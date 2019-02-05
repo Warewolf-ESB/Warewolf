@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
 using Dev2.Activities.WcfEndPoint;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
