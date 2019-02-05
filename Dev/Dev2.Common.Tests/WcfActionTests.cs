@@ -11,8 +11,8 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
-using Warewolf.Core;
 
 namespace Dev2.Common.Tests
 {
@@ -26,10 +26,13 @@ namespace Dev2.Common.Tests
         {
             const string expectedFullName = "FullName";
             const string expectedMethod = "Method";
-            var expectedInputs = new List<IServiceInput>
-                {
-                    new ServiceInput("name","")
-                };
+
+            var mockServiceInput = new Mock<IServiceInput>();
+            mockServiceInput.Setup(serviceInput => serviceInput.Name).Returns("name");
+
+            var expectedInputs = new List<IServiceInput>();
+            expectedInputs.Add(mockServiceInput.Object);
+
             var expectedReturnType = typeof(string);
             var expectedVariables = new List<INameValue>
             {
