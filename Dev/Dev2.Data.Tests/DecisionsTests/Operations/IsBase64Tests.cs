@@ -22,11 +22,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsBase64_Invoke_ItemsEqual_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsBase64();
+            var isBase64 = new IsBase64();
             var cols = new string[2];
             cols[0] = "aGVsbG8=";
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isBase64.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -37,11 +37,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsBase64_Invoke_NotEqualItems_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsBase64();
+            var isBase64 = new IsBase64();
             var cols = new string[2];
             cols[0] = "aGVsbG8ASS@";
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isBase64.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -52,11 +52,11 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         public void IsBase64_Invoke_EmptyColumns_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var endsWith = new IsBase64();
+            var isBase64 = new IsBase64();
             var cols = new string[1];
             cols[0] = null;
             //------------Execute Test---------------------------
-            var result = endsWith.Invoke(cols);
+            var result = isBase64.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -64,14 +64,14 @@ namespace Dev2.Data.Tests.DecisionsTests.Operations
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(IsBase64))]
-        public void IsBase64_HandlesType_ReturnsIsEndsWithType()
+        public void IsBase64_HandlesType_ReturnsIsBase64Type()
         {
             var expected = enDecisionType.IsBase64;
             //------------Setup for test--------------------------
-            var isEndsWith = new IsBase64();
+            var isBase64 = new IsBase64();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected, isEndsWith.HandlesType());
+            Assert.AreEqual(expected, isBase64.HandlesType());
         }
     }
 }
