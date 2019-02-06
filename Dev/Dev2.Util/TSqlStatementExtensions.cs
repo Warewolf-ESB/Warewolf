@@ -107,7 +107,7 @@ namespace Dev2.Util
     {
         public string TableName { get; set; }
 
-        public TSqlTable(string tableName, string tableAlias)
+        public TSqlTable(string tableName)
         {
             TableName = tableName;
         }
