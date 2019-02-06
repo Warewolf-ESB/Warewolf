@@ -19,12 +19,12 @@ namespace Dev2.Utils.Tests
     public class JsonNetValueSystemTests
     {
 
-        readonly string _jsonObject = "{\"results\":[" +
+        const string _jsonObject = "{\"results\":[" +
                "{\"employeename\":\"name1\",\"employeesupervisor\":\"supervisor1\"}," +
                "{\"employeename\":\"name2\",\"employeesupervisor\":\"supervisor1\"}," +
                "{\"employeename\":\"name3\",\"employeesupervisor\":[\"supervisor1\",\"supervisor2\"]}" +
                "]}";
-        readonly string _jsonArray = @"[  'Small',  'Medium',  'Large']";
+        const string _jsonArray = @"[  'Small',  'Medium',  'Large']";
 
         [TestMethod]
         [Owner("Candice Daniel")]
