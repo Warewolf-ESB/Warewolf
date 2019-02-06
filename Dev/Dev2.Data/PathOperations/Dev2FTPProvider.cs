@@ -26,6 +26,7 @@ using Warewolf.Resource.Errors;
 using System.Globalization;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Data.PathOperations
 {
@@ -58,10 +59,12 @@ namespace Dev2.Data.PathOperations
         }
         readonly IImplementation _implementation;
 
+        [ExcludeFromCodeCoverage]
         public Dev2FTPProvider()
             :this(new Implementation())
         {
         }
+
         public Dev2FTPProvider(IImplementation implementation)
         {
             _implementation = implementation;
@@ -81,7 +84,6 @@ namespace Dev2.Data.PathOperations
             {
                 if (_implementation.IsStandardFtp(path))
                 {
-
                     _implementation.ReadFromFtp(path, ref result);
                 }
                 else
@@ -98,6 +100,7 @@ namespace Dev2.Data.PathOperations
             }
             return result;
         }
+
         public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             var result = -1;
@@ -199,7 +202,6 @@ namespace Dev2.Data.PathOperations
 
         public bool HandlesType(enActivityIOPathType type)
         {
-
             var result = type == enActivityIOPathType.FTPS || type == enActivityIOPathType.SFTP || type == enActivityIOPathType.FTP || type == enActivityIOPathType.FTPES;
             return result;
         }
@@ -212,6 +214,7 @@ namespace Dev2.Data.PathOperations
         public string PathSeperator() => @"/";
 
         static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
+
         static bool IsFile(string part) => !IsDirectory(part);
 
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
