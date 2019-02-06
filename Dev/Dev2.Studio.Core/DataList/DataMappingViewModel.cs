@@ -61,7 +61,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if(DataListSingleton.ActiveDataList != null)
             {
-                activeDataList = DataListSingleton.DataListAsXmlString;
+                activeDataList = DataListSingleton.ActiveDataList?.Resource?.DataList ?? "";
             }
 
             var ioBuilder = new ActivityDataMappingBuilder

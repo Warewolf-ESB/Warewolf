@@ -190,7 +190,13 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
+    <Compile Include="Activities\DsfComDllActivityTests.cs" />
+    <Compile Include="Activities\EmailSenderTests.cs" />
+    <Compile Include="Activities\DsfPluginActivityTests.cs" />
+    <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivityTests.cs" />
     <Compile Include="ActivityComparerTests\DropBox2016\MockOAuthSource.cs" />
+    <Compile Include="ActivityTests\AdvancedRecordsetActivityTests.cs" />
     <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
@@ -259,7 +265,7 @@
     <Compile Include="ActivityComparerTests\PathOperations\DsfPathCreateComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfUnZipComparerTests.cs" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfZipComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\WebTools\DsfWebGetWithTimeoutActivityComparerTests.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetWithTimeoutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetRequestActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebGetActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
@@ -275,7 +281,6 @@
     <Compile Include="ActivityComparerTests\Scripting\DsfRubyActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityComparerTests\SelectAndApply\DsfSelectAndApplyActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\Sharepoint\SharepointCopyFileActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
@@ -342,6 +347,7 @@
     <Compile Include="ActivityTests\Sharepoint\SharepointReadListActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointUpdateListItemActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDotNetGatherSystemInformationActivityTests.cs" />
+    <Compile Include="ActivityTests\AdvancedRecordsetActivityWorkerTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
@@ -390,7 +396,6 @@
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\ResponseManagerTests.cs" />
-    <Compile Include="ActivityTests\Web\WebGetRequestActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
@@ -423,9 +428,11 @@
     <Compile Include="TOTests\JsonMappingEvaluatedTests.cs" />
     <Compile Include="TOTests\JsonMappingToTest.cs" />
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
+    <Compile Include="TOTests\DataColumnMappingTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="ServiceTestHelperTests.cs" />
     <Compile Include="TestMockStepTests.cs" />
+    <Compile Include="DsfMethodBasedActivityTests.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
@@ -461,6 +468,10 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Tests\Dev2.Common.Tests.csproj">
+      <Project>{B0564C7A-9DA8-4751-B5D4-D446138E0987}</Project>
+      <Name>Dev2.Common.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
@@ -570,6 +581,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

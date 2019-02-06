@@ -265,7 +265,6 @@
     <Compile Include="Environments\TestServer.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
-    <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
@@ -319,7 +318,7 @@
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
-    <Compile Include="DataListSingletonTest.cs" />
+    <Compile Include="DataListSingletonTests.cs" />
     <Compile Include="DataListViewModelTests.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
@@ -365,6 +364,7 @@
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
+    <Compile Include="Utils\HelperUtilsTests.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewFactoryTests.cs" />
     <Compile Include="Workflows\MergePreviewWorkflowDesignerViewModelMock.cs" />

@@ -243,6 +243,11 @@ namespace Dev2.Services.Security
                     isInRole = principal.IsInRole(windowsGroup);
                 }
             }
+            catch (ObjectDisposedException e)
+            {
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                throw;
+            }
             catch (Exception e)
             {
                 Dev2Logger.Warn(e.Message, "Warewolf Warn");

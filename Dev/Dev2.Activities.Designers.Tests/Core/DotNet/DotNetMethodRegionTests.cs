@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
         [TestCategory("DotNetMethodRegion_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DotNetMethodRegion_Constructor_IsNew_ValidateShellVmDependencies()
-            => new DotNetMethodRegion(default(IShellViewModel), new ActionInputDatatalistMapper());
+            => new DotNetMethodRegion(default(IShellViewModel), new ActionInputDatalistMapper());
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

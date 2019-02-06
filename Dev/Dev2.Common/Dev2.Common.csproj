@@ -64,6 +64,9 @@
       <HintPath>..\packages\Dropbox.Api.4.2.4\lib\net45\Dropbox.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -134,8 +137,8 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
-    <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
+    <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
     <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
@@ -197,6 +200,7 @@
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
     <Compile Include="NameValue.cs" />
+    <Compile Include="SaveDialogue\ResourceName.cs" />
     <Compile Include="Search\Search.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Serializers\Dev2JsonSerializer.cs" />
@@ -243,6 +247,7 @@
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
+    <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />

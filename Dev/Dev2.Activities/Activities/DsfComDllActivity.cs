@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
@@ -18,13 +28,13 @@ using Warewolf.Storage;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Com_DLL")]
-    public class DsfComDllActivity : DsfMethodBasedActivity,ISimpePlugin
+    public class DsfComDllActivity : DsfMethodBasedActivity, ISimpePlugin
     {
         internal string _result;
         public IPluginAction Method { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IOutputDescription OutputDescription { get; set; }
-
+       
         public DsfComDllActivity()
         {
             Type = "Com DLL Connector";
@@ -40,8 +50,7 @@ namespace Dev2.Activities
                 tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
-
-
+            
             ExecuteService(update, out tmpErrors, Method, dataObject);
         }
 
@@ -116,13 +125,20 @@ namespace Dev2.Activities
                 var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
                 args.OutputFormatter = outputFormatter;
             }
-            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString(); });
+            ExecuteInsideImpersonatedContext(args);
 
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
             ResponseManager.PushResponseIntoEnvironment(_result, update, dataObject, false);
         }
 
+        protected virtual void ExecuteInsideImpersonatedContext(ComPluginInvokeArgs args)
+        {
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString(); });
+        }
+
         public IResponseManager ResponseManager { get; set; }
+        
+
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)
@@ -144,22 +160,11 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfComDllActivity dsfComDllActivity)
             {
-                return false;
+               return Equals(dsfComDllActivity);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((ISimpePlugin)obj);
+            return false;
         }
 
         public override int GetHashCode()

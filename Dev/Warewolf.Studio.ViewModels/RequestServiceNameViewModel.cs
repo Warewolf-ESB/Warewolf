@@ -11,7 +11,7 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Hosting;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.SaveDialog;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
 using Dev2.Runtime.Hosting;

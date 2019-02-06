@@ -9,30 +9,33 @@
 */
 
 using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
-
-
 
 namespace Dev2.Activities.Designers2.DeleteRecords
 {
     public class DeleteRecordsDesignerViewModel : ActivityDesignerViewModel
     {
-        public DeleteRecordsDesignerViewModel(ModelItem modelItem)
+        private readonly IShellViewModel _shellViewModel;
+
+        public DeleteRecordsDesignerViewModel(ModelItem modelItem, IShellViewModel shellViewModel)
             : base(modelItem)
         {
+            _shellViewModel = shellViewModel;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Delete;
         }
 
-        public override void Validate()
+        [ExcludeFromCodeCoverage]
+        public DeleteRecordsDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, CustomContainer.Get<IShellViewModel>())
         {
         }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            _shellViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

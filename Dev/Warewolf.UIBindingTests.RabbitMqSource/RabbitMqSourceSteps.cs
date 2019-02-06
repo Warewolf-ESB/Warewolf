@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.RabbitMQ;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.SaveDialog;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

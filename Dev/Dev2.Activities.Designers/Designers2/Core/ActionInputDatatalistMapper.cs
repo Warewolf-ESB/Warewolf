@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
@@ -7,9 +6,18 @@ using Dev2.Studio.Core;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ActionInputDatatalistMapper : IActionInputDatatalistMapper
+    public class ActionInputDatalistMapper : IActionInputDatatalistMapper
     {
-        #region Implementation of IActionInputDatatalistMapper
+        readonly IActiveDataList _activeDataList;
+        public ActionInputDatalistMapper()
+            :this(DataListSingleton.Instance)
+        {
+        }
+
+        public ActionInputDatalistMapper(IActiveDataList activeDataList)
+        {
+            _activeDataList = activeDataList;
+        }
 
         public void MapInputsToDatalist(IEnumerable<IServiceInput> inputs)
         {
@@ -26,15 +34,15 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void MapInput(IServiceInput serviceInput)
+        private void MapInput(IServiceInput serviceInput)
         {
-            if (DataListSingleton.ActiveDataList != null)
+            if (_activeDataList.ActiveDataList != null)
             {
                 MapInputToActiveDatalist(serviceInput);
             }
         }
 
-        private static void MapInputToActiveDatalist(IServiceInput serviceInput)
+        private void MapInputToActiveDatalist(IServiceInput serviceInput)
         {
             if (!serviceInput.IsObject)
             {
@@ -46,11 +54,11 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void MapToObject(IServiceInput serviceInput)
+        private void MapToObject(IServiceInput serviceInput)
         {
-            if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+            if (_activeDataList.ActiveDataList.ComplexObjectCollection != null)
             {
-                var value = serviceInput?.Name;
+                var value = serviceInput.Name;
                 if (value != null)
                 {
                     value = value.Split('(').First().TrimEnd(' ');
@@ -61,11 +69,11 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void MapToScalar(IServiceInput serviceInput)
+        private void MapToScalar(IServiceInput serviceInput)
         {
-            if (DataListSingleton.ActiveDataList.ScalarCollection != null)
+            if (_activeDataList.ActiveDataList.ScalarCollection != null)
             {
-                var value = serviceInput?.Name;
+                var value = serviceInput.Name;
                 if (value != null)
                 {
                     var variable = DataListUtil.AddBracketsToValueIfNotExist(value.Split('(').First().TrimEnd(' '));
@@ -73,7 +81,5 @@ namespace Dev2.Activities.Designers2.Core
                 }
             }
         }
-
-        #endregion
     }
 }

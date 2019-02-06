@@ -308,35 +308,34 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             Errors = result.Count == 0 ? null : result;
         }
 
-        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
-
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            foreach (var error in GetRuleSet("EmailSource", GetDatalistString?.Invoke()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
+            var datalist = DataListSingleton.ActiveDataList.Resource.DataList;
+            foreach (var error in GetRuleSet("EmailSource", datalist).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Recipients", GetDatalistString?.Invoke()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("Recipients", datalist).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("To", GetDatalistString?.Invoke()).ValidateRules("'To'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("To", datalist).ValidateRules("'To'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Cc", GetDatalistString?.Invoke()).ValidateRules("'Cc'", () => IsCcFocused = true))
+            foreach (var error in GetRuleSet("Cc", datalist).ValidateRules("'Cc'", () => IsCcFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Bcc", GetDatalistString?.Invoke()).ValidateRules("'Bcc'", () => IsBccFocused = true))
+            foreach (var error in GetRuleSet("Bcc", datalist).ValidateRules("'Bcc'", () => IsBccFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("SubjectAndBody", GetDatalistString?.Invoke()).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
+            foreach (var error in GetRuleSet("SubjectAndBody", datalist).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Attachments", GetDatalistString?.Invoke()).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
+            foreach (var error in GetRuleSet("Attachments", datalist).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
             {
                 yield return error;
             }

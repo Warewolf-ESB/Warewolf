@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Core.Messages;
@@ -29,13 +30,10 @@ namespace Dev2.Utils
         IResourceChangeHandler Create(IEventAggregator eventPublisher);
     }
 
+    [ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerFactory : IResourceChangeHandlerFactory
     {
-        #region Implementation of IResourceChangeHandlerFactory
-
         public IResourceChangeHandler Create(IEventAggregator eventPublisher) => new ResourceChangeHandler(eventPublisher);
-
-        #endregion
     }
 
     public class ResourceChangeHandler : IResourceChangeHandler

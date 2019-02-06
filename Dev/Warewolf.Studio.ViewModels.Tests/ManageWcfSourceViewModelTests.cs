@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.SaveDialog;
 using Dev2.Studio.Interfaces;
 using System.Text;
 using System.Xml.Linq;
