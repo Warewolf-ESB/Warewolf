@@ -39,11 +39,13 @@ namespace Dev2.Common
             }
             catch (TimeoutException)
             {
+                //TODO: Remove this code as it is never used
                 start?.Kill();
                 start?.Dispose();
             }
             catch (System.Runtime.InteropServices.COMException)
             {
+                //TODO: Remove this code as it is never used
                 start?.Kill();
                 start?.Dispose();
             }
