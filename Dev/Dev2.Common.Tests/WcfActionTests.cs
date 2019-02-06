@@ -28,7 +28,6 @@ namespace Dev2.Common.Tests
             const string expectedMethod = "Method";
 
             var mockServiceInput = new Mock<IServiceInput>();
-            mockServiceInput.Setup(serviceInput => serviceInput.Name).Returns("name");
 
             var expectedInputs = new List<IServiceInput>();
             expectedInputs.Add(mockServiceInput.Object);

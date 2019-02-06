@@ -73,8 +73,6 @@ namespace Dev2.Common.Tests
             //---------------------Act-----------------------------
             externalProcessExecutor.OpenInBrowser(uri);
             //---------------------Assert--------------------------
-            mockProcessWrapper.Verify(o => o.Start(It.IsAny<string>()).Kill(), Times.Once);
-            mockProcessWrapper.Verify(o => o.Start(It.IsAny<string>()).Dispose(), Times.Once);
             mockProcessWrapper.VerifyAll();
         }
 
