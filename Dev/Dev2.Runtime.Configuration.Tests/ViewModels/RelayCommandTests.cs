@@ -15,23 +15,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
     [TestClass]
-    
     public class RelayCommandTests
     {
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_Constructor")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelayCommand_Constructor_ActionIsNull_ThrowsException()
         {
-            
             new RelayCommand(null);
-            
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_Execute")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
         public void RelayCommand_Execute_PassingAnObject_ObjectPassedToAction()
         {
             //------------Setup for test--------------------------
@@ -44,13 +41,13 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             relayCommand.Execute(new { Name = "Tshepo", Surname = "Ntlhokoa" });
             //------------Assert Results-------------------------
             Assert.IsNotNull(prop);
-            Assert.IsNotNull("Tshepo", prop.Name);
-            Assert.IsNotNull("Ntlhokoa", prop.Surname);
+            Assert.AreEqual("Tshepo", prop.Name);
+            Assert.AreEqual("Ntlhokoa", prop.Surname);
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_CanExecute")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
         public void RelayCommand_CanExecute_WhenConstructedWithAPredicate_PredicateIsCalled()
         {
             //------------Setup for test--------------------------
@@ -68,8 +65,8 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_CanExecute")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
         public void RelayCommand_CanExecute_WhenConstructedWithoutAPredicate_ReturnsTrueAsADefault()
         {
             //------------Setup for test--------------------------
@@ -79,26 +76,56 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             //------------Assert Results-------------------------
             Assert.IsTrue(canExecute);
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
+        public void RelayCommand_RaiseCanExecuteChanged_EventNotTriggered_isDelegateCalled_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var isDelegateCalled = false;
+
+            var relayCommand = new RelayCommand(o => { });
+            //------------Execute Test---------------------------
+            relayCommand.RaiseCanExecuteChanged();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isDelegateCalled);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(RelayCommand))]
+        public void RelayCommand_RaiseCanExecuteChanged_EventTriggered_isDelegateCalled_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var isDelegateCalled = false;
+            
+            var relayCommand = new RelayCommand(o => { });
+            //------------Execute Test---------------------------
+            relayCommand.CanExecuteChanged += (s, MouseEventArgs) => { isDelegateCalled = true; };
+            relayCommand.RaiseCanExecuteChanged();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isDelegateCalled);
+        }
     }
+
 
     [TestClass]
     public class RelayGenericCommandTests
     {
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_Constructor")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void RelayCommand_Constructor_ActionIsNull_ThrowsException()
+        public void RelayGenericCommand_Constructor_ActionIsNull_ThrowsException()
         {
-            
             new RelayCommand<object>(null);
-            
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_Execute")]
-        public void RelayCommand_Execute_PassingAnObject_ObjectPassedToAction()
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
+        public void RelayGenericCommand_Execute_PassingAnObject_ObjectPassedToAction()
         {
             //------------Setup for test--------------------------
             dynamic prop = null;
@@ -110,14 +137,14 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             relayCommand.Execute(new { Name = "Tshepo", Surname = "Ntlhokoa" });
             //------------Assert Results-------------------------
             Assert.IsNotNull(prop);
-            Assert.IsNotNull("Tshepo", prop.Name);
-            Assert.IsNotNull("Ntlhokoa", prop.Surname);
+            Assert.AreEqual("Tshepo", prop.Name);
+            Assert.AreEqual("Ntlhokoa", prop.Surname);
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_CanExecute")]
-        public void RelayCommand_CanExecute_WhenConstructedWithAPredicate_PredicateIsCalled()
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
+        public void RelayGenericCommand_CanExecute_WhenConstructedWithAPredicate_PredicateIsCalled()
         {
             //------------Setup for test--------------------------
             var canExecuteWasCalled = false;
@@ -134,9 +161,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("RelayCommand_CanExecute")]
-        public void RelayCommand_CanExecute_WhenConstructedWithoutAPredicate_ReturnsTrueAsADefault()
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
+        public void RelayGenericCommand_CanExecute_WhenConstructedWithoutAPredicate_ReturnsTrueAsADefault()
         {
             //------------Setup for test--------------------------
             var relayCommand = new RelayCommand<object>(o => { });
@@ -144,6 +171,37 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             var canExecute = relayCommand.CanExecute(null);
             //------------Assert Results-------------------------
             Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
+        public void RelayGenericCommand_RaiseCanExecuteChanged_EventNotTriggered_isDelegateCalled_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var isDelegateCalled = false;
+
+            var relayCommand = new RelayCommand<object>(o => { });
+            //------------Execute Test---------------------------
+            relayCommand.RaiseCanExecuteChanged();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isDelegateCalled);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory("RelayGenericCommand")]
+        public void RelayGenericCommand_RaiseCanExecuteChanged_EventTriggered_isDelegateCalled_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var isDelegateCalled = false;
+
+            var relayCommand = new RelayCommand<object>(o => { });
+            //------------Execute Test---------------------------
+            relayCommand.CanExecuteChanged += (s, MouseEventArgs) => { isDelegateCalled = true; };
+            relayCommand.RaiseCanExecuteChanged();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isDelegateCalled);
         }
     }
 }
