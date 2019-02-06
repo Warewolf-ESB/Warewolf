@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,14 +29,17 @@ using TestingDotnetDllCascading;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
 {
+    /// <summary>
+    /// Summary description for PluginRuntimeHandlerTest
+    /// </summary>
     [TestClass]
-    [TestCategory("Runtime ESB")]
+
     public class PluginRuntimeHandlerTest
     {
 
         #region FetchNamespaceListObject
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
@@ -52,7 +55,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         public void PluginRuntimeHandler_FetchNamespaceListObjectWithJsonObjects_WhenValidDll_ExpectNamespaces()
@@ -68,7 +71,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -84,7 +87,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -100,7 +103,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -114,7 +117,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -128,7 +131,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -143,7 +146,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_FetchNamespaceListObject")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -158,7 +161,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(BadImageFormatException))]
         public void FetchNamespaceListObject_GivenThrowsBadFormatExceptionError_ShouldRethrowBadFormatException()
@@ -176,7 +179,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             pluginRuntimeHandler.FetchNamespaceListObject(source);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(BadImageFormatException))]
         public void FetchNamespaceListObjectWithJsonObjects_GivenThrowsBadFormatExceptionError_ShouldRethrowBadFormatException()
@@ -198,7 +201,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         #region ValidatePlugin
 
-        //[TestMethod]
+        //[TestMethod, DeploymentItem("EnableDocker.txt")]
         //[Owner("Travis Frisinger")]
         //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
         //public void PluginRuntimeHandler_ValidatePlugin_WhenValidDll_ExpectBlankMessage()
@@ -214,7 +217,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         //    StringAssert.Contains(result, string.Empty);
         //}
 
-        //[TestMethod]
+        //[TestMethod, DeploymentItem("EnableDocker.txt")]
         //[Owner("Travis Frisinger")]
         //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
         //public void PluginRuntimeHandler_ValidatePlugin_WhenNotADll_ExpectErrorMessage()
@@ -230,7 +233,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         //    StringAssert.Contains(result, "Not a Dll file");
         //}
 
-        //[TestMethod]
+        //[TestMethod, DeploymentItem("EnableDocker.txt")]
         //[Owner("Travis Frisinger")]
         //[TestCategory("PluginRuntimeHandler_ValidatePlugin")]
         //public void PluginRuntimeHandler_ValidatePlugin_WhenGacDll_ExpectBlankMessage()
@@ -250,7 +253,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         #region ListNamespaces
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_ListNamespaces")]
         public void PluginRuntimeHandler_ListNamespaces_WhenValidLocation_ExpectNamespaces()
@@ -265,7 +268,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_ListNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -279,7 +282,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginRuntimeHandler_ListNamespaces")]
         public void PluginRuntimeHandler_ListNamespaces_WhenInvalidLocation_ExpectNoResults()
@@ -293,7 +296,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
         public void PluginRuntimeHandler_ListMethods_WhenInvalidLocation_ExpectNoResults()
@@ -307,7 +310,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
         public void PluginRuntimeHandler_ListConstructors_WhenInvalidLocation_ExpectNoResults()
@@ -321,7 +324,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
         public void PluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
@@ -337,7 +340,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethods")]
         public void PluginRuntimeHandler_ListConstructors_WhenValidLocation_ExpectResults()
@@ -353,7 +356,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocation_ExpectResults()
@@ -369,7 +372,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndVoid_ExpectResultsWithVoidMethod()
@@ -386,7 +389,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndIsProperty_ExpectResultsWithPropertyMethod()
@@ -403,7 +406,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
         public void PluginRuntimeHandler_ListMethodsWithReturns_WhenListFoods_ExpectJSonArrayReturnType()
@@ -424,7 +427,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -438,7 +441,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_CreateInstance_WhenHuman_ExpectHumanStringObject()
@@ -470,7 +473,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_CreateInstance_WhenHumanWithInputs_ExpectHumanStringObjectWithInputs()
@@ -518,7 +521,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_Run")]
         public void PluginRuntimeHandler_Run_WhenObjectStringIsNotNull_ExpectRunsCorrectly()
@@ -561,7 +564,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_Run")]
         public void PluginRuntimeHandler_Run_WhenHasInnerError_ExpectInerErrors()
@@ -611,7 +614,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_Test")]
         public void PluginRuntimeHandler_Test_WhenHasInnerError_ExpectInerErrors()
@@ -655,7 +658,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_Run")]
         [ExpectedException(typeof(AccessViolationException))]
@@ -705,7 +708,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_Run_WhenClassIsStatic_ExpectRunsCorrectly()
@@ -736,7 +739,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_Run_WhenClassIsStatic_ExpectRunsMethodsCorrectly()
@@ -770,7 +773,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_CreateInstance")]
         public void PluginRuntimeHandler_Run_WhenClassIsSealed_ExpectRunsCorrectly()
@@ -801,7 +804,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_ExecuteConstructor")]
         public void PluginRuntimeHandler_ExecuteConstructor_WhenClassIsSealed_ExpectRunsCorrectly()
@@ -835,7 +838,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_Test")]
         public void PluginRuntimeHandler_Test_WhenValid_ExpectRunsCorrectly()
@@ -878,7 +881,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void GetPropertiesJObject_GivenOracleCommand_ShouldRetunWithTwoProperties()
         {
@@ -899,7 +902,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.AreEqual(8, jObject.Count);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         public void GetPropertiesJObject_GivenOracleCommand_ShouldHaveCorrectShape()
         {
@@ -923,7 +926,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             Assert.AreEqual(str, s);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_AdjustPluginResult")]
         public void PluginRuntimeHandler_AdjustPluginResult_WhenClassIsSealed_ExpectRunsCorrectly()

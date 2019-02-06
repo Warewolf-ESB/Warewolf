@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime
             Assert.AreEqual(false, AppUsageStats.CollectUsageStats);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
         public void RevulyticsCollectUsageStats_WhenNoConfigSetting_ShouldUseGlobalConstantValue()

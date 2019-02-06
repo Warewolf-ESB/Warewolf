@@ -12,7 +12,6 @@ using Connection = Dev2.Data.ServiceModel.Connection;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class ConnectionsTests
     {
         [TestMethod]

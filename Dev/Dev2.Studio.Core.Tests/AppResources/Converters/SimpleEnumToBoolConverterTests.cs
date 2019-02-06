@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.AppResources.Converters
 {
     [TestClass]
-	[TestCategory("Studio Resources Core")]
     public class SimpleEnumToBoolConverterTests
     {
         [TestMethod]

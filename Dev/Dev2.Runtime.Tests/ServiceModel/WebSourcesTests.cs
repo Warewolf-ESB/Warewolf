@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,13 +21,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class WebSourcesTests
     {
         
         #region CTOR
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -42,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesTestWithInValidArgsExpectedInvalidValidationResult()
         {
             var handler = new WebSources();
@@ -50,7 +49,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesTestWithInvalidAddressExpectedInvalidValidationResult()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous }.ToString();
@@ -60,7 +59,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesAssertUserAgentHeaderSet()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
@@ -72,7 +71,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(agent);
             Assert.AreEqual(agent, GlobalConstants.UserAgentString);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesAssertUserAgentHeaderSet_SetsOtherHeaders()
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
@@ -86,7 +85,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(client.Headers.AllKeys.Contains("a"));
             Assert.IsTrue(client.Headers.AllKeys.Contains("b"));
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
 
         public void WebSourcesAssertUserAgentHeaderSet_SetsUserNameAndPassword()
 
@@ -107,7 +106,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Get
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesGetWithNullArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
@@ -117,7 +116,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void WebSourcesGetWithInvalidArgsExpectedReturnsNewSource()
         {
             var handler = new WebSources();
@@ -127,7 +126,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
         {
@@ -144,7 +143,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
         {

@@ -7,11 +7,10 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class OauthSourceTest
     {
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("OauthSource_Ctor")]
         public void OauthSource_Ctor_Construct_ExpectSource()
@@ -26,7 +25,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(null,oauthSource.AppKey);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("OauthSource_Ctor")]
         public void OauthSource_Ctor_FromXML_Construct_ExpectSource()
@@ -47,7 +46,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(oauthSource.AppKey, "key");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("OauthSource_ToXML")]
         public void OauthSource_ToXML_Construct_ExpectPropertiesSet()

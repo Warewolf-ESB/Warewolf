@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,13 +16,31 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
+    /// <summary>
+    /// A set of test cases to test the functionality of the DataListSingleton
+    /// </summary>
     [TestClass]
-    [TestCategory("Studio Datalist Core")]
     public class DataListSingletonTest
     {
-        public static readonly object DataListSingletonTestGuard = new object();
 
-        public TestContext TestContext { get; set; }
+        public static readonly object DataListSingletonTestGuard = new object();
+        TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
 
         #region Additional test attributes
 

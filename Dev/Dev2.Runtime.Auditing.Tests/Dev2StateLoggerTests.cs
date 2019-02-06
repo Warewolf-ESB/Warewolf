@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
             _directoryWrapper.Delete(EnvironmentVariables.DetailLogPath, true);
         }
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void StateNotifier_SubscribeToEventNotifications_Tests()
         {
             TestSetup(out _fileWrapper, out _directoryWrapper, out _activity);
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Auditing
             notifier.Dispose();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogExecuteCompleteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogExecuteException_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogPostExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogAdditionalDetail_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -163,7 +163,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.IsTrue(results.FirstOrDefault(a => a.WorkflowID == str) != null);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void Dev2StateAuditLogger_LogPreExecuteState_Tests()
         {
             var expectedWorkflowId = Guid.NewGuid();
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Runtime.Auditing
                             result.Environment);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(NullReferenceException))]
         public void Dev2StateAuditLogger_LogPreExecuteState_ExpectedException_Tests()
         {
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Runtime.Auditing
             _dev2StateAuditLogger.Flush();
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(ArgumentException))]
         public void Dev2StateAuditLogger_LogAuditState_Exception_Tests()
         {

@@ -10,10 +10,9 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class DataObjectExtentionsTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Nkosinathi Sangweni")]
         //SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         public void SetResourceNameAndId_GivenResourceNameIsBad_ShouldFixAndLoadResource()

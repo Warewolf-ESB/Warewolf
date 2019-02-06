@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,6 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebPostRequestHandlerTest
     /// </summary>
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class WebPostRequestHandlerTest
     {
         [ClassInitialize]
@@ -44,7 +43,7 @@ namespace Dev2.Tests.Runtime.WebServer
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Travis Frisinger")]
         [TestCategory("WebPostRequestHandler_ProcessRequest")]
         public void WebPostRequestHandler_ProcessRequest_WhenValidUserContext_ExpectExecution()
