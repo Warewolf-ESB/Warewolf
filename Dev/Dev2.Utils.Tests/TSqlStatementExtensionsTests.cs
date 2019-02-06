@@ -54,7 +54,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(TSqlStatementExtensions))]
         public void TSqlStatementExtensions_GetAllTables_TSqlTable_Constructor()
         {
-            var tables = new TSqlTable("Person", "p");
+            var tables = new TSqlTable("Person");
             Assert.AreEqual("Person", tables.TableName);
         }
     }

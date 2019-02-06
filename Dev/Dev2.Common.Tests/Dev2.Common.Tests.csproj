@@ -91,6 +91,7 @@
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
     <Compile Include="SingleApiTests.cs" />
     <Compile Include="AssemblyWrapperTests.cs" />
+    <Compile Include="ExternalProcessExecutorTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="ObservableNameValueTests.cs" />
