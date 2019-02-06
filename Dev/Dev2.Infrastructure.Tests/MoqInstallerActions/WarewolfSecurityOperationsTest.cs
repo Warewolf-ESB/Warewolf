@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -114,7 +115,14 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             warewolfGroupOps.AddWarewolfGroup();
 
             //------------Execute Test---------------------------
-            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            try
+            {
+                warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            }
+            catch (COMException)
+            {
+                //Expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+            }
             var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
 
             //------------Assert Results-------------------------
