@@ -206,10 +206,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public enPathType PathIs(IActivityIOPath path)
-        {
-            return _implementation.PathIs(path);
-        }
+        public enPathType PathIs(IActivityIOPath path) => _implementation.PathIs(path);
 
         public string PathSeperator() => @"/";
 
@@ -239,12 +236,9 @@ namespace Dev2.Data.PathOperations
             return dirs.Select(dir => _implementation.BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
         }
 
-        public IActivityIOPath IOPath
-        {
-            get;
-            set;
-        }
+        public IActivityIOPath IOPath { get; set; }
 
+        [ExcludeFromCodeCoverage]
         class Implementation : IImplementation
         {
             readonly IFile _file;
