@@ -18,7 +18,7 @@ namespace Dev2.Utils.Tests
     [TestClass]
     public class JsonNetValueSystemTests
     {
-        public IJsonPathValueSystem ValueSystem { get; set; }
+
         readonly string _jsonObject = "{\"results\":[" +
                "{\"employeename\":\"name1\",\"employeesupervisor\":\"supervisor1\"}," +
                "{\"employeename\":\"name2\",\"employeesupervisor\":\"supervisor1\"}," +
@@ -31,6 +31,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_JObject_ReturnTrue()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JObject.Parse(_jsonObject);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsTrue(ValueSystem.HasMember(results, "results"));
@@ -40,6 +41,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_JObject_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JObject.Parse(_jsonObject);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.HasMember(results, "teststring"));
@@ -49,6 +51,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_JArray_ReturnTrue()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JArray.Parse(_jsonArray);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsTrue(ValueSystem.HasMember(results, "2"));
@@ -58,6 +61,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_JArray_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JArray.Parse(_jsonArray);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.HasMember(results, "6"));
@@ -67,6 +71,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_JArray_ReturnFalse_DefaultValue()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JArray.Parse(_jsonArray);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.HasMember(results, "-1"));
@@ -77,6 +82,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_HasMember_Object_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.HasMember(_jsonArray, "6"));
         }
@@ -86,6 +92,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_GetMembers()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JObject.Parse(_jsonObject);
             var result = "";
             ValueSystem = new JsonNetValueSystem();
@@ -101,6 +108,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_JObject_ReturnTrue()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JObject.Parse(_jsonObject);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsTrue(ValueSystem.IsObject(results));
@@ -110,6 +118,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_JObject_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.IsObject(new object()));
         }
@@ -118,6 +127,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_IsArray_ReturnTrue()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JArray.Parse(_jsonArray);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsTrue(ValueSystem.IsArray(results));
@@ -127,6 +137,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_IsArray_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JObject.Parse(_jsonObject);
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.IsArray(results));
@@ -136,6 +147,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_IsPrimitive_ReturnTrue()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             Assert.IsTrue(ValueSystem.IsPrimitive(new object()));
         }
@@ -144,6 +156,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_IsPrimitive_ReturnFalse()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             Assert.IsFalse(ValueSystem.IsArray(new JObject()));
             Assert.IsFalse(ValueSystem.IsPrimitive(new JArray()));
@@ -154,6 +167,7 @@ namespace Dev2.Utils.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void JsonNetValueSystem_IsPrimitive_ReturnException()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             ValueSystem.IsPrimitive(null);
         }
@@ -162,6 +176,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_GetMemberValue_JObject()
         {
+            IJsonPathValueSystem ValueSystem;
             var myJsonString = "{report: {Id: \"aaakkj98898983\"}}";
             ValueSystem = new JsonNetValueSystem();
             var obj = ValueSystem.GetMemberValue(JObject.Parse(myJsonString), "report");
@@ -173,6 +188,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_GetMemberValue_JArray()
         {
+            IJsonPathValueSystem ValueSystem;
             var results = JArray.Parse(_jsonArray);
             ValueSystem = new JsonNetValueSystem();
             var obj = ValueSystem.GetMemberValue(results, "1");
@@ -183,6 +199,7 @@ namespace Dev2.Utils.Tests
         [TestCategory(nameof(JsonNetValueSystem))]
         public void JsonNetValueSystem_GetMemberValue_ReturnNull()
         {
+            IJsonPathValueSystem ValueSystem;
             ValueSystem = new JsonNetValueSystem();
             var obj = ValueSystem.GetMemberValue(new object(), "results");
             Assert.IsNull(obj);
