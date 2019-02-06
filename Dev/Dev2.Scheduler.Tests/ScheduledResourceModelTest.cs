@@ -8,19 +8,20 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 
 namespace Dev2.Scheduler.Test
@@ -39,28 +40,23 @@ namespace Dev2.Scheduler.Test
         public void Init()
         {
             _mockService = new Mock<IDev2TaskService>();
-
             _convertorFactory = new Mock<ITaskServiceConvertorFactory>();
             _folderId = "WareWolf";
             _agentPath = "AgentPath";
             _folder = new Mock<ITaskFolder>();
             _wrapper = new Mock<ISecurityWrapper>();
-            _wrapper.Setup(a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(true);
-            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(true);
-
+            _wrapper.Setup(a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Constructor")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_Constructor_ShouldConstruct()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             Assert.AreEqual(_convertorFactory.Object, model.ConvertorFactory);
             Assert.AreEqual(_folderId, model.WarewolfFolderPath);
             Assert.AreEqual(_agentPath, model.WarewolfAgentPath);
@@ -70,7 +66,7 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Constructor")]
+        [TestCategory("ScheduledResourceModel")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ScheduledResourceModel_Constructor_ShouldThrowErrorIfArgsNull()
         {
@@ -78,9 +74,7 @@ namespace Dev2.Scheduler.Test
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             try
             {
-                
                 new ScheduledResourceModel(null, null, null, null, null, null, null);
-                
             }
             catch (Exception e)
             {
@@ -107,17 +101,12 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResources()
         {
-            //setup
             SetupSingleTask();
-            //create
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-
-            Assert.AreEqual(1,
-                            model.ScheduledResources.Count);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
+            Assert.AreEqual(1, model.ScheduledResources.Count);
         }
 
         [TestMethod]
@@ -125,42 +114,19 @@ securityWrapper
         [TestCategory("ScheduledResourceModel_ScheduledResources")]
         public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResourcesWithId()
         {
-            //setup
             SetupSingleTaskWithId();
-            //create
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-
-            Assert.AreEqual(1,
-                            model.ScheduledResources.Count);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
+            Assert.AreEqual(1, model.ScheduledResources.Count);
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_ScheduledResources")]
-        public void ScheduledResourceModel_Get_ShouldErrorInvalidMessages()
-        {
-            //setup
-            SetupSingleTask();
-            //create
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
-
-            Assert.AreEqual(1,
-                            model.ScheduledResources.Count);
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_CorrectSelectedResources()
         {
             SetupSingleTask();
 
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, d => d.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, d => d.WorkflowName);
             var a = model.ScheduledResources.First();
             Assert.AreEqual("bob", a.Name);
             Assert.AreEqual("a", a.WorkflowName);
@@ -168,13 +134,12 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Delete")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_ShouldDeleteTest_Valid()
         {
             SetupSingleTask();
 
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var mockFolder = new Mock<ITaskFolder>();
@@ -190,13 +155,12 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Delete")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_Delete_InValid()
         {
             //setup
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             var mockFolder = new Mock<ITaskFolder>();
             var resource = new Mock<IScheduledResource>();
 
@@ -210,16 +174,14 @@ securityWrapper
 
             //test
             model.DeleteSchedule(resource.Object);
-
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTest_CorrectTaskEventsSelected()
         {
-            // setup 
             var startTime = new DateTime(2000, 1, 1);
             var endTime = new DateTime(2003, 1, 1);
             var log = new MockTaskEventLog
@@ -230,11 +192,10 @@ securityWrapper
                     new MockTaskEvent(Guid.NewGuid(), 12, "Task Completed", endTime, "12348", "dave")
                 };
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+
             var res = new Mock<IScheduledResource>();
-            //setup expectancies
+
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
-            fileHelper.Setup(a => a.ReadAllText("b_12345_Bob")).Returns("");
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
@@ -245,7 +206,7 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTestDebugCreated()
         {
             var startTime = new DateTime(2000, 1, 1);
@@ -260,39 +221,34 @@ securityWrapper
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+            var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             const string content = "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":false,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]";
-            fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
-                      .Returns(content);
+            fileHelper.Setup(a => a.ReadAllText("b_12345_Bob")).Returns(content);
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
-            model.FileHelper = fileHelper.Object;
-            //var history = RunOutput(startTime, endTime, "Bob");
+            model.FileWrapper = fileHelper.Object;
             var serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
             var history = model.CreateHistory(res.Object);
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(debugStates.StartTime, history.First().DebugOutput.First().StartTime);
             Assert.AreEqual(debugStates.EndTime, history.First().DebugOutput.First().EndTime);
-            Assert.AreEqual(history.Last().DebugOutput.Count, 1);
+            Assert.AreEqual(1, history.Last().DebugOutput.Count);
             Assert.AreEqual("Bob", history.Last().UserName);
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTestStatusNotFoundIfNoDebugDebugCreated()
         {
             var startTime = new DateTime(2000, 1, 1);
@@ -307,7 +263,7 @@ securityWrapper
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+            var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
@@ -315,16 +271,15 @@ securityWrapper
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
                       .Returns(
                           "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
+
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
-            model.FileHelper = fileHelper.Object;
+            model.FileWrapper = fileHelper.Object;
             var history = model.CreateHistory(res.Object);
             //WE ONLY RETURN EXECUTED HISTORY
             Assert.AreEqual(0, history.Count);
@@ -332,7 +287,7 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTestStatusFailedWindowsSchedulerError()
         {
             //setup
@@ -345,24 +300,21 @@ securityWrapper
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+            var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
-                      .Returns(
-                          "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
+                    .Returns("[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]");
+
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
-            model.FileHelper = fileHelper.Object;
+            model.FileWrapper = fileHelper.Object;
             var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
@@ -371,7 +323,7 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_HistoryTestDebugCreated_StatusFailureIfDebugHasError()
         {
             //setup
@@ -384,41 +336,36 @@ securityWrapper
                 };
             // this should return two history items without any debug output
             var dirHelper = new Mock<IDirectoryHelper>();
-            var fileHelper = new Mock<IFileHelper>();
+            var fileHelper = new Mock<IFile>();
             var res = new Mock<IScheduledResource>();
 
             //expectations
             dirHelper.Setup(a => a.GetFiles(@"c:\")).Returns(new[] { "b_12345_Bob" });
             fileHelper.Setup(a => a.ReadAllText("b_12345_Bob"))
-                      .Returns(
-                          "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"05d4e815-61bf-49ad-b46c-b6f0e0e2e839\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"BUGS/Bug_11889\",\"HasError\":true,\"ErrorMessage\":\"Service [ BUGS/Bug_11889 ] not found.\",\"Version\":\"\",\"Name\":\"EsbServiceInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"EndTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\",\"WorkSurfaceMappingId\":\"00000000-0000-0000-0000-000000000000\"}]");
+                     .Returns("[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"05d4e815-61bf-49ad-b46c-b6f0e0e2e839\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"BUGS/Bug_11889\",\"HasError\":true,\"ErrorMessage\":\"Service [ BUGS/Bug_11889 ] not found.\",\"Version\":\"\",\"Name\":\"EsbServiceInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"EndTime\":\"2014-07-24T12:49:28.4006805+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\",\"WorkSurfaceMappingId\":\"00000000-0000-0000-0000-000000000000\"}]");
             res.Setup(a => a.Name).Returns("Bob");
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
-            model.FileHelper = fileHelper.Object;
+            model.FileWrapper = fileHelper.Object;
             var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
-            Assert.AreEqual(history.Last().DebugOutput.Count, 1);
+            Assert.AreEqual(1, history.Last().DebugOutput.Count);
             Assert.AreEqual("Bob", history.Last().UserName);
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_SaveTestValid()
         {
             //create objects
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();
             var action = new Mock<IExecAction>();
@@ -446,28 +393,21 @@ securityWrapper
             resource.Setup(a => a.Name).Returns("Dora");
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);
-            mockFolder.Verify(
-                a =>
-                a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword));
+            mockFolder.Verify(a => a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd", TaskLogonType.InteractiveTokenOrPassword));
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_SaveInvalidWindowsUserPermissions()
         {
             //create objects
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
-            _wrapper.Setup(
-                a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(false);
+            _wrapper.Setup(a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceLogOnAsBatchErrorTest, errorMessage);
@@ -481,14 +421,11 @@ securityWrapper
         {
             //create objects
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
-            _wrapper.Setup(
-                a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(false);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             resourceToSave.Setup(a => a.WorkflowName).Returns("bob");
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);
@@ -497,19 +434,16 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_SaveInvalidName()
         {
             //create objects
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
             var resourceToSave = new Mock<IScheduledResource>();
 
             //setup expectations
-            _wrapper.Setup(
-                a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(true);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             resourceToSave.Setup(a => a.Name).Returns("bob?");
             //run test
             model.Save(resourceToSave.Object, out string errorMessage);
@@ -519,12 +453,11 @@ securityWrapper
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel")]
         public void ScheduledResourceModel_SaveTest_UserPassword()
         {
             SetupSingleTask();
-            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\", _wrapper.Object, a => a.WorkflowName);
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object, @"c:\", _wrapper.Object, a => a.WorkflowName);
 
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();
@@ -548,13 +481,10 @@ securityWrapper
             var mockFolder = new Mock<ITaskFolder>();
             _mockService.Setup(a => a.GetFolder("WareWolf")).Returns(mockFolder.Object);
             resource.Setup(a => a.Name).Returns("Dora");
-
-
             model.Save(resourceToSave.Object, "user", "pwd");
             mockFolder.Verify(
                 a =>
-                a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword));
+                a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd", TaskLogonType.InteractiveTokenOrPassword));
             task.Verify(a => a.AddTrigger(It.IsAny<ITrigger>()));
         }
 
@@ -625,8 +555,6 @@ securityWrapper
                 };
             return history;
         }
-
-
     }
 
 
@@ -642,8 +570,7 @@ securityWrapper
 
     public class MockTaskEvent : ITaskEvent
     {
-        public MockTaskEvent(Guid? activityId, int eventId, string taskCategory, DateTime? timeCreated,
-                             string correlation, string userId)
+        public MockTaskEvent(Guid? activityId, int eventId, string taskCategory, DateTime? timeCreated, string correlation, string userId)
         {
             UserId = userId;
             Correlation = correlation;

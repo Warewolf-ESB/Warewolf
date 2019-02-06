@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
@@ -11,8 +21,6 @@ using Unlimited.Framework.Converters.Graph;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-
-
 
 namespace Dev2.Activities.WcfEndPoint
 {
@@ -38,9 +46,7 @@ namespace Dev2.Activities.WcfEndPoint
             }
             ExecuteService(update, out tmpErrors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
         }
-
-        protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject) => ExecuteService(update, out errors, method, dataObject, null);
-
+        
         protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
@@ -104,22 +110,12 @@ namespace Dev2.Activities.WcfEndPoint
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfWcfEndPointActivity dsfWcfEndPointActivity)
             {
-                return false;
+                return this.Equals(dsfWcfEndPointActivity);
+               
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfWcfEndPointActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()

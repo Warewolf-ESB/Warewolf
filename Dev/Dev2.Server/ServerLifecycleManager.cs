@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,23 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Runtime;
-using System.Security.Principal;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xml;
-using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -34,8 +21,6 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.Data;
 using Dev2.Diagnostics.Debug;
-using Dev2.Diagnostics.Logging;
-using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
 using Dev2.Runtime.ESB.Execution;
@@ -43,162 +28,105 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
-using Dev2.Workspaces;
-using log4net.Config;
 using WarewolfCOMIPC.Client;
+using Dev2.Common.Interfaces.Wrappers;
+using System.Collections.Generic;
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2
 {
-    sealed class ServerLifecycleManager : IDisposable
+    public interface IServerLifecycleManager : IDisposable
     {
-        static ServerLifecycleManager _singleton;
+        bool InteractiveMode { get; set; }
 
-        static int Main(string[] arguments)
+        void Run(IEnumerable<IServerLifecycleWorker> initWorkers);
+        void Stop(bool didBreak, int result);
+    }
+
+    public class StartupConfiguration
+    {
+        public IServerEnvironmentPreparer ServerEnvironmentPreparer { get; set; }
+        public IIpcClient IpcClient { get; set; }
+        public IAssemblyLoader AssemblyLoader { get; set; }
+        public IDirectory Directory { get; set; }
+        public IResourceCatalogFactory ResourceCatalogFactory { get; set; }
+        public IDirectoryHelper DirectoryHelper { get; set; }
+        public IWebServerConfiguration WebServerConfiguration { get; set; }
+        public IWriter Writer { get; set; }
+        public IPauseHelper PauseHelper { get; set; }
+        public IStartWebServer StartWebServer { get; set; }
+
+        public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
-            try
-            {
-                using (new MemoryFailPoint(2048))
-                {
-                    return RunMain(arguments);
-                }
-            }
-            catch (InsufficientMemoryException)
-            {
-                return RunMain(arguments);
-            }
+            var writer = new Writer();
 
-        }
-
-        static int RunMain(string[] arguments)
-        {
-            const int Result = 0;
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            return new StartupConfiguration
             {
-                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
+                ServerEnvironmentPreparer = serverEnvironmentPreparer,
+                IpcClient = new IpcClientImpl(new NamedPipeClientStreamWrapper(".", Guid.NewGuid().ToString(), System.IO.Pipes.PipeDirection.InOut)),
+                AssemblyLoader = new AssemblyLoader(),
+                Directory = new DirectoryWrapper(),
+                ResourceCatalogFactory = new ResourceCatalogFactory(),
+                DirectoryHelper = new DirectoryHelper(),
+                WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
+                Writer = writer,
+                PauseHelper = new PauseHelper(),
+                StartWebServer = new StartWebServer(writer, WebServerStartup.Start)
             };
-            if (Environment.UserInteractive || (arguments.Count() > 0 && arguments[0] == "--interactive"))
-            {
-                Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                using (_singleton = new ServerLifecycleManager(arguments))
-                {
-                    _singleton.Run(true);
-                }
-
-                _singleton = null;
-            }
-            else
-            {
-                Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
-                using (var service = new ServerLifecycleManagerService())
-                {
-                    ServiceBase.Run(service);
-                }
-            }
-            return Result;
         }
+    }
 
-
-        public class ServerLifecycleManagerService : ServiceBase
-        {
-            public ServerLifecycleManagerService()
-            {
-                CanPauseAndContinue = false;
-            }
-
-            protected override void OnStart(string[] args)
-            {
-                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
-                _singleton = new ServerLifecycleManager(null);
-                _singleton.Run(false);
-            }
-
-            protected override void OnStop()
-            {
-                Dev2Logger.Info("** Service Stopped **", GlobalConstants.WarewolfInfo);
-                _singleton.Stop(false, 0);
-                _singleton = null;
-            }
-        }
+    public sealed class ServerLifecycleManager : IServerLifecycleManager
+    {
+        public bool InteractiveMode { get; set; } = true;
+        IServerEnvironmentPreparer _serverEnvironmentPreparer;
 
         bool _isDisposed;
-        bool _isWebServerEnabled;
-        bool _isWebServerSslEnabled;
 
-        Dev2Endpoint[] _endpoints;
         Timer _timer;
-        Timer _loggerFlushTimer;
-        IDisposable _owinServer;
-        readonly IPulseLogger _pulseLogger;
-        int _daysToKeepTempFiles;
-        readonly PulseTracker _pulseTracker;
-        IpcClient _ipcIpcClient;
-
-
-        ServerLifecycleManager(string[] arguments)
+        IStartWebServer _startWebServer;
+        readonly IStartTimer _pulseLogger; // need to keep reference to avoid collection of timer
+        readonly IStartTimer _pulseTracker; // need to keep reference to avoid collection of timer
+        IIpcClient _ipcClient;
+        
+        private readonly ILoadResources _loadResources;
+        private readonly IAssemblyLoader _assemblyLoader;
+        private readonly IWebServerConfiguration _webServerConfiguration;
+        private readonly IWriter _writer;
+        private readonly IPauseHelper _pauseHelper;
+        
+        public ServerLifecycleManager(IServerEnvironmentPreparer serverEnvironmentPreparer)
+            :this(StartupConfiguration.GetStartupConfiguration(serverEnvironmentPreparer))
         {
-            _pulseLogger = new PulseLogger(60000);
-            _pulseLogger.Start();
-            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
-            _pulseTracker.Start();
-            SetWorkingDirectory();
-            MoveSettingsFiles();
-            var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
-            if (!File.Exists(settingsConfigFile))
-            {
-                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
-            }
-            try
-            {
-                Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
-                Dev2Logger.UpdateFileLoggerToProgramData(settingsConfigFile);
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("Error in startup.", e, GlobalConstants.WarewolfError);
-            }
-            Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            SetupTempCleanupSetting();
-        }
-
-        static void MoveSettingsFiles()
-        {
-            if (File.Exists("Settings.config"))
-            {
-                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
-                {
-                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
-                }
-                if (!File.Exists(EnvironmentVariables.ServerLogSettingsFile))
-                {
-                    File.Copy("Settings.config", EnvironmentVariables.ServerLogSettingsFile);
-                }
-            }
-            if (File.Exists("secure.config"))
-            {
-                if (!Directory.Exists(EnvironmentVariables.ServerSettingsFolder))
-                {
-                    Directory.CreateDirectory(EnvironmentVariables.ServerSettingsFolder);
-                }
-                if (!File.Exists(EnvironmentVariables.ServerSecuritySettingsFile))
-                {
-                    File.Copy("secure.config", EnvironmentVariables.ServerSecuritySettingsFile);
-                }
-            }
-        }
-
-        void SetupTempCleanupSetting()
-        {
-            var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
-            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue) && int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
-            {
-                _daysToKeepTempFiles = daysToKeepTempFiles;
-            }
 
         }
 
-        void Run(bool interactiveMode)
+        public ServerLifecycleManager(StartupConfiguration startupConfiguration)
         {
+            LoadPerformanceCounters();
+
+            _serverEnvironmentPreparer = startupConfiguration.ServerEnvironmentPreparer;
+            _ipcClient = startupConfiguration.IpcClient;
+            _assemblyLoader = startupConfiguration.AssemblyLoader;
+            _pulseLogger = new PulseLogger(60000).Start();
+            _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds).Start();
+            _serverEnvironmentPreparer.PrepareEnvironment();
+            _startWebServer = startupConfiguration.StartWebServer;
+            _loadResources = new LoadResources("Resources", startupConfiguration.Writer, startupConfiguration.Directory, startupConfiguration.ResourceCatalogFactory, startupConfiguration.DirectoryHelper);
+            _webServerConfiguration = startupConfiguration.WebServerConfiguration;
+            _writer = startupConfiguration.Writer;
+            _pauseHelper = startupConfiguration.PauseHelper;
+        }
+
+        public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
+        {
+            void OpenCOMStream(INamedPipeClientStreamWrapper clientStreamWrapper)
+            {
+                _writer.Write("Opening named pipe client stream for COM IPC... ");
+                _ipcClient = _ipcClient.GetIPCExecutor(clientStreamWrapper);
+                _writer.WriteLine("done.");
+            }
+
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
             try
@@ -214,28 +142,32 @@ namespace Dev2
 
             try
             {
-                RegisterDependencies();
-                SetWorkingDirectory();
-                Config.Server.SaveIfNotExists();
+                foreach (var worker in initWorkers)
+                {
+                    worker.Execute();
+                }
 
                 LoadHostSecurityProvider();
-                LoadPerformanceCounters();
-                CheckExampleResources();
-                MigrateOldTests();
-                InitializeServer();
-                LoadSettingsProvider();
-                ConfigureLoggging();
-                OpenCOMStream();
-                var catalog = LoadResourceCatalog();
-                _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
-                ConfigureLogFlushing();
-                StartPulseLogger();
-                LoadServerWorkspace();
-                LoadActivityCache(catalog);
-                StartWebServer();
-                RegisterDependencies();
+                _loadResources.CheckExampleResources();
+                _loadResources.MigrateOldTests();
+                var webServerConfig = _webServerConfiguration;
+                webServerConfig.Execute();
+                new LoadRuntimeConfigurations(_writer).Execute();
+                OpenCOMStream(null);
+                _loadResources.LoadResourceCatalog();
+                _timer = new Timer((state)=> GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
+                _loadResources.LoadServerWorkspace();
+                _loadResources.LoadActivityCache(_assemblyLoader);
+                _startWebServer.Execute(webServerConfig, _pauseHelper);
+#if DEBUG
+                SetAsStarted();
+#endif
                 LoadTestCatalog();
-                ServerLoop(interactiveMode);
+                if (InteractiveMode)
+                {
+                    WaitForUserExit();
+                }
             }
             catch (Exception e)
             {
@@ -248,283 +180,54 @@ namespace Dev2
                 Stop(true, 0);
             }
         }
-
-        private void RegisterDependencies()
-        {
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
-            CustomContainer.Register<IResumableExecutionContainerFactory>(new ResumableExecutionContainerFactory());
-        }
-
-        void OpenCOMStream()
-        {
-            Write("Opening named pipe client stream for COM IPC... ");
-            _ipcIpcClient = IpcClient.GetIPCExecutor();
-            WriteLine("done.");
-        }
-
-        void StartPulseLogger()
-        {
-            _pulseLogger.Start();
-            _pulseTracker.Start();
-        }
-
-        void PerformTimerActions(object state)
-        {
-            GetComputerNames.GetComputerNamesList();
-            if (_daysToKeepTempFiles != 0)
-            {
-                DeleteTempFiles();
-            }
-        }
-
-        private void ConfigureLogFlushing()
-        {
-            if (Config.Server.EnableDetailedLogging)
-            {
-                Config.Server.OnLogFlushPauseRequested += PerformLogFlushTimerPause;
-                Config.Server.OnLogFlushResumeRequested += PerformLogFlushTimerResume;
-                _loggerFlushTimer = new Timer(PerformLoggerFlushActions, null, 10000, Config.Server.LogFlushInterval);
-            }
-        }
-
-        long _flushing;
-        void PerformLoggerFlushActions(object state)
-        {
-            if (Interlocked.Exchange(ref _flushing, 1) != 0)
-            {
-                return;
-            }
-
-            try
-            {
-                LogManager.FlushLogs();
-            }
-            catch (Exception e)
-            {
-                //
-            }
-            finally
-            {
-                Interlocked.Decrement(ref _flushing);
-            }
-        }
-        void PerformLogFlushTimerPause()
-        {
-            _loggerFlushTimer.Change(0, Timeout.Infinite);
-            while (Interlocked.Read(ref _flushing) > 0)
-            {
-                Thread.Sleep(100);
-            }
-        }
-        void PerformLogFlushTimerResume()
-        {
-            _loggerFlushTimer.Change(10000, Config.Server.LogFlushInterval);
-        }
-
-        static void PreloadReferences()
-        {
-            Write("Preloading assemblies...  ");
-            var currentAsm = typeof(ServerLifecycleManager).Assembly;
-            var inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-            LoadReferences(currentAsm, inspected);
-            WriteLine("done.");
-        }
-
-        static void LoadReferences(Assembly asm, HashSet<string> inspected)
-        {
-            var allReferences = asm.GetReferencedAssemblies();
-
-            foreach (var toLoad in allReferences)
-            {
-                if (!inspected.Contains(toLoad.Name))
-                {
-                    inspected.Add(toLoad.Name);
-                    var loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
-                }
-            }
-        }
-
-        void DeleteTempFiles()
-        {
-            var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
-            DeleteTempFiles(tempPath);
-            var schedulerTempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
-            DeleteTempFiles(schedulerTempPath);
-        }
-
-        void DeleteTempFiles(string tempPath)
-        {
-            if (Directory.Exists(tempPath))
-            {
-                var dir = new DirectoryInfo(tempPath);
-                var files = dir.GetFiles();
-                var filesToDelete = files.Where(info =>
-                {
-                    var maxDaysToKeepTimeSpan = new TimeSpan(_daysToKeepTempFiles, 0, 0, 0);
-                    var time = DateTime.Now.Subtract(info.CreationTime);
-                    return time > maxDaysToKeepTimeSpan;
-                }).ToList();
-
-                foreach (var fileInfo in filesToDelete)
-                {
-                    fileInfo.Delete();
-                }
-            }
-        }
-
-        void Stop(bool didBreak, int result)
+        
+        public void Stop(bool didBreak, int result)
         {
             if (!didBreak)
             {
                 Dispose();
             }
 
-            Write($"Exiting with exitcode {result}");
+            _writer.Write($"Exiting with exitcode {result}");
         }
 
-        void ServerLoop(bool interactiveMode)
+        void WaitForUserExit()
         {
-            if (interactiveMode)
+
+            _writer.Write("Press <ENTER> to terminate service and/or web server if started");
+            if (EnvironmentVariables.IsServerOnline)
             {
-                Write("Press <ENTER> to terminate service and/or web server if started");
-                if (EnvironmentVariables.IsServerOnline)
-                {
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Write("Failed to start Server");
-                }
-                Stop(false, 0);
+                _pauseHelper.Pause();
             }
+            else
+            {
+                _writer.Write("Failed to start Server");
+            }
+            Stop(false, 0);
         }
-
-        static void SetWorkingDirectory()
-        {
-            try
-            {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            }
-            catch (Exception e)
-            {
-                Fail("Unable to set working directory.", e);
-            }
-        }
-        void InitializeServer()
-        {
-            try
-            {
-                string webServerSslPort;
-                string webServerPort;
-                GlobalConstants.CollectUsageStats = ConfigurationManager.AppSettings["CollectUsageStats"];
-                GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
-
-                _isWebServerEnabled = false;
-                bool.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
-                bool.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
-
-                if (_isWebServerEnabled)
-                {
-                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
-                    {
-                        throw new ArgumentException("Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
-                    }
-
-
-                    if (!int.TryParse(webServerPort, out int realPort))
-                    {
-                        throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
-                    }
-
-                    var endpoints = new List<Dev2Endpoint>();
-
-                    var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
-                    var httpUrl = $"http://*:{webServerPort}/";
-                    endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-
-                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-                    EnableSslForServer(webServerSslPort, endpoints);
-
-                    _endpoints = endpoints.ToArray();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Fail("Server initialization failed", ex);
-            }
-        }
-
-
-        void EnableSslForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
-        {
-            if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
-            {
-                int.TryParse(webServerSslPort, out int realWebServerSslPort);
-
-                var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
-
-                if (!string.IsNullOrEmpty(sslCertPath))
-                {
-                    var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                    var httpsUrl = $"https://*:{webServerSslPort}/";
-                    var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
-
-                    if (canEnableSsl)
-                    {
-                        endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
-                    }
-                    else
-                    {
-                        WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
-                    }
-                }
-            }
-        }
-
 
         internal void CleanupServer()
         {
             try
             {
-                if (_owinServer != null)
+                if (_startWebServer != null)
                 {
-                    _owinServer.Dispose();
-                    _owinServer = null;
+                    _startWebServer.Dispose();
+                    _startWebServer = null;
                 }
-                if (_ipcIpcClient != null)
+                if (_ipcClient != null)
                 {
-                    _ipcIpcClient.Dispose();
-                    _ipcIpcClient = null;
+                    _ipcClient.Dispose();
+                    _ipcClient = null;
                 }
                 DebugDispatcher.Instance.Shutdown();
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
             }
         }
-
-        static void Fail(string message, Exception e)
-        {
-            var ex = e;
-            var errors = new StringBuilder();
-            while (ex != null)
-            {
-                errors.AppendLine(ex.Message);
-                errors.AppendLine(ex.StackTrace);
-                ex = ex.InnerException;
-            }
-
-            WriteLine("Critical Failure: " + message);
-            WriteLine(errors.ToString());
-
-            WriteLine("");
-        }
-
+        
         ~ServerLifecycleManager()
         {
             Dispose(false);
@@ -556,7 +259,22 @@ namespace Dev2
                 _timer = null;
             }
 
-            _owinServer = null;
+            if (_pulseLogger != null)
+            {
+                _pulseLogger.Dispose();
+            }
+            if (_pulseTracker != null)
+            {
+                _pulseTracker.Dispose();
+            }
+
+            if (_serverEnvironmentPreparer != null)
+            {
+                _serverEnvironmentPreparer.Dispose();
+                _serverEnvironmentPreparer = null;
+            }
+
+            _startWebServer = null;
         }
 
         static void LoadPerformanceCounters()
@@ -581,150 +299,28 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-
-        static ResourceCatalog LoadResourceCatalog()
-        {
-            MigrateOldResources();
-            ValidateResourceFolder();
-            Write("Loading resource catalog...  ");
-            var catalog = ResourceCatalog.Instance;
-            MethodsToBeDepricated();
-            WriteLine("done.");
-            return catalog;
-        }
-
-        static void MethodsToBeDepricated()
-        {
-            ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
-        }
-
-        static void LoadTestCatalog()
+        
+        void LoadTestCatalog()
         {
 
-            Write("Loading test catalog...  ");
+            _writer.Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
-            WriteLine("done.");
+            _writer.WriteLine("done.");
         }
+        
 
-        static void LoadActivityCache(ResourceCatalog catalog)
+        void LoadHostSecurityProvider()
         {
-            PreloadReferences();
-            Write("Loading resource activity cache...  ");
-            catalog.LoadServerActivityCache();
-            WriteLine("done.");
-        }
-        public static IDirectoryHelper DirectoryHelperInstance()
-        {
-            return new DirectoryHelper();
-        }
-        static void MigrateOldResources()
-        {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
-            {
-                var dir = DirectoryHelperInstance();
-                dir.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
-                dir.CleanUp(serverBinResources);
-            }
-        }
-
-        static void CheckExampleResources()
-        {
-            var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
-            if (Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverReleaseResources))
-            {
-                ResourceCatalog.Instance.LoadExamplesViaBuilder(serverReleaseResources);
-            }
-        }
-
-        static void MigrateOldTests()
-        {
-            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
-            {
-                var dir = DirectoryHelperInstance();
-                dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
-                dir.CleanUp(serverBinTests);
-            }
-        }
-
-        static void ValidateResourceFolder()
-        {
-            var folder = EnvironmentVariables.ResourcePath;
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
-        }
-
-        static void LoadSettingsProvider()
-        {
-            Write("Loading settings provider...  ");
-            Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
-            WriteLine("done.");
-        }
-
-        static void ConfigureLoggging()
-        {
-            try
-            {
-                Write("Configure logging...  ");
-
-                var instance = Runtime.Configuration.SettingsProvider.Instance;
-                var settings = instance.Configuration;
-                WorkflowLoggger.LoggingSettings = settings.Logging;
-
-                WriteLine("done.");
-            }
-            catch (Exception e)
-            {
-                Write("fail.");
-                WriteLine(e.Message);
-            }
-        }
-
-        static void LoadServerWorkspace()
-        {
-
-            Write("Loading server workspace...  ");
-
-            var instance = WorkspaceRepository.Instance;
-            if (instance != null)
-            {
-                WriteLine("done.");
-            }
-        }
-
-        static void LoadHostSecurityProvider()
-        {
-            Write("Loading security provider...  ");
+            _writer.Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
             if (instance != null)
             {
-                WriteLine("done.");
+                _writer.WriteLine("done.");
             }
 
         }
 
-        void StartWebServer()
-        {
-            if (_isWebServerEnabled || _isWebServerSslEnabled)
-            {
-                try
-                {
-                    LogEndpoints();
-                }
-                catch (Exception e)
-                {
-                    LogException(e);
-                    EnvironmentVariables.IsServerOnline = false;
-                    Fail("Webserver failed to start", e);
-                    Console.ReadLine();
-                }
-            }
 #if DEBUG
-            SetAsStarted();
-        }
 
         static void SetAsStarted()
         {
@@ -740,21 +336,13 @@ namespace Dev2
             {
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
+        }
 #endif
-        }
+    }
 
-        void LogEndpoints()
-        {
-            _owinServer = WebServerStartup.Start(_endpoints);
-            EnvironmentVariables.IsServerOnline = true;
-            WriteLine("\r\nWeb Server Started");
-            foreach (var endpoint in _endpoints)
-            {
-                WriteLine($"Web server listening at {endpoint.Url}");
-            }
-        }
-
-        internal static void WriteLine(string message)
+    class Writer : IWriter
+    {
+        public void WriteLine(string message)
         {
             if (Environment.UserInteractive)
             {
@@ -768,8 +356,7 @@ namespace Dev2
 
         }
 
-
-        internal static void Write(string message)
+        public void Write(string message)
         {
             if (Environment.UserInteractive)
             {
@@ -782,9 +369,21 @@ namespace Dev2
             }
         }
 
-        static void LogException(Exception ex)
+        public void Fail(string message, Exception e)
         {
-            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
+            var ex = e;
+            var errors = new StringBuilder();
+            while (ex != null)
+            {
+                errors.AppendLine(ex.Message);
+                errors.AppendLine(ex.StackTrace);
+                ex = ex.InnerException;
+            }
+
+            WriteLine("Critical Failure: " + message);
+            WriteLine(errors.ToString());
+
+            WriteLine("");
         }
     }
 }

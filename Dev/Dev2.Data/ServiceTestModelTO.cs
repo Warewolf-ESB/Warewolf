@@ -21,10 +21,7 @@ namespace Dev2.Data
         public TestRunResult Result { get; set; }
         public bool TestPassed
         {
-            get
-            {
-                return _testPassed;
-            }
+            get => _testPassed;
             set
             {
                 _testPassed = value;

@@ -39,7 +39,7 @@ using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using System.Reflection;
 using Dev2.Activities.Designers2.AdvancedRecordset;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -264,6 +264,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             if (!string.IsNullOrEmpty(getExtention))
             {
                 return location.Replace(getExtention, GetGuid + getExtention);
+            }
+            else if (location.EndsWith(@"\\"))
+            {
+                return location.TrimEnd('\\') + GetGuid + @"\\";
+            }
+            else if (location.EndsWith("\\"))
+            {
+                return location.TrimEnd('\\') + GetGuid + "\\";
             }
             return location + GetGuid;
         }

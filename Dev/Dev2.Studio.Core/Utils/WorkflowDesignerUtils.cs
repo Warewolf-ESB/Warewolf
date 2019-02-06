@@ -20,6 +20,7 @@ using Dev2.Studio.Interfaces.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Parsers;
 
 namespace Dev2.Utils
 {
@@ -45,7 +46,7 @@ namespace Dev2.Utils
 
                 if (intellisenseParser.EventLog.HasEventLogs)
                 {
-                    var languageParser = DataListFactory.CreateStudioLanguageParser();
+                    var languageParser = new Dev2DataLanguageParser();
 
                     try
                     {

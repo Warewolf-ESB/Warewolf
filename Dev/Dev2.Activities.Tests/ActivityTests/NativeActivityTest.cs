@@ -17,7 +17,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ActivityUnitTests;
-using ActivityUnitTests.ActivityTest;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -34,10 +33,8 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

@@ -122,6 +122,7 @@
     <Compile Include="Communication\Dev2JsonSerializer.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
+    <Compile Include="PerformanceCounters\Counters\MyPerfCounter.cs" />
     <Compile Include="PerformanceCounters\Counters\SafeCounter.cs" />
     <Compile Include="PerformanceCounters\Counters\WarewolfAverageExecutionTimePerformanceCounter.cs" />
     <Compile Include="PerformanceCounters\Counters\WarewolfAverageExecutionTimePerformanceCounterByResource.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="PerformanceCounters\Management\PerformanceCounterTo.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterManager.cs" />
     <Compile Include="PerformanceCounters\Management\WarewolfPerformanceCounterRegister.cs" />
+    <Compile Include="PerformanceCounters\PerformanceCounterCategoryWrapper.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
@@ -205,7 +207,6 @@
     <Compile Include="VerifyArgument.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Infrastructure.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

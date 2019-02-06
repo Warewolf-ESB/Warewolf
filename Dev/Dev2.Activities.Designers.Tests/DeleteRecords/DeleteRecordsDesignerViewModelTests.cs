@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,6 +9,7 @@
 */
 
 using System.Activities.Presentation.Model;
+using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
@@ -19,59 +20,26 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.DeleteRecords
 {
     [TestClass]
-    
     public class DeleteRecordsDesignerViewModelTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DeleteRecordsDesignerViewModel_SetRecordsetNameValue")]
-        public void DeleteRecordsDesignerViewModel_SetRecordsetNameValue_ModelItemIsValid_RecordSetOnModelItemIsSet()
-        {
-            var modelItem = CreateModelItem();
-            var viewModel = new TestDeleteRecordsDesignerViewModel(modelItem);
-            const string ExcpectedVal = "[[Table_Records()]]";
-            viewModel.RecordsetName = ExcpectedVal;
-            viewModel.Validate();
-            Assert.AreEqual(ExcpectedVal, viewModel.RecordsetName);
-            Assert.IsTrue(viewModel.HasLargeView);
-        }
-
-        [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("DeleteRecordsDesignerViewModel_Handle")]
-        public void DeleteRecordsDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        [TestCategory(nameof(DeleteRecordsDesignerViewModel))]
+        public void DeleteRecordsDesignerViewModel_ShouldCall_UpdateHelpDescriptor()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
-            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
-            CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new TestDeleteRecordsDesignerViewModel(CreateModelItem());
-            //------------Execute Test---------------------------
-            viewModel.UpdateHelpDescriptor("help");
-            //------------Assert Results-------------------------
-            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Constructor_GivenIsNew_ShouldHaveTreatAsNullTrue()
-        {
-            //---------------Set up test pack-------------------
-            var modelItem = CreateModelItem();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(modelItem);
-            //---------------Execute Test ----------------------
-            var modelProperty = modelItem.Properties["TreatNullAsZero"];
-            var value = modelProperty?.Value;
-            if (value != null)
+            using (var viewModel = new DeleteRecordsDesignerViewModel(CreateModelItem(), mockMainViewModel.Object))
             {
-                var currentValue = value.GetCurrentValue();
-                //---------------Test Result -----------------------
-                Assert.IsTrue(bool.Parse(currentValue.ToString()));
+                //------------Execute Test---------------------------
+                viewModel.UpdateHelpDescriptor("help");
+                //------------Assert Results-------------------------
+                mockHelpViewModel.Verify(model => model.UpdateHelpText("help"), Times.Once());
+                Assert.AreEqual(Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Delete, viewModel.HelpText);
+                Assert.IsTrue(viewModel.HasLargeView);
             }
-
         }
 
         static ModelItem CreateModelItem()

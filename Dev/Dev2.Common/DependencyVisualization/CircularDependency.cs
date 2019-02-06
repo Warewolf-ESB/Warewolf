@@ -20,23 +20,13 @@ namespace Dev2.Common.DependencyVisualization
     /// </summary>
     public class CircularDependency : IComparable<CircularDependency>, ICircularDependency
     {
-        #region Constructor
-
         public CircularDependency(IEnumerable<IDependencyVisualizationNode> nodes)
         {
             Nodes = new List<IDependencyVisualizationNode>(nodes);
         }
 
-        #endregion Constructor
-
-        #region Properties
-
         public List<IDependencyVisualizationNode> Nodes { get; private set; }
-
-        #endregion Properties
-
-        #region Base Class Overrides
-
+        
         public override bool Equals(object obj)
         {
             var other = obj as CircularDependency;
@@ -48,12 +38,6 @@ namespace Dev2.Common.DependencyVisualization
 
         public override int GetHashCode() => Nodes.GetHashCode();
 
-        #endregion Base Class Overrides
-
-        #region IComparable<CircularDependency> Members
-
         public int CompareTo(CircularDependency other) => Nodes.Count.CompareTo(other.Nodes.Count);
-
-        #endregion IComparable<CircularDependency> Members
     }
 }

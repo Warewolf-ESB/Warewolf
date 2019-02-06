@@ -345,7 +345,6 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
-    <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
@@ -419,7 +418,6 @@
     <Compile Include="Utils\OpeningWorkflowsHelper.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewFactory.cs" />
-    <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="ViewModels\DeployWorksurfaceViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModelUtil.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
@@ -899,6 +897,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\Administration\" />
     <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <ItemGroup>

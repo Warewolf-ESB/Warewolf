@@ -79,14 +79,22 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="CommonComparerTests.cs" />
+    <Compile Include="Core\ServerSourceTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="DirectoryEntryFactoryTest.cs" />
+    <Compile Include="ExtMethods\StringExtensionTests.cs" />
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="ConfigTest.cs" />
+    <Compile Include="ComputerNameTests.cs" />
+    <Compile Include="RecordSetSearchPayloadTests.cs" />
+    <Compile Include="SaveDialogue\ResourceNameTests.cs" />
+    <Compile Include="Utils\VerifyArgumentTests.cs" />
     <Compile Include="WarewolfQueue\WarewolfQueueTests.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <Compile Include="Utils\SearchUtilTests.cs" />
+    <Compile Include="Wrappers\TimerWrapperTests.cs" />
+    <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>

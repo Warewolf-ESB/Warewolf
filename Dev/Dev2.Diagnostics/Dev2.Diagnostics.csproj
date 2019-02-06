@@ -115,7 +115,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Diagnostics.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -27,7 +27,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             _folder = _service.RootFolder.SubFolders.All(a => a.Name != "WarewolfTestFolder") ? _service.RootFolder.CreateFolder("WarewolfTestFolder") : _service.GetFolder("WarewolfTestFolder");
             var task = _service.NewTask();
             task.Actions.Add(new ExecAction("Notepad.exe"));
-            _folder.RegisterTaskDefinition("TestTask", task);
+            _folder.RegisterTaskDefinition("TestTask", task, TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
 
         }
 

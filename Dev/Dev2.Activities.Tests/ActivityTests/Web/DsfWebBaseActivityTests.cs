@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
-            var httpClient = dsfWebActivity.CreateClient(new List<NameValue>(new[] { new NameValue("a", "b") }),
+            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new ObservableNameValue("a", "b") }),
                 Tests.TestUtils.ExampleURL, new WebSource());
 
             //---------------Test Result -----------------------
@@ -72,7 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
-            var httpClient = dsfWebActivity.CreateClient(new List<NameValue>(new[] { new NameValue("a", "b") }), "Wrong.com.", new WebSource() { Address = "Wrong.com." });
+            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new ObservableNameValue("a", "b") }), "Wrong.com.", new WebSource() { Address = "Wrong.com." });
             //---------------Test Result -----------------------
             Assert.IsNull(httpClient.BaseAddress);
         }
@@ -195,9 +196,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebDeleteActivityFromBase();
 
-            var headers = new List<NameValue>
+            var headers = new List<INameValue>
             {
-                new NameValue("Content", "text/json")
+                new ObservableNameValue("Content", "text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(deleteActivityFromBase);
@@ -229,7 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = CreateWebDeleteActivityFromBase();
-            dsfWebPostActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
+            dsfWebPostActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
             dsfWebPostActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             dsfWebPostActivity.Outputs = serviceOutputs;
@@ -289,7 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
         }
 
-        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source,
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source,
             string putData)
         {
             return ResponseFromWeb;

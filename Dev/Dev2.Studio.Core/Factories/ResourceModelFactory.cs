@@ -17,8 +17,7 @@ using Dev2.Utils;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common;
-using System.IO;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.Studio.Core.Factories
 {
@@ -59,7 +58,7 @@ namespace Dev2.Studio.Core.Factories
             }
             catch (SystemException exception)
             {
-                HelperUtils.ShowTrustRelationshipError(exception);
+                HelperUtils.ShowTrustRelationshipError(CustomContainer.Get<IPopupController>(), exception);
             }
             return null;
         }

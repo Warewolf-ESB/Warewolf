@@ -17,10 +17,16 @@ using Dev2.Common;
 
 namespace Dev2.Runtime.Configuration
 {
+
+    public interface ISettingsProvider
+    {
+        Settings.Configuration Configuration { get; }
+    }
+
     /// <summary>
     /// Do NOT instantiate directly - use static <see cref="Instance" /> property instead; use for testing only!
     /// </summary>
-    public class SettingsProvider
+    public class SettingsProvider : ISettingsProvider
     {
         public static string WebServerUri { get; set; }
 

@@ -16,6 +16,17 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
+
+    public class DirectoryInfoWrapper : IDirectoryInfo
+    {
+        readonly DirectoryInfo _info;
+        public DirectoryInfoWrapper(DirectoryInfo info)
+        {
+            _info = info;
+        }
+        public string FullName => _info.FullName;
+    }
+
     public class DirectoryWrapper : IDirectory
     {
         public string[] GetFiles(string path)
@@ -25,6 +36,13 @@ namespace Dev2.Common.Wrappers
                 return new string[0];
             }
             return Directory.GetFiles(path);
+        }
+        public IEnumerable<IFileInfo> GetFileInfos(string path)
+        {
+            foreach (var info in new DirectoryInfo(path).GetFiles())
+            {
+                yield return new FileInfoWrapper(info);
+            }
         }
 
         public string CreateIfNotExists(string path)
@@ -70,7 +88,9 @@ namespace Dev2.Common.Wrappers
             Directory.Delete(directoryStructureFromPath, recursive);
         }
 
-        public DirectoryInfo CreateDirectory(string dir) => Directory.CreateDirectory(dir);
+        public IDirectoryInfo CreateDirectory(string dir) {
+            return new DirectoryInfoWrapper(Directory.CreateDirectory(dir));
+        }
 
         public IEnumerable<string> EnumerateFiles(string path)
             => Directory.EnumerateFiles(path);
