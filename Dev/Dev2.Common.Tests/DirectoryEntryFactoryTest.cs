@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -10,8 +20,8 @@ namespace Dev2.Common.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("DirectoryEntryTest_Create")]
-        public void DirectoryEntryFactoryTest_EntryNameAndMachineName_AreEqual()
+        [TestCategory(nameof(DirectoryEntryFactory))]
+        public void DirectoryEntryFactory_EntryNameAndMachineName_AreEqual()
         {
             //-----------------Arrage------------------
             var path = "WinNT://" + Environment.MachineName + ",computer";
@@ -32,8 +42,8 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("DirectoryEntryTest_Create")]
-        public void DirectoryEntryFactoryTest_DirectoryEntry_IsDisposed()
+        [TestCategory(nameof(DirectoryEntryFactory))]
+        public void DirectoryEntryFactory_DirectoryEntry_IsDisposed()
         {
             //-----------------Arrage------------------
             var path = "WinNT://" + Environment.MachineName + ",computer";
@@ -52,8 +62,8 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("DirectoryEntryTest_Create")]
-        public void DirectoryEntryFactoryTest_DirectoryEntryPath_IsTrue()
+        [TestCategory(nameof(DirectoryEntryFactory))]
+        public void DirectoryEntryFactory_DirectoryEntryPath_IsTrue()
         {
             //-----------------Arrage------------------
             IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
@@ -63,5 +73,20 @@ namespace Dev2.Common.Tests
             Assert.IsNotNull(entry);
             Assert.IsTrue(entry.Instance.Path == "Administrator");
         }
+
+        //[TestMethod]
+        //[Owner("Siphamandla Dube")]
+        //[TestCategory(nameof(DirectoryEntryFactory))]
+        //public void DirectoryEntryFactory_Create_DirectoryEntryPath_IsTrue()
+        //{
+        //    //-----------------Arrage------------------
+        //    IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
+        //    IDirectoryEntryFactory _directoryEntryFactory1 = new DirectoryEntryFactory();
+        //    //-----------------Act------------------
+        //    var entry = _directoryEntryFactory.Create<IDirectoryEntry>(_directoryEntryFactory1.Create("Administrator"));
+        //    //-----------------Assert------------------
+        //    Assert.IsNotNull(entry);
+        //    Assert.IsTrue(entry.Instance.Path == "Administrator");
+        //}
     }
 }
