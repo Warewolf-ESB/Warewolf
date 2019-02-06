@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -47,9 +56,6 @@ namespace Warewolf.Studio.ViewModels
         string _errorContainsText;
         bool _isTestLoading;
         bool _isValidatingIsDirty;
-#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
-        bool _isDirty;
-#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 
         public string NeverRunString
         {
@@ -412,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
                     return false;
                 }
                 _isValidatingIsDirty = true;
-                _isDirty = false;
+                var _isDirty = false;
                 var notEquals = !Equals(Item);
                 if (NewTest)
                 {
@@ -547,7 +553,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {
@@ -605,7 +611,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
             string colName = null;
-            foreach (var col in recsetCols.Distinct(new ScalarNameComparer()))
+            foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
             {
                 if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
                 {

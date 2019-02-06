@@ -20,18 +20,22 @@ namespace Dev2.ViewModels
 {
     public class SearchModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
+        readonly IShellViewModel _shellViewModel;
+
+        [ExcludeFromCodeCoverage]
         public SearchModel(IEventAggregator eventPublisher, ISearchViewModel vm, IView view)
+            : this(eventPublisher, vm, view, CustomContainer.Get<IShellViewModel>())
+        {
+        }
+        public SearchModel(IEventAggregator eventPublisher, ISearchViewModel vm, IView view, IShellViewModel shellViewModel)
             : base(eventPublisher)
         {
+            _shellViewModel = shellViewModel;
             ViewModel = vm;
             View = view;
             ViewModel.PropertyChanged += (sender, args) =>
             {
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                if (mainViewModel != null)
-                {
-                    ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
-                }
+                ViewModelUtils.RaiseCanExecuteChanged(_shellViewModel.SaveCommand);
 
                 if (args.PropertyName == "DisplayName")
                 {
@@ -47,7 +51,7 @@ namespace Dev2.ViewModels
         {
             _eventPublisher.Unsubscribe(this);
             base.OnDispose();
-            ViewModel?.Dispose();
+            ViewModel.Dispose();
         }
 
         public override object GetView(object context = null) => View;
@@ -71,15 +75,9 @@ namespace Dev2.ViewModels
 
         public string ResourceType => "Search";
 
-        #region Implementation of IHelpSource
-
         public string HelpText { get; set; }
         public ISearchViewModel ViewModel { get; set; }
         public IView View { get; set; }
-
-        #endregion
-
-        #region Implementation of IStudioTab
 
         public bool IsDirty => false;
 
@@ -93,7 +91,5 @@ namespace Dev2.ViewModels
             ViewModel.UpdateHelpDescriptor(string.Empty);
             return true;
         }
-
-        #endregion
     }
 }

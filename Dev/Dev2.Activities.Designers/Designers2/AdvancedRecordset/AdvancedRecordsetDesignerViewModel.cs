@@ -39,6 +39,8 @@ using Dev2.Data.Util;
 using static LanguageAST.LanguageExpression;
 using System.Text;
 using Dev2.Studio.Interfaces.DataList;
+using Dev2.Common;
+using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.AdvancedRecordset
 {
@@ -190,7 +192,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         {
             DeclareVariables.Add(new ObservableAwareNameValue(DeclareVariables, s =>
             {
-                _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+                _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
             }));
         }
 
@@ -198,7 +200,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
         }
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -211,7 +213,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
 
                 AddDeclareVariables();
             }
-            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty(nameof(DeclareVariables), _declareVariables.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         private void GenerateOutputs()

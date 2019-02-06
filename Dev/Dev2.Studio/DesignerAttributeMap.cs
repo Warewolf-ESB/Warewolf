@@ -104,6 +104,7 @@ using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.ExchangeNewEmail;
 using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.AdvancedRecordset;
+using Dev2.Activities.Designers2.DeleteRecords;
 
 namespace Dev2
 {
@@ -126,7 +127,7 @@ namespace Dev2
                 { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesignerViewModel) },
                 { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesignerViewModel) },
                 { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(RecordsLengthDesignerViewModel) },
-                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(DeleteRecordsDesignerViewModel) },
+                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(DeleteRecordsNullHandlerDesignerViewModel) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesignerViewModel) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesignerViewModel) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesignerViewModel) },

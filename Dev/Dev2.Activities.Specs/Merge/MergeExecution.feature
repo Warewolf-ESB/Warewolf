@@ -6,7 +6,7 @@ Feature: MergeExecution
 
 Scenario: Merge AssignOnlyWithNoOutput Workflow with Same Version
 	 Given I Load workflow "AssignOnlyWithNoOutput" from "localhost"
-	 And I Load workflow "AssignOnlyWithNoOutput" from "Remote Container"	 
+	 And I Load workflow "AssignOnlyWithNoOutput" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "AssignOnlyWithNoOutput"
 	 Then Current workflow contains "2" tools
 	 Then Current workflow contains "1" connectors
@@ -19,7 +19,7 @@ Scenario: Merge AssignOnlyWithNoOutput Workflow with Same Version
 
 Scenario: Merge VersionHelloWorld Workflow 
 	 Given I Load workflow "MergeHelloWorld" from "localhost"
-	 And I Load workflow "VersionHelloWorld" from "Remote Container"	 
+	 And I Load workflow "VersionHelloWorld" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "VersionHelloWorld"
 	 Then Current workflow contains "6" tools
 	 Then Current workflow contains "5" connectors
@@ -67,7 +67,7 @@ Scenario: Merge WorkFlowWithOneObject different input mapping
 
 Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
 	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
-	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Container"	 
+	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "WorkflowWithDifferentToolSequence"
 	 Then Current workflow contains "3" tools
 	 Then Current workflow contains "2" connectors
@@ -100,7 +100,7 @@ Scenario: Merge Workflow Containing SequenceTool With Different Children Sequenc
 
 Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 Given I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "localhost"
-	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Container"	 
+	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "WorkflowWithAssignToolsWithDisconnectedArms"
 	 Then Current workflow contains "3" tools
 	 Then Current workflow contains "1" connectors

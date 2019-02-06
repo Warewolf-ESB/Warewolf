@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\MainViewModelTests.cs" />
     <Compile Include="ViewModels\DelegateCommandTests.cs" />
     <Compile Include="ViewModels\RelayCommandTests.cs" />
+    <Compile Include="ViewModels\SettingsViewModelBaseTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +124,6 @@
     <EmbeddedResource Include="XML\LoggingSettings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

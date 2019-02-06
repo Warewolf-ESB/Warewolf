@@ -109,9 +109,12 @@
       <HintPath>..\packages\SpecFlow.2.3.2\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="Warewolf.Launcher, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Warewolf Test Agent.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildConfig.cs" />
     <Compile Include="..\Dev2.IntegrationTests\Services.Sql\SqlServerTestUtils.cs">
       <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTestUtils.cs</Link>
     </Compile>
@@ -252,7 +255,7 @@
       <DependentUpon>Move.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
@@ -636,7 +639,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Read File1.feature.cs</LastGenOutput>
+      <LastGenOutput>Read File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -953,10 +956,6 @@
     <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>Warewolf.Language.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Launcher\Warewolf.Launcher.csproj">
-      <Project>{9B669D51-14CE-44A3-9407-8251BA3BAD19}</Project>
-      <Name>Warewolf.Launcher</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>

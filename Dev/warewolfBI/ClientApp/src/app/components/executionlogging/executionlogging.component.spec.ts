@@ -53,7 +53,7 @@ describe('ExecutionLoggingComponent', () => {
 
   it('should set defaults on ngOnInit', () => {
     component.ngOnInit();
-    expect(component.selected).toEqual('3142');
+    expect(component.port).toEqual('3142');
     expect(component.serverName).toEqual('localhost');
     expect(component.logEntry).not.toBeNull;
     expect(component.dataSource).not.toBeNull;

@@ -15,14 +15,24 @@ using System.Windows;
 using System.Activities;
 using System.Windows.Media;
 using Dev2.Studio.Core.Activities.Utils;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers2.SelectAndApply
 {
     public class SelectAndApplyDesignerViewModel : ActivityDesignerViewModel
     {
+        private readonly IShellViewModel _shellViewModel;
+
+        [ExcludeFromCodeCoverage]
         public SelectAndApplyDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, CustomContainer.Get<IShellViewModel>())
+        {
+        }
+
+        public SelectAndApplyDesignerViewModel(ModelItem modelItem, IShellViewModel shellViewModel)
             : base(modelItem)
         {
+            _shellViewModel = shellViewModel;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_Select_and_Apply;
             var dataFunc = modelItem.Properties["ApplyActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
@@ -36,8 +46,8 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         public string DataFuncDisplayName
         {
-            get { return (string)GetValue(DataFuncDisplayNameProperty); }
-            set { SetValue(DataFuncDisplayNameProperty, value); }
+            get => (string)GetValue(DataFuncDisplayNameProperty);
+            set => SetValue(DataFuncDisplayNameProperty, value);
         }
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
@@ -45,21 +55,16 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         public ImageSource DataFuncIcon
         {
-            get { return (ImageSource)GetValue(DataFuncIconProperty); }
-            set { SetValue(DataFuncIconProperty, value); }
+            get => (ImageSource)GetValue(DataFuncIconProperty);
+            set => SetValue(DataFuncIconProperty, value);
         }
 
         public static readonly DependencyProperty DataFuncIconProperty =
             DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
 
-        public override void Validate()
-        {
-        }
-
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            _shellViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }
 }

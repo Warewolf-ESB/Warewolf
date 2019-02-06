@@ -20,7 +20,7 @@ namespace Dev2.Common
             var isValidJson = content?.IsValidJson() ?? false;
             if (isValidJson)
             {
-                var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
+                var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
 
                 SetupHeader(region, jsonHeader);
             }
@@ -29,19 +29,19 @@ namespace Dev2.Common
                 var isValidXml = content.IsValidXml();
                 if (isValidXml)
                 {
-                    var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
+                    var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
 
                     SetupHeader(region, jsonHeader);
                 }
             }
         }
 
-        static void SetupHeader(IHeaderRegion region, NameValue jsonHeader)
+        static void SetupHeader(IHeaderRegion region, ObservableNameValue jsonHeader)
         {
             if (region.Headers == null ||
                 region.Headers.All(value => string.IsNullOrEmpty(value.Value) && string.IsNullOrEmpty(value.Name)))
             {
-                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
+                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             }
             else
             {

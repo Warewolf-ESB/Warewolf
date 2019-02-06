@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
@@ -420,7 +421,19 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             warewolfGroupOps.DeleteWarewolfGroup();
             warewolfGroupOps.AddWarewolfGroup();
 
-            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            Console.WriteLine("BEFOREEntering AddAdministratorsGroupToWarewolf");
+            try
+            {
+                warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            }
+            catch (COMException e)
+            {
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
+            }
             var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
 
             Assert.IsTrue(result);
@@ -668,7 +681,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Assert Results-------------------------
             securityService.Verify(p => p.Remove(resourceID));
         }
-        //----Test classes for : AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue
         class TestDirectoryEntry : IDirectoryEntry
         {
             private string _name;
@@ -702,7 +714,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         class TestDirectoryEntries : IDirectoryEntries
         {
 
-            public SchemaNameCollection SchemaFilter => new DirectoryEntry().Children.SchemaFilter;
+            public SchemaNameCollection SchemaFilter => new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
 
             public DirectoryEntries Instance => throw new NotImplementedException();
 
@@ -750,7 +762,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
-            SchemaNameCollection filterList = new DirectoryEntry().Children.SchemaFilter;
+            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
             children.Setup(a => a.SchemaFilter).Returns(filterList);
             var ss = "WinNT://" + Environment.MachineName + ",computer";
             dir.Setup(a => a.Create(ss)).Returns(new TestDirectoryEntry(ss));

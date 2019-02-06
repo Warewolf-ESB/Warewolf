@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -344,7 +345,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity
             {
-                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PutData = "This is post:[[Post]]",
                 ResourceCatalog = new Mock<IResourceCatalog>().Object
@@ -436,7 +437,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var DsfWebPutActivity = new TestDsfWebPutActivity
             {
-                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PutData = "This is post:[[Post]]"
             };
@@ -544,9 +545,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Set up test pack-------------------
             var deleteActivityFromBase = CreateWebPutActivityFromBase();
 
-            var headers = new List<NameValue>
+            var headers = new List<INameValue>
             {
-                new NameValue("Content", "text/json")
+                new ObservableNameValue("Content", "text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(deleteActivityFromBase);
@@ -635,7 +636,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
             Head = head;
             QueryRes = query;
@@ -647,7 +648,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string QueryRes { get; private set; }
 
-        public IEnumerable<NameValue> Head { get; private set; }
+        public IEnumerable<INameValue> Head { get; private set; }
 
         #endregion
     }

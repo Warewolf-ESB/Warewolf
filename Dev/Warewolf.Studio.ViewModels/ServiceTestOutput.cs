@@ -8,7 +8,6 @@ using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestOutput : BindableBase, IServiceTestOutput
@@ -25,7 +24,22 @@ namespace Warewolf.Studio.ViewModels
         List<string> _optionsForValue;
         string _from;
         string _to;
-        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
+        readonly IList<string> _requiresSearchCriteria = new List<string>
+        {
+            "Doesn't Contain",
+            "Contains", "=",
+            "<> (Not Equal)",
+            "Ends With",
+            "Doesn't Start With",
+            "Doesn't End With",
+            "Starts With",
+            "Is Regex",
+            "Not Regex",
+            ">",
+            "<",
+            "<=",
+            ">="
+        };
         readonly IList<IFindRecsetOptions> _findRecsetOptions;
         bool _testPassed;
         bool _testPending;
@@ -34,7 +48,6 @@ namespace Warewolf.Studio.ViewModels
         TestRunResult _result;
         bool _canEditVariable;
 
-
         public ServiceTestOutput()
         {
             
@@ -42,12 +55,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
-            if (variable == null)
-            {
-                throw new ArgumentNullException(nameof(variable));
-            }
-
-            Variable = variable;
+            Variable = variable ?? throw new ArgumentNullException(nameof(variable));
             Value = value;
             From = from;
             To = to;
@@ -62,10 +70,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Variable
         {
-            get
-            {
-                return _variable;
-            }
+            get => _variable;
             set
             {
                 _variable = value;
@@ -74,22 +79,12 @@ namespace Warewolf.Studio.ViewModels
         }
         public string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 if (string.IsNullOrEmpty(_value) && !string.IsNullOrEmpty(value))
                 {
-                    if (AddNewAction != null)
-                    {
-                        AddNewAction.Invoke();
-                    }
-                    else
-                    {
-                        AddStepOutputRow?.Invoke(Variable);
-                    }
+                    InvokeAction();
                 }
                 _value = value;
                 OnPropertyChanged(() => Value);
@@ -98,54 +93,46 @@ namespace Warewolf.Studio.ViewModels
 
         public string From
         {
-            get
-            {
-                return _from;
-            }
+            get => _from;
             set
             {
                 _from = value;
                 if (!string.IsNullOrEmpty(_from))
                 {
-                    if (AddNewAction != null)
-                    {
-                        AddNewAction.Invoke();
-                    }
-                    else
-                    {
-                        AddStepOutputRow?.Invoke(Variable);
-                    }
+                    InvokeAction();
                 }
                 OnPropertyChanged(() => From);
             }
         }
         public string To
         {
-            get
-            {
-                return _to;
-            }
+            get => _to;
             set
             {
                 _to = value;
                 if (!string.IsNullOrEmpty(_to))
                 {
-                    if (AddNewAction != null)
-                    {
-                        AddNewAction.Invoke();
-                    }
-                    else
-                    {
-                        AddStepOutputRow?.Invoke(Variable);
-                    }
+                    InvokeAction();
                 }
                 OnPropertyChanged(() => To);
             }
         }
 
+        private void InvokeAction()
+        {
+            if (AddNewAction != null)
+            {
+                AddNewAction.Invoke();
+            }
+            else
+            {
+                AddStepOutputRow?.Invoke(Variable);
+            }
+        }
+
         public string AssertOp
         {
-            get { return _assertOp; }
+            get => _assertOp;
             set
             {
                 _assertOp = value;
@@ -156,7 +143,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool HasOptionsForValue
         {
-            get { return _hasOptionsForValue; }
+            get => _hasOptionsForValue;
             set
             {
                 _hasOptionsForValue = value;
@@ -166,10 +153,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsSinglematchCriteriaVisible
         {
-            get
-            {
-                return _isSinglematchCriteriaVisible;
-            }
+            get => _isSinglematchCriteriaVisible;
             set
             {
                 _isSinglematchCriteriaVisible = value;
@@ -178,10 +162,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsBetweenCriteriaVisible
         {
-            get
-            {
-                return _isBetweenCriteriaVisible;
-            }
+            get => _isBetweenCriteriaVisible;
             set
             {
                 _isBetweenCriteriaVisible = value;
@@ -191,10 +172,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsSearchCriteriaEnabled
         {
-            get
-            {
-                return _isSearchCriteriaEnabled;
-            }
+            get => _isSearchCriteriaEnabled;
             set
             {
                 _isSearchCriteriaEnabled = value;
@@ -204,10 +182,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsSearchCriteriaVisible
         {
-            get
-            {
-                return _isSearchCriteriaVisible;
-            }
+            get => _isSearchCriteriaVisible;
             set
             {
                 _isSearchCriteriaVisible = value;
@@ -217,7 +192,7 @@ namespace Warewolf.Studio.ViewModels
 
         public List<string> OptionsForValue
         {
-            get { return _optionsForValue; }
+            get => _optionsForValue;
             set
             {
                 _optionsForValue = value;
@@ -226,7 +201,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public TestRunResult Result
         {
-            get { return _result; }
+            get => _result;
             set
             {
                 _result = value;
@@ -262,16 +237,18 @@ namespace Warewolf.Studio.ViewModels
 
         void UpdateTestPending()
         {
-            TestPending = _result.RunTestResult != RunResult.TestFailed &&
-                          _result.RunTestResult != RunResult.TestPassed &&
-                          _result.RunTestResult != RunResult.TestInvalid &&
-                          _result.RunTestResult != RunResult.TestResourceDeleted &&
-                          _result.RunTestResult != RunResult.TestResourcePathUpdated;
+            var testPending = _result.RunTestResult != RunResult.TestFailed;
+            testPending &= _result.RunTestResult != RunResult.TestPassed;
+            testPending &= _result.RunTestResult != RunResult.TestInvalid;
+            testPending &= _result.RunTestResult != RunResult.TestResourceDeleted;
+            testPending &= _result.RunTestResult != RunResult.TestResourcePathUpdated;
+
+            TestPending = testPending;
         }
 
         public bool TestPassed
         {
-            get { return _testPassed; }
+            get => _testPassed;
             set
             {
                 _testPassed = value;
@@ -287,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestFailing
         {
-            get { return _testFailing; }
+            get => _testFailing;
             set
             {
                 _testFailing = value;
@@ -303,7 +280,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestInvalid
         {
-            get { return _testInvalid; }
+            get => _testInvalid;
             set
             {
                 _testInvalid = value;
@@ -319,7 +296,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPending
         {
-            get { return _testPending; }
+            get => _testPending;
             set
             {
                 _testPending = value;
@@ -347,7 +324,6 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateMatchVisibility(string value, IList<IFindRecsetOptions> whereOptions)
         {
-
             var opt = whereOptions.FirstOrDefault(a => value != null && value.ToLower().StartsWith(a.HandlesType().ToLower()));
             if (opt != null)
             {
@@ -376,7 +352,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<string> AssertOps
         {
-            get { return _assertOps; }
+            get => _assertOps;
             set
             {
                 _assertOps = value;
@@ -386,7 +362,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanEditVariable
         {
-            get { return _canEditVariable; }
+            get => _canEditVariable;
             set
             {
                 _canEditVariable = value; 
@@ -398,7 +374,5 @@ namespace Warewolf.Studio.ViewModels
         public Action AddNewAction { get; set; }
         [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
-
-
     }
 }

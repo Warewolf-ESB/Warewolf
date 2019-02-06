@@ -103,6 +103,16 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfServicesNotFoundCounterTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfNumberOfAuthErrorsTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterByResourceTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
+    <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -179,7 +189,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

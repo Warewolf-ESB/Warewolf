@@ -64,91 +64,91 @@ namespace Dev2.Tests.Activities.ActivityTests
             var computer = env.EvalAsListOfStrings(outputs[0], 0);
 
             var computerName = env.EvalAsListOfStrings("[[computerName]]", 0);
-            Assert.AreEqual(System.Environment.MachineName, computerName[0]);
+            Assert.AreEqual(System.Environment.MachineName, computerName[0], "[[computerName]]");
 
             var operatingSystem = env.EvalAsListOfStrings("[[operatingSystem]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(operatingSystem[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(operatingSystem[0]), "[[operatingSystem]]");
 
             var operatingSystemVersion = env.EvalAsListOfStrings("[[operatingSystemVersion]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(operatingSystemVersion[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(operatingSystemVersion[0]), "[[operatingSystemVersion]]");
 
             var servicePack = env.EvalAsListOfStrings("[[servicePack]]", 0);
-            Assert.AreEqual(1, servicePack.Count);
+            Assert.AreEqual(1, servicePack.Count, "[[servicePack]]");
 
             var oSBitValue = env.EvalAsListOfStrings("[[oSBitValue]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(oSBitValue[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(oSBitValue[0]), "[[oSBitValue]]");
 
             var fullDateTime = env.EvalAsListOfStrings("[[fullDateTime]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(fullDateTime[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(fullDateTime[0]), "[[fullDateTime]]");
 
             var dateTimeFormat = env.EvalAsListOfStrings("[[dateTimeFormat]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(dateTimeFormat[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(dateTimeFormat[0]), "[[dateTimeFormat]]");
 
             var diskAvailable = env.EvalAsListOfStrings("[[diskAvailable]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(diskAvailable[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(diskAvailable[0]), "[[diskAvailable]]");
 
             var diskTotal = env.EvalAsListOfStrings("[[diskTotal]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(diskTotal[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(diskTotal[0]), "[[diskTotal]]");
 
             var virtualMemoryAvailable = env.EvalAsListOfStrings("[[virtualMemoryAvailable]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(virtualMemoryAvailable[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(virtualMemoryAvailable[0]), "[[virtualMemoryAvailable]]");
 
             var virtualMemoryTotal = env.EvalAsListOfStrings("[[virtualMemoryTotal]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(virtualMemoryTotal[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(virtualMemoryTotal[0]), "[[virtualMemoryTotal]]");
 
             var physicalMemoryAvailable = env.EvalAsListOfStrings("[[physicalMemoryAvailable]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(physicalMemoryAvailable[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(physicalMemoryAvailable[0]), "[[physicalMemoryAvailable]]");
 
             var physicalMemoryTotal = env.EvalAsListOfStrings("[[physicalMemoryTotal]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(physicalMemoryTotal[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(physicalMemoryTotal[0]), "[[physicalMemoryTotal]]");
 
             var cPUAvailable = env.EvalAsListOfStrings("[[cPUAvailable]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(cPUAvailable[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(cPUAvailable[0]), "[[cPUAvailable]]");
 
             var cPUTotal = env.EvalAsListOfStrings("[[cPUTotal]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(cPUTotal[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(cPUTotal[0]), "[[cPUTotal]]");
 
             var language = env.EvalAsListOfStrings("[[language]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(language[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(language[0]), "[[language]]");
 
             var region = env.EvalAsListOfStrings("[[region]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(region[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(region[0]), "[[region]]");
 
             var userRoles = env.EvalAsListOfStrings("[[userRoles]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(userRoles[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(userRoles[0]), "[[userRoles]]");
 
             var userName = env.EvalAsListOfStrings("[[userName]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(userName[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(userName[0]), "[[userName]]");
 
             var domain = env.EvalAsListOfStrings("[[domain]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(domain[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(domain[0]), "[[domain]]");
 
             var numberOfServerNICS = env.EvalAsListOfStrings("[[numberOfServerNICS]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(numberOfServerNICS[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(numberOfServerNICS[0]), "[[numberOfServerNICS]]");
 
             var macAddress = env.EvalAsListOfStrings("[[macAddress]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(macAddress[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(macAddress[0]), "[[macAddress]]");
 
             var gateWayAddress = env.EvalAsListOfStrings("[[gateWayAddress]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(gateWayAddress[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(gateWayAddress[0]), "[[gateWayAddress]]");
 
             var dNSAddress = env.EvalAsListOfStrings("[[dNSAddress]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(dNSAddress[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(dNSAddress[0]), "[[dNSAddress]]");
 
             var iPv4Address = env.EvalAsListOfStrings("[[iPv4Address]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(iPv4Address[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(iPv4Address[0]), "[[iPv4Address]]");
 
             var iPv6Address = env.EvalAsListOfStrings("[[iPv6Address]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(iPv6Address[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(iPv6Address[0]), "[[iPv6Address]]");
 
             var warewolfMemory = env.EvalAsListOfStrings("[[warewolfMemory]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfMemory[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfMemory[0]), "[[warewolfMemory]]");
 
             var warewolfCPU = env.EvalAsListOfStrings("[[warewolfCPU]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfCPU[0]), "[[warewolfCPU]]");
 
             var warewolfServerVersion = env.EvalAsListOfStrings("[[warewolfServerVersion]]", 0);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfServerVersion[0]));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(warewolfServerVersion[0]), "[[warewolfServerVersion]]");
         }
 
         [TestMethod]

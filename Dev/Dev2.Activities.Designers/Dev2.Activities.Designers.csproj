@@ -217,6 +217,7 @@
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <Compile Include="Utils\ObservableAwareNameValue.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -663,7 +664,7 @@
       <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsNullHandlerDesignerViewModel.cs" />
     <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -1203,7 +1204,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Dev2.Activities.Designers.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -1300,6 +1300,10 @@
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1BD5CC42-66C7-4A1B-AF1F-E6F2D4372B44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{A62DA168-5BF3-4C14-B880-4AD83478E3A7}</Project>
+      <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>

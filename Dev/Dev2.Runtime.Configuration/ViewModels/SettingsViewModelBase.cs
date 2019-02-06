@@ -14,14 +14,8 @@ namespace Dev2.Runtime.Configuration.ViewModels
 {
     public abstract class SettingsViewModelBase : Screen
     {
-        #region Fields
-
         object _object;
-
-        #endregion
-
-        #region events
-
+        
         public delegate void UnderlyingObjectChangedHandler();
         public event UnderlyingObjectChangedHandler UnderlyingObjectChanged;
 
@@ -29,11 +23,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             UnderlyingObjectChanged?.Invoke();
         }
-
-        #endregion events
-
-        #region Properties
-
+        
         public object Object
         {
             get
@@ -47,8 +37,5 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 OnUnderlyingObjectChanged();
             }
         }
-
-        #endregion
-
     }
 }

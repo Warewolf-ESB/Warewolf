@@ -19,7 +19,7 @@
                                MaxHeight="175"
                                mc:Ignorable="d"
                                d:DesignWidth="200"
-                               d:DataContext="{d:DesignInstance deleteRecordsNullHandler:DeleteRecordsDesignerViewModel}">
+                               d:DataContext="{d:DesignInstance deleteRecordsNullHandler:DeleteRecordsNullHandlerDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>

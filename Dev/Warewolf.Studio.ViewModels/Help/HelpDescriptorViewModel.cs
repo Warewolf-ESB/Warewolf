@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels.Help
         /// <summary>
         /// The icon to display
         /// </summary>
-        public DrawingImage Icon => _descriptor.Icon;
+        public object Icon => _descriptor.Icon as DrawingImage;
 
         /// <summary>
         /// Is this help enabled.
