@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,6 @@ namespace Dev2.Tests.Runtime.WebServer
     /// Summary description for WebsiteResourceHandlerTest
     /// </summary>
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class GetApisJsonServiceHandlerTest
     {
         NameValueCollection LocalQueryString => new NameValueCollection
@@ -37,7 +36,7 @@ namespace Dev2.Tests.Runtime.WebServer
             { "rid", "resourceid" }
         };
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ProcessRequest_GiveNullCommunicationContext_ThrowsException()
@@ -49,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GiveNoPathAndNonPublicRequest()
         {
@@ -67,7 +66,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Sanele Mthembu")]
         public void ProcessRequest_GivePublicRequest()
         {

@@ -8,6 +8,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
@@ -25,7 +26,7 @@ namespace Dev2.Core.Tests.Workflows
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("Studio Workflows Core")]
+        [TestCategory("WorkflowDesignerViewModel_AddItem")]
         public void AddItem_Given_MergeToolModel_VerifyCalls()
         {
             //------------Setup for test--------------------------

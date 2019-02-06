@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,12 +21,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
 {
     [TestClass]
-    [TestCategory("Runtime Hosting")]
     public class DbSourceTests
     {
         #region ToString Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
         {
             var testDbSource = SetupDefaultDbSource();
@@ -35,7 +34,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, actualDbSourceToString);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToStringEmptyObjectExpected()
         {
             var testDbSource = new DbSource();
@@ -46,7 +45,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion ToString Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NotNamedInstance_ShouldUsePortNumber()
@@ -66,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(connectionString,",1433");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NamedInstanceDefaultPort_ShouldNotUsePort()
@@ -87,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(contains);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NamedInstanceNotDefaultPort_ShouldUsePort()
@@ -110,7 +109,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region ToXml Tests
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToXmlAllPropertiesSetupExpectedXElementContainingAllObjectInformation()
         {
             var testDbSource = SetupDefaultDbSource();
@@ -129,7 +128,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNull(workflowXamlDefintion);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
         {
             var testDbSource = new DbSource();

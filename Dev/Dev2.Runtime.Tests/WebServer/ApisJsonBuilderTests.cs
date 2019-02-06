@@ -14,10 +14,9 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class ApisJsonBuilderTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -32,7 +31,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -47,7 +46,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_Constructor")]
         public void ApisJsonBuilder_Constructor_AuthorizationService_PropertySet()
@@ -62,7 +61,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(builder.ResourceCatalog);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
         public void ApisJsonBuilder_BuildForPath_NullPath_ShouldBuildForWholeCatalog()
@@ -94,7 +93,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl.Contains("secure"), apisJson.Apis[0].BaseUrl.Contains("secure"));
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
         public void ApisJsonBuilder_BuildForPath_WithPath_ShouldBuildForResourcesAtPath()
@@ -127,7 +126,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl,apisJson.Apis[0].BaseUrl);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
         public void ApisJsonBuilder_BuildForPath_WithPathHasSubDirectories_ShouldBuildForAllResourcesAtPath()
@@ -162,7 +161,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[1].BaseUrl, apisJson.Apis[1].BaseUrl);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
         public void ApisJsonBuilder_BuildForPath_OnlyAuthorized_ShouldBuildForWholeCatalog()
@@ -201,7 +200,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl, apisJson.Apis[0].BaseUrl);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
         public void ApisJsonBuilder_BuildForPath_OnlyAuthorized_MixPublicWithSecure_ShouldBuildForWholeCatalog()
@@ -243,7 +242,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[1].BaseUrl, apisJson.Apis[1].BaseUrl);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         public void ApisJsonBuilder_GetHashCode()
         {
@@ -257,7 +256,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsInstanceOfType(apiJson.GetHashCode(), typeof(int), "ApisJson object did not hash.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         public void ApisJsonBuilder_Include_Equals()
         {
@@ -286,7 +285,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsFalse(differentApiJson.Include == apiJson.Include, "ApisJson object cannot compare Included Apis.");
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Ashley Lewis")]
         public void ApisJsonBuilder_Maintainers_Equals()
         {

@@ -7,7 +7,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class ServerSettingsTest
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Pieter Terblanche")]
         [TestCategory("SaveServerSettings_Execute")]
         public void SaveServerSettings_Execute_NullValues_ErrorResult()
@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Pieter Terblanche")]
         [TestCategory("GetServerSettings_Execute")]
         public void GetServerSettings_Execute_NullValues_ErrorResult()

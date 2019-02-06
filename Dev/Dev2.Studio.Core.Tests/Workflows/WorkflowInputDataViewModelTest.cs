@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,14 +35,22 @@ using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Core.Tests.Workflows
 {
+    /// <summary>
+    ///This is a result class for WorkflowInputDataViewModelTest and is intended
+    ///to contain all WorkflowInputDataViewModelTest Unit Tests
+    ///</summary>
     [TestClass]
-    [TestCategory("Studio Workflows Core")]
+    [ExcludeFromCodeCoverage]
     public class WorkflowInputDataViewModelTest
     {
         readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
         readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
         const string ResourceName = "TestWorkflow";
-        
+
+        /// <summary>
+        ///Gets or sets the result context which provides
+        ///information about and functionality for the current result run.
+        ///</summary>
         public TestContext TestContext { get; set; }
 
         #region LoadInputs Tests

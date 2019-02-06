@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FetchDebugItemFileExecuteWithNullValuesExpectedException()
         {
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FetchDebugItemFileExecuteWithNoDebugItemFileInValuesExpectedException()
         {
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FetchDebugItemFileExecuteWithNullDebugItemFileExpectedException()
         {
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FetchDebugItemFileExecuteWithNonExistingDebugItemFileExpectedReturnsEmptyString()
         {
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FetchDebugItemFileExecuteWithExistingLogExpectedReturnsContentsOfLog()
         {
             const string Expected = "Hello world";
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.Services
             StringAssert.Contains(msg.Message.ToString(), Expected);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FetchDebugItemFile_Execute")]
 
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FetchDebugItemFileHandlesTypeExpectedReturnsFetchCurrentServerLogService()
         {
             var esb = new FetchDebugItemFile();
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         public void FFetchDebugItemFileCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new FetchDebugItemFile();
@@ -159,7 +159,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()

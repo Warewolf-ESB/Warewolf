@@ -27,9 +27,20 @@ namespace Dev2.PerformanceCounters.Counters
         protected IBobsPerformanceCounter _counter;
         public bool IsActive { get; set; }
 
+        public MyPerfCounter()
+            :this(new PerformanceCounterFactory())
+        {
+        }
         public MyPerfCounter(IRealPerformanceCounterFactory counterFactory)
         {
-            _counterFactory = counterFactory;
+            if (counterFactory is null)
+            {
+                _counterFactory = new PerformanceCounterFactory();
+            }
+            else
+            {
+                _counterFactory = counterFactory;
+            }
         }
 
         public void Dispose()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,10 +21,9 @@ using Moq;
 namespace Dev2.Tests.Runtime.WebServer.Security
 {
     [TestClass]
-    [TestCategory("Runtime WebServer")]
     public class AuthorizeHubAttributeTests
     {
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_Constructor")]
         public void AuthorizeHubAttribute_Constructor_Default_ProviderIsAuthorizationProviderInstance()
@@ -38,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreSame(ServerAuthorizationService.Instance, attribute.Service);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -52,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -68,7 +67,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -84,7 +83,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
         public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsNotAuthenticated_ResponseIsFalse()
@@ -92,7 +91,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_AuthorizeHubConnection(isAuthenticated: false, isAuthorized: false);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
         public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsAuthenticatedAndNotAuthorized_ResponseIsFalse()
@@ -100,7 +99,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_AuthorizeHubConnection(isAuthenticated: true, isAuthorized: false);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubConnection")]
         public void AuthorizeHubAttribute_AuthorizeHubConnection_UserIsAuthenticatedAndAuthorized_ResponseIsTrue()
@@ -122,7 +121,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(isAuthenticated && isAuthorized, response);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubMethodInvocation")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -138,7 +137,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubMethodInvocation")]
         public void AuthorizeHubAttribute_AuthorizeHubMethodInvocation_UserIsNotAuthenticated_ResponseIsFalse()
@@ -146,7 +145,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_AuthorizeHubMethodInvocation(isAuthenticated: false, isAuthorized: false);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubMethodInvocation")]
         public void AuthorizeHubAttribute_AuthorizeHubMethodInvocation_UserIsAuthenticatedAndNotAuthorized_ResponseIsFalse()
@@ -154,7 +153,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_AuthorizeHubMethodInvocation(isAuthenticated: true, isAuthorized: false);
         }
 
-        [TestMethod]
+        [TestMethod, DeploymentItem("EnableDocker.txt")]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizeHubAttribute_AuthorizeHubMethodInvocation")]
         public void AuthorizeHubAttribute_AuthorizeHubMethodInvocation_UserIsAuthenticatedAndAuthorized_ResponseIsTrue()
