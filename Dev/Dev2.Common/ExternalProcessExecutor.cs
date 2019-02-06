@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common
 {
@@ -24,8 +25,9 @@ namespace Dev2.Common
             _processWrapper = processWrapper;
         }
 
+        [ExcludeFromCodeCoverage]
         public ExternalProcessExecutor()
-            :this(new Process() as IProcessFactory)
+            :this(new ProcessWrapperFactory())
         {
 
         }
