@@ -426,9 +426,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             {
                 warewolfGroupOps.AddAdministratorsGroupToWarewolf();
             }
-            catch (COMException)
+            catch (COMException e)
             {
-                //Expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
             }
             var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
 

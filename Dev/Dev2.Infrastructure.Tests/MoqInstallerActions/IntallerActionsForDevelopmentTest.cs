@@ -36,9 +36,13 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             { 
                 installerActionsForDevelopment.ExecuteMoqInstallerActions();
             }
-            catch (COMException)
+            catch (COMException e)
             {
-                //Expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
             }
 
             //------------Assert Results-------------------------
@@ -66,9 +70,13 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             {
                 installerActionsForDevelopment.ExecuteMoqInstallerActions();
             }
-            catch (COMException)
+            catch (COMException e)
             {
-                //Expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
             }
 
             //------------Assert Results-------------------------
