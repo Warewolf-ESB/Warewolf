@@ -12,6 +12,7 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using static Dev2.Data.PathOperations.Dev2FTPProvider;
@@ -26,9 +27,14 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(Dev2FTPProvider))]
         public void Dev2FTPProvider_Validate_Defaults()
         {
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
             var mockImplementation = new Mock<IImplementation>();
-            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object)
+            {
+                IOPath = mockActivityIOPath.Object
+            };
 
+            Assert.AreEqual(mockActivityIOPath.Object, dev2FTPProvider.IOPath);
             Assert.AreEqual(@"/", dev2FTPProvider.PathSeperator());
             Assert.IsTrue(dev2FTPProvider.RequiresLocalTmpStorage());
         }
@@ -56,6 +62,29 @@ namespace Dev2.Data.Tests.PathOperations
             Assert.AreEqual(null, stream);
             mockImplementation.Verify(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object), Times.Once);
             mockImplementation.Verify(implementation => implementation.ReadFromFtp(mockActivityIOPath.Object, ref streamNullResult), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_Get_ExpectedException()
+        {
+            const string path = "path";
+            var filesToCleanup = new List<string>();
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+
+            var dev2FTPProvider = new Dev2FTPProvider(null);
+
+            try
+            {
+                dev2FTPProvider.Get(mockActivityIOPath.Object, filesToCleanup);
+                Assert.Fail("Code should have caused an exception to be thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Object reference not set to an instance of an object. ,  [path]", ex.Message);
+            }
         }
 
         [TestMethod]
@@ -107,6 +136,63 @@ namespace Dev2.Data.Tests.PathOperations
 
             Assert.AreEqual(1, result);
             mockImplementation.Verify(implementation => implementation.WriteToFtp(streamResult, mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_Put_ExpectedException_using()
+        {
+            Stream streamResult = new MemoryStream(new byte[0]);
+            var filesToCleanup = new List<string>();
+            var whereToPut = string.Empty;
+
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PathType).Returns(Interfaces.Enums.enActivityIOPathType.FileSystem);
+
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(dev2CRUDOperationTO => dev2CRUDOperationTO.Overwrite).Returns(false);
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object)).Returns(true);
+            mockImplementation.Setup(implementation => implementation.WriteToFtp(streamResult, mockActivityIOPath.Object)).Returns(1);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+
+            var result = dev2FTPProvider.Put(streamResult, null, mockDev2CRUDOperationTO.Object, whereToPut, filesToCleanup);
+            Assert.AreEqual(0, result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_Put_ExpectedException_All()
+        {
+            Stream streamResult = new MemoryStream(new byte[0]);
+            var filesToCleanup = new List<string>();
+            var whereToPut = string.Empty;
+
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PathType).Returns(Interfaces.Enums.enActivityIOPathType.FileSystem);
+
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(dev2CRUDOperationTO => dev2CRUDOperationTO.Overwrite).Returns(false);
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object)).Returns(true);
+            mockImplementation.Setup(implementation => implementation.WriteToFtp(streamResult, mockActivityIOPath.Object)).Returns(1);
+
+            var dev2FTPProvider = new Dev2FTPProvider(null);
+
+            try
+            {
+                dev2FTPProvider.Put(streamResult, mockActivityIOPath.Object, mockDev2CRUDOperationTO.Object, whereToPut, filesToCleanup);
+                Assert.Fail("Code should have caused an exception to be thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Object reference not set to an instance of an object.", ex.Message);
+            }
         }
 
         [TestMethod]
@@ -191,6 +277,28 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_Delete_ExpectedException()
+        {
+            const string path = "path";
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+
+            var dev2FTPProvider = new Dev2FTPProvider(null);
+
+            try
+            {
+                dev2FTPProvider.Delete(mockActivityIOPath.Object);
+                Assert.Fail("Code should have caused an exception to be thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Object reference not set to an instance of an object.", ex.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
         public void Dev2FTPProvider_Delete_PathType_File_DeleteOp()
         {
             const string path = ".path";
@@ -260,6 +368,222 @@ namespace Dev2.Data.Tests.PathOperations
             Assert.AreEqual(activityIOPathList, listDirectory);
             Assert.AreEqual(1, listDirectory.Count);
             mockImplementation.Verify(implementation => implementation.ListDirectorySftp(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_CreateDirectory_Overwrite()
+        {
+            const string path = "path";
+            const string userName = "userName";
+            const string password = "password";
+            const string privateKeyFile = "privateKeyFile";
+            var pathStack = new List<string> { path };
+
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PathType).Returns(Interfaces.Enums.enActivityIOPathType.FTP);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Username).Returns(userName);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Password).Returns(password);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PrivateKeyFile).Returns(privateKeyFile);
+
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(dev2CRUDOperationTO => dev2CRUDOperationTO.Overwrite).Returns(true);
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object)).Returns(true);
+            mockImplementation.Setup(implementation => implementation.PathIs(mockActivityIOPath.Object)).Returns(Interfaces.Enums.enPathType.Directory);
+            mockImplementation.Setup(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object)).Returns(true);
+            mockImplementation.Setup(implementation => implementation.DeleteHandler(pathStack, userName, password, privateKeyFile));
+            mockImplementation.Setup(implementation => implementation.CreateDirectoryStandardFtp(mockActivityIOPath.Object)).Returns(true);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var result = dev2FTPProvider.CreateDirectory(mockActivityIOPath.Object, mockDev2CRUDOperationTO.Object);
+
+            Assert.IsTrue(result);
+
+            mockImplementation.Verify(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object), Times.Once);
+            mockImplementation.Verify(implementation => implementation.DeleteHandler(pathStack, userName, password, privateKeyFile), Times.Once);
+            mockImplementation.Verify(implementation => implementation.CreateDirectoryStandardFtp(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_CreateDirectory_Not_Overwrite()
+        {
+            const string path = "path";
+            const string userName = "userName";
+            const string password = "password";
+            const string privateKeyFile = "privateKeyFile";
+
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PathType).Returns(Interfaces.Enums.enActivityIOPathType.FTP);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Username).Returns(userName);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Password).Returns(password);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PrivateKeyFile).Returns(privateKeyFile);
+
+            var mockDev2CRUDOperationTO = new Mock<IDev2CRUDOperationTO>();
+            mockDev2CRUDOperationTO.Setup(dev2CRUDOperationTO => dev2CRUDOperationTO.Overwrite).Returns(false);
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object)).Returns(false);
+            mockImplementation.Setup(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object)).Returns(false);
+            mockImplementation.Setup(implementation => implementation.CreateDirectorySftp(mockActivityIOPath.Object)).Returns(true);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var result = dev2FTPProvider.CreateDirectory(mockActivityIOPath.Object, mockDev2CRUDOperationTO.Object);
+
+            Assert.IsTrue(result);
+
+            mockImplementation.Verify(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object), Times.Once);
+            mockImplementation.Verify(implementation => implementation.CreateDirectorySftp(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_PathExist_Directory()
+        {
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.PathIs(mockActivityIOPath.Object)).Returns(Interfaces.Enums.enPathType.Directory);
+            mockImplementation.Setup(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object)).Returns(true);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var pathExists = dev2FTPProvider.PathExist(mockActivityIOPath.Object);
+
+            Assert.IsTrue(pathExists);
+            mockImplementation.Verify(implementation => implementation.PathIs(mockActivityIOPath.Object), Times.Once);
+            mockImplementation.Verify(implementation => implementation.IsDirectoryAlreadyPresent(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_PathExist_File()
+        {
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.PathIs(mockActivityIOPath.Object)).Returns(Interfaces.Enums.enPathType.File);
+            mockImplementation.Setup(implementation => implementation.IsFilePresent(mockActivityIOPath.Object)).Returns(true);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var pathExists = dev2FTPProvider.PathExist(mockActivityIOPath.Object);
+
+            Assert.IsTrue(pathExists);
+            mockImplementation.Verify(implementation => implementation.PathIs(mockActivityIOPath.Object), Times.Once);
+            mockImplementation.Verify(implementation => implementation.IsFilePresent(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_HandlesType()
+        {
+            var mockImplementation = new Mock<IImplementation>();
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+
+            Assert.IsFalse(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.FileSystem));
+            Assert.IsFalse(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.Invalid));
+            Assert.IsTrue(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.FTPS));
+            Assert.IsTrue(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.SFTP));
+            Assert.IsTrue(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.FTP));
+            Assert.IsTrue(dev2FTPProvider.HandlesType(Interfaces.Enums.enActivityIOPathType.FTPES));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ListFoldersInDirectory()
+        {
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            var activityIOPathList = new List<IActivityIOPath> { mockActivityIOPath.Object };
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.IsStandardFtp(mockActivityIOPath.Object)).Returns(false);
+            mockImplementation.Setup(implementation => implementation.ListFoldersInDirectory(mockActivityIOPath.Object)).Returns(activityIOPathList);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var foldersInDirectory = dev2FTPProvider.ListFoldersInDirectory(mockActivityIOPath.Object);
+
+            Assert.AreEqual(activityIOPathList, foldersInDirectory);
+            Assert.AreEqual(1, foldersInDirectory.Count);
+            mockImplementation.Verify(implementation => implementation.ListFoldersInDirectory(mockActivityIOPath.Object), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ListFilesInDirectory()
+        {
+            const string path = "path";
+            const string userName = "userName";
+            const string password = "password";
+            const bool isNotCertVerifiable = false;
+            const bool enableSsl = false;
+            const string privateKeyFile = "privateKeyFile";
+            const string tmpDirData = "tmpDirData";
+            const string path1 = "\\test";
+            const string path2 = "\\testnew";
+            var extractList = new List<string> { path1, path2 };
+
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PathType).Returns(Interfaces.Enums.enActivityIOPathType.FTP);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Username).Returns(userName);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Password).Returns(password);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.IsNotCertVerifiable).Returns(isNotCertVerifiable);
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.PrivateKeyFile).Returns(privateKeyFile);
+
+            var mockImplementation = new Mock<IImplementation>();
+            mockImplementation.Setup(implementation => implementation.EnableSsl(mockActivityIOPath.Object)).Returns(enableSsl);
+            mockImplementation.Setup(implementation => implementation.ExtendedDirList(path, userName, password, enableSsl, isNotCertVerifiable, privateKeyFile)).Returns(tmpDirData);
+            mockImplementation.Setup(implementation => implementation.ExtractList(tmpDirData, It.IsAny<Func<string, bool>>()))
+                .Callback<string, Func<string, bool>>((string payload, Func<string, bool> matchFunc) => {
+                    Assert.IsFalse(matchFunc("<dir>"));
+                    Assert.IsTrue(matchFunc("ftp:\\testfile.txt"));
+                    matchFunc(payload);
+                })
+                .Returns(extractList);
+            mockImplementation.Setup(implementation => implementation.BuildValidPathForFtp(mockActivityIOPath.Object, path1)).Returns(path1);
+            mockImplementation.Setup(implementation => implementation.BuildValidPathForFtp(mockActivityIOPath.Object, path2)).Returns(path2);
+
+            var dev2FTPProvider = new Dev2FTPProvider(mockImplementation.Object);
+            var foldersInDirectory = dev2FTPProvider.ListFilesInDirectory(mockActivityIOPath.Object);
+
+            Assert.AreEqual(2, foldersInDirectory.Count);
+            mockImplementation.Verify(implementation => implementation.EnableSsl(mockActivityIOPath.Object), Times.Once);
+            mockImplementation.Verify(implementation => implementation.ExtendedDirList(path, userName, password, enableSsl, isNotCertVerifiable, privateKeyFile), Times.Once);
+            mockImplementation.Verify(implementation => implementation.ExtractList(tmpDirData, It.IsAny<Func<string, bool>>()), Times.Once);
+            mockImplementation.Verify(implementation => implementation.BuildValidPathForFtp(mockActivityIOPath.Object, path1), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ListFilesInDirectory_ExpectedException()
+        {
+            const string path = "path";
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            mockActivityIOPath.Setup(activityIOPath => activityIOPath.Path).Returns(path);
+
+            var dev2FTPProvider = new Dev2FTPProvider(null);
+
+            try
+            {
+                dev2FTPProvider.ListFilesInDirectory(mockActivityIOPath.Object);
+                Assert.Fail("Code should have caused an exception to be thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Object reference not set to an instance of an object. : [path]", ex.Message);
+            }
         }
     }
 }
