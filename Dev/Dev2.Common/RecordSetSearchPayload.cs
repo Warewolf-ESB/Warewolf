@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 namespace Dev2.Common
 {
-
     public class RecordSetSearchPayload
     {
         public RecordSetSearchPayload(int index, string payload)

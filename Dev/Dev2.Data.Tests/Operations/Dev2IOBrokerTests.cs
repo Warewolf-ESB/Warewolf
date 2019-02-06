@@ -42,36 +42,6 @@ namespace Dev2.Data.Tests.Operations
         }
 
         [TestMethod]
-        public void CopyFileWithPathsExpectedRecursiveCopy()
-        {
-            var innerDir = Guid.NewGuid().ToString();
-            var tempPath = Path.GetTempPath();
-            var tempFileName = Path.GetFileName(Path.GetTempFileName());
-            const string TempData = "some string data";
-            if (tempFileName != null)
-            {
-                var tempFile = Path.Combine(tempPath, innerDir, innerDir, tempFileName);
-                var directoryName = Path.GetDirectoryName(tempFile);
-                if (directoryName != null)
-                {
-                    Directory.CreateDirectory(directoryName);
-                }
-                var upperLevelDir = Path.Combine(tempPath, innerDir);
-                File.WriteAllText(tempFile, TempData);
-                var dst = Path.Combine(tempPath, Guid.NewGuid().ToString());
-                var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(upperLevelDir, string.Empty, null, true));
-                var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(dst, string.Empty, null, true));
-
-                var moveTO = new Dev2CRUDOperationTO(true);
-                ActivityIOFactory.CreateOperationsBroker().Copy(scrEndPoint, dstEndPoint, moveTO);
-                var newFilePath = Path.Combine(dst, tempFileName);
-                Assert.IsTrue(File.Exists(tempFile));
-
-                File.Delete(tempFile);
-                File.Delete(newFilePath);
-            }
-        }
-        [TestMethod]
         public void PutRaw_Should()
         {
             const string newFileName = "tempTextFile";

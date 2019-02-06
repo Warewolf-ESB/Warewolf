@@ -1,4 +1,14 @@
-﻿using Dev2.Common.Interfaces.Diagnostics.Debug;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.ServiceModel;
@@ -276,33 +286,25 @@ namespace Dev2.Activities.Sharepoint
             }
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
-            return base.Equals(other)
-                && string.Equals(ServerInputPathFrom, other.ServerInputPathFrom)
-                && string.Equals(ServerInputPathTo, other.ServerInputPathTo)
-                && string.Equals(DisplayName, other.DisplayName)
-                && Overwrite == other.Overwrite
-                && isSourceEqual
-                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+
+            var eq = base.Equals(other);
+            eq &= string.Equals(ServerInputPathFrom, other.ServerInputPathFrom);
+            eq &= string.Equals(ServerInputPathTo, other.ServerInputPathTo);
+            eq &= string.Equals(DisplayName, other.DisplayName);
+            eq &= Overwrite == other.Overwrite;
+            eq &= isSourceEqual;
+            eq &= SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+
+            return eq;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is SharepointCopyFileActivity sharepointCopyFileActivity)
             {
-                return false;
+                return Equals(sharepointCopyFileActivity);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((SharepointCopyFileActivity)obj);
+            return false;
         }
 
         public override int GetHashCode()

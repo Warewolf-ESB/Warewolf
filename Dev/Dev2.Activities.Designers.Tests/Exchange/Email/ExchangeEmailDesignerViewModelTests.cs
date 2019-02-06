@@ -109,13 +109,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
            
             var testEmailDesignerViewModel = new TestExchangeEmailDesignerViewModel(modelItem, model, eve)
             {              
-                GetDatalistString = () =>
-                {
-                    const string trueString = "True";
-                    const string noneString = "None";
-                    var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-                    return datalist;
-                }
+                
             };
 
             testEmailDesignerViewModel.SourceRegion.SelectedSource = model.RetrieveSources().First();

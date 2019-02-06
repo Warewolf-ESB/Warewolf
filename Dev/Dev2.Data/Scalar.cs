@@ -1,4 +1,12 @@
-
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
 using System;
 using System.Collections.Generic;
 using Dev2.Data.Interfaces.Enums;
@@ -12,8 +20,27 @@ namespace Dev2.Data
         string Description { get; set; }
         bool IsEditable { get; set; }
         string Value { get; set; }
+
     }
 
+    public class ScalarEqualityComparer : IEqualityComparer<IScalar>
+    {
+        public bool Equals(IScalar x, IScalar y)
+        {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+            if (x is null || y is null)
+            {
+                return false;
+            }
+            return string.Equals(x.Name, y.Name);
+        }
+
+        public int GetHashCode(IScalar obj) => obj.Name?.GetHashCode() ?? 0;
+
+    }
     public class Scalar : IScalar, IEquatable<IScalar>
     {
         public string Name { get; set; }
@@ -22,97 +49,36 @@ namespace Dev2.Data
         public bool IsEditable { get; set; }
         public string Value { get; set; }
 
-        #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IScalar other)
         {
-            if(ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
-            if(ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
             return string.Equals(Name, other.Name);
         }
 
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (obj is Scalar scalarObj)
             {
-                return false;
+                return Equals((Scalar)obj);
             }
-            if(ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if(obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((Scalar)obj);
+            return false;
         }
 
-        /// <summary>
-        /// Serves as the default hash function. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current object.
-        /// </returns>
         public override int GetHashCode() => Name?.GetHashCode() ?? 0;
 
         public static bool operator ==(Scalar left, Scalar right) => Equals(left, right);
 
         public static bool operator !=(Scalar left, Scalar right) => !Equals(left, right);
-
-        #endregion
-
-        #region ComparerEqualityComparer
-
-        sealed class ComparerEqualityComparer : IEqualityComparer<IScalar>
-        {
-            public bool Equals(IScalar x, IScalar y)
-            {
-                if (ReferenceEquals(x, y))
-                {
-                    return true;
-                }
-                if (ReferenceEquals(x, null))
-                {
-                    return false;
-                }
-                if (ReferenceEquals(y, null))
-                {
-                    return false;
-                }
-                if (x.GetType() != y.GetType())
-                {
-                    return false;
-                }
-                return string.Equals(x.Name, y.Name);
-            }
-
-            public int GetHashCode(IScalar obj) => obj.Name?.GetHashCode() ?? 0;
-        }
-
-        static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();
+       
+        static readonly IEqualityComparer<IScalar> ComparerInstance = new ScalarEqualityComparer();
         public static IEqualityComparer<IScalar> Comparer => ComparerInstance;
 
-        #endregion
     }
 }

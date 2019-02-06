@@ -17,17 +17,14 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Warewolf.Security.Encryption;
 
-
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class EmailSource : Resource, IResourceSource,IEmailSource
+    public class EmailSource : Resource, IResourceSource, IEmailSource
     {
         public static readonly int DefaultTimeout = 100000; // (100 seconds)
         public static readonly int DefaultPort = 25;
         public static readonly int SslPort = 465;
         public static readonly int TlsPort = 587;
-
-        #region Properties
 
         public string Host { get; set; }
         public string UserName { get; set; }
@@ -58,10 +55,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 base.DataList = value.ToStringBuilder();
             }
         }
-
-        #endregion
-
-        #region CTOR
 
         public EmailSource()
         {
@@ -102,11 +95,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
-
+        //TODO: Add SmtpClientFactory so that we can test it without failing
         public void Send(MailMessage mailMessage)
         {
             var userParts = UserName.Split('@');
-            using(var smtp = new SmtpClient(Host, Port)
+            using (var smtp = new SmtpClient(Host, Port)
             {
                 Credentials = new NetworkCredential(userParts[0], Password),
                 EnableSsl = EnableSsl,
@@ -117,9 +110,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                 smtp.Send(mailMessage);
             }
         }
-        #endregion
-
-        #region ToXml
 
         public override XElement ToXml()
         {
@@ -143,14 +133,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         public override bool IsSource => true;
-
         public override bool IsService => false;
         public override bool IsFolder => false;
         public override bool IsReservedService => false;
         public override bool IsServer => false;
         public override bool IsResourceVersion => false;
-
-        #endregion
-
     }
 }

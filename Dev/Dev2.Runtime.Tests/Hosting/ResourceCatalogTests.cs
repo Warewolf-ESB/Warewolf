@@ -47,6 +47,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
 using System.Collections.Concurrent;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -3277,7 +3278,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
             var privateObject = new PrivateObject(rcBuilder);
-            var fileHelperObject = new Mock<IFileHelper>();
+            var fileHelperObject = new Mock<IFile>();
             var serverReleaseResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
             fileHelperObject.Setup(o => o.Copy(serverReleaseResources +"\\asdf\\asdf2.xml",
                                                EnvironmentVariables.ResourcePath + "\\asdf\\asdf2.bite", false)).Verifiable();
@@ -3295,8 +3296,8 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 return new ResourceBuilderTO
                 {
-                    FilePath = serverReleaseResources + "\\" + filename,
-                    FileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
+                    _filePath = serverReleaseResources + "\\" + filename,
+                    _fileStream = new MemoryStream(Encoding.ASCII.GetBytes($"<node ID=\"{id}\"></node>"))
                 };
             }
 

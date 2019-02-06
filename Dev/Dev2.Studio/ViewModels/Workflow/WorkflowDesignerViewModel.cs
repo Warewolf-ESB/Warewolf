@@ -91,6 +91,7 @@ using Dev2.Communication;
 using System.IO;
 using Dev2.Common.Interfaces;
 using System.Xml;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {

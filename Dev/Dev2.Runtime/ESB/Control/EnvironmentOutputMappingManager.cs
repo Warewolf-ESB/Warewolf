@@ -14,6 +14,16 @@ namespace Dev2.Runtime.ESB.Control
 {
     public class EnvironmentOutputMappingManager : IEnvironmentOutputMappingManager
     {
+        readonly IDataListFactory _dataListFactory;
+        public EnvironmentOutputMappingManager()
+            : this(DataListFactory.Instance)
+        {
+        }
+        public EnvironmentOutputMappingManager(IDataListFactory dataListFactory)
+        {
+            _dataListFactory = dataListFactory;
+        }
+
         public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
             var innerEnvironment = dataObject.Environment;
@@ -21,53 +31,63 @@ namespace Dev2.Runtime.ESB.Control
             OutputsToEnvironment(innerEnvironment, dataObject.Environment, outputDefs, update);
             if (innerEnvironment.HasErrors() && !handleErrors)
             {
-                foreach (var error in innerEnvironment.AllErrors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-                        dataObject.Environment.AllErrors.Add(error);
-                        errors.AddError(error);
-                    }
-                }
-                foreach (var error in innerEnvironment.Errors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-                        dataObject.Environment.AllErrors.Add(error);
-                        errors.AddError(error);
-                    }
-                }
+                CopyErrors(dataObject, errors, innerEnvironment);
             }
             if (innerEnvironment.HasErrors() && handleErrors)
             {
-                foreach (var error in innerEnvironment.AllErrors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-
-                        errors.AddError(error);
-                    }
-                }
-                foreach (var error in innerEnvironment.Errors)
-                {
-                    if (!dataObject.Environment.AllErrors.Contains(error))
-                    {
-
-                        errors.AddError(error);
-                    }
-                }
+                CopyErrorsAndHandleThem(dataObject, errors, innerEnvironment);
             }
             return innerEnvironment;
         }
 
-        static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
+        private static void CopyErrors(IDSFDataObject dataObject, ErrorResultTO errors, IExecutionEnvironment innerEnvironment)
+        {
+            foreach (var error in innerEnvironment.AllErrors)
+            {
+                if (!dataObject.Environment.AllErrors.Contains(error))
+                {
+                    dataObject.Environment.AllErrors.Add(error);
+                    errors.AddError(error);
+                }
+            }
+            foreach (var error in innerEnvironment.Errors)
+            {
+                if (!dataObject.Environment.AllErrors.Contains(error))
+                {
+                    dataObject.Environment.AllErrors.Add(error);
+                    errors.AddError(error);
+                }
+            }
+        }
+
+        private static void CopyErrorsAndHandleThem(IDSFDataObject dataObject, ErrorResultTO errors, IExecutionEnvironment innerEnvironment)
+        {
+            foreach (var error in innerEnvironment.AllErrors)
+            {
+                if (!dataObject.Environment.AllErrors.Contains(error))
+                {
+
+                    errors.AddError(error);
+                }
+            }
+            foreach (var error in innerEnvironment.Errors)
+            {
+                if (!dataObject.Environment.AllErrors.Contains(error))
+                {
+
+                    errors.AddError(error);
+                }
+            }
+        }
+
+        void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
         {
             try
             {
-                var outputs = DataListFactory.CreateOutputParser().Parse(outputDefs);
-                var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
-                var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
-                var outputComplexObjectList = DataListFactory.CreateObjectList(outputs);
+                var outputs = _dataListFactory.CreateOutputParser().Parse(outputDefs);
+                var outputRecSets = _dataListFactory.CreateRecordSetCollection(outputs, true);
+                var outputScalarList = _dataListFactory.CreateScalarList(outputs, true);
+                var outputComplexObjectList = _dataListFactory.CreateObjectList(outputs);
                 TryEvalAssignRecordSets(innerEnvironment, environment, update, outputRecSets, outputs);
                 TryEvalAssignScalars(innerEnvironment, environment, update, outputScalarList);
                 TryEvalAssignComplexObjects(innerEnvironment, environment, outputComplexObjectList);
