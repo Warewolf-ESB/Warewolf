@@ -81,6 +81,7 @@
     <Compile Include="CommonComparerTests.cs" />
     <Compile Include="Core\ServerSourceTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
+    <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="DirectoryEntryFactoryTest.cs" />
     <Compile Include="ExtMethods\StringExtensionTests.cs" />
