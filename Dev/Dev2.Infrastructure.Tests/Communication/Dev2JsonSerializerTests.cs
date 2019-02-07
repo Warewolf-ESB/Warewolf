@@ -8,30 +8,127 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Text;
+using Dev2.Common;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-
+using System.IO;
+using System.Text;
 
 namespace Dev2.Infrastructure.Tests.Communication
 {
-    /// <summary>
-    /// Summary description for JsonSerializerTest
-    /// </summary>
     [TestClass]
-    public class JsonSerializerTest
+    public class Dev2JsonSerializerTests
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
+        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+        };
+        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+        };
+        const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("JsonSerializer_SerializeToBuffer")]
-        public void JsonSerializer_SerializeToBuffer_WhenEsbExecuteRequest_ValidObjectStringBuffer()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Serialize()
+        {
+            var theMessage = "testingtesting123";
+            var msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(theMessage);
+            var buffer = JsonConvert.SerializeObject(msg);
+
+            var json = new Dev2JsonSerializer();
+            var resultA = JsonConvert.SerializeObject(buffer,Formatting);
+            var resultB = json.Serialize(buffer);
+
+            Assert.AreEqual(resultA.ToString(), resultB.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Serialize_Formatting()
+        {
+            var theMessage = "testingtesting123";
+            var msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(theMessage);
+            var buffer = JsonConvert.SerializeObject(msg);
+
+            var json = new Dev2JsonSerializer();
+            var resultA = JsonConvert.SerializeObject(buffer, Formatting.None, _serializerSettings);
+            var resultB= json.Serialize(buffer, Formatting.None);
+            
+            Assert.AreEqual(resultA.ToString(), resultB.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserialize_String_Type()
+        {
+            var theMessage = "testingtesting123";
+            var js = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(theMessage);
+            var buffer = JsonConvert.SerializeObject(msg);
+
+            var resultA = JsonConvert.DeserializeObject(buffer.ToString(), typeof(ExecuteMessage), _deSerializerSettings);
+
+            var resultB = js.Deserialize(buffer.ToString(), typeof(ExecuteMessage));
+            Assert.AreEqual(resultA.ToString(), resultB.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserialize_String()
+        {
+            var theMessage = "testingtesting123";
+            var js = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(theMessage);
+            var buffer = JsonConvert.SerializeObject(msg);
+
+            var  resultA = JsonConvert.DeserializeObject<ExecuteMessage>(buffer.ToString(), _deSerializerSettings);
+
+            var resultB = js.Deserialize<ExecuteMessage>(buffer.ToString());
+            Assert.AreEqual(resultA.Message.ToString(), resultB.Message.ToString());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserialize_StringBuilder_SendNull_ReturnNull()
+        {
+            var js = new Dev2JsonSerializer();
+            var sb = new StringBuilder();
+            sb = null;
+            var result = js.Deserialize<StringBuilder>(sb);
+            Assert.IsNull(result);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserialize_StringBuilder_SendEmpty_ReturnNull()
+        {
+            var js = new Dev2JsonSerializer();
+            var sb = new StringBuilder("");
+            var result = js.Deserialize<StringBuilder>(sb);
+            Assert.IsNull(result);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_SerializeToBuffer_WhenEsbExecuteRequest_ValidObjectStringBuffer()
         {
             //------------Setup for test--------------------------
             var js = new Dev2JsonSerializer();
@@ -45,46 +142,37 @@ namespace Dev2.Infrastructure.Tests.Communication
             //------------Assert Results-------------------------
             var resultObj = js.Deserialize<EsbExecuteRequest>(result);
 
-            // check service name hydration
             Assert.AreEqual(request.ServiceName, resultObj.ServiceName);
-
-            // ensure args hydrate ;)
             Assert.AreEqual(request.Args["key1"].ToString(), resultObj.Args["key1"].ToString());
             Assert.AreEqual(request.Args["key2"].ToString(), resultObj.Args["key2"].ToString());
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("JsonSerializer_Deserializer")]
-        public void JsonSerializer_Deserializer_WhenUsingStream_ExpectValidObject()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserializer_WhenUsingStream_ExpectValidObject()
         {
             //------------Setup for test--------------------------
             const string theMessage = @"Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of. Consider speaking me prospect whatever if. Ten nearer rather hunted six parish indeed number. Allowance repulsive sex may contained can set suspected abilities cordially. Do part am he high rest that. So fruit to ready it being views match. 
-
 Knowledge nay estimable questions repulsive daughters boy. Solicitude gay way unaffected expression for. His mistress ladyship required off horrible disposed rejoiced. Unpleasing pianoforte unreserved as oh he unpleasant no inquietude insipidity. Advantages can discretion possession add favourable cultivated admiration far. Why rather assure how esteem end hunted nearer and before. By an truth after heard going early given he. Charmed to it excited females whether at examine. Him abilities suffering may are yet dependent. 
-
 Why end might ask civil again spoil.";
 
             var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(theMessage);
-
             var buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
 
             //------------Execute Test---------------------------
-
             var js = new Dev2JsonSerializer();
-
             var result = js.Deserialize<ExecuteMessage>(buffer);
 
             //------------Assert Results-------------------------
-
             Assert.AreEqual(theMessage, result.Message.ToString());
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("JsonSerializer_Deserializer")]
-        public void JsonSerializer_Deserializer_WhenUsingStreamWithLargePayload_ExpectValidObject()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserializer_WhenUsingStreamWithLargePayload_ExpectValidObject()
         {
             //------------Setup for test--------------------------
             const string theMessage = @"Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of. Consider speaking me prospect whatever if. Ten nearer rather hunted six parish indeed number. Allowance repulsive sex may contained can set suspected abilities cordially. Do part am he high rest that. So fruit to ready it being views match. 
@@ -113,18 +201,54 @@ Pointing has no control about the blind texts it is an almost unorthographic lif
 
             var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(theMessage);
-
             var buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
 
             //------------Execute Test---------------------------
 
             var js = new Dev2JsonSerializer();
-
             var result = js.Deserialize<ExecuteMessage>(buffer);
 
             //------------Assert Results-------------------------
-
             Assert.AreEqual(theMessage, result.Message.ToString());
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Deserialize_StreamReader_And_Serialize_StreamWriter()
+        {
+            const string theMessage = @"Test";
+            var msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(theMessage);
+
+            var testPath = EnvironmentVariables.TestPath;
+            var filePath = Path.Combine(testPath, $"Dev2JsonSerializerTest.txt");
+            var writer = new StreamWriter(filePath);
+
+            //------------Execute Test---------------------------
+            var js = new Dev2JsonSerializer();
+            js.Serialize(writer, msg);
+
+            var reader = new StreamReader(filePath);
+            var result = (ExecuteMessage)js.Deserialize<object>(reader);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(theMessage, result.Message.ToString());
+
+            DeleteTest("Dev2JsonSerializerTest");
+        }
+
+        public void DeleteTest(string testName)
+        {
+            var fileWrapper = new FileWrapper();
+            var dirPath = EnvironmentVariables.TestPath;
+            var testFilePath = Path.Combine(dirPath, $"{testName}.txt");
+            if (fileWrapper.Exists(testFilePath))
+            {
+                fileWrapper.Delete(testFilePath);
+            }
+        }
+
+       
     }
 }
