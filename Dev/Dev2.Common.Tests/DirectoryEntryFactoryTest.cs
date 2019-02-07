@@ -73,20 +73,5 @@ namespace Dev2.Common.Tests
             Assert.IsNotNull(entry);
             Assert.IsTrue(entry.Instance.Path == "Administrator");
         }
-
-        //[TestMethod]
-        //[Owner("Siphamandla Dube")]
-        //[TestCategory(nameof(DirectoryEntryFactory))]
-        //public void DirectoryEntryFactory_Create_DirectoryEntryPath_IsTrue()
-        //{
-        //    //-----------------Arrage------------------
-        //    IDirectoryEntryFactory _directoryEntryFactory = new DirectoryEntryFactory();
-        //    IDirectoryEntryFactory _directoryEntryFactory1 = new DirectoryEntryFactory();
-        //    //-----------------Act------------------
-        //    var entry = _directoryEntryFactory.Create<IDirectoryEntry>(_directoryEntryFactory1.Create("Administrator"));
-        //    //-----------------Assert------------------
-        //    Assert.IsNotNull(entry);
-        //    Assert.IsTrue(entry.Instance.Path == "Administrator");
-        //}
     }
 }

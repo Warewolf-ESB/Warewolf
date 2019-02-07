@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces.Wrappers;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
 
 namespace Dev2.Common.Wrappers
@@ -19,7 +20,7 @@ namespace Dev2.Common.Wrappers
         {
             return new Dev2DirectoryEntry(path);
         }
-
+        [ExcludeFromCodeCoverage]
         public IDirectoryEntry Create<T>(T member)
         {
             return new Dev2DirectoryEntry(new DirectoryEntry(member));
