@@ -16,22 +16,14 @@ namespace Warewolf.Storage.Tests
     [TestClass]
     public class ExecutionEnvironmentTest
     {
-
-        const string OutOfBoundExpression = "[[rec(0).a]]";
-        const string InvalidScalar = "[[rec(0).a]";
-        const string PersonNameExpression = "[[@Person().Name]]";
-        const string ChildNameExpression = "[[@Person.Child().Name]]";
-        const string VariableA = "[[a]]";
-
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void ExecutionEnvironment_GivenInvalidIndex_ExecutionEnvironmentEval_ShouldThrowIndexOutOfRangeException()
+        public void ExecutionEnvironment_Eval_GivenInvalidIndex_Throws_IndexOutOfRangeException()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Eval(OutOfBoundExpression, 0, true);
+            _environment.Eval("[[rec(0).a]]", 0, true);
         }
 
         [TestMethod]
@@ -40,7 +32,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_Assign_RecsetField()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
             var recordSet = _environment.GetCount("rec");
             Assert.AreEqual(1, recordSet);
         }
@@ -51,7 +43,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_Assign_NullExpression_DoesNotThrow()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(null, "sanele", 0);
+            _environment.Assign(null, "bob", 0);
 
             // reached here, test passed
         }
@@ -90,7 +82,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_AssignStrict_RecsetField()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignStrict("[[rec().a]]", "sanele", 0);
+            _environment.AssignStrict("[[rec().a]]", "bob", 0);
             var recordSet = _environment.GetCount("rec");
             Assert.AreEqual(1, recordSet);
         }
@@ -101,7 +93,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_AssignStrict_NullExpression_DoesNotThrow()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignStrict(null, "sanele", 0);
+            _environment.AssignStrict(null, "bob", 0);
 
             // reached here, test passed
         }
@@ -138,37 +130,29 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_AssignWithFrame()
-        {
-            var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrame(new List<IAssignValue> {
-                new AssignValue("[[rec().name]]", "n1"),
-                new AssignValue("[[rec().name]]", "n2"),
-            }, 0);
-
-            Assert.IsFalse(_environment.HasErrors());
-            var result = _environment.EvalAsListOfStrings("[[rec(*).name]]", 0);
-
-            Assert.AreEqual("n1", result[0]);
-            Assert.AreEqual("n2", result[1]);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentEvalAssignFromNestedLast_Should()
+        public void ExecutionEnvironment_EvalAssignFromNestedLast_GivenRecSet_Should()
         {
             var _environment = new ExecutionEnvironment();
             var evalMultiAssign = EvalMultiAssign();
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+
+            Assert.AreEqual(1, _environment.EvalAsListOfStrings("[[rec(*).a]]", 0).Count);
+
             _environment.EvalAssignFromNestedLast("[[rec(*).a]]", warewolfAtomListresult, 0);
+
+            var result = _environment.EvalAsList("[[rec(*).a]]", 0).ToArray();
+
+            Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(27, (result[0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(25, (result[1] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(33, (result[2] as DataStorage.WarewolfAtom.Int).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentEvalAssignFromNestedLast_TwoColumn_Should()
+        public void ExecutionEnvironment_EvalAssignFromNestedLast_GivenRecSet_TwoColumn_Should()
         {
             var _environment = new ExecutionEnvironment();
             var evalMultiAssign = EvalMultiAssignTwoColumn();
@@ -218,48 +202,60 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenNonExistingRec_ExecutionEnvironmentEvalAssignFromNestedLast_ShouldAddStar()
+        public void ExecutionEnvironment_EvalAssignFromNestedLast_GivenNonExistingRec_ShouldAddStar()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "Bob", 0);
             var evalMultiAssign = EvalMultiAssign();
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+
+            Assert.AreEqual("Bob", _environment.EvalAsListOfStrings("[[rec(*).a]]", 0)[0]);
+
             _environment.EvalAssignFromNestedLast("[[recs().a]]", warewolfAtomListresult, 0);
+
+
+            var result = _environment.EvalAsList("[[recs(*).a]]", 0).ToArray();
+
+            Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(27, (result[0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(25, (result[1] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(33, (result[2] as DataStorage.WarewolfAtom.Int).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetLengthOfJson_ShouldThrow()
+        public void ExecutionEnvironment_GetLength_GivenJson_ShouldThrow()
         {
             var _environment = new ExecutionEnvironment();
-            string msg = null;
+
             try
             {
                 _environment.GetLength("@obj.people");
+
+                Assert.Fail("expected exception, not a recordset");
             } catch (Exception e)
             {
-                msg = e.Message;
+                Assert.AreEqual("not a recordset", e.Message);
             }
-            Assert.AreEqual("not a recordset", msg);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetObjectLengthOfJson_ShouldThrow()
+        public void ExecutionEnvironment_GetObjectLength_GivenJson_ShouldThrow()
         {
             var _environment = new ExecutionEnvironment();
-            string msg = null;
+
             try
             {
                 _environment.GetObjectLength("@obj.people");
+                Assert.Fail("expected exception, not a json array");
             } catch (Exception e)
             {
-                msg = e.Message;
+                Assert.AreEqual("not a json array", e.Message);
             }
-            Assert.AreEqual("not a json array", msg);
         }
 
         [TestMethod]
@@ -268,58 +264,82 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_AssignFromNestedStar_Should()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "Bob", 0);
             var evalMultiAssign = EvalMultiAssign();
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             _environment.EvalAssignFromNestedStar("[[rec().a]]", warewolfAtomListresult, 0);
+
+            var result = _environment.EvalAsList("[[rec(*).a]]", 0).ToArray();
+
+            Assert.AreEqual(4, result.Length);
+            Assert.AreEqual("Bob", (result[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual(27, (result[1] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(25, (result[2] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(33, (result[3] as DataStorage.WarewolfAtom.Int).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_SortRecordSet_ShouldSortRecordSets()
+        public void ExecutionEnvironment_SortRecordSet_ShouldSortRecordSet()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "Bob", 0);
+            _environment.Assign("[[rec().a]]", "1Bob", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
             var evalMultiAssign = EvalMultiAssign();
             PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
-            _environment.SortRecordSet("[[rec().a]]", true, 0);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedStar("[[rec().a]]", warewolfAtomListresult, 0);
+
+            _environment.SortRecordSet("[[rec().a]]", false, 0);
+
+            var result = _environment.EvalAsList("[[rec(*).a]]", 0).ToArray();
+
+            Assert.AreEqual(6, result.Length);
+            Assert.AreEqual("1Bob", (result[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual(25, (result[1] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(27, (result[2] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(33, (result[3] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual("bob", (result[4] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("Bob", (result[5] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
-        static DataStorage.WarewolfEnvironment EvalMultiAssign()
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_SortRecordSet_Desc_ShouldSortRecordSet_InReverse()
         {
-            var assigns = new List<IAssignValue>
-            {
-                new AssignValue("[[rec(1).a]]", "27"),
-                new AssignValue("[[rec(3).a]]", "33"),
-                new AssignValue("[[rec(2).a]]", "25")
-            };
-            var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
-            var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
-            return evalMultiAssign;
-        }
-        static DataStorage.WarewolfEnvironment EvalMultiAssignTwoColumn()
-        {
-            var assigns = new List<IAssignValue>
-            {
-                new AssignValue("[[rec().a]]", "a11"),
-                new AssignValue("[[rec().b]]", ""),
-                new AssignValue("[[rec().c]]", "c22"),
-                new AssignValue("[[rec().a]]", "ayy"),
-                new AssignValue("[[rec().b]]", "b33"),
-                new AssignValue("[[rec().c]]", "czz")
-            };
-            var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
-            var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
-            return evalMultiAssign;
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().a]]", "Bob", 0);
+            _environment.Assign("[[rec().a]]", "1Bob", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
+            var evalMultiAssign = EvalMultiAssign();
+            PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedStar("[[rec().a]]", warewolfAtomListresult, 0);
+
+            _environment.SortRecordSet("[[rec().a]]", true, 0);
+
+            var result = _environment.EvalAsList("[[rec(*).a]]", 0).ToArray();
+
+            Assert.AreEqual(6, result.Length);
+            Assert.AreEqual("Bob", (result[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("bob", (result[1] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual(33, (result[2] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(27, (result[3] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(25, (result[4] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual("1Bob", (result[5] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
-        public void ExecutionEnvironment__EvalAsList_WhenRecSet_ShouldReturnListOfAllValues()
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_ListsAllCells_ColumnByColumn()
         {
             var _environment = new ExecutionEnvironment();
             //------------Setup for test--------------------------
@@ -331,16 +351,88 @@ namespace Warewolf.Storage.Tests
             var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
             //------------Assert Results-------------------------
             Assert.AreEqual(4, list.Count);
-            Assert.AreEqual("27", list[0].ToString());
-            Assert.AreEqual("31", list[1].ToString());
-            Assert.AreEqual("bob", list[2].ToString());
-            Assert.AreEqual("mary", list[3].ToString());
+            Assert.AreEqual(27, (list[0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(31, (list[1] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual("bob", (list[2] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("mary", (list[3] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
-        public void ExecutionEnvironment__EvalAsList_WhenRecSet_ShouldReturnListOfAllValues_PadLeft()
+        public void ExecutionEnvironment_EvalAsList_NonExistentRecordset_Returns1NothingItem()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            var list = _environment.EvalAsList("[[rec(*)]]", 0).ToArray();
+
+            Assert.AreEqual(1, list.Length);
+            Assert.IsTrue(list[0].IsNothing);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_Scalar()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[a]]", "1234", 0);
+
+            var list = _environment.EvalAsList("[[a]]", 0).ToArray();
+
+            Assert.AreEqual(1, list.Length);
+            Assert.AreEqual(1234, (list[0] as DataStorage.WarewolfAtom.Int).Item);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_Scalar_NotExists_Returns1NothingItem()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            var list = _environment.EvalAsList("[[a]]", 0).ToArray();
+
+            Assert.AreEqual(1, list.Length);
+            Assert.IsTrue(list[0].IsNothing);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_JsonObject()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignJson(new AssignValue("[[@Obj]]", "{\"Name\":\"Bob\"}"), 0);
+
+            var list = _environment.EvalAsList("[[@Obj]]", 0).ToArray();
+
+            Assert.AreEqual(1, list.Length);
+            Assert.AreEqual("{\r\n  \"Name\": \"Bob\"\r\n}", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_JsonObject_NotExists_Returns1NothingItem()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            var list = _environment.EvalAsList("[[@Obj]]", 0).ToArray();
+
+            Assert.AreEqual(1, list.Length);
+            Assert.IsTrue(list[0].IsNothing);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_PadLeft_IsNotStripped()
         {
             var _environment = new ExecutionEnvironment();
             //------------Setup for test--------------------------
@@ -352,17 +444,38 @@ namespace Warewolf.Storage.Tests
             var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
             //------------Assert Results-------------------------
             Assert.AreEqual(4, list.Count);
-            Assert.AreEqual("27     ", list[0].ToString());
-            Assert.AreEqual("31 ", list[1].ToString());
-            Assert.AreEqual("bob    ", list[2].ToString());
-            Assert.AreEqual("mary", list[3].ToString());
+            Assert.AreEqual("27     ", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("31 ", (list[1] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("bob    ", (list[2] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("mary", (list[3] as DataStorage.WarewolfAtom.DataString).Item);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_Padding_IsNotStripped()
+        {
+            var _environment = new ExecutionEnvironment();
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", " 27     ", 0);
+            _environment.Assign("[[rec(1).b]]", "  bob    ", 0);
+            _environment.Assign("[[rec(2).a]]", "\t31 ", 0);
+            _environment.Assign("[[rec(2).b]]", "mary\t", 0);
+            //------------Execute Test---------------------------
+            var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, list.Count);
+            Assert.AreEqual(" 27     ", (list[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("\t31 ", (list[1] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("  bob    ", (list[2] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual("mary\t", (list[3] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
-        public void ExecutionEnvironment__EvalAsListOfString_WhenRecSet_ShouldReturnListOfAllValues()
+        public void ExecutionEnvironment_EvalAsListOfString_WhenRecSet_ShouldReturnListOfAllValues()
         {
             var _environment = new ExecutionEnvironment();
             //------------Setup for test--------------------------
@@ -384,7 +497,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
-        public void ExecutionEnvironment__EvalAsListOfString_NoData()
+        public void ExecutionEnvironment_EvalAsListOfString_NoData()
         {
             var _environment = new ExecutionEnvironment();
             //------------Setup for test--------------------------
@@ -400,7 +513,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
-        public void ExecutionEnvironment__EvalAsString_WhenRecSet_ShouldReturnListOfAllValues()
+        public void ExecutionEnvironment_EvalAsString_WhenRecSet_ShouldReturnListOfAllValues()
         {
             var _environment = new ExecutionEnvironment();
             //------------Setup for test--------------------------
@@ -419,41 +532,37 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenJsonObject_ExecutionEnvironmentEvalAsListOfStrings_ShouldReturnValue()
+        public void ExecutionEnvironment_EvalAsListOfStrings_SameValues_ShouldReturn()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[Person().Name]]", "Sanele", 0);
-            _environment.Assign("[[Person().Name]]", "Nathi", 0);
+            _environment.Assign("[[Person().Name]]", "Bob", 0);
+            _environment.Assign("[[Person().Name]]", "Bob", 0);
+
             var evalAsListOfStrings = _environment.EvalAsListOfStrings("[[Person(*).Name]]", 0);
-            Assert.IsTrue(evalAsListOfStrings.Contains("Sanele"));
+
+            Assert.AreEqual(2, evalAsListOfStrings.Count);
+            Assert.AreEqual("Bob", evalAsListOfStrings[0]);
+            Assert.AreEqual("Bob", evalAsListOfStrings[1]);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenListResults_ExecutionEnvironmentEvalAsListOfStrings_ShouldReturnValuesAsList()
+        public void ExecutionEnvironment_EvalAsListOfStrings_GivenListResults_ShouldReturnValuesAsList()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue(PersonNameExpression, "Sanele"), 0);
-            var evalAsListOfStrings = _environment.EvalAsListOfStrings(PersonNameExpression, 0);
-            Assert.IsTrue(evalAsListOfStrings.Contains("Sanele"));
+            _environment.AssignJson(new AssignValue("[[@Person().Name]]", "Bob"), 0);
+
+            var evalAsListOfStrings = _environment.EvalAsListOfStrings("[[@Person().Name]]", 0);
+
+            Assert.AreEqual(1, evalAsListOfStrings.Count);
+            Assert.AreEqual("Bob", evalAsListOfStrings[0]);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_AssignWithFrameAndList_Should()
-        {
-            var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrameAndList(VariableA,
-                new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Test Value")),
-                false, 0);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentHasRecordSet_ShouldReturnTrue()
+        public void ExecutionEnvironment_HasRecordSet_GivenRecSet_ShouldReturnTrue()
         {
             var executionEnv = new ExecutionEnvironment();
             executionEnv.Assign("[[rec().a]]", "bob", 0);
@@ -464,7 +573,17 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenIncorrectString_ExecutionEnvironmentHasRecordSet_ShouldReturnFalse()
+        public void ExecutionEnvironment_HasRecordSet_ShouldReturnFalse()
+        {
+            var _environment = new ExecutionEnvironment();
+            var hasRecordSet = _environment.HasRecordSet("[[rec()]]");
+            Assert.IsFalse(hasRecordSet);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_HasRecordSet_GivenIncorrectString_ShouldReturnFalse()
         {
             var _environment = new ExecutionEnvironment();
             var hasRecordSet = _environment.HasRecordSet("RandomString");
@@ -474,74 +593,85 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenJson_ExecutionEnvironmentToStar_ShouldReturnAddStar()
+        public void ExecutionEnvironment_ToStar_GivenJson_ShouldReturnAddStar()
         {
 
             var _environment = new ExecutionEnvironment();
-            var star = _environment.ToStar(PersonNameExpression);
-            Assert.IsNotNull(star);
+            var star = _environment.ToStar("[[@Person().Name]]");
+
             Assert.AreEqual("[[@Person(*).Name]]", star);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentToStar_ShouldReturnAddStar()
+        public void ExecutionEnvironment_ToStar_GivenRecSet_ShouldReturnAddStar()
         {
             var _environment = new ExecutionEnvironment();
             var star = _environment.ToStar("[[rec().a]]");
-            Assert.IsNotNull(star);
+
             Assert.AreEqual("[[rec(*).a]]", star);
 
             star = _environment.ToStar("[[rec()]]");
-            Assert.IsNotNull(star);
             Assert.AreEqual("[[rec(*)]]", star);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenVariable_ExecutionEnvironmentToStar_ShouldReturnTheSame()
+        public void ExecutionEnvironment_ToStar_GivenVariable_ShouldReturnTheSame()
         {
             var _environment = new ExecutionEnvironment();
-            var star = _environment.ToStar(VariableA);
-            Assert.IsNotNull(star);
-            Assert.AreEqual(VariableA, star);
+            var star = _environment.ToStar("[[a]]");
+
+            Assert.AreEqual("[[a]]", star);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_AssignFromNestedNumeric_Should()
+        public void ExecutionEnvironment_AssignFromNestedNumeric_ShouldAppendLast()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "Bob", 0);
             var evalMultiAssign = EvalMultiAssign();
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
             var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+
             _environment.EvalAssignFromNestedNumeric("[[rec().a]]", warewolfAtomListresult, 0);
+
+            var result = _environment.EvalAsList("[[rec(*)]]", 0).ToArray();
+
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual("Bob", (result[0] as DataStorage.WarewolfAtom.DataString).Item);
+            Assert.AreEqual(33, (result[1] as DataStorage.WarewolfAtom.Int).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_WarewolfEvalResultToString_Should()
+        public void ExecutionEnvironment_AssignFromNestedNumeric_ToStar_Should_ReplaceItemsWithLast()
         {
-            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(
-                CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(
-                    new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Test string"))));
-            Assert.IsNotNull(warewolfEvalResultToString);
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().a]]", "Bob", 0);
+            _environment.Assign("[[rec().a]]", "Bob2", 0);
+            var evalMultiAssign = EvalMultiAssign();
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
 
-            warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(
-                CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(
-                    DataStorage.WarewolfAtom.NewDataString("Test string")));
-            Assert.IsNotNull(warewolfEvalResultToString);
+            _environment.EvalAssignFromNestedNumeric("[[rec(*).a]]", warewolfAtomListresult, 0);
+
+            var result = _environment.EvalAsList("[[rec(*)]]", 0).ToArray();
+
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(33, (result[0] as DataStorage.WarewolfAtom.Int).Item);
+            Assert.AreEqual(33, (result[1] as DataStorage.WarewolfAtom.Int).Item);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentIsRecordSetName_ShouldReturnTrue()
+        public void ExecutionEnvironment_IsRecordSetName_GivenRecSet_ShouldReturnTrue()
         {
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec(1).a]]", "Test Value", 0);
@@ -552,35 +682,79 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenInvalidRecSet_ExecutionEnvironmentIsRecordSetName_ShouldReturnFalse()
+        public void ExecutionEnvironment_IsRecordSetName_GivenRecSetExists_UseNameIncorrectly_ShouldReturnFalse()
         {
             var _environment = new ExecutionEnvironment();
-            var isRecordSetName = ExecutionEnvironment.IsRecordSetName(InvalidScalar);
+            _environment.Assign("[[rec(1).a]]", "Test Value", 0);
+            var isRecordSetName = ExecutionEnvironment.IsRecordSetName("[[rec]]");
             Assert.IsFalse(isRecordSetName);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenValidExpression_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnTrue()
+        public void ExecutionEnvironment_IsRecordSetName_GivenInvalidRecSet_ShouldReturnFalse()
         {
             var _environment = new ExecutionEnvironment();
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(VariableA, out string message, 0);
-            Assert.IsTrue(isValidVariableExpression);
+            var isRecordSetName = ExecutionEnvironment.IsRecordSetName("[[rec(0).a]]");
+            Assert.IsFalse(isRecordSetName);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenInValidExpressionOrEmptyString_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnFalse()
+        public void ExecutionEnvironment_IsRecordSetName_GivenScalar_ShouldReturnFalse()
         {
             var _environment = new ExecutionEnvironment();
-            //Given Invalid Scalar
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(InvalidScalar, out string message, 0);
-            Assert.IsFalse(isValidVariableExpression);
-            //Given Empty Strign
-            isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(string.Empty, out message, 0);
-            Assert.IsFalse(isValidVariableExpression);
+            var isRecordSetName = ExecutionEnvironment.IsRecordSetName("[[a]]");
+            Assert.IsFalse(isRecordSetName);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidVariableExpression_GivenValidExpression_ShouldReturnTrue()
+        {
+            var _environment = new ExecutionEnvironment();
+            var result = ExecutionEnvironment.IsValidVariableExpression("[[a]]", out string message, 0);
+            Assert.IsTrue(result);
+            Assert.AreEqual("", message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidVariableExpression_GivenInValidExpression_ShouldReturnFalse()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            var result = ExecutionEnvironment.IsValidVariableExpression("[[rec(0).a]", out string message, 0);
+            Assert.IsFalse(result);
+            Assert.AreEqual("parse error", message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidVariableExpression_GivenInValidExpression2_ShouldReturnFalse()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            var result = ExecutionEnvironment.IsValidVariableExpression("@", out string message, 0);
+            Assert.IsFalse(result);
+            // TODO: shouldn't this return parse error?
+            Assert.AreEqual("", message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidVariableExpression_GivenEmptyString_ShouldReturnFalse()
+        {
+            var result = ExecutionEnvironment.IsValidVariableExpression(string.Empty, out string message, 0);
+            Assert.IsFalse(result);
+            // TODO: should this really have no error message?
+            Assert.AreEqual("", message);
         }
 
         [TestMethod]
@@ -589,9 +763,10 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_GetLength_Should()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
             var recordSet = _environment.GetLength("rec");
-            Assert.AreEqual(1, recordSet);
+            Assert.AreEqual(2, recordSet);
         }
 
         [TestMethod]
@@ -600,7 +775,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_GetLength_NotARecordset()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[rec().a]]", "sanele", 0);
+            _environment.Assign("[[rec().a]]", "bob", 0);
             try
             {
                 var recordSet = _environment.GetLength("@");
@@ -694,11 +869,27 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalToExpression_ShouldEvaluateToBaseExpression()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[a]]", "SomeValue", 0);
+            _environment.Assign("[[b]]", "[[a]]", 0);
+
+            var evalToExpression = _environment.EvalToExpression("[[[[b]]]]", 0);
+
+            Assert.AreEqual("[[SomeValue]]", evalToExpression);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalToExpression_Should()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(VariableA, "SomeValue", 0);
-            var evalToExpression = _environment.EvalToExpression(VariableA, 0);
+
+            _environment.Assign("[[a]]", "SomeValue", 0);
+
+            var evalToExpression = _environment.EvalToExpression("[[a]]", 0);
             Assert.AreEqual("[[a]]", evalToExpression);
         }
 
@@ -720,7 +911,9 @@ namespace Warewolf.Storage.Tests
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[FirstNames]]", "Bob", 0);
             var calcExpr = "!~calculation~!FIND(\" \",[[FirstNames]],1)!~~calculation~!";
+
             var evalResult = _environment.Eval(calcExpr, 0);
+
             Assert.AreEqual("!~calculation~!FIND(\" \",\"Bob\",1)!~~calculation~!", ExecutionEnvironment.WarewolfEvalResultToString(evalResult));
         }
 
@@ -748,6 +941,28 @@ namespace Warewolf.Storage.Tests
             var result = ExecutionEnvironment.WarewolfEvalResultToString(_environment.Eval("[[FirstNames(*).name]]", 0));
 
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_WarewolfEvalResultToString_GivenWarewolfAtomList_DataStringIsUnaltered()
+        {
+            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(
+                CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(
+                    new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Test string"))));
+            Assert.IsNotNull(warewolfEvalResultToString);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_WarewolfEvalResultToString_GivenWarewolfAtom_DataStringIsUnaltered()
+        {
+            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(
+                CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(
+                    DataStorage.WarewolfAtom.NewDataString("Test string")));
+            Assert.AreEqual("Test string", warewolfEvalResultToString);
         }
 
         [TestMethod]
@@ -781,88 +996,140 @@ namespace Warewolf.Storage.Tests
 
             var result = _environment.EvalAsTable("[[FirstNames(*).name]]", 0);
 
-            // BUG: this should not throw but should return a count of zero items
+            // BUG: this should not throw, instead it should return a count of zero items or a single cell with Nothing in it
             Assert.AreEqual(0, result.Count());
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentGetPositionColumnExpression_ShouldReturn()
+        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSetNotExists()
         {
             var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().name]]", "Bob", 0);
+
             var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec()]]");
-            Assert.IsNotNull(positionColumnExpression);
-            Assert.IsTrue(positionColumnExpression.Contains("rec(*)"));
+
+            Assert.AreEqual("[[rec(*).WarewolfPositionColumn]]", positionColumnExpression);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenVariable_ExecutionEnvironmentGetPositionColumnExpression_ShouldReturnSameVariable()
+        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSet()
         {
             var _environment = new ExecutionEnvironment();
+
+            var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec()]]");
+
+            Assert.AreEqual("[[rec(*).WarewolfPositionColumn]]", positionColumnExpression);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GivenVariable_GetPositionColumnExpression_ShouldReturnSameVariable()
+        {
+            var _environment = new ExecutionEnvironment();
+
             var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec]]");
-            Assert.IsNotNull(positionColumnExpression);
+
             Assert.AreEqual("[[rec]]", positionColumnExpression);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_ConvertToIndex_Should()
+        public void ExecutionEnvironment_ConvertToIndex()
         {
             var _environment = new ExecutionEnvironment();
-            var convertToIndex = ExecutionEnvironment.ConvertToIndex(VariableA, 0);
-            Assert.IsNotNull(convertToIndex);
-            convertToIndex = ExecutionEnvironment.ConvertToIndex("[[rec(1).a]]", 0);
-            Assert.IsNotNull(convertToIndex);
+            var result = ExecutionEnvironment.ConvertToIndex("[[a]]", 0);
+            Assert.AreEqual("[[a]]", result);
 
-            convertToIndex = ExecutionEnvironment.ConvertToIndex("[[rec(*).a]]", 0);
-            Assert.IsNotNull(convertToIndex);
+            result = ExecutionEnvironment.ConvertToIndex("[[rec(1).a]]", 0);
+            Assert.AreEqual("[[rec(1).a]]", result);
+
+            result = ExecutionEnvironment.ConvertToIndex("[[rec(*).a]]", 0);
+            // TODO: this doesn't seem right, we start indexing at 1
+            Assert.AreEqual("[[rec(0).a]]", result);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenVariable_ExecutionEnvironmentIsScalar_ShouldBeTrue()
+        public void ExecutionEnvironment_ConvertToIndex_LastNotAltered()
+        {
+            var result = ExecutionEnvironment.ConvertToIndex("[[rec().a]]", 0);
+            Assert.AreEqual("[[rec().a]]", result);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsScalar_GivenVariable_ShouldBeTrue()
         {
 
             var _environment = new ExecutionEnvironment();
-            var isScalar = ExecutionEnvironment.IsScalar(VariableA);
+            var isScalar = ExecutionEnvironment.IsScalar("[[a]]");
             Assert.IsTrue(isScalar);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenInvalidScarOrSomeString_ExecutionEnvironmentIsScalar_ShouldBeFalse()
+        public void ExecutionEnvironment_IsScalar_GivenSomeString_ShouldBeFalse()
         {
 
             var _environment = new ExecutionEnvironment();
             var isScalar = ExecutionEnvironment.IsScalar("SomeString");
             Assert.IsFalse(isScalar);
-            isScalar = ExecutionEnvironment.IsScalar("[[a]");
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsScalar_GivenInvalid_ShouldNotThrow()
+        {
+            var isScalar = ExecutionEnvironment.IsScalar("[[a]");
             Assert.IsFalse(isScalar);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_EvalAsList_Should()
+        public void ExecutionEnvironment_IsScalar_GivenRecset_ShouldBeFalse()
         {
-
-            var _environment = new ExecutionEnvironment();
-            var evalAsList = _environment.EvalAsList(PersonNameExpression, 0);
-            Assert.IsNotNull(evalAsList);
-            evalAsList = _environment.EvalAsList(string.Empty, 0);
-            Assert.IsNotNull(evalAsList);
+            var isScalar = ExecutionEnvironment.IsScalar("[[rec().a]]");
+            Assert.IsFalse(isScalar);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_EvalAsList_NothingEvaluatesToEmpty()
+        public void ExecutionEnvironment_EvalAsList_RecordsetNotExists_Returns1NothingCell()
+        {
+            var _environment = new ExecutionEnvironment();
+            var result = _environment.EvalAsList("[[@Person().Name]]", 0).ToArray();
+            Assert.AreEqual(1, result.Length);
+            Assert.IsTrue(result[0].IsNothing);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalAsList_GivenEmptyString_Returns1DataStringCell()
+        {
+            var _environment = new ExecutionEnvironment();
+            var result = _environment.EvalAsList(string.Empty, 0).ToArray();
+
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual("", (result[0] as DataStorage.WarewolfAtom.DataString).Item);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalAsList_ScalarNotExists_Returns1NothingCell()
         {
 
             var _environment = new ExecutionEnvironment();
@@ -871,21 +1138,6 @@ namespace Warewolf.Storage.Tests
 
             Assert.AreEqual(1, result.Length);
             Assert.IsTrue(result[0].IsNothing);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_EvalAsList_EmptyEvaluatesToEmpty()
-        {
-            var _environment = new ExecutionEnvironment();
-
-            var result = _environment.EvalAsList(string.Empty, 0).ToArray();
-
-            Assert.AreEqual(1, result.Length);
-            Assert.IsTrue(result[0].IsDataString);
-            var v = result[0] as DataStorage.WarewolfAtom.DataString;
-            Assert.AreEqual("", v.Item);
         }
 
         [TestMethod]
@@ -913,43 +1165,111 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_ApplyUpdate_Should()
+        public void ExecutionEnvironment_ApplyUpdate_ShouldAlterDataInPlace()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(VariableA, "SomeValue", 0);
+            _environment.Assign("[[a]]", "SomeValue", 0);
             var clause =
-                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => atom);
-            _environment.ApplyUpdate(VariableA, clause, 0);
+                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before"+ atom.ToString() +"after"));
+            _environment.ApplyUpdate("[[a]]", clause, 0);
+
+            var result = _environment.EvalAsListOfStrings("[[a]]", 0);
+            Assert.AreEqual("beforeSomeValueafter", result[0]);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenIsNothingEval_ExecutionEnvironmentEvalWhere_ShouldReturnNothing()
+        public void ExecutionEnvironment_ApplyUpdate_ShouldAlterDataInPlace_Recset()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(VariableA, "SomeValue", 0);
+            _environment.Assign("[[rec(1).a]]", "SomeValue", 0);
+            _environment.Assign("[[rec(2).a]]", "1234", 0);
+            _environment.Assign("[[rec(3).a]]", "2.4", 0);
+            var clause =
+                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+            _environment.ApplyUpdate("[[rec(*)]]", clause, 0);
+
+            var result = _environment.EvalAsListOfStrings("[[rec(*)]]", 0);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("beforeSomeValueafter", result[0]);
+            Assert.AreEqual("before1234after", result[1]);
+            Assert.AreEqual("before2.4after", result[2]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void ExecutionEnvironment_ApplyUpdate_RecsetNotExists()
+        {
+            var _environment = new ExecutionEnvironment();
+            var clause =
+                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+            _environment.ApplyUpdate("[[rec(*)]]", clause, 0);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_ApplyUpdate_ScalarNotExists()
+        {
+            var _environment = new ExecutionEnvironment();
+            var clause =
+                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+            try
+            {
+                _environment.ApplyUpdate("[[rec]]", clause, 0);
+                Assert.Fail("expected exception Scalar value { rec } is NULL");
+            } catch (Exception e)
+            {
+                Assert.AreEqual("Scalar value { rec } is NULL", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalWhere_GivenIsNothingEval_ShouldReturnNothing()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[a]]", "SomeValue", 0);
             var clause = new Func<DataStorage.WarewolfAtom, bool>(atom => atom.IsNothing);
+
             var evalWhere = _environment.EvalWhere("[[rec()]]", clause, 0);
-            Assert.IsNotNull(evalWhere);
+
+            Assert.AreEqual(0, evalWhere.ToArray().Length);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenJSonExpression_ExecutionEnvironmentGetIndexes_ShouldReturn1Index()
+        public void ExecutionEnvironment_GetIndexes_GivenJSonExpression_ShouldReturn1Index()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue(PersonNameExpression, "Sanele"), 0);
-            var indexes = _environment.GetIndexes(PersonNameExpression);
-            Assert.AreEqual(1, indexes.Count);
-            Assert.IsTrue(indexes.Contains(PersonNameExpression));
+            _environment.AssignJson(new AssignValue("[[@Person().Name]]", "Bob"), 0);
+
+            var indexes = _environment.GetIndexes("[[@Person().Name]]").ToArray();
+
+            Assert.AreEqual(1, indexes.Length);
+            Assert.AreEqual("[[@Person().Name]]", indexes[0]);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenRecSet_ExecutionEnvironmentGetIndexes_ShouldReturn1Index()
+        public void ExecutionEnvironment_GetIndexes_Scalar_HasNoIndexes()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[a]]", "Bob", 0);
+            var indexes = _environment.GetIndexes("[[a]]");
+            Assert.AreEqual(0, indexes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GetIndexes_GivenRecSet_ShouldReturn1Index()
         {
             var _environment = new ExecutionEnvironment();
             const string recA = "[[rec(*).a]]";
@@ -961,14 +1281,16 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenContainer_ExecutionEnvironmentBuildIndexMap_ShouldBuildMapForChildObj()
+        public void ExecutionEnvironment_BuildIndexMap_GivenContainer_ShouldBuildMapForChildObj()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue(ChildNameExpression, "Sanele"), 0);
+            _environment.AssignJson(new AssignValue("[[@Person.Child().Name]]", "Bob"), 0);
+
+            // TODO: refactor BuildIndexMap into a helper class that we can test separately
             var privateObj = new PrivateObject(_environment);
-            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(ChildNameExpression);
+            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-            var obj = new JArray(ChildNameExpression);
+            var obj = new JArray("[[@Person.Child().Name]]");
             if (jsonIdentifierExpression == null)
             {
                 return;
@@ -986,7 +1308,10 @@ namespace Warewolf.Storage.Tests
         {
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec().a]]", "Some Value", 0);
+            Assert.AreEqual(1, _environment.EvalAsListOfStrings("[[rec(*).a]]", 0).ToArray().Length);
+
             _environment.EvalDelete("[[rec()]]", 0);
+
             var result = _environment.Eval("[[rec().a]]", 0);
             Assert.IsTrue(WarewolfDataEvaluationCommon.isNothing(result));
         }
@@ -994,10 +1319,10 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenEmptyStringAndName_ExecutionEnvironmentAssignWithFrame_ShouldReturn()
+        public void ExecutionEnvironment_AssignWithFrame_GivenEmptyString_ThrowsWithMessage()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrame(new AssignValue(PersonNameExpression, "Value"), 0);
+            _environment.AssignWithFrame(new AssignValue("[[@Person().Name]]", "Value"), 0);
             try
             {
                 _environment.AssignWithFrame(new AssignValue(string.Empty, "Value"), 0);
@@ -1011,10 +1336,92 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
+        public void ExecutionEnvironment_AssignWithFrame_GivenInvalidScalar_ShouldThrowException()
+        {
+            var _environment = new ExecutionEnvironment();
+            try
+            {
+                _environment.AssignWithFrame(new AssignValue("[[rec(0).a]", "Value"), 0);
+                Assert.Fail("expected exception parse error");
+            } catch (Exception e)
+            {
+                Assert.AreEqual("parse error", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_AssignWithFrame()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignWithFrame(new List<IAssignValue> {
+                new AssignValue("[[rec().name]]", "n1"),
+                new AssignValue("[[rec().name]]", "n2"),
+            }, 0);
+
+            Assert.IsFalse(_environment.HasErrors());
+            var result = _environment.EvalAsListOfStrings("[[rec(*).name]]", 0);
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("n1", result[0]);
+            Assert.AreEqual("n2", result[1]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidRecordSetIndex_Last()
         {
             var _environment = new ExecutionEnvironment();
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidRecordSetIndex_InvalidString()
+        {
+            var _environment = new ExecutionEnvironment();
+
+            // TODO: shouldn't this just return false to keep similarity with IsScalar?
+            try
+            {
+                Assert.IsFalse(ExecutionEnvironment.IsValidRecordSetIndex("[[a]"));
+                Assert.Fail("expected exception, parse error");
+            } catch (Exception e)
+            {
+                Assert.AreEqual("parse error", e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidRecordSetIndex_EmptyString()
+        {
+            var _environment = new ExecutionEnvironment();
+            // BUG: this should pass?
+            //Assert.IsFalse(ExecutionEnvironment.IsValidRecordSetIndex(""));
+            Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex(""));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidRecordSetIndex_Number()
+        {
+            var _environment = new ExecutionEnvironment();
+            Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec(1).b]]"));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_IsValidRecordSetIndex_Star()
+        {
+            var _environment = new ExecutionEnvironment();
+            Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec(*).b]]"));
         }
 
         [TestMethod]
@@ -1029,31 +1436,21 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [ExpectedException(typeof(Exception))]
-        public void ExecutionEnvironment_GivenInvalidScalar_ExecutionEnvironmentAssignWithFrame_ShouldThrowException()
-        {
-            var _environment = new ExecutionEnvironment();
-            _environment.AssignWithFrame(new AssignValue(InvalidScalar, "Value"), 0);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalForDataMerge_Should()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(VariableA, "Sanele", 0);
-            _environment.EvalForDataMerge(VariableA, 0);
+            _environment.Assign("[[a]]", "bob", 0);
+            _environment.EvalForDataMerge("[[a]]", 0);
         }
 
         [ExpectedException(typeof(NullValueInVariableException))]
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenUnAssignedVar_ExecutionEnvironmentEvalStrict_ShouldThrowNullValueInVariableException()
+        public void ExecutionEnvironment_GivenUnAssignedVar_EvalStrict_ShouldThrowNullValueInVariableException()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.EvalStrict(PersonNameExpression, 0);
+            _environment.EvalStrict("[[@Person().Name]]", 0);
         }
 
         [TestMethod]
@@ -1062,8 +1459,8 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_EvalStrict_Should()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.Assign(PersonNameExpression, "Sanele", 0);
-            _environment.EvalStrict(PersonNameExpression, 0);
+            _environment.Assign("[[@Person().Name]]", "Bob", 0);
+            _environment.EvalStrict("[[@Person().Name]]", 0);
         }
 
         [TestMethod]
@@ -1089,7 +1486,7 @@ namespace Warewolf.Storage.Tests
             var values = new List<string> { "[[Person().Name]]" };
 
             var _environment = new ExecutionEnvironment();
-            _environment.Assign("[[Person().Name]]", "sanele", 0);
+            _environment.Assign("[[Person().Name]]", "bob", 0);
             var resList = new List<string>();
             _environment.AssignUnique(recs, values, resList, 0);
             Assert.IsNotNull(resList);
@@ -1099,7 +1496,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [ExpectedException(typeof(Exception))]
-        public void ExecutionEnvironment_GivenInvalidExpression_ExecutionEnvironmentEval_ShouldThrowException()
+        public void ExecutionEnvironment_GivenInvalidExpression_Eval_ShouldThrowException()
         {
             var _environment = new ExecutionEnvironment();
             const string expression = "[[rec(0).a]";
@@ -1109,7 +1506,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenInvalidExpressionAndthrowsifnotexistsIsFalse_ExecutionEnvironmentEval_ShouldReturnNothing()
+        public void ExecutionEnvironment_GivenInvalidExpressionAndthrowsifnotexistsIsFalse_Eval_ShouldReturnNothing()
         {
             var _environment = new ExecutionEnvironment();
             const string expression = "[[rec(0).a]";
@@ -1120,7 +1517,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenEmptyString_ExecutionEnvironmentEvalJContainer_ShouldReturn()
+        public void ExecutionEnvironment_GivenEmptyString_EvalJContainer_ShouldReturn()
         {
 
             var _environment = new ExecutionEnvironment();
@@ -1131,8 +1528,8 @@ namespace Warewolf.Storage.Tests
             evalJContainer = _environment.EvalJContainer(something);
             Assert.IsNull(evalJContainer);
 
-            _environment.AssignJson(new AssignValue(PersonNameExpression, "Sanele"), 0);
-            evalJContainer = _environment.EvalJContainer(PersonNameExpression);
+            _environment.AssignJson(new AssignValue("[[@Person().Name]]", "Bob"), 0);
+            evalJContainer = _environment.EvalJContainer("[[@Person().Name]]");
             Assert.IsNotNull(evalJContainer);
         }
 
@@ -1153,7 +1550,21 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenEmptyString_ExecutionEnvironmentEvalForJason_ShouldReturnNothing()
+        public void ExecutionEnvironment_EvalJContainer_NonJson_DoesNotThrow()
+        {
+
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[a]]", "Bob", 0);
+
+            const string something = "[[a]]";
+            var evalJContainer = _environment.EvalJContainer(something);
+            Assert.IsNull(evalJContainer);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GivenEmptyString_EvalForJason_ShouldReturnNothing()
         {
             var _environment = new ExecutionEnvironment();
             var warewolfEvalResult = _environment.EvalForJson(string.Empty);
@@ -1164,21 +1575,21 @@ namespace Warewolf.Storage.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void ExecutionEnvironment_GivenInvalidScalar_ExecutionEnvironmentEvalForJason_ShouldReturnNothing()
+        public void ExecutionEnvironment_GivenInvalidScalar_EvalForJason_ShouldReturnNothing()
         {
             var _environment = new ExecutionEnvironment();
-            var warewolfEvalResult = _environment.EvalForJson(OutOfBoundExpression);
+            var warewolfEvalResult = _environment.EvalForJson("[[rec(0).a]]");
             Assert.AreEqual(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing), warewolfEvalResult);
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenInvalidScalar_ExecutionEnvironmentEvalForJason_ShouldException()
+        public void ExecutionEnvironment_GivenInvalidScalar_EvalForJason_ShouldException()
         {
 
             var _environment = new ExecutionEnvironment();
-            var warewolfEvalResult = _environment.EvalForJson(InvalidScalar);
+            var warewolfEvalResult = _environment.EvalForJson("[[rec(0).a]");
             Assert.AreEqual(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing), warewolfEvalResult);
             warewolfEvalResult = _environment.EvalForJson("[[rec().a]]");
             Assert.IsNotNull(warewolfEvalResult);
@@ -1187,7 +1598,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenEmptyString_ExecutionEnvironmentAssignJson_ShouldReturn()
+        public void ExecutionEnvironment_GivenEmptyString_AssignJson_ShouldReturn()
         {
 
             var _environment = new ExecutionEnvironment();
@@ -1210,7 +1621,7 @@ namespace Warewolf.Storage.Tests
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
         [ExpectedException(typeof(Exception))]
-        public void ExecutionEnvironment_GivenInvalidObject_ExecutionEnvironmentAssignJson_ShouldThrowParseError()
+        public void ExecutionEnvironment_GivenInvalidObject_AssignJson_ShouldThrowParseError()
         {
 
             var _environment = new ExecutionEnvironment();
@@ -1221,7 +1632,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment__ShouldHave_Ctor()
+        public void ExecutionEnvironment_ShouldHave_Ctor()
         {
             var _environment = new ExecutionEnvironment();
             var privateObj = new PrivateObject(_environment);
@@ -1259,7 +1670,7 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_AddToJsonObjects_ShouldAddJsonObject()
         {
             var _environment = new ExecutionEnvironment();
-            _environment.AddToJsonObjects(PersonNameExpression, null);
+            _environment.AddToJsonObjects("[[@Person().Name]]", null);
             var privateObj = new PrivateObject(_environment);
             var field = privateObj.GetFieldOrProperty("_env") as DataStorage.WarewolfEnvironment;
             Assert.IsTrue(field != null && field.JsonObjects.Count > 0);
@@ -1293,7 +1704,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenNullForWarewolfAtom_ExecutionEnvironmentWarewolfAtomToString_ShouldReturnNull()
+        public void ExecutionEnvironment_GivenNullForWarewolfAtom_WarewolfAtomToString_ShouldReturnNull()
         {
             var result = ExecutionEnvironment.WarewolfAtomToString(null);
             Assert.IsTrue(string.IsNullOrEmpty(result));
@@ -1331,7 +1742,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenErrorsAndAllErrorsHaveCount_ExecutionEnvironmentFetchError_ShouldJoinAllErrors()
+        public void ExecutionEnvironment_GivenErrorsAndAllErrorsHaveCount_FetchError_ShouldJoinAllErrors()
         {
             var _environment = new ExecutionEnvironment();
             _environment.Errors.Add("SomeError");
@@ -1414,6 +1825,35 @@ namespace Warewolf.Storage.Tests
             _environment.FromJson(serializedEnv);
             var hasRecSet = _environment.HasRecordSet("R");
             Assert.IsFalse(hasRecSet);
+        }
+
+        static DataStorage.WarewolfEnvironment EvalMultiAssign()
+        {
+            var assigns = new List<IAssignValue>
+            {
+                new AssignValue("[[rec(1).a]]", "27"),
+                new AssignValue("[[rec(3).a]]", "33"),
+                new AssignValue("[[rec(2).a]]", "25")
+            };
+            var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
+            var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
+            return evalMultiAssign;
+        }
+
+        static DataStorage.WarewolfEnvironment EvalMultiAssignTwoColumn()
+        {
+            var assigns = new List<IAssignValue>
+            {
+                new AssignValue("[[rec().a]]", "a11"),
+                new AssignValue("[[rec().b]]", ""),
+                new AssignValue("[[rec().c]]", "c22"),
+                new AssignValue("[[rec().a]]", "ayy"),
+                new AssignValue("[[rec().b]]", "b33"),
+                new AssignValue("[[rec().c]]", "czz")
+            };
+            var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
+            var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
+            return evalMultiAssign;
         }
     }
 }
