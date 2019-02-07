@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
         public void SettingsRead_Execute_SecurityReadDoesNotThrowException_HasErrorsIsFalseAndSecurityPermissionsAreAssigned()
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
         public void SettingsRead_Execute_SecurityReadDoesThrowException_HasErrorsIsTrueAndDefaultPermissionsAreAssigned()
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_CreateSecurityReadEndPoint")]
         public void SettingsRead_CreateSecurityReadEndPoint_IsInstanceOfSecurityRead()
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SettingsRead_HandlesType_ReturnsSettingsReadService()
         {
             var esb = new SettingsRead();
@@ -154,7 +154,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SettingsRead_CreateServiceEntry_ReturnsDynamicService()
         {
             var esb = new SettingsRead();

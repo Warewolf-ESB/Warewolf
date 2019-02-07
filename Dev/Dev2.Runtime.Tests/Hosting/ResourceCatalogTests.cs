@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,6 +52,7 @@ using Dev2.Common.Interfaces.Wrappers;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()
@@ -83,7 +84,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region Instance
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void InstanceExpectedIsSingleton()
         {
             var instance1 = ResourceCatalog.Instance;
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region LoadWorkspaceAsync
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void LoadWorkspaceAsyncWithNullWorkspaceArgumentExpectedThrowsArgumentNullException()
         {
@@ -109,7 +110,7 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.LoadWorkspaceViaBuilder(null, false);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
@@ -118,7 +119,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
             var workspaceID = Guid.NewGuid();
@@ -143,7 +144,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
             var workspaceID = Guid.NewGuid();
@@ -164,7 +165,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceCount_ExpectedReturnsCount()
         {
             var workspaceID = Guid.NewGuid();
@@ -176,7 +177,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Reload_ExpectedReturnsCount()
         {
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -189,7 +190,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -214,7 +215,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
             var workspaceID = GlobalConstants.ServerWorkspaceID;
@@ -246,7 +247,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region SaveResource
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SaveResourceWithNullResourceArgumentExpectedThrowsArgumentNullException()
         {
@@ -255,7 +256,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.SaveResource(workspaceID, (IResource)null, "");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SaveResourceWithNullResourceXmlArgumentExpectedThrowsArgumentNullException()
         {
@@ -264,7 +265,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.SaveResource(workspaceID, (Resource)null, "");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNoResourcePath_ExpectedSavedAtRootLevel()
@@ -289,7 +290,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(resourceName, nameAttribute.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_Expects_A_VersionToBeSaved()
@@ -306,7 +307,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             version.Verify(a => a.StoreVersion(It.IsAny<IResource>(), "bob", "reason", workspaceID, ""));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_Expects_A_VersionToBeSaved_Xml()
@@ -328,7 +329,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_Expects_A_RollbackOnError()
@@ -360,7 +361,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNoResourcePath_ServerWorkspace_ExpectedResourceSavedEventFired()
@@ -386,7 +387,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(resource.ResourceID, _resourceInEvent.ResourceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNullResourcePath_ExpectedSavedAtRootLevel()
@@ -411,7 +412,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(resourceName, nameAttribute.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithResourcePath_ExpectedSavedInCorrectFolder()
@@ -437,7 +438,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(resourceName, nameAttribute.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithDifferentResourcePath_ExpectedDeleteOfExisting()
@@ -461,7 +462,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(File.Exists(pathToDelete));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourcePath_ExpectedNotDeleteOfExisting()
@@ -485,7 +486,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(File.Exists(pathToDelete));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourcePath_ExpectedNotDeleteOfExisting_ReasonDeploy()
@@ -509,7 +510,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(File.Exists(pathToDelete));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourceNameDifferentResourcePath_ExpectedSavedInCorrectFolder()
@@ -539,7 +540,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourceNameSameResourcePath_ExpectedSavedInCorrectFolder()
@@ -569,7 +570,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SaveResourceWithSourceWithoutIDExpectedSourceSavedWithID()
         {
             var workspaceID = Guid.NewGuid();
@@ -588,7 +589,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, attr.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SaveResourceWithExistingResourceExpectedResourceOverwritten()
         {
             var workspaceID = Guid.NewGuid();
@@ -610,7 +611,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected.ServerType, actual.ServerType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SaveResourceWithExistingResourceAndReadonlyExpectedResourceOverwritten()
         {
             var workspaceID = Guid.NewGuid();
@@ -640,7 +641,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected.ServerType, actual.ServerType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SaveResourceWithNewResourceExpectedResourceWritten()
         {
             var workspaceID = Guid.NewGuid();
@@ -658,7 +659,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected.ServerType, actual.ServerType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(DirectoryNotFoundException))]
         public void SaveResourceWithSlashesInResourceNameExpectedThrowsDirectoryNotFoundException()
         {
@@ -669,7 +670,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.SaveResource(workspaceID, expected, "");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SaveResourceWithNewResourceXmlExpectedResourceWritten()
         {
             var workspaceID = Guid.NewGuid();
@@ -691,7 +692,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetResource
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetResourceWithNullResourceNameExpectedThrowsArgumentNullException()
         {
@@ -700,7 +701,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.GetResource(workspaceID, null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceWithResourceNameExpectedReturnsResource()
         {
             var workspaceID = Guid.NewGuid();
@@ -717,7 +718,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void GetResource_WithResourceContainsResourcePath_ExpectedCorrectResource()
@@ -741,7 +742,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetResourcepath_WithResourceContainsResourcePath_ExpectedCorrectResourcePath()
         {
@@ -762,7 +763,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetResourceList_WithGivenWorkspaceWith1Resource_ShouldReturn1Resource()
         {
@@ -783,7 +784,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetResourceListGeneric_GivenWorkspaceWith1Resource_ShouldReturn1Resource()
         {
@@ -804,7 +805,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetResourceListGeneric_GivenWorkspaceWith1ResourceAndWrongTypr_ShouldReturnNothing()
         {
@@ -826,7 +827,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void LoadResourceActivityCache_GivenServerId_ShouldNotThrowException()
         {
@@ -848,7 +849,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Test Result -----------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWorkflow()
         {
             //------------Setup for test--------------------------
@@ -868,7 +869,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsInstanceOfType(workflow, typeof(Workflow));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebSource()
         {
             //------------Setup for test--------------------------
@@ -895,7 +896,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetResourceContents
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceContentsWithNullResourceExpectedReturnsEmptyString()
         {
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
@@ -903,7 +904,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(string.Empty, result.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceContentsWithNullResourceFilePathExpectedReturnsEmptyString()
         {
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
@@ -911,7 +912,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(string.Empty, result.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceContentsWithExistingResourceExpectedReturnsResourceContents()
         {
             var workspaceID = Guid.NewGuid();
@@ -925,7 +926,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_GetResourceContents")]
         public void ResourceCatalog_GetResourceContents_WhenHasNewLine_ShouldReturnWithNewLine()
@@ -956,7 +957,7 @@ namespace Dev2.Tests.Runtime.Hosting
             StringAssert.Contains(resourceContents.ToString(), "\n");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceContentsWithNonExistentResourceExpectedReturnsEmptyString()
         {
             var workspaceID = Guid.NewGuid();
@@ -967,7 +968,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(string.Empty, actual.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
             var workspaceID = Guid.NewGuid();
@@ -982,7 +983,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region SyncTo
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithDeleteIsFalseAndFileDeletedFromSourceExpectedFileNotDeletedInDestination()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1002,7 +1003,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(targetFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithOverwriteIsTrueExpectedFileInDestinationOverwritten()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1034,7 +1035,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithOverwriteIsFalseExpectedFileInDestinationUnchanged()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1067,7 +1068,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotCopied()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1086,7 +1087,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(targetFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotDeleted()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1106,7 +1107,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(targetFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncToWithNonExistingDestinationDirectoryExpectedDestinationDirectoryCreated()
         {
             var sourceWorkspaceID = Guid.NewGuid();
@@ -1127,7 +1128,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region ToPayload
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("ResourceCatalog_ToPayload")]
         public void ResourceCatalog_ToPayload_GetServiceNormalPayload_ConnectionStringAsAttributeOfRootTag()
@@ -1158,7 +1159,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region ResourceCatalogResultBuilder
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalogResultBuilder_GivenMessage_ShouldReturnCorrectResults()
         {
@@ -1188,7 +1189,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region DeleteResource
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void DeleteResourceWithNullResourceNameExpectedThrowsInvalidDataContractException()
         {
@@ -1197,7 +1198,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.DeleteResource(workspaceID, null, null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void DeleteResourceWithNullTypeExpectedThrowsInvalidDataContractException()
         {
@@ -1206,7 +1207,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.DeleteResource(workspaceID, "xxx", null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteResourceWithWildcardResourceNameExpectedReturnsNoWildcardsAllowed()
         {
             var workspaceID = Guid.NewGuid();
@@ -1215,7 +1216,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.NoWildcardsAllowed, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteResourceWithNonExistingResourceNameExpectedReturnsNoMatch()
         {
             var workspaceID = Guid.NewGuid();
@@ -1226,7 +1227,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.NoMatch, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteResourceWithManyExistingResourceNamesExpectedReturnsDuplicateMatch()
         {
             const string ResourceName = "Test";
@@ -1247,7 +1248,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetDynamicObjects
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDynamicObjectsWithNullResourceNameExpectedThrowsArgumentNullException()
         {
@@ -1256,7 +1257,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.GetDynamicObjects<DynamicServiceObjectBase>(workspaceID, null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDynamicObjectsWithNullResourceNameAndContainsTrueExpectedThrowsArgumentNullException()
         {
@@ -1265,7 +1266,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.GetDynamicObjects<DynamicServiceObjectBase>(workspaceID, null, true);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDynamicObjectsWithNullResourceExpectedThrowsArgumentNullException()
         {
@@ -1273,7 +1274,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.GetDynamicObjects((IResource)null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDynamicObjectsWithNullResourcesExpectedThrowsArgumentNullException()
         {
@@ -1281,7 +1282,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.GetDynamicObjects((IEnumerable<IResource>)null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDynamicObjectsWithResourceNameExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
@@ -1296,7 +1297,7 @@ namespace Dev2.Tests.Runtime.Hosting
             VerifyObjectGraph(new List<IResource> { expected }, graph);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDynamicObjectsWithResourceExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
@@ -1311,7 +1312,7 @@ namespace Dev2.Tests.Runtime.Hosting
             VerifyObjectGraph(new List<IResource> { expected }, graph);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDynamicObjectsWithResourcesExpectedReturnsObjectGraphs()
         {
             var workspaceID = Guid.NewGuid();
@@ -1332,7 +1333,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetModels
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumDev2Server_ExpectConnectionObjects()
@@ -1365,7 +1366,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(payload);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumEmailSource_ExpectEmailSourceObjects()
@@ -1397,7 +1398,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumDropBoxSource_ExpectDropBoxSourceSourceObjects()
@@ -1430,9 +1431,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(payload);
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("MSSql")]
         public void ResourceCatalog_GetModels_WhenEnumSqlDatabase_ExpectDbSourceObjects()
         {
             //------------Setup for test--------------------------
@@ -1460,7 +1460,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(payload);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumPlugin_ExpectPluginSourceObjects()
@@ -1492,7 +1492,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(payload);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumWebSource_ExpectWebSourceObjects()
@@ -1524,7 +1524,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(payload);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumWebService_ExpectNull()
@@ -1545,7 +1545,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(models);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumDynamicService_ExpectNull()
@@ -1566,7 +1566,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(models);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumMySqlDatabase_ExpectNull()
@@ -1587,7 +1587,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, models.Cast<object>().Count());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumManagementDynamicService_ExpectNull()
@@ -1608,7 +1608,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(models);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetModels")]
         public void ResourceCatalog_GetModels_WhenEnumUnknown_ExpectNullModels()
@@ -1638,7 +1638,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region UpdateResourceCatalog            
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Requires Valid arguments")]
         [Owner("Ashley Lewis")]
         public void ResourceCatalog_UnitTest_UpdateResourceNameWithNullOldName_ExpectRename()
@@ -1678,7 +1678,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Needs valid arguments")]
         [Owner("Ashley Lewis")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1711,7 +1711,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Bug6619Dep", element.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Needs valid arguments")]
         [Owner("Ashley Lewis")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1747,7 +1747,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("TestCategory\\Bug6619Dep", element.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArguments_ExpectFileContentsUpdated()
@@ -1775,7 +1775,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("TestCategory\\Bug6619Dep", oldResource.GetResourcePath(workspaceID));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void RenameCategory_GivenValidParams_ShouldReturnSucces()
         {
@@ -1808,7 +1808,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
         public void ResourceCatalog_RenameCategory_NoResources_ExpectErrorNoMatching()
@@ -1839,7 +1839,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Bugs\\Bug6619Dep", element.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArgumentsDifferentCasing_ExpectFileContentsUpdated()
@@ -1867,7 +1867,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("TestCategory\\Bug6619Dep", oldResource.GetResourcePath(workspaceID));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void ResourceCatalog_DeleteResource_ResourceIDEmptyGuid_ExpectException()
@@ -1892,7 +1892,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------            
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void ResourceCatalog_DeleteResource_TypeEmptyString_ExpectException()
@@ -1917,7 +1917,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------            
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void ResourceCatalog_DeleteResource_TypeNull_ExpectException()
@@ -1942,7 +1942,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------            
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_DeleteResource_ResourceNotFound_ExpectNoMatchResult()
         {
@@ -1967,7 +1967,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.NoMatch, resourceCatalogResult.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_DeleteResource_FoundMultipleResources_ExpectDuplicateMatchResult()
         {
@@ -1995,7 +1995,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted()
         {
@@ -2027,7 +2027,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted_VersionsNotDeleted()
         {
@@ -2057,7 +2057,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_GetResource_Workflow_ExpectResource()
         {
@@ -2083,7 +2083,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Huggs")]
         public void ResourceCatalog_GetResource_DbSource_ExpectResource()
         {
@@ -2232,7 +2232,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetDependants
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2255,7 +2255,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8"), dependants[0]);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2313,7 +2313,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
         {
             //------------Setup for test--------------------------
@@ -2373,7 +2373,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2389,7 +2389,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, dependants.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2415,7 +2415,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetDependantsAsResourceForTrees
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2438,7 +2438,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("Bug6619", dependants[0].ResourceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2454,7 +2454,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, dependants.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
@@ -2508,7 +2508,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #region GetResourceList
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         public void ResourceCatalog_GetResourceList_WhenUsingNameAndResourcesNotPresent_ExpectEmptyList()
@@ -2535,7 +2535,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         [ExpectedException(typeof(InvalidDataContractException))]
@@ -2562,7 +2562,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesPresent_ExpectResourceList()
@@ -2599,7 +2599,7 @@ namespace Dev2.Tests.Runtime.Hosting
             StringAssert.Contains(workflow[1].ResourceName, "Bug6619");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndResourcesNotPresent_ExpectEmptyList()
@@ -2631,7 +2631,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndTypeNull_ShouldStillReturn()
@@ -2661,7 +2661,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resourceList);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_GetResourceList")]
         public void ResourceCatalog_GetResourceList_WhenUsingIdAndGuidCsvNull_ExpectEmptyList()
@@ -2691,7 +2691,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalogPluginContainer_GivenVersion_ShouldCreateInstancesWithVersion()
         {
@@ -2711,7 +2711,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(catalogPluginContainer.LoadProvider);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalogPluginContainer_GivenVersionAndManagementServices_ShouldCreateInstances()
         {
@@ -2732,7 +2732,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Dispose_GivenInstance_ShouldCleaup()
         {
@@ -2746,7 +2746,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, rc.WorkspaceLocks.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ToPayload_GivenIsReservedService_ShouldAppendTypeAndName()
         {
@@ -2765,7 +2765,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(stringBuilder.Contains(s));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MapServiceActionDependencies_GivenServiceName_ShouldNotThrowException()
         {
@@ -2794,7 +2794,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Test Result -----------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldNotThrowException()
         {
@@ -2834,7 +2834,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Test Result -----------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldAddActivityToParserCache()
         {
@@ -2871,7 +2871,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(act2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         public void LoadResourceActivityCache_GivenServiceNameWithActivityInCache_ShouldReturnFromCache()
         {
@@ -2902,7 +2902,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(act1);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         public void LoadResourceActivityCache_GivenServiceName_ShouldPopulateServiceActionRepo()
         {
@@ -2936,7 +2936,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(ds2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteResourceWithSingleExistingResourceName_ShouldRemoveFromCache()
         {
             //---------------Set up test pack-------------------
@@ -2970,7 +2970,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_GetResourceDuplicate_Give2SameFilesInDifferentFolders_ShouldReturnPaths()
         {
@@ -3011,7 +3011,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithNullDestination_ExpectArgumentNullException()
         {
@@ -3032,7 +3032,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(oldResource);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectSuccesResult()
         {
@@ -3053,7 +3053,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(oldResource);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateResourceResourceWithValidArgs_ExpectNewDisplayName()
         {
@@ -3093,7 +3093,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithValidArgs_ExpectSuccesResult()
         {
@@ -3119,7 +3119,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(@"Duplicated Successfully".Replace(Environment.NewLine, ""), resourceCatalogResult.Message.Replace(Environment.NewLine, ""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_DuplicateFolderResourceWithInvalidArgs_ExpectExceptions()
         {
@@ -3141,7 +3141,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_GetResourceListGivenWorkspace_ExpectResources()
         {
@@ -3164,7 +3164,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_GetResourceCountGivenWorkspace_ExpectCorrectResources()
         {
@@ -3186,7 +3186,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
         {
@@ -3204,7 +3204,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceList);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceCatalog_UnitTest_GetDependantsInvalidArgs_ExpectExceptions()
@@ -3223,7 +3223,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalog_UnitTest_GivenFixRefsTrue_ExpectResourceContentsChanges()
         {
@@ -3248,7 +3248,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_GetXmlResource_UpdatesResource_To_Bite()
         {
@@ -3271,7 +3271,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(resource.FilePath.EndsWith(".bite"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_CopyMissingResources()
         {
@@ -3332,7 +3332,7 @@ namespace Dev2.Tests.Runtime.Hosting
             directoryHelperObject.Verify();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_IsWarewolfResource_Given_NonWarewolf_Resource_Retunrs_False()
         {
@@ -3348,7 +3348,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse((bool)results);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_Save_Resource_Saves_In_Bite_Extension()
         {
@@ -3369,7 +3369,7 @@ namespace Dev2.Tests.Runtime.Hosting
             File.Delete(expectedFile);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
         {
@@ -3388,7 +3388,7 @@ namespace Dev2.Tests.Runtime.Hosting
             File.Delete(expectedFile);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceCatalog_Load")]
         public void ResourceCatalog_Load_WhenFileIsReadOnly_ShouldUpdateToNormal()
@@ -3413,7 +3413,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(FileAttributes.ReadOnly, attributes);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceCatalog_TryBuildCatalogFromWorkspace_WithNullFolders_ThrowsException()
         {
@@ -3422,7 +3422,7 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.TryBuildCatalogFromWorkspace("some value", null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(DirectoryNotFoundException))]
         public void ResourceCatalog_BuildReleaseExamples()
         {
