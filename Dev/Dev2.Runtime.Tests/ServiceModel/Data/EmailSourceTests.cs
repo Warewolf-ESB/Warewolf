@@ -166,5 +166,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var emailSource = new EmailSource(xml);
             emailSource.Send(mailMessage);
         }
+
+        #endregion
     }
 }
