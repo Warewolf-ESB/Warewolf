@@ -105,14 +105,26 @@ namespace Dev2.Instrumentation.Tests
             var result = tracker.SetProductVersion();
             Assert.AreEqual(result, RUIResult.ok, "Error in setting product version");
         }
-        
+
         [TestMethod()]
-        public void EnableAppplicationTrackerSdkException()
+        public void SetInformationalVersionTest()
+        {
+            var tracker = GetRevulyticsTracker();
+            tracker.CreateRevulyticsConfig();
+            tracker.StartSdk();
+            tracker.InformationalVersion = "Git Commit ID, branch name, etc...";
+            var result = tracker.SetInformationalVersion();
+            Assert.AreEqual(result, RUIResult.ok, "Error in setting informational version");
+        }
+
+        [TestMethod()]
+        public void EnableApplicationTrackerSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreEqual(tracker.EnableApplicationResultStatus, RUIResult.ok);
         }
         
@@ -121,9 +133,10 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
             tracker.SdkFilePath = null;
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreEqual(RUIResult.invalidConfigPath, tracker.EnableApplicationResultStatus);
         }
         
@@ -132,8 +145,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.IsTrue(tracker.RuiSdk.GetState() == RUIState.running || tracker.RuiSdk.GetState() == RUIState.startedNewRegRunning, "Revulytics Started");
         }
 
@@ -141,8 +155,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreNotEqual(tracker.EnableApplicationResultStatus, RUIResult.ok, "Config is not created");
         }
         
@@ -151,8 +166,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.TrackEvent("Test Event", "Unit Test");
         }
         
@@ -161,8 +177,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.TrackCustomEvent("Test Event", "Unit Test", "custom values");
         }
         
@@ -171,8 +188,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.DisableApplicationTracker();
             Assert.AreEqual(RUIState.stopped,tracker.RuiSdk.GetState(), "Revulytics stopped");
         }
@@ -183,8 +201,9 @@ namespace Dev2.Instrumentation.Tests
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
+            const string infoVersion = "Some extra info...";
             const string username = "windows\\raju";
-            tracker.EnableApplicationTracker(productVersion, username);
+            tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.RuiSdk = null;
             tracker.DisableApplicationTracker();
             tracker.RuiSdk.GetState();

@@ -17,12 +17,17 @@ using Vestris.ResourceLib;
 namespace Dev2.Studio.Utils
 {
     public static class VersionInfo
-    {
-    
+    {    
         public static string FetchVersionInfo()
         {
             var versionResource = GetVersionResource();
             return versionResource.FileVersion;
+        }
+
+        public static string FetchInformationalVersion()
+        {
+            var versionResource = GetVersionResource();
+            return versionResource.ProductVersion;
         }
 
         public static Version FetchVersionInfoAsVersion()

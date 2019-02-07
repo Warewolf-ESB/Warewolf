@@ -32,6 +32,9 @@ using WarewolfCOMIPC.Client;
 using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
+using Dev2.Instrumentation.Factory;
+using System.Security.Claims;
+using Dev2.Studio.Utils;
 
 namespace Dev2
 {
@@ -163,6 +166,7 @@ namespace Dev2
 #if DEBUG
                 SetAsStarted();
 #endif
+                ApplicationTrackerFactory.GetApplicationTrackerProvider()?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
                 LoadTestCatalog();
                 if (InteractiveMode)
                 {
