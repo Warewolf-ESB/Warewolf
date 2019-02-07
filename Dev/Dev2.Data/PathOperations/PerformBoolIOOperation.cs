@@ -26,8 +26,9 @@ namespace Dev2.Data.PathOperations
                 return enPathType.Directory;
             }
 
-            if ((FileExist(path, fileWrapper) || DirectoryExist(path, dirWrapper))
-                && !Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
+            var exists = FileExist(path, fileWrapper) || DirectoryExist(path, dirWrapper);
+            var isNotStarWildCard = !Dev2ActivityIOPathUtils.IsStarWildCard(path.Path);
+            if (exists && isNotStarWildCard)
             {
                 var fa = fileWrapper.GetAttributes(path.Path);
                 if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
