@@ -21,12 +21,7 @@ namespace Dev2.Data.Binary_Objects
         public int MinValue { get; set; }
 
         public List<int> Indexes { get; private set; }
-
-        ListOfIndex()
-        {
-
-        }
-
+        
         public ListOfIndex(List<int> indexes)
         {
             Indexes = indexes;
