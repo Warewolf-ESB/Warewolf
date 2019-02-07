@@ -226,10 +226,9 @@ namespace Warewolf.Storage
         public bool HasRecordSet(string recordsetName)
         {
             var x = EvaluationFunctions.parseLanguageExpression(recordsetName, 0);
-            if (x.IsRecordSetNameExpression)
+            if (x.IsRecordSetNameExpression && x is LanguageAST.LanguageExpression.RecordSetNameExpression recsetName)
             {
-                var recsetName = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                return _env.RecordSets.ContainsKey(recsetName?.Item.Name);
+                return _env.RecordSets.ContainsKey(recsetName.Item.Name);
             }
             return false;
         }
@@ -237,28 +236,22 @@ namespace Warewolf.Storage
         public IList<string> EvalAsListOfStrings(string expression, int update)
         {
             var result = Eval(expression, update);
-            if (result.IsWarewolfAtomResult)
-            {
-                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                return new List<string> { WarewolfAtomToString(x) };
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x) {
+                return new List<string> { WarewolfAtomToString(x.Item) };
             }
-            if (result.IsWarewolfRecordSetResult)
-            {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult) {
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return EvalListOfStringsHelper(recSetData);
                 }
             }
-            var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (warewolfAtomListresult == null)
+            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
-                throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
+                var item = warewolfAtomListresult.Item;
+                return item.Select(WarewolfAtomToString).ToList();
             }
-
-            var item = warewolfAtomListresult.Item;
-            return item.Select(WarewolfAtomToString).ToList();
+            throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
 
         private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)
@@ -329,10 +322,8 @@ namespace Warewolf.Storage
 
         public static string WarewolfEvalResultToString(CommonFunctions.WarewolfEvalResult result)
         {
-            if (result.IsWarewolfAtomResult)
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
-                if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                {
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing)
                     {
@@ -340,13 +331,10 @@ namespace Warewolf.Storage
                     }
 
                     return WarewolfAtomToStringErrorIfNull(x);
-                }
-                throw new Exception(@"Null when value should have been returned.");
             }
-            if (result.IsWarewolfRecordSetResult)
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return WarewolfEvalResultToStringHelper(recSetData);
@@ -464,26 +452,21 @@ namespace Warewolf.Storage
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists)
         {
             var result = Eval(expression, update, throwsifnotexists);
-            if (result.IsWarewolfAtomResult)
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
-                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (warewolfAtomResult == null)
-                {
-                    throw new Exception(@"Null when value should have been returned.");
-                }
-
                 var item = warewolfAtomResult.Item;
                 return new List<DataStorage.WarewolfAtom> { item };
             }
-            if (result.IsWarewolfRecordSetResult)
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return EvalAsListHelper(recSetData);
                 }
             }
+
+            // BUG: this will just return null if there is an unhandled Warewolf Atom Result of some sort
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();
         }
@@ -536,9 +519,9 @@ namespace Warewolf.Storage
         public static string ConvertToIndex(string outputVar, int i)
         {
             var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0);
-            if (output.IsRecordSetExpression)
+            if (output.IsRecordSetExpression && output is LanguageAST.LanguageExpression.RecordSetExpression recSetExpr)
             {
-                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression)?.Item;
+                var outputidentifier = recSetExpr.Item;
                 if (Equals(outputidentifier?.Index, LanguageAST.Index.Star))
                 {
                     return $"[[{outputidentifier?.Name}({i}).{outputidentifier?.Column}]]";
