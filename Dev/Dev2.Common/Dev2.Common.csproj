@@ -137,6 +137,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
+    <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
