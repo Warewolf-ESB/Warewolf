@@ -11,7 +11,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class GetServerInformationTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Peter Bezuidenhout")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Peter Bezuidenhout")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -39,7 +39,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Peter Bezuidenhout")]
         [TestCategory("GetServerInformation_HandlesType")]
         
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("GetServerInformation", getInformation.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Peter Bezuidenhout")]
         [TestCategory("GetServerInformation_Execute")]
         public void GetServerInformation_Execute_NullValuesParameter_ErrorResult()

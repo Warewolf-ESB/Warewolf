@@ -14,69 +14,45 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ScalarTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_ConstructorWithNoParametersExpectedInitializesListProperties()
+        [TestMethod]
+        public void ConstructorWithNoParametersExpectedInitializesListProperties()
         {
             var scalar = new Scalar();
             Assert.IsNotNull(scalar);
             Assert.IsFalse(scalar.IsEditable);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
+        [TestMethod]
         public void Scalar_GetHashCode_ShouldReturnHashCode()
         {
             var scalar = new Scalar { Name = "MyScalar" };
             var hashCode = scalar.GetHashCode();
             Assert.IsNotNull(hashCode);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_GivenDifferentScalar_Equals_ShouldReturnFalse()
+
+
+        [TestMethod]
+        public void GivenDifferemtScalar_Scalar_Equals_ShouldReturnFalse()
         {
             var scalar = new Scalar { Name = "MyScalar" };
             var other = new Scalar();
             var scalarEqual = scalar.Equals(other);
             Assert.IsFalse(scalarEqual);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_GivenNullScalar_Equals_ShouldReturnFalse()
-        {
-            var scalar = new Scalar { Name = "MyScalar" };
-            var scalarEqual = scalar.Equals(null);
-            Assert.IsFalse(scalarEqual);
-        }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_GivenSameScalar_Equals_ShouldReturnTrue()
-        {
-            var scalar = new Scalar { Name = "MyScalar" };
-            var scalarEqual = scalar.Equals(scalar);
-            Assert.IsTrue(scalarEqual);
-        }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_GivenDifferemtScalar_Scalar_EqualsOperator_ShouldReturnFalse()
+
+        [TestMethod]
+        public void GivenDifferemtScalar_Scalar_EqualsOperator_ShouldReturnFalse()
         {
             var scalar = new Scalar { Name = "MyScalar" };
             var other = new Scalar();
             Assert.IsFalse(scalar == other);
             Assert.IsTrue(scalar != other);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [Owner("Candice Daniel")]
-        [TestCategory("Scalar")]
-        public void Scalar_GivenNullScalar_Scalar_EqualsOperator_ShouldReturnFalse()
+        [TestMethod]
+        public void GivenNullScalar_Scalar_EqualsOperator_ShouldReturnFalse()
         {
             var scalar = new Scalar { Name = "MyScalar" };
             var other = new Scalar();

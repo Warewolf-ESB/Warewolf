@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetLogDataService_GetResourceID_ShouldReturnEmptyGuid()
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetLogDataService_GetAuthorizationContextForService_ShouldReturnContext()
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_WithLogData_ShouldReturnLogDataObject()
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Auditing
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithAuditType()
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Auditing
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithExecutingUser()
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithExecutionId()
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt", "TextFiles")]
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.AreEqual("GetLogDataService", getLogDataService.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Runtime.Auditing
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -267,7 +267,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -331,7 +331,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormat.txt", "TextFiles")]
@@ -361,7 +361,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithIsSubExecution()
@@ -394,7 +394,7 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_FromDB_Execute")]
         public void GetLogDataService_Execute_ShouldFilterLogData_WithIsRemoteWorkflow()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ClearLogNonValidDirectoryExpectsNoDelete()
         {
             //setup
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.Contains("Error clearing"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ClearLogNoDirectoryPassedExpectsNoDelete()
         {
             //execute
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.Contains("Can't delete a file if no directory is passed."));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ClearLogDirectoryExpectsFilesDeleted()
         {
             lock(SyncRoot)
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ClearLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
             var serializer = new Dev2JsonSerializer();
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogHandlesTypeExpectedReturnsDeleteLogService()
         {
             var esb = new ClearLog();
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new ClearLog();
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty,resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
