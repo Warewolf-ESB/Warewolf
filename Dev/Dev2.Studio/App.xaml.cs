@@ -114,7 +114,7 @@ namespace Dev2.Studio
             //Create configuration for action tracker and start
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
-            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
 
