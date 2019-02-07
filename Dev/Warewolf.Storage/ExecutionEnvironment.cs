@@ -378,7 +378,7 @@ namespace Warewolf.Storage
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            AssignWithFrameAndList(exp, recsetResult.Item, false, update);
+            _env = PublicFunctions.EvalAssignFromList(exp, recsetResult.Item, _env, update, false);
         }
 
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -389,12 +389,7 @@ namespace Warewolf.Storage
                 exp = ToStar(exp);
             }
 
-            AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
-        }
-
-        public void AssignWithFrameAndList(string assignValue, IEnumerable<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
-        {
-            _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
+            _env = PublicFunctions.EvalAssignFromList(exp, recsetResult.Item, _env, update, exists);
         }
 
         public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -608,21 +603,19 @@ namespace Warewolf.Storage
                 return null;
             }
 
-            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
-            if (!var.IsJsonIdentifierExpression)
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+            if (parsedExpression.IsJsonIdentifierExpression && parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
             {
-                return null;
+                if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
+                {
+                    return _env.JsonObjects[nameExpression.Item.Name];
+                }
+                if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
+                {
+                    return _env.JsonObjects[arrayExpression.Item.ObjectName];
+                }
             }
-
-            var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
-            {
-                return _env.JsonObjects[nameExpression.Item.Name];
-            }
-            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
-            {
-                return _env.JsonObjects[arrayExpression.Item.ObjectName];
-            }
+            // BUG: if any other types are added to JsonIdentifierExpression this method will no longer be correct.
             return null;
         }
 
@@ -631,18 +624,18 @@ namespace Warewolf.Storage
             var indexMap = new List<string>();
             if (!string.IsNullOrEmpty(exp))
             {
-                var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+                var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
 
-                if (var.IsJsonIdentifierExpression)
+                if (parsedExpression.IsJsonIdentifierExpression)
                 {
-                    if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
+                    if (parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
                     {
                         BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
                     }
                 }
                 else
                 {
-                    if (var.IsRecordSetExpression && var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
+                    if (parsedExpression.IsRecordSetExpression && parsedExpression is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
                     {
                         GetIndexAddRecordSetIndexes(exp, indexMap, recSetExpression);
                     }
@@ -661,6 +654,7 @@ namespace Warewolf.Storage
             }
         }
 
+        // TODO: refactor BuildIndexMap into a helper class that we can test separately
         void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
             var jsonIdentifierExpression = var;
