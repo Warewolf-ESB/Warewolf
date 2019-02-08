@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 
 namespace Dev2.Diagnostics.Test.Debug
@@ -25,11 +23,11 @@ namespace Dev2.Diagnostics.Test.Debug
         public void RemoteDebugMessageRepo_AddDebugItem_Invalid_Guid()
         {
             Guid.TryParse("test", out Guid remoteInvokeId);
-            var mockDebugState = new Mock<IDebugState>();
+            var debugState = new DebugState { ID = remoteInvokeId };
 
             var instance = RemoteDebugMessageRepo.Instance;
 
-            instance.AddDebugItem(remoteInvokeId.ToString(), mockDebugState.Object);
+            instance.AddDebugItem(remoteInvokeId.ToString(), debugState);
             var list = instance.FetchDebugItems(remoteInvokeId);
 
             Assert.IsNull(list);
@@ -41,14 +39,15 @@ namespace Dev2.Diagnostics.Test.Debug
         public void RemoteDebugMessageRepo_AddDebugItem()
         {
             var remoteInvokeId = Guid.NewGuid();
-            var mockDebugState = new Mock<IDebugState>();
+            var debugState = new DebugState { ID = remoteInvokeId };
 
             var instance = RemoteDebugMessageRepo.Instance;
 
-            instance.AddDebugItem(remoteInvokeId.ToString(), mockDebugState.Object);
+            instance.AddDebugItem(remoteInvokeId.ToString(), debugState);
             var list = instance.FetchDebugItems(remoteInvokeId);
 
             Assert.AreEqual(1, list.Count);
+            Assert.AreEqual(remoteInvokeId, list[0].ID);
         }
 
         [TestMethod]
@@ -57,15 +56,21 @@ namespace Dev2.Diagnostics.Test.Debug
         public void RemoteDebugMessageRepo_AddDebugItem_AddToList()
         {
             var remoteInvokeId = Guid.NewGuid();
-            var mockDebugState = new Mock<IDebugState>();
+            var remoteInvokeIdOther = Guid.NewGuid();
+            var debugState = new DebugState { ID = remoteInvokeId, Name = "name" };
+            var debugStateOther = new DebugState { ID = remoteInvokeIdOther, Name = "otherName" };
 
             var instance = RemoteDebugMessageRepo.Instance;
 
-            instance.AddDebugItem(remoteInvokeId.ToString(), mockDebugState.Object);
-            instance.AddDebugItem(remoteInvokeId.ToString(), mockDebugState.Object);
+            instance.AddDebugItem(remoteInvokeId.ToString(), debugState);
+            instance.AddDebugItem(remoteInvokeId.ToString(), debugStateOther);
             var list = instance.FetchDebugItems(remoteInvokeId);
 
             Assert.AreEqual(2, list.Count);
+            Assert.AreEqual(remoteInvokeId, list[0].ID);
+            Assert.AreEqual("name", list[0].Name);
+            Assert.AreEqual(remoteInvokeIdOther, list[1].ID);
+            Assert.AreEqual("otherName", list[1].Name);
         }
 
         [TestMethod]
@@ -84,6 +89,7 @@ namespace Dev2.Diagnostics.Test.Debug
             var list = instance.FetchDebugItems(remoteInvokeId);
 
             Assert.AreEqual(1, list.Count);
+            Assert.AreEqual(remoteInvokeId, list[0].ID);
         }
 
         [TestMethod]
