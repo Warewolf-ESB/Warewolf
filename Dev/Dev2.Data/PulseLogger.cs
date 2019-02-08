@@ -10,7 +10,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -61,7 +60,7 @@ namespace Dev2.Data
                 return null;
             }
         }
-        [ExcludeFromCodeCoverage]
+        
         public void Dispose()
         {
             _timer.Dispose();
@@ -109,7 +108,7 @@ namespace Dev2.Data
                 return null;
             }
         }
-        [ExcludeFromCodeCoverage]
+     
         public void Dispose()
         {
             _timer.Dispose();
