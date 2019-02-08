@@ -558,6 +558,21 @@ namespace Dev2.Data.Tests.PathOperations
             var foldersInDirectory = dev2FTPProvider.ListFilesInDirectory(mockActivityIOPath.Object);
 
             Assert.AreEqual(2, foldersInDirectory.Count);
+
+            Assert.IsFalse(foldersInDirectory[0].IsNotCertVerifiable);
+            Assert.AreEqual(password, foldersInDirectory[0].Password);
+            Assert.AreEqual(path1, foldersInDirectory[0].Path);
+            Assert.AreEqual(Interfaces.Enums.enActivityIOPathType.FileSystem, foldersInDirectory[0].PathType);
+            Assert.AreEqual(privateKeyFile, foldersInDirectory[0].PrivateKeyFile);
+            Assert.AreEqual(userName, foldersInDirectory[0].Username);
+
+            Assert.IsFalse(foldersInDirectory[1].IsNotCertVerifiable);
+            Assert.AreEqual(password, foldersInDirectory[1].Password);
+            Assert.AreEqual(path2, foldersInDirectory[1].Path);
+            Assert.AreEqual(Interfaces.Enums.enActivityIOPathType.FileSystem, foldersInDirectory[1].PathType);
+            Assert.AreEqual(privateKeyFile, foldersInDirectory[1].PrivateKeyFile);
+            Assert.AreEqual(userName, foldersInDirectory[1].Username);
+
             mockImplementation.Verify(implementation => implementation.EnableSsl(mockActivityIOPath.Object), Times.Once);
             mockImplementation.Verify(implementation => implementation.ExtendedDirList(path, userName, password, enableSsl, isNotCertVerifiable, privateKeyFile), Times.Once);
             mockImplementation.Verify(implementation => implementation.ExtractList(tmpDirData, It.IsAny<Func<string, bool>>()), Times.Once);
