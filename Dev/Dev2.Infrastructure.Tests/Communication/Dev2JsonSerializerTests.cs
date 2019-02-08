@@ -8,11 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
-using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Text;
 
@@ -48,7 +48,7 @@ namespace Dev2.Infrastructure.Tests.Communication
             var buffer = JsonConvert.SerializeObject(msg);
 
             var json = new Dev2JsonSerializer();
-            var resultA = JsonConvert.SerializeObject(buffer,Formatting);
+            var resultA = JsonConvert.SerializeObject(buffer, Formatting);
             var resultB = json.Serialize(buffer);
 
             Assert.AreEqual(resultA.ToString(), resultB.ToString());
@@ -66,8 +66,8 @@ namespace Dev2.Infrastructure.Tests.Communication
 
             var json = new Dev2JsonSerializer();
             var resultA = JsonConvert.SerializeObject(buffer, Formatting.None, _serializerSettings);
-            var resultB= json.Serialize(buffer, Formatting.None);
-            
+            var resultB = json.Serialize(buffer, Formatting.None);
+
             Assert.AreEqual(resultA.ToString(), resultB.ToString());
         }
 
@@ -99,7 +99,7 @@ namespace Dev2.Infrastructure.Tests.Communication
             msg.SetMessage(theMessage);
             var buffer = JsonConvert.SerializeObject(msg);
 
-            var  resultA = JsonConvert.DeserializeObject<ExecuteMessage>(buffer.ToString(), _deSerializerSettings);
+            var resultA = JsonConvert.DeserializeObject<ExecuteMessage>(buffer.ToString(), _deSerializerSettings);
 
             var resultB = js.Deserialize<ExecuteMessage>(buffer.ToString());
             Assert.AreEqual(resultA.Message.ToString(), resultB.Message.ToString());
@@ -215,40 +215,27 @@ Pointing has no control about the blind texts it is an almost unorthographic lif
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(Dev2JsonSerializer))]
-        public void Dev2JsonSerializer_Deserialize_StreamReader_And_Serialize_StreamWriter()
+        public void Dev2JsonSerializer_Deserialize_StreamReader()
         {
-            const string theMessage = @"Test";
-            var msg = new ExecuteMessage { HasError = false };
-            msg.SetMessage(theMessage);
-
-            var testPath = EnvironmentVariables.TestPath;
-            var filePath = Path.Combine(testPath, $"Dev2JsonSerializerTest.txt");
-            var writer = new StreamWriter(filePath);
-
-            //------------Execute Test---------------------------
-            var js = new Dev2JsonSerializer();
-            js.Serialize(writer, msg);
-
-            var reader = new StreamReader(filePath);
-            var result = (ExecuteMessage)js.Deserialize<object>(reader);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(theMessage, result.Message.ToString());
-
-            DeleteTest("Dev2JsonSerializerTest");
-        }
-
-        public void DeleteTest(string testName)
-        {
-            var fileWrapper = new FileWrapper();
-            var dirPath = EnvironmentVariables.TestPath;
-            var testFilePath = Path.Combine(dirPath, $"{testName}.txt");
-            if (fileWrapper.Exists(testFilePath))
+            string json = "{\"ErrorMessage\": \"\",\"ErrorDetails\": {\"ErrorID\": 111,\"Description\":{\"Short\": 0,\"Verbose\": 20},\"ErrorDate\": \"\"}}";
+            using (var stream = GenerateStreamFromString(json))
             {
-                fileWrapper.Delete(testFilePath);
+                var sr = new StreamReader(stream);               
+                var js = new Dev2JsonSerializer();
+                var result = js.Deserialize<object>(sr);
+                Assert.AreEqual(json.Replace(" ", ""), result.ToString().Replace("\r\n","").Replace(" ", ""));
             }
         }
 
-       
+        public static Stream GenerateStreamFromString(string s)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
     }
 }
