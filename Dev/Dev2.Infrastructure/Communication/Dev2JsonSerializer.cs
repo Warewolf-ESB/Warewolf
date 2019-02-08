@@ -19,9 +19,6 @@ using System.Text;
 
 namespace Dev2.Communication
 {
-    /// <summary>
-    /// A JSON implementation of an <see cref="ISerializer"/>
-    /// </summary>
     public class Dev2JsonSerializer : ISerializer
     {
 
@@ -140,7 +137,7 @@ namespace Dev2.Communication
 
             return default(T);
         }
-        [ExcludeFromCodeCoverage]
+
         public void Serialize(StreamWriter streamWriter, object obj)
         {
             using (streamWriter)
