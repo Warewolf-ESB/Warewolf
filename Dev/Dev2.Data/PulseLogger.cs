@@ -10,14 +10,14 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
-    public class PulseLogger : IStartTimer, IDisposable
+    public class PulseLogger : IStartTimer
     {
         internal readonly Timer _timer;
 
@@ -25,10 +25,10 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;       
+            _timer.Elapsed += Timer_Elapsed;       
         }
 
-        void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -48,8 +48,6 @@ namespace Dev2.Data
             }
         }
 
-        #region Implementation of IPulseLogger
-
         public IStartTimer Start()
         {
             try
@@ -62,20 +60,17 @@ namespace Dev2.Data
 
                 return null;
             }
-            
         }
-
+        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
             _timer.Dispose();
         }
 
         public double Interval { get; private set; }
-
-        #endregion
     }
 
-    public class PulseTracker : IStartTimer, IDisposable
+    public class PulseTracker : IStartTimer
     {
         readonly Timer _timer;
 
@@ -83,10 +78,10 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;       
+            _timer.Elapsed += TimerElapsed;       
         }
 
-        void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -101,8 +96,7 @@ namespace Dev2.Data
             }
         }
 
-        #region Implementation of IPulseLogger
-
+    
         public IStartTimer Start()
         {
             try
@@ -115,14 +109,12 @@ namespace Dev2.Data
                 return null;
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public void Dispose()
         {
             _timer.Dispose();
         }
 
         public double Interval { get; private set; }
-
-        #endregion
     }
 }

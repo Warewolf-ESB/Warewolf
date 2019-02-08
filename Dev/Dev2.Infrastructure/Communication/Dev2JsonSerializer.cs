@@ -13,6 +13,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Communication;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -139,7 +140,7 @@ namespace Dev2.Communication
 
             return default(T);
         }
-        
+        [ExcludeFromCodeCoverage]
         public void Serialize(StreamWriter streamWriter, object obj)
         {
             using (streamWriter)
@@ -160,9 +161,9 @@ namespace Dev2.Communication
             }
         }
 
-        public T Deserialize<T>(StreamReader streamWriter)
+        public T Deserialize<T>(StreamReader streamReader)
         {
-            using (streamWriter)
+            using (streamReader)
             {
                 var jsonSerializer = new JsonSerializer
                 {
@@ -171,7 +172,7 @@ namespace Dev2.Communication
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
-                using (var reader = new JsonTextReader(streamWriter))
+                using (var reader = new JsonTextReader(streamReader))
                 {
                     var result = jsonSerializer.Deserialize<T>(reader);
                     return result;
