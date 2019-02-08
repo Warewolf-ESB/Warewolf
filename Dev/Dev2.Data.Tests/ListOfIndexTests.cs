@@ -56,25 +56,7 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ListOfIndex))]
-        public void ListOfIndex_GetMaxIndex_AreEqual_ExpectTrues()
-        {
-            //-----------------------Arrange------------------------
-            List<int> indexes = new List<int>();
-            indexes.Add(12);
-            indexes.Add(13);
-            indexes.Add(14);
-            indexes.Add(15);
-
-            var listOfIndex = new ListOfIndex(indexes);
-            //-----------------------Act----------------------------
-            //-----------------------Assert-------------------------
-            Assert.AreEqual(15, listOfIndex.GetMaxIndex());
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(ListOfIndex))]
-        public void ListOfIndex_SetProperty_AreEqual_SetPropertyValue_ExpectTrues()
+        public void ListOfIndex_SetProperty_AreEqual_SetPropertyValue_ExpectTrue()
         {
             //-----------------------Arrange------------------------
             List<int> indexes = new List<int>();
