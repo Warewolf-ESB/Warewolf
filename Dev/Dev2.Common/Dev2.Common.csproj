@@ -207,6 +207,8 @@
     <Compile Include="Serializers\Dev2JsonSerializer.cs" />
     <Compile Include="State\StateVariable.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
+    <Compile Include="Utils\JsonNetValueSystem.cs" />
+    <Compile Include="Utils\JsonPath.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="Utils\VerifyArgument.cs" />
     <Compile Include="WcfAction.cs" />

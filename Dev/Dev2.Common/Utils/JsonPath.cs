@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -54,6 +54,7 @@
 
 #endregion
 
+
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -61,16 +62,13 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Dev2.Util
+namespace Dev2.Common.Utils
 {
-
-    #region Imports
-
-    #endregion
 
     public delegate object JsonPathScriptEvaluator(string script, object value, string context);
 
     public delegate void JsonPathResultAccumulator(object value, string[] indicies);
+
 
     public interface IJsonPathValueSystem
     {
@@ -111,7 +109,7 @@ namespace Dev2.Util
         public override string ToString() => Path + " = " + Value;
     }
 
-    public sealed class JsonPathContext
+    public class JsonPathContext
     {
         public static readonly JsonPathContext Default = new JsonPathContext();
 
@@ -147,7 +145,7 @@ namespace Dev2.Util
         {
             var list = new ArrayList();
             SelectNodesTo(obj, expr, list);
-            return (JsonPathNode[]) list.ToArray(typeof (JsonPathNode));
+            return (JsonPathNode[])list.ToArray(typeof(JsonPathNode));
         }
 
         public IList SelectNodesTo(object obj, string expr, IList output)
@@ -375,7 +373,7 @@ namespace Dev2.Util
             delegate void WalkCallback(object member, string loc, string expr, object value, string path);
         }
 
-        sealed class ListAccumulator
+        public sealed class ListAccumulator
         {
             readonly IList _list;
 
