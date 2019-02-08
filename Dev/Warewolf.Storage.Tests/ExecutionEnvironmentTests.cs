@@ -1,14 +1,22 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
-using Dev2.Data.Util;
 using Warewolf.Resource.Errors;
 
 namespace Warewolf.Storage.Tests
@@ -696,7 +704,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsRecordSetName_GivenInvalidRecSet_ShouldReturnFalse()
         {
-            var _environment = new ExecutionEnvironment();
             var isRecordSetName = ExecutionEnvironment.IsRecordSetName("[[rec(0).a]]");
             Assert.IsFalse(isRecordSetName);
         }
@@ -706,7 +713,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsRecordSetName_GivenScalar_ShouldReturnFalse()
         {
-            var _environment = new ExecutionEnvironment();
             var isRecordSetName = ExecutionEnvironment.IsRecordSetName("[[a]]");
             Assert.IsFalse(isRecordSetName);
         }
@@ -716,7 +722,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidVariableExpression_GivenValidExpression_ShouldReturnTrue()
         {
-            var _environment = new ExecutionEnvironment();
             var result = ExecutionEnvironment.IsValidVariableExpression("[[a]]", out string message, 0);
             Assert.IsTrue(result);
             Assert.AreEqual("", message);
@@ -727,8 +732,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidVariableExpression_GivenInValidExpression_ShouldReturnFalse()
         {
-            var _environment = new ExecutionEnvironment();
-
             var result = ExecutionEnvironment.IsValidVariableExpression("[[rec(0).a]", out string message, 0);
             Assert.IsFalse(result);
             Assert.AreEqual("parse error", message);
@@ -739,8 +742,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidVariableExpression_GivenInValidExpression2_ShouldReturnFalse()
         {
-            var _environment = new ExecutionEnvironment();
-
             var result = ExecutionEnvironment.IsValidVariableExpression("@", out string message, 0);
             Assert.IsFalse(result);
             // TODO: shouldn't this return parse error?
@@ -1019,8 +1020,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSet()
         {
-            var _environment = new ExecutionEnvironment();
-
             var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec()]]");
 
             Assert.AreEqual("[[rec(*).WarewolfPositionColumn]]", positionColumnExpression);
@@ -1031,8 +1030,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_GivenVariable_GetPositionColumnExpression_ShouldReturnSameVariable()
         {
-            var _environment = new ExecutionEnvironment();
-
             var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec]]");
 
             Assert.AreEqual("[[rec]]", positionColumnExpression);
@@ -1043,7 +1040,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_ConvertToIndex()
         {
-            var _environment = new ExecutionEnvironment();
             var result = ExecutionEnvironment.ConvertToIndex("[[a]]", 0);
             Assert.AreEqual("[[a]]", result);
 
@@ -1069,8 +1065,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsScalar_GivenVariable_ShouldBeTrue()
         {
-
-            var _environment = new ExecutionEnvironment();
             var isScalar = ExecutionEnvironment.IsScalar("[[a]]");
             Assert.IsTrue(isScalar);
         }
@@ -1080,8 +1074,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsScalar_GivenSomeString_ShouldBeFalse()
         {
-
-            var _environment = new ExecutionEnvironment();
             var isScalar = ExecutionEnvironment.IsScalar("SomeString");
             Assert.IsFalse(isScalar);
         }
@@ -1132,7 +1124,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalAsList_ScalarNotExists_Returns1NothingCell()
         {
-
             var _environment = new ExecutionEnvironment();
 
             var result = _environment.EvalAsList("[[bob]]", 0).ToArray();
@@ -1205,8 +1196,10 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_ApplyUpdate_RecsetNotExists()
         {
             var _environment = new ExecutionEnvironment();
-            var clause =
-                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+
+            var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(
+                atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after")
+            );
             _environment.ApplyUpdate("[[rec(*)]]", clause, 0);
         }
 
@@ -1216,8 +1209,9 @@ namespace Warewolf.Storage.Tests
         public void ExecutionEnvironment_ApplyUpdate_ScalarNotExists()
         {
             var _environment = new ExecutionEnvironment();
-            var clause =
-                new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after"));
+            var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(
+                atom => DataStorage.WarewolfAtom.NewDataString("before" + atom.ToString() + "after")
+            );
             try
             {
                 _environment.ApplyUpdate("[[rec]]", clause, 0);
@@ -1374,7 +1368,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidRecordSetIndex_Last()
         {
-            var _environment = new ExecutionEnvironment();
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
         }
 
@@ -1383,8 +1376,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidRecordSetIndex_InvalidString()
         {
-            var _environment = new ExecutionEnvironment();
-
             // TODO: shouldn't this just return false to keep similarity with IsScalar?
             try
             {
@@ -1401,7 +1392,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidRecordSetIndex_EmptyString()
         {
-            var _environment = new ExecutionEnvironment();
             // BUG: this should pass?
             //Assert.IsFalse(ExecutionEnvironment.IsValidRecordSetIndex(""));
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex(""));
@@ -1412,7 +1402,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidRecordSetIndex_Number()
         {
-            var _environment = new ExecutionEnvironment();
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec(1).b]]"));
         }
 
@@ -1421,7 +1410,6 @@ namespace Warewolf.Storage.Tests
         [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_IsValidRecordSetIndex_Star()
         {
-            var _environment = new ExecutionEnvironment();
             Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec(*).b]]"));
         }
 
@@ -1991,7 +1979,6 @@ namespace Warewolf.Storage.Tests
 
             // execute
             _environment.FromJson(serializedEnv);
-
         }
 
         [TestMethod]
