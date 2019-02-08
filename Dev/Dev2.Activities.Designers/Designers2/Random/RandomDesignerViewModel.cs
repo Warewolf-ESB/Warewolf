@@ -12,6 +12,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Studio.Interfaces;
@@ -24,7 +25,7 @@ namespace Dev2.Activities.Designers2.Random
             : base(modelItem)
         {
             RandomTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enRandomType>();
-            SelectedRandomType = Dev2EnumConverter.ConvertEnumValueToString(RandomType);
+            SelectedRandomType = RandomType.GetDescription();
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Random;
         }
