@@ -238,6 +238,7 @@ namespace Dev2.Data.PathOperations
 
         public IActivityIOPath IOPath { get; set; }
 
+        // Exclude from coverage due to this class not forming any part of the public interface, inputs, or outputs of Dev2FTPProvider
         [ExcludeFromCodeCoverage]
         class Implementation : IImplementation
         {
