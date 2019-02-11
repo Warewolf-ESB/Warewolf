@@ -33,8 +33,9 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.Collections.Generic;
 using Dev2.Runtime.Interfaces;
 using Dev2.Instrumentation.Factory;
-using System.Security.Claims;
+using Dev2.Instrumentation;
 using Dev2.Studio.Utils;
+using System.Security.Claims;
 
 namespace Dev2
 {
@@ -158,16 +159,16 @@ namespace Dev2
                 new LoadRuntimeConfigurations(_writer).Execute();
                 OpenCOMStream(null);
                 _loadResources.LoadResourceCatalog();
-                _timer = new Timer((state)=> GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
+                _timer = new Timer((state) => GetComputerNames.GetComputerNamesList(), null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 new LogFlusherWorker(new LogManagerImplementation(), _writer).Execute();
                 _loadResources.LoadServerWorkspace();
                 _loadResources.LoadActivityCache(_assemblyLoader);
+                LoadTestCatalog();
+                StartTrackingUsage();
                 _startWebServer.Execute(webServerConfig, _pauseHelper);
 #if DEBUG
                 SetAsStarted();
 #endif
-                ApplicationTrackerFactory.GetApplicationTrackerProvider()?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
-                LoadTestCatalog();
                 if (InteractiveMode)
                 {
                     WaitForUserExit();
@@ -184,7 +185,17 @@ namespace Dev2
                 Stop(true, 0);
             }
         }
-        
+
+        void StartTrackingUsage()
+        {
+            _writer.Write("Registering usage tracker...  ");
+            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
+            applicationTracker?.TrackEvent("Server Events", "Server Startup");
+            _writer.WriteLine("done.");
+        }
+
         public void Stop(bool didBreak, int result)
         {
             if (!didBreak)

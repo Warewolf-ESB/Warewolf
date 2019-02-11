@@ -13,13 +13,16 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
+using Dev2.Instrumentation;
+using Dev2.Instrumentation.Factory;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using Dev2.Studio.Utils;
 using Dev2.Workspaces;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace Dev2
 {

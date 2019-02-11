@@ -110,10 +110,8 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
-            CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
-            //Create configuration for action tracker and start
+            CustomContainer.Register(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-
             applicationTracker?.EnableApplicationTracker(VersionInfo.FetchVersionInfo(), VersionInfo.FetchInformationalVersion(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
 
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
