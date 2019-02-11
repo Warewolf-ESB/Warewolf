@@ -42,6 +42,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_GetComputerNamesImpl_ComputerNames_ShouldBeMoreThanZero()
         {
             var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
@@ -56,6 +58,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_GetComputerNamesImpl_UpdateComputerNamesList()
         {
             var expectedList = new List<string>();
@@ -76,6 +80,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_GetWindowsDomainOrWorkgroupNameFromUserName_GivenDomainUser()
         {
             var result = SecurityIdentityForWindows.GetWindowsDomainOrWorkgroupName(@"WinDomain\IntegrationTester");
@@ -84,6 +90,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_GetWindowsDomainOrWorkgroupNameFromUserName()
         {
             var result = SecurityIdentityForWindows.GetWindowsDomainOrWorkgroupName("");

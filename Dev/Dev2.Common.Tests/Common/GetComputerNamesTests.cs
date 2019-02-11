@@ -39,6 +39,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_SecurityIdentityFactory_Get_Current_HasHosts()
         {
             var identity = new SecurityIdentityFactory().Current;
@@ -46,6 +48,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_ComputerNames_ExpectListOfComputerNames()
         {
 
@@ -53,6 +57,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(GetComputerNames))]
         public void GetComputerNames_ComputerNames_UpdateComputerNames()
         {
 
