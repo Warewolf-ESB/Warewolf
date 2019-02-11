@@ -91,6 +91,7 @@
     <Compile Include="ComputerNameTests.cs" />
     <Compile Include="RecordSetSearchPayloadTests.cs" />
     <Compile Include="SaveDialogue\ResourceNameTests.cs" />
+    <Compile Include="SearchTests.cs" />
     <Compile Include="SingleApiTests.cs" />
     <Compile Include="AssemblyWrapperTests.cs" />
     <Compile Include="ExternalProcessExecutorTests.cs" />
@@ -134,6 +135,10 @@
       <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
@@ -141,6 +146,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
