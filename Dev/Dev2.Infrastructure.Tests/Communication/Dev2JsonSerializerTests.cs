@@ -54,6 +54,35 @@ namespace Dev2.Infrastructure.Tests.Communication
             Assert.AreEqual(resultA.ToString(), resultB.ToString());
         }
 
+
+        class MyType
+        {
+            public int Ival { get; set; } = 1234;
+            public string Sval { get; set; } = "hello";
+        }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2JsonSerializer))]
+        public void Dev2JsonSerializer_Serialize_GivenObject()
+        {
+            var expected = "{\"$id\":\"1\",\"$type\":\"Dev2.Infrastructure.Tests.Communication.Dev2JsonSerializerTests+MyType, Dev2.Infrastructure.Tests\",\"Ival\":1234,\"Sval\":\"hello\"}";
+            var obj = new MyType();
+            var json = new Dev2JsonSerializer();
+            var stream = new MemoryStream();
+            var streamWriter = new StreamWriter(stream, Encoding.UTF8, 4096, true);
+            
+            // test
+            json.Serialize(streamWriter, obj);
+
+            // verify
+            stream.Seek(0, SeekOrigin.Begin);
+            var streamReader = new StreamReader(stream);
+
+            var value = streamReader.ReadToEnd();
+
+            Assert.AreEqual(expected, value);
+        }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(Dev2JsonSerializer))]
