@@ -13,7 +13,7 @@ using System.Collections;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Dev2.Util
+namespace Dev2.Common.Utils
 {
     public sealed class JsonNetValueSystem : IJsonPathValueSystem
     {
