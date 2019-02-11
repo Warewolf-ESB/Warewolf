@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,9 +34,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ServerExplorerRepositoryTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Constructor")]
         public void ServerExplorerRepository_Constructor_ExpectValid()
@@ -124,7 +125,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Load")]
         public void ServerExplorerRepository_Load_AssertRootLevelIsFolder_ExpectFolder()
@@ -159,7 +160,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(root.Children[1].DisplayName, "Bobs");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Load")]
         public void ServerExplorerRepository_LoadFiltered_AssertRootLevelIsFolder_ExpectFolder()
@@ -193,7 +194,7 @@ namespace Dev2.Tests.Runtime.Hosting
             factory.Verify(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Load")]
         public void ServerExplorerRepository_Load_FilteredTypeAndPath_AssertRootLevelIsFolder_ExpectFolder()
@@ -226,7 +227,7 @@ namespace Dev2.Tests.Runtime.Hosting
             factory.Verify(a => a.CreateRootExplorerItem("Folder", It.IsAny<string>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_RenameItem_AssertFolderFails_ExpectErrorMessage()
@@ -256,7 +257,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_RenameItem_AssertItemCallCorrectMethods_ExpectErrorMessage()
@@ -290,7 +291,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Verify(a => a.RenameResource(It.IsAny<Guid>(), guid, "dave","bob"));
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_RenameItem_DuplicateExists_AssertItemCallCorrectMethods_ExpectErrorMessage()
@@ -328,7 +329,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_MoveItem")]
         public void ServerExplorerRepository_MoveItem_AssertItemCallCorrectMethods_ExpectErrorMessage()
@@ -366,7 +367,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Verify(a => a.GetResourceList(It.IsAny<Guid>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_MoveItem")]
         public void ServerExplorerRepository_MoveItem_ResourceDoesNotexist_ExpectErrorMessage()
@@ -406,7 +407,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_MoveItem")]
         public void ServerExplorerRepository_MoveItem_ResourceDoesExistSubFolder_ExpectSuccess()
@@ -446,7 +447,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteItem")]
         public void ServerExplorerRepository_DeleteItem_AssertItemCallCorrectMethods_ExpectErrorMessage()
@@ -477,7 +478,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ServerExplorerRepository_DeleteItem")]
         public void ServerExplorerRepository_DeleteItem_DeleteTests_ExpectErrorMessage()
@@ -509,7 +510,7 @@ namespace Dev2.Tests.Runtime.Hosting
             catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
             testCatalogue.Verify(catalog => catalog.DeleteAllTests(It.IsAny<Guid>()), Times.Once);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteItem")]
         public void ServerExplorerRepository_DeleteItemFolder_AssertItemCallCorrectMethods_ExpectErrorMessage()
@@ -538,7 +539,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameFolder")]
         public void ServerExplorerRepository_RenameFolder_AssertResourcesAreRenames_FolderRenamedCatalogueSaved()
@@ -576,7 +577,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameFolder")]
         public void ServerExplorerRepository_RenameFolder_AssertResourcesAreRenames_EmptyFolderRenamed()
@@ -613,7 +614,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameFolder")]
         public void ServerExplorerRepository_RenameFolder_AssertResourcesAreRenames_HasVersions_ExpectVersionCopied()
@@ -652,7 +653,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameFolder")]
         public void ServerExplorerRepository_RenameFolder_ResourceRenameSuccess_OldFolderDeleted()
@@ -689,7 +690,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.NoMatch);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerExplorerRepository_RenameFolder")]
         public void ServerExplorerRepository_RenameFolder_ResourceCatalogFailure_ErrorReturnedNoDelete()
@@ -726,7 +727,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.Fail);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_RenameFolder_FolderDoesNotexist_ExpectFailureMessage()
@@ -749,7 +750,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_CreateItem_FolderExists_ExpectFailureMessage()
@@ -774,7 +775,7 @@ namespace Dev2.Tests.Runtime.Hosting
             sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Never());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_CreateItem_InvalidItemType_ExpectErrorResult()
@@ -800,7 +801,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_CreateItem_ValidFolder_ExpectCreatedFolder()
@@ -830,7 +831,7 @@ namespace Dev2.Tests.Runtime.Hosting
             sync.Verify(m => m.AddItemMessage(It.IsAny<IExplorerItem>()), Times.Once());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_CreateItem_FileSystemException_ExpectErrorMessageFromException()
@@ -857,7 +858,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItems_ExpectFailureMessage()
@@ -881,7 +882,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NonExistent_ExpectFailureMessage()
@@ -903,7 +904,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(result.Status, ExecStatus.Fail);
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_Root_ExpectFailureMessage()
@@ -927,7 +928,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursive_ExpectDeletion()
@@ -957,7 +958,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursiveWithTests_ExpectTestsDeletion()
@@ -989,7 +990,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursive_MultipleItemsToDelete_ExpectDeletion()
@@ -1031,7 +1032,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursiveFilesystemError_ExpectError()
@@ -1062,7 +1063,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteFolder")]
         public void ServerExplorerRepository_DeleteFolder_NestedItemsRecursiveNestedFails_ExpectFailue()
@@ -1090,7 +1091,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [ExpectedException(typeof(ArgumentNullException))]
         [TestCategory("ServerExplorerRepository_MessageSubscription")]
@@ -1107,7 +1108,7 @@ namespace Dev2.Tests.Runtime.Hosting
             repo.MessageSubscription(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_AddItem")]
         public void ServerExplorerRepository_AddItem_VerifyNullThrowsException()
@@ -1127,7 +1128,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_RenameItem")]
         public void ServerExplorerRepository_RenameItem_VerifyNullThrowsException()
@@ -1147,7 +1148,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_DeleteItem")]
         public void ServerExplorerRepository_AddItem_VerifyDeleteThrowsException()

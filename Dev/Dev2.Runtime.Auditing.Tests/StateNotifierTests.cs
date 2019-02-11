@@ -9,7 +9,7 @@ namespace Dev2.Tests.Runtime.Auditing
     [TestClass]
     public class StateNotifierTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void StateNotifier_SubscribeToEventNotifications_Test()
         {
             var activityMock = new Mock<IDev2Activity>();

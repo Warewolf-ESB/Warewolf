@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,11 +26,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
 
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ResourceTests
     {
         #region Equals
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EqualsWithSameItemKeyExpectedReturnsTrue()
         {
             var key = new Resource();
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsTrue(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EqualsWithNullExpectedReturnsFalse()
         {
             var key = new Resource();
@@ -50,7 +51,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EqualsWithDifferentItemKeyHavingSamePropertiesExpectedReturnsTrue()
         {
             var key = new Resource();
@@ -62,7 +63,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EqualsWithDifferentItemKeyHavingDifferentPropertiesExpectedReturnsFalse()
         {
             var key = new Resource();
@@ -73,7 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void EqualsWithObjectExpectedReturnsFalse()
         {
             var key = new Resource();
@@ -82,7 +83,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLExpectResource()
         {
             //------------Setup for test--------------------------
@@ -98,7 +99,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WorkflowService", resource.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         
         public void ToXMLWhereValidResourceWIthErrorInfoDataIsValidFalse()
         {
@@ -125,7 +126,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Critical", errorMessageElement.Attribute("ErrorType").Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidResourceXMLWIthErrorInfoDataIsValidFalse()
         {
             //------------Setup for test--------------------------
@@ -143,7 +144,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(FixType.None, resource.Errors[1].FixType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithOneDependenciesExpectResourceWithOneItemInTree()
         {
             //------------Setup for test--------------------------
@@ -161,7 +162,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.UniqueID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleDependenciesExpectResourceWithGreaterThanOneItemInTree()
         {
             //------------Setup for test--------------------------
@@ -183,7 +184,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("WorkflowService", resourceForTreeChild1.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_Plugin()
         {
             //------------Setup for test--------------------------
@@ -202,7 +203,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("PluginService", resourceForTreeService.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_PublishRabbitMQ()
         {
             //------------Setup for test--------------------------
@@ -221,7 +222,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("RabbitMQSource", resourceForTreeService.ResourceType);
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_SqlServer()
         {
             //------------Setup for test--------------------------
@@ -240,7 +241,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("DbService", resourceForTreeService.ResourceType);
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_MySqlServer()
         {
             //------------Setup for test--------------------------
@@ -259,7 +260,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("DbService", resourceForTreeService.ResourceType);
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_WebGet()
         {
             //------------Setup for test--------------------------
@@ -279,7 +280,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructWhereValidXMLFromResourceWithOneDependenciesExpectResourceWithOneItemInTree()
         {
             //------------Setup for test--------------------------
@@ -297,7 +298,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.UniqueID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Construct_UnitTest_LoadDependenciesWhereHasRemoteWorkflowDependency_ExpectedRemoteServerDependencyAdded()
         {
             //------------Setup for test--------------------------
@@ -314,7 +315,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Server", serverDependency.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasEmailSource_ShouldHaveEmailSourceInDepencyList()
@@ -331,7 +332,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("988e1146-ddb8-456d-8a01-4377a707605b", resource.Dependencies[0].ResourceID.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasDatabaseSourceFromSqlBulkInsertTool_ShouldHaveDatabaseSourceInDepencyList()
@@ -348,7 +349,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("62505a00-b304-4ac0-a55c-50ce85111f16", resource.Dependencies[1].ResourceID.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasWebSourceFromWebPutTool_ShouldHaveWebSourceInDepencyList()
@@ -363,7 +364,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasWebSourceFromWebDeleteTool_ShouldHaveWebSourceInDepencyList()
@@ -378,7 +379,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasWebSourceFromWebPostTool_ShouldHaveWebSourceInDepencyList()
@@ -393,7 +394,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasWebSourceFromWebGetTool_ShouldHaveWebSourceInDepencyList()
@@ -408,7 +409,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Resource_LoadDependencies")]
         public void Resource_LoadDependencies_HasSharepointSourceFromSharepointCopyTool_ShouldHaveSharepointSourceInDepencyList()
@@ -424,7 +425,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_XmlConstructor")]
         public void Resource_XmlConstructor_Invoked_ShouldLoadDataList()
@@ -555,7 +556,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_XmlConstructor")]
         public void Resource_XmlConstructor_Invoked_ServiceShouldHaveInputsAndOutputs()
@@ -590,7 +591,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(outputs, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_XmlConstructor")]
         public void Resource_XmlConstructor_Invoked_ServiceNoInputsShouldHaveInputsAndOutputs()
@@ -606,7 +607,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(String.IsNullOrEmpty(resource.Outputs));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Resource_Given_ResourceType_Is_Null_Sets_IsServer_To_False()
         {
@@ -617,7 +618,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsFalse(resource.IsServer);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Resource_Given_ResourceType_Is_Dev2Server_Sets_IsServer_To_True()
         {
@@ -631,7 +632,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsTrue(resource.IsServer);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Resource_Given_ResourceType_Is_ComPluginSource_Sets_IsServer_To_False()
         {
@@ -1745,7 +1746,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         #region ParseProperties
 
         // PBI 5656 - 2013.05.20 - TWR - Created
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullStringExpectedThrowsArgumentNullException()
         {
@@ -1753,7 +1754,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullPropertiesExpectedThrowsArgumentNullException()
         {
@@ -1761,7 +1762,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ResourceParsePropertiesWithInvalidPropertiesExpectedSafelyIgnoresInvalidProperties()
         {
             const string TestStr = "address=http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa;AuthenticationType=Anonymous";
@@ -1776,7 +1777,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ResourceParsePropertiesWithValidPropertiesExpectedParsesProperties()
         {
             const string Address = "http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa";

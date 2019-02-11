@@ -26,6 +26,7 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
+    [TestCategory("Studio Settings Core")]
     public class PerfCounterViewModelTests
     {
         Mock<IServer> _mockEnvironment;
