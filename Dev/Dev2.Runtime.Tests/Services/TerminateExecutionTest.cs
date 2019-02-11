@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             Monitor.Exit(SyncRoot);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void CreateServiceEntryExpectsDynamicService()
         {
             var terminateExecution = new TerminateExecution();
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", ds.DataListSpecification.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ExecuteExpectSuccessResult()
         {
             var service = GetExecutableService();
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.Services
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
             const string Expected = "Message: Failed to stop the workflow execution. It may have completed already.";
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Expected, obj.Message.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void TwoServicesAddedExpectServiceWithOneAssociatedServiceFromRepository()
         {
             var service1 = GetExecutableService();
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(service != null && service.AssociatedServices.Count == 1);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ThreeServicesAddedOneRemovedExpectsTwoInRepository()
         {
             var guid = Guid.NewGuid();
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(0, service.AssociatedServices.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()

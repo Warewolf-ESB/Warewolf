@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class SavePerformanceCountesTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SavePerformanceCounters_Execute")]
         public void SavePerformanceCounters_Execute_WhenValid_ShouldCallManagerSave()
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Services
             mockPerfCounterManager.Verify(repository => repository.Save(It.IsAny<IPerformanceCounterTo>()));
         }        
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SavePerformanceCounters_Execute")]
         public void SavePerformanceCounters_Execute_WhenError_ShouldSetMessageWithError()
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("This call failed", message.GetDecompressedMessage());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SavePerformanceCounters_HandlesType")]
         public void SavePerformanceCounters_HandlesType_ShouldReturnSavePerformanceCounters()

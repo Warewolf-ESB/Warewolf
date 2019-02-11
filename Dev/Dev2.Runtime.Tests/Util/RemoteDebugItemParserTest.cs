@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.Util
     [TestClass]
     public class RemoteDebugItemParserTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RemoteDebugItemParser_Parse")]
         
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(ActivityType.Workflow, result[0].ActivityType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RemoteDebugItemParser_Parse")]
         
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(ActivityType.Workflow, result[9].ActivityType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RemoteDebugItemParser_Parse")]
         
