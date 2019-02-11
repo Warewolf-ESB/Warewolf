@@ -537,7 +537,6 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual("27,31,bob,mary", stringVal);
         }
 
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
@@ -552,6 +551,19 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual(2, evalAsListOfStrings.Count);
             Assert.AreEqual("Bob", evalAsListOfStrings[0]);
             Assert.AreEqual("Bob", evalAsListOfStrings[1]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalAsListOfStrings_ListOfNothing_DoesNotThrow()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignDataShape("[[Person().Name]]");
+
+            var evalAsListOfStrings = _environment.EvalAsListOfStrings("[[Person(*)]]", 0);
+
+            Assert.AreEqual(0, evalAsListOfStrings.Count);
         }
 
         [TestMethod]
@@ -922,6 +934,21 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_WarewolfEvalResultToString_EnsureNoNewResultTypes()
+        {
+            /* This test ensures that if we add a new result type we will make sure that we alter WarewolfEvalResultToString */
+            var members = typeof(CommonFunctions.WarewolfEvalResult).FindMembers(System.Reflection.MemberTypes.NestedType, System.Reflection.BindingFlags.Public, (m,s) => true, null).ToArray();
+
+            Assert.AreEqual(4, members.Length);
+            Assert.AreEqual("Tags", members[0].Name);
+            Assert.AreEqual("WarewolfAtomResult", members[1].Name);
+            Assert.AreEqual("WarewolfAtomListresult", members[2].Name);
+            Assert.AreEqual("WarewolfRecordSetResult", members[3].Name);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_WarewolfEvalResultToString()
         {
             var _environment = new ExecutionEnvironment();
@@ -1005,7 +1032,7 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSetNotExists()
+        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecsetNameExpression()
         {
             var _environment = new ExecutionEnvironment();
             _environment.Assign("[[rec().name]]", "Bob", 0);
@@ -1018,7 +1045,17 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSet()
+        public void ExecutionEnvironment_GetPositionColumnExpression_GivenScalar()
+        {
+            var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[a]]");
+
+            Assert.AreEqual("[[a]]", positionColumnExpression);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_GetPositionColumnExpression_GivenRecSetNameExpression_NotExists()
         {
             var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec()]]");
 
@@ -1028,11 +1065,11 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_GivenVariable_GetPositionColumnExpression_ShouldReturnSameVariable()
+        public void ExecutionEnvironment_GetPositionColumnExpression_RecordSetExpression()
         {
-            var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec]]");
+            var positionColumnExpression = ExecutionEnvironment.GetPositionColumnExpression("[[rec().N]]");
 
-            Assert.AreEqual("[[rec]]", positionColumnExpression);
+            Assert.AreEqual("[[rec(*).WarewolfPositionColumn]]", positionColumnExpression);
         }
 
         [TestMethod]
@@ -1664,13 +1701,41 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void ExecutionEnvironment_EvalForJson_GivenInvalidScalar_ShouldReturnNothing()
+        {
+            var _environment = new ExecutionEnvironment();
+            var warewolfEvalResult = _environment.EvalForJson("[[rec(1).a]]");
+
+            var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+
+            Assert.AreEqual(1, result.Item.Count);
+            Assert.IsTrue(result.Item[0].IsNothing);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        [ExpectedException(typeof(IndexOutOfRangeException))]
+        public void ExecutionEnvironment_EvalForJson_GivenInvalidIndex_ShouldThrow()
         {
             var _environment = new ExecutionEnvironment();
             var warewolfEvalResult = _environment.EvalForJson("[[rec(0).a]]");
 
-            Assert.AreEqual(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing), warewolfEvalResult);
+            var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalForJson_GivenValid_ShouldReturn()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.Assign("[[rec().a]]", "some value", 0);
+
+            var warewolfEvalResult = _environment.EvalForJson("[[rec(1).a]]");
+
+            var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.AreEqual("some value", (result.Item[0] as DataStorage.WarewolfAtom.DataString).Item);
         }
 
         [TestMethod]
