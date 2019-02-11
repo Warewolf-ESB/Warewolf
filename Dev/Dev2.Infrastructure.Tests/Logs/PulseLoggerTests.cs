@@ -38,7 +38,6 @@ namespace Dev2.Infrastructure.Tests.Logs
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PulseLogger))]
         public void PulseLogger_Ctor_Start_ExpectInitialised()
-
         {
             //------------Setup for test--------------------------
             using (var pulseLogger = new PulseLogger(2000))
@@ -48,7 +47,6 @@ namespace Dev2.Infrastructure.Tests.Logs
                 timer.Elapsed += (sender, e) =>
                     {
                         _elapsed = true;
-
                     };
                 Assert.AreEqual(false, timer.Enabled);
                 //------------Execute Test---------------------------
@@ -62,7 +60,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(PulseTracker))]
-        public void PulseTracker_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
+        public void PulseLogger_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
         {
             //------------Setup for test--------------------------
             using (var pulseTracker = new PulseTracker(2000))
