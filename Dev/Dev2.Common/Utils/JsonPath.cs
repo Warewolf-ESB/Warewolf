@@ -202,23 +202,6 @@ namespace Dev2.Common.Utils
             return sb.ToString();
         }
 
-        static int ParseInt(string str, int defaultValue = 0)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return defaultValue;
-            }
-
-            try
-            {
-                return int.Parse(str, NumberStyles.None, CultureInfo.InvariantCulture);
-            }
-            catch (FormatException)
-            {
-                return defaultValue;
-            }
-        }
-
         sealed class Interpreter
         {
             static readonly char[] Colon = { ':' };
@@ -367,7 +350,24 @@ namespace Dev2.Common.Utils
                     Trace(i + ";" + expr, value, path);
                 }
             }
+            
+            static int ParseInt(string str, int defaultValue = 0)
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    return defaultValue;
+                }
 
+                try
+                {
+                    return int.Parse(str, NumberStyles.None, CultureInfo.InvariantCulture);
+                }
+                catch (FormatException)
+                {
+                    return defaultValue;
+                }
+            }
+            
             object Index(object obj, string member) => _system.GetMemberValue(obj, member);
 
             delegate void WalkCallback(object member, string loc, string expr, object value, string path);
