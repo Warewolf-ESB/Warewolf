@@ -9,8 +9,8 @@
 */
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
-using Vestris.ResourceLib;
 
 
 
@@ -36,13 +36,12 @@ namespace Dev2.Studio.Utils
             return new Version(versionResource.FileVersion);
         }
 
-        static VersionResource GetVersionResource()
+        static FileVersionInfo GetVersionResource()
         {
             var asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
             var fileName = asm.Location;
-            versionResource.LoadFrom(fileName);
-            return versionResource;
+            var versionInfo = FileVersionInfo.GetVersionInfo(fileName);
+            return versionInfo;
         }
     }
 }
