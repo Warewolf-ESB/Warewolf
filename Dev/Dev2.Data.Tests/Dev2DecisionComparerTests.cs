@@ -99,6 +99,34 @@ namespace Dev2.Data.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DecisionComparer))]
+        public void Dev2DecisionComparer_Equals_Expect_False()
+        {
+            var dev2DecisionA = new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                Col2 = "=",
+                Col3 = "bob",
+                EvaluationFn = Decisions.Operations.enDecisionType.Choose
+            };
+
+            var dev2DecisionB = new Dev2Decision
+            {
+                Col1 = "[[a]]",
+                Col2 = "=",
+                Col3 = "bob",
+                EvaluationFn = Decisions.Operations.enDecisionType.IsEqual
+            };
+
+            var dev2DecisionComparer = new Dev2DecisionComparer();
+
+            var isEqual = dev2DecisionComparer.Equals(dev2DecisionA, dev2DecisionB);
+
+            Assert.IsFalse(isEqual);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2DecisionComparer))]
         public void Dev2DecisionComparer_GetHashCode_Expected_Not_Zero()
         {
             var dev2DecisionA = new Dev2Decision

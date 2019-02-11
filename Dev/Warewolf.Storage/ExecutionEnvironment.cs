@@ -507,7 +507,7 @@ namespace Warewolf.Storage
 
         public string FetchErrors() => string.Join(Environment.NewLine, AllErrors.Union(Errors));
 
-        public bool HasErrors() => Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
+        public bool HasErrors() => (Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s))) > 0;
 
         public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
 
@@ -849,7 +849,12 @@ namespace Warewolf.Storage
 
             private static void AssignJsonData(ExecutionEnvironment environment, JObject jsonJObjects)
             {
-                foreach (var jsonObj in jsonJObjects?.Properties())
+                if (jsonJObjects is null)
+                {
+                    return;
+                }
+
+                foreach (var jsonObj in jsonJObjects.Properties())
                 {
                     environment.Assign($"[[@{jsonObj.Name}]]", jsonObj.Value.ToString(), 0);
                 }
@@ -857,7 +862,12 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JObject jsonRecSets)
             {
-                foreach (var recSetObj in jsonRecSets?.Properties())
+                if (jsonRecSets is null)
+                {
+                    return;
+                }
+
+                foreach (var recSetObj in jsonRecSets.Properties())
                 {
                     AssignRecSetData(environment, recSetObj);
 
@@ -866,7 +876,12 @@ namespace Warewolf.Storage
 
             private static void AssignScalarData(ExecutionEnvironment environment, JObject jsonScalars)
             {
-                foreach (var scalarObj in jsonScalars?.Properties())
+                if (jsonScalars is null)
+                {
+                    return;
+                }
+
+                foreach (var scalarObj in jsonScalars.Properties())
                 {
                     environment.Assign($"[[{scalarObj.Name}]]", (string)scalarObj.Value, 0);
                 }
@@ -874,9 +889,7 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JProperty recSetObj)
             {
-                var recSetDataObj = recSetObj?.Value as JObject;
-                var positionItems = (recSetDataObj?.Property("WarewolfPositionColumn")?.Value as JArray).ToList();
-                foreach (var recSetData in recSetDataObj?.Properties())
+                void AssignRecSetDataItem(List<JToken> positionItems, JProperty recSetData)
                 {
                     if (recSetData.Name != "WarewolfPositionColumn")
                     {
@@ -885,14 +898,21 @@ namespace Warewolf.Storage
                         foreach (var dataValue in dataItems)
                         {
                             var index = positionItems[i].ToString();
-                            environment.Assign($"[[{recSetObj?.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
+                            environment.Assign($"[[{recSetObj.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
                             i++;
                         }
                     }
                 }
+
+                if (recSetObj != null && recSetObj.Value is JObject recSetDataObj)
+                {
+                    var positionItems = (recSetDataObj.Property("WarewolfPositionColumn").Value as JArray).ToList();
+                    foreach (var recSetData in recSetDataObj.Properties())
+                    {
+                        AssignRecSetDataItem(positionItems, recSetData);
+                    }
+                }
             }
         }
-
-       
     }
 }
