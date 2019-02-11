@@ -9,7 +9,7 @@ namespace Dev2.Instrumentation.Factory
         public static IApplicationTracker  GetApplicationTrackerProvider()
         {
             ApplicationTracker = null;
-#if !DEBUG
+#if DEBUG
             ApplicationTracker = new DummyApplicationTracker();
 #else
             ApplicationTracker = RevulyticsTracker.GetTrackerInstance();
@@ -17,7 +17,7 @@ namespace Dev2.Instrumentation.Factory
             return ApplicationTracker;
         }
 
-#if !DEBUG
+#if DEBUG
 	    class DummyApplicationTracker : IApplicationTracker
         {
             public RUIResult EnableApplicationResultStatus { get; set; }
