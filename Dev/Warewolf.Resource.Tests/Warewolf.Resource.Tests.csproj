@@ -45,6 +45,7 @@
     <Compile Include="ErrorResourceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntellisenseTrackerMenuTests.cs" />
+    <Compile Include="MessagesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSTest.TestAdapter">
