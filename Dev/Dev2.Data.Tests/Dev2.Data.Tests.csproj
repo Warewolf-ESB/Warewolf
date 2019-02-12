@@ -150,6 +150,7 @@
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="MethodOutputTests.cs" />
+    <Compile Include="Operations\NotBetweenTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
