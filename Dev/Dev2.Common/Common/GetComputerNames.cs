@@ -18,19 +18,139 @@ using System.Security.Principal;
 
 namespace Dev2.Common.Common
 {
-    public class GetComputerNames
+    public interface ISecurityIdentityFactory
     {
-        static List<string> _currentComputerNames;
+        ISecurityIdentity Current { get; }
+    }
+    public class SecurityIdentityFactory : ISecurityIdentityFactory
+    {
+        private static ISecurityIdentityFactory _instance;
+        private static readonly object _lock = new object();
 
-        protected GetComputerNames()
+        public static ISecurityIdentityFactory Get()
         {
+            void thrower()
+            {
+                throw new Exception("security identity factory not set");
+            }
+
+            if (_instance is null)
+            {
+                thrower();
+            }
+            return _instance;
         }
 
-        public static List<string> ComputerNames
+        public static void Set(ISecurityIdentityFactory securityIdentityFactory)
+        {
+            void thrower()
+            {
+                throw new Exception("security identity factory already set");
+            }
+
+            if (_instance != null)
+            {
+                thrower();
+            }
+                    
+            lock (_lock)
+            {
+                if (_instance is null)
+                {
+                    _instance = securityIdentityFactory;
+                }
+            }
+        }
+
+        public ISecurityIdentity Current => Get().Current;
+    }
+
+    public class SecurityIdentityFactoryForWindows : ISecurityIdentityFactory
+    {
+        public ISecurityIdentity Current => new SecurityIdentityForWindows();
+    }
+
+    public interface ISecurityIdentity
+    {
+        List<string> GetHosts();
+    }
+    internal class SecurityIdentityForWindows : ISecurityIdentity
+    {
+        private readonly WindowsIdentity _wi;
+        public SecurityIdentityForWindows()
+            :this(WindowsIdentity.GetCurrent())
+        {
+        }
+        public SecurityIdentityForWindows(WindowsIdentity windowsIdentity)
+        {
+            _wi = windowsIdentity;
+        }
+
+        public List<string> GetHosts()
+        {
+            var serverUserName = _wi.Name;
+
+            var domainOrWorkgroupName = GetWindowsDomainOrWorkgroupName(serverUserName);
+            var queryStr = $"WinNT://{domainOrWorkgroupName}";
+
+            return GetHosts(queryStr);
+        }
+
+        private static List<string> GetHosts(string queryStr)
+        {
+            var root = new DirectoryEntry(queryStr);
+
+            var kids = root.Children;
+
+            var result = (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
+            return result;
+        }
+
+        public static string GetWindowsDomainOrWorkgroupName(string serverUserName)
+        {
+            var parts = serverUserName.Split('\\');
+
+
+            var userHasWindowsDomain = parts.Length == 2;
+            if (userHasWindowsDomain)
+            {
+                return parts[0];
+            }
+            else
+            {
+                var query = new SelectQuery("Win32_ComputerSystem");
+                var searcher = new ManagementObjectSearcher(query);
+                var itr = searcher.Get().GetEnumerator();
+                if (itr.MoveNext())
+                {
+                    return itr.Current["Workgroup"] as string;
+                }
+            }
+
+            return "";
+        }
+    }
+
+    public interface IGetComputerNames
+    {
+        List<string> ComputerNames { get; }
+        void GetComputerNamesList();
+    }
+
+    public class GetComputerNamesImpl : IGetComputerNames
+    {
+        List<string> _currentComputerNames;
+        readonly ISecurityIdentityFactory _securityIdentityFactory;
+        public GetComputerNamesImpl(ISecurityIdentityFactory securityIdentityFactory)
+        {
+            _securityIdentityFactory = securityIdentityFactory;
+        }
+
+        public List<string> ComputerNames
         {
             get
             {
-                if (_currentComputerNames == null)
+                if (_currentComputerNames is null)
                 {
                     GetComputerNamesList();
                 }
@@ -39,40 +159,15 @@ namespace Dev2.Common.Common
             }
         }
 
-        public static void GetComputerNamesList() => _currentComputerNames = StandardComputerNameQuery();
+        public void GetComputerNamesList() => _currentComputerNames = StandardComputerNameQuery();
 
-        static List<string> StandardComputerNameQuery()
+        List<string> StandardComputerNameQuery()
         {
-            var wi = WindowsIdentity.GetCurrent();
+            var currentSecurityIdentity = _securityIdentityFactory.Current;
 
-            if (wi != null)
+            if (currentSecurityIdentity != null)
             {
-                var serverUserName = wi.Name;
-
-                var parts = serverUserName.Split('\\');
-
-                var queryStr = "WinNT://";
-
-                if (parts.Length == 2)
-                {
-                    queryStr += parts[0];
-                }
-                else
-                {
-                    var query = new SelectQuery("Win32_ComputerSystem");
-                    var searcher = new ManagementObjectSearcher(query);
-                    var itr = searcher.Get().GetEnumerator();
-                    if (itr.MoveNext())
-                    {
-                        queryStr += itr.Current["Workgroup"] as string;
-                    }
-                }
-
-                var root = new DirectoryEntry(queryStr);
-
-                var kids = root.Children;
-
-                var result = (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
+                var result = currentSecurityIdentity.GetHosts();
 
                 if (result.Any())
                 {
@@ -82,5 +177,34 @@ namespace Dev2.Common.Common
 
             return new List<string> { Environment.MachineName };
         }
+    }
+
+    public static class GetComputerNames
+    {
+        private static IGetComputerNames _instance;
+        private static object _lock = new object();
+        private static IGetComputerNames Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new GetComputerNamesImpl(SecurityIdentityFactory.Get());
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+        public static List<string> ComputerNames
+        {
+            get => Instance.ComputerNames;
+        }
+
+        public static void GetComputerNamesList() => Instance.GetComputerNamesList();
     }
 }
