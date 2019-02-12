@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -11,9 +21,6 @@ namespace Dev2.Data.ServiceModel
 
     public abstract class OauthSource : Resource, IResourceSource, IOAuthSource
     {
-
-        #region CTOR
-
         protected OauthSource()
         {
             ResourceID = Guid.Empty;            
@@ -23,11 +30,7 @@ namespace Dev2.Data.ServiceModel
             : base(xml)
         {
         }
-       
-        #endregion
-
-        #region ToXml
-
+        
         public override XElement ToXml()
         {
             var result = base.ToXml();
@@ -54,24 +57,11 @@ namespace Dev2.Data.ServiceModel
         public override bool IsServer => false;
 
         public override bool IsResourceVersion => false;
-
-        #endregion    
-
+   
         public abstract string AppKey { get; set; }
         public abstract string AccessToken { get; set; }
         public string ResourcePath { get; set; }
-        #region Implementation of IEquatable<IOAuthSource>
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
         public abstract bool Equals(IOAuthSource other);
-
-        #endregion
     }
 
     public class DropBoxSource : OauthSource
@@ -102,16 +92,7 @@ namespace Dev2.Data.ServiceModel
 
         public sealed override string AccessToken { get; set; }
         public sealed override string AppKey { get; set; }
-
-
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public override bool Equals(IOAuthSource other)
         {
             if (other != null)
