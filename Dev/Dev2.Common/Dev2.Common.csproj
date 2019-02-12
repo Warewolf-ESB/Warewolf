@@ -201,7 +201,6 @@
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
-    <Compile Include="NameValue.cs" />
     <Compile Include="SaveDialogue\ResourceName.cs" />
     <Compile Include="Search\Search.cs" />
     <Compile Include="Config.cs" />
