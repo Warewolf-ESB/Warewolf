@@ -9,7 +9,7 @@
 */
 
 using Dev2.Activities;
-using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
