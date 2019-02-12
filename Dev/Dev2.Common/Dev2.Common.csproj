@@ -188,6 +188,7 @@
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
+    <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
     <Compile Include="Interfaces\IAssignManager.cs" />
