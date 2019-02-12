@@ -22,37 +22,39 @@ namespace Dev2.Instrumentation.Tests
 
             return tracker;
         }
-        
+
         private RevulyticsTracker GetRevulyticsTrackerWithIncorrectConfig()
         {
-            var tracker = new RevulyticsTracker();
-            tracker.SdkFilePath = "D:\\";
-            tracker.ConfigFilePath = ConfigurationManager.AppSettings["IConfigFilePath"];
-            tracker.ProductId = ConfigurationManager.AppSettings["IProductID"];
-            tracker.AppName = ConfigurationManager.AppSettings["IAppName"];
-            tracker.ProductUrl = ConfigurationManager.AppSettings["IProductUrl"];
-            tracker.AesHexKey = ConfigurationManager.AppSettings["IAesHexKey"];
+            var tracker = new RevulyticsTracker
+            {
+                SdkFilePath = "D:\\",
+                ConfigFilePath = ConfigurationManager.AppSettings["IConfigFilePath"],
+                ProductId = ConfigurationManager.AppSettings["IProductID"],
+                AppName = ConfigurationManager.AppSettings["IAppName"],
+                ProductUrl = ConfigurationManager.AppSettings["IProductUrl"],
+                AesHexKey = ConfigurationManager.AppSettings["IAesHexKey"]
+            };
 
             return tracker;
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CreateRevulyticsConfigTestSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             var result = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(result, RUIResult.ok);
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void CreateRevulyticsConfigTest()
         {
             var tracker = GetRevulyticsTracker();
             var configResult = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(configResult, RUIResult.ok, "configNotCreated");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void StartSdkTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -60,8 +62,8 @@ namespace Dev2.Instrumentation.Tests
             var startSdkResult = tracker.StartSdk();
             Assert.AreEqual(startSdkResult, RUIResult.ok, "sdkNotStarted");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void StopSdkTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -70,8 +72,8 @@ namespace Dev2.Instrumentation.Tests
             var stopResult = tracker.StopSdk();
             Assert.AreEqual(stopResult, RUIResult.ok, "sdkAlreadyStopped");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void StartSessionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -81,8 +83,8 @@ namespace Dev2.Instrumentation.Tests
             var startSessionResult = tracker.StartSession();
             Assert.AreEqual(startSessionResult, RUIResult.ok, "sdkSuspended");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void StopSessionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -94,8 +96,8 @@ namespace Dev2.Instrumentation.Tests
             var stopSessionResult = tracker.StopSession();
             Assert.AreEqual(stopSessionResult, RUIResult.ok, "sdkAlreadyStopped");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void SetProductVersionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -106,7 +108,7 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(result, RUIResult.ok, "Error in setting product version");
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void SetInformationalVersionTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -117,7 +119,7 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(result, RUIResult.ok, "Error in setting informational version");
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void EnableApplicationTrackerSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -126,9 +128,12 @@ namespace Dev2.Instrumentation.Tests
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreEqual(tracker.EnableApplicationResultStatus, RUIResult.ok);
+            Assert.AreEqual(productVersion, tracker.ProductVersion);
+            Assert.AreEqual(infoVersion, tracker.InformationalVersion);
+            Assert.AreEqual(username, tracker.Username);
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void EnableAppplicationTrackerArgumentNullException()
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
@@ -138,9 +143,13 @@ namespace Dev2.Instrumentation.Tests
             tracker.SdkFilePath = null;
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreEqual(RUIResult.invalidConfigPath, tracker.EnableApplicationResultStatus);
+            Assert.AreEqual(productVersion, tracker.ProductVersion);
+            Assert.AreEqual(infoVersion, tracker.InformationalVersion);
+            Assert.AreEqual(username, tracker.Username);
+            Assert.IsNull(tracker.SdkFilePath);
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void EnableApplicationTrackerTestWithCorrectConfig()
         {
             var tracker = GetRevulyticsTracker();
@@ -149,8 +158,12 @@ namespace Dev2.Instrumentation.Tests
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.IsTrue(tracker.RuiSdk.GetState() == RUIState.running || tracker.RuiSdk.GetState() == RUIState.startedNewRegRunning, "Revulytics Started");
+            Assert.AreEqual(productVersion, tracker.ProductVersion);
+            Assert.AreEqual(infoVersion, tracker.InformationalVersion);
+            Assert.AreEqual(username, tracker.Username);
         }
 
+        [TestMethod]
         public void EnableAppplicationTrackerTestWithInCorrectonfig()
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
@@ -159,9 +172,12 @@ namespace Dev2.Instrumentation.Tests
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             Assert.AreNotEqual(tracker.EnableApplicationResultStatus, RUIResult.ok, "Config is not created");
+            Assert.AreEqual(productVersion, tracker.ProductVersion);
+            Assert.AreEqual(infoVersion, tracker.InformationalVersion);
+            Assert.AreEqual(username, tracker.Username);
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void TrackEventTest()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -171,8 +187,8 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.TrackEvent("Test Event", "Unit Test");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void TrackCustomEventTest()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
@@ -182,8 +198,8 @@ namespace Dev2.Instrumentation.Tests
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.TrackCustomEvent("Test Event", "Unit Test", "custom values");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         public void DisableAppplicationTrackerTest()
         {
             var tracker = GetRevulyticsTracker();
@@ -192,10 +208,10 @@ namespace Dev2.Instrumentation.Tests
             const string username = "windows\\raju";
             tracker.EnableApplicationTracker(productVersion, infoVersion, username);
             tracker.DisableApplicationTracker();
-            Assert.AreEqual(RUIState.stopped,tracker.RuiSdk.GetState(), "Revulytics stopped");
+            Assert.AreEqual(RUIState.stopped, tracker.RuiSdk.GetState(), "Revulytics stopped");
         }
-        
-        [TestMethod()]
+
+        [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
         public void DisableAppplicationTrackerExceptionTest()
         {
