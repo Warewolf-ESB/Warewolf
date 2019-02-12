@@ -1,9 +1,8 @@
-﻿using Dev2.Common.Interfaces;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Dev2.Common
+namespace Dev2.Common.Interfaces
 {
     public class NameValue : INameValue, IEquatable<NameValue>
     {
