@@ -79,7 +79,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="CommonComparerTests.cs" />
-    <Compile Include="Common\GetComputerNamesFailTests.cs" />
+    <Compile Include="Common\GetComputerNamesImplTests.cs" />
     <Compile Include="Core\ServerSourceTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
