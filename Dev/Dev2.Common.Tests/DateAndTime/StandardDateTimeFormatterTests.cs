@@ -22,7 +22,7 @@ namespace Dev2.Common.Tests.DateAndTime
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(StandardDateTimeFormatter))]
-        public void StandardDateTimeFormatter_TryFormat_DateTime_Empty()
+        public void StandardDateTimeFormatter_TryFormat_DateTime_Empty_SystemRegionDefaultFormat()
         {
             IDateTimeOperationTO dateTimeOperationTO = new DateTimeOperationTO
             {

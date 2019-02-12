@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,18 +10,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
+using Dev2.Common.Interfaces.Logging;
 
 namespace Dev2.Common
 {
+    [ExcludeFromCodeCoverage]
     public static class Dev2Logger
     {
         static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -302,6 +302,59 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("level", new XAttribute("value", levelValue)));
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
+        }
+    }
+
+    class DefaultLogger : ILogger
+    {
+        public void Debug(object message, string executionId)
+        {
+            Dev2Logger.Debug(message, executionId);
+        }
+
+        public void Debug(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Debug(message, exception, executionId);
+        }
+
+        public void Error(object message, string executionId)
+        {
+            Dev2Logger.Error(message, executionId);
+        }
+
+        public void Error(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Error(message, exception, executionId);
+        }
+
+        public void Warn(object message, string executionId)
+        {
+            Dev2Logger.Warn(message, executionId);
+        }
+
+        public void Warn(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Warn(message, exception, executionId);
+        }
+
+        public void Fatal(object message, string executionId)
+        {
+            Dev2Logger.Fatal(message, executionId);
+        }
+
+        public void Fatal(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Fatal(message, exception, executionId);
+        }
+
+        public void Info(object message, string executionId)
+        {
+            Dev2Logger.Info(message, executionId);
+        }
+
+        public void Info(object message, Exception exception, string executionId)
+        {
+            Dev2Logger.Info(message, exception, executionId);
         }
     }
 }
