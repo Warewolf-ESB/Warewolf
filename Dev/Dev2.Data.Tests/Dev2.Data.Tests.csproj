@@ -114,7 +114,7 @@
     <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
     <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
     <Compile Include="DecisionsTests\Operations\IsBase64Tests.cs" />
-    <Compile Include="DecisionsTests\IsBetweenTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsBetweenTests.cs" />
     <Compile Include="DecisionsTests\IsBinaryTests.cs" />
     <Compile Include="DecisionsTests\IsDateTests.cs" />
     <Compile Include="DecisionsTests\IsEmailTests.cs" />
