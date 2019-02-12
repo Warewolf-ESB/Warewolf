@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
@@ -11,6 +21,8 @@ namespace Dev2.Data.Tests
     public class WarewolfIteratorTests
     {
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenList()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("some string");
@@ -47,6 +59,8 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalar()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("some string");
@@ -64,6 +78,8 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalarWithUnixNewLine()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("some \nstring");
@@ -80,8 +96,9 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("some \nstring", iterator.GetNextValue());
         }
 
-
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenRecordset()
         {
             var expectedResult = "some string0,3.2,1234,positioned value0,some string1,4.2,1235,positioned value1,some string2,5.2,1236,positioned value2,some string3,6.2,1237,positioned value3";
@@ -117,6 +134,8 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Should()
         {
             var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
@@ -130,6 +149,8 @@ namespace Dev2.Data.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_SetupForWarewolfRecordSetResult_Should()
         {
             var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
@@ -154,6 +175,8 @@ namespace Dev2.Data.Tests
 
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalarWithCalculate()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("!~calculation~!\"now()\"!~~calculation~!");
@@ -175,6 +198,8 @@ namespace Dev2.Data.Tests
 
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalarWithInvalidCalculate()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("!~calculation~!\"2- nos2w()-200\"!~~calculation~!");
@@ -192,8 +217,9 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("2- nos2w()-200", nowString);
         }
 
-
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenEmptyCalculate()
         {
             var item1 = DataStorage.WarewolfAtom.NewDataString("!~calculation~!!~~calculation~!");
