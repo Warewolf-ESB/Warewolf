@@ -63,7 +63,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TSqlStatementExtensionsTests.cs" />
     <Compile Include="JsonNetValueSystemTests.cs" />
-    <Compile Include="JsonPathTests.cs" />
+    <Compile Include="JsonPathNodeTests.cs" />
+    <Compile Include="JsonPathContextTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
