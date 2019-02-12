@@ -15,7 +15,7 @@ using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Diagnostics.Test
+namespace Dev2.Diagnostics.Test.Debug
 {
     [TestClass]
     public class WebDebugMessageRepoTests
@@ -74,10 +74,10 @@ namespace Dev2.Diagnostics.Test
                            );
 
             var fetchDebugItems = webDebugMessageRepo.FetchDebugItems(clientId, sessionId);
+            Assert.AreEqual(1, fetchDebugItems.Count);
 
             fetchDebugItems = webDebugMessageRepo.FetchDebugItems(clientId1, sessionId1);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, fetchDebugItems.Count);
             Assert.AreEqual(1, fetchDebugItems.Count);
         }
 
@@ -104,7 +104,7 @@ namespace Dev2.Diagnostics.Test
 
             var fetchDebugItems = webDebugMessageRepo.FetchDebugItems(clientId, sessionId);
             var fetchDebugItems1 = webDebugMessageRepo.FetchDebugItems(clientId1, sessionId1);
-            //---------------Test Result -----------------------;
+            //---------------Test Result -----------------------
             Assert.AreEqual(1, fetchDebugItems.Count);
             Assert.AreEqual(2, fetchDebugItems1.Count);
         }
@@ -116,9 +116,6 @@ namespace Dev2.Diagnostics.Test
         {
             //---------------Set up test pack-------------------
             var mockDebugState = new Mock<IDebugState>();
-
-            var clientId = Guid.NewGuid();
-            var sessionId = Guid.NewGuid();
 
             mockDebugState.Setup(o => o.StateType).Returns(StateType.None);
             mockDebugState.Setup(o => o.ParentID).Returns(default(Guid));
