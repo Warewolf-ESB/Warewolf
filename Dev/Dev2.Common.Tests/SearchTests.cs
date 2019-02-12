@@ -121,7 +121,12 @@ namespace Dev2.Common.Tests
         [TestCategory("Search")]
         public void Search_SearchResult_Blank_Ctor()
         {
-            Assert.IsNotNull(new SearchResult());
+            var result = new SearchResult();
+            Assert.IsNull(result.Match);
+            Assert.IsNull(result.Name);
+            Assert.IsNull(result.Path);
+            Assert.AreEqual(Guid.Empty,result.ResourceId);
+            Assert.AreEqual(SearchItemType.WorkflowName, result.Type);
         }
 
         [TestMethod]
