@@ -55,6 +55,7 @@ namespace Dev2
         public IWriter Writer { get; set; }
         public IPauseHelper PauseHelper { get; set; }
         public IStartWebServer StartWebServer { get; set; }
+        public ISecurityIdentityFactory SecurityIdentityFactory { get; set; }
 
         public static StartupConfiguration GetStartupConfiguration(IServerEnvironmentPreparer serverEnvironmentPreparer)
         {
@@ -71,7 +72,8 @@ namespace Dev2
                 WebServerConfiguration = new WebServerConfiguration(writer, new FileWrapper()),
                 Writer = writer,
                 PauseHelper = new PauseHelper(),
-                StartWebServer = new StartWebServer(writer, WebServerStartup.Start)
+                StartWebServer = new StartWebServer(writer, WebServerStartup.Start),
+                SecurityIdentityFactory = new SecurityIdentityFactoryForWindows(),
             };
         }
     }
@@ -116,6 +118,8 @@ namespace Dev2
             _webServerConfiguration = startupConfiguration.WebServerConfiguration;
             _writer = startupConfiguration.Writer;
             _pauseHelper = startupConfiguration.PauseHelper;
+
+            SecurityIdentityFactory.Set(startupConfiguration.SecurityIdentityFactory);
         }
 
         public void Run(IEnumerable<IServerLifecycleWorker> initWorkers)
