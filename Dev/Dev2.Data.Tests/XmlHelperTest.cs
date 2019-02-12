@@ -16,8 +16,6 @@ namespace Dev2.Data.Tests
     [TestClass]
     public class XmlHelperTest
     {
-        public TestContext TestContext { get; set; }
-       
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(XmlHelper))]
@@ -74,7 +72,6 @@ Procedure:
         {
             //---------------Set up test pack-------------------
             var xml = @"<XmlData>Hello world<XmlData>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
@@ -88,7 +85,6 @@ Procedure:
         {
             //---------------Set up test pack-------------------
             var xml = @"<WebXMLConfiguration>Hello world</WebXMLConfiguration>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
@@ -102,12 +98,24 @@ Procedure:
         {
             //---------------Set up test pack-------------------
             var xml = @"<Person><WebXMLConfiguration>Hello world</WebXMLConfiguration></Person>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
             Assert.AreEqual("<Person></Person>", cleanXml);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_NotisXml_NotisFragment_NotisHtml_ShouldReuturnCleanXml()
+        {
+            //---------------Set up test pack-------------------
+            var xml = @"<![CDATA[some stuff]]>";
+            //---------------Execute Test ----------------------
+            var cleanXml = xml.ToCleanXml();
+            //---------------Test Result -----------------------
+            Assert.AreEqual("<ADL><![CDATA[some stuff]]></ADL>", cleanXml);
+        }
+       
     }
 }
