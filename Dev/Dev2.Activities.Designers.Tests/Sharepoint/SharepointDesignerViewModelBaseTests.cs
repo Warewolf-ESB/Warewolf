@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             //------------Setup for test--------------------------
             var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var sharepointSource = new SharepointSource
+            var sharepointSource = new SharepointSource()
             {
                 ResourceName = "SharepointServer1",
                 ResourceID = Guid.NewGuid()
