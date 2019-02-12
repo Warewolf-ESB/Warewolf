@@ -43,16 +43,6 @@ namespace Dev2.Common.Common
 
         public static void Set(ISecurityIdentityFactory securityIdentityFactory)
         {
-            void thrower()
-            {
-                throw new Exception("security identity factory already set");
-            }
-
-            if (_instance != null)
-            {
-                thrower();
-            }
-                    
             lock (_lock)
             {
                 if (_instance is null)
