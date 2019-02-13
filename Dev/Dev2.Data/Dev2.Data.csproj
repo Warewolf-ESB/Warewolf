@@ -157,6 +157,8 @@
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
+    <Compile Include="PathOperations\ImpersonationDelegate.cs" />
+    <Compile Include="PathOperations\ImpersonationOperation.cs" />
     <Compile Include="PathOperations\ValidateAuthorization.cs" />
     <Compile Include="Util\OperationsHelper.cs" />
     <Compile Include="IComplexObject.cs" />
