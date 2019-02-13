@@ -161,6 +161,7 @@
     <Compile Include="PathOperations\LogonProviderTests.cs" />
     <Compile Include="PathOperations\Dev2FTPProviderTests.cs" />
     <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
+    <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
@@ -195,8 +196,9 @@
     <Compile Include="TO\CompileMessageTOTests.cs" />
     <Compile Include="ServiceTestOutputTOTests.cs" />
     <Compile Include="Dev2DecisionComparerTests.cs" />
+    <Compile Include="Util\OperationsHelperTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />
-    <Compile Include="UtilTests\CommonDataUtilsTests.cs" />
+    <Compile Include="Util\CommonDataUtilsTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
