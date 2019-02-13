@@ -1,31 +1,42 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Core
 {
     public class EmailServiceSourceDefinition : IEmailServiceSource, IEquatable<EmailServiceSourceDefinition>
     {
+        [ExcludeFromCodeCoverage]
         public EmailServiceSourceDefinition()
         {
-                
+
         }
 
         public EmailServiceSourceDefinition(IEmailSource db)
         {
-                Id = db.ResourceID;
-                HostName = db.Host;
-                Password = db.Password;
-                UserName = db.UserName;
-                Path = "";
-                Port = db.Port;
-                Timeout = db.Timeout;
-                ResourceName = db.ResourceName;
-                EnableSsl = db.EnableSsl;
+            Id = db.ResourceID;
+            HostName = db.Host;
+            Password = db.Password;
+            UserName = db.UserName;
+            Path = "";
+            Port = db.Port;
+            Timeout = db.Timeout;
+            ResourceName = db.ResourceName;
+            EnableSsl = db.EnableSsl;
         }
-        #region Equality members
-        
+
         public bool Equals(EmailServiceSourceDefinition other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -33,13 +44,21 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(HostName, other.HostName) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) 
-                && EnableSsl == other.EnableSsl && string.Equals(Port, other.Port) && string.Equals(Timeout, other.Timeout);
+
+            var equals = true;
+            equals &= string.Equals(HostName, other.HostName);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= EnableSsl == other.EnableSsl;
+            equals &= Port == other.Port;
+            equals &= Timeout == other.Timeout;
+
+            return equals;
         }
 
         public bool Equals(IEmailServiceSource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -47,13 +66,21 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(HostName, other.HostName) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
-                && EnableSsl == other.EnableSsl && string.Equals(Port, other.Port) && string.Equals(Timeout, other.Timeout);
+
+            var equals = true;
+            equals &= string.Equals(HostName, other.HostName);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= EnableSsl == other.EnableSsl;
+            equals &= Port == other.Port;
+            equals &= Timeout == other.Timeout;
+
+            return equals;
         }
-                
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -67,7 +94,7 @@ namespace Dev2.Common.Interfaces.Core
             }
             return Equals((EmailServiceSourceDefinition)obj);
         }
-        
+
         public override int GetHashCode()
         {
             unchecked
@@ -82,8 +109,6 @@ namespace Dev2.Common.Interfaces.Core
         public static bool operator ==(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right) => Equals(left, right);
 
         public static bool operator !=(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right) => !Equals(left, right);
-
-        #endregion
 
         public string HostName { get; set; }
         public string UserName { get; set; }
