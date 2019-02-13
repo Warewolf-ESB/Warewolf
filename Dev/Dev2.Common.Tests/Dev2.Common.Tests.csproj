@@ -84,6 +84,7 @@
     <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
     <Compile Include="Core\ServerSourceTests.cs" />
     <Compile Include="Core\PluginSourceDefinitionTests.cs" />
+    <Compile Include="Core\ComPluginSourceDefinitionTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
