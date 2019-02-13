@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -29,11 +29,9 @@ namespace Dev2.Common.Interfaces.Core
         public Guid Id { get; set; }
         public string ResourceName { get; set; }
 
-        #region Equality members
-        
         public bool Equals(ExchangeSourceDefinition other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -41,13 +39,19 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
-                && Timeout == other.Timeout;
+
+            var equals = true;
+            equals &= string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= Timeout == other.Timeout;
+
+            return equals;
         }
 
         public bool Equals(IExchangeSource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -55,13 +59,19 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
-                && Timeout == other.Timeout;
+
+            var equals = true;
+            equals &= string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= Timeout == other.Timeout;
+
+            return equals;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -86,7 +96,5 @@ namespace Dev2.Common.Interfaces.Core
                 return hashCode;
             }
         }
-
-        #endregion Equality members
     }
 }
