@@ -1,6 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
@@ -14,6 +23,7 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoGetFilesAsPerTypeOperation : PerformListOfIOPathOperation
     {
+        //TODO: use IWindowsImpersonationContext instead
         readonly WindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
@@ -24,12 +34,17 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly string _newPath;
 
         public DoGetFilesAsPerTypeOperation(IActivityIOPath path, ReadTypes type)
+            :this(path, type, new LogonProvider(), new FileWrapper(), new DirectoryWrapper())
         {
-            _logOnProvider = new LogonProvider();
-            _fileWrapper = new FileWrapper();
-            _dirWrapper = new DirectoryWrapper();
+        }
+        public DoGetFilesAsPerTypeOperation(IActivityIOPath path, ReadTypes type, IDev2LogonProvider dev2LogonProvider, IFile file, IDirectory directory)
+        {
+            _logOnProvider = dev2LogonProvider; 
+            _fileWrapper = file;  
+            _dirWrapper = directory; 
             _path = path;
             _type = type;
+            //TODO: use IValidateAuthorization instead
             ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
             _newPath = AppendBackSlashes(_path, _fileWrapper, _dirWrapper);
         }
@@ -60,8 +75,7 @@ namespace Dev2.Data.PathOperations.Operations
                 throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
             }
         }
-
-
+        
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
             using (ImpersonatedUser)
