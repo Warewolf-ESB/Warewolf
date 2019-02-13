@@ -1,58 +1,72 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Interfaces.Core
 {
     public class PluginSourceDefinition : IPluginSource
     {
-
+        [ExcludeFromCodeCoverage]
         public PluginSourceDefinition()
         {
                 
         }
 
-        public PluginSourceDefinition(IPlugin db)
+        public PluginSourceDefinition(IPlugin plugin)
         {
-            SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false };
-            Id = db.ResourceID;
-            Path = db.GetSavePath();
-            Name = db.ResourceName;
-            ConfigFilePath = db.ConfigFilePath;
-            SetAssemblyName(db);
+            SelectedDll = new DllListing
+            {
+                FullName = plugin.AssemblyLocation,
+                Name = plugin.AssemblyName,
+                Children = new Collection<IFileListing>(),
+                IsDirectory = false
+            };
+            Id = plugin.ResourceID;
+            Path = plugin.GetSavePath();
+            Name = plugin.ResourceName;
+            ConfigFilePath = plugin.ConfigFilePath;
+            SetAssemblyName(plugin);
         }
 
-        void SetAssemblyName(IPlugin db)
+        void SetAssemblyName(IPlugin plugin)
         {
-            if (db.AssemblyLocation.StartsWith("GAC:"))
+            if (plugin.AssemblyLocation.StartsWith("GAC:"))
             {
-                GACAssemblyName = db.AssemblyLocation;
+                GACAssemblyName = plugin.AssemblyLocation;
                 FileSystemAssemblyName = string.Empty;
             }
             else
             {
-                FileSystemAssemblyName = db.AssemblyLocation;
+                FileSystemAssemblyName = plugin.AssemblyLocation;
                 GACAssemblyName = string.Empty;
             }
         }
-        #region Equality members
 
-        public bool Equals(IPluginSource other) => string.Equals(Name, other.Name) &&
-                string.Equals(Path, other.Path) &&
-                string.Equals(ConfigFilePath, other.ConfigFilePath) &&
-                string.Equals(FileSystemAssemblyName, other.FileSystemAssemblyName) &&
-                string.Equals(GACAssemblyName, other.GACAssemblyName);
+        public bool Equals(IPluginSource other)
+        {
+            var equals = true;
+            equals &= string.Equals(Name, other.Name);
+            equals &= string.Equals(Path, other.Path);
+            equals &= string.Equals(ConfigFilePath, other.ConfigFilePath);
+            equals &= string.Equals(FileSystemAssemblyName, other.FileSystemAssemblyName);
+            equals &= string.Equals(GACAssemblyName, other.GACAssemblyName);
+            return equals;
+        }
 
 
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -67,12 +81,6 @@ namespace Dev2.Common.Interfaces.Core
             return Equals((PluginSourceDefinition)obj);
         }
 
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
         public override int GetHashCode()
         {
             unchecked
@@ -90,10 +98,6 @@ namespace Dev2.Common.Interfaces.Core
 
         public static bool operator !=(PluginSourceDefinition left, PluginSourceDefinition right) => !Equals(left, right);
 
-        #endregion
-
-        #region Implementation of IPluginSource
-
         public string Name { get; set; }
         public Guid Id { get; set; }
         public IFileListing SelectedDll { get; set; }
@@ -101,7 +105,5 @@ namespace Dev2.Common.Interfaces.Core
         public string ConfigFilePath { get; set; }
         public string FileSystemAssemblyName { get; set; }
         public string GACAssemblyName { get; set; }
-
-        #endregion
     }
 }
