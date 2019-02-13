@@ -1,8 +1,18 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
-
 
 namespace Dev2.Common.Interfaces.Core
 {
@@ -10,6 +20,7 @@ namespace Dev2.Common.Interfaces.Core
     {
         AuthenticationType _authenticationType;
 
+        [ExcludeFromCodeCoverage]
         public DbSourceDefinition()
         {
 
@@ -29,13 +40,9 @@ namespace Dev2.Common.Interfaces.Core
             UserName = db.UserID;
         }
 
-        #region Implementation of IDbSourceDefinition
-
-        #region Equality members
-
         public bool Equals(IDbSource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -51,13 +58,13 @@ namespace Dev2.Common.Interfaces.Core
             equals &= AuthenticationType == other.AuthenticationType;
             equals &= Id == other.Id;
             equals &= string.Equals(DbName, other.DbName);
-            equals &= ConnectionTimeout == other.ConnectionTimeout;            
+            equals &= ConnectionTimeout == other.ConnectionTimeout;
             return equals;
         }
 
         public bool Equals(DbSourceDefinition other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -80,7 +87,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -94,7 +101,7 @@ namespace Dev2.Common.Interfaces.Core
             }
             return Equals((DbSourceDefinition)obj);
         }
-        
+
         public override int GetHashCode()
         {
             unchecked
@@ -113,8 +120,6 @@ namespace Dev2.Common.Interfaces.Core
         public static bool operator ==(DbSourceDefinition left, DbSourceDefinition right) => Equals(left, right);
 
         public static bool operator !=(DbSourceDefinition left, DbSourceDefinition right) => !Equals(left, right);
-
-        #endregion
 
         public string ServerName { get; set; }
         public enSourceType Type { get; set; }
@@ -138,18 +143,6 @@ namespace Dev2.Common.Interfaces.Core
         public Guid Id { get; set; }
         public bool ReloadActions { get; set; }
 
-        #endregion
-
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
         public override string ToString() => Name;
-
-        #endregion
     }
 }
