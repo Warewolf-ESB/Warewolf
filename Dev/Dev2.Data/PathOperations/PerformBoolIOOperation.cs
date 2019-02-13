@@ -17,8 +17,12 @@ using System.IO;
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformBoolIOOperation
+    public abstract class PerformBoolIOOperation : ImpersonationOperation
     {
+        protected PerformBoolIOOperation(ImpersonationDelegate impersonationDelegate) : base(impersonationDelegate)
+        {
+        }
+
         public static enPathType PathIs(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {
             if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
