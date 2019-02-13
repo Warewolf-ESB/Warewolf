@@ -161,6 +161,7 @@
     <Compile Include="PathOperations\LogonProviderTests.cs" />
     <Compile Include="PathOperations\Dev2FTPProviderTests.cs" />
     <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
+    <Compile Include="PathOperations\DoGetFilesAsPerTypeOperationTests.cs" />
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
