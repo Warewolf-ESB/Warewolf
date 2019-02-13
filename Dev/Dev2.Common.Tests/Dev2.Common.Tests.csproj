@@ -86,6 +86,7 @@
     <Compile Include="Core\PluginSourceDefinitionTests.cs" />
     <Compile Include="Core\ComPluginSourceDefinitionTests.cs" />
     <Compile Include="Core\EmailServiceSourceDefinitionTests.cs" />
+    <Compile Include="Core\ExchangeSourceDefinitionTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
     <Compile Include="DebugStateTreeBuilderTests.cs" />
