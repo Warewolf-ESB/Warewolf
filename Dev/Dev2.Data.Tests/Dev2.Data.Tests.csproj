@@ -196,8 +196,9 @@
     <Compile Include="TO\CompileMessageTOTests.cs" />
     <Compile Include="ServiceTestOutputTOTests.cs" />
     <Compile Include="Dev2DecisionComparerTests.cs" />
+    <Compile Include="Util\OperationsHelperTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />
-    <Compile Include="UtilTests\CommonDataUtilsTests.cs" />
+    <Compile Include="Util\CommonDataUtilsTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
