@@ -24,6 +24,7 @@ namespace Dev2.Data.PathOperations
             {
                 using (safeToken)
                 {
+                    //TODO: this should use ISecurityIdentityFactory
                     var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
                     return newID.Impersonate();
                 }
