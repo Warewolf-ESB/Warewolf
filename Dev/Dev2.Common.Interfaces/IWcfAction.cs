@@ -23,4 +23,14 @@ namespace Dev2.Common.Interfaces
         IList<INameValue> Variables { get; set; }
         string GetHashCodeBySource();
     }
+
+    public class WcfAction : IWcfAction
+    {
+        public string FullName { get; set; }
+        public string Method { get; set; }
+        public IList<IServiceInput> Inputs { get; set; }
+        public Type ReturnType { get; set; }
+        public IList<INameValue> Variables { get; set; }
+        public string GetHashCodeBySource() => FullName + Method;
+    }
 }

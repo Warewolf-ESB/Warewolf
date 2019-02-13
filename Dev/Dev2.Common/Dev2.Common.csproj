@@ -211,7 +211,6 @@
     <Compile Include="Utils\JsonPath.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="Utils\VerifyArgument.cs" />
-    <Compile Include="WcfAction.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
