@@ -18,7 +18,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-namespace Dev2.Data.Tests.UtilTests
+namespace Dev2.Data.Tests.Util
 {
     [TestClass]
     public class CommonDataUtilsTests
@@ -279,7 +279,7 @@ namespace Dev2.Data.Tests.UtilTests
         public void CommonDataUtils_ExtractZipCompressionLevel()
         {
             //---------------Set up test pack-------------------
-            var commonDataUtils = new Util.CommonDataUtils();
+            var commonDataUtils = new CommonDataUtils();
             var level = commonDataUtils.ExtractZipCompressionLevel("BestCompression");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -295,7 +295,7 @@ namespace Dev2.Data.Tests.UtilTests
         public void CommonDataUtils_ExtractZipCompressionLevel_UnknownLevel_ShouldUseDefault()
         {
             //---------------Set up test pack-------------------
-            var commonDataUtils = new Util.CommonDataUtils();
+            var commonDataUtils = new CommonDataUtils();
             var level = commonDataUtils.ExtractZipCompressionLevel("Test");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
