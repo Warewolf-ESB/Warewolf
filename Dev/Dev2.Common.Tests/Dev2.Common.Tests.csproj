@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="CommonComparerTests.cs" />
     <Compile Include="Common\GetComputerNamesImplTests.cs" />
+    <Compile Include="Core\Database\DbSourceDefinitionTests.cs" />
     <Compile Include="Core\ServerSourceTests.cs" />
     <Compile Include="DateAndTime\DateTimeConverterFactoryTests.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatterTests.cs" />
