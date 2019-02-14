@@ -22,7 +22,7 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoGetFilesAsPerTypeOperation : PerformListOfIOPathOperation
     {
-        readonly IWindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
@@ -32,24 +32,25 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly string _newPath;
 
         public DoGetFilesAsPerTypeOperation(IActivityIOPath path, ReadTypes type)
-            :this(path, type, new LogonProvider(), new FileWrapper(), new DirectoryWrapper())
+            :this(path, type, new LogonProvider(), new FileWrapper(), new DirectoryWrapper(), ValidateAuthorization.RequiresAuth)
         {
         }
-        public DoGetFilesAsPerTypeOperation(IActivityIOPath path, ReadTypes type, IDev2LogonProvider dev2LogonProvider, IFile file, IDirectory directory)
+        public DoGetFilesAsPerTypeOperation(IActivityIOPath path, ReadTypes type, IDev2LogonProvider dev2LogonProvider, IFile file, IDirectory directory, ImpersonationDelegate impersonationDelegate)
+            :base(impersonationDelegate)
         {
             _logOnProvider = dev2LogonProvider; 
             _fileWrapper = file;  
             _dirWrapper = directory; 
             _path = path;
             _type = type;
-            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
+            _impersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
             _newPath = AppendBackSlashes(_path, _fileWrapper, _dirWrapper);
         }
         public override IList<IActivityIOPath> ExecuteOperation()
         {
             try
             {
-                if (ImpersonatedUser != null)
+                if (_impersonatedUser != null)
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -75,7 +76,7 @@ namespace Dev2.Data.PathOperations.Operations
         
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -96,7 +97,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }
