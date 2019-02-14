@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
-using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -48,10 +48,8 @@ namespace Dev2.Runtime.Hosting
         static Version GetVersion()
         {
             var asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
             var fileName = asm.Location;
-
-            versionResource.LoadFrom(fileName);
+            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
             var v = new Version(versionResource.FileVersion);
 
             return v;
