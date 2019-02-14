@@ -16,7 +16,7 @@ using Dev2.Runtime.Configuration.Settings;
 
 namespace Dev2.Diagnostics.Logging
 {
-    static public class WorkflowLoggger
+    static public class WorkflowLogger
     {
         static LoggingSettings _loggingSettings;
         static IDictionary<Guid, string> _workflowsToLog;
