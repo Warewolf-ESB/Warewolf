@@ -38,8 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\Dev2.IntegrationTests\bin\Debug\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\SettingsProviderTests.cs" />
@@ -54,6 +58,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration.Tests\Dev2.Runtime.Configuration.Tests.csproj">
+      <Project>{56C3C6A6-7325-40FD-945E-C529CABE2579}</Project>
+      <Name>Dev2.Runtime.Configuration.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
@@ -61,6 +73,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
