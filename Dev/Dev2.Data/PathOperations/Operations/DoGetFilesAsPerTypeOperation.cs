@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -23,8 +22,7 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoGetFilesAsPerTypeOperation : PerformListOfIOPathOperation
     {
-        //TODO: use IWindowsImpersonationContext instead
-        readonly WindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
@@ -44,7 +42,6 @@ namespace Dev2.Data.PathOperations.Operations
             _dirWrapper = directory; 
             _path = path;
             _type = type;
-            //TODO: use IValidateAuthorization instead
             ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
             _newPath = AppendBackSlashes(_path, _fileWrapper, _dirWrapper);
         }
