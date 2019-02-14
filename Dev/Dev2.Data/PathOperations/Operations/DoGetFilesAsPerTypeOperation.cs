@@ -43,7 +43,7 @@ namespace Dev2.Data.PathOperations.Operations
             _dirWrapper = directory; 
             _path = path;
             _type = type;
-            _impersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
+            _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
             _newPath = AppendBackSlashes(_path, _fileWrapper, _dirWrapper);
         }
         public override IList<IActivityIOPath> ExecuteOperation()
