@@ -870,7 +870,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Assert Results-------------------------
             if (string.IsNullOrEmpty(expectedErrorMessage))
             {
-                Assert.IsNull(viewModel.Errors, string.Join(", ", viewModel.Errors));
+                Assert.IsNull(viewModel.Errors, string.Join("\n", viewModel.Errors.Select(error => error.Message)));
             }
             else
             {
