@@ -110,6 +110,7 @@
     <Compile Include="IntellisenseStringResultTests.cs" />
     <Compile Include="CommonEqualityOpsTests.cs" />
     <Compile Include="PluginActionTests.cs" />
+    <Compile Include="FileListingTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="ObservableNameValueTests.cs" />
