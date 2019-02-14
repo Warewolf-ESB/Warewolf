@@ -163,6 +163,7 @@
     <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
     <Compile Include="PathOperations\DoGetFilesAsPerTypeOperationTests.cs" />
     <Compile Include="PathOperations\DoPathExistOperationTests.cs" />
+    <Compile Include="PathOperations\DoDeleteOperationTests.cs" />
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
