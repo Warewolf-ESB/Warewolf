@@ -1,18 +1,52 @@
-﻿using Dev2.Common.Interfaces.Wrappers;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using System.IO;
 using Dev2.Common.Wrappers;
 using Dev2.PathOperations;
 using System.Threading;
-using System.Security.Principal;
 using Dev2.Common.Common;
 
 namespace Dev2.Data.PathOperations.Operations
 {
+    public class DoPutActionConfiguration
+    {
+        public Stream CurrentStream { get; set; }
+        public IActivityIOPath Destination { get; set; }
+        public IDev2CRUDOperationTO CrudArgument { get; set; }
+        public string WhereToPut { get; set; }
+        public IDev2LogonProvider Dev2LogonProvider { get; set; }
+        public IFilePath FilePath { get; set; }
+        public IFile FileWrapper { get; set; }
+
+        public static DoPutActionConfiguration GetDoPutActionConfiguration(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
+        {
+            return new DoPutActionConfiguration
+            {
+                CurrentStream = currentStream,
+                Destination = destination,
+                CrudArgument = crudArgument,
+                WhereToPut = whereToPut,
+                Dev2LogonProvider = new LogonProvider(),
+                FilePath = new FilePathWrapper(),
+                FileWrapper = new FileWrapper()
+            };
+        }
+    }
+
     public class DoPutAction : PerformIntegerIOOperation
     {
         static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-        readonly WindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath Destination;
         protected readonly IFile _fileWrapper;
@@ -22,15 +56,20 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly string _whereToPut;
 
         public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
+            :this(new DoPutActionConfiguration { CurrentStream = currentStream, Destination = destination, CrudArgument = crudArgument, WhereToPut = whereToPut }, ValidateAuthorization.RequiresAuth)
+        { }
+
+        public DoPutAction(DoPutActionConfiguration doPutActionConfiguration, ImpersonationDelegate impersonationDelegate)
+            :base(impersonationDelegate)
         {
-            _logOnProvider = new LogonProvider();
-            _pathWrapper = new FilePathWrapper();
-            _fileWrapper = new FileWrapper();
-            _currentStream = currentStream;
-            Destination = destination;
-            _arguments = crudArgument;
-            ImpersonatedUser = ValidateAuthorization.RequiresAuth(Destination, _logOnProvider);
-            _whereToPut = whereToPut;
+            _logOnProvider = doPutActionConfiguration.Dev2LogonProvider;
+            _pathWrapper = doPutActionConfiguration.FilePath;
+            _fileWrapper = doPutActionConfiguration.FileWrapper;
+            _currentStream = doPutActionConfiguration.CurrentStream;
+            Destination = doPutActionConfiguration.Destination;
+            _arguments = doPutActionConfiguration.CrudArgument;
+            ImpersonatedUser = _impersonationDelegate(Destination, _logOnProvider);
+            _whereToPut = doPutActionConfiguration.WhereToPut;
         }
         public override int ExecuteOperation()
         {

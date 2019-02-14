@@ -13,7 +13,6 @@ using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -53,18 +52,18 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory(nameof(ValidateAuthorization))]
         public void ValidateAuthorization_RequiresAuth_safeToken_IsNotNull_ExpectTrue()
         {
-            //NOTE: Test is currently throwing an exception but should be Passing hence the incorrect name currently
-            //after the factor it should pass.
             //--------------------------Arrange--------------------------
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockActivityIOPath = new Mock<IActivityIOPath>();
+            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
 
+            //mockWindowsImpersonationContext.Setup(o => o).Returns();
             mockDev2LogonProvider.Setup(o => o.DoLogon(It.IsAny<IActivityIOPath>())).Returns(new SafeTokenHandle());
             mockActivityIOPath.Setup(o => o.Username).Returns("TestUsername");
             mockActivityIOPath.Setup(o => o.Path).Returns("TestPath");
             //--------------------------Act------------------------------
+            var list =  ValidateAuthorization.RequiresAuth(mockActivityIOPath.Object, mockDev2LogonProvider.Object);
             //--------------------------Assert---------------------------
-            Assert.ThrowsException<ArgumentException>(()=> ValidateAuthorization.RequiresAuth(mockActivityIOPath.Object, mockDev2LogonProvider.Object));
         }
     }
 }
