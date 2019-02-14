@@ -374,7 +374,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateViewModelProperties_ReturnsNoError()
+        public void ExchangeEmailDesignerViewModel_ValidateViewModelProperties_ReturnsNoError()
         {
             var modelItem = CreateModelItem();
 
@@ -415,7 +415,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_RunCommands_RetrunsSuccess()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_RunCommands_RetrunsSuccess()
         {
             var modelItem = CreateModelItem();
 
@@ -436,7 +436,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_TestEmail_NullTo_RetrunsErrors()
+        public void ExchangeEmailDesignerViewModel_TestEmail_NullTo_RetrunsErrors()
         {
             var modelItem = CreateNullToModelItem();
 
@@ -453,7 +453,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_TestEmail_ErrorIsNotNull_RetrunsErrors()
+        public void ExchangeEmailDesignerViewModel_TestEmail_ErrorIsNotNull_RetrunsErrors()
         {
             var modelItem = CreateFullToModelItem();
 
@@ -477,7 +477,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_TestEmail_ErrorIsNull_RetrunsErrors()
+        public void ExchangeEmailDesignerViewModel_TestEmail_ErrorIsNull_RetrunsErrors()
         {
             var modelItem = CreateFullToModelItem();
 
@@ -498,7 +498,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_TestEmail_RetrunsErrors()
+        public void ExchangeEmailDesignerViewModel_TestEmail_RetrunsErrors()
         {
             var modelItem = CreateFullToModelItem();
           
@@ -515,7 +515,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_UpdateHelperText_RetrunsSuccess()
+        public void ExchangeEmailDesignerViewModel_UpdateHelperText_RetrunsSuccess()
         {
             var modelItem = CreateModelItem();
 
@@ -530,7 +530,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_RecipientsIsEmpty_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_RecipientsIsEmpty_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -547,7 +547,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_RecipientsToIsNotEmpty_DoesHaveNotErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_RecipientsToIsNotEmpty_DoesHaveNotErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -564,7 +564,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_RecipientsCcIsNotEmpty_DoesHaveNotErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_RecipientsCcIsNotEmpty_DoesHaveNotErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -581,7 +581,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_RecipientsBccIsNotEmpty_DoesHaveNotErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_RecipientsBccIsNotEmpty_DoesHaveNotErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -598,7 +598,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_SubjectAndBodyIsEmpty_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_SubjectAndBodyIsEmpty_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -615,7 +615,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_SubjectIsNotEmpyAndBodyIsEmpty_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_SubjectIsNotEmpyAndBodyIsEmpty_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -632,7 +632,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_SubjectIsEmpyAndBodyIsNotEmpty_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_SubjectIsEmpyAndBodyIsNotEmpty_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -649,7 +649,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_ToIsNotValidExpression_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_ToIsNotValidExpression_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -666,7 +666,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_ToIsValidExpression_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_ToIsValidExpression_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -683,7 +683,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_ToIsNotValidEmailAddress_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_ToIsNotValidEmailAddress_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -700,7 +700,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_CcIsNotValidExpression_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_CcIsNotValidExpression_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -717,7 +717,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_CcIsValidExpression_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_CcIsValidExpression_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -734,7 +734,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_CcIsNotValidEmailAddress_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_CcIsNotValidEmailAddress_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -751,7 +751,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_BccIsNotValidExpression_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_BccIsNotValidExpression_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -768,7 +768,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_BccIsValidExpression_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_BccIsValidExpression_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -785,7 +785,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_BccIsNotValidEmailAddress_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_BccIsNotValidEmailAddress_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -802,7 +802,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidExpression_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidExpression_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -819,7 +819,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsValidExpression_DoesNotHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_AttachmentsIsValidExpression_DoesNotHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
@@ -836,7 +836,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestMethod]
         [Owner(TestOwner)]
         [TestCategory(Category)]
-        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidFileName_DoesHaveErrors()
+        public void ExchangeEmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidFileName_DoesHaveErrors()
         {
             var activity = new DsfExchangeEmailActivity
             {
