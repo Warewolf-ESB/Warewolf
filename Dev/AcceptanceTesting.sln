@@ -316,6 +316,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Tests", "Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource.Tests", "Warewolf.Resource.Tests\Warewolf.Resource.Tests.csproj", "{DBE78E73-8D7E-4199-969C-D2BE0DC19A4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services.Tests", "Dev2.Runtime.Services.Tests\Dev2.Runtime.Services.Tests.csproj", "{6A5E9021-0253-490B-B21E-E664EB1EF115}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1200,6 +1202,14 @@ Global
 		{DBE78E73-8D7E-4199-969C-D2BE0DC19A4D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DBE78E73-8D7E-4199-969C-D2BE0DC19A4D}.Release|x86.ActiveCfg = Release|Any CPU
 		{DBE78E73-8D7E-4199-969C-D2BE0DC19A4D}.Release|x86.Build.0 = Release|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A5E9021-0253-490B-B21E-E664EB1EF115}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
