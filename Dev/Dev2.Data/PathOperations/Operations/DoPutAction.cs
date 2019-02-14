@@ -11,44 +11,19 @@
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using System.IO;
-using Dev2.Common.Wrappers;
 using Dev2.PathOperations;
 using System.Threading;
 using Dev2.Common.Common;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Data.PathOperations.Operations
 {
-    public class DoPutActionConfiguration
-    {
-        public Stream CurrentStream { get; set; }
-        public IActivityIOPath Destination { get; set; }
-        public IDev2CRUDOperationTO CrudArgument { get; set; }
-        public string WhereToPut { get; set; }
-        public IDev2LogonProvider Dev2LogonProvider { get; set; }
-        public IFilePath FilePath { get; set; }
-        public IFile FileWrapper { get; set; }
-
-        public static DoPutActionConfiguration GetDoPutActionConfiguration(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
-        {
-            return new DoPutActionConfiguration
-            {
-                CurrentStream = currentStream,
-                Destination = destination,
-                CrudArgument = crudArgument,
-                WhereToPut = whereToPut,
-                Dev2LogonProvider = new LogonProvider(),
-                FilePath = new FilePathWrapper(),
-                FileWrapper = new FileWrapper()
-            };
-        }
-    }
-
     public class DoPutAction : PerformIntegerIOOperation
     {
         static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-        readonly IWindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
-        protected readonly IActivityIOPath Destination;
+        protected readonly IActivityIOPath _destination;
         protected readonly IFile _fileWrapper;
         protected readonly IFilePath _pathWrapper;
         protected readonly IDev2CRUDOperationTO _arguments;
@@ -56,34 +31,34 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly string _whereToPut;
 
         public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
-            :this(new DoPutActionConfiguration { CurrentStream = currentStream, Destination = destination, CrudArgument = crudArgument, WhereToPut = whereToPut }, ValidateAuthorization.RequiresAuth)
+            :this(currentStream, destination, crudArgument, whereToPut, new LogonProvider(), new FileWrapper(), new FilePathWrapper(), ValidateAuthorization.RequiresAuth)
         { }
 
-        public DoPutAction(DoPutActionConfiguration doPutActionConfiguration, ImpersonationDelegate impersonationDelegate)
+        public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut, IDev2LogonProvider logOnProvider, IFile fileWrapper, IFilePath pathWrapper, ImpersonationDelegate impersonationDelegate)
             :base(impersonationDelegate)
         {
-            _logOnProvider = doPutActionConfiguration.Dev2LogonProvider;
-            _pathWrapper = doPutActionConfiguration.FilePath;
-            _fileWrapper = doPutActionConfiguration.FileWrapper;
-            _currentStream = doPutActionConfiguration.CurrentStream;
-            Destination = doPutActionConfiguration.Destination;
-            _arguments = doPutActionConfiguration.CrudArgument;
-            ImpersonatedUser = _impersonationDelegate(Destination, _logOnProvider);
-            _whereToPut = doPutActionConfiguration.WhereToPut;
+            _logOnProvider = logOnProvider;
+            _pathWrapper = pathWrapper;
+            _fileWrapper = fileWrapper;
+            _currentStream = currentStream;
+            _destination = destination;
+            _arguments = crudArgument;
+            _impersonatedUser = _impersonationDelegate(_destination, _logOnProvider);
+            _whereToPut = whereToPut;
         }
         public override int ExecuteOperation()
         {
-            var destination = Destination;
-            if (!_pathWrapper.IsPathRooted(Destination.Path) && _whereToPut != null)
+            var destination = _destination;
+            if (!_pathWrapper.IsPathRooted(_destination.Path) && _whereToPut != null)
             {
-                destination = ActivityIOFactory.CreatePathFromString(_whereToPut + "\\" + Destination.Path, Destination.Username, Destination.Password, Destination.PrivateKeyFile);
+                destination = ActivityIOFactory.CreatePathFromString(_whereToPut + "\\" + _destination.Path, _destination.Username, _destination.Password, _destination.PrivateKeyFile);
             }
             _fileLock.EnterWriteLock();
             try
             {
                 using (_currentStream)
                 {
-                    if (ImpersonatedUser != null)
+                    if (_impersonatedUser != null)
                     {
                         return ExecuteOperationWithAuth(_currentStream, destination);
                     }
@@ -93,13 +68,13 @@ namespace Dev2.Data.PathOperations.Operations
             finally
             {
                 _fileLock.ExitWriteLock();
-                ImpersonatedUser?.Undo();
+                _impersonatedUser?.Undo();
             }
         }
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -107,7 +82,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }

@@ -17,33 +17,30 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoDeleteOperation : PerformBoolIOOperation
     {
-        readonly IWindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
+
         public DoDeleteOperation(IActivityIOPath path)
-            :this(path, ValidateAuthorization.RequiresAuth)
+            : this(path, new LogonProvider(), ValidateAuthorization.RequiresAuth)
         {
-        }
-        public DoDeleteOperation(IActivityIOPath path, ImpersonationDelegate impersonationDelegate)
-            : this(path, new LogonProvider(), impersonationDelegate)
-        {
-            ImpersonatedUser = _impersonationDelegate(_path, _logOnProvider);
         }
         public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider)
-            :this(path, logOnProvider, ValidateAuthorization.RequiresAuth)
+            :this(path, logOnProvider, null)
         {
         }
         public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider, ImpersonationDelegate impersonationDelegate)
             :base(impersonationDelegate)
         {
-            _logOnProvider = logOnProvider;
             _path = path;
+            _logOnProvider = logOnProvider;
+            _impersonatedUser = _impersonationDelegate?.Invoke(_path, _logOnProvider);
         }
         public override bool ExecuteOperation()
         {
             try
             {
-                if (ImpersonatedUser != null)
+                if (_impersonatedUser != null)
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -57,7 +54,7 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override bool ExecuteOperationWithAuth()
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -70,7 +67,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser?.Undo();
+                    _impersonatedUser?.Undo();
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
-        readonly IWindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
 
         public DoGetAction(IActivityIOPath path)
             :this(path, new LogonProvider(), new FileWrapper(), ValidateAuthorization.RequiresAuth)
@@ -35,12 +35,12 @@ namespace Dev2.Data.PathOperations.Operations
             _logOnProvider = dev2LogonProvider;
             _fileWrapper = fileWrapper;
             _path = path;
-            ImpersonatedUser = _impersonationDelegate(_path, _logOnProvider);
+            _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
 
         }
         public override Stream ExecuteOperation()
         {
-            if (ImpersonatedUser != null)
+            if (_impersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -53,7 +53,7 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override Stream ExecuteOperationWithAuth()
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }
