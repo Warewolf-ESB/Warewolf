@@ -56,7 +56,7 @@ namespace Dev2
                     _settingsProvider = Runtime.Configuration.SettingsProvider.Instance;
                 }
                 var settings = _settingsProvider.Configuration;
-                WorkflowLoggger.LoggingSettings = settings.Logging;
+                WorkflowLogger.LoggingSettings = settings.Logging;
 
                 _writer.WriteLine("done.");
             }
