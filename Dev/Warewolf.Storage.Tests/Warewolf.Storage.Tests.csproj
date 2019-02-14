@@ -92,7 +92,7 @@
     <Compile Include="WarewolfAtomIteratorTests.cs" />
     <Compile Include="FsInteropFunctionsTests.cs" />
     <Compile Include="ExecutionEnvironmentTests.cs" />
-    <Compile Include="TestScopedEnvironment.cs" />
+    <Compile Include="ScopedEnvironmentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
