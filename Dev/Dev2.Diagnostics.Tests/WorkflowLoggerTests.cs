@@ -16,66 +16,66 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Diagnostics.Test
 {
     [TestClass]
-    public class WorkflowLogggerTests
+    public class WorkflowLoggerTests
     {
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(WorkflowLoggger))]
-        public void WorkflowLoggger_LoggingSettings()
+        [TestCategory(nameof(WorkflowLogger))]
+        public void WorkflowLogger_LoggingSettings()
         {
             var config = new Configuration(XmlResource.Fetch("Settings"));
-            WorkflowLoggger.LoggingSettings = config.Logging;
-            Assert.AreEqual("Logging", WorkflowLoggger.LoggingSettings.DisplayName);
+            WorkflowLogger.LoggingSettings = config.Logging;
+            Assert.AreEqual("Logging", WorkflowLogger.LoggingSettings.DisplayName);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(WorkflowLoggger))]
-        public void WorkflowLoggger_GetDefaultLogDirectoryPath()
+        [TestCategory(nameof(WorkflowLogger))]
+        public void WorkflowLogger_GetDefaultLogDirectoryPath()
         {
-            var result = WorkflowLoggger.GetDefaultLogDirectoryPath();
+            var result = WorkflowLogger.GetDefaultLogDirectoryPath();
             StringAssert.Contains(result, "Source\\repos\\Warewolf\\Dev\\Dev2.Diagnostics.Tests\\bin\\Debug\\Logs");
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(WorkflowLoggger))]
-        public void WorkflowLoggger_GetDirectoryPath()
+        [TestCategory(nameof(WorkflowLogger))]
+        public void WorkflowLogger_GetDirectoryPath()
         {
             var config = new Configuration(XmlResource.Fetch("Settings"));
-            WorkflowLoggger.LoggingSettings = config.Logging;
-            var result = WorkflowLoggger.GetDirectoryPath(config.Logging);
+            WorkflowLogger.LoggingSettings = config.Logging;
+            var result = WorkflowLogger.GetDirectoryPath(config.Logging);
             StringAssert.Contains(result, "Source\\repos\\Warewolf\\Dev\\Dev2.Diagnostics.Tests\\bin\\Debug\\Logs");
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(WorkflowLoggger))]
-        public void WorkflowLoggger_ShouldLog_IsLoggingEnabled_True()
+        [TestCategory(nameof(WorkflowLogger))]
+        public void WorkflowLogger_ShouldLog_IsLoggingEnabled_True()
         {
             var config = new Configuration(XmlResource.Fetch("Settings"));
-            WorkflowLoggger.LoggingSettings = config.Logging;
+            WorkflowLogger.LoggingSettings = config.Logging;
 
             config.Logging.IsLoggingEnabled = true;
             config.Logging.LogAll = true;
-            WorkflowLoggger.UpdateSettings(config.Logging);
+            WorkflowLogger.UpdateSettings(config.Logging);
            
-            var result = WorkflowLoggger.ShouldLog(new System.Guid());
+            var result = WorkflowLogger.ShouldLog(new System.Guid());
             Assert.IsTrue(result);
         }
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory(nameof(WorkflowLoggger))]
-        public void WorkflowLoggger_ShouldLog_IsLoggingEnabled_False()
+        [TestCategory(nameof(WorkflowLogger))]
+        public void WorkflowLogger_ShouldLog_IsLoggingEnabled_False()
         {
             var config = new Configuration(XmlResource.Fetch("Settings"));
-            WorkflowLoggger.LoggingSettings = config.Logging;
+            WorkflowLogger.LoggingSettings = config.Logging;
 
             config.Logging.IsLoggingEnabled = false;
             config.Logging.LogAll = false;
-            WorkflowLoggger.UpdateSettings(config.Logging);
-            Assert.IsFalse(WorkflowLoggger.ShouldLog(new System.Guid()));
+            WorkflowLogger.UpdateSettings(config.Logging);
+            Assert.IsFalse(WorkflowLogger.ShouldLog(new System.Guid()));
         }
     }
 }
