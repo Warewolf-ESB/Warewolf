@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -6,11 +17,10 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class WebServiceSourceDefinition : IWebServiceSource, IEquatable<WebServiceSourceDefinition>
     {
-        #region Implementation of IDbSource
-
+        [ExcludeFromCodeCoverage]
         public WebServiceSourceDefinition()
         {
-            
+
         }
 
         public WebServiceSourceDefinition(IWebSource db)
@@ -25,11 +35,9 @@ namespace Dev2.Common.Interfaces.Core
             UserName = db.UserName;
         }
 
-        #region Equality members
-        
         public bool Equals(WebServiceSourceDefinition other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -37,12 +45,22 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(HostName, other.HostName) && Id == other.Id && string.Equals(Name, other.Name) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType && string.Equals(DefaultQuery, other.DefaultQuery);
+
+            var equals = true;
+            equals &= string.Equals(HostName, other.HostName);
+            equals &= Id == other.Id;
+            equals &= string.Equals(Name, other.Name);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= AuthenticationType == other.AuthenticationType;
+            equals &= string.Equals(DefaultQuery, other.DefaultQuery);
+
+            return equals;
         }
 
         public bool Equals(IWebServiceSource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -50,12 +68,22 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(HostName, other.HostName) && Id == other.Id && string.Equals(Name, other.Name) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType && string.Equals(DefaultQuery, other.DefaultQuery);
+
+            var equals = true;
+            equals &= string.Equals(HostName, other.HostName);
+            equals &= Id == other.Id;
+            equals &= string.Equals(Name, other.Name);
+            equals &= string.Equals(UserName, other.UserName);
+            equals &= string.Equals(Password, other.Password);
+            equals &= AuthenticationType == other.AuthenticationType;
+            equals &= string.Equals(DefaultQuery, other.DefaultQuery);
+
+            return equals;
         }
-        
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -69,7 +97,7 @@ namespace Dev2.Common.Interfaces.Core
             }
             return Equals((WebServiceSourceDefinition)obj);
         }
-        
+
         public override int GetHashCode()
         {
             unchecked
@@ -87,8 +115,6 @@ namespace Dev2.Common.Interfaces.Core
 
         public static bool operator !=(WebServiceSourceDefinition left, WebServiceSourceDefinition right) => !Equals(left, right);
 
-        #endregion
-
         public string HostName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -97,7 +123,5 @@ namespace Dev2.Common.Interfaces.Core
         public string Name { get; set; }
         public string Path { get; set; }
         public Guid Id { get; set; }
-
-        #endregion
     }
 }
