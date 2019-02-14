@@ -199,6 +199,7 @@
     <Compile Include="Dev2DecisionComparerTests.cs" />
     <Compile Include="DataListModelTests.cs" />
     <Compile Include="DataListConversionUtilsTests.cs" />
+    <Compile Include="SharepointHelperTests.cs" />
     <Compile Include="Util\OperationsHelperTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />
     <Compile Include="Util\CommonDataUtilsTests.cs" />
@@ -261,6 +262,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
+      <Name>Warewolf.Sharepoint</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
