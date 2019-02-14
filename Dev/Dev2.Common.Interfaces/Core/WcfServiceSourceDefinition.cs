@@ -1,4 +1,14 @@
-﻿using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using System;
 
 namespace Dev2.Common.Interfaces.Core
@@ -14,7 +24,6 @@ namespace Dev2.Common.Interfaces.Core
         public enSourceType Type { get; set; }
         public string ResourceType { get; set; }
 
-        #region Equality members
         public override bool Equals(object obj)
         {
             if (obj is WcfServiceSourceDefinition wsd)
@@ -28,9 +37,9 @@ namespace Dev2.Common.Interfaces.Core
             return false;
         }
 
-    public bool Equals(WcfServiceSourceDefinition other)
+        public bool Equals(WcfServiceSourceDefinition other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -43,7 +52,7 @@ namespace Dev2.Common.Interfaces.Core
 
         public bool Equals(IWcfServerSource other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -67,7 +76,5 @@ namespace Dev2.Common.Interfaces.Core
         public static bool operator ==(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => left.Equals(right);
 
         public static bool operator !=(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => !left.Equals(right);
-
-        #endregion Equality members
     }
 }
