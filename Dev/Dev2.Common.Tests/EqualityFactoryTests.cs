@@ -15,7 +15,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_()
+        public void EqualityFactory_GetComparer_Compare()
         {
             var expected = 1234;
             var cmp = EqualityFactory.GetComparer<Example>((a, b) => expected);
@@ -27,7 +27,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_Equals()
+        public void EqualityFactory_GetEqualityComparer_Equals_GetHashCode()
         {
             var expectedHash = 4321;
             var expectedBool = true;
@@ -41,7 +41,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_GetComparable()
+        public void EqualityFactory_GetComparable_CompareTo()
         {
             var expectedHash = 4321;
             var cmp = EqualityFactory.GetComparable<Example>((a) => expectedHash);
@@ -53,7 +53,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_GetEquitable()
+        public void EqualityFactory_GetEquitable_GetHashCode_NoHashCodeCallback()
         {
             var expected = true;
             var cmp = EqualityFactory.GetEquitable<Example>((a) => expected);
@@ -71,7 +71,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_2()
+        public void EqualityFactory_GetEquitable_IEqualityComparer_Equals()
         {
             var expected = true;
             var cmp = EqualityFactory.GetEquitable<Example>((a) => expected);
@@ -83,7 +83,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(EqualityFactory))]
-        public void EqualityFactory_3()
+        public void EqualityFactory_GetEquitable_IEquatable_Equals()
         {
             var expected = true;
             var cmp = EqualityFactory.GetEquitable<Example>((a) => expected);
