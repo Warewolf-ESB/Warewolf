@@ -34,7 +34,7 @@ namespace Dev2.Diagnostics.Test
         public void WorkflowLogger_GetDefaultLogDirectoryPath()
         {
             var result = WorkflowLogger.GetDefaultLogDirectoryPath();
-            StringAssert.Contains(result, "Source\\repos\\Warewolf\\Dev\\Dev2.Diagnostics.Tests\\bin\\Debug\\Logs");
+            StringAssert.Contains(result, "\\Logs");
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace Dev2.Diagnostics.Test
             var config = new Configuration(XmlResource.Fetch("Settings"));
             WorkflowLogger.LoggingSettings = config.Logging;
             var result = WorkflowLogger.GetDirectoryPath(config.Logging);
-            StringAssert.Contains(result, "Source\\repos\\Warewolf\\Dev\\Dev2.Diagnostics.Tests\\bin\\Debug\\Logs");
+            StringAssert.Contains(result, "\\Logs");
         }
 
         [TestMethod]
