@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -21,7 +22,7 @@ namespace Dev2.Runtime.Configuration
     {
         Settings.Configuration Configuration { get; }
     }
-
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Do NOT instantiate directly - use static <see cref="Instance" /> property instead; use for testing only!
     /// </summary>
@@ -102,8 +103,7 @@ namespace Dev2.Runtime.Configuration
                     xml.SetAttributeValue("WebServerUri", WebServerUri);
                     return new Settings.Configuration(xml);
                 }
-                catch(Exception ex)
-                
+                catch(Exception ex)                
                 {
                     Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
