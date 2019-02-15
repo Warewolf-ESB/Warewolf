@@ -11,7 +11,6 @@ namespace Dev2.Common
         {
             Inputs = new List<IConstructorParameter>();
         }
-        #region Implementation of IConstructor
 
         public IList<IConstructorParameter> Inputs { get; set; }
         public string ReturnObject { get; set; }
@@ -19,13 +18,9 @@ namespace Dev2.Common
 
         public string GetIdentifier() => ConstructorName;
 
-        #endregion
-
-        #region Implementation of IPluginConstructor
 
         public bool IsExistingObject { get; set; }
 
-        #endregion
 
         public bool Equals(PluginConstructor other)
         {
@@ -75,10 +70,6 @@ namespace Dev2.Common
 
         public override string ToString() => ConstructorName;
 
-        #region Implementation of IPluginConstructor
-
         public Guid ID { get; set; }
-
-        #endregion
     }
 }
