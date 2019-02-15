@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Administrator, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogExecuteWithNullFilePathExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogExecuteWithNullDirectoryExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogExecuteWithNonExistingDirectoryExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogExecuteWithNonExistingPathExpectedReturnsError()
         {
             var workspace = new Mock<IWorkspace>();
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
             //Lock because of access to file system
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogHandlesTypeExpectedReturnsDeleteLogService()
         {
             var esb = new DeleteLog();
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DeleteLogCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new DeleteLog();

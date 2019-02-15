@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going bac
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -2807,7 +2807,7 @@ namespace Dev2.Activities.Specs.Composition
             var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
             if (!String.IsNullOrEmpty(serverPathUniqueNameGuid))
             {
-                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/");
+                var sharepointHelper = new SharepointHelper("http://rsaklfsvrdev/", "integrationtester@dev2.local", "I73573r0", false);
                 sharepointHelper.Delete(serverPath);
             }
         }

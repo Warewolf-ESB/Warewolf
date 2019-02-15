@@ -14,7 +14,7 @@ namespace Dev2.Tests.Runtime.Search
     [TestClass]
     public class TestSearcherTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullResourceCatalog_ExpectException()
         {
@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.Search
             Assert.IsNull(testSearcher);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullTestCatalog_ExpectException()
         {
@@ -30,14 +30,14 @@ namespace Dev2.Tests.Runtime.Search
             Assert.IsNull(testSearcher);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Constructor_ResourceCatalogTestCatalog_ExpectNoException()
         {
             var testSearcher = new TestSearcher(new Mock<IResourceCatalog>().Object, new Mock<ITestCatalog>().Object);
             Assert.IsNotNull(testSearcher);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenTestNameHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();

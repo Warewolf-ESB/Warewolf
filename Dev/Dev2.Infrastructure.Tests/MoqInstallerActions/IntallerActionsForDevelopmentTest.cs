@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +32,18 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 
             //------------Execute Test---------------------------
-            installerActionsForDevelopment.ExecuteMoqInstallerActions();
+            try
+            { 
+                installerActionsForDevelopment.ExecuteMoqInstallerActions();
+            }
+            catch (COMException e)
+            {
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
+            }
 
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
@@ -53,8 +65,19 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
 
             var installerActionsForDevelopment = new InstallerActionsForDevelopment();
 
-            //------------Execute Test---------------------------
-            installerActionsForDevelopment.ExecuteMoqInstallerActions();
+            //------------Execute Test---------------------------\
+            try
+            {
+                installerActionsForDevelopment.ExecuteMoqInstallerActions();
+            }
+            catch (COMException e)
+            {
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
+            }
 
             //------------Assert Results-------------------------
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();

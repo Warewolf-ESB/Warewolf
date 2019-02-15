@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -114,7 +115,18 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             warewolfGroupOps.AddWarewolfGroup();
 
             //------------Execute Test---------------------------
-            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            try
+            {
+                warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            }
+            catch (COMException e)
+            {
+                //'The Server service is not started.' error is expected in containers. See: https://github.com/moby/moby/issues/26409#issuecomment-304978309
+                if (e.Message != "The Server service is not started.\r\n")
+                {
+                    throw e;
+                }
+            }
             var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
 
             //------------Assert Results-------------------------

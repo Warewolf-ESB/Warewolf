@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchPluginConstructorTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void HandlesType_GivenPluginConstructorService_ShouldRuturnCorrectly()
         {
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("FetchPluginConstructors", handlesType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenTestInputs_ShouldReturnConstructorList()
         {
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(3, deserializeToObject.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenHasContructorWithInputs_ShouldReturnCorrectInputs()
         {
@@ -169,7 +169,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(typeof(string), Type.GetType(typeName));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenHasContructorWithInputs_ShouldReturnCorrectConstructorName()
         {
@@ -230,7 +230,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(expectedName2, constructorName2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenHasError_ShouldReturnErrorState()
         {

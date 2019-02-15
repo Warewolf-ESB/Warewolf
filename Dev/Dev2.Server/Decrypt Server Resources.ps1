@@ -32,7 +32,7 @@ get-childitem "$SolutionDirectory\Resources - Release\Resources",
 "$SolutionDirectory\Resources - ServerTests\Resources",
 "$SolutionDirectory\Resources - UITests\Resources",
 "$env:ProgramData\Warewolf\Resources",
-"$SolutionDirectory\Dev2.Server\bin\Debug\Resources" -recurse | where {$_.extension -eq ".xml"} | % {
+"$SolutionDirectory\Dev2.Server\bin\Debug\Resources" -recurse | where {$_.extension -eq ".xml" -or $_.extension -eq ".bite"} | % {
 
 	Write-Host Resource found at $_.FullName.
 	$sb = New-Object System.Text.StringBuilder
