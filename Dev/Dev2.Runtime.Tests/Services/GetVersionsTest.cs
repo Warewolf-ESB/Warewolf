@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ using Moq;
         [TestClass]
         public class GetVersionsTest
         {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -44,7 +44,7 @@ using Moq;
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -58,7 +58,7 @@ using Moq;
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_HandlesType_ExpectName()
@@ -73,7 +73,7 @@ using Moq;
                 Assert.AreEqual("GetVersions", getVersions.HandlesType());
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_Execute")]
             public void GetVersions_Execute_NullValuesParameter_ErrorResult()
@@ -88,7 +88,7 @@ using Moq;
             Assert.AreEqual(ExecStatus.Fail, result.Status);
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_Execute_ExpectName()
@@ -110,7 +110,7 @@ using Moq;
                 Assert.AreEqual(serializer.Deserialize<IList<IExplorerItem>>(ax.ToString())[0].ResourceId, item.ResourceId);
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_CreateServiceEntry_ExpectProperlyFormedDynamicService()
