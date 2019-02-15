@@ -16,9 +16,11 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -100,7 +102,11 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         static TestExchangeEmailDesignerViewModel CreateViewModel(ModelItem modelItem, IEventAggregator eve, bool isemptySource = false)
         {
             var mockModel = new TestExchangeServiceModel(isemptySource);
-      
+            var resourceMock = new Mock<IResourceModel>();
+            resourceMock.Setup(res => res.DataList).Returns("<DataList></DataList>");
+            var dataListVM = new Mock<IDataListViewModel>();
+            dataListVM.Setup(vm => vm.Resource).Returns(resourceMock.Object);
+            DataListSingleton.Instance.ActiveDataList = dataListVM.Object;
             return CreateViewModel(modelItem, mockModel,eve);
         }
 
