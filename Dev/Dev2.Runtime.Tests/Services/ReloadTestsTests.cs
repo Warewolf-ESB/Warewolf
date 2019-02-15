@@ -14,7 +14,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class ReloadTestsTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DeleteTestHandlesType")]
         public void ReloadTestsHandlesType_ExpectName()
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("ReloadTestsService", deleteTest.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ReloadTestsExecute")]
         public void ReloadTestsExecute_NullValues_ErrorResult()
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ReloadTestsExecute")]
         public void ReloadTestsExecute__ValidArgs_ExpectDeleteTestCalled()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,20 +12,16 @@ using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+using System.Runtime.InteropServices;
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
-
-    /// <summary>
-    /// Very limited as to what we can test here
-    /// </summary>
     [TestClass]
     public class Dev2TaskTest
     {
         TaskService _taskService;
         Mock<ITaskServiceConvertorFactory> _factory;
-
-
+        
         [TestInitialize]
         public void Init()
         {
@@ -35,11 +31,20 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var action = new ExecAction("bob.exe");
             newTask.Actions.Add(action);
             newTask.Triggers.Add(new DailyTrigger());
-            _taskService.RootFolder.RegisterTaskDefinition("UnitTestTask",newTask);
+            try
+            {
+                _taskService.RootFolder.RegisterTaskDefinition("UnitTestTask", newTask, TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
+            }
+            catch (COMException e)
+            {
+                if (e.Message != "Cannot create a file when that file already exists. (Exception from HRESULT: 0x800700B7)")
+                {
+                    throw e;
+                }
+            }
             _factory = new Mock<ITaskServiceConvertorFactory>();
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_Dev2Task_Construct")]
@@ -50,10 +55,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             wrapper.Enabled = false;
             Assert.AreEqual(wrapper.Enabled,task.Enabled);
             Assert.AreEqual(task,wrapper.Instance);
-    
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_Dev2Task_Properties")]
@@ -70,8 +73,6 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             Assert.AreEqual(task.NumberOfMissedRuns,wrapper.NumberOfMissedRuns);
             Assert.AreEqual(task.Path, wrapper.Path);
             Assert.AreEqual(task.State, wrapper.State);
-
-
         }
 
         //pass through
@@ -90,8 +91,6 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             Assert.IsTrue(wrapper.IsValidDev2Task());
             t.Setup(a => a.IsValidDev2Task()).Returns(false);
             Assert.IsFalse(wrapper.IsValidDev2Task());
-           
-
         }
     }
 }

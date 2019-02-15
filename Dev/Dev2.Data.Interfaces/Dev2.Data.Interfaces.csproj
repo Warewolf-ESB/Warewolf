@@ -141,10 +141,6 @@
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
       <Name>Warewolf.Storage.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.TestingDotnetDllCascading\Warewolf.TestingDotnetDllCascading.csproj">
-      <Project>{7925b0c6-88dc-49a4-bbe1-c0550987f63a}</Project>
-      <Name>Warewolf.TestingDotnetDllCascading</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />

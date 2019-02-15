@@ -1,6 +1,6 @@
 //*
 //*  Warewolf - Once bitten, there's no going back
-//*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+//*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 //*  Licensed under GNU Affero General Public License 3.0 or later. 
 //*  Some rights reserved.
 //*  Visit our website for more information <http://warewolf.io/>
@@ -70,7 +70,7 @@
 
 //        #endregion
 
-//        [TestMethod, DeploymentItem("EnableDocker.txt")]
+//        [TestMethod]
 //        [Description("Test Constructor")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ConstructorWhereParametersPassed_ObjectHasProperties()
@@ -88,7 +88,7 @@
 //            Assert.AreEqual(environmentID, workspaceItem.EnvironmentID);
 //        }
 
-//        [TestMethod, DeploymentItem("EnableDocker.txt")]
+//        [TestMethod]
 //        [Description("Test Constructor")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ConstructorWhereParametersXML_ObjectHasProperties()
@@ -109,7 +109,7 @@
 //            Assert.IsTrue(newWorkspaceItem.IsWorkflowSaved);
 //        }
 
-//        [TestMethod, DeploymentItem("EnableDocker.txt")]
+//        [TestMethod]
 //        [Description("Test ToXML")]
 //        [Owner("Huggs")]
 //        public void WorkspaceItem_UnitTest_ToXMLWhereParametersXML_HasElementWithAttributes()
