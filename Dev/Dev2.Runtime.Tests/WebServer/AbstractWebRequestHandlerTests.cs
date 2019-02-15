@@ -33,6 +33,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class AbstractWebRequestHandlerTests
     {
         NameValueCollection LocalBoundVariables => new NameValueCollection
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.WebServer
         };
         public TestContext TestContext { get; set; }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateFormGivenValidArgsShouldreturnWriter()
         {
@@ -80,7 +81,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(responseWriter);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsDebug_ShouldSetDataObjectAsDebug()
         {
@@ -127,7 +128,7 @@ namespace Dev2.Tests.Runtime.WebServer
             principal.Setup(p => p.Identity).Returns(identity.Object);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceTes_ShouldSetDataObjectAsTest()
         {
@@ -167,7 +168,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
         {
@@ -210,7 +211,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceJson_ShouldSetDataObjectAsJson()
         {
@@ -254,7 +255,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceXMl_ShouldSetDataObjectAsXml()
         {
@@ -296,7 +297,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(2));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceXMlWithErrors_ShouldCheckReturnTypeOfError()
         {
@@ -340,7 +341,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifyGet(o => o.ReturnType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenValidArgsContainsIsServiceJsonWithErrors_ShouldCheckReturnTypeOfError()
         {
@@ -383,7 +384,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifyGet(o => o.ReturnType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTests_ShouldSetDataobjectsTestsOptions()
         {
@@ -422,7 +423,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.TestName = "*", Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
         {
@@ -460,7 +461,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.TestName = "*", Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenServiceNameIsGuid_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
         {
@@ -506,7 +507,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenServiceNameIsText_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
         {
@@ -551,7 +552,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenHasTestResourcesIds_ShouldRunAllTests()
         {
@@ -617,7 +618,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsInstanceOfType(responseWriter, typeof(StringResponseWriter));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenEmitionTypeTEST_ShouldFetchTest()
         {
@@ -665,7 +666,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Verify(o => o.Fetch(Guid.Empty), Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests()
         {
@@ -722,7 +723,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Verify(o => o.Fetch(Guid.Empty), Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void BindRequestVariablesToDataObjectGivenHasBookMarkShouldSetDataObjectBookmark()
         {
@@ -756,7 +757,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ServiceName = "a", Times.Once);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostDataGivenUrlWithGetJsonDataShouldReturnPostData()
         {
@@ -797,7 +798,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(payLoad, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostDataGivenUrlWithJsonPostDataShouldReturnPostData()
         {
@@ -829,7 +830,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(payLoad, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenPostDataInContext_ShouldReturnEmpty()
         {
@@ -858,7 +859,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("", postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenPostJsonDataInContextThrowsException_ShouldSwallowException()
         {
@@ -888,7 +889,7 @@ namespace Dev2.Tests.Runtime.WebServer
             handlerMock.GetPostDataMock(communicationContext.Object);
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenPostJsonDataInContext_ShouldReturnJsonData()
         {
@@ -920,7 +921,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(data, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenJsonDataInContextAndUnknownWebMethod_ShouldReturnEmpty()
         {
@@ -950,7 +951,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(string.Empty, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenPostXmlDataInContext_ShouldReturnXmlData()
         {
@@ -992,7 +993,7 @@ namespace Dev2.Tests.Runtime.WebServer
             return xmlData;
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenGetJsonDataInContext_ShouldReturnJsonData()
         {
@@ -1023,7 +1024,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(data, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenGetXmlDataInContext_ShouldReturnXmlData()
         {
@@ -1055,7 +1056,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(xmlData, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenGetDataListXmlDataInContext_ShouldReturnXmlData()
         {
@@ -1088,7 +1089,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(xmlData, postDataMock);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void LocationGivenReturnsCorrectly()
         {
@@ -1115,7 +1116,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(location == locationCurrent || location == currentLocation, location + " does not equal " + locationCurrent + " or " + currentLocation);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void RemoteInove_GivenServerInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
         {
@@ -1144,7 +1145,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(Someremoteid, dataObject.Object.RemoteInvokerID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void RemoteInvoke_GivenRemoteDebugInvoke_ShouldSetRemoteIdOnTheDataObjectAndRemoteInvokeTo_True()
         {
@@ -1174,7 +1175,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(Someremoteid, dataObject.Object.RemoteInvokerID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetBookmark_GivenBoundVariables_ShouldReturnBookmark()
         {
@@ -1191,7 +1192,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetClassName_GivenBoundVariables_ShouldReturnName()
         {
@@ -1208,7 +1209,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetMethodName_GivenBoundVariables_ShouldReturnMethodName()
         {
@@ -1225,7 +1226,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetPath_GivenBoundVariables_ShouldReturnPath()
         {
@@ -1242,7 +1243,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetWebsite_GivenBoundVariables_ShouldReturnWebsite()
         {
@@ -1259,7 +1260,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetInstanceID_GivenBoundVariables_ShouldReturnInstanceId()
         {
@@ -1276,7 +1277,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetServiceName_GivenBoundVariables_ShouldReturnServiceName()
         {
@@ -1292,7 +1293,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ExpectedResult, serviceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetWorkspaceID_GivenQueryString_ShouldReturnId()
         {
@@ -1307,7 +1308,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ExpectedResult, workspaceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetDataListID_GivenQueryString_ShouldReturnDatalsi()
         {
@@ -1325,7 +1326,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         #region ServiceTestModelJObjectResultBuilder
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
@@ -1342,7 +1343,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Passed\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
@@ -1359,7 +1360,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Failed\""));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
@@ -1376,7 +1377,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Invalid\""));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
@@ -1393,7 +1394,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourceDelete\""));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
@@ -1410,7 +1411,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourcpathUpdated\""));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultJSONForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
@@ -1432,7 +1433,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         #region ServiceTestModelTRXResultBuilder
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
@@ -1452,7 +1453,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"Passed\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
@@ -1473,7 +1474,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"Failed\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
@@ -1494,7 +1495,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"Invalid\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
@@ -1515,7 +1516,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"ResourceDeleted\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
@@ -1536,7 +1537,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(result.ToString().Contains("outcome=\"ResourcePathUpdated\""));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
@@ -1559,7 +1560,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
         {
@@ -1573,7 +1574,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void CleanupXml_GivenXml_ShouldAppendXmlCorrectly()
         {
@@ -1590,7 +1591,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(startsWith);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ExtractKeyValuePairForGetMethod_GivenEmptyPayload_ShouldUseContextQueryString()
         {
@@ -1609,7 +1610,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void SetContentType_GivenJsonType_ShouldSetDataObjectReturnType()
         {
@@ -1639,7 +1640,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(EmitionTypes.JSON, dataObject.Object.ReturnType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void SetContentType_GivenXMLType_ShouldSetDataObjectReturnType()
         {
@@ -1669,7 +1670,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(EmitionTypes.XML, dataObject.Object.ReturnType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenHeaderContentTypeJson_ShouldSetDataObjectContentTypeJson()
         {
@@ -1689,7 +1690,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ServiceName, invoke);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenHeaderContentTypeXml_ShouldSetDataObjectContentTypeXml()
         {
@@ -1709,7 +1710,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ServiceName, emitionType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenNoHeaders_ShouldSetDataObjectContentTypeXml()
         {
@@ -1725,7 +1726,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(ServiceName, emitionType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
         {
@@ -1746,7 +1747,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectContentTypeTests()
         {
@@ -1767,7 +1768,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Ashley Lewis")]
         public void SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
         {
@@ -1787,7 +1788,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
         {
@@ -1808,7 +1809,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenTestsInFolder_ShouldSetDataObjectContentTypeTests()
         {
@@ -1831,7 +1832,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("*", dataObject.Object.TestName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectIsTestExecution()
         {
@@ -1854,7 +1855,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetTestResourceIds_GivenRequestForAllTestsInAFolder_ShouldSetDataObjectTestResourceIds()
         {
@@ -1890,7 +1891,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsTrue(contains);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
         {

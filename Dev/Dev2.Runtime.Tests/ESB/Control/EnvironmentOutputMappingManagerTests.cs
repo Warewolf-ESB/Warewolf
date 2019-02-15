@@ -21,143 +21,12 @@ using WarewolfParserInterop;
 namespace Dev2.Tests.Runtime.ESB.Control
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class EnvironmentOutputMappingManagerTests
     {
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]        
-        public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_NoOutputs_NoErrors_Success()
-        {
-            var outputDefinition = "";
-            var handleErrors = true;
-
-            var dataObject = new Mock<IDSFDataObject>();
-            var mockEnv = new Mock<IExecutionEnvironment>();
-
-            dataObject.SetupGet(o => o.Environment).Returns(mockEnv.Object);
-            var copiedErrorsResult = new HashSet<string>();
-            mockEnv.SetupGet(o => o.AllErrors).Returns(copiedErrorsResult);
-
-            var mockDataListFactory = new Mock<IDataListFactory>();
-            var mockLanguageParser = new Mock<IDev2LanguageParser>();
-            var outputs = new List<IDev2Definition>();
-            mockLanguageParser.Setup(o => o.Parse(outputDefinition)).Returns(outputs);
-            mockDataListFactory.Setup(o => o.CreateOutputParser()).Returns(mockLanguageParser.Object);
-            var recordsetOutputs = new List<IRecordSetDefinition>();
-            var mockRecordsetOutput = new Mock<IRecordSetCollection>();
-            mockRecordsetOutput.Setup(o => o.RecordSets).Returns(recordsetOutputs);
-            mockDataListFactory.Setup(o => o.CreateRecordSetCollection(outputs, true)).Returns(mockRecordsetOutput.Object);
-            var scalarOutputs = new List<IDev2Definition>();
-            var objectOutputs = new List<IDev2Definition>();
-            mockDataListFactory.Setup(o => o.CreateScalarList(outputs, true)).Returns(scalarOutputs);
-            mockDataListFactory.Setup(o => o.CreateObjectList(outputs)).Returns(objectOutputs);
-
-
-            var environmentOutputMappingManager = new EnvironmentOutputMappingManager(mockDataListFactory.Object);
-            var errorsFound = new ErrorResultTO();
-            environmentOutputMappingManager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject.Object, outputDefinition, 0, handleErrors, errorsFound);
-
-
-            dataObject.Verify(o => o.PopEnvironment(), Times.Once);
-            mockEnv.Verify(o => o.HasErrors(), Times.Exactly(2));
-
-            mockDataListFactory.Verify(o => o.CreateOutputParser(), Times.Once);
-            mockLanguageParser.Verify(o => o.Parse(outputDefinition), Times.Once);
-            mockDataListFactory.Verify(o => o.CreateRecordSetCollection(outputs, true));
-            mockRecordsetOutput.Verify(o => o.RecordSets, Times.Once);
-            mockDataListFactory.Verify(o => o.CreateScalarList(outputs, true));
-            mockDataListFactory.Verify(o => o.CreateObjectList(outputs));
-
-            Assert.AreEqual(0, errorsFound.FetchErrors().Count);
-            Assert.AreEqual(0, copiedErrorsResult.Count);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
-        public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs_WithErrorsHandled_Success()
-        {
-            EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs(true);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
-        public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs_WithErrorsNotHandled_Success()
-        {
-            EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs(false);
-        }
-
-        private void EnvironmentOutputMappingManager_UpdatePreviousEnvironment_Outputs(bool handleErrors)
-        {
-            var outputDefinition = "<Outputs>" +
-               "<Output Name=\"scalar1\" MapsTo=\"[[scalar1]]\" Value=\"[[scalar1]]\" DefaultValue=\"1234\" />" +
-               "<Output Name=\"name\" MapsTo=\"[[name]]\" Value=\"[[person(*).name]]\" Recordset=\"person\" DefaultValue=\"bob1\" />" +
-               "<Output Name=\"name\" MapsTo=\"[[name]]\" Value=\"[[recB(*).name]]\" Recordset=\"person\" DefaultValue=\"bob2\" />" +
-               "<Output Name=\"name\" MapsTo=\"[[name]]\" Value=\"[[recB(*).name]]\" Recordset=\"person\" DefaultValue=\"bob3\" />" +
-               "<Output Name=\"@obj.a\" MapsTo=\"[[a]]\" Value=\"[[@obj.a]]\" IsObject=\"True\" DefaultValue=\"1\" />" +
-            "</Outputs>";
-            var parser = new OutputLanguageParser();
-
-            var dataObject = new DsfDataObject("", Guid.NewGuid());
-
-            var env = new ExecutionEnvironment();
-            env.AddError("some error from before");
-            env.AllErrors.Add("some all error from before");
-            dataObject.Environment = env;
-            env = new ExecutionEnvironment();
-            env.AddError("some fake error");
-            env.AllErrors.Add("some all error");
-
-            env.Assign("[[scalar1]]", "1234", 0);
-            env.Assign("[[person().name]]", "bob", 0);
-            env.Assign("[[person().name]]", "bob2", 0);
-            env.Assign("[[person().name]]", "bob3", 0);
-            env.AssignJson(new AssignValue("[[@obj.a]]", "1"), 0);
-            env.CommitAssign();
-
-            dataObject.PushEnvironment(env);
-
-
-            Mock<IDev2LanguageParser> mockLanguageParser;
-            Mock<IDataListFactory> mockDataListFactory;
-            {
-                var dataListFactory = new DataListFactoryImplementation();
-                var languageParser = dataListFactory.CreateOutputParser();
-
-                mockDataListFactory = new Mock<IDataListFactory>();
-                mockLanguageParser = new Mock<IDev2LanguageParser>();
-
-                mockLanguageParser.Setup(o => o.Parse(outputDefinition)).Returns<string>(defs => languageParser.Parse(defs));
-
-
-                mockDataListFactory.Setup(o => o.CreateOutputParser()).Returns(mockLanguageParser.Object);
-
-                mockDataListFactory.Setup(o => o.CreateRecordSetCollection(It.IsAny<IList<IDev2Definition>>(), true)).Returns<IList<IDev2Definition>, bool>((list, isOutput) => dataListFactory.CreateRecordSetCollection(list, isOutput));
-                mockDataListFactory.Setup(o => o.CreateScalarList(It.IsAny<IList<IDev2Definition>>(), true)).Returns<IList<IDev2Definition>, bool>((list, isOutput) => dataListFactory.CreateScalarList(list, isOutput));
-                mockDataListFactory.Setup(o => o.CreateObjectList(It.IsAny<IList<IDev2Definition>>())).Returns<IList<IDev2Definition>>(list => dataListFactory.CreateObjectList(list));
-            }
-
-
-
-            var environmentOutputMappingManager = new EnvironmentOutputMappingManager(mockDataListFactory.Object);
-            var errorsFound = new ErrorResultTO();
-            environmentOutputMappingManager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefinition, 0, handleErrors, errorsFound);
-
-
-            mockDataListFactory.Verify(o => o.CreateOutputParser(), Times.Once);
-            mockLanguageParser.Verify(o => o.Parse(outputDefinition), Times.Once);
-            mockDataListFactory.Verify(o => o.CreateRecordSetCollection(It.IsAny<IList<IDev2Definition>>(), true));
-            mockDataListFactory.Verify(o => o.CreateScalarList(It.IsAny<IList<IDev2Definition>>(), true));
-            mockDataListFactory.Verify(o => o.CreateObjectList(It.IsAny<IList<IDev2Definition>>()));
-
-            Assert.AreEqual(2, errorsFound.FetchErrors().Count);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
-        public void EnvironmentOutputMappingManager_UpdatePreviousEnvironment()
+        [Owner("Nkosinathi Sangweni")]
+        public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenValidArgs_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
             var manager = new EnvironmentOutputMappingManager();
@@ -176,8 +45,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
+        [Owner("Nkosinathi Sangweni")]
         public void UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings_GivenEnvHasErrors_ShouldAddErrorsToResultTo()
         {
             //---------------Set up test pack-------------------
@@ -202,8 +70,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
+        [Owner("Nkosinathi Sangweni")]
         public void EvalAssignRecordSets_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -234,8 +101,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
         public void EvalAssignScalars_GivenRecordsetWithoutItems_ShouldEvaluate()
         {
             //---------------Set up test pack-------------------
@@ -252,8 +117,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
+        [Owner("Nkosinathi Sangweni")]
         public void EvalAssignScalars_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
@@ -281,8 +145,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory("EnvironmentOutputMappingManager")]
+        [Owner("Nkosinathi Sangweni")]
         public void EvalAssignComplexObjects_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------

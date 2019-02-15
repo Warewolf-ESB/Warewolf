@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,6 +23,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     /// Summary description for PluginServiceExecutionFactory
     /// </summary>
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class PluginServiceExecutionFactoryTest
     {
         /// <summary>
@@ -32,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public TestContext TestContext { get; set; }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         public void PluginRuntimeHandler_GetNamespaces_WhenValidDll_ExpectNamespaces()
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         public void PluginRuntimeHandler_GetNamespacesWithJsonObjects_WhenValidDll_ExpectNamespaces()
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -76,7 +77,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             PluginServiceExecutionFactory.GetNamespaces(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetNamespaces")]
         [ExpectedException(typeof(NullReferenceException))]
@@ -87,7 +88,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]
         public void PluginRuntimeHandler_GetMethods_WhenValidDll_ExpectValidResults()
@@ -104,7 +105,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]
         public void PluginRuntimeHandler_GetConstructors_WhenValidDll_ExpectValidResults()
@@ -121,7 +122,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDll_ExpectValidResults()
@@ -138,7 +139,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginServiceExecutionFactory_GetMethods")]
         public void PluginRuntimeHandler_GetMethodsWithReturns_WhenValidDllMethodIsVoid_ExpectValidResultsWithVoidMethod()
@@ -156,7 +157,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServiceExecutionFactory_InvokePlugin")]
         public void PluginRuntimeHandler_InvokePlugin_WhenValidDll_ExpectValidResults()

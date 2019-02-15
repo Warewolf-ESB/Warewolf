@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_WhenOldSecureConfigExist_MigratesAdministratorsToWarewolfAdministrators_ExpectSuccessfulMigration()
@@ -94,7 +94,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].Administrator);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithNoGuestPermission_ShouldHaveExistingPermissionsAndGuest()
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(new TimeSpan(0, 10, 0), readSecuritySettings.CacheTimeout);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithGuestPermission_ShouldHaveExistingPermissions()
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(new TimeSpan(0, 10, 0), readSecuritySettings.CacheTimeout);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_ReturnsDefaultPermissions()
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_DecryptThrowsException_ReturnsDefaultPermissions()
@@ -286,7 +286,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region HandlesType
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SecurityRead_HandlesType_ReturnsSecurityReadService()
         {
             var esb = new SecurityRead();
@@ -298,7 +298,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region CreateServiceEntry
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SecurityReadCreateServiceEntryExpectedReturnsDynamicService()
         {
             var esb = new SecurityRead();
@@ -315,7 +315,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -329,7 +329,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -343,7 +343,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_Given_Config_data()

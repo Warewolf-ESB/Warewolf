@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ namespace Dev2.Tests.Runtime.Security
     {
         
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_Instance")]
         public void ServerAuthorizationService_Instance_Singleton()
@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreSame(instance1, instance2);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_Constructor")]
         public void ServerAuthorizationService_Constructor_PermissionsChangedEvent_ClearsCachedRequests()
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(0, authorizationService.CachedRequestCount);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsTrue()
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.IsTrue(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndPayloadFetch_AuthorizationCalculatedAndNotCachedIsTrue()
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.IsTrue(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedNoResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.IsFalse(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndNotHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
@@ -220,7 +220,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.IsFalse(result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
@@ -247,7 +247,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
@@ -276,7 +276,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_TimedOutPeriodExpired_ShouldNotGetFromCache()
@@ -304,7 +304,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_WithinTimedOutPeriod_ShouldGetFromCache()
@@ -331,7 +331,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_WebInvokeService_CorrectAuthorizations()
@@ -360,7 +360,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_WebGetXXX_CorrectAuthorizations()
@@ -390,7 +390,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
@@ -409,7 +409,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_HubConnect_CorrectAuthorizations()
@@ -425,7 +425,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         public void ServerAuthorizationService_IsAuthorized_EsbXXX_CorrectAuthorizations()
@@ -513,7 +513,7 @@ namespace Dev2.Tests.Runtime.Security
                 authorizationRequest.UserIsInRole, allowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("ServerAuthorizationService_IsAuthorized")]
         [ExpectedException(typeof(ArgumentNullException))]

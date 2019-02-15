@@ -6,7 +6,7 @@ using Warewolf.UI.Tests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasse
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using System.IO;
 using System.Reflection;
 

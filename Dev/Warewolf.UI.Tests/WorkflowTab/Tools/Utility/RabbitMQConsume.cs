@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.RabbitMQSource.RabbitMQSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using System.IO;
 using System.Reflection;
 

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using System.Reflection;
 using System.IO;
 
