@@ -10,7 +10,6 @@
 
 using Dev2.Data.Interfaces;
 using Dev2.Data.PathOperations;
-using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -45,25 +44,6 @@ namespace Dev2.Data.Tests.PathOperations
             var doLogOn = ValidateAuthorization.RequiresAuth(mockActivityIOPath.Object, mockDev2LogonProvider.Object);
             //--------------------------Assert---------------------------
             Assert.IsNull(doLogOn);
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(ValidateAuthorization))]
-        public void ValidateAuthorization_RequiresAuth_safeToken_IsNotNull_ExpectTrue()
-        {
-            //--------------------------Arrange--------------------------
-            var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
-            var mockActivityIOPath = new Mock<IActivityIOPath>();
-            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
-
-            //mockWindowsImpersonationContext.Setup(o => o).Returns();
-            mockDev2LogonProvider.Setup(o => o.DoLogon(It.IsAny<IActivityIOPath>())).Returns(new SafeTokenHandle());
-            mockActivityIOPath.Setup(o => o.Username).Returns("TestUsername");
-            mockActivityIOPath.Setup(o => o.Path).Returns("TestPath");
-            //--------------------------Act------------------------------
-            var list =  ValidateAuthorization.RequiresAuth(mockActivityIOPath.Object, mockDev2LogonProvider.Object);
-            //--------------------------Assert---------------------------
         }
     }
 }
