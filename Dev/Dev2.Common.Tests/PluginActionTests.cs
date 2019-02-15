@@ -307,5 +307,43 @@ namespace Dev2.Common.Tests
 
             Assert.AreEqual(0, hashCode);
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(PluginAction))]
+        public void PluginAction_OnPropertyChanged()
+        {
+            bool called = false;
+            var action = new TestPluginAction();
+            action.PropertyChanged += (s, e) => { called = true; };
+
+            Assert.IsFalse(called);
+
+            action.TestOnPropertyChanged();
+
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(PluginAction))]
+        public void PluginAction_OnPropertyChanged_Null_DoesNotThrow()
+        {
+            bool called = false;
+            var action = new TestPluginAction();
+
+            Assert.IsFalse(called);
+
+            action.TestOnPropertyChanged();
+        }
+
+        class TestPluginAction : PluginAction
+        {
+            public void TestOnPropertyChanged()
+            {
+                OnPropertyChanged("SomeProperty");
+            }
+        }
+
     }
 }
