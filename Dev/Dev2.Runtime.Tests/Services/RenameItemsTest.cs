@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
     
     public class RenameItemsTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RenameItem_HandlesType")]
         public void RenameItem_HandlesType_ExpectName()
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RenameItemService_Execute")]
         public void RenameItem_Execute_NullValues_ErrorResult()
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RenameItemService_Execute")]
         public void RenameItem_Execute_ItemToRenameNotInValues_ErrorResult()
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RenameItemService_Execute")]
         public void RenameItem_Execute_NewNameNotInDictionary_ErrorResult()
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RenameItemervice_Execute")]
         public void RenameItem_Execute_ItemToRenameNotServerExplorerItem_ErrorResult()
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RenameItem_Execute")]
         public void RenameItem_Execute_ExpectRename()
@@ -168,7 +168,7 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("RenameItem_HandlesType")]
         public void RenameItem_CreateServiceEntry_ExpectProperlyFormedDynamicService()

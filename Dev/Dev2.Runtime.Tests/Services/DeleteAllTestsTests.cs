@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DeleteAllTestsTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetAuthorizationContextForService_Returns_Contribute()
         {
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, authorizationContextForService);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void CreateServiceEntry_Returns_New_Dynamic_Service_DeleteAllTestsService()
         {
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(handleType));
             Assert.AreEqual(handleType, dynamicService.Name);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenEmptyArgs_Returns_EmptyGuid()
         {
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(Guid.Empty, resourceID);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenSomeArgs_Returns_Id()
         {
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(resId, resourceID);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Execute_GivenNoArgs_Exception()
         {
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(deserializedResults.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Execute_GivenSomeArgs_Returns_Id()
         {

@@ -29,6 +29,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Runtime.ESB.Control
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class EsbServiceInvokerTests
     {
         [ClassInitialize]
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             pCounter.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(new EmptyCounter());
             CustomContainer.Register(pCounter.Object);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OnConstruction_ShouldNotThrowException()
         {
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(invoker, "Cannot create new EsbServiceInvoker object.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DispatchDebugErrors_GivenObjects_ShouldWritesCorrectly()
         {
@@ -97,7 +98,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.VerifyGet(o => o.ClientID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeFalse_ShouldNotThrowException()
         {
@@ -115,7 +116,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(executionContainer);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNullService_ShouldReturnNull()
         {
@@ -140,7 +141,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNull(executionContainer);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_ShouldAddToCache()
         {
@@ -184,7 +185,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             locater.VerifyAll();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_IsTestExecution_ShouldAddToCache()
         {
@@ -229,7 +230,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             locater.VerifyAll();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsInternalServiceService_ShouldCorrectServiceInContainer()
         {
@@ -273,7 +274,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsTrue(condition);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
@@ -325,7 +326,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsRemoteService_ShouldCorrectServiceInContainer()
         {
@@ -385,7 +386,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsNotLocalInvoke_ShouldReturnRemoteExecutionContainer()
         {
@@ -419,7 +420,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
@@ -452,7 +453,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenServiceNameAndEmptyId_ShouldFindByName()
         {
@@ -486,7 +487,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenIsTestExecutionServiceNameAndEmptyId_ShouldFindByNameInLocalhost()
         {
@@ -539,7 +540,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(0, serviceTestModelTO.Result.DebugForTest.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenIsTestExecution_ShouldResetTheActionTypeAfterTestExecution()
         {
@@ -584,7 +585,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(enActionType.Workflow, serviceAction.ActionType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenIsFromWebServerNotWorFlow_ShouldThrowException()
         {
@@ -632,7 +633,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser, errorResultTO.FetchErrors().Single());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenInvalidAction_ShouldThrowException()
         {
@@ -680,7 +681,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(string.Format(ErrorResource.MalformedService, Guid.Empty), errorResultTO.FetchErrors().Single());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Dispose_GivenIsNew_ShouldPassThrough()
         {
@@ -703,7 +704,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Test Result -----------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_masterDataListId_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
@@ -756,7 +757,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetService_GivenThrowsExc_ShouldReturnNull()
         {
@@ -804,7 +805,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Test Result -----------------------
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetService_GivenEmptyGuid_ShouldFindByName()
         {
@@ -855,7 +856,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetService_GivenGuid_ShouldFindByResourceId()
         {
@@ -906,7 +907,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Invoke_GivenHasErrors_ShouldReturnResult()
         {

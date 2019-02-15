@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Responses
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class StringResponseWriterTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -50,7 +51,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Constructor")]
         [ExpectedException(typeof(FormatException))]
@@ -64,7 +65,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Write")]
         public void StringResponseWriter_Write_WebServerContext_WritesContent()
@@ -89,7 +90,7 @@ namespace Dev2.Tests.Runtime.WebServer.Responses
             Assert.AreEqual(NewContent, task.Result);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StringResponseWriter_Write")]
         public void StringResponseWriter_Write_LargeContentWebServerContext_WritesContentAndUpdateContentDisposition()

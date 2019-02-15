@@ -10,9 +10,10 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class WebServiceContainerTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void WebServiceContainer_GivenGivenServiceExec_ShouldConstruct()
         {
@@ -33,7 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Test Result -----------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenValidArgs_ShouldExecuteCorrectly()
         {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UI.Tests

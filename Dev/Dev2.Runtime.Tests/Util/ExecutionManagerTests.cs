@@ -8,7 +8,7 @@ namespace Dev2.Tests.Runtime.Util
     [TestClass]
     public class ExecutionManagerTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_Instance")]
         public void ExecutionManager_Instance_Accessed_ShouldHaveAllDefaults()
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.Util
             return new ExecutionManager();
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_Instance")]
         public void ExecutionManager_StartRefreshing_ShouldSetIsRefreshingTrue()
@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.IsTrue(executionManager.IsRefreshing);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_Instance")]
         public void ExecutionManager_StopRefreshing_ShouldSetIsRefreshingTrue()
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.IsTrue(executionManager.IsRefreshing);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_AddExecution")]
         public void ExecutionManager_AddExecution_ShouldIncreaseExecutionsCounts()
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Util
 
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_AddExecution")]
         public void ExecutionManager_CompleteExecution_ShouldDecreaseExecutionsCounts()
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(0, updatedCurrentExecutionsValue);
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_StopExecution")]
         public void ExecutionManager_StopRefresh_AfterWaitHandlesSet_ShouldSetToFalse()

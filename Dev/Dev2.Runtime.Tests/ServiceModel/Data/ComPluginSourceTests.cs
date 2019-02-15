@@ -7,12 +7,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class ComPluginSourceTests
     {
   
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ComPluginSourceContructorWithDefaultExpectedInitializesProperties()
         {
             var source = new ComPluginSource();
@@ -20,14 +21,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("ComPluginSource", source.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ComPluginSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             var source = new ComPluginSource(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ComPluginSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region ToXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ComPluginSourceToXmlExpectedSerializesProperties()
         {
             var expected = new ComPluginSource
@@ -59,7 +60,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected.Is32Bit, actual.Is32Bit);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ComPluginSourceToXmlWithNullPropertiesExpectedSerializesPropertiesAsEmpty()
         {
             var expected = new ComPluginSource

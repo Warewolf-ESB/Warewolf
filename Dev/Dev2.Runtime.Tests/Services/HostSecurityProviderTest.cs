@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,14 +54,14 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Ctor
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_ConstructorWithNull_Expected_ThrowsArgumentNullException()
         {
             var provider = new HostSecurityProviderImpl(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_ConstructorWithDefaultConfig_Expected_ReturnsDefaultValues()
         {
             var config = CreateConfig();
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region SignXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_SignXmlWithNull_Expected_ThrowsArgumentNullException()
         {
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             provider.SignXml(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(XmlException))]
         public void HostSecurityProvider_SignXmlWithInvalidXml_Expected_ThrowsXmlException()
         {
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime.Services
             provider.SignXml(new StringBuilder("xxx"));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_SignXmlWithSignedXml_Expected_OneSignatureAdded()
         {
             var config = CreateConfig();
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(0,signatures.Count());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_SignXmlWithServerKey_Expected_SignatureAdded()
         {
             var config = CreateConfig();
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreNotEqual(expected, resultXml);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_SignXmlWithSystemKey_Expected_SignatureAdded()
         {
             var config = CreateConfig(true);
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreNotEqual(expected, resultXml);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_SignXmlWithoutServerID_Expected_ServerIDAdded()
         {
             var config = CreateConfig();
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(config.Object.ServerID.ToString(), serverID.Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_SignXmlWithServerID_Expected_ServerIDOverwritten()
         {
             var config = CreateConfig(
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region VerifyXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HostSecurityProvider_VerifyXmlWithNull_Expected_ThrowsArgumentNullException()
         {
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_VerifyXmlWithInvalidServerID_Expected_ReturnsFalse()
         {
             var config = CreateConfig();
@@ -201,7 +201,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(verified);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_VerifyXmlWithInvalidKeys_Expected_ReturnsFalse()
         {
             var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider());
@@ -211,7 +211,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(verified);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_VerifyXmlWithValidKeys_Expected_ReturnsTrue()
         {
             var config = CreateConfig();
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(verified);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_VerifyXmlWhichIsInternallySignedWithValidKeys_Expected_ReturnsTrue()
         {
             var config = CreateConfig();
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(verified);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void HostSecurityProvider_VerifyXmlWithService_Expected_ReturnsTrue()
         {
             var xml = XmlResource.Fetch("Calculate_RecordSet_Subtract").ToString();
