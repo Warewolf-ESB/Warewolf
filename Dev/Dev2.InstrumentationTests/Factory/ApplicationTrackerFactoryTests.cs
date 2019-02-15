@@ -1,10 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Instrumentation.Factory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dev2.Instrumentation.Factory.Tests
 {
@@ -12,10 +6,14 @@ namespace Dev2.Instrumentation.Factory.Tests
     public class ApplicationTrackerFactoryTests
     {
         [TestMethod()]
-        public void GetApplicationTrackerProviderTest()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ApplicationTrackerFactory))]
+        public void ApplicationTrackerFactory_GetApplicationTrackerProviderTest()
         {
+            Assert.IsNull(ApplicationTrackerFactory.ApplicationTracker);
             IApplicationTracker applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             Assert.IsNotNull(applicationTracker, "Unable to get RevulyticsTracker");
-        }  
+            Assert.IsNotNull(ApplicationTrackerFactory.ApplicationTracker);
+        }
     }
 }
