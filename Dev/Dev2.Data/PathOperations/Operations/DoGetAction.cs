@@ -36,7 +36,6 @@ namespace Dev2.Data.PathOperations.Operations
             _fileWrapper = fileWrapper;
             _path = path;
             _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
-
         }
         public override Stream ExecuteOperation()
         {
@@ -50,7 +49,6 @@ namespace Dev2.Data.PathOperations.Operations
             }
             throw new Exception(string.Format(ErrorResource.FileNotFound, _path.Path));
         }
-
         public override Stream ExecuteOperationWithAuth()
         {
             using (_impersonatedUser)
@@ -58,7 +56,6 @@ namespace Dev2.Data.PathOperations.Operations
                 try
                 {
                     return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
-
                 }
                 catch (Exception exception)
                 {
