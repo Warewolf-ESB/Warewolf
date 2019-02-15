@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         {
             var mockModel = new TestExchangeServiceModel(isemptySource);
             var resourceMock = new Mock<IResourceModel>();
-            resourceMock.Setup(res => res.DataList).Returns("<DataList></DataList>");
+            resourceMock.Setup(res => res.DataList).Returns("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>");
             var dataListVM = new Mock<IDataListViewModel>();
             dataListVM.Setup(vm => vm.Resource).Returns(resourceMock.Object);
             DataListSingleton.Instance.ActiveDataList = dataListVM.Object;
@@ -876,7 +876,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Assert Results-------------------------
             if (string.IsNullOrEmpty(expectedErrorMessage))
             {
-                Assert.IsNull(viewModel.Errors, string.Join("\n", viewModel.Errors.Select(error => error.Message)));
+                Assert.IsNull(viewModel.Errors, string.Join("\n", viewModel.Errors?.Select(error => error.Message)??new List<string>()));
             }
             else
             {
