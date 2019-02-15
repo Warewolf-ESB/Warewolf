@@ -112,6 +112,7 @@
     <Compile Include="EqualityFactoryTests.cs" />
     <Compile Include="PluginActionTests.cs" />
     <Compile Include="FileListingTests.cs" />
+    <Compile Include="PluginConstructorTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="ObservableNameValueTests.cs" />
