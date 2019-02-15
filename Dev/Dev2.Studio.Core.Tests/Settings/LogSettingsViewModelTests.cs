@@ -12,6 +12,7 @@ using Moq;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
+    [TestCategory("Studio Settings Core")]
     public class LogSettingsViewModelTests
     {
         [TestMethod]

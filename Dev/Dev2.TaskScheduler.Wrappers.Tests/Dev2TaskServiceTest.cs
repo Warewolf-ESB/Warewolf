@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             _folder = _service.RootFolder.SubFolders.All(a => a.Name != "WarewolfTestFolder") ? _service.RootFolder.CreateFolder("WarewolfTestFolder") : _service.GetFolder("WarewolfTestFolder");
             var task = _service.NewTask();
             task.Actions.Add(new ExecAction("Notepad.exe"));
-            _folder.RegisterTaskDefinition("TestTask", task);
+            _folder.RegisterTaskDefinition("TestTask", task, TaskCreation.Create, "LocalSchedulerAdmin", "987Sched#@!", TaskLogonType.None);
 
         }
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DeleteItemsTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeleteItem_HandlesType")]
         public void DeleteItem_HandlesType_ExpectName()
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("DeleteItemService", deleteItem.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeleteItemService_Execute")]
         public void DeleteItem_Execute_NullValues_ErrorResult()
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeleteItemService_Execute")]
         public void DeleteItem_Execute_ItemToDeleteNotInValues_ErrorResult()
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DeleteItemService_Execute")]
         public void DeleteItem_Execute_ItemToDeleteNotServerExplorerItem_ErrorResult()
@@ -120,7 +120,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("deleteItem_Execute")]
         public void DeleteItem_Execute_ExpectName()
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()));
         }
         
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("deleteItem_CreateEntry")]
         public void DeleteItem_CreateServiceEntry_ExpectProperlyFormedDynamicService()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.Hosting
     public class ExplorerItemFactoryTests
     {
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_Constructor")]
         public void ExplorerItemFactory_Constructor_AssertCatalogueSetup()
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(catalogue.Object, explorerItemFactory.Catalogue);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_BuildRootNode")]
         public void ExplorerItemFactory_BuildRootNode_AssertRootNode_Correct()
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(Permissions.View, root.Permissions);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItem_NoResources_ExpectARoot()
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItem_FirstGen_ExpectFirstGenChildren()
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItem_SecondtGen_ExpectSecondGenChildren()
@@ -177,7 +177,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItem_MultipleGenerations_ExpectSecondAndFirstGenChildren()
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_FirstGen_ExpectFirstGenChildren()
@@ -244,7 +244,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_SecondtGen_ExpectSecondGenChildren()
@@ -275,7 +275,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(4, item.Children[0].Children.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_ReservedServicesNotReturned_SecondtGen_ExpectSecondGenChildren()
@@ -314,7 +314,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_MultipleGenerations_ExpectSecondAndFirstGenChildren()
@@ -348,7 +348,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_Folders_ExpectTwoChildren()
@@ -383,7 +383,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemFactory_CreateExplorerItem")]
         public void ExplorerItemFactory_CreateExplorerItemWithType_Authorisation_ExpectFirstGenChildrenWithPermissions()
@@ -423,7 +423,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExplorerItemFactory_GetDuplicatedResourcesPaths_ShouldReturnDuplicateStringMessage()
         {
@@ -453,7 +453,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(string.Equals(expectedResults, results.Any().ToString()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExplorerItemFactory_GivenEmptyResourceDir_GetDuplicatedResourcesPaths_ShouldReturnEmptyString()
         {

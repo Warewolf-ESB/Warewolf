@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,6 +19,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class DatabaseServiceContainerTests
     {
         #region ClassInitialize
@@ -32,8 +33,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region Execute
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
-        [TestCategory("MSSql")]
+        [TestMethod]
         public void DatabaseServiceContainer_UnitTest_ExecuteWhereHasDatabaseServiceExecution_Guid()
         {
             //------------Setup for test--------------------------
