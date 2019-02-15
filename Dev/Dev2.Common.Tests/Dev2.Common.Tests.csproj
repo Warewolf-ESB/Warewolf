@@ -115,6 +115,7 @@
     <Compile Include="PluginConstructorTests.cs" />
     <Compile Include="DllListingTests.cs" />
     <Compile Include="ApisJsonTests.cs" />
+    <Compile Include="Utils\JSONUtilsTests.cs" />
     <Compile Include="WcfActionTests.cs" />
     <Compile Include="NameValueTests.cs" />
     <Compile Include="ObservableNameValueTests.cs" />
@@ -188,6 +189,7 @@
     <EmbeddedResource Include="Json\ForEachWithHelloWorldTest.json" />
     <EmbeddedResource Include="Json\AllTools.json" />
     <None Include="App.config" />
+    <EmbeddedResource Include="Json\Test.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
