@@ -8,11 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.IO;
 using System.Reflection;
 
 namespace Dev2.Server.Tests
@@ -278,7 +280,8 @@ namespace Dev2.Server.Tests
             var mockResourceCatalogFactory = new Mock<IResourceCatalogFactory>();
             var mockDirectoryHelper = new Mock<IDirectoryHelper>();
 
-            mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(false);
+            mockDirectory.Setup(o => o.Exists(EnvironmentVariables.TestPath)).Returns(false);
+            mockDirectory.Setup(o => o.Exists(Path.Combine(EnvironmentVariables.ApplicationPath, "Tests"))).Returns(true);
             mockResourceCatalogFactory.Setup(o => o.New()).Returns(mockResourceCatalog.Object);
             //------------------Act-------------------
             var loadResources = new LoadResources(resourceDirectory, mockWriter.Object, mockDirectory.Object, mockResourceCatalogFactory.Object, mockDirectoryHelper.Object);

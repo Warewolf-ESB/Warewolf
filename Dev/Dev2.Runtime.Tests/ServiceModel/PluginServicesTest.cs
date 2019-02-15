@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,12 +22,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // BUG 9500 - 2013.05.31 - TWR - Created
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class PluginServicesTest
     {
 
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
@@ -47,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region DeserializeService
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PluginServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             services.DeserializeService(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesDeserializeServiceWithInvalidJsonExpectedReturnsNewPluginService()
         {
             var services = new PluginServicesMock();
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesDeserializeServiceWithValidJsonExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("PluginService");
@@ -75,7 +76,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             PluginServiceTests.VerifyEmbeddedPluginService(result as PluginService);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
             var services = new PluginServicesMock();
@@ -84,7 +85,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesDeserializeServiceWithValidXmlExpectedReturnsPluginService()
         {
             var xml = XmlResource.Fetch("PluginService");
@@ -99,7 +100,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Namespaces
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesNamespacesWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -107,7 +108,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesNamespacesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -115,7 +116,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesNamespacesWithValidArgsExpectedReturnsList()
         {
             var source = CreatePluginSource();
@@ -136,7 +137,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Methods
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesMethodsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -144,7 +145,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PluginServicesMethodsWithReturnsNullArgsExpectedReturnsEmptyList()
         {
@@ -153,7 +154,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -161,7 +162,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PluginServicesMethodsWithReturnsWithInvalidArgsExpectedReturnsEmptyList()
         {
@@ -170,7 +171,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesMethodsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();
@@ -184,7 +185,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(9, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PluginServicesMethodsWithReturnsWithValidArgsExpectedReturnsList()
         {
@@ -203,7 +204,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Constuctors
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesConstuctorsWithNullArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -211,7 +212,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesConstuctorsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
@@ -219,7 +220,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(0, result.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesConstructorsWithValidArgsExpectedReturnsList()
         {
             var service = CreatePluginService();
@@ -237,7 +238,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Test
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningBool_ExpectValidPaths()
@@ -263,7 +264,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "False");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningDouble_ExpectValidPaths()
@@ -289,7 +290,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningPlainString_ExpectValidPaths()
@@ -315,7 +316,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Hello__COMMA__ bob");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningXmlString_ExpectValidPaths()
@@ -341,7 +342,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Howdy__COMMA__");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
@@ -367,7 +368,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Howzit__COMMA__");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------
@@ -378,7 +379,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsTrue(result[0].HasErrors);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginServicesTestWithInvalidArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------

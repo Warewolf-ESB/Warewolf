@@ -26,6 +26,7 @@ using Warewolf.Studio.ViewModels;
 namespace Dev2.Core.Tests.Settings
 {
     [TestClass]
+    [TestCategory("Studio Settings Core")]
     public class PerfCounterViewModelTests
     {
         Mock<IServer> _mockEnvironment;
@@ -61,6 +62,7 @@ namespace Dev2.Core.Tests.Settings
             var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
             ServerRepository.Instance.ActiveServer = activeServer;
             var counters = new PrivateType(typeof(PerfcounterViewModel));
+            CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
             var invokeStatic = counters.InvokeStatic("GetEnvironment");

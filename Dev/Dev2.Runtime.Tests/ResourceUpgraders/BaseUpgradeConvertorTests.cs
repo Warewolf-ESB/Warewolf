@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
     [TestClass]
     public class BaseUpgradeConvertorTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         public void BaseResourceUpgrader_Upgrade_HasMatchin_ExpectReplaceAlt()
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BaseResourceUpgrader_Upgrade")]
         public void BaseResourceUpgrader_Upgrade_NoMatch_NoReplace()

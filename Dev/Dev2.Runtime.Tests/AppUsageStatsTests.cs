@@ -1,7 +1,7 @@
-﻿using System;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Configuration;
 
 namespace Dev2.Tests.Runtime
 {
@@ -11,7 +11,7 @@ namespace Dev2.Tests.Runtime
         /// <summary>
         /// This test checks that CollectUsageStats is set to False on develop
         /// </summary>
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
         public void RevulyticsCollectUsageStatsForServerIsFalseTest()
@@ -19,14 +19,26 @@ namespace Dev2.Tests.Runtime
             Assert.AreEqual(false, AppUsageStats.CollectUsageStats);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("RevulyticsCollectUsageStats")]
         public void RevulyticsCollectUsageStats_WhenNoConfigSetting_ShouldUseGlobalConstantValue()
         {
-            GlobalConstants.CollectUsageStats = "True";
-            Assert.AreEqual(true, AppUsageStats.CollectUsageStats);
-            GlobalConstants.CollectUsageStats = null;
+            var oldValue = ConfigurationManager.AppSettings["CollectUsageStats"];
+            try
+            {
+                //setup for test
+                ConfigurationManager.AppSettings["CollectUsageStats"] = null;
+                GlobalConstants.CollectUsageStats = "True";
+                //test
+                Assert.AreEqual(true, AppUsageStats.CollectUsageStats);
+            }
+            finally
+            {
+                //cleanup
+                ConfigurationManager.AppSettings["CollectUsageStats"] = oldValue;
+                GlobalConstants.CollectUsageStats = null;
+            }
         }
     }
 }

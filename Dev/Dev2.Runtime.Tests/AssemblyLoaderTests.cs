@@ -14,7 +14,7 @@ namespace Dev2.Tests.Runtime
     [TestClass]
     public class AssemblyLoaderTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Constructor_InitializesDefaults()
         {
@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsNotNull(assemblyLoader);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Constructor_Dependency_InitializesDefaults()
         {
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime
             //---------------Test Result -----------------------
             Assert.IsNotNull(assemblyLoader);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenReturnsNull_ShouldNotLoadAssembly()
         {
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.Load(It.IsAny<string>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenDirtyPath_ShouldUseCleanPath()
         {
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Runtime
             return "GAC:" + name + ", processorArchitecture=x86";
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenDirtyPath_ShouldCleanPathAndLoadAssembly()
         {
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.Load(cleanName));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenDirtyPath_ShouldLoadReferencedAssemblies()
         {
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.AtLeast(2));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenLoadsCorreclty_ShouldAddAssembliesTo_loadedAssemblies()
         {
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime
        
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssembly_GivenLoadsCorreclty_ShouldAddAssembliesTo_loadedAssemblies()
         {
@@ -223,7 +223,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.Load(a1));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(BadImageFormatException))]
         public void TryLoadAssemblyGac_GivenThrowsBadFormat_Shouldrethrow()
@@ -246,7 +246,7 @@ namespace Dev2.Tests.Runtime
 
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssembly_GivenReturnsNull_ShouldNotLoadAssembly()
         {
@@ -262,7 +262,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(BadImageFormatException))]
         public void TryLoadAssembly_GivenThrowsBadFormat_Shouldrethrow()
@@ -281,7 +281,7 @@ namespace Dev2.Tests.Runtime
             //---------------Test Result -----------------------
 
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssembly_GivenThrowsExceptionForPathDll_ShouldThrowLoadUnsafely()
         {
@@ -303,7 +303,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.LoadFrom(location));
             mock.Verify(wrapper => wrapper.UnsafeLoadFrom(location));
         }
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssembly_GivenUnsafeLoadFromThrows_ShouldGetAssmbly()
         {
@@ -329,7 +329,7 @@ namespace Dev2.Tests.Runtime
             mock.Verify(wrapper => wrapper.GetAssembly(type));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(BadImageFormatException))]
         public void TryLoadAssembly_GivenUnsafeLoadFromThrowsBadFormat_ShouldRethrow()
