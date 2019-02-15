@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,9 +17,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.WebServer.Responses
 {
     [TestClass]
+    [TestCategory("Runtime WebServer")]
     public class StatusResponseWriterTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("StatusResponseWriter_Write")]
         public void StatusResponseWriter_Write_WebServerContext_WritesTheStatus()

@@ -13,7 +13,7 @@ namespace Dev2.Tests.Runtime.Search
     [TestClass]
     public class VariableListSearcherTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullResourceCatalog_ExpectException()
         {
@@ -21,14 +21,14 @@ namespace Dev2.Tests.Runtime.Search
             Assert.IsNull(variableListSearcher);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void Constructor_ResourceCatalogTestCatalog_ExpectNoException()
         {
             var variableListSearcher = new VariableListSearcher(new Mock<IResourceCatalog>().Object);
             Assert.IsNotNull(variableListSearcher);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenScalarNameHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Search
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenScalarNameDoesNotHaveValue_ShouldNotReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Search
             Assert.AreEqual(0, searchResults.Count);            
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenRecsetNameHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.Search
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenObjectNameHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -193,7 +193,7 @@ namespace Dev2.Tests.Runtime.Search
             
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void GetSearchResults_WhenMultipleMatches_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
