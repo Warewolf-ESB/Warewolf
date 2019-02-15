@@ -90,7 +90,6 @@ namespace Dev2.Data.Tests.PathOperations
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockFileWrapper = new Mock<IFile>();
             var mockFilePath = new Mock<IFilePath>();
-            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
 
             mockFilePath.Setup(o => o.IsPathRooted(It.IsAny<string>())).Returns(true);
 
