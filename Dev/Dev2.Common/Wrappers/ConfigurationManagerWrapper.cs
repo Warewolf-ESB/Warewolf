@@ -1,10 +1,11 @@
 ﻿using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Wrappers;
 using Newtonsoft.Json;
-using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Wrappers
 {
+    [ExcludeFromCodeCoverage]
     class ConfigurationManagerWrapper : IConfigurationManager
     {
         private readonly object _settingLock = new object();
