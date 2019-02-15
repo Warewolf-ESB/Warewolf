@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.Services
          [TestClass]
     public class GetServerVersionTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
                 Assert.AreEqual("GetServerVersion", getVersions.HandlesType());
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_Execute")]
             public void GetVersions_Execute_NullValuesParameter_ErrorResult()
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Runtime.Services
                 Assert.IsNotNull(result);
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_Execute_ExpectName()
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Services
                 Assert.AreEqual(serializer.Deserialize<IList<IExplorerItem>>(ax.ToString())[0].ResourceId, item.ResourceId);
             }
 
-            [TestMethod, DeploymentItem("EnableDocker.txt")]
+            [TestMethod]
             [Owner("Leon Rajindrapersadh")]
             [TestCategory("GetVersions_HandlesType")]
             public void GetVersions_CreateServiceEntry_ExpectProperlyFormedDynamicService()

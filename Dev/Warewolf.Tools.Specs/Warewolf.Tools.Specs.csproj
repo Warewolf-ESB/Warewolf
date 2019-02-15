@@ -255,7 +255,7 @@
       <DependentUpon>Move.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
@@ -639,7 +639,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Read File1.feature.cs</LastGenOutput>
+      <LastGenOutput>Read File.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

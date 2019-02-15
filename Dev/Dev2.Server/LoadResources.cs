@@ -151,7 +151,7 @@ namespace Dev2
         public void MigrateOldTests()
         {
             var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
-            if (!_directory.Exists(EnvironmentVariables.TestPath) && !_directory.Exists(serverBinTests))
+            if (!_directory.Exists(EnvironmentVariables.TestPath) && _directory.Exists(serverBinTests))
             {
                 var dir = _directoryHelper;
                 dir.Copy(serverBinTests, EnvironmentVariables.TestPath, true);

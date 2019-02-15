@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [TestCategory("Studio Worksurfaces Core")]
     public class WorksurfaceKeyFactoryTests
     {
         [TestMethod]

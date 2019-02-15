@@ -117,7 +117,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Execute Test ----------------------
             var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, expressionIntoParts.Count);
+            Assert.AreEqual(2, expressionIntoParts.Count);
 
             Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
             Assert.AreEqual("", expressionIntoParts[0].Message);
@@ -125,6 +125,13 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
             Assert.AreEqual("", expressionIntoParts[0].Option.Recordset);
             Assert.AreEqual("", expressionIntoParts[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[1].ErrorCode);
+            Assert.AreEqual("", expressionIntoParts[1].Message);
+            Assert.AreEqual("[[a]]", expressionIntoParts[1].Option.DisplayValue);
+            Assert.AreEqual("a", expressionIntoParts[1].Option.Field);
+            Assert.AreEqual("", expressionIntoParts[1].Option.Recordset);
+            Assert.AreEqual("", expressionIntoParts[1].Option.RecordsetIndex);
         }
 
         [TestMethod]
@@ -142,7 +149,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Execute Test ----------------------
             var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a([[b()]]", datalist);
             //---------------Test Result -----------------------
-            Assert.AreEqual(4, expressionIntoParts.Count);
+            Assert.AreEqual(3, expressionIntoParts.Count);
 
             Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
             Assert.AreEqual("", expressionIntoParts[0].Message);
@@ -153,24 +160,17 @@ namespace Dev2.Data.Tests.Parsers
 
             Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[1].ErrorCode);
             Assert.AreEqual(" / Select a specific row", expressionIntoParts[1].Message);
-            Assert.AreEqual("[[a([[b()]])]]", expressionIntoParts[1].Option.DisplayValue);
+            Assert.AreEqual("[[a([[b(]])]]", expressionIntoParts[1].Option.DisplayValue);
             Assert.AreEqual("", expressionIntoParts[1].Option.Field);
             Assert.AreEqual("a", expressionIntoParts[1].Option.Recordset);
-            Assert.AreEqual("[[b()]]", expressionIntoParts[1].Option.RecordsetIndex);
+            Assert.AreEqual("[[b(]]", expressionIntoParts[1].Option.RecordsetIndex);
 
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[2].ErrorCode);
-            Assert.AreEqual(" / Select a specific row", expressionIntoParts[2].Message);
-            Assert.AreEqual("[[a([[b(]])]]", expressionIntoParts[2].Option.DisplayValue);
+            Assert.AreEqual(enIntellisenseErrorCode.RecordsetNotFound, expressionIntoParts[2].ErrorCode);
+            Assert.AreEqual(" [[b()]] does not exist in your variable list", expressionIntoParts[2].Message);
+            Assert.AreEqual("[[b()]]", expressionIntoParts[2].Option.DisplayValue);
             Assert.AreEqual("", expressionIntoParts[2].Option.Field);
-            Assert.AreEqual("a", expressionIntoParts[2].Option.Recordset);
-            Assert.AreEqual("[[b(]]", expressionIntoParts[2].Option.RecordsetIndex);
-
-            Assert.AreEqual(enIntellisenseErrorCode.RecordsetNotFound, expressionIntoParts[3].ErrorCode);
-            Assert.AreEqual(" [[b()]] does not exist in your variable list", expressionIntoParts[3].Message);
-            Assert.AreEqual("[[b()]]", expressionIntoParts[3].Option.DisplayValue);
-            Assert.AreEqual("", expressionIntoParts[3].Option.Field);
-            Assert.AreEqual("b()", expressionIntoParts[3].Option.Recordset);
-            Assert.AreEqual("", expressionIntoParts[3].Option.RecordsetIndex);
+            Assert.AreEqual("b()", expressionIntoParts[2].Option.Recordset);
+            Assert.AreEqual("", expressionIntoParts[2].Option.RecordsetIndex);
         }
 
         [TestMethod]
@@ -1033,9 +1033,11 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Execute Test ----------------------
             var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, true);
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, expressionIntoParts.Count);
+            Assert.AreEqual(2, expressionIntoParts.Count);
             Assert.AreEqual("[[var]]", expressionIntoParts[0].Option.DisplayValue);
             Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
+            Assert.AreEqual("[[a]]", expressionIntoParts[1].Option.DisplayValue);
+            Assert.AreEqual("a", expressionIntoParts[1].Option.Field);
         }
 
         [TestMethod]
