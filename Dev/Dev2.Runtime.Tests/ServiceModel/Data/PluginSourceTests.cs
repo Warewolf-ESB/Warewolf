@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,13 +20,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class PluginSourceTests
     {
   
 
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginSourceContructorWithDefaultExpectedInitializesProperties()
         {
             var source = new PluginSource();
@@ -34,14 +35,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("PluginSource", source.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PluginSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
             var source = new PluginSource(null);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
             var xml = new XElement("root");
@@ -51,7 +52,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("PluginSource", source.ResourceType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginSourceContructorWithValidXmlExpectedInitializesProperties()
         {
             var xml = XmlResource.Fetch("PluginSource");
@@ -67,7 +68,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region ToXml
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginSourceToXmlExpectedSerializesProperties()
         {
             var expected = new PluginSource
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected.AssemblyName, actual.AssemblyName);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void PluginSourceToXmlWithNullPropertiesExpectedSerializesPropertiesAsEmpty()
         {
             var expected = new PluginSource

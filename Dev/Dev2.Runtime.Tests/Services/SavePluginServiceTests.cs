@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class SavePluginServiceTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_HandlesType")]
         public void SavePluginService_HandlesType_ExpectName()
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("SavePluginService", SavePluginService.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_Execute")]
         public void SavePluginService_Execute_NullValues_ErrorResult()
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_Execute")]
         public void SavePluginService_Execute_ResourceIDNotPresent_ErrorResult()
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_Execute")]
         public void SavePluginService_Execute_ResourceIDNotGuid_ErrorResult()
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_Execute")]
         public void SavePluginService_Execute_TestDefinitionsNotInValues_ErrorResult()
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SavePluginService_Execute")]
         public void SavePluginService_Execute_ItemToDeleteNotListOfServiceTestTO_ErrorResult()
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNoSource_ShouldReturnNoSourceMsg()
         {
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Runtime.Services
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenNullSource_ShouldReturnNullSourceMsg()
         {

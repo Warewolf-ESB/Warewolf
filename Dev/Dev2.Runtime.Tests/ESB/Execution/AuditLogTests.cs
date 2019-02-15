@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
+    [TestCategory("Runtime ESB")]
     public class AuditLogTests
     {
         [TestMethod]

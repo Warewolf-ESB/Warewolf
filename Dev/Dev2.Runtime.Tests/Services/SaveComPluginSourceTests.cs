@@ -19,7 +19,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class SaveComPluginSourceTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SaveComPluginSource_HandlesType")]
         public void SaveComPluginSource_HandlesType_ExpectName()
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("SaveComPluginSource", saveComPluginSource.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SaveComPluginSource_HandlesType")]
         public void SaveComPluginSource_CreateServiceEntry_ExpectActions()
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(dynamicService.Actions);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SaveComPluginSource_Execute")]
         public void SaveComPluginSource_Execute_NullValues_ErrorResult()
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("SaveComPluginSource_Execute")]
         public void SaveComPluginSource_Execute_ResourceIDNotPresent_ErrorResult()
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourceDefination_ShouldSaveNewSourceReturnResourceDefinationMsg()
         {
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime.Services
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourceDefination_GivenExising_ShouldReturnResourceDefinationMsg()
         {
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.Services
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>()));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DllListing_GetHashCode_CorrectlyHashedObject()
         {
             var dllListing = new DllListing
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(-1908201757, dllListing.GetHashCode(), "Cannot get correct hash code for this object.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DllListing_EqualsOperator_WithEqualObjects_AreEqual()
         {
             var firstDllListing = new DllListing { Name = "bravo" };
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(firstDllListing == secondDllListing, "Equals operator doesnt work.");
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DllListing_NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
         {
             var firstDllListing = new DllListing { Name = "bravo" };

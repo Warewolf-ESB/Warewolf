@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchAllTestsTest
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceId()
@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(resId, resourceID);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FetchAllTests_HandlesType")]
         public void FetchTests_HandlesType_ExpectName()
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("FetchAllTests", fetchAllTests.HandlesType());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_NullValues_ErrorResult()
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_ResourceIDNotPresent_ErrorResult()
@@ -106,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_ResourceIDNotGuid_ErrorResult()
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(result.HasError);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("FetchTests_Execute")]
         public void FetchAllTests_Execute_ExpectTestList()

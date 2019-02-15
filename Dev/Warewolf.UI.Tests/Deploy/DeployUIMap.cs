@@ -10,7 +10,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Warewolf.Launcher;
+using Warewolf.Test.Agent;
 using System.IO;
 using System.Reflection;
 

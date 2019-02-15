@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -155,7 +155,7 @@ namespace Dev2.DynamicServices.Test
         #region SyncTo
 
         //Commented out because it was decided that all the local files should be kept
-        //[TestMethod, DeploymentItem("EnableDocker.txt")]
+        //[TestMethod]
         //public void SyncTo_Where_DeleteIsTrue_And_FileDeletedFromSource_Expected_FileDeletedInDestination()
         //{
         //    IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -178,7 +178,7 @@ namespace Dev2.DynamicServices.Test
         //    Assert.IsFalse(destFile.Exists);
         //}
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_DeleteIsFalse_And_FileDeletedFromSource_Expected_FileNotDeletedInDestination()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -198,7 +198,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(destFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_OverrideIsTrue_Expected_FileInDestinationOverridden()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -229,7 +229,7 @@ namespace Dev2.DynamicServices.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_OverrideIsFalse_Expected_FileInDestinationUnchanged()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -262,7 +262,7 @@ namespace Dev2.DynamicServices.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_FilesToIgnoreAreSpecified_Expected_IgnoredFilesArentCopied()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -285,7 +285,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsFalse(destFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_FilesToIgnoreAreSpecified_Expected_IgnoredFilesArentDeleted()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -308,7 +308,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(destFile.Exists);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SyncTo_Where_DestinationDirectoryDoesntExist_Expected_DestinationDirectoryCreated()
         {
             IWorkspace workspaceSource = _testInstance.Get(Guid.NewGuid());
@@ -326,7 +326,7 @@ namespace Dev2.DynamicServices.Test
 
         #region RestoreResources
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_RestoreResourcesWithOneSignedAndOneUnsignedService_Expected_LoadsSignedService()
         {
             // Class initialization copies 2 services one signed, one unsigned.
@@ -341,7 +341,7 @@ namespace Dev2.DynamicServices.Test
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_RestoreResources_Expected_LoadsSource()
         {
             // Class initialization copies 1 source
@@ -353,7 +353,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsNotNull(source);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_RestoreResources_WithSourceWithoutID_Expected_InjectsID()
         {
             // Class initialization copies 1 source
@@ -369,7 +369,7 @@ namespace Dev2.DynamicServices.Test
 
         #region SaveResources
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_SaveResources_WithUnsignedService_Expected_SignsFile()
         {
             var host = _workspace.Host;
@@ -384,7 +384,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(isValid);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_SaveResources_WithSourceWithoutID_Expected_SourceSavedWithID()
         {
             var host = _workspace.Host;
@@ -403,7 +403,7 @@ namespace Dev2.DynamicServices.Test
 
         #region RollbackResources
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_RollbackResourcesWithUnsignedVersion_Expected_DoesNotRollback()
         {
             var host = _workspace.Host;
@@ -411,7 +411,7 @@ namespace Dev2.DynamicServices.Test
             Assert.IsFalse(rolledBack);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void DynamicServicesHost_RollbackResourcesWithSignedVersion_Expected_DoesRollback()
         {
             var host = _workspace.Host;

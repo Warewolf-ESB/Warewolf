@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,11 +20,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class RecordsetTests
     {
         #region CTOR
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void ConstructorWithNoParametersExpectedInitializesListProperties()
         {
             var rs = new Recordset();
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region NewRecord Tests
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void NewRecordExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -54,7 +55,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region SetValue Tests
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SetValueExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -64,14 +65,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("MyTestData", rs.Records[0][0].Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void RecordSet_AddColumn_ShouldAddColumnOnTheRecSet()
         {
             var recordset = new RecordSet { Name = "MyRec" };
             Assert.IsNotNull(recordset);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SetValueWithRecordNotExistiongExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };
@@ -80,7 +81,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("MyTestData", rs.Records[0][0].Value);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         public void SetValueSecondMethodExpectedAddANewRecordToRecordset()
         {
             var rs = new Recordset { Name = "MyRec" };

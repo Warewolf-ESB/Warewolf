@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class DuplicateResourceServiceTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(Guid.Empty, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("DuplicateResourceService", handlesType);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, handlesType.Actions.Count);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenResourcePayLoad_ShouldExctactPayLoad()
         {
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(stringBuilder);
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenMissingDestinationPath_ShouldReturnFailure()
         {
@@ -139,7 +139,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenMissingResourceId_ShouldReturnFailure()
         {
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("ResourceId is required", executeMessage.Message.ToString());
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenCatalogThrowsException_ShouldReturnFailureAndCatalogException()
         {

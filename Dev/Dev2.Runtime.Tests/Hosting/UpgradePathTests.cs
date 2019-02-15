@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,9 +16,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
+    [TestCategory("Runtime Hosting")]
     public class UpgradePathTests
     {
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,7 +35,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
 
@@ -78,7 +79,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsTrue(upgrade.CanUpgrade(XElement.Parse("<a></a>")));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
 
@@ -93,7 +94,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(upgrade.CanUpgrade(XElement.Parse("<a ServerVersion=\"3.4.5.6\"></a>")));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
 
@@ -108,7 +109,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(upgrade.CanUpgrade(XElement.Parse("<a ServerVersion=\"2.0.0.0\"></a>")));
         }
 
-        [TestMethod, DeploymentItem("EnableDocker.txt")]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("UpgradePath_Ctor")]
 
