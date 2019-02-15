@@ -115,7 +115,7 @@ namespace Dev2.Data.Tests.PathOperations
             var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
 
             mockDev2CRUDOperationTO.Setup(o => o.Overwrite).Returns(true);
-            
+
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
             mockActivityIOPath.Setup(o => o.Path).Returns("testPath");
 
@@ -140,10 +140,9 @@ namespace Dev2.Data.Tests.PathOperations
             var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
             var mockFileWrapper = new Mock<IFile>();
             var mockDirectory = new Mock<IDirectory>();
-            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
 
             mockDev2CRUDOperationTO.Setup(o => o.Overwrite).Returns(true);
-            
+
             mockDirectory.Setup(o => o.Exists(It.IsAny<string>())).Returns(true);
 
             var doCreateDirectory = new DoCreateDirectory(mockActivityIOPath.Object, mockDev2CRUDOperationTO.Object, mockDev2LogonProvider.Object, mockFileWrapper.Object, mockDirectory.Object, (arg1, arg2) => null);
