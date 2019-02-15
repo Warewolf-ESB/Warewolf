@@ -1,4 +1,5 @@
 ﻿using RUISDK_5_3_1;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Instrumentation.Factory
 {
@@ -28,7 +29,8 @@ namespace Dev2.Instrumentation.Factory
         }
 
 #if DEBUG
-	class DummyApplicationTracker : IApplicationTracker
+        [ExcludeFromCodeCoverage]
+	    class DummyApplicationTracker : IApplicationTracker
         {
             public RUIResult EnableApplicationResultStatus { get; set; }
 
