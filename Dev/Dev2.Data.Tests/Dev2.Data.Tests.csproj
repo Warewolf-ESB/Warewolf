@@ -166,6 +166,7 @@
     <Compile Include="PathOperations\DoDeleteOperationTests.cs" />
     <Compile Include="PathOperations\DoGetActionTests.cs" />
     <Compile Include="PathOperations\DoCreateDirectoryTests.cs" />
+    <Compile Include="PathOperations\DoPutActionTests.cs" />
     <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
