@@ -62,6 +62,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Debug\TestDebugMessageRepoTests.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepoTests.cs" />
     <Compile Include="Dev2LoggerTests.cs" />
     <Compile Include="DebugMessageRepoTests.cs" />
