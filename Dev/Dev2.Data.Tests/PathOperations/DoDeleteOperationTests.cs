@@ -50,21 +50,6 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DoDeleteOperation))]
-        public void DoDeleteOperation_ExecuteOperation_CTOR3Param_ImpersonatedUser_IsNotNull_ExpectTrue()
-        {
-            //---------------------------Arrange---------------------------
-            var mockActivityIOPath = new Mock<IActivityIOPath>();
-            var mockDev2LogonProvider = new Mock<IDev2LogonProvider>();
-            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
-            //---------------------------Act-------------------------------
-            var doDeleteOperation = new DoDeleteOperation(mockActivityIOPath.Object, mockDev2LogonProvider.Object, (arg1, arg2) => mockWindowsImpersonationContext.Object );
-            //---------------------------Assert----------------------------
-            Assert.IsFalse(doDeleteOperation.ExecuteOperation());
-        }
-
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DoDeleteOperation))]
         public void DoDeleteOperation_ExecuteOperation_CTOR3Param_ExecuteOperationWithAuth_Catch_ExpectFalse()
         {
             //---------------------------Arrange---------------------------
