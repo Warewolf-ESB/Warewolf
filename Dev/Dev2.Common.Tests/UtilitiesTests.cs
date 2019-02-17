@@ -31,6 +31,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
+
         public void Utilities_Flatten_GivenNull()
         {
             var result = Utilities.Flatten<int>(null, (item) => { return new List<int> { item }; });
@@ -39,6 +42,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_Flatten_GivenAList()
         {
             var list = new List<Example> {
@@ -59,6 +64,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_Flatten_GivenAnArray()
         {
             var list = new Example[] {
@@ -79,6 +86,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_DistinctBy()
         {
             var list1 = new List<Example> {
@@ -100,6 +109,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenNullPrincipal_ShouldExecuteWithoutImpersonation()
         {
             var executed = false;
@@ -110,6 +121,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipal_ShouldExecuteWithImpersonation()
         {
             var executed = false;
@@ -126,6 +139,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipal_NullActionDoesNotThrow()
         {
             var mockPrincipal = new Mock<IPrincipal>();
@@ -140,6 +155,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_GivenAnonymousPrincipal_ShouldTryServerUser()
         {
             var executed = false;
@@ -169,6 +186,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgain()
         {
             var executed = false;
@@ -200,6 +219,8 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
         public void Utilities_PerformActionInsideImpersonatedContext_TaskFailureTriesAgainAndFailsAgain_ShouldThrow()
         {
             var executedCount = 0;
