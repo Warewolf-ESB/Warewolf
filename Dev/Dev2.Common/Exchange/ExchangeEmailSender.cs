@@ -11,6 +11,7 @@
 using Dev2.Common.Interfaces;
 using Microsoft.Exchange.WebServices.Data;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Exchange
 {
@@ -38,7 +39,6 @@ namespace Dev2.Common.Exchange
                 service.AutodiscoverUrl(_source.UserName, RedirectionUrlValidationCallback);
             }
         }
-
         static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {
             var redirectionUri = new Uri(redirectionUrl);
