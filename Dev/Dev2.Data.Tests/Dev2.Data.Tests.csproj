@@ -208,6 +208,7 @@
     <Compile Include="SharepointHelperTests.cs" />
     <Compile Include="OptomizedObservableCollectionTests.cs" />
     <Compile Include="Util\OperationsHelperTests.cs" />
+    <Compile Include="Util\CommonRecordSetUtilTests.cs" />
     <Compile Include="WarewolfAtomComparerTests.cs" />
     <Compile Include="Util\CommonDataUtilsTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
