@@ -9,6 +9,7 @@
 */
 using Dev2.Runtime.Configuration.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.ComponentModel;
 
 namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 {
@@ -32,6 +33,20 @@ namespace Dev2.Runtime.Configuration.Tests.ComponentModel
             var dataListVariable = new DataListVariable() { Name = "test" };
             dataListVariable.Name = "test";
             Assert.AreEqual("test", dataListVariable.Name);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(DataListVariable))]
+        public void DataListVariable_NotifyOfPropertyChange()
+        {
+            var dataListVariable = new DataListVariable() { Name = "test" };
+            var called = false;
+            dataListVariable.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            {
+                called = true;
+            };
+            dataListVariable.Name = "testing";
+            Assert.IsTrue(called);
         }
     }
 }
