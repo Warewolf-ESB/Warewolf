@@ -25,11 +25,11 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Tests.Runtime.ESB.Execution
 {
     [TestClass]
-    [TestCategory("Runtime ESB")]
     public class ServiceTestExecutionContainerTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Runtime ESB")]
         public void Constructor_GivenArgs_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
@@ -53,6 +53,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Runtime ESB")]
         public void Execute_GivenArgs_ShouldPassThrough_ReturnsExecutedResults()
         {
             //---------------Set up test pack-------------------
@@ -210,6 +211,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Runtime ESB")]
         public void CanExecute_GivenArgs_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
@@ -235,6 +237,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [TestCategory("Runtime ESB")]
         public void UpdateTestWithStepValues_Sets_The_Correct_FailureMessage()
         {
             //------------Setup for test-------------------------
@@ -293,6 +296,7 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [TestCategory("Runtime ESB")]
         public void GetTestRunResults_Given_ThereIsNoError_And_EnvironmentHasNoErrorSetsTest_ToPass()
         {
             //------------Setup for test-------------------------
@@ -342,6 +346,7 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [TestCategory("Runtime ESB")]
         public void GetTestRunResults_Given_ThereIsAnError_And_EnvironmentHasError_SetsTest_ToPass()
         {
             //------------Setup for test-------------------------
@@ -387,6 +392,7 @@ Test Failed because of some reasons
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [TestCategory("Runtime ESB")]
         public void ExecuteWf_GivenRecordSetsInputs_Should_AssignAllRecordSetItems()
         {
             //------------Setup for test-------------------------
