@@ -141,6 +141,7 @@ namespace Dev2.Server.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(WebServerConfiguration))]
+        [DeploymentItem("WarewolfServer.cer")]
         public void WebServerConfigurationTests_Execute_sslCertificateName_NotNull_ExpectException()
         {
             //----------------Arrange--------------------
