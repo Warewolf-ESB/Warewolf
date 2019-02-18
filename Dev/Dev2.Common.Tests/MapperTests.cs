@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Common.Tests
@@ -9,25 +19,12 @@ namespace Dev2.Common.Tests
         public string Surname { get; set; }
         public int Id { get; set; }
 #pragma warning disable 169
-
-
         string _name = "name";
 #pragma warning restore 169
-
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
         public override string ToString()
         {
             return _name;
         }
-
-        #endregion
     }
 
     public class Child
@@ -44,11 +41,10 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class MapperTests
     {
-
-        
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Map_GivenObjects_ShouldMapCorrectly()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Mapper))]
+        public void Mapper_Map_GivenObjects_ShouldMapCorrectly()
         {
             //---------------Set up test pack-------------------
             Mapper.Clear();
@@ -76,8 +72,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Map_GivenObjectsNoActions_ShouldMapCorrectly()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Mapper))]
+        public void Mapper_Map_ObjectsNoActions_ShouldMapCorrectly()
         {
             //---------------Set up test pack-------------------
             Mapper.Clear();
@@ -104,9 +101,9 @@ namespace Dev2.Common.Tests
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Map_GivenNullFrom_ShouldThrowException()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Mapper))]
+        public void Mapper_Map_TMapTo_IsNotNull_ExpectArgumentNullException()
         {
             //---------------Set up test pack-------------------
             Mapper.Clear();
@@ -124,16 +121,8 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map(default(Parent), child);
             //---------------Test Result -----------------------
-            Assert.AreEqual(100, parent.Id);
-            Assert.AreEqual(parent.Id, child.Id);
-            Assert.AreEqual(parent.Name, child.Name);
-            Assert.AreEqual(parent.Surname, child.Surname);
+            Assert.ThrowsException<ArgumentNullException>(()=> Mapper.Map(default(Parent), child));
         }
-
-       
-
-        
     }
 }
