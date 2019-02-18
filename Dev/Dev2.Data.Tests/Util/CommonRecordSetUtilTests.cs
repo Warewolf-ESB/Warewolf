@@ -264,6 +264,7 @@ namespace Dev2.Data.Tests.Util
             Assert.AreEqual("rec().a", instance.ReplaceRecordsetIndexWithBlank("rec(2).a"));
             Assert.AreEqual("[[rec()]]", instance.ReplaceRecordsetIndexWithBlank("[[rec(a)]]"));
             Assert.AreEqual("[[rec()]]", instance.ReplaceRecordsetIndexWithBlank("[[rec()]]"));
+            Assert.AreEqual("()", instance.ReplaceRecordsetIndexWithBlank("[[rec)(]]"));
         }
 
         [TestMethod]
