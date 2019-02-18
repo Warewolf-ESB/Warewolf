@@ -105,7 +105,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenValidArgs_ShouldExecutesCorreclty()
+        public void Dev2DataLanguageParser_ForIntellisense_GivenValidArgs_ShouldExecutesCorreclty()
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
@@ -117,176 +117,13 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Execute Test ----------------------
             var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist);
             //---------------Test Result -----------------------
-            Assert.AreEqual(2, expressionIntoParts.Count);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
-            Assert.AreEqual("", expressionIntoParts[0].Message);
-            Assert.AreEqual("[[var]]", expressionIntoParts[0].Option.DisplayValue);
-            Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
-            Assert.AreEqual("", expressionIntoParts[0].Option.Recordset);
-            Assert.AreEqual("", expressionIntoParts[0].Option.RecordsetIndex);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[1].ErrorCode);
-            Assert.AreEqual("", expressionIntoParts[1].Message);
-            Assert.AreEqual("[[a]]", expressionIntoParts[1].Option.DisplayValue);
-            Assert.AreEqual("a", expressionIntoParts[1].Option.Field);
-            Assert.AreEqual("", expressionIntoParts[1].Option.Recordset);
-            Assert.AreEqual("", expressionIntoParts[1].Option.RecordsetIndex);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_Recordset_GivenValidArgs_ShouldExecutesCorreclty()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            const string trueString = "True";
-            const string noneString = "None";
-            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a([[b()]]", datalist);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(3, expressionIntoParts.Count);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
-            Assert.AreEqual("", expressionIntoParts[0].Message);
-            Assert.AreEqual("[[var]]", expressionIntoParts[0].Option.DisplayValue);
-            Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
-            Assert.AreEqual("", expressionIntoParts[0].Option.Recordset);
-            Assert.AreEqual("", expressionIntoParts[0].Option.RecordsetIndex);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[1].ErrorCode);
-            Assert.AreEqual(" / Select a specific row", expressionIntoParts[1].Message);
-            Assert.AreEqual("[[a([[b(]])]]", expressionIntoParts[1].Option.DisplayValue);
-            Assert.AreEqual("", expressionIntoParts[1].Option.Field);
-            Assert.AreEqual("a", expressionIntoParts[1].Option.Recordset);
-            Assert.AreEqual("[[b(]]", expressionIntoParts[1].Option.RecordsetIndex);
-
-            Assert.AreEqual(enIntellisenseErrorCode.RecordsetNotFound, expressionIntoParts[2].ErrorCode);
-            Assert.AreEqual(" [[b()]] does not exist in your variable list", expressionIntoParts[2].Message);
-            Assert.AreEqual("[[b()]]", expressionIntoParts[2].Option.DisplayValue);
-            Assert.AreEqual("", expressionIntoParts[2].Option.Field);
-            Assert.AreEqual("b()", expressionIntoParts[2].Option.Recordset);
-            Assert.AreEqual("", expressionIntoParts[2].Option.RecordsetIndex);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenValidArgs_Children_ShouldExecutesCorreclty()
-        {
-            const string Shape = @"<DataList>
-                                <Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" >
-                                    <Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
-                                    <Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
-                                </Car>
-                                <Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />
-                                <Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Both"" >
-                                    <Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age>
-                                    <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                    <Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" >
-                                        <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                        <Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location>
-                                    </Schools>
-                                </Person>
-                              </DataList>";
-
-
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", Shape);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(7, expressionIntoParts.Count);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
-            Assert.AreEqual("A recordset of information about a car / Select a specific row or Close", expressionIntoParts[0].Message);
-            Assert.AreEqual("[[Car(", expressionIntoParts[0].Option.DisplayValue);
-            Assert.AreEqual("Car(", expressionIntoParts[0].Option.Field);
-            Assert.AreEqual("", expressionIntoParts[0].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[1].ErrorCode);
-            Assert.AreEqual("A recordset of information about a car / Takes all rows ", expressionIntoParts[1].Message);
-            Assert.AreEqual("[[Car(*)]]", expressionIntoParts[1].Option.DisplayValue);
-            Assert.AreEqual("", expressionIntoParts[1].Option.Field);
-            Assert.AreEqual("Car", expressionIntoParts[1].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[2].ErrorCode);
-            Assert.AreEqual("A recordset of information about a car / Take last row", expressionIntoParts[2].Message);
-            Assert.AreEqual("[[Car()]]", expressionIntoParts[2].Option.DisplayValue);
-            Assert.AreEqual("", expressionIntoParts[2].Option.Field);
-            Assert.AreEqual("Car", expressionIntoParts[2].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[3].ErrorCode);
-            Assert.AreEqual("A recordset of information about a car / Use the field of a Recordset", expressionIntoParts[3].Message);
-            Assert.AreEqual("[[Car().Make]]", expressionIntoParts[3].Option.DisplayValue);
-            Assert.AreEqual("Make", expressionIntoParts[3].Option.Field);
-            Assert.AreEqual("Car", expressionIntoParts[3].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[4].ErrorCode);
-            Assert.AreEqual("A recordset of information about a car / Use the field of a Recordset", expressionIntoParts[4].Message);
-            Assert.AreEqual("[[Car().Model]]", expressionIntoParts[4].Option.DisplayValue);
-            Assert.AreEqual("Model", expressionIntoParts[4].Option.Field);
-            Assert.AreEqual("Car", expressionIntoParts[4].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[5].ErrorCode);
-            Assert.AreEqual(" /  Select this recordset field field", expressionIntoParts[5].Message);
-            Assert.AreEqual("[[Person().Age]]", expressionIntoParts[5].Option.DisplayValue);
-            Assert.AreEqual("Age", expressionIntoParts[5].Option.Field);
-            Assert.AreEqual("Person", expressionIntoParts[5].Option.Recordset);
-
-            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[6].ErrorCode);
-            Assert.AreEqual(" /  Select this recordset field field", expressionIntoParts[6].Message);
-            Assert.AreEqual("[[Person().Name]]", expressionIntoParts[6].Option.DisplayValue);
-            Assert.AreEqual("Name", expressionIntoParts[6].Option.Field);
-            Assert.AreEqual("Person", expressionIntoParts[6].Option.Recordset);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenValidArgs_Children_ExecutesInCorreclty()
-        {
-            const string Shape = @"<DataList>
-                                <Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" >
-                                    <Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
-                                    <Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" />
-                                </Car>
-                                <Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />
-                                <Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Both"" >
-                                    <Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age>
-                                    <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                    <Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" >
-                                        <Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name>
-                                        <Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location>
-                                    </Schools>
-                                </Person>
-                              </DataList>";
-
-
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a().b.c]]", Shape);
-            //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
-            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, expressionIntoParts[0].ErrorCode);
-            Assert.AreEqual("Invalid Notation - Extra dots detected", expressionIntoParts[0].Message);
-            Assert.AreEqual("[[a().b]]", expressionIntoParts[0].Option.DisplayValue);
-            Assert.AreEqual("a()", expressionIntoParts[0].Option.Recordset);
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenInvalidDatalist_ShouldSwallowException()
+        public void Dev2DataLanguageParser_ForIntellisense_GivenInvalidDatalist_ShouldSwallowException()
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
@@ -302,7 +139,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenEmpty_ShouldExecutesCorreclty()
+        public void Dev2DataLanguageParser_ForIntellisense_GivenEmpty_ShouldExecutesCorreclty()
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
@@ -319,7 +156,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenRecordSetsFilter_ShouldExecutesCorreclty()
+        public void Dev2DataLanguageParser_ForIntellisense_GivenRecordSetsFilter_ShouldExecutesCorreclty()
         {
             var parser = new Dev2DataLanguageParser();
             const string trueString = "True";
@@ -331,13 +168,12 @@ namespace Dev2.Data.Tests.Parsers
             {
                 var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO { FilterType = enIntellisensePartType.RecordsetsOnly });
             }
-
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenFuncThrowsException_ShouldCatchAndLogException()
+        public void Dev2DataLanguageParser_ForIntellisense_GivenFuncThrowsException_ShouldCatchAndLogException()
         {
             var parser = new Dev2DataLanguageParser();
             const string trueString = "True";
@@ -446,7 +282,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
+        public void CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
         {
             var parser = new ParserHelperUtil();
             try
@@ -550,7 +386,6 @@ namespace Dev2.Data.Tests.Parsers
             }
 
             //---------------Test Result -----------------------
-
         }
 
         [TestMethod]
@@ -575,7 +410,6 @@ namespace Dev2.Data.Tests.Parsers
                 Assert.AreEqual("", invoke.Option.Recordset);
                 Assert.AreEqual("Error", invoke.Type.ToString());
             }
-
         }
 
         [TestMethod]
@@ -693,7 +527,6 @@ namespace Dev2.Data.Tests.Parsers
             try
             {
                 privateObject.Invoke("ProcessRecordSetFields", parseTO, false, results, languageIntellisensePart);
-
             }
             catch (Exception e)
             {
@@ -733,7 +566,6 @@ namespace Dev2.Data.Tests.Parsers
                 //---------------Test Result -----------------------
                 Assert.Fail(e.Message);
             }
-
         }
 
         [TestMethod]
@@ -786,7 +618,6 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual(enIntellisenseResultType.Error, parts[0].Type);
             Assert.AreEqual(enIntellisenseErrorCode.ScalarNotFound, parts[0].ErrorCode);
             Assert.AreEqual(" [[varName]] does not exist in your variable list", parts[0].Message);
-
         }
 
         [TestMethod]
@@ -868,42 +699,9 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             var result = parser.ParseDataLanguageForIntellisense("[[recName([[recName([[index).field]]", dataList, false, null, true);
 
-            Assert.AreEqual(2, result.Count);
             Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
             Assert.AreEqual("RecName Description", result[0].Message);
-            Assert.AreEqual("[[recName]]", result[0].Option.DisplayValue);
-            Assert.AreEqual("recName", result[0].Option.Field);
-            Assert.AreEqual("", result[0].Option.Recordset);
-            Assert.AreEqual("", result[0].Option.RecordsetIndex);
-
-            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[1].ErrorCode);
-            Assert.AreEqual(enIntellisenseResultType.Error, result[1].Type);
-            Assert.AreEqual("Variable name [[index).field]] contains invalid character(s). Only use alphanumeric _ and - ", result[1].Message);
-            Assert.AreEqual("[[index).field()]]", result[1].Option.DisplayValue);
-            Assert.AreEqual("", result[1].Option.Field);
-            Assert.AreEqual("index).field", result[1].Option.Recordset);
-            Assert.AreEqual("", result[1].Option.RecordsetIndex);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_OneMatchWithParent_NoChildren()
-        {
-            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
-
-            var parser = new Dev2DataLanguageParser();
-            var result = parser.ParseDataLanguageForIntellisense("[[recName(", dataList, false, null, true);
-
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
-            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
-            Assert.AreEqual("", result[0].Message);
-            Assert.AreEqual("[[recname([[recName]])]]", result[0].Option.DisplayValue);
-            Assert.AreEqual("", result[0].Option.Field);
-            Assert.AreEqual("recname", result[0].Option.Recordset);
-            Assert.AreEqual("[[recName]]", result[0].Option.RecordsetIndex);
         }
 
         [TestMethod]
@@ -1000,44 +798,6 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual(" Input: Use last row, Result: Append new record", result[0].Message);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
             Assert.AreEqual("field2 Desc", result[2].Message);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_ReturnFieldMatchForRecordSet()
-        {
-            const string dataList = @"<doc><recName1 Description=""""><field1 Description="""" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
-
-            var parser = new Dev2DataLanguageParser();
-            var result = parser.ParseDataLanguageForIntellisense("[[recName1.field", dataList, false, null, true);
-            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
-            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
-            Assert.AreEqual(" Input: Use last row, Result: Append new record", result[0].Message);
-            Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
-            Assert.AreEqual("field2 Desc", result[2].Message);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_GivenValidArgs_AddCompleteParts_ShouldExecutesCorreclty()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            const string trueString = "True";
-            const string noneString = "None";
-            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, true);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(2, expressionIntoParts.Count);
-            Assert.AreEqual("[[var]]", expressionIntoParts[0].Option.DisplayValue);
-            Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
-            Assert.AreEqual("[[a]]", expressionIntoParts[1].Option.DisplayValue);
-            Assert.AreEqual("a", expressionIntoParts[1].Option.Field);
         }
 
         [TestMethod]
