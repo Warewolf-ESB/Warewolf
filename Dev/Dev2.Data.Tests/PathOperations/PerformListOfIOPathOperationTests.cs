@@ -40,6 +40,23 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(PerformListOfIOPathOperation))]
+        public void PerformListOfIOPathOperation_AppendBackSlashes_With_CTOR_Path_Null_ExpectNullReferenceException()
+        {
+            //-----------------------Arrange------------------------
+            var mockActivityIOPath = new Mock<IActivityIOPath>();
+            var mockFileWrapper = new Mock<IFile>();
+            var mockDirectory = new Mock<IDirectory>();
+            var mockWindowsImpersonationContext = new Mock<IWindowsImpersonationContext>();
+
+            var performListOfIOPathOperation = new TestPerformListOfIOPathOperation((arg1, arg2) => mockWindowsImpersonationContext.Object);
+            //-----------------------Act----------------------------
+            //-----------------------Assert-------------------------
+            Assert.ThrowsException<NullReferenceException>(() => PerformListOfIOPathOperation.AppendBackSlashes(mockActivityIOPath.Object, mockFileWrapper.Object, mockDirectory.Object));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(PerformListOfIOPathOperation))]
         public void PerformListOfIOPathOperation_AppendBackSlashes_Path_IsNotNull_ExpectNullReferenceException()
         {
             //-----------------------Arrange------------------------
@@ -259,6 +276,23 @@ namespace Dev2.Data.Tests.PathOperations
             var getDirectoriesForType = PerformListOfIOPathOperation.GetDirectoriesForType(path, string.Empty, ReadTypes.FilesAndFolders, mockDirectory.Object);
             //-----------------------Assert-------------------------
             Assert.IsNotNull(getDirectoriesForType);
+        }
+
+        class TestPerformListOfIOPathOperation : PerformListOfIOPathOperation
+        {
+            public TestPerformListOfIOPathOperation(ImpersonationDelegate impersonationDelegate) : base(impersonationDelegate)
+            {
+            }
+
+            public override IList<IActivityIOPath> ExecuteOperation()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override IList<IActivityIOPath> ExecuteOperationWithAuth()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
