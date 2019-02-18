@@ -11,7 +11,6 @@
 using Dev2.Common.Interfaces;
 using Microsoft.Exchange.WebServices.Data;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Exchange
 {
@@ -44,7 +43,7 @@ namespace Dev2.Common.Exchange
             var redirectionUri = new Uri(redirectionUrl);
             return redirectionUri.Scheme == "https";
         }
-
+        //TODO: add ExchangeServiceWrapper and EmailmessageWrapper  
         public void Send(ExchangeService service, EmailMessage message)
         {
             Initialize(service);
