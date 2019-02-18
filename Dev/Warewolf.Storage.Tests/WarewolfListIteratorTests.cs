@@ -625,8 +625,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -653,8 +651,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -681,8 +677,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -709,8 +703,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -737,8 +729,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -765,8 +755,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -793,8 +781,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -821,8 +807,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -849,8 +833,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
@@ -877,8 +859,6 @@ namespace Warewolf.Storage.Tests
 
             var iter = new WarewolfIterator(v);
             var warewolfListIterator = new WarewolfListIterator();
-            var privateObj = new PrivateObject(warewolfListIterator);
-            var variablesToIterateOn = privateObj.GetField("_variablesToIterateOn") as List<IWarewolfIterator>;
             warewolfListIterator.AddVariableToIterateOn(iter);
 
             var listIterator = warewolfListIterator;
