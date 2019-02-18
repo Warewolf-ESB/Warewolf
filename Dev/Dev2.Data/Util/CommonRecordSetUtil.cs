@@ -20,7 +20,6 @@ namespace Dev2.Data.Util
     class CommonRecordSetUtil : ICommonRecordSetUtil
     {
         const string EmptyBrackets = "()";
-        #region Implementation of ICommonRecordSetUtil
 
         public string ReplaceRecordBlankWithStar(string fullRecSetName)
         {
@@ -392,7 +391,5 @@ namespace Dev2.Data.Util
                 }
             }
         }
-
-        #endregion
     }
 }
