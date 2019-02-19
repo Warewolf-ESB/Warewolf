@@ -20,14 +20,9 @@ namespace Dev2.Activities.DropBox2016
         protected readonly IDropboxClientFactory _dropboxClientFactory;
         protected IDropboxClient _dropboxClient;
 
-        protected DsfDropBoxBaseActivity(IDropboxClientFactory dropboxClientFactory, IDropboxClient dropboxClient)
-            : this(dropboxClientFactory)
-        { 
-            _dropboxClientFactory = dropboxClientFactory;
-            _dropboxClient = dropboxClient;
-        }
         protected DsfDropBoxBaseActivity(IDropboxClientFactory dropboxClientFactory)
         {
+            _dropboxClientFactory = dropboxClientFactory;
         }
 
         public void Dispose()
