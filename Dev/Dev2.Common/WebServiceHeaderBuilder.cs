@@ -22,7 +22,7 @@ namespace Dev2.Common
             {
                 var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
 
-                SetupHeader(region, jsonHeader);
+                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             }
             else
             {
@@ -31,30 +31,8 @@ namespace Dev2.Common
                 {
                     var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
 
-                    SetupHeader(region, jsonHeader);
+                    region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
                 }
-            }
-        }
-
-        static void SetupHeader(IHeaderRegion region, ObservableNameValue jsonHeader)
-        {
-            if (region.Headers == null ||
-                region.Headers.All(value => string.IsNullOrEmpty(value.Value) && string.IsNullOrEmpty(value.Name)))
-            {
-                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
-            }
-            else
-            {
-                bool ExistingHeaders(INameValue value) => value.Name.Equals(jsonHeader.Name, StringComparison.InvariantCultureIgnoreCase) &&
-                                                          value.Value.Equals(jsonHeader.Value, StringComparison.InvariantCultureIgnoreCase);
-
-                var emptyHeader = region.Headers.FirstOrDefault(value => string.IsNullOrEmpty(value.Name) && string.IsNullOrEmpty(value.Value));
-                region.Headers.Remove(emptyHeader);
-                if (!region.Headers.Any(ExistingHeaders))
-                {
-                    region.Headers.Add(jsonHeader);
-                }
-                region.Headers.Add(emptyHeader);
             }
         }
     }

@@ -26,32 +26,131 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Parsers
 {
-    //TODO: This class is difficult to cover with Unit Tests. 
-    //      It needs to be refactored into seperate classes so that we can test the private methods more direct
     public class Dev2DataLanguageParser : IDev2DataLanguageParser, IDev2StudioDataLanguageParser
     {
-        const string CdataStart = @"<![CDATA[";
-        const string CdataEnd = @"]]>";
+        readonly IParserHelper _parserHelper;
         static volatile ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>();
         static volatile ConcurrentDictionary<string, IList<IIntellisenseResult>> _expressionCache = new ConcurrentDictionary<string, IList<IIntellisenseResult>>();
+        private readonly DataLanguageParserImplementation _dataLanguageParser;
 
-        static IParserHelper _parserHelper = new ParserHelperUtil();
-        static ICommonRecordSetUtil _recordSetUtil = new CommonRecordSetUtil();
-
-        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts) => WrapAndClear(() =>
+        public Dev2DataLanguageParser()
+            : this(new ParserHelperUtil())
         {
-            if (string.IsNullOrEmpty(expression) || parts == null)
+        }
+
+        public Dev2DataLanguageParser(IParserHelper parserHelper)
+        {
+            _parserHelper = parserHelper;
+            _dataLanguageParser = new DataLanguageParserImplementation(_parserHelper, this);
+        }
+
+        public IList<IParseTO> MakeParts(string payload) => MakeParts(payload, false);
+        public IList<IParseTO> MakeParts(string payload, bool addCompleteParts)
+        {
+            if (string.IsNullOrEmpty(payload))
+            {
+                return new List<IParseTO>();
+            }
+
+            IList<IParseTO> result = new List<IParseTO>();
+
+            var region = new StringBuilder();
+            var openRegion = false;
+            IParseTO currentNode = new ParseTO { Parent = null, HangingOpen = true };
+            var root = currentNode;
+            var methodPayload = payload.Replace("]].[[", "]][[");
+
+            var payloadIndex = RetrievePayloadIndex(payload, result, ref region, ref openRegion, ref currentNode, ref root, methodPayload);
+
+            if (openRegion)
+            {
+                currentNode.EndIndex = payloadIndex - 1;
+                currentNode.Payload = region.ToString();
+            }
+
+            if (!result.Contains(root))
+            {
+                result.Add(root);
+            }
+
+            if (root.HangingOpen && addCompleteParts)
+            {
+                throw new Dev2DataLanguageParseError(ErrorResource.InvalidCloseRegion, 0, methodPayload.Length, enIntellisenseErrorCode.SyntaxError);
+            }
+            return result;
+        }
+
+        private int RetrievePayloadIndex(string payload, IList<IParseTO> result, ref StringBuilder region, ref bool openRegion, ref IParseTO currentNode, ref IParseTO root, string methodPayload)
+        {
+            var previousPayload = '\0';
+            int payloadIndex;
+            for (payloadIndex = 0; payloadIndex < methodPayload.Length; payloadIndex++)
+            {
+                var currentPayload = methodPayload[payloadIndex];
+                var shouldAddToRegion = _parserHelper.ShouldAddToRegion(methodPayload, currentPayload, previousPayload, payloadIndex, true, '[');
+                shouldAddToRegion = _parserHelper.ShouldAddToRegion(methodPayload, currentPayload, previousPayload, payloadIndex, shouldAddToRegion, ']');
+
+                if (currentPayload == '[' && previousPayload == '[')
+                {
+                    currentNode = openRegion ? _parserHelper.CurrentNode(currentNode, region, payloadIndex) : ParseTO(currentNode, payloadIndex, result, ref root, ref openRegion);
+                    currentPayload = '\0';
+                }
+
+                if (currentPayload == ']' && previousPayload == ']')
+                {
+                    openRegion = _parserHelper.ProcessOpenRegion(payload, openRegion, payloadIndex, ref currentNode, ref region, ref currentPayload);
+                }
+
+                if (openRegion && shouldAddToRegion && currentPayload != '\0')
+                {
+                    region.Append(currentPayload);
+                }
+                previousPayload = currentPayload;
+            }
+
+            return payloadIndex;
+        }
+
+        IParseTO ParseTO(IParseTO currentNode, int i, IList<IParseTO> result, ref IParseTO root, ref bool openRegion)
+        {
+            if (currentNode == root && !root.HangingOpen)
+            {
+                IParseTO newRoot = new ParseTO { HangingOpen = true, Parent = null, StartIndex = i, EndIndex = -1 };
+                result.Add(root);
+                root = newRoot;
+                currentNode = root;
+            }
+            openRegion = true;
+            currentNode.StartIndex = i + 1;
+            return currentNode;
+        }
+
+        public IIntellisenseResult ValidateName(string name, string displayString) => _parserHelper.ValidateName(name, displayString);
+
+        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts) 
+            => WrapAndClear(() =>
+        {
+            return ExpressionIntoParts(expression, parts);
+        }, _expressionCache);
+
+        IList<IIntellisenseResult> ExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts)
+        {
+            var inputVariables = string.IsNullOrEmpty(expression) || parts == null;
+            if (inputVariables)
             {
                 return new List<IIntellisenseResult>();
             }
+
             var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
-            if (canCache && _expressionCache.ContainsKey(expression))
+            var expressionCacheContainsKey = _expressionCache.ContainsKey(expression);
+            if (canCache && expressionCacheContainsKey)
             {
                 return _expressionCache[expression];
             }
 
-            var result = PartsGeneration(expression, parts, true);
-            if (result != null && canCache && result.All(a => a.Type != enIntellisenseResultType.Error))
+            var result = _dataLanguageParser.PartsGeneration(expression, parts, true, false, null);
+            var resultWithoutError = result != null && result.All(a => a.Type != enIntellisenseResultType.Error);
+            if (resultWithoutError && canCache)
             {
                 try
                 {
@@ -59,18 +158,21 @@ namespace Dev2.Data.Parsers
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                    Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
                 }
             }
 
             return result;
-        }, _expressionCache);
+        }
 
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList) => ParseDataLanguageForIntellisense(payload, dataList, false, null, false);
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList)
+            => ParseDataLanguageForIntellisense(payload, dataList, false, null, false);
 
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts) => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, null, false);
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts)
+            => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, null, false);
 
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo) => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, filterTo, false);
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo)
+            => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, filterTo, false);
 
         public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo, bool isFromIntellisense)
         {
@@ -92,7 +194,7 @@ namespace Dev2.Data.Parsers
                 {
                     additionalParts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, new IntellisenseFilterOpsTO { FilterCondition = filterTo.FilterCondition, FilterType = enIntellisensePartType.None });
                 }
-                var result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense, additionalParts);
+                var result = _dataLanguageParser.PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense, additionalParts);
                 if (result != null && result.Count > 0 && result.All(a => a.Type != enIntellisenseResultType.Error))
                 {
                     try
@@ -101,13 +203,12 @@ namespace Dev2.Data.Parsers
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                        Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
                     }
                 }
 
                 return result;
             }, _payloadCache);
-
         }
 
         T WrapAndClear<T, U>(Func<T> runFunc, ConcurrentDictionary<U, T> clearIfException)
@@ -150,8 +251,23 @@ namespace Dev2.Data.Parsers
 
             return result;
         }
+    }
 
-        IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts, bool isFromIntellisense = false, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
+    public class DataLanguageParserImplementation
+    {
+        const string CdataStart = @"<![CDATA[";
+        const string CdataEnd = @"]]>";
+
+        readonly IParserHelper _parserHelper;
+        static ICommonRecordSetUtil _recordSetUtil = new CommonRecordSetUtil();
+        readonly IDev2DataLanguageParser _dev2DataLanguageParser;
+        public DataLanguageParserImplementation(IParserHelper parserHelper, IDev2DataLanguageParser dev2DataLanguageParser)
+        {
+            _parserHelper = parserHelper;
+            _dev2DataLanguageParser = dev2DataLanguageParser;
+        }
+
+        public IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts, bool isFromIntellisense, IList<IDev2DataLanguageIntellisensePart> additionalParts)
         {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
             try
@@ -171,7 +287,7 @@ namespace Dev2.Data.Parsers
 
                 if (payload.Contains(DataListUtil.OpeningSquareBrackets))
                 {
-                    var rootItems = MakeParts(payload, addCompleteParts);
+                    var rootItems = _dev2DataLanguageParser.MakeParts(payload, addCompleteParts);
                     IParseTO magicRegion = null;
                     IList<IParseTO> evalParts = new List<IParseTO>();
                     magicRegion = GetMagicRegion(rootItems, magicRegion, evalParts);
@@ -201,106 +317,25 @@ namespace Dev2.Data.Parsers
 
         private static IParseTO GetMagicRegion(IList<IParseTO> rootItems, IParseTO magicRegion, IList<IParseTO> evalParts)
         {
-            rootItems
-                                    .ToList()
-                                    .ForEach(rootItem =>
-                                    {
-                                        var eval = rootItem;
-                                        while (eval != null)
-                                        {
-                                            if (eval.HangingOpen)
-                                            {
-                                                magicRegion = eval;
-                                            }
-                                            if (!eval.HangingOpen && eval != magicRegion)
-                                            {
-                                                evalParts.Add(eval);
-                                            }
-                                            eval = eval.Child;
-                                        }
-                                    });
+            rootItems.ToList()
+                .ForEach(rootItem =>
+                {
+                    var eval = rootItem;
+                    while (eval != null)
+                    {
+                        if (eval.HangingOpen)
+                        {
+                            magicRegion = eval;
+                        }
+                        if (!eval.HangingOpen && eval != magicRegion)
+                        {
+                            evalParts.Add(eval);
+                        }
+                        eval = eval.Child;
+                    }
+                });
             return magicRegion;
         }
-
-        public IList<IParseTO> MakeParts(string payload) => MakeParts(payload, false);
-
-        public IList<IParseTO> MakeParts(string payload, bool addCompleteParts)
-        {
-            if (string.IsNullOrEmpty(payload))
-            {
-                return new List<IParseTO>();
-            }
-
-            var prev = '\0';
-            var region = new StringBuilder();
-            var openRegion = false;
-            IParseTO currentNode = new ParseTO { Parent = null, HangingOpen = true };
-            var root = currentNode;
-            int i;
-            payload = payload.Replace("]].[[", "]][[");
-            IList<IParseTO> result = new List<IParseTO>();
-
-            for (i = 0; i < payload.Length; i++)
-            {
-                var cur = payload[i];
-                var shouldAddToRegion = ShouldAddToRegion(payload, cur, prev, i, true, '[');
-                shouldAddToRegion = ShouldAddToRegion(payload, cur, prev, i, shouldAddToRegion, ']');
-
-                if (cur == '[' && prev == '[')
-                {
-                    currentNode = openRegion ? CurrentNode(currentNode, region, i) : ParseTO(currentNode, i, result, ref root, ref openRegion);
-                    cur = '\0';
-                }
-
-                if (cur == ']' && prev == ']')
-                {
-                    openRegion = ProcessOpenRegion(payload, openRegion, i, ref currentNode, ref region, ref cur);
-                }
-
-                if (openRegion && shouldAddToRegion && cur != '\0')
-                {
-                    region.Append(cur);
-                }
-                prev = cur;
-            }
-
-            if (openRegion)
-            {
-                currentNode.EndIndex = i - 1;
-                currentNode.Payload = region.ToString();
-            }
-
-            if (!result.Contains(root))
-            {
-                result.Add(root);
-            }
-
-            if (root.HangingOpen && addCompleteParts)
-            {
-                throw new Dev2DataLanguageParseError(ErrorResource.InvalidCloseRegion, 0, payload.Length, enIntellisenseErrorCode.SyntaxError);
-            }
-            return result;
-        }
-
-        static IParseTO ParseTO(IParseTO currentNode, int i, IList<IParseTO> result, ref IParseTO root, ref bool openRegion)
-        {
-            if (currentNode == root && !root.HangingOpen)
-            {
-                IParseTO newRoot = new ParseTO { HangingOpen = true, Parent = null, StartIndex = i, EndIndex = -1 };
-                result.Add(root);
-                root = newRoot;
-                currentNode = root;
-            }
-            openRegion = true;
-            currentNode.StartIndex = i + 1;
-            return currentNode;
-        }
-
-        static bool ProcessOpenRegion(string payload, bool openRegion, int i, ref IParseTO currentNode, ref StringBuilder region, ref char cur) => _parserHelper.ProcessOpenRegion(payload, openRegion, i, ref currentNode, ref region, ref cur);
-
-        static IParseTO CurrentNode(IParseTO currentNode, StringBuilder region, int i) => _parserHelper.CurrentNode(currentNode, region, i);
-
-        static bool ShouldAddToRegion(string payload, char cur, char prev, int i, bool shouldAddToRegion, char charToCheck) => _parserHelper.ShouldAddToRegion(payload, cur, prev, i, shouldAddToRegion, charToCheck);
 
         IList<IIntellisenseResult> TryExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
         {
@@ -326,14 +361,13 @@ namespace Dev2.Data.Parsers
                 }
                 catch (Dev2DataLanguageParseError e)
                 {
-                    result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                    result.Add(_parserHelper.AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
                 }
             }
 
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
 
-            result
-                .ToList()
+            result.ToList()
                 .ForEach(r =>
                 {
                     var addToFinal = true;
@@ -523,11 +557,10 @@ namespace Dev2.Data.Parsers
             }
 
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
-            result.ToList().ForEach(r => ProcessResults(realResults, r));
+            result.ToList().ForEach(r => _parserHelper.ProcessResults(realResults, r));
             return result;
         }
 
-        static void ProcessResults(IList<IIntellisenseResult> realResults, IIntellisenseResult r) => _parserHelper.ProcessResults(realResults, r);
         void ProcessRegion(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, StringBuilder tmp, IList<IIntellisenseResult> result, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
         {
             const bool EmptyOk = false;
@@ -539,8 +572,9 @@ namespace Dev2.Data.Parsers
                 var rawSearch = search;
                 var isRs = false;
 
-                search = RemoveRecordSetBraces(search, ref isRs);
-                if (AddFieldResult(payload, result, tmpString, parts, isRs))
+                search = _recordSetUtil.RemoveRecordSetBraces(search, ref isRs);
+
+                if (_parserHelper.AddFieldResult(payload, result, tmpString, parts, isRs))
                 {
                     return;
                 }
@@ -551,7 +585,6 @@ namespace Dev2.Data.Parsers
                 }
                 else if (parts.Length == 2)
                 {
-
                     MatchFieldVariables(payload, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, EmptyOk);
                 }
                 else
@@ -571,14 +604,14 @@ namespace Dev2.Data.Parsers
             const string DisplayString = "Recordset";
             if ((!isRecName || parts[1] == string.Empty) && payload.Child == null)
             {
-                if (ValidateName(rawSearch, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
+                if (_parserHelper.ValidateName(rawSearch, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }
             }
             else
             {
-                if (ValidateName(search, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
+                if (_parserHelper.ValidateName(search, DisplayString, result, out IList<IIntellisenseResult> intellisenseResults))
                 {
                     return;
                 }
@@ -586,11 +619,11 @@ namespace Dev2.Data.Parsers
 
             try
             {
-                IsValidIndex(tmpTo);
+                _parserHelper.IsValidIndex(tmpTo);
             }
             catch (Dev2DataLanguageParseError e)
             {
-                result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                result.Add(_parserHelper.AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
             }
 
             var recordsetPart = refParts.FirstOrDefault(c => c.Name.ToLower() == search && c.Children != null);
@@ -629,7 +662,7 @@ namespace Dev2.Data.Parsers
             }
             else
             {
-                if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
+                if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && _parserHelper.ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
                 {
                     return search;
                 }
@@ -642,10 +675,6 @@ namespace Dev2.Data.Parsers
             }
             return search;
         }
-
-        bool ProcessFieldsForRecordSet(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
-            => _parserHelper.ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName);
-
 
         void MatchNonFieldVariables(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, StringBuilder tmp, IList<IIntellisenseResult> result, IList<IDev2DataLanguageIntellisensePart> additionalParts, bool isRs, string rawSearch, string search, bool emptyOk, string[] parts)
         {
@@ -660,7 +689,7 @@ namespace Dev2.Data.Parsers
                 {
                     return;
                 }
-                if ((rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && IsValidIndex(payload)) || !rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket))
+                if ((rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && _parserHelper.IsValidIndex(payload)) || !rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket))
                 {
                     foreach (IDev2DataLanguageIntellisensePart t1 in refParts)
                     {
@@ -678,13 +707,13 @@ namespace Dev2.Data.Parsers
             }
             catch (Dev2DataLanguageParseError e)
             {
-                result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                result.Add(_parserHelper.AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
             }
         }
 
         bool RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
         {
-            var intellisenseResult = ValidateName(search == string.Empty ? rawSearch : search, "Variable"); //search is empty if there is a scalar value with start open (
+            var intellisenseResult = _parserHelper.ValidateName(search == string.Empty ? rawSearch : search, "Variable"); //search is empty if there is a scalar value with start open (
 
             if (intellisenseResult != null)
             {
@@ -696,7 +725,7 @@ namespace Dev2.Data.Parsers
 
         bool ScalarMatch(IList<IIntellisenseResult> result, bool isRs, string rawSearch)
         {
-            var intellisenseResult = ValidateName(rawSearch, isRs && !rawSearch.StartsWith(DataListUtil.RecordsetIndexOpeningBracket) ? "Recordset" : "Variable");
+            var intellisenseResult = _parserHelper.ValidateName(rawSearch, isRs && !rawSearch.StartsWith(DataListUtil.RecordsetIndexOpeningBracket) ? "Recordset" : "Variable");
             if (intellisenseResult != null)
             {
                 result.Add(intellisenseResult);
@@ -766,16 +795,16 @@ namespace Dev2.Data.Parsers
             {
                 if (t1.Children != null && t1.Children.Count > 0)
                 {
-                    ProcessRecordSetFields(payload, addCompleteParts, result, t1);
+                    _recordSetUtil.ProcessRecordSetFields(payload, addCompleteParts, result, t1);
                 }
                 else
                 {
-                    ProcessNonRecordsetFields(payload, result, t1);
+                    _recordSetUtil.ProcessNonRecordsetFields(payload, result, t1);
                 }
             }
             else if (match == search && isRs)
             {
-                emptyOk = rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket) ? RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1) : ProcessForChild(payload, refParts, result, search, t1);
+                emptyOk = rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.Contains(DataListUtil.RecordsetIndexClosingBracket) ? _recordSetUtil.RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1) : ProcessForChild(payload, refParts, result, search, t1);
             }
             else
             {
@@ -801,7 +830,7 @@ namespace Dev2.Data.Parsers
 
             if (!payload.IsLeaf && !isHangingChild)
             {
-                OpenRecordsetItem(payload, result, t1);
+                _recordSetUtil.OpenRecordsetItem(payload, result, t1);
             }
             else
             {
@@ -859,23 +888,6 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        static void OpenRecordsetItem(IParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
-            => _recordSetUtil.OpenRecordsetItem(payload, result, t1);
-
-        static bool RecordsetMatch(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
-            => _recordSetUtil.RecordsetMatch(payload, addCompleteParts, result, rawSearch, search, emptyOk, parts, t1);
-
-        static void ProcessNonRecordsetFields(IParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
-            => _recordSetUtil.ProcessNonRecordsetFields(payload, result, t1);
-
-        void ProcessRecordSetFields(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
-            => _recordSetUtil.ProcessRecordSetFields(payload, addCompleteParts, result, t1);
-
-        bool AddFieldResult(IParseTO payload, IList<IIntellisenseResult> result, string tmpString, string[] parts, bool isRs)
-            => _parserHelper.AddFieldResult(payload, result, tmpString, parts, isRs);
-
-        static string RemoveRecordSetBraces(string search, ref bool isRs) => _recordSetUtil.RemoveRecordSetBraces(search, ref isRs);
-
         void ProcessForOnlyOpenRegion(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
         {
             var addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
@@ -885,13 +897,12 @@ namespace Dev2.Data.Parsers
                 {
                     var tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, "", part.Description + " / Select this record set");
                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
-                    part.Children
-                        .ToList()
-                        .ForEach(child =>
-                        {
-                            tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description + " / Select this record set field");
-                            result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, part.Description + Environment.NewLine + child.Description));
-                        });
+                    part.Children.ToList()
+                    .ForEach(child =>
+                    {
+                        tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description + " / Select this record set field");
+                        result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, part.Description + Environment.NewLine + child.Description));
+                    });
                 }
                 else
                 {
@@ -911,14 +922,5 @@ namespace Dev2.Data.Parsers
                 }
             });
         }
-
-        bool ValidateName(string rawSearch, string displayString, IList<IIntellisenseResult> result, out IList<IIntellisenseResult> intellisenseResults)
-            => _parserHelper.ValidateName(rawSearch, displayString, result, out intellisenseResults);
-
-        public IIntellisenseResult ValidateName(string name, string displayString) => _parserHelper.ValidateName(name, displayString);
-
-        IIntellisenseResult AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen) => _parserHelper.AddErrorToResults(isRs, part, e, isOpen);
-
-        bool IsValidIndex(IParseTO to) => _parserHelper.IsValidIndex(to);
     }
 }
