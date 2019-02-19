@@ -253,7 +253,6 @@
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
     <Compile Include="enIntellisensePartType.cs" />
-    <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\AuthorizationContext.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\LoggerType.cs" />

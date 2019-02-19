@@ -5,6 +5,6 @@ namespace Dev2.Activities.DropBox2016
 {
     public interface IDropboxSingleExecutor<out TResult> : IDropboxExecutor
     {
-        TResult ExecuteTask(IDropboxClientWrapper client);
+        TResult ExecuteTask(IDropboxClient client);
     }
 }
