@@ -50,7 +50,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #region Implementation of IDropboxSingleExecutor
 
-        public IDropboxResult ExecuteTask(IDropboxClientWrapper client)
+        public IDropboxResult ExecuteTask(IDropboxClient client)
         {
             try
             {
