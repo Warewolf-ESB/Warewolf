@@ -145,6 +145,33 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
-       
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenEmptyHeaders_SetHeaders()
+        {
+            //------------Setup for test--------------------------
+            var mod = new WebServiceHeaderBuilder();
+            var newMock = new Mock<IHeaderRegion>();
+            newMock.SetupProperty(region => region.Headers);
+            var jsonHeader = new ObservableNameValue();
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+            var content = "{\"NormalText\":\"\"}";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(newMock.Object.Headers);
+            Assert.AreEqual(2, newMock.Object.Headers.Count);
+            //------------Execute Test---------------------------
+            mod.BuildHeader(newMock.Object, content);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(newMock.Object.Headers);
+            Assert.AreEqual(2, newMock.Object.Headers.Count);
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
+            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals(GlobalConstants.ApplicationJsonHeader));
+            Assert.AreEqual(1, countContentTypesValues);
+            Assert.AreEqual(1, countContentTypes);
+
+        }
+
+
     }
 }
