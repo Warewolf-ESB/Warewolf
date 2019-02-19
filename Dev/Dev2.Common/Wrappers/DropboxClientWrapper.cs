@@ -28,6 +28,7 @@ namespace Dev2.Common.Wrappers
         IDropboxClient CreateWithSecret(string accessToken);
     }
 
+    [ExcludeFromCodeCoverage]
     public class DropboxClientWrapperFactory : IDropboxClientFactory
     {
         public IDropboxClient New(string accessToken, HttpClient httpClient)
