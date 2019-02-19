@@ -288,7 +288,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
+        public void Dev2DataLanguageParser_CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
         {
             var parser = new ParserHelperUtil();
             try
