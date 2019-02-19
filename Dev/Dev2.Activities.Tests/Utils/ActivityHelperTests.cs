@@ -101,6 +101,7 @@ namespace Dev2.Tests.Activities.Utils
                 value = item,
                 expectValue = expectedResults[index]
             });
+            Assert.AreEqual(expectedResults.Length, iter.Count());
             foreach (var entry in iter)
             {
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
@@ -261,6 +262,7 @@ namespace Dev2.Tests.Activities.Utils
                 value = item,
                 expectValue = expectedResults[index]
             });
+            Assert.AreEqual(expectedResults.Length, iter.Count());
             foreach (var entry in iter)
             {
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
@@ -425,6 +427,7 @@ namespace Dev2.Tests.Activities.Utils
                 value = item,
                 expectValue = expectedResults[index]
             });
+            Assert.AreEqual(expectedResults.Length, iter.Count());
             foreach (var entry in iter)
             {
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
@@ -499,6 +502,7 @@ namespace Dev2.Tests.Activities.Utils
                 value = item,
                 expectValue = expectedResults[index]
             });
+            Assert.AreEqual(expectedResults.Length, iter.Count());
             foreach (var entry in iter)
             {
                 Assert.AreEqual(entry.expectValue.Name, entry.value.Name);

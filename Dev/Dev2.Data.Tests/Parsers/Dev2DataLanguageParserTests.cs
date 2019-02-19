@@ -118,6 +118,12 @@ namespace Dev2.Data.Tests.Parsers
             var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
+            Assert.AreEqual(enIntellisenseErrorCode.None, expressionIntoParts[0].ErrorCode);
+            Assert.AreEqual("", expressionIntoParts[0].Message);
+            Assert.AreEqual("[[var]]", expressionIntoParts[0].Option.DisplayValue);
+            Assert.AreEqual("var", expressionIntoParts[0].Option.Field);
+            Assert.AreEqual("", expressionIntoParts[0].Option.Recordset);
+            Assert.AreEqual("", expressionIntoParts[0].Option.RecordsetIndex);
         }
 
         [TestMethod]
@@ -282,7 +288,7 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
+        public void Dev2DataLanguageParser_CheckCurrentIndex_GivenInvalid_ShouldThrow_InvalidCharException()
         {
             var parser = new ParserHelperUtil();
             try
@@ -319,276 +325,6 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new ParserHelperUtil();
             var invoke = parser.CheckCurrentIndex(new ParseTO(), 3, "rec(1)", "rec(1)".Length);
             Assert.IsTrue(invoke, "Positive recordset index marked as invalid.");
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_IsValidIndex_GivenInvalidIndex_ShouldThrowException()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            var privateObject = new PrivateObject(parser);
-            var parseTO = new ParseTO { Payload = "rec(-1)", EndIndex = "rec(-1)".Length, StartIndex = 3 };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                //---------------Test Result -----------------------
-                privateObject.Invoke("IsValidIndex", parseTO);
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Recordset index -1 is not greater than zero", ex.InnerException.Message);
-                try
-                {
-                    parseTO = new ParseTO { Payload = "rec(-1", EndIndex = "rec(-1".Length, StartIndex = 3 };
-                    //---------------Test Result -----------------------
-                    privateObject.Invoke("IsValidIndex", parseTO);
-                }
-                catch (Exception ex1)
-                {
-                    Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
-                    try
-                    {
-                        parseTO = new ParseTO { Payload = "rec(1", EndIndex = "rec(1".Length, StartIndex = 3 };
-                        //---------------Test Result -----------------------
-                        privateObject.Invoke("IsValidIndex", parseTO);
-                    }
-                    catch (Exception ex2)
-                    {
-                        Assert.AreEqual("Recordset [ rec(1 ] does not contain a matching ')'", ex2.InnerException.Message);
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_AddErrorToResults_GivenErrors_ShouldAddErrors()
-        {
-            //---------------Set up test pack-------------------
-            //AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
-            var parser = new Dev2DataLanguageParser();
-            var privateObject = new PrivateObject(parser);
-            var error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            if (privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) is IntellisenseResult invoke)
-            {
-                Assert.AreEqual(5, invoke.EndIndex);
-                Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
-                Assert.AreEqual("Error", invoke.Message);
-                Assert.AreEqual("[[rec()]]", invoke.Option.DisplayValue);
-                Assert.AreEqual("rec", invoke.Option.Recordset);
-                Assert.AreEqual("Error", invoke.Type.ToString());
-            }
-
-            //---------------Test Result -----------------------
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_AddErrorToResults_GivenValidationErrors_ShouldAddErrors()
-        {
-            //---------------Set up test pack-------------------
-            //AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
-            var parser = new Dev2DataLanguageParser();
-            var privateObject = new PrivateObject(parser);
-            var error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            if (privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) is IntellisenseResult invoke)
-            {
-                //---------------Test Result -----------------------
-                Assert.AreEqual(5, invoke.EndIndex);
-                Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, invoke.ErrorCode);
-                Assert.AreEqual("Error", invoke.Message);
-                Assert.AreEqual("[[rec().Name]]", invoke.Option.DisplayValue);
-                Assert.AreEqual("", invoke.Option.Recordset);
-                Assert.AreEqual("Error", invoke.Type.ToString());
-            }
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ProcessForOnlyOpenRegion_GivenValidationArgs_ShouldProcessCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            //ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
-            var parser = new Dev2DataLanguageParser();
-            var privateObject = new PrivateObject(parser);
-            var refParts = new List<IDev2DataLanguageIntellisensePart> { new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", null) };
-            var result = new List<IIntellisenseResult>();
-            var parseTO = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "rec().Name" }
-            };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            bool invoke;
-            try
-            {
-                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
-                invoke = true;
-            }
-            catch (Exception)
-            {
-                invoke = false;
-            }
-            //---------------Test Result -----------------------
-            Assert.IsTrue(invoke);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ProcessForOnlyOpenRegion_GivenValidationArgsAndHasChildrenAndISRecordSet_ShouldProcessCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            var privateObject = new PrivateObject(parser);
-            var refParts = new List<IDev2DataLanguageIntellisensePart>();
-            var children = new List<IDev2DataLanguageIntellisensePart> { new Dev2DataLanguageIntellisensePart("name", "name", new List<IDev2DataLanguageIntellisensePart>()) };
-            refParts.Add(new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", children));
-            var result = new List<IIntellisenseResult>();
-            var parseTO = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "Name" },
-
-            };
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            bool invoke;
-            try
-            {
-                privateObject.Invoke("ProcessForOnlyOpenRegion", parseTO, refParts, result);
-                invoke = true;
-            }
-            catch (Exception)
-            {
-                invoke = false;
-            }
-            //---------------Test Result -----------------------
-            Assert.IsTrue(invoke, "Cannot invoke new Dev2DataLanguageParser PrivateObject.");
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ProcessRecordSetFields_GivenInvalidArgs_ShouldThrowValidException()
-        {
-            //---------------Set up test pack-------------------
-            //ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
-            var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "Name" },
-
-            };
-            var languageIntellisensePart = new Dev2DataLanguageIntellisensePart("Name", "Desc", new List<IDev2DataLanguageIntellisensePart>());
-            var results = new List<IIntellisenseResult>();
-            var privateObject = new PrivateObject(parser);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                privateObject.Invoke("ProcessRecordSetFields", parseTO, true, results, languageIntellisensePart);
-
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
-            //---------------Test Result -----------------------
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ProcessRecordSetFields_GivenAddCompletePartsFalse_ShouldThrowValidException()
-        {
-            //---------------Set up test pack-------------------
-            //ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
-            var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "Name" },
-
-            };
-            var languageIntellisensePart = new Dev2DataLanguageIntellisensePart("Name", "Desc", new List<IDev2DataLanguageIntellisensePart>());
-            var results = new List<IIntellisenseResult>();
-            var privateObject = new PrivateObject(parser);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                privateObject.Invoke("ProcessRecordSetFields", parseTO, false, results, languageIntellisensePart);
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
-            //---------------Test Result -----------------------
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_ExtractActualIntellisenseOptions_GivenValidArgs_ShouldExecuteCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "Name" }
-            };
-
-            var parseTORecSet = new ParseTO
-            {
-                Parent = new ParseTO { Payload = "rec().Name" },
-                Payload = "rec().Name"
-            };
-            var intellisenseParts = new List<IDev2DataLanguageIntellisensePart>();
-            var privateObject = new PrivateObject(parser);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                privateObject.Invoke("TryExtractActualIntellisenseOptions", parseTO, intellisenseParts, true);
-                privateObject.Invoke("TryExtractActualIntellisenseOptions", parseTORecSet, intellisenseParts, false);
-            }
-            catch (Exception e)
-            {
-                //---------------Test Result -----------------------
-                Assert.Fail(e.Message);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(Dev2DataLanguageParser))]
-        public void Dev2DataLanguageParser_RecordsetMatch_GivenValidArgs_ShouldNotThrowException()
-        {
-            //---------------Set up test pack-------------------
-            //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
-            var parser = new Dev2DataLanguageParser();
-            var intellisenseResults = new List<IIntellisenseResult> { IntellisenseFactory.CreateErrorResult(1, 2, new Mock<IDataListVerifyPart>().Object, "msg", enIntellisenseErrorCode.None, false) };
-            var privateObject = new PrivateObject(parser);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            try
-            {
-                privateObject.Invoke("RecordsetMatch", intellisenseResults, "rawSearch", "seach");
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]
@@ -702,6 +438,18 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
             Assert.AreEqual("RecName Description", result[0].Message);
+            Assert.AreEqual("[[recName]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("recName", result[0].Option.Field);
+            Assert.AreEqual("", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[1].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Error, result[1].Type);
+            Assert.AreEqual("Variable name [[index).field]] contains invalid character(s). Only use alphanumeric _ and - ", result[1].Message);
+            Assert.AreEqual("[[index).field()]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("", result[1].Option.Field);
+            Assert.AreEqual("index).field", result[1].Option.Recordset);
+            Assert.AreEqual("", result[1].Option.RecordsetIndex);
         }
 
         [TestMethod]
@@ -820,6 +568,45 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual("varName", parts[0]);
 
             Assert.ThrowsException<Dev2DataLanguageParseError>(() => parser.MakeParts(unclosed, true));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2DataLanguageParser))]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_TwoMatchingFields_AddCompleteParts()
+        {
+            const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1", dataList, true);
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
+            Assert.AreEqual("Invalid region detected: An open [[ without a related close ]]", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2DataLanguageParser))]
+        public void Dev2DataLanguageParser_ValidateName()
+        {
+            //---------------Set up test pack-------------------
+            const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1.field", dataList, false, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("field1 Desc", result[0].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
+            Assert.AreEqual("field2 Desc", result[2].Message);
+
+            var name = parser.ValidateName("field1", "Scalar");
+
+            Assert.IsNull(name);
+
+            name = parser.ValidateName("[[recName1]]", "Recordset");
+
+            Assert.IsNotNull(name);
         }
     }
 }
