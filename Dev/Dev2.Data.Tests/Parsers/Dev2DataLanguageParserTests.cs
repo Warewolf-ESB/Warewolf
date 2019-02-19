@@ -578,10 +578,10 @@ namespace Dev2.Data.Tests.Parsers
             const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
 
             var parser = new Dev2DataLanguageParser();
-            var result = parser.ParseDataLanguageForIntellisense("[[recName1", dataList, true);
-            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
-            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
-            Assert.AreEqual("Invalid region detected: An open [[ without a related close ]]", result[0].Message);
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1", dataList, false);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName1 Description", result[0].Message);
         }
 
         [TestMethod]
