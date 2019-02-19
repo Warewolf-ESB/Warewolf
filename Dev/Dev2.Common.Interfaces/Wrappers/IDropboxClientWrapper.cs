@@ -6,7 +6,7 @@ using Dropbox.Api.Stone;
 
 namespace Dev2.Common.Interfaces.Wrappers
 {
-    public interface IDropboxClientWrapper
+    public interface IDropboxClient : IDisposable
     {
         Task<FileMetadata> UploadAsync(string path);
         Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body);

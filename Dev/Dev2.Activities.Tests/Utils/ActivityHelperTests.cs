@@ -10,6 +10,7 @@
 
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Decision;
+using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
 using Dev2.Common.Serializers;
 using Dev2.Common.State;
@@ -19,8 +20,9 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
+using System;
 using System.Activities.Presentation.Model;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -105,7 +107,91 @@ namespace Dev2.Tests.Activities.Utils
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
+        }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ActivityHelper))]
+        public void ActivityHelper_Dev2Decision_Null_FalseArmText_SetArmText()
+        {
+            //---------------Set up test pack-------------------
+            using (var viewModel = new DecisionDesignerViewModel(CreateModelItem()))
+            {
+                var dev2DecisionStack = new Dev2DecisionStack
+                {
+                    DisplayText = "",
+                    FalseArmText = null,
+                    TrueArmText = "",
+                    Version = "2",
+                    Mode = Dev2DecisionMode.AND,
+                    TheStack = new List<Dev2Decision>()
+                };
+                var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
+                viewModel.Handle(decisionExpressionMessage);
+
+                //------------Setup for test--------------------------
+
+                ActivityHelper.SetArmTextDefaults(dev2DecisionStack);
+                Assert.AreEqual("False", dev2DecisionStack.FalseArmText);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ActivityHelper))]
+        public void ActivityHelper_Dev2Decision_Null_TrueArmText_SetArmText()
+        {
+            //---------------Set up test pack-------------------
+            using (var viewModel = new DecisionDesignerViewModel(CreateModelItem()))
+            {
+                var dev2DecisionStack = new Dev2DecisionStack
+                {
+                    DisplayText = "",
+                    FalseArmText = "",
+                    TrueArmText = null,
+                    Version = "2",
+                    Mode = Dev2DecisionMode.AND,
+                    TheStack = new List<Dev2Decision>()
+                };
+                var decisionExpressionMessage = new ConfigureDecisionExpressionMessage();
+                viewModel.Handle(decisionExpressionMessage);
+
+                //------------Setup for test--------------------------
+
+                ActivityHelper.SetArmTextDefaults(dev2DecisionStack);
+                Assert.AreEqual("True", dev2DecisionStack.TrueArmText);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(ActivityHelper))]
+        public void ActivityHelper_WithKeyProperty_SetSwitchKeyProperty_Dev2Switch()
+        {
+            var uniqueId = Guid.NewGuid().ToString();
+            var calcActivity = new DsfCalculateActivity { UniqueID = uniqueId };
+            var flowStep = new FlowStep { Action = calcActivity };
+            //---------------Set up test pack-------------------
+            using (var viewModel = new SwitchDesignerViewModel(CreateSwitchModelItem(flowStep), "Switch"))
+            {
+                var mySwitch = new Dev2Switch
+                {
+                    SwitchExpression = "[[a]]"
+                };
+
+                var parentNodeProperty = viewModel.ModelItem.Properties["Cases"].Dictionary;
+
+                //------------Setup for test--------------------------
+                var switchCaseFirst = ModelItemUtils.CreateModelItem(parentNodeProperty.First());
+                var switchCaseLast = ModelItemUtils.CreateModelItem(parentNodeProperty.Last());
+                ActivityHelper.SetSwitchKeyProperty(mySwitch, switchCaseFirst);
+
+                var modelItemFirst = switchCaseFirst.Properties["Value"].Value.Properties["Action"].Value;
+                var modelItemLast = switchCaseLast.Properties["Value"].Value.Properties["Action"].Value;
+
+                Assert.AreEqual(uniqueId, modelItemFirst.Properties["UniqueID"].ComputedValue);
+                Assert.IsNull(modelItemLast);
+            }
         }
 
         [TestMethod]
@@ -407,7 +493,7 @@ namespace Dev2.Tests.Activities.Utils
                     Value = ActivityHelper.GetSerializedStateValueFromCollection(act.FalseArm?.ToList())
                 }
             };
-         
+
             var iter = act.GetState().Select((item, index) => new
             {
                 value = item,
@@ -420,13 +506,27 @@ namespace Dev2.Tests.Activities.Utils
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
         }
-        
+
         static ModelItem CreateModelItem()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDecision()
             {
                 DisplayName = "A",
             });
+            return modelItem;
+        }
+
+        static ModelItem CreateSwitchModelItem(FlowStep flowStep)
+        {
+            var dsfSwitch = new FlowSwitch<string>();
+            var uniqueId = Guid.NewGuid();
+            var activity = new DsfFlowSwitchActivity { UniqueID = uniqueId.ToString() };
+            dsfSwitch.Expression = activity;
+            dsfSwitch.Cases.Add("Case1", flowStep);
+            dsfSwitch.Cases.Add("Case2", new FlowStep());
+            dsfSwitch.Default = new FlowStep();
+
+            var modelItem = ModelItemUtils.CreateModelItem(dsfSwitch);
             return modelItem;
         }
     }
