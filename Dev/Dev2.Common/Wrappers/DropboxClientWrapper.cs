@@ -11,19 +11,49 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 
+
 namespace Dev2.Common.Wrappers
 {
+
+    public interface IDropboxClientFactory
+    {
+        IDropboxClient New(string accessToken, HttpClient httpClient);
+        IDropboxClient CreateWithSecret(string accessToken);
+    }
+
+    public class DropboxClientWrapperFactory : IDropboxClientFactory
+    {
+        public IDropboxClient New(string accessToken, HttpClient httpClient)
+        {
+            return new DropboxClientWrapper(accessToken, httpClient);
+        }
+
+        IDropboxClient IDropboxClientFactory.CreateWithSecret(string accessToken)
+        {
+            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            {
+                Timeout = TimeSpan.FromMinutes(20)
+            };
+            return New(accessToken, httpClient);
+        }
+    }
+
     [ExcludeFromCodeCoverage]
-    public class DropboxClientWrapper : IDropboxClientWrapper
+    public class DropboxClientWrapper : IDropboxClient
     {
         readonly DropboxClient _client;
 
+        public DropboxClientWrapper(string accessToken, HttpClient httpClient)
+        {
+            _client = new DropboxClient(accessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
+        }
         public DropboxClientWrapper(DropboxClient client)
         {
             _client = client;
@@ -38,5 +68,10 @@ namespace Dev2.Common.Wrappers
         public Task<IDownloadResponse<FileMetadata>> DownloadAsync(DownloadArg downloadArg) => _client.Files.DownloadAsync(downloadArg);
 
         public Task<ListFolderResult> ListFolderAsync(ListFolderArg listFolderArg) => _client.Files.ListFolderAsync(listFolderArg);
+
+        public void Dispose()
+        {
+            _client.Dispose();
+        }
     }
 }

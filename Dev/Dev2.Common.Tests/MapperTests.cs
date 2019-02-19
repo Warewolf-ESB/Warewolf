@@ -31,7 +31,7 @@ namespace Dev2.Common.Tests
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int ParentId { get; set; }
 #pragma warning disable 169
         string _name;
@@ -61,7 +61,7 @@ namespace Dev2.Common.Tests
             var child = new Child()
             {
                 Name = "child",
-                Id = 1
+                Id = "1"
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -88,14 +88,14 @@ namespace Dev2.Common.Tests
             var child = new Child()
             {
                 Name = "child",
-                Id = 1
+                Id = "1"
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Mapper.Map(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
-            Assert.AreEqual(parent.Id, child.Id);
+            Assert.AreNotEqual(parent.Id.ToString(), child.Id);
             Assert.AreEqual(parent.Name, child.Name);
             Assert.AreEqual(parent.Surname, child.Surname);
         }
@@ -104,6 +104,46 @@ namespace Dev2.Common.Tests
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Mapper))]
         public void Mapper_Map_TMapTo_IsNotNull_ExpectArgumentNullException()
+        {
+            //---------------Set up test pack-------------------
+            Mapper.Clear();
+            Mapper.AddMap<Parent, Child>();
+            var child = new Child()
+            {
+                Name = "child",
+                Id = "1"
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.ThrowsException<ArgumentNullException>(()=> Mapper.Map(default(Parent), child));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Mapper))]
+        public void Mapper_Map_TMapTo_IsNull_ExpectNoArgumentNullException()
+        {
+            //---------------Set up test pack-------------------
+            Mapper.Clear();
+            Mapper.AddMap<Parent, Child>();
+            var parent = new Parent()
+            {
+                Id = 100,
+                Name = "name",
+                Surname = "surname"
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            Mapper.Map<Parent, Child>(parent, null, true, new string[] { "listItem1", "listItem2", "3" });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(100, parent.Id);
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(Mapper))]
+        public void Mapper_Map_TMapTo_IsNotNull_ExpectNoArgumentNullException()
         {
             //---------------Set up test pack-------------------
             Mapper.Clear();
@@ -117,12 +157,16 @@ namespace Dev2.Common.Tests
             var child = new Child()
             {
                 Name = "child",
-                Id = 1
+                Id = "1"
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
+            Mapper.Map<Parent, Child>(parent, child, true, new string[] { "name", "listItem2", "3" });
             //---------------Test Result -----------------------
-            Assert.ThrowsException<ArgumentNullException>(()=> Mapper.Map(default(Parent), child));
+            Assert.AreEqual(100, parent.Id);
+            Assert.AreNotEqual(parent.Id.ToString(), child.Id);
+            Assert.AreEqual(parent.Name, child.Name);
+            Assert.AreEqual(parent.Surname, child.Surname);
         }
     }
 }

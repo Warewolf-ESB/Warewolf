@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         {
             var mock = new Mock<IDropboxDownload>();
             var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()))
                  .Returns(successResult);
             return mock;
         }
@@ -45,8 +45,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Assert.IsNotNull(downloadMock);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
-            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
+            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClient>());
+            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()));
         }
         
         [TestMethod]
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         {
             //---------------Set up test pack-------------------
             var dropBoxDownLoad = new DropBoxDownLoad("a.file");
-            var mockDropboxClient = new Mock<IDropboxClientWrapper>();
+            var mockDropboxClient = new Mock<IDropboxClient>();
             mockDropboxClient.Setup(client => client.DownloadAsync(It.IsAny<DownloadArg>())).Throws(new Exception());
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
