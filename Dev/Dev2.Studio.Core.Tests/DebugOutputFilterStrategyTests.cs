@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -9,13 +9,10 @@
 */
 
 using System;
-using System.Windows;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -28,7 +25,6 @@ namespace Dev2.Core.Tests
         public static void MyTestClassInitialize(TestContext testContext)
         {
             _debugOutputFilterStrategy = new DebugOutputFilterStrategy();
-           
         }
 
         [TestMethod]
@@ -181,6 +177,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(Expected, actual);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DebugOutputFilterStrategy))]
@@ -196,6 +193,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(Expected, actual);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DebugOutputFilterStrategy))]
@@ -205,6 +203,7 @@ namespace Dev2.Core.Tests
             var actual = _debugOutputFilterStrategy.Filter(debugState, "Cake");
             Assert.AreEqual(true, actual);
         }
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DebugOutputFilterStrategy))]
@@ -220,12 +219,10 @@ namespace Dev2.Core.Tests
         [TestCategory(nameof(DebugOutputFilterStrategy))]
         public void DebugOutputFilterStrategy_debugState_VersionNotnull_And_debugState_Version_Contains_filterText_True()
         {
-            var debugState = new DebugState {  Version = "Version1" };
+            var debugState = new DebugState { Version = "Version1" };
             var actual = _debugOutputFilterStrategy.Filter(debugState, "Version1");
             Assert.AreEqual(true, actual);
         }
-
-        
 
         [TestMethod]
         [Owner("Candice Daniel")]

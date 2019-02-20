@@ -18,7 +18,7 @@ namespace Dev2.Diagnostics.Test.Debug
     public class TestDebugMessageRepoTests
     {
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_AddDebugItem_Invalid_Guid()
         {
@@ -34,7 +34,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_AddDebugItem()
         {
@@ -51,7 +51,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_AddDebugItem_AddToList()
         {
@@ -74,7 +74,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_GetDebugItems()
         {
@@ -97,7 +97,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_GetDebugItems_NoItems()
         {
@@ -116,7 +116,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_AddDebugItem_Contains_Id()
         {
@@ -135,7 +135,7 @@ namespace Dev2.Diagnostics.Test.Debug
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
+        [Owner("Rory McGuire")]
         [TestCategory(nameof(TestDebugMessageRepo))]
         public void TestDebugMessageRepo_FetchDebugItems()
         {
