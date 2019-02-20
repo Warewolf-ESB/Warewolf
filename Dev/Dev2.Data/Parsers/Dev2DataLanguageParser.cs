@@ -430,7 +430,11 @@ namespace Dev2.Data.Parsers
                     hasIndex = true;
                 }
 
-                if (payload.Payload.Contains(DataListUtil.RecordsetIndexOpeningBracket) && !payload.Payload.Contains(DataListUtil.RecordsetIndexClosingBracket) && payload.Child == null && !hasIndex)
+                var isRecordsetIndexOpeningBracket = payload.Payload.Contains(DataListUtil.RecordsetIndexOpeningBracket);
+                var isRecordsetIndexClosingBracket = !payload.Payload.Contains(DataListUtil.RecordsetIndexClosingBracket);
+                var isPayloadChildEmpty = payload.Child == null;
+
+                if (isRecordsetIndexOpeningBracket && isRecordsetIndexClosingBracket && isPayloadChildEmpty && !hasIndex)
                 {
                     AddIndex(refParts, payload, search, result);
                 }
