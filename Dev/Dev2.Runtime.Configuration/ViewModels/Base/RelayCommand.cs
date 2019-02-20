@@ -50,40 +50,4 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             }
         }
     }
-
-    public class RelayCommand<T> : ICommand
-    {
-        readonly Action<T> _execute;
-        readonly Predicate<T> _canExecute;
-
-        public RelayCommand(Action<T> execute)
-            : this(execute, null)
-        {
-        }
-        
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
-        {
-            if(execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
-
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter) => _canExecute?.Invoke((T)parameter) ?? true;
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            _execute((T)parameter);
-        }
-        
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
-    }
 }
