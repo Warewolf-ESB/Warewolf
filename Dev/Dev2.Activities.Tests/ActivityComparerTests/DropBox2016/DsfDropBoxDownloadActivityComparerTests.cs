@@ -1,9 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Activities.DropBox2016.Result;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.State;
+using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
+using Dropbox.Api.Files;
+using Dropbox.Api.Stone;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 {
@@ -12,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
+        public void DsfDropBoxDownloadActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -28,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueID_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_UniqueID_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -43,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Same_Object_IsEqual()
+        public void DsfDropBoxDownloadActivity_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -59,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -75,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -90,7 +102,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Same_Object_IsEqual()
+        public void DsfDropBoxDownloadActivity_Result_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -106,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -122,7 +134,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -138,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FromPath_Same_Object_IsEqual()
+        public void DsfDropBoxDownloadActivity_FromPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -154,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FromPath_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -170,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void FromPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -186,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Same_Object_IsEqual()
+        public void DsfDropBoxDownloadActivity_ToPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -202,7 +214,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -218,7 +230,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -234,7 +246,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DropBoxSource_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_DropBoxSource_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -255,7 +267,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DropBoxSource_Same_Object_Is_Equal()
+        public void DsfDropBoxDownloadActivity_DropBoxSource_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -273,7 +285,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OverwriteFile_Different_Object_Is_Not_Equal()
+        public void DsfDropBoxDownloadActivity_OverwriteFile_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -291,7 +303,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void OverwriteFile_Same_Object_Is_Equal()
+        public void DsfDropBoxDownloadActivity_OverwriteFile_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -378,6 +390,129 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
                 Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
+        public void DsfDropBoxDownloadActivity_LocalPathManager_SetProperty_AreEqual_ExpectTrue()
+        {
+            //-----------------------Arrange----------------------------
+            var mockLocalPathManager = new Mock<ILocalPathManager>();
+
+            //-----------------------Act--------------------------------
+            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity()
+            {
+                LocalPathManager = mockLocalPathManager.Object
+            };
+            //-----------------------Assert-----------------------------
+            Assert.AreEqual(mockLocalPathManager.Object, dsfDropBoxDownloadActivity.LocalPathManager);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
+        public void DsfDropBoxDownloadActivity_ExecuteTool_FromPath_IsNullOrEmpty_VerifyMethodCall_3Times_ExpectTrue()
+        {
+            //-----------------------Arrange----------------------------
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+
+            mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
+
+            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity()
+            {
+                FromPath = null,
+                ToPath = null
+            };
+            //-----------------------Act--------------------------------
+            dsfDropBoxDownloadActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+            //-----------------------Assert-----------------------------
+            mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Exactly(3));
+        }
+
+        //[TestMethod]
+        //[Owner("Siphamandla Dube")]
+        //[TestCategory(nameof(DsfDropBoxDownloadActivity))]
+        //public void DsfDropBoxDownloadActivity_PerformExecution_ExpectException()
+        //{
+        //    //-----------------------Arrange----------------------------
+        //    var mockDSFDataObject = new Mock<IDSFDataObject>();
+        //    var mockDropboxClient = new Mock<IDropboxClient>();
+        //    var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+        //    var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+
+        //    mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
+        //    mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+        //    mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new Mock<IDropboxResult>().Object);
+            
+        //    var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object);
+
+        //    var dictionery = new Dictionary<string, string> { };
+        //    dictionery.Add("ToPath", "TestToPath");
+        //    dictionery.Add("FromPath", "TestFromPath");
+        //    //-----------------------Act--------------------------------
+        //    //dsfDropBoxDownloadActivity.TestSetupDropboxClient("TestAccessToken");
+        //    dsfDropBoxDownloadActivity.GetDropboxSingleExecutor(mockDropboxSingleExecutor.Object);
+        //    //-----------------------Assert-----------------------------
+        //    Assert.ThrowsException<Exception>(()=> dsfDropBoxDownloadActivity.TestPerformExecution(dictionery));
+        //}
+
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
+        public void DsfDropBoxDownloadActivity_PerformExecution_FromPath_IsNullOrEmpty_VerifyMethodCall_3Times_ExpectTrue()
+        {
+            //-----------------------Arrange----------------------------
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
+
+            var dropboxDownloadSuccessResult = new DropboxDownloadSuccessResult(mockDownloadResponse.Object);
+            // var downloadArg = new DownloadArg("testPath");
+            //var uploadAsync = client.DownloadAsync(downloadArg).Result;
+            //mockDropboxClient.Setup(o => o.DownloadAsync(downloadArg)).Returns(mockDownloadResponse.Object);
+            //mockDropboxClient.Setup(o => o.DownloadAsync(downloadArg)).Returns();
+            mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(new Task<IDownloadResponse<FileMetadata>>(() => { return mockDownloadResponse.Object; }));
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(dropboxDownloadSuccessResult);
+
+            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object);
+
+            var dictionery = new Dictionary<string, string> { };
+            dictionery.Add("ToPath", "TestToPath");
+            dictionery.Add("FromPath", "TestFromPath");
+            //-----------------------Act--------------------------------
+            //dsfDropBoxDownloadActivity.TestSetupDropboxClient("TestAccessToken");
+            //dsfDropBoxDownloadActivity.GetDropboxSingleExecutor(mockDropboxSingleExecutor.Object);
+            dsfDropBoxDownloadActivity.TestPerformExecution(dictionery);
+            //-----------------------Assert-----------------------------
+            //mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Exactly(3));
+        }
+    }
+
+    class TestDsfDropBoxDownloadActivity : DsfDropBoxDownloadActivity
+    {
+        public TestDsfDropBoxDownloadActivity(IDropboxClientFactory dropboxClientFactory)
+            :base(dropboxClientFactory)
+        {
+
+        }
+        public TestDsfDropBoxDownloadActivity()
+            : this(new DropboxClientWrapperFactory())
+        {
+
+        }
+        public void TestExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            base.ExecuteTool(dataObject, update);
+        }
+        public List<string> TestPerformExecution(Dictionary<string, string> evaluatedValues)
+        {
+            return base.PerformExecution(evaluatedValues);
         }
     }
 }
