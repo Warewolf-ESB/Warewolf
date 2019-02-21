@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
+        public void DsfDropboxFileListActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void UniqueID_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_UniqueID_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Same_Object_IsEqual()
+        public void DsfDropboxFileListActivity_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Same_Object_IsEqual()
+        public void DsfDropboxFileListActivity_Result_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -107,7 +107,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Result_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Same_Object_IsEqual()
+        public void DsfDropboxFileListActivity_ToPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
+        public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DropBoxSource_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_DropBoxSource_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DropBoxSource_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_DropBoxSource_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeMediaInfo_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IncludeMediaInfo_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -246,7 +246,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeMediaInfo_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IncludeMediaInfo_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsRecursive_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IsRecursive_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -281,7 +281,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsRecursive_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IsRecursive_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeDeleted_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IncludeDeleted_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -317,7 +317,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IncludeDeleted_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IncludeDeleted_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -335,7 +335,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesSelected_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IsFilesSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -353,7 +353,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesSelected_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IsFilesSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -372,7 +372,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFoldersSelected_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IsFoldersSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -390,7 +390,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFoldersSelected_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IsFoldersSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -409,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesAndFoldersSelected_Different_Object_Is_Not_Equal()
+        public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
@@ -427,7 +427,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void IsFilesAndFoldersSelected_Same_Object_Is_Equal()
+        public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
