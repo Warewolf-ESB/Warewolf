@@ -222,14 +222,9 @@ namespace Dev2.Data.Tests.Parsers
                 mockParseTo.Object
             };
 
-            //var mockIntellisenseResult = new Mock<IIntellisenseResult>()
-            //var results = new List<IIntellisenseResult>()
-            //var results1 = new Mock<IList<IIntellisenseResult>>()
-
             var mockParserHelper = new Mock<IParserHelper>();
-            //mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.IsAny<List<IIntellisenseResult>>()))
-            //    .Callback<IIntellisenseResult>(value => ref mockIntellisenseResult.Object)
-            //    .Returns(true)
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(true);
 
             var mockDev2DataLanguageParser = new Mock<IDev2DataLanguageParser>();
             mockDev2DataLanguageParser.Setup(dataLanguageParser => dataLanguageParser.MakeParts(textNoBrackets, addCompleteParts)).Returns(parseToList);
@@ -238,19 +233,111 @@ namespace Dev2.Data.Tests.Parsers
 
             var result = dataLanguageParserImplementation.PartsGeneration(textNoBrackets, parts, addCompleteParts, isFromIntellisense, additionalParts);
 
-            const string expectedPayload = @" [[<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>]] contains a space, this is an invalid character for a variable name";
-            const string expectedDisplayValue = @"[[<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>]]";
-            const string expectedField = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_ValidateName_ExpectsTrue()
+        {
+            const string payload = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(true);
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = new string[] { payload };
+            const bool isRs = false;
+            const string rawSearch = "";
+            const string search = "";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_ValidateName_ExpectsFalse()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(false);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>." +
+                @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = false;
+            const string rawSearch = "";
+            const string search = "";
+            const bool emptyOk = false;
+
+            const string expectedMessage = @" [[<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>]] contains a space, this is an invalid character for a variable name";
+            const string expectedDisplayValue = @"[[<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>.<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>]]";
+            const string expectedField = @".<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+            const string expectedRecordset = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(0, result[0].StartIndex);
-            Assert.AreEqual(0, result[0].EndIndex);
             Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
-            Assert.AreEqual(expectedPayload, result[0].Message);
+            Assert.AreEqual(expectedMessage, result[0].Message);
             Assert.IsNotNull(result[0].Option);
             Assert.AreEqual(expectedDisplayValue, result[0].Option.DisplayValue);
             Assert.AreEqual(expectedField, result[0].Option.Field);
-            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
+            Assert.AreEqual(expectedRecordset, result[0].Option.Recordset);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_ValidateName_ExpectsFalse1()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(false);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = @"recName1.field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = false;
+            const string rawSearch = "";
+            const string search = "";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, result[0].ErrorCode);
+            Assert.AreEqual("[[recName1]] does not exist in your variable list", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("[[recName1().field1]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field1", result[0].Option.Field);
+            Assert.AreEqual("recName1", result[0].Option.Recordset);
         }
     }
 }
