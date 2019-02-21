@@ -15,6 +15,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Data.Tests.Parsers
 {
@@ -262,6 +263,7 @@ namespace Dev2.Data.Tests.Parsers
             match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
 
             Assert.AreEqual(0, result.Count);
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
         }
 
         [TestMethod]
@@ -303,19 +305,21 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual(expectedDisplayValue, result[0].Option.DisplayValue);
             Assert.AreEqual(expectedField, result[0].Option.Field);
             Assert.AreEqual(expectedRecordset, result[0].Option.Recordset);
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DataLanguageParserImplementation))]
-        public void DataLanguageParserImplementation_Match_MatchFieldVariables_ValidateName_ExpectsFalse1()
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_IncorrectRecordset()
         {
             var mockParserHelper = new Mock<IParserHelper>();
             mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
                 .Returns(false);
             mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
 
-            const string payload = @"recName1.field1";
+            const string payload = "recName1.field1";
 
             var mockParseTo = new Mock<IParseTO>();
             var refParts = new List<IDev2DataLanguageIntellisensePart>();
@@ -338,6 +342,636 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual("[[recName1().field1]]", result[0].Option.DisplayValue);
             Assert.AreEqual("field1", result[0].Option.Field);
             Assert.AreEqual("recName1", result[0].Option.Recordset);
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_IsRecordset_ValidateName_ExpectsTrue()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(true);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            Assert.AreEqual(0, result.Count);
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_IsRecordset_ValidateName_ExpectsFalse()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(false);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, result[0].ErrorCode);
+            Assert.AreEqual("[[recName1()]] does not exist in your variable list", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("[[recName1().field1]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field1", result[0].Option.Field);
+            Assert.AreEqual("recName1", result[0].Option.Recordset);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_IsRecordset_ValidateName_HasRecordset()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(false);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+            mockParserHelper.Setup(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()))
+                .Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            refParts.Add(mockDataIntellisensePart.Object);
+
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
+            mockParserHelper.Verify(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()), Times.Once);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        class ASDF
+        {
+            public void ProcessFieldsForRecordSetCallback(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
+            {
+                search = "a";
+                emptyOk = false;
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_MatchFieldVariables_EmptyList()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny))
+                .Returns(false);
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            var asdf = new ASDF();
+
+            //mockParserHelper.Setup(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()))
+            //    .Callback(asdf.ProcessFieldsForRecordSetCallback)
+            //    .Returns(false)
+
+            const string payload = "a.b";
+
+            var mockParseTo = new Mock<IParseTO>();
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            refParts.Add(mockDataIntellisensePart.Object);
+
+            const bool addCompleteParts = false;
+            var result = new List<IIntellisenseResult>();
+            var parts = payload.Split('.');
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchFieldVariables(mockParseTo.Object, refParts, addCompleteParts, result, parts, isRs, rawSearch, search, emptyOk);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IIntellisenseResult>>(), out It.Ref<IList<IIntellisenseResult>>.IsAny), Times.Once());
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
+            mockParserHelper.Verify(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()), Times.Once);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Scalar_MatchNonFieldVariables()
+        {
+            var mockIntellisenseResult = new Mock<IIntellisenseResult>();
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>())).Returns(mockIntellisenseResult.Object);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = false;
+            const string rawSearch = "field";
+            const string search = "";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+            Assert.AreEqual(1, result.Count);
+            Assert.AreSame(mockIntellisenseResult.Object, result[0]);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_MatchNonFieldVariables()
+        {
+            var mockIntellisenseResult = new Mock<IIntellisenseResult>();
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>())).Returns(mockIntellisenseResult.Object);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.ValidateName(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+            Assert.AreEqual(1, result.Count);
+            Assert.AreSame(mockIntellisenseResult.Object, result[0]);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+
+            var mockDev2DataLanguageIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDev2DataLanguageIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            refParts.Add(mockDev2DataLanguageIntellisensePart.Object);
+
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.IsNull(result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("[[field2]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field2", result[0].Option.Field);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts_WithChildren()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(4, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(" / Select a specific row or Close", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual(" / Select a specific row or Close", result[0].Option.Description);
+            Assert.AreEqual("[[field2(", result[0].Option.DisplayValue);
+            Assert.AreEqual("field2(", result[0].Option.Field);
+            Assert.AreEqual("", result[0].Option.Recordset);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
+            Assert.AreEqual(" / Takes all rows ", result[1].Message);
+            Assert.IsNotNull(result[1].Option);
+            Assert.AreEqual(" / Takes all rows ", result[1].Option.Description);
+            Assert.AreEqual("[[field2(*)]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("", result[1].Option.Field);
+            Assert.AreEqual("field2", result[1].Option.Recordset);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[2].ErrorCode);
+            Assert.AreEqual(" / Take last row", result[2].Message);
+            Assert.IsNotNull(result[2].Option);
+            Assert.AreEqual(" / Take last row", result[2].Option.Description);
+            Assert.AreEqual("[[field2()]]", result[2].Option.DisplayValue);
+            Assert.AreEqual("", result[2].Option.Field);
+            Assert.AreEqual("field2", result[2].Option.Recordset);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[3].ErrorCode);
+            Assert.AreEqual(" / Use the field of a Recordset", result[3].Message);
+            Assert.IsNotNull(result[3].Option);
+            Assert.AreEqual(" / Use the field of a Recordset", result[3].Option.Description);
+            Assert.AreEqual("[[field2().childField2]]", result[3].Option.DisplayValue);
+            Assert.AreEqual("childField2", result[3].Option.Field);
+            Assert.AreEqual("field2", result[3].Option.Recordset);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts_WithChildren_MatchSearch()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(3, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(" / Select a specific row", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual(" / Select a specific row", result[0].Option.Description);
+            Assert.AreEqual("[[field2([[]])]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsTrue(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[0].Option.Recordset);
+            Assert.AreEqual("[[]]", result[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
+            Assert.AreEqual(" / Select a specific field at a specific row", result[1].Message);
+            Assert.IsNotNull(result[1].Option);
+            Assert.AreEqual(" / Select a specific field at a specific row", result[1].Option.Description);
+            Assert.AreEqual("[[field2([[]]).childField2]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("childField2", result[1].Option.Field);
+            Assert.IsTrue(result[1].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[1].Option.Recordset);
+            Assert.AreEqual("[[]]", result[1].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[2].ErrorCode);
+            Assert.AreEqual(" /  Select this recordset field field", result[2].Message);
+            Assert.IsNotNull(result[2].Option);
+            Assert.AreEqual(" /  Select this recordset field field", result[2].Option.Description);
+            Assert.AreEqual("[[field2().childField2]]", result[2].Option.DisplayValue);
+            Assert.AreEqual("childField2", result[2].Option.Field);
+            Assert.IsFalse(result[2].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[2].Option.Recordset);
+            Assert.AreEqual("", result[2].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts_WithChildren_MatchSearch_IsRsFalse()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = false;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = false;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(2, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.IsNull(result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.IsNull(result[0].Option.Description);
+            Assert.AreEqual("[[field2()]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
+            Assert.AreEqual(" / Use a field of the Recordset", result[1].Message);
+            Assert.IsNotNull(result[1].Option);
+            Assert.AreEqual(" / Use a field of the Recordset", result[1].Option.Description);
+            Assert.AreEqual("[[field2().childField2]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("childField2", result[1].Option.Field);
+            Assert.IsFalse(result[1].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[1].Option.Recordset);
+            Assert.AreEqual("", result[1].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts_NoChildren_MatchSearch_IsRsFalse()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = true;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = false;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.IsNull(result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("", result[0].Option.Description);
+            Assert.AreEqual("[[field2]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field2", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_Recordset_LoopRefParts_WithParent_MatchSearch_IsRsFalse()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("ChildPayload");
+
+            var mockParseToParent = new Mock<IParseTO>();
+            mockParseToParent.Setup(parseTo => parseTo.Payload).Returns("ParentPayload");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+            mockParseTo.Setup(parseTo => parseTo.Parent).Returns(mockParseTo.Object);
+            mockParseTo.Setup(parseTo => parseTo.Payload).Returns("Payload()");
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = true;
+            var tmp = new StringBuilder();
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = false;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once());
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(" / Select a specific row ", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("", result[0].Option.Description);
+            Assert.AreEqual("[[field2]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field2", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
         }
     }
 }
