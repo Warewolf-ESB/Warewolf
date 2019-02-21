@@ -190,6 +190,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivityTests.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
     <Compile Include="Activities\DsfComDllActivityTests.cs" />
     <Compile Include="Activities\EmailSenderTests.cs" />
