@@ -566,7 +566,9 @@ namespace Dev2.Data.Parsers
             {
                 try
                 {
-                    var isRecName = isRs && rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.EndsWith(DataListUtil.RecordsetIndexClosingBracket);
+                    var isRecName = isRs;
+                    isRecName &= rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket);
+                    isRecName &= rawSearch.EndsWith(DataListUtil.RecordsetIndexClosingBracket);
                     if (!isRecName && !payload.HangingOpen && ScalarMatch(result, isRs, rawSearch))
                     {
                         return;
