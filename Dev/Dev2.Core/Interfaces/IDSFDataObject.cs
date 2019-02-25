@@ -68,6 +68,7 @@ namespace Dev2.Interfaces
         StringBuilder RawPayload { get; set; }
         StringBuilder RemoteInvokeResultShape { get; set; }
         bool RemoteInvoke { get; set; }
+        //TODO: Change this to Guid
         string RemoteInvokerID { get; set; }
         IList<IDebugState> RemoteDebugItems { get; set; }
         string RemoteServiceType { get; set; }

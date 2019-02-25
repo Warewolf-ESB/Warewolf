@@ -23,7 +23,6 @@ namespace Dev2.Common.Interfaces.Enums.Enums
 
             IList<string> result = new List<string>();
 
-            
             foreach (object value in Enum.GetValues(enumType))
             
             {
@@ -31,17 +30,6 @@ namespace Dev2.Common.Interfaces.Enums.Enums
             }
 
             return result;
-        }
-
-        public static string ConvertEnumValueToString(Enum value)
-        {
-            var type = value.GetType();
-            if (!type.IsEnum)
-            {
-                throw new InvalidOperationException(ErrorResource.ExpectedEnumerationTypeParameter);
-            }
-
-            return value.GetDescription();
         }
 
         public static object GetEnumFromStringDiscription(string discription, Type type)
@@ -52,7 +40,6 @@ namespace Dev2.Common.Interfaces.Enums.Enums
             }
 
             foreach (object value in Enum.GetValues(type))
-            
             {
                 if ((value as Enum).GetDescription() == discription)
                 {

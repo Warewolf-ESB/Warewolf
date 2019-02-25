@@ -38,24 +38,30 @@ namespace Dev2.Instrumentation.Tests
             return tracker;
         }
 
-        [TestMethod]
-        public void CreateRevulyticsConfigTestSdkException()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_CreateRevulyticsConfigTestSdkException()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             var result = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(result, RUIResult.ok);
         }
 
-        [TestMethod]
-        public void CreateRevulyticsConfigTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_CreateRevulyticsConfigTest()
         {
             var tracker = GetRevulyticsTracker();
             var configResult = tracker.CreateRevulyticsConfig();
             Assert.AreEqual(configResult, RUIResult.ok, "configNotCreated");
         }
 
-        [TestMethod]
-        public void StartSdkTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_StartSdkTest()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -63,8 +69,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(startSdkResult, RUIResult.ok, "sdkNotStarted");
         }
 
-        [TestMethod]
-        public void StopSdkTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_StopSdkTest()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -73,8 +81,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(stopResult, RUIResult.ok, "sdkAlreadyStopped");
         }
 
-        [TestMethod]
-        public void StartSessionTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_StartSessionTest()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -84,8 +94,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(startSessionResult, RUIResult.ok, "sdkSuspended");
         }
 
-        [TestMethod]
-        public void StopSessionTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_StopSessionTest()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -97,8 +109,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(stopSessionResult, RUIResult.ok, "sdkAlreadyStopped");
         }
 
-        [TestMethod]
-        public void SetProductVersionTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_SetProductVersionTest()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -108,8 +122,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(result, RUIResult.ok, "Error in setting product version");
         }
 
-        [TestMethod]
-        public void SetInformationalVersionTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_EnableAppplicationTrackerSdkException()
         {
             var tracker = GetRevulyticsTracker();
             tracker.CreateRevulyticsConfig();
@@ -133,8 +149,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(username, tracker.Username);
         }
 
-        [TestMethod]
-        public void EnableAppplicationTrackerArgumentNullException()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_EnableAppplicationTrackerArgumentNullException()
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
             const string productVersion = "1.0.0.0";
@@ -149,8 +167,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.IsNull(tracker.SdkFilePath);
         }
 
-        [TestMethod]
-        public void EnableApplicationTrackerTestWithCorrectConfig()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_EnableApplicationTrackerTestWithCorrectConfig()
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
@@ -163,8 +183,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(username, tracker.Username);
         }
 
-        [TestMethod]
-        public void EnableAppplicationTrackerTestWithInCorrectonfig()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_EnableAppplicationTrackerTestWithInCorrectonfig()
         {
             var tracker = GetRevulyticsTrackerWithIncorrectConfig();
             const string productVersion = "1.0.0.0";
@@ -177,8 +199,10 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(username, tracker.Username);
         }
 
-        [TestMethod]
-        public void TrackEventTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_TrackEventTest()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             const string productVersion = "1.0.0.0";
@@ -188,8 +212,10 @@ namespace Dev2.Instrumentation.Tests
             tracker.TrackEvent("Test Event", "Unit Test");
         }
 
-        [TestMethod]
-        public void TrackCustomEventTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_TrackCustomEventTest()
         {
             var tracker = RevulyticsTracker.GetTrackerInstance();
             const string productVersion = "1.0.0.0";
@@ -199,8 +225,10 @@ namespace Dev2.Instrumentation.Tests
             tracker.TrackCustomEvent("Test Event", "Unit Test", "custom values");
         }
 
-        [TestMethod]
-        public void DisableAppplicationTrackerTest()
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
+        public void RevulyticsTracker_DisableAppplicationTrackerTest()
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";
@@ -211,9 +239,11 @@ namespace Dev2.Instrumentation.Tests
             Assert.AreEqual(RUIState.stopped, tracker.RuiSdk.GetState(), "Revulytics stopped");
         }
 
-        [TestMethod]
+        [TestMethod()]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(RevulyticsTracker))]
         [ExpectedException(typeof(NullReferenceException))]
-        public void DisableAppplicationTrackerExceptionTest()
+        public void RevulyticsTracker_DisableAppplicationTrackerExceptionTest()
         {
             var tracker = GetRevulyticsTracker();
             const string productVersion = "1.0.0.0";

@@ -22,6 +22,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Data.TO;
 using Warewolf.Storage.Interfaces;
+using System;
+using System.Linq;
 
 namespace Dev2.Activities.Designers.Tests.Decision
 {
@@ -673,5 +675,44 @@ namespace Dev2.Activities.Designers.Tests.Decision
             return modelItem;
         }
 
+
+        class Entry
+        {
+            public enDecisionType _decisionType;
+            public bool _found;
+        }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(enDecisionType))]
+        public void enDecisionType_Handled()
+        {
+            var type = typeof(IDecisionOperation);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
+
+            var names = Enum.GetValues(typeof(enDecisionType))
+                .Cast<enDecisionType>()
+                .Select(o => new Entry { _decisionType = o, _found = false })
+                .ToArray();
+
+            foreach (var item in names)
+            {
+                if (types.Any(t =>
+                {
+                    var v = Activator.CreateInstance(t) as IDecisionOperation;
+                    var handlesType = (enDecisionType)v.HandlesType();
+                    return handlesType == item._decisionType;
+                }))
+                {
+                    item._found = true;
+                }
+            }
+
+            var unhandledDecisionTypes = names.Where(o => !o._found).ToArray();
+
+            Assert.AreEqual(1, unhandledDecisionTypes.Length);
+            Assert.AreEqual(enDecisionType.Choose, unhandledDecisionTypes[0]._decisionType);
+        }
     }
 }

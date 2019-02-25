@@ -15,8 +15,6 @@ namespace Dev2.Runtime
 {
     public static class Utilities
     {
-        #region GenerateString
-
         public static string GenerateString(this Random random, int length) => random.GenerateString(length, "");
 
         public static string GenerateString(this Random random, int length, string prefix)
@@ -34,7 +32,6 @@ namespace Dev2.Runtime
             }
             return builder.ToString();
         }
-
-        #endregion
+        
     }
 }

@@ -115,13 +115,11 @@ namespace Dev2.Data.Util
                     var isXml = IsXml(result, out bool isFragment, out bool isHtml);
                     if (!(isXml && !isFragment && !isHtml))
                     {
-                        // We need to replace DataList if present ;)
                         result = result.Replace("<DataList>", "").Replace("</DataList>", "");
                         result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");
                         result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
                     }
                 }
-
 
             }
 
@@ -150,13 +148,12 @@ namespace Dev2.Data.Util
                     }
                 }
             }
-
             return result.Trim();
-
         }
 
         private static string CloseOpenTag(string[] toRemove, bool foundOpen, string result, int i, string myTag)
         {
+            var _result = result;
             if (foundOpen)
             {
                 var loc = i - 1;
@@ -168,16 +165,15 @@ namespace Dev2.Data.Util
                     {
                         var canidate = result.Substring(start, end - start + myTag.Length);
                         var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                        result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
+                        _result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
                     }
                 }
             }
             else
             {
-                result = result.Replace(myTag, "");
+                _result = result.Replace(myTag, "");
             }
-
-            return result;
+            return _result;
         }
     }
 }

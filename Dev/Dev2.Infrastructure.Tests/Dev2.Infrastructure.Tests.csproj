@@ -113,6 +113,7 @@
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
+    <Compile Include="SharedModels\CompileMessageListTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -124,7 +125,7 @@
     </AdditionalFiles>
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\FutureRecieptTest.cs" />
-    <Compile Include="Communication\JsonSerializerTest.cs" />
+    <Compile Include="Communication\Dev2JsonSerializerTests.cs" />
     <Compile Include="Communication\MemoTests.cs" />
     <Compile Include="Communication\DesignValidationMemoTests.cs" />
     <Compile Include="Communication\ExecuteMessageTest.cs" />

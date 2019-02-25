@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using Dev2.Common;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Decisions.Operations
@@ -62,16 +61,9 @@ namespace Dev2.Data.Decisions.Operations
 
         private static void TryParseColum(DateTime[] dtVal, int pos, string c)
         {
-            try
+            if (DateTime.TryParse(c, out DateTime dt))
             {
-                if (DateTime.TryParse(c, out DateTime dt))
-                {
-                    dtVal[pos] = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                dtVal[pos] = dt;
             }
         }
     }

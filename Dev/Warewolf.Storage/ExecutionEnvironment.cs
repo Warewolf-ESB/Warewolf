@@ -226,10 +226,9 @@ namespace Warewolf.Storage
         public bool HasRecordSet(string recordsetName)
         {
             var x = EvaluationFunctions.parseLanguageExpression(recordsetName, 0);
-            if (x.IsRecordSetNameExpression)
+            if (x.IsRecordSetNameExpression && x is LanguageAST.LanguageExpression.RecordSetNameExpression recsetName)
             {
-                var recsetName = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
-                return _env.RecordSets.ContainsKey(recsetName?.Item.Name);
+                return _env.RecordSets.ContainsKey(recsetName.Item.Name);
             }
             return false;
         }
@@ -237,28 +236,22 @@ namespace Warewolf.Storage
         public IList<string> EvalAsListOfStrings(string expression, int update)
         {
             var result = Eval(expression, update);
-            if (result.IsWarewolfAtomResult)
-            {
-                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult)?.Item;
-                return new List<string> { WarewolfAtomToString(x) };
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x) {
+                return new List<string> { WarewolfAtomToString(x.Item) };
             }
-            if (result.IsWarewolfRecordSetResult)
-            {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult) {
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return EvalListOfStringsHelper(recSetData);
                 }
             }
-            var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (warewolfAtomListresult == null)
+            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
-                throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
+                var item = warewolfAtomListresult.Item;
+                return item.Select(WarewolfAtomToString).ToList();
             }
-
-            var item = warewolfAtomListresult.Item;
-            return item.Select(WarewolfAtomToString).ToList();
+            throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
         }
 
         private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)
@@ -329,10 +322,8 @@ namespace Warewolf.Storage
 
         public static string WarewolfEvalResultToString(CommonFunctions.WarewolfEvalResult result)
         {
-            if (result.IsWarewolfAtomResult)
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
-                if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                {
                     var x = warewolfAtomResult.Item;
                     if (x.IsNothing)
                     {
@@ -340,13 +331,10 @@ namespace Warewolf.Storage
                     }
 
                     return WarewolfAtomToStringErrorIfNull(x);
-                }
-                throw new Exception(@"Null when value should have been returned.");
             }
-            if (result.IsWarewolfRecordSetResult)
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return WarewolfEvalResultToStringHelper(recSetData);
@@ -390,7 +378,7 @@ namespace Warewolf.Storage
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            AssignWithFrameAndList(exp, recsetResult.Item, false, update);
+            _env = PublicFunctions.EvalAssignFromList(exp, recsetResult.Item, _env, update, false);
         }
 
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -401,12 +389,7 @@ namespace Warewolf.Storage
                 exp = ToStar(exp);
             }
 
-            AssignWithFrameAndList(exp, recsetResult.Item, exists, update);
-        }
-
-        public void AssignWithFrameAndList(string assignValue, IEnumerable<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
-        {
-            _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
+            _env = PublicFunctions.EvalAssignFromList(exp, recsetResult.Item, _env, update, exists);
         }
 
         public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -464,26 +447,21 @@ namespace Warewolf.Storage
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists)
         {
             var result = Eval(expression, update, throwsifnotexists);
-            if (result.IsWarewolfAtomResult)
+            if (result.IsWarewolfAtomResult && result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
             {
-                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if (warewolfAtomResult == null)
-                {
-                    throw new Exception(@"Null when value should have been returned.");
-                }
-
                 var item = warewolfAtomResult.Item;
                 return new List<DataStorage.WarewolfAtom> { item };
             }
-            if (result.IsWarewolfRecordSetResult)
+            if (result.IsWarewolfRecordSetResult && result is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recSetResult)
             {
-                var recSetResult = result as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                var recSetData = recSetResult?.Item;
+                var recSetData = recSetResult.Item;
                 if (recSetData != null)
                 {
                     return EvalAsListHelper(recSetData);
                 }
             }
+
+            // BUG: this will just return null if there is an unhandled Warewolf Atom Result of some sort
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();
         }
@@ -529,16 +507,16 @@ namespace Warewolf.Storage
 
         public string FetchErrors() => string.Join(Environment.NewLine, AllErrors.Union(Errors));
 
-        public bool HasErrors() => Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
+        public bool HasErrors() => (Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s))) > 0;
 
         public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
 
         public static string ConvertToIndex(string outputVar, int i)
         {
             var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0);
-            if (output.IsRecordSetExpression)
+            if (output.IsRecordSetExpression && output is LanguageAST.LanguageExpression.RecordSetExpression recSetExpr)
             {
-                var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression)?.Item;
+                var outputidentifier = recSetExpr.Item;
                 if (Equals(outputidentifier?.Index, LanguageAST.Index.Star))
                 {
                     return $"[[{outputidentifier?.Name}({i}).{outputidentifier?.Column}]]";
@@ -625,21 +603,19 @@ namespace Warewolf.Storage
                 return null;
             }
 
-            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
-            if (!var.IsJsonIdentifierExpression)
+            var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+            if (parsedExpression.IsJsonIdentifierExpression && parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
             {
-                return null;
+                if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
+                {
+                    return _env.JsonObjects[nameExpression.Item.Name];
+                }
+                if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
+                {
+                    return _env.JsonObjects[arrayExpression.Item.ObjectName];
+                }
             }
-
-            var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
-            {
-                return _env.JsonObjects[nameExpression.Item.Name];
-            }
-            if (jsonIdentifierExpression?.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
-            {
-                return _env.JsonObjects[arrayExpression.Item.ObjectName];
-            }
+            // BUG: if any other types are added to JsonIdentifierExpression this method will no longer be correct.
             return null;
         }
 
@@ -648,18 +624,18 @@ namespace Warewolf.Storage
             var indexMap = new List<string>();
             if (!string.IsNullOrEmpty(exp))
             {
-                var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
+                var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
 
-                if (var.IsJsonIdentifierExpression)
+                if (parsedExpression.IsJsonIdentifierExpression)
                 {
-                    if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
+                    if (parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
                     {
                         BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
                     }
                 }
                 else
                 {
-                    if (var.IsRecordSetExpression && var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
+                    if (parsedExpression.IsRecordSetExpression && parsedExpression is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
                     {
                         GetIndexAddRecordSetIndexes(exp, indexMap, recSetExpression);
                     }
@@ -678,6 +654,7 @@ namespace Warewolf.Storage
             }
         }
 
+        // TODO: refactor BuildIndexMap into a helper class that we can test separately
         void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
             var jsonIdentifierExpression = var;
@@ -872,7 +849,12 @@ namespace Warewolf.Storage
 
             private static void AssignJsonData(ExecutionEnvironment environment, JObject jsonJObjects)
             {
-                foreach (var jsonObj in jsonJObjects?.Properties())
+                if (jsonJObjects is null)
+                {
+                    return;
+                }
+
+                foreach (var jsonObj in jsonJObjects.Properties())
                 {
                     environment.Assign($"[[@{jsonObj.Name}]]", jsonObj.Value.ToString(), 0);
                 }
@@ -880,7 +862,12 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JObject jsonRecSets)
             {
-                foreach (var recSetObj in jsonRecSets?.Properties())
+                if (jsonRecSets is null)
+                {
+                    return;
+                }
+
+                foreach (var recSetObj in jsonRecSets.Properties())
                 {
                     AssignRecSetData(environment, recSetObj);
 
@@ -889,7 +876,12 @@ namespace Warewolf.Storage
 
             private static void AssignScalarData(ExecutionEnvironment environment, JObject jsonScalars)
             {
-                foreach (var scalarObj in jsonScalars?.Properties())
+                if (jsonScalars is null)
+                {
+                    return;
+                }
+
+                foreach (var scalarObj in jsonScalars.Properties())
                 {
                     environment.Assign($"[[{scalarObj.Name}]]", (string)scalarObj.Value, 0);
                 }
@@ -897,9 +889,7 @@ namespace Warewolf.Storage
 
             private static void AssignRecSetData(ExecutionEnvironment environment, JProperty recSetObj)
             {
-                var recSetDataObj = recSetObj?.Value as JObject;
-                var positionItems = (recSetDataObj?.Property("WarewolfPositionColumn")?.Value as JArray).ToList();
-                foreach (var recSetData in recSetDataObj?.Properties())
+                void AssignRecSetDataItem(List<JToken> positionItems, JProperty recSetData)
                 {
                     if (recSetData.Name != "WarewolfPositionColumn")
                     {
@@ -908,14 +898,21 @@ namespace Warewolf.Storage
                         foreach (var dataValue in dataItems)
                         {
                             var index = positionItems[i].ToString();
-                            environment.Assign($"[[{recSetObj?.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
+                            environment.Assign($"[[{recSetObj.Name}({index}).{recSetData.Name}]]", dataValue.ToString(), 0);
                             i++;
                         }
                     }
                 }
+
+                if (recSetObj != null && recSetObj.Value is JObject recSetDataObj)
+                {
+                    var positionItems = (recSetDataObj.Property("WarewolfPositionColumn").Value as JArray).ToList();
+                    foreach (var recSetData in recSetDataObj.Properties())
+                    {
+                        AssignRecSetDataItem(positionItems, recSetData);
+                    }
+                }
             }
         }
-
-       
     }
 }

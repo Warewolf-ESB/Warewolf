@@ -1,20 +1,29 @@
-﻿using Dev2.Common.Interfaces.Wrappers;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using System.IO;
-using Dev2.Common.Wrappers;
 using Dev2.PathOperations;
 using System.Threading;
-using System.Security.Principal;
 using Dev2.Common.Common;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Data.PathOperations.Operations
 {
     public class DoPutAction : PerformIntegerIOOperation
     {
         static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-        readonly WindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
-        protected readonly IActivityIOPath Destination;
+        protected readonly IActivityIOPath _destination;
         protected readonly IFile _fileWrapper;
         protected readonly IFilePath _pathWrapper;
         protected readonly IDev2CRUDOperationTO _arguments;
@@ -22,29 +31,34 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly string _whereToPut;
 
         public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut)
+            :this(currentStream, destination, crudArgument, whereToPut, new LogonProvider(), new FileWrapper(), new FilePathWrapper(), ValidateAuthorization.RequiresAuth)
+        { }
+
+        public DoPutAction(Stream currentStream, IActivityIOPath destination, IDev2CRUDOperationTO crudArgument, string whereToPut, IDev2LogonProvider logOnProvider, IFile fileWrapper, IFilePath pathWrapper, ImpersonationDelegate impersonationDelegate)
+            :base(impersonationDelegate)
         {
-            _logOnProvider = new LogonProvider();
-            _pathWrapper = new FilePathWrapper();
-            _fileWrapper = new FileWrapper();
+            _logOnProvider = logOnProvider;
+            _pathWrapper = pathWrapper;
+            _fileWrapper = fileWrapper;
             _currentStream = currentStream;
-            Destination = destination;
+            _destination = destination;
             _arguments = crudArgument;
-            ImpersonatedUser = ValidateAuthorization.RequiresAuth(Destination, _logOnProvider);
+            _impersonatedUser = _impersonationDelegate(_destination, _logOnProvider);
             _whereToPut = whereToPut;
         }
         public override int ExecuteOperation()
         {
-            var destination = Destination;
-            if (!_pathWrapper.IsPathRooted(Destination.Path) && _whereToPut != null)
+            var destination = _destination;
+            if (!_pathWrapper.IsPathRooted(_destination.Path) && _whereToPut != null)
             {
-                destination = ActivityIOFactory.CreatePathFromString(_whereToPut + "\\" + Destination.Path, Destination.Username, Destination.Password, Destination.PrivateKeyFile);
+                destination = ActivityIOFactory.CreatePathFromString(_whereToPut + "\\" + _destination.Path, _destination.Username, _destination.Password, _destination.PrivateKeyFile);
             }
             _fileLock.EnterWriteLock();
             try
             {
                 using (_currentStream)
                 {
-                    if (ImpersonatedUser != null)
+                    if (_impersonatedUser != null)
                     {
                         return ExecuteOperationWithAuth(_currentStream, destination);
                     }
@@ -54,13 +68,13 @@ namespace Dev2.Data.PathOperations.Operations
             finally
             {
                 _fileLock.ExitWriteLock();
-                ImpersonatedUser?.Undo();
+                _impersonatedUser?.Undo();
             }
         }
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
@@ -68,7 +82,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }

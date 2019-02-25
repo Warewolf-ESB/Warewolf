@@ -85,6 +85,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentModel\DataListVariableTests.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptorTests.cs" />
     <Compile Include="Settings\ConfigurationTests.cs" />
     <Compile Include="ExtensionMethodsTests.cs" />

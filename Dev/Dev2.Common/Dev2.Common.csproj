@@ -99,6 +99,8 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -134,6 +136,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="AssemblyWrapper.cs" />
+    <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
@@ -144,7 +147,6 @@
     <Compile Include="CommonEqualityOps.cs" />
     <Compile Include="Dev2XamlCleaner.cs" />
     <Compile Include="EqualityFactory.cs" />
-    <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="DebugStateTreeBuilder.cs" />
     <Compile Include="DeplyResult.cs" />
     <Compile Include="Dev2MethodInfo.cs" />
@@ -169,9 +171,6 @@
     <Compile Include="DateAndTime\TO\DateTimeOperationTO.cs" />
     <Compile Include="DateAndTime\TO\DateTimeResultTO.cs" />
     <Compile Include="DateAndTime\TO\TimeZoneTO.cs" />
-    <Compile Include="DependencyGraphGenerator.cs" />
-    <Compile Include="DependencyVisualization\CircularDependency.cs" />
-    <Compile Include="DependencyVisualization\Graph.cs" />
     <Compile Include="Dev2EnumConverter.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Exchange\ExchangeEmailSender.cs" />
@@ -184,6 +183,7 @@
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
+    <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
     <Compile Include="Interfaces\IAssignManager.cs" />
@@ -196,13 +196,14 @@
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
-    <Compile Include="NameValue.cs" />
     <Compile Include="SaveDialogue\ResourceName.cs" />
     <Compile Include="Search\Search.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Serializers\Dev2JsonSerializer.cs" />
     <Compile Include="State\StateVariable.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
+    <Compile Include="Utils\JsonNetValueSystem.cs" />
+    <Compile Include="Utils\JsonPath.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="Utils\VerifyArgument.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Wrappers\FileInfoWrapper.cs" />
     <Compile Include="Wrappers\FilePathWrapper.cs" />
     <Compile Include="Wrappers\IonicZipFileWrapper.cs" />
+    <Compile Include="Wrappers\ProcessWrapper.cs" />
     <Compile Include="Wrappers\TimerWrapper.cs" />
     <Compile Include="Wrappers\ZipFileWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />

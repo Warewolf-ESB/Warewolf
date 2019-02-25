@@ -11,27 +11,17 @@
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-
 namespace Dev2.Data.Tests
 {
-    /// <summary>
-    /// Summary description for XmlHelperTest
-    /// </summary>
     [TestClass]
     public class XmlHelperTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-       
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsXml_GivenValidXml_ShouldReturnTrue()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_IsXml_GivenValidXml_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
-
             const string XmlFragment = @"<InnerError>Index #0
 Message: Login failed for user 'testuser2'.
 LineNumber: 65536
@@ -52,11 +42,11 @@ Procedure:
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsXml_GivenValidIvalidXml_ShouldReturnFalse()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_IsXml_GivenValidIvalidXml_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
-
             const string XmlFragment = @"HHHHHHH";
             var isXml = XmlHelper.IsXml(XmlFragment, out bool isFragment, out bool isHtml);
             //---------------Test Result -----------------------
@@ -64,12 +54,24 @@ Procedure:
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ToCleanXml_GivenDirtXmlWithToStripTags_ShouldReuturnCleanXml()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_IsXml_TryProcessAllNodes_IsHtml()
+        {
+            //---------------Set up test pack-------------------
+            const string HTMLFragment = @"<html><body></body></html>";
+            var isXml = XmlHelper.IsXml(HTMLFragment, out bool isFragment, out bool isHtml);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(isXml);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_GivenDirtXmlWithToStripTags_ShouldReuturnCleanXml()
         {
             //---------------Set up test pack-------------------
             var xml = @"<XmlData>Hello world<XmlData>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
@@ -77,12 +79,12 @@ Procedure:
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ToCleanXml_GivenDirtXmlWithnaughtyTags_ShouldReuturnNoData()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_GivenDirtXmlWithnaughtyTags_ShouldReuturnNoData()
         {
             //---------------Set up test pack-------------------
             var xml = @"<WebXMLConfiguration>Hello world</WebXMLConfiguration>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
@@ -90,17 +92,30 @@ Procedure:
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ToCleanXml_GivenDirtXmlWithnaughtyTagsAndValid_ShouldReuturnCleanXml()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_GivenDirtXmlWithnaughtyTagsAndValid_ShouldReuturnCleanXml()
         {
             //---------------Set up test pack-------------------
             var xml = @"<Person><WebXMLConfiguration>Hello world</WebXMLConfiguration></Person>";
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var cleanXml = xml.ToCleanXml();
             //---------------Test Result -----------------------
             Assert.AreEqual("<Person></Person>", cleanXml);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(XmlHelper))]
+        public void XmlHelper_ToCleanXml_NotisXml_NotisFragment_NotisHtml_ShouldReuturnCleanXml()
+        {
+            //---------------Set up test pack-------------------
+            var xml = @"<![CDATA[some stuff]]>";
+            //---------------Execute Test ----------------------
+            var cleanXml = xml.ToCleanXml();
+            //---------------Test Result -----------------------
+            Assert.AreEqual("<ADL><![CDATA[some stuff]]></ADL>", cleanXml);
+        }
+       
     }
 }

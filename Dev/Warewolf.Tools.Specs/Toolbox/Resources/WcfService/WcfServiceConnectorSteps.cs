@@ -19,6 +19,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
+using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Toolbox.WcfService
 {

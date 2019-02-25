@@ -1,4 +1,14 @@
-﻿using Dev2.Activities.DropBox2016;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
@@ -14,7 +24,8 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Interfaces;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Dev2.Common.Interfaces.Dropbox;
+using Dev2.Common.Wrappers;
+using System.Net.Http;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
@@ -164,8 +175,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClient>()))
             .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
             {
@@ -198,10 +209,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         public void PerformExecution_GivenPath_ShouldReturnSuccess()
         {
             //---------------Set up test pack-------------------
-            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
-                .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
+            clientFactoryMock.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(new Mock<IDropboxClient>().Object);
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
             {
                 SelectedSource = new DropBoxSource
@@ -234,7 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
@@ -269,7 +278,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
@@ -305,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
@@ -341,7 +350,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
@@ -376,7 +385,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object)
@@ -412,7 +421,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 //---------------Set up test pack-------------------
                 var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-                var clientFactoryMock = new Mock<IDropboxFactory>();
+                var clientFactoryMock = new Mock<IDropboxClientFactory>();
                 mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                     .Returns(new DropboxFailureResult(TestConstant.ExceptionInstance.Value));
                 var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object);
@@ -457,61 +466,13 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         }
 
         [TestMethod]
-        public void GetDropboxClient_GivenActivityIsNewAndSourceIsSelected_ShouldCreateNewClient()
-        {
-            //---------------Set up test pack-------------------
-            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
-            var dropboxFileListActivity = new DsfDropboxFileListActivity();
-            dropboxFileListActivity.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivity.SelectedSource = new DropBoxSource
-            {
-                AccessToken = "Test"
-            };
-            var privateObject = new PrivateObject(dropboxFileListActivity);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropboxFileListActivity);
-            //---------------Execute Test ----------------------
-
-            var dropboxClient = privateObject.Invoke("GetDropboxClient");
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(dropboxClient);
-        }
-
-        [TestMethod]
-        public void GetDropboxClient_GivenClientExists_ShouldReturnExistingClient()
-        {
-            //---------------Set up test pack-------------------
-            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
-            var dropboxFileListActivity = new DsfDropboxFileListActivity();
-            dropboxFileListActivity.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivity.SelectedSource = new DropBoxSource
-            {
-                AccessToken = "Test"
-            };
-
-            var privateObject = new PrivateObject(dropboxFileListActivity);
-            //---------------Execute Test ----------------------
-            var dropboxClient = privateObject.Invoke("GetDropboxClient");
-            var dropboxClient1 = privateObject.Invoke("GetDropboxClient");
-
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(dropboxClient);
-            Assert.IsNotNull(dropboxClient1);
-            Assert.AreEqual(dropboxClient, dropboxClient1);
-        }
-
-        [TestMethod]
         [Owner("Clint Stedman")]
         [ExpectedException(typeof(Exception))]
         public void PerformExecution_GivenHasError_ShouldReturnDropboxFailureResult()
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxFailureResult(new Exception("Test Exception")));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object);
@@ -544,9 +505,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClient>()))
                 .Returns(new DropboxFailureResult(new Exception("Test Exception")));
-            var mock = new Mock<IDropboxFactory>();
+            var mock = new Mock<IDropboxClientFactory>();
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(mock.Object);
             dropboxFileListActivity.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
             dropboxFileListActivity.SelectedSource =
@@ -563,7 +524,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
               
             });
             //---------------Test Result -----------------------
-            mockExecutor.Verify(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
+            mockExecutor.Verify(executor => executor.ExecuteTask(It.IsAny<IDropboxClient>()));
         }
 
         [TestMethod]
@@ -572,7 +533,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientFactoryMock = new Mock<IDropboxFactory>();
+            var clientFactoryMock = new Mock<IDropboxClientFactory>();
             mockExecutor.Setup(executor => executor.ExecuteTask(clientFactoryMock.Object.CreateWithSecret("TEST")))
                 .Returns(new DropboxFailureResult(new Exception("Test Exception")));
             var dropboxFileListActivity = new TestDsfDropboxFileListActivity(clientFactoryMock.Object);
@@ -597,9 +558,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
     public class TestDsfDropboxFileListActivity : DsfDropboxFileListActivity
     {
-        readonly IDropboxFactory _clientFactory;
+        readonly IDropboxClientFactory _clientFactory;
 
-        public TestDsfDropboxFileListActivity(IDropboxFactory clientFactory)
+        public TestDsfDropboxFileListActivity(IDropboxClientFactory clientFactory)
             :base(clientFactory)
         {
             _clientFactory = clientFactory;
@@ -617,7 +578,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(_clientFactory.CreateWithSecret("TEST")))
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClient>()))
                 .Returns(DropboxResult);
             var dropboxFileListActivity = new Mock<TestDsfDropboxFileListActivity>();
             dropboxFileListActivity.Setup(

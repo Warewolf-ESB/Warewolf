@@ -13,42 +13,31 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Logging;
 using Newtonsoft.Json;
 
 namespace Dev2.Diagnostics.Debug
 {
-    public class DebugDispatcher : IDebugDispatcher
+    internal class DebugDispatcherImplementation : IDebugDispatcher
     {
+        readonly ILogger _dev2Logger;
+        public DebugDispatcherImplementation()
+            : this(new DefaultLogger())
+        { }
+        public DebugDispatcherImplementation(ILogger logger)
+        {
+            _dev2Logger = logger;
+        }
         readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
-        static bool _shutdownRequested;
+        bool _shutdownRequested;
         static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Objects,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
         };
 
-        static DebugDispatcher _instance;
-        public static DebugDispatcher Instance => _instance ?? (_instance = new DebugDispatcher());
-
-        static DebugDispatcher()
-        {
-        }
-
-        // Prevent instantiation
-        DebugDispatcher()
-        {
-
-        }
-        /// <summary>
-        /// Gets the number of writers.
-        /// </summary>
         public int Count => _writers.Count;
 
-        /// <summary>
-        /// Adds the specified writer to the dispatcher.
-        /// </summary>
-        /// <param name="workspaceId">The ID of the workspace to which the writer belongs.</param>
-        /// <param name="writer">The writer to be added.</param>
         public void Add(Guid workspaceId, IDebugWriter writer)
         {
             if (writer == null || _shutdownRequested)
@@ -59,10 +48,6 @@ namespace Dev2.Diagnostics.Debug
         }
 
 
-        /// <summary>
-        /// Removes the specified workspace from the dispatcher.
-        /// </summary>
-        /// <param name="workspaceId">The ID of workspace to be removed.</param>
         public void Remove(Guid workspaceId)
         {
             _writers.TryRemove(workspaceId, out IDebugWriter writer);
@@ -84,7 +69,7 @@ namespace Dev2.Diagnostics.Debug
             _shutdownRequested = true;
         }
 
-        public void Write(IDebugState debugState)=>Write(debugState, false, false, "", false, null, null, null);
+        public void Write(IDebugState debugState) => Write(debugState, false, false, "", false, null, null, null);
         public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName) => Write(debugState, isTestExecution, isDebugFromWeb, testName, false, null, null, null);
         public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId) => Write(debugState, isTestExecution, isDebugFromWeb, testName, isRemoteInvoke, remoteInvokerId, null, null);
         public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId, string parentInstanceId, IList<IDebugState> remoteDebugItems)
@@ -133,13 +118,13 @@ namespace Dev2.Diagnostics.Debug
 
                 remoteDebugItems.Clear();
             }
-            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}",GlobalConstants.WarewolfDebug);
+            _dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}", GlobalConstants.WarewolfDebug);
             QueueWrite(debugState);
 
             if (debugState.IsFinalStep())
             {
                 IDebugWriter writer;
-                if ((writer = Instance.Get(debugState.WorkspaceID)) != null)
+                if ((writer = Get(debugState.WorkspaceID)) != null)
                 {
                     var allDebugStates = DebugMessageRepo.Instance.FetchDebugItems(debugState.ClientID, debugState.SessionID);
                     foreach (var state in allDebugStates)
@@ -159,6 +144,28 @@ namespace Dev2.Diagnostics.Debug
 
             }
         }
+    }
 
+    public static class DebugDispatcher
+    {
+        static IDebugDispatcher _instance;
+        static readonly object _lock = new object();
+        public static IDebugDispatcher Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance is null)
+                        {
+                            _instance = new DebugDispatcherImplementation();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
     }
 }

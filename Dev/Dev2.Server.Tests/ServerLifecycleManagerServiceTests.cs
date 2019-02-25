@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Runtime.Interfaces;
@@ -128,6 +129,7 @@ namespace Dev2.Server.Tests
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -137,6 +139,7 @@ namespace Dev2.Server.Tests
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -149,7 +152,8 @@ namespace Dev2.Server.Tests
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
                 PauseHelper = mockPauseHelper.Object,
-                StartWebServer = mockStartWebServer.Object
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {
@@ -185,6 +189,7 @@ namespace Dev2.Server.Tests
             var mockSerLifeCycleWorker = new Mock<IServerLifecycleWorker>();
             var mockResourceCatalog = new Mock<IResourceCatalog>();
             var mockStartWebServer = new Mock<IStartWebServer>();
+            var mockSecurityIdentityFactory = new Mock<ISecurityIdentityFactory>();
 
             var items = new List<IServerLifecycleWorker> { mockSerLifeCycleWorker.Object };
 
@@ -194,6 +199,7 @@ namespace Dev2.Server.Tests
             mockSerLifeCycleWorker.Setup(o => o.Execute()).Verifiable();
             mockAssemblyLoader.Setup(o => o.AssemblyNames(It.IsAny<Assembly>())).Returns(new AssemblyName[] { new AssemblyName() { Name = "testAssemblyName" } });
             mockWebServerConfiguration.Setup(o => o.EndPoints).Returns(new Dev2Endpoint[] { new Dev2Endpoint(new IPEndPoint(0x40E9BB63, 8080), "Url", "path") });
+
             //------------------------Act----------------------------
             var config = new StartupConfiguration
             {
@@ -206,7 +212,8 @@ namespace Dev2.Server.Tests
                 WebServerConfiguration = mockWebServerConfiguration.Object,
                 Writer = mockWriter.Object,
                 PauseHelper = mockPauseHelper.Object,
-                StartWebServer = mockStartWebServer.Object
+                StartWebServer = mockStartWebServer.Object,
+                SecurityIdentityFactory = mockSecurityIdentityFactory.Object,
             };
             using (var serverLifeCycleManager = new ServerLifecycleManager(config))
             {

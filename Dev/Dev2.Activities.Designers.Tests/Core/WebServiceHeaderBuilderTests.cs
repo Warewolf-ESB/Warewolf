@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -12,19 +13,9 @@ namespace Dev2.Activities.Designers.Tests.Core
     public class WebServiceHeaderBuilderTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_Ctor")]
-        public void WebServiceHeaderBuilder_Ctor()
-        {
-            var mod = new WebServiceHeaderBuilder();
-
-            Assert.IsNotNull(mod);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenNoHeadersNoContent_PassThrouh()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenNoHeadersNoContent_PassThrouh()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
@@ -36,9 +27,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenNormalText_PassAddNoHeaders()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenNormalText_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
@@ -54,9 +45,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenNormalTextJson_PassAddHeaders()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenNormalTextJson_PassAddHeaders()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
@@ -70,16 +61,17 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Assert Results-------------------------
             Assert.IsNotNull(newMock.Object.Headers);
             Assert.AreEqual(2, newMock.Object.Headers.Count);
-            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals("Content-Type"));
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
             var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals("application/json"));
             Assert.AreEqual(1, countContentTypesValues);
             Assert.AreEqual(1, countContentTypes);
         }
 
+
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenNormalTextXml_PassAddHeaders()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenNormalTextXml_PassAddHeaders()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
@@ -93,22 +85,22 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Assert Results-------------------------
             Assert.IsNotNull(newMock.Object.Headers);
             Assert.AreEqual(2, newMock.Object.Headers.Count);
-            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals("Content-Type"));
-            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals("application/xml"));
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
+            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals(GlobalConstants.ApplicationXmlHeader));
             Assert.AreEqual(1, countContentTypesValues);
             Assert.AreEqual(1, countContentTypes);
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenHasExistingXmlHeaderAndCOntentIsXml_PassAddNoHeaders()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenHasExistingXmlHeaderAndCOntentIsXml_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new ObservableNameValue("Content-Type", "application/xml");
+            var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
             newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             var content = "<DataList><a>2</a></DataList>";
             //---------------Assert Precondition----------------
@@ -119,23 +111,23 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Assert Results-------------------------
             Assert.IsNotNull(newMock.Object.Headers);
             Assert.AreEqual(2, newMock.Object.Headers.Count);
-            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals("Content-Type"));
-            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals("application/xml"));
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
+            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals(GlobalConstants.ApplicationXmlHeader));
             Assert.AreEqual(1, countContentTypesValues);
             Assert.AreEqual(1, countContentTypes);
-            
+
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("WebServiceHeaderBuilder_BuildHeader")]
-        public void BuildHeader_GivenHasExistingJsonHeaderAndContentIsJson_PassAddNoHeaders()
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenHasExistingJsonHeaderAndContentIsJson_PassAddNoHeaders()
         {
             //------------Setup for test--------------------------
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new ObservableNameValue("Content-Type", "application/json");
+            var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
             newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
             var content = "{\"NormalText\":\"\"}";
             //---------------Assert Precondition----------------
@@ -146,11 +138,40 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Assert Results-------------------------
             Assert.IsNotNull(newMock.Object.Headers);
             Assert.AreEqual(2, newMock.Object.Headers.Count);
-            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals("Content-Type"));
-            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals("application/json"));
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
+            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals(GlobalConstants.ApplicationJsonHeader));
             Assert.AreEqual(1, countContentTypesValues);
             Assert.AreEqual(1, countContentTypes);
 
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("WebServiceHeaderBuilder")]
+        public void WebServiceHeaderBuilder_GivenEmptyHeaders_SetHeaders()
+        {
+            //------------Setup for test--------------------------
+            var mod = new WebServiceHeaderBuilder();
+            var newMock = new Mock<IHeaderRegion>();
+            newMock.SetupProperty(region => region.Headers);
+            var jsonHeader = new ObservableNameValue();
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+            var content = "{\"NormalText\":\"\"}";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(newMock.Object.Headers);
+            Assert.AreEqual(2, newMock.Object.Headers.Count);
+            //------------Execute Test---------------------------
+            mod.BuildHeader(newMock.Object, content);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(newMock.Object.Headers);
+            Assert.AreEqual(2, newMock.Object.Headers.Count);
+            var countContentTypes = newMock.Object.Headers.Count(value => value.Name.Equals(GlobalConstants.ContentType));
+            var countContentTypesValues = newMock.Object.Headers.Count(value => value.Value.Equals(GlobalConstants.ApplicationJsonHeader));
+            Assert.AreEqual(1, countContentTypesValues);
+            Assert.AreEqual(1, countContentTypes);
+
+        }
+
+
     }
 }
