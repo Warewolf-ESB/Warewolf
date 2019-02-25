@@ -240,6 +240,73 @@ namespace Dev2.Data.Tests.Parsers
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_ProcessForChild_ExpectsFalse()
+        {
+            var mockParseTo = new Mock<IParseTO>();
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            var result = new List<IIntellisenseResult>();
+            const string search = "";
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var emptyOk = DataLanguageParserImplementation.ProcessForChild(mockParseTo.Object, refParts, result, search, mockDataIntellisensePart.Object);
+
+            Assert.IsFalse(emptyOk);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_ProcessForChild_ExpectsTrue()
+        {
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.IsLeaf).Returns(true);
+
+            List<IDev2DataLanguageIntellisensePart> refParts1 = null;
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+            refParts.Add(mockDataIntellisensePart.Object);
+
+            var result = new List<IIntellisenseResult>();
+            const string search = "";
+
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var emptyOk = DataLanguageParserImplementation.ProcessForChild(mockParseTo.Object, refParts, result, search, mockDataIntellisensePart.Object);
+
+            Assert.IsTrue(emptyOk);
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(" / Select a specific row", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual(" / Select a specific row", result[0].Option.Description);
+            Assert.AreEqual("[[]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsTrue(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("", result[0].Option.Recordset);
+            Assert.AreEqual("[[field2]]", result[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
+            Assert.AreEqual(" / Reference all rows in the Recordset ", result[1].Message);
+            Assert.IsNotNull(result[1].Option);
+            Assert.AreEqual(" / Reference all rows in the Recordset ", result[1].Option.Description);
+            Assert.AreEqual("[[]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("", result[1].Option.Field);
+            Assert.IsTrue(result[1].Option.HasRecordsetIndex);
+            Assert.AreEqual("", result[1].Option.Recordset);
+            Assert.AreEqual("*", result[1].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
         public void DataLanguageParserImplementation_Match_MatchFieldVariables_ValidateName_ExpectsTrue()
         {
             const string payload = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
@@ -464,11 +531,11 @@ namespace Dev2.Data.Tests.Parsers
             Assert.AreEqual(0, result.Count);
         }
 
-        class ASDF
+        class CallbackTestClass
         {
             public void ProcessFieldsForRecordSetCallback(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
             {
-                search = "a";
+                search = "field2";
                 emptyOk = false;
             }
         }
@@ -483,11 +550,17 @@ namespace Dev2.Data.Tests.Parsers
                 .Returns(false);
             mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
 
-            var asdf = new ASDF();
+            var asdf = new CallbackTestClass();
+            var outSearch = "field2";
+            var outEmptyOk = false;
 
-            //mockParserHelper.Setup(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()))
-            //    .Callback(asdf.ProcessFieldsForRecordSetCallback)
-            //    .Returns(false)
+            mockParserHelper.Setup(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out outSearch, out outEmptyOk, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()))
+                .Callback(() =>
+                {
+                    asdf.ProcessFieldsForRecordSetCallback(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out outSearch, out outEmptyOk, "", It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>());
+                    outSearch = "field2";
+                })
+                .Returns(false);
 
             const string payload = "a.b";
 
@@ -523,7 +596,12 @@ namespace Dev2.Data.Tests.Parsers
             mockParserHelper.Verify(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>()), Times.Once);
             mockParserHelper.Verify(parserHelper => parserHelper.ProcessFieldsForRecordSet(It.IsAny<IParseTO>(), It.IsAny<bool>(), It.IsAny<IList<IIntellisenseResult>>(), It.IsAny<string[]>(), out It.Ref<string>.IsAny, out It.Ref<bool>.IsAny, It.IsAny<string>(), It.IsAny<IDev2DataLanguageIntellisensePart>(), It.IsAny<string>()), Times.Once);
 
-            Assert.AreEqual(0, result.Count);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(enIntellisenseErrorCode.FieldNotFound, result[0].ErrorCode);
+            Assert.AreEqual("Recordset Field [ field2 ] does not exist for [ a ]", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("[[a().field2]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field2", result[0].Option.Field);
         }
 
         [TestMethod]
@@ -972,6 +1050,245 @@ namespace Dev2.Data.Tests.Parsers
             Assert.IsFalse(result[0].Option.HasRecordsetIndex);
             Assert.AreEqual("", result[0].Option.Recordset);
             Assert.AreEqual("", result[0].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Match_FinalEvaluation()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+            mockParserHelper.Setup(parserHelper => parserHelper.IsValidIndex(It.IsAny<IParseTO>())).Returns(true);
+
+            const string payload = "recName1().field1";
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("ChildPayload");
+
+            var mockParseToParent = new Mock<IParseTO>();
+            mockParseToParent.Setup(parseTo => parseTo.Payload).Returns("ParentPayload");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+            mockParseTo.Setup(parseTo => parseTo.Parent).Returns(mockParseTo.Object);
+            mockParseTo.Setup(parseTo => parseTo.Payload).Returns("Payload()");
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>();
+
+            const bool addCompleteParts = true;
+            var tmp = new StringBuilder();
+            tmp.AppendFormat(payload);
+
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+            const bool isRs = true;
+            const string rawSearch = "recName1()";
+            const string search = "field2";
+            const bool emptyOk = false;
+            var parts = payload.Split('.');
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+
+            match.MatchNonFieldVariables(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts, isRs, rawSearch, search, emptyOk, parts);
+
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.RecordsetNotFound, result[0].ErrorCode);
+            Assert.AreEqual(" [[recName1()]] does not exist in your variable list", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("", result[0].Option.Description);
+            Assert.AreEqual("[[recName1()]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("recName1()", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Extract_ExtractIntellisenseOptions_ProcessRegion()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+            var extract = new DataLanguageParserImplementation.Extract(mockParserHelper.Object, match);
+
+            var mockParseTo = new Mock<IParseTO>();
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const string payload = "recName1().field1.field2";
+
+            const bool addCompleteParts = true;
+            var tmp = new StringBuilder();
+            tmp.AppendFormat(payload);
+            var result = new List<IIntellisenseResult>();
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+
+            extract.ProcessRegion(mockParseTo.Object, refParts, addCompleteParts, tmp, result, additionalParts);
+
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
+            Assert.AreEqual("Invalid Notation - Extra dots detected", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("", result[0].Option.Description);
+            Assert.AreEqual("[[recName1().field1]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("field1", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("recName1()", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Extract_ExtractIntellisenseOptions_ProcessForOnlyOpenRegion()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+            var extract = new DataLanguageParserImplementation.Extract(mockParserHelper.Object, match);
+
+            var mockParseToChild = new Mock<IParseTO>();
+            mockParseToChild.Setup(parseTo => parseTo.Payload).Returns("ChildPayload");
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.IsRecordSet).Returns(false);
+            mockParseTo.Setup(parseTo => parseTo.Child).Returns(mockParseToChild.Object);
+            mockParseTo.Setup(parseTo => parseTo.Parent).Returns(mockParseTo.Object);
+            mockParseTo.Setup(parseTo => parseTo.Payload).Returns("");
+
+            var mockDataIntellisensePartChild = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePartChild.Setup(dlip => dlip.Name).Returns("childField2");
+            var refParts1 = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePartChild.Object
+            };
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+            mockDataIntellisensePart.Setup(dlip => dlip.Children).Returns(refParts1);
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = true;
+            var additionalParts = new List<IDev2DataLanguageIntellisensePart>();
+
+            var result = extract.ExtractIntellisenseOptions(mockParseTo.Object, refParts, addCompleteParts, additionalParts);
+
+            Assert.AreEqual(2, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(" / Select this record set", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual(" / Select this record set", result[0].Option.Description);
+            Assert.AreEqual("[[field2()]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsFalse(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[0].Option.Recordset);
+            Assert.AreEqual("", result[0].Option.RecordsetIndex);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[1].ErrorCode);
+            Assert.AreEqual("\r\n", result[1].Message);
+            Assert.IsNotNull(result[1].Option);
+            Assert.AreEqual(" / Select this record set field", result[1].Option.Description);
+            Assert.AreEqual("[[field2().childField2]]", result[1].Option.DisplayValue);
+            Assert.AreEqual("childField2", result[1].Option.Field);
+            Assert.IsFalse(result[1].Option.HasRecordsetIndex);
+            Assert.AreEqual("field2", result[1].Option.Recordset);
+            Assert.AreEqual("", result[1].Option.RecordsetIndex);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Extract_ExtractActualIntellisenseOptions_CreateResultsGeneric_HasIndex()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+            var extract = new DataLanguageParserImplementation.Extract(mockParserHelper.Object, match);
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Payload).Returns("Payload()");
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = true;
+            var result = new List<IIntellisenseResult>();
+            const string payload = "recName1()";
+            var parts = payload.Split('.');
+            const string search = "recName1()";
+
+            DataLanguageParserImplementation.Extract.ExtractActualIntellisenseOptions(mockParseTo.Object, refParts, addCompleteParts, result, parts, search);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(DataLanguageParserImplementation))]
+        public void DataLanguageParserImplementation_Extract_ExtractActualIntellisenseOptions_CreateResultsGeneric_AddIndex()
+        {
+            var mockParserHelper = new Mock<IParserHelper>();
+
+            var match = new DataLanguageParserImplementation.Match(mockParserHelper.Object);
+            var extract = new DataLanguageParserImplementation.Extract(mockParserHelper.Object, match);
+
+            var mockParseTo = new Mock<IParseTO>();
+            mockParseTo.Setup(parseTo => parseTo.HangingOpen).Returns(true);
+            mockParseTo.Setup(parseTo => parseTo.Payload).Returns("Payload(");
+
+            var mockDataIntellisensePart = new Mock<IDev2DataLanguageIntellisensePart>();
+            mockDataIntellisensePart.Setup(dlip => dlip.Name).Returns("field2");
+
+            var refParts = new List<IDev2DataLanguageIntellisensePart>
+            {
+                mockDataIntellisensePart.Object
+            };
+
+            const bool addCompleteParts = true;
+            var result = new List<IIntellisenseResult>();
+            const string payload = "recName1()";
+            var parts = payload.Split('.');
+            const string search = "recName1";
+
+            DataLanguageParserImplementation.Extract.ExtractActualIntellisenseOptions(mockParseTo.Object, refParts, addCompleteParts, result, parts, search);
+
+            Assert.AreEqual(1, result.Count);
+
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual("", result[0].Message);
+            Assert.IsNotNull(result[0].Option);
+            Assert.AreEqual("", result[0].Option.Description);
+            Assert.AreEqual("[[recName1([[field2]])]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("", result[0].Option.Field);
+            Assert.IsTrue(result[0].Option.HasRecordsetIndex);
+            Assert.AreEqual("recName1", result[0].Option.Recordset);
+            Assert.AreEqual("[[field2]]", result[0].Option.RecordsetIndex);
         }
     }
 }

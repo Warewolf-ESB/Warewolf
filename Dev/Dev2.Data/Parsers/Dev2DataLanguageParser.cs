@@ -378,7 +378,7 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        static bool ProcessForChild(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result, string search, IDev2DataLanguageIntellisensePart t1)
+        internal static bool ProcessForChild(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result, string search, IDev2DataLanguageIntellisensePart t1)
         {
             var emptyOk = false;
             var isHangingChild = payload.Child != null && payload.Child.HangingOpen;
@@ -731,7 +731,8 @@ namespace Dev2.Data.Parsers
                 }
                 else
                 {
-                    if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && _parserHelper.ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName))
+                    var processForRecordset = _parserHelper.ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName);
+                    if (recordsetPart.Children != null && recordsetPart.Children.Count > 0 && processForRecordset)
                     {
                         return search;
                     }
@@ -904,10 +905,10 @@ namespace Dev2.Data.Parsers
 
             internal static void ProcessForOnlyOpenRegion(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
             {
-                var addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
+                var parentIsRecordset = payload.Parent?.IsRecordSet ?? false;
                 refParts.ToList().ForEach(part =>
                 {
-                    if (part.Children != null && part.Children.Count > 0 && addAll)
+                    if (part.Children != null && part.Children.Count > 0 && !parentIsRecordset)
                     {
                         var tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, "", part.Description + " / Select this record set");
                         result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
