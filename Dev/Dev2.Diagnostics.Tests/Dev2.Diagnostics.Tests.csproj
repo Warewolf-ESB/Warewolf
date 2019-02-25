@@ -35,6 +35,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f" />
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
@@ -55,15 +56,19 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Debug\TestDebugMessageRepoTests.cs" />
+    <Compile Include="Debug\RemoteDebugMessageRepoTests.cs" />
     <Compile Include="Dev2LoggerTests.cs" />
     <Compile Include="DebugMessageRepoTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
-    <Compile Include="WebDebugMessageRepoTests.cs" />
+    <Compile Include="Debug\WebDebugMessageRepoTests.cs" />
+    <Compile Include="WorkflowLoggerTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -104,6 +109,14 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration.Tests\Dev2.Runtime.Configuration.Tests.csproj">
+      <Project>{56c3c6a6-7325-40fd-945e-c529cabe2579}</Project>
+      <Name>Dev2.Runtime.Configuration.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
@@ -111,6 +124,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

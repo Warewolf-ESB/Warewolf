@@ -16,8 +16,6 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
-
-
 namespace Dev2.Data.ServiceModel
 {
     public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ
@@ -25,17 +23,11 @@ namespace Dev2.Data.ServiceModel
         const int DefaultPort = 5672;
         const string DefaultVirtualHost = "/";
 
-        #region Properties
-
         public string HostName { get; set; }
         public int Port { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string VirtualHost { get; set; }
-
-        #endregion Properties
-
-        #region CTOR
 
         public RabbitMQSource()
         {
@@ -72,10 +64,6 @@ namespace Dev2.Data.ServiceModel
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
         }
 
-        #endregion CTOR
-
-        #region ToXml
-
         public override XElement ToXml()
         {
             var result = base.ToXml();
@@ -96,10 +84,6 @@ namespace Dev2.Data.ServiceModel
             return result;
         }
 
-        #endregion ToXml
-
-        #region Resource override
-
         public override bool IsSource => true;
 
         public override bool IsService => false;
@@ -111,7 +95,5 @@ namespace Dev2.Data.ServiceModel
         public override bool IsServer => false;
 
         public override bool IsResourceVersion => false;
-
-        #endregion Resource override
     }
 }

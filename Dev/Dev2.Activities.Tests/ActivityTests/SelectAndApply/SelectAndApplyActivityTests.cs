@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -191,7 +191,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
                 {
                     Expression = "[[result]]",
                     Result = "[[result]]",
-                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingType = enRoundingType.Up.GetDescription(),
                     RoundingDecimalPlaces = "2",
                     DecimalPlacesToShow = "2"
                 };
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
                 {
                     Expression = "[[result]]",
                     Result = "[[result]]",
-                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingType = enRoundingType.Up.GetDescription(),
                     RoundingDecimalPlaces = "2",
                     DecimalPlacesToShow = "2"
                 };
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
                 {
                     Expression = "[[result]]",
                     Result = "[[result]]",
-                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingType = enRoundingType.Up.GetDescription(),
                     RoundingDecimalPlaces = "2",
                     DecimalPlacesToShow = "2"
                 };
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
                 {
                     Expression = "[[result]]",
                     Result = "[[b]]",
-                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingType = enRoundingType.Up.GetDescription(),
                     RoundingDecimalPlaces = "2",
                     DecimalPlacesToShow = "2"
                 };

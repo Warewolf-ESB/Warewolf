@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
@@ -11,27 +21,27 @@ namespace Dev2.Common.Interfaces
             Name = selectedDll.Name;
             FullName = selectedDll.FullName;
             IsDirectory = selectedDll.IsDirectory;
-            ClsId = selectedDll?.ClsId;
-            Is32Bit = selectedDll?.Is32Bit ?? false;
+            ClsId = selectedDll.ClsId;
+            Is32Bit = selectedDll.Is32Bit;
         }
 
         public DllListing()
         {
         }
-        #region Equality members
 
-        public bool Equals(IFileListing other) => string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
+        public bool Equals(IFileListing other)
+        {
+            var equals = true;
+            equals &= string.Equals(Name, other.Name);
+            equals &= string.Equals(FullName, other.FullName);
+            equals &= IsDirectory == other.IsDirectory;
 
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+            return equals;
+        }
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -61,8 +71,6 @@ namespace Dev2.Common.Interfaces
         public static bool operator ==(DllListing left, DllListing right) => Equals(left, right);
 
         public static bool operator !=(DllListing left, DllListing right) => !Equals(left, right);
-
-        #endregion
 
         public string Name { get; set; }
         public ICollection<IFileListing> Children { get; set; }

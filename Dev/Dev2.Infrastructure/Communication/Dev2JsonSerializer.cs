@@ -8,38 +8,36 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.IO;
-using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Communication;
 using Newtonsoft.Json;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text;
 
 namespace Dev2.Communication
 {
-    /// <summary>
-    /// A JSON implementation of an <see cref="ISerializer"/>
-    /// </summary>
     public class Dev2JsonSerializer : ISerializer
     {
 
         const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
 
         readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects
-            };
-        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            };
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects
+        };
+        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+        };
         public string Serialize<T>(T obj) => this.Serialize<T>(obj, Formatting);
         public string Serialize<T>(T obj, Formatting formatting) => JsonConvert.SerializeObject(obj, formatting, _serializerSettings);
 
@@ -68,10 +66,10 @@ namespace Dev2.Communication
                     TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
-                };                
+                };
                 using (var jsonTextWriter = new JsonTextWriter(sw))
                 {
-                    
+
                     jsonSerializer.Serialize(jsonTextWriter, obj);
                     jsonTextWriter.Flush();
                     jsonTextWriter.Close();
@@ -83,7 +81,7 @@ namespace Dev2.Communication
 
         public T Deserialize<T>(StringBuilder message) where T : class
         {
-            if(message != null && message.Length > 0)
+            if (message != null && message.Length > 0)
             {
                 var serializer = new JsonSerializer
                 {
@@ -101,10 +99,10 @@ namespace Dev2.Communication
                     var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
 
-                    for(int i = 0; i < rounds; i++)
+                    for (int i = 0; i < rounds; i++)
                     {
                         var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                        if(len > message.Length - startIdx)
+                        if (len > message.Length - startIdx)
                         {
                             len = message.Length - startIdx;
                         }
@@ -113,28 +111,25 @@ namespace Dev2.Communication
                         ms.Write(bytes, 0, bytes.Length);
                         startIdx += len;
                     }
-
-                    // rewind
                     ms.Flush();
                     ms.Position = 0;
 
                     try
                     {
-                        // finally do the conversion ;)
-                        using(StreamReader sr = new StreamReader(ms))
+                        using (StreamReader sr = new StreamReader(ms))
                         {
-                            using(JsonReader jr = new JsonTextReader(sr))
+                            using (JsonReader jr = new JsonTextReader(sr))
                             {
-                                var result = serializer.Deserialize(jr,typeof(T));
+                                var result = serializer.Deserialize(jr, typeof(T));
                                 return result as T;
                             }
                         }
                     }
-                    
+
                     catch
-                    
+
                     {
-                        // Do nothing default(T) returned below ;)
+                        // Do nothing default(T) returned below
                     }
                 }
 
@@ -163,9 +158,9 @@ namespace Dev2.Communication
             }
         }
 
-        public T Deserialize<T>(StreamReader streamWriter)
+        public T Deserialize<T>(StreamReader streamReader)
         {
-            using (streamWriter)
+            using (streamReader)
             {
                 var jsonSerializer = new JsonSerializer
                 {
@@ -174,7 +169,7 @@ namespace Dev2.Communication
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
-                using (var reader = new JsonTextReader(streamWriter))
+                using (var reader = new JsonTextReader(streamReader))
                 {
                     var result = jsonSerializer.Deserialize<T>(reader);
                     return result;

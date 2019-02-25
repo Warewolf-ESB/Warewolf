@@ -16,8 +16,12 @@ using System.IO;
 namespace Dev2.Data.PathOperations
 {
     [ExcludeFromCodeCoverage]
-    public abstract class PerformIntegerIOOperation
+    public abstract class PerformIntegerIOOperation : ImpersonationOperation
     {
+        protected PerformIntegerIOOperation(ImpersonationDelegate impersonationDelegate) : base(impersonationDelegate)
+        {
+        }
+
         public static bool FileExist(IActivityIOPath path, IFile fileWrapper) => fileWrapper.Exists(path.Path);       
         public abstract int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst);
         public abstract int ExecuteOperation();

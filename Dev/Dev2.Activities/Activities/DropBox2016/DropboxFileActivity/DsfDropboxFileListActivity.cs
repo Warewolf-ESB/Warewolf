@@ -1,17 +1,14 @@
 ﻿using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
-using Dev2.Factories;
 using Dev2.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -23,14 +20,11 @@ using Dev2.Common.State;
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Activities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
-    public class DsfDropboxFileListActivity : DsfBaseActivity,IEquatable<DsfDropboxFileListActivity>
+    public class DsfDropboxFileListActivity : DsfDropBoxBaseActivity, IEquatable<DsfDropboxFileListActivity>
     {
-        public IDropboxFactory DropboxFactory { get; set; }
-        
         public OauthSource SelectedSource { get; set; }
 
         public List<string> Files { get; set; }
-        IDropboxClientWrapper _dropboxClientWrapper;
         public Exception Exception { get; set; }
 
         [FindMissing]
@@ -55,10 +49,9 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-        protected DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
+        protected DsfDropboxFileListActivity(IDropboxClientFactory dropboxClientFactory)
+            :base(dropboxClientFactory)
         {
-            DropboxFactory = dropboxFactory;
-
             DisplayName = "List Dropbox Contents";
             Files = new List<string>();
             IsFilesSelected = true;
@@ -68,17 +61,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         }
 
         public DsfDropboxFileListActivity()
-            : this(new DropboxFactory())
+            : this(new DropboxClientWrapperFactory())
         {
-        }
-
-        protected IDropboxClientWrapper GetDropboxClient()
-        {
-            if (_dropboxClientWrapper != null)
-            {
-                return _dropboxClientWrapper;
-            }
-            return _dropboxClientWrapper ?? (_dropboxClientWrapper = DropboxFactory.CreateWithSecret(SelectedSource.AccessToken));
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -98,8 +82,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
-            var dropboxClientWrapper = GetDropboxClient();
-            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(dropboxClientWrapper);
+            SetupDropboxClient(SelectedSource.AccessToken);
+            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();

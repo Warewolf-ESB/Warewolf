@@ -21,53 +21,57 @@ namespace Dev2.Infrastructure.Tests.Logs
         bool _elapsed;
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("PulseLogger_Ctor")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PulseLogger))]
         public void PulseLogger_Ctor_CheckValues_ExpectInitialised()
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(25);
-            Assert.AreEqual(pulseLogger.Interval, 25);
-            var timer = pulseLogger._timer;
-            Assert.AreEqual(false, timer.Enabled);
+            using (var pulseLogger = new PulseLogger(25))
+            {
+                Assert.AreEqual(25, pulseLogger.Interval);
+                var timer = pulseLogger._timer;
+                Assert.AreEqual(false, timer.Enabled);
+            }
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("PulseLogger_Ctor")]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PulseLogger))]
         public void PulseLogger_Ctor_Start_ExpectInitialised()
-
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(2000);            
-            Assert.AreEqual(pulseLogger.Interval, 2000);
-            var timer = pulseLogger._timer;
-            timer.Elapsed += (sender, e) =>
-                {
-                    _elapsed = true;
-
-                };
-            Assert.AreEqual(false, timer.Enabled);
-            //------------Execute Test---------------------------
-            pulseLogger.Start();
-            Thread.Sleep(6000);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(_elapsed);
+            using (var pulseLogger = new PulseLogger(2000))
+            {
+                Assert.AreEqual(2000, pulseLogger.Interval);
+                var timer = pulseLogger._timer;
+                timer.Elapsed += (sender, e) =>
+                    {
+                        _elapsed = true;
+                    };
+                Assert.AreEqual(false, timer.Enabled);
+                //------------Execute Test---------------------------
+                pulseLogger.Start();
+                Thread.Sleep(6000);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(_elapsed);
+            }
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("PulseLogger_Ctor")]
-        public void PulseTracker_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PulseTracker))]
+        public void PulseLogger_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
         {
             //------------Setup for test--------------------------
-            var pulseTracker = new PulseTracker(2000);
-            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
-            //------------Execute Test---------------------------
-            pulseTracker.Start();
-            Thread.Sleep(6000);
-            //------------Assert Results-------------------------
-            Assert.IsFalse(WorkflowExecutionWatcher.HasAWorkflowBeenExecuted, "Execution Watcher not reset after pulse tracker execute.");
+            using (var pulseTracker = new PulseTracker(2000))
+            {
+                WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+                //------------Execute Test---------------------------
+                pulseTracker.Start();
+                Thread.Sleep(6000);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(WorkflowExecutionWatcher.HasAWorkflowBeenExecuted, "Execution Watcher not reset after pulse tracker execute.");
+            }
         }
     }
 }

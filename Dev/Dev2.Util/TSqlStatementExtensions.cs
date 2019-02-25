@@ -54,23 +54,23 @@ namespace Dev2.Util
                     case "INNER":
                     case "OUTER":
                     case "NATURAL":
-					case "UPDATE":
-					case "INSERT":
-					case "CROSS":
-					case "INTO":
-						if (tokens[i].Type == TSQLTokenType.Keyword)
+                    case "UPDATE":
+                    case "INSERT":
+                    case "CROSS":
+                    case "INTO":
+                        if (tokens[i].Type == TSQLTokenType.Keyword)
                         {
                             canProcess = true;
                             continue;
                         }
                         break;
-					case "SET":
+                    case "SET":
                     case "WHERE":
                     case "ON":
                     case "USING":
                     case "DELETE":
                     case "SELECT":
-					case "ORDER":
+                    case "ORDER":
                     case "GROUP":
                     case "HAVING":
                         if (tokens[i].Type == TSQLTokenType.Keyword)
@@ -79,9 +79,9 @@ namespace Dev2.Util
                         }
                         break;
                     case ")":
-                    case "OFFSET":                        
-					case "(":
-						canProcess = false;
+                    case "OFFSET":
+                    case "(":
+                        canProcess = false;
                         break;
                     default:
                         break;
@@ -91,71 +91,25 @@ namespace Dev2.Util
                     if (SkipToken(tokens[i - 1]))
                     {
                         continue;
-                    }                    
+                    }
                     tableNames.Add(tokens[i].Text);
                 }
             }
             return tableNames;
         }
 
-        private static bool SkipToken(TSQLToken token) 
-            => token.Type == TSQLTokenType.Identifier || 
+        private static bool SkipToken(TSQLToken token)
+            => token.Type == TSQLTokenType.Identifier ||
             (token.Type == TSQLTokenType.Keyword && token.Text.ToUpper(CultureInfo.InvariantCulture) == "AS");
-
     }
 
     public struct TSqlTable
     {
         public string TableName { get; set; }
 
-        public TSqlTable(string tableName, string tableAlias)
+        public TSqlTable(string tableName)
         {
             TableName = tableName;
-        }
-    }
-
-    public class TSqlField
-    {
-        private readonly List<string> _tokens;
-
-        public TSqlField()
-        {
-            _tokens = new List<string>();
-        }
-
-        public string FieldName { get; set; }
-        public string TableAlias { get; set; }
-        public string FieldNameAlias { get; set; }
-
-        internal void AddFieldToken(string text)
-        {
-            _tokens.Add(text);
-        }
-
-        internal void ProcessTokens()
-        {
-            if (_tokens.Count == 1)
-            {
-                FieldName = _tokens[0];
-            }
-            else
-            {
-                var tableAliasIndicator = _tokens.IndexOf(".");
-                if (tableAliasIndicator != -1)
-                {
-                    TableAlias = _tokens[tableAliasIndicator - 1];
-                    FieldName = _tokens[tableAliasIndicator + 1];
-                }
-                var columnAliasIndicator = _tokens.FindIndex(s => s.ToUpper(CultureInfo.InvariantCulture) == "AS");
-                if (columnAliasIndicator != -1)
-                {
-                    FieldNameAlias = _tokens[columnAliasIndicator + 1];
-                    if (!string.IsNullOrEmpty(FieldNameAlias))
-                    {
-                        FieldName = FieldNameAlias;
-                    }
-                }
-            }
         }
     }
 }

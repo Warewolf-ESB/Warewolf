@@ -1,11 +1,19 @@
-﻿using Dev2.Common.Interfaces.Wrappers;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using System;
 using System.IO;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Wrappers;
-using Dev2.PathOperations;
-using System.Security.Principal;
 using Dev2.Common;
 
 namespace Dev2.Data.PathOperations.Operations
@@ -15,19 +23,23 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
-        readonly WindowsImpersonationContext ImpersonatedUser;
+        readonly IWindowsImpersonationContext _impersonatedUser;
 
         public DoGetAction(IActivityIOPath path)
+            :this(path, new LogonProvider(), new FileWrapper(), ValidateAuthorization.RequiresAuth)
         {
-            _logOnProvider = new LogonProvider();
-            _fileWrapper = new FileWrapper();
+        }
+        public DoGetAction(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider, IFile fileWrapper, ImpersonationDelegate impersonationDelegate)
+        :base(impersonationDelegate)
+        {
+            _logOnProvider = dev2LogonProvider;
+            _fileWrapper = fileWrapper;
             _path = path;
-            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
-
+            _impersonatedUser = _impersonationDelegate(_path, _logOnProvider);
         }
         public override Stream ExecuteOperation()
         {
-            if (ImpersonatedUser != null)
+            if (_impersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -37,15 +49,13 @@ namespace Dev2.Data.PathOperations.Operations
             }
             throw new Exception(string.Format(ErrorResource.FileNotFound, _path.Path));
         }
-
         public override Stream ExecuteOperationWithAuth()
         {
-            using (ImpersonatedUser)
+            using (_impersonatedUser)
             {
                 try
                 {
                     return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
-
                 }
                 catch (Exception exception)
                 {
@@ -54,7 +64,7 @@ namespace Dev2.Data.PathOperations.Operations
                 }
                 finally
                 {
-                    ImpersonatedUser.Undo();
+                    _impersonatedUser.Undo();
                 }
             }
         }

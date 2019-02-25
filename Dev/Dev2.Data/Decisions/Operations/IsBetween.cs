@@ -20,12 +20,10 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public class IsBetween : IDecisionOperation
     {
-
         public Enum HandlesType() => enDecisionType.IsBetween;
 
         public bool Invoke(string[] cols)
         {
-            
             var dVal = new double[3];
             var dtVal = new DateTime[3];
 
@@ -37,10 +35,8 @@ namespace Dev2.Data.Decisions.Operations
                 {
                     isDateTimeCompare = TryParseAsDatetimeCompare(dtVal, pos, isDateTimeCompare, c);
                 }
-
                 pos++;
             }
-
 
             double left;
             double right;
@@ -53,11 +49,8 @@ namespace Dev2.Data.Decisions.Operations
                 }
                 else
                 {
-
                     left = dVal[0] - dVal[1];
                     right = dVal[0] - dVal[2];
-
-                
                 }
             }
             catch(Exception e)
@@ -70,19 +63,11 @@ namespace Dev2.Data.Decisions.Operations
 
         private static bool TryParseAsDatetimeCompare(DateTime[] dtVal, int pos, bool isDateTimeCompare, string c)
         {
-            try
+            if (DateTime.TryParse(c, out DateTime dt))
             {
-                if (DateTime.TryParse(c, out DateTime dt))
-                {
-                    dtVal[pos] = dt;
-                    isDateTimeCompare = true;
-                }
+                dtVal[pos] = dt;
+                return true;
             }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-            }
-
             return isDateTimeCompare;
         }
     }

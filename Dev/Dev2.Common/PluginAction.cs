@@ -1,13 +1,21 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.DB;
 
-
 namespace Dev2.Common.Interfaces
 {
-    
     public class PluginAction : IPluginAction, INotifyPropertyChanged, IEquatable<PluginAction>
     {
         public string FullName { get; set; }
@@ -30,9 +38,10 @@ namespace Dev2.Common.Interfaces
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public bool Equals(PluginAction other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -50,7 +59,7 @@ namespace Dev2.Common.Interfaces
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -72,24 +81,15 @@ namespace Dev2.Common.Interfaces
                 return ((Inputs?.GetHashCode() ?? 0) * 397) ^ (Method?.GetHashCode() ?? 0);
             }
         }
+
         public string GetIdentifier() => FullName + Method;
 
         public static bool operator ==(PluginAction left, PluginAction right) => Equals(left, right);
 
         public static bool operator !=(PluginAction left, PluginAction right) => !Equals(left, right);
 
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
         public override string ToString() => Method;
 
         public Guid ID { get; set; }
-
-        #endregion
     }
 }
