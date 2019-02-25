@@ -11,8 +11,6 @@
 using System;
 using System.Security.Principal;
 using Dev2.Workspaces;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -22,16 +20,13 @@ namespace Dev2.Runtime.WebServer.Hubs
         public static Server Instance => TheInstance.Value;
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients, WorkspaceRepository.Instance));
+        readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(WorkspaceRepository.Instance));
 
-        readonly IHubConnectionContext<dynamic> _clients;
-        readonly IWorkspaceRepository _workspaceRepository;
+       readonly IWorkspaceRepository _workspaceRepository;
 
-        Server(IHubConnectionContext<dynamic> clients, IWorkspaceRepository workspaceRepository)
+        Server(IWorkspaceRepository workspaceRepository)
         {
-            VerifyArgument.IsNotNull("clients", clients);
             VerifyArgument.IsNotNull("workspaceRepository", workspaceRepository);
-            _clients = clients;
             _workspaceRepository = workspaceRepository;
         }
 
