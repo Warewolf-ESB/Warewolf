@@ -9,6 +9,7 @@
 */
 
 using Dev2.Activities;
+using Dev2.Activities.Factories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -31,18 +32,6 @@ namespace Dev2.Tests.Activities.Activities
     [TestClass]
     public class DsfComDllActivityTests
     {
-        [TestMethod]
-        [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(DsfComDllActivity))]
-        public void DsfComDllActivity_Method_IsNull_Expect_Error1()
-        {
-            //-----------------------Arrange---------------------
-            var dsfComDllActivity = new TestDsfComDllActivity();
-            //-----------------------Act-------------------------
-
-            //-----------------------Assert----------------------
-        }
-
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
@@ -83,6 +72,8 @@ namespace Dev2.Tests.Activities.Activities
             //-----------------------Act-------------------------
             dsfComDllActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
             //-----------------------Assert----------------------
+            mockResourceCatalog.Verify(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+
             Assert.AreEqual(1, errorResult.FetchErrors().Count);
             Assert.AreEqual("Object reference not set to an instance of an object.", errorResult.FetchErrors()[0]);
         }
@@ -134,6 +125,8 @@ namespace Dev2.Tests.Activities.Activities
             //-----------------------Act-------------------------
             dsfComDllActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
             //-----------------------Assert----------------------
+            mockResourceCatalog.Verify(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+
             Assert.AreEqual(comPluginSource.ClsId, dsfComDllActivity._comPluginInvokeArgs.ClsId);
             Assert.AreEqual(0, errorResult.FetchErrors().Count);
         }
@@ -151,6 +144,8 @@ namespace Dev2.Tests.Activities.Activities
             var mockOutputDescription = new Mock<IOutputDescription>();
             var mockPath = new Mock<IPath>();
             var mockDataSourceShape = new Mock<IDataSourceShape>();
+            var mockResponseManagerFactory = new Mock<IResponseManagerFactory>();
+            var mockResponseManager = new Mock<IResponseManager>();
 
             var comPluginSource = new ComPluginSource()
             {
@@ -166,29 +161,37 @@ namespace Dev2.Tests.Activities.Activities
             var dataListID = Guid.NewGuid();
             var environment = new ExecutionEnvironment();
             var outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping() };
-            var dsfComDllActivity = new TestDsfComDllActivity()
+            var dsfComDllActivity = new TestDsfComDllActivity(mockResponseManagerFactory.Object)
             {
                 ResourceCatalog = mockResourceCatalog.Object,
                 Method = mockPluginAction.Object,
                 Inputs = new List<IServiceInput>() { new ServiceInput("[[a]]", "") },
                 Outputs = outputs,
-                OutputDescription = mockOutputDescription.Object
+                OutputDescription = mockOutputDescription.Object,
+
             };
 
             mockDataSourceShape.Setup(o => o.Paths).Returns(new List<IPath> { mockPath.Object });
             mockPluginAction.Setup(o => o.Method).Returns("TestMethod");
-            mockResourceCatalog.Setup(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(comPluginSource);
+            mockResourceCatalog.Setup(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(comPluginSource).Verifiable();
             mockOutputDescription.Setup(o => o.DataSourceShapes).Returns(new List<IDataSourceShape> { mockDataSourceShape.Object });
             mockOutputDescription.Setup(o => o.Format).Returns(OutputFormats.ShapedXML);
             mockDSFDataObject.Setup(o => o.DataListID).Returns(dataListID);
             mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+            mockResponseManager.Setup(o => o.PushResponseIntoEnvironment("some result", 0, mockDSFDataObject.Object, false)).Verifiable();
+            mockResponseManagerFactory.Setup(o => o.New(mockOutputDescription.Object)).Returns(mockResponseManager.Object).Verifiable();
             //-----------------------Act-------------------------
             dsfComDllActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "TestInput", "TestOutput", out ErrorResultTO errorResult, 0);
             //-----------------------Assert----------------------
+            mockResourceCatalog.Verify(o => o.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+            mockResponseManagerFactory.Verify(o => o.New(mockOutputDescription.Object), Times.Once);
+            mockResponseManager.Verify(o => o.PushResponseIntoEnvironment("some result", 0, mockDSFDataObject.Object, false), Times.Once);
+            mockOutputDescription.Verify(o => o.Format, Times.Once);
+
             Assert.AreEqual(comPluginSource.ClsId, dsfComDllActivity._comPluginInvokeArgs.ClsId);
             Assert.AreEqual(0, errorResult.FetchErrors().Count);
         }
-        
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfComDllActivity))]
@@ -274,6 +277,14 @@ namespace Dev2.Tests.Activities.Activities
 
     class TestDsfComDllActivity : DsfComDllActivity
     {
+        public TestDsfComDllActivity()
+        {
+
+        }
+        public TestDsfComDllActivity(IResponseManagerFactory responseManagerFactory)
+            :base(responseManagerFactory)
+        {
+        }
         public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
@@ -283,6 +294,7 @@ namespace Dev2.Tests.Activities.Activities
         protected override void ExecuteInsideImpersonatedContext(ComPluginInvokeArgs args)
         {
             _comPluginInvokeArgs = args;
+            _result = "some result";
         }
     }
 }

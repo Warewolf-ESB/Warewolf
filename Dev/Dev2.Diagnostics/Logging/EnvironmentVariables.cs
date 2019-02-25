@@ -13,12 +13,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-
 namespace Dev2.Common
 {
     public static class EnvironmentVariables
     {
-
         static string _appPath;
         static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
 
@@ -26,7 +24,6 @@ namespace Dev2.Common
         {
             get
             {
-
                 if (String.IsNullOrEmpty(_appPath))
                 {
                     try
@@ -38,7 +35,7 @@ namespace Dev2.Common
                     catch (Exception e)
                     {
                         Dev2Logger.Info("ApplicationPath Error -> " + e.Message, GlobalConstants.WarewolfInfo);
-                        _appPath = Directory.GetCurrentDirectory(); // fail safe ;)
+                        _appPath = Directory.GetCurrentDirectory(); 
                     }
 
                 }
@@ -207,12 +204,7 @@ namespace Dev2.Common
         }
 
         static readonly Guid RemoteID = Guid.NewGuid();
-        /// <summary>
-        /// Gets the remote invoke ID.
-        /// </summary>
-        /// <value>
-        /// The remote invoke ID.
-        /// </value>
+        
         public static Guid RemoteInvokeID => RemoteID;
 
         public static string WebServerUri { get; set; }

@@ -1,59 +1,42 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Storage.Tests
 {
-    [ExcludeFromCodeCoverage]
     [TestClass]
     public class WarewolfAtomIteratorTests
     {
         [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void NewInstance_ShouldHave_Constructor()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfAtomIterator))]
+        public void WarewolfAtomIterator_GetLength_ShouldBeEqualToMaxVal_AreEqual_ExpectTrue()
         {
+            //-------------------------Arrange--------------------------
             IEnumerable<DataStorage.WarewolfAtom> listResult = new List<DataStorage.WarewolfAtom>();
             var warewolfAtomIterator = new WarewolfAtomIterator(listResult);
-            Assert.IsNotNull(warewolfAtomIterator);
-            var privateObj = new PrivateObject(warewolfAtomIterator);
-            var listRes = privateObj.GetField("_listResult");
-            var maxVal = privateObj.GetField("_maxValue");
-            Assert.IsNotNull(listRes);
-            Assert.IsNotNull(maxVal);
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void WarewolfAtomIterator_GetLength_ShouldBeEqualToMaxVal()
-        {
-            IEnumerable<DataStorage.WarewolfAtom> listResult = new List<DataStorage.WarewolfAtom>();
-            var warewolfAtomIterator = new WarewolfAtomIterator(listResult);
-            Assert.IsNotNull(warewolfAtomIterator);
-            var privateObj = new PrivateObject(warewolfAtomIterator);
-            var maxVal = (int) privateObj.GetField("_maxValue");
-            Assert.IsNotNull(maxVal);
+            //-------------------------Act------------------------------
             var length = warewolfAtomIterator.GetLength();
-            Assert.AreEqual(maxVal, length);
+            //-------------------------Assert---------------------------
+            Assert.AreEqual(0, length);
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void GivenListResultIsNull_WarewolfAtomIterator_GetNextValue_ShouldReturnNull()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfAtomIterator))]
+        public void WarewolfAtomIterator_GetNextValue_AreEqual_ExpectTrue()
         {
-            var warewolfAtomIterator = new WarewolfAtomIterator(new List<DataStorage.WarewolfAtom>());
-            Assert.IsNotNull(warewolfAtomIterator);
-            var privateObj = new PrivateObject(warewolfAtomIterator);
-            privateObj.GetField("_listResult");
-            privateObj.SetField("_listResult", null);
-            Assert.IsNotNull(warewolfAtomIterator);
-            Assert.IsNull(warewolfAtomIterator.GetNextValue());
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void GivenListRes_WarewolfAtomIterator_GetNextValue_ShouldReturn()
-        {
+            //-------------------------Arrange--------------------------
             IEnumerable<DataStorage.WarewolfAtom> listResult = new List<DataStorage.WarewolfAtom>
             {
                 DataStorage.WarewolfAtom.NewDataString("a"),
@@ -61,33 +44,37 @@ namespace Warewolf.Storage.Tests
                 DataStorage.WarewolfAtom.NewDataString("c")
             };
             var warewolfAtomIterator = new WarewolfAtomIterator(listResult);
-            Assert.IsNotNull(warewolfAtomIterator);
-            var privateObj = new PrivateObject(warewolfAtomIterator);
-            privateObj.GetField("_listResult");
+            //-------------------------Act------------------------------
             var value = warewolfAtomIterator.GetNextValue();
+            //-------------------------Assert---------------------------
             Assert.AreEqual(listResult.First(), value);
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void WarewolfAtomIterator_GetNextValue_ShouldReturn()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfAtomIterator))]
+        public void WarewolfAtomIterator_GetNextValue_IsNotNull_ExpectTrue()
         {
+            //-------------------------Arrange--------------------------
             IEnumerable<DataStorage.WarewolfAtom> listResult = new List<DataStorage.WarewolfAtom>();
             var warewolfAtomIterator = new WarewolfAtomIterator(listResult);
-            Assert.IsNotNull(warewolfAtomIterator);
-            var privateObj = new PrivateObject(warewolfAtomIterator);
-            privateObj.GetField("_listResult");
+            //-------------------------Act------------------------------
             warewolfAtomIterator.GetNextValue();
+            //-------------------------Assert---------------------------
+            Assert.IsNotNull(warewolfAtomIterator);
         }
 
         [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void GivenEmptyListResult_WarewolfAtomIterator_HasMoreData_ShouldReturnFalse()
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(WarewolfAtomIterator))]
+        public void WarewolfAtomIterator_HasMoreData_GivenEmptyListResult_ExpectFalse()
         {
+            //-------------------------Arrange--------------------------
             IEnumerable<DataStorage.WarewolfAtom> listResult = new List<DataStorage.WarewolfAtom>();
             var warewolfAtomIterator = new WarewolfAtomIterator(listResult);
-            Assert.IsNotNull(warewolfAtomIterator);
+            //-------------------------Assert---------------------------
             var hasMoreData = warewolfAtomIterator.HasMoreData();
+            //-------------------------Act------------------------------
             Assert.IsFalse(hasMoreData);
         }
     }

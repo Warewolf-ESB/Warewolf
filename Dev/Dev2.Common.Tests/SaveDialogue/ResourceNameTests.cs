@@ -18,12 +18,12 @@ namespace Dev2.Common.Tests.SaveDialogue
 
         [TestMethod]
         [Owner("Candice Daniel")]
-        [TestCategory("ResourceName")]
+        [TestCategory(nameof(ResourceName))]
         public void ResourceName_Test()
         {
-            var path = "C:\\\\ProgramData\\Warewolf\\Server Log";
-            var name = "warewolf-Server.log";
-           var  ResourceName = new ResourceName(path, name);
+            const string path = "C:\\\\ProgramData\\Warewolf\\Server Log";
+            const string name = "warewolf-Server.log";
+            var ResourceName = new ResourceName(path, name);
 
             Assert.IsNotNull(ResourceName);
             Assert.AreEqual(path, ResourceName.Path);

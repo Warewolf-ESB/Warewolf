@@ -113,22 +113,22 @@
     <Compile Include="DataListFactoryTests.cs" />
     <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
     <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
-    <Compile Include="DecisionsTests\IsBase64Tests.cs" />
-    <Compile Include="DecisionsTests\IsBetweenTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsBase64Tests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsBetweenTests.cs" />
     <Compile Include="DecisionsTests\IsBinaryTests.cs" />
     <Compile Include="DecisionsTests\IsDateTests.cs" />
     <Compile Include="DecisionsTests\IsEmailTests.cs" />
     <Compile Include="DecisionsTests\IsEqualTests.cs" />
     <Compile Include="DecisionsTests\IsErrorTests.cs" />
-    <Compile Include="DecisionsTests\IsHexTests.cs" />
-    <Compile Include="DecisionsTests\IsNotAlphanumericTests.cs" />
-    <Compile Include="DecisionsTests\IsNotBase64Tests.cs" />
-    <Compile Include="DecisionsTests\IsNotBinaryTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsHexTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotAlphanumericTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBase64Tests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotBinaryTests.cs" />
     <Compile Include="DecisionsTests\IsNotDateTests.cs" />
     <Compile Include="DecisionsTests\IsNotEmailTests.cs" />
     <Compile Include="DecisionsTests\IsNotEqualTests.cs" />
     <Compile Include="DecisionsTests\IsNotErrorTests.cs" />
-    <Compile Include="DecisionsTests\IsNotHexTests.cs" />
+    <Compile Include="DecisionsTests\Operations\IsNotHexTests.cs" />
     <Compile Include="DecisionsTests\IsNotNullTests.cs" />
     <Compile Include="DecisionsTests\IsNotNumericTests.cs" />
     <Compile Include="DecisionsTests\IsNotTextTests.cs" />
@@ -150,13 +150,25 @@
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="MethodOutputTests.cs" />
+    <Compile Include="Operations\NotBetweenTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriverTests.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriverTests.cs" />
     <Compile Include="PathOperations\Dev2ActivityIOBrokerTests.cs" />
     <Compile Include="PathOperations\ActivityIOFactoryTests.cs" />
     <Compile Include="PathOperations\Dev2ActivityIOPathUtilsTests.cs" />
+    <Compile Include="PathOperations\Extention\PathExtensionsTests.cs" />
     <Compile Include="PathOperations\LogonProviderTests.cs" />
+    <Compile Include="PathOperations\Dev2FTPProviderTests.cs" />
+    <Compile Include="PathOperations\PerformBoolIOOperationTests.cs" />
+    <Compile Include="PathOperations\DoGetFilesAsPerTypeOperationTests.cs" />
+    <Compile Include="PathOperations\DoPathExistOperationTests.cs" />
+    <Compile Include="PathOperations\DoDeleteOperationTests.cs" />
+    <Compile Include="PathOperations\DoGetActionTests.cs" />
+    <Compile Include="PathOperations\DoCreateDirectoryTests.cs" />
+    <Compile Include="PathOperations\DoPutActionTests.cs" />
+    <Compile Include="PathOperations\PerformListOfIOPathOperationTests.cs" />
+    <Compile Include="PathOperations\ValidateAuthorizationTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
@@ -189,7 +201,16 @@
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="TO\ErrorResultTOTests.cs" />
     <Compile Include="TO\CompileMessageTOTests.cs" />
-    <Compile Include="UtilTests\CommonDataUtilsTests.cs" />
+    <Compile Include="ServiceTestOutputTOTests.cs" />
+    <Compile Include="Dev2DecisionComparerTests.cs" />
+    <Compile Include="DataListModelTests.cs" />
+    <Compile Include="DataListConversionUtilsTests.cs" />
+    <Compile Include="SharepointHelperTests.cs" />
+    <Compile Include="OptomizedObservableCollectionTests.cs" />
+    <Compile Include="Util\OperationsHelperTests.cs" />
+    <Compile Include="Util\CommonRecordSetUtilTests.cs" />
+    <Compile Include="WarewolfAtomComparerTests.cs" />
+    <Compile Include="Util\CommonDataUtilsTests.cs" />
     <Compile Include="TranslationConstantsTest.cs" />
     <Compile Include="WarewolfIteratorTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
@@ -249,6 +270,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
+      <Name>Warewolf.Sharepoint</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>

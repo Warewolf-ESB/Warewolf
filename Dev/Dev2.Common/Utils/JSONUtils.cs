@@ -17,11 +17,6 @@ namespace Dev2.Common.Utils
 {
     public static class JSONUtils
     {
-        /// <summary>
-        ///     Scrubs the JSON.
-        /// </summary>
-        /// <param name="stringToScrub">The string to scrub.</param>
-        /// <returns></returns>
         public static string ScrubJSON(string stringToScrub)
         {
             if (!String.IsNullOrEmpty(stringToScrub))

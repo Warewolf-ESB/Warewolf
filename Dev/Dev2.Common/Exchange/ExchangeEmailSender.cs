@@ -38,13 +38,12 @@ namespace Dev2.Common.Exchange
                 service.AutodiscoverUrl(_source.UserName, RedirectionUrlValidationCallback);
             }
         }
-
         static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {
             var redirectionUri = new Uri(redirectionUrl);
             return redirectionUri.Scheme == "https";
         }
-
+        //TODO: add ExchangeServiceWrapper and EmailmessageWrapper  
         public void Send(ExchangeService service, EmailMessage message)
         {
             Initialize(service);

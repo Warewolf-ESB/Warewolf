@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.State;
 using Dev2.Data.Interfaces.Enums;
@@ -53,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     Expression = expression,
                     Result = result,
-                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(roundingType),
+                    RoundingType = roundingType.GetDescription(),
                     RoundingDecimalPlaces = roundingDecimalPlaces,
                     DecimalPlacesToShow = decimalPlacesToShow,
                 }

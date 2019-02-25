@@ -33,8 +33,8 @@ namespace Dev2.Scheduler
         readonly IDev2TaskService _taskService;
         readonly string _warewolfAgentPath;
         readonly string _warewolfFolderPath;
-        IFile _file;
-        IDirectoryHelper _folderHelper;
+        readonly IFile _fileWrapper;
+        readonly IDirectoryHelper _directoryHelper;
         readonly IDictionary<int, string> _taskStates;
         readonly Func<IScheduledResource, string> _pathResolve;
         const string Sebatchlogonright = "SeBatchLogonRight";
@@ -42,7 +42,14 @@ namespace Dev2.Scheduler
         const char ArgWrapper = '"';
 
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
+            : this(taskService, warewolfFolderId, warewolfAgentPath, taskServiceFactory, debugHistoryPath, securityWrapper, pathResolve, new FileWrapper(), new DirectoryHelper())
         {
+        }
+        public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath, ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve, IFile file, IDirectoryHelper directoryHelper)
+        {
+            _fileWrapper = file;
+            _directoryHelper = directoryHelper;
+
             var nullables = new Dictionary<string, object>
                 {
                     {"taskService", taskService},
@@ -69,18 +76,6 @@ namespace Dev2.Scheduler
             _debugHistoryPath = debugHistoryPath;
             _securityWrapper = securityWrapper;
             _pathResolve = pathResolve;
-        }
-
-        public IFile FileWrapper
-        {
-            get { return _file ?? new FileWrapper(); }
-            set { _file = value; }
-        }
-
-        public IDirectoryHelper DirectoryHelper
-        {
-            get { return _folderHelper ?? new DirectoryHelper(); }
-            set { _folderHelper = value; }
         }
 
         public IDev2TaskService TaskService => _taskService;
@@ -318,21 +313,21 @@ namespace Dev2.Scheduler
         bool DebugHasErrors(string debugHistoryPath, string correlationId)
         {
             var serializer = new Dev2JsonSerializer();
-            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
 
             if (file == null)
             {
                 return false;
             }
 
-            return serializer.Deserialize<List<IDebugState>>(FileWrapper.ReadAllText(file)).Last().HasError;
+            return serializer.Deserialize<List<IDebugState>>(_fileWrapper.ReadAllText(file)).Last().HasError;
         }
 
-        bool DebugHistoryExists(string debugHistoryPath, string correlationId) => DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
+        bool DebugHistoryExists(string debugHistoryPath, string correlationId) => _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
 
         string GetUserName(string debugHistoryPath, string correlationId)
         {
-            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if (file != null)
             {
                 return file.Split('_').Last();
@@ -344,14 +339,14 @@ namespace Dev2.Scheduler
         IList<IDebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
         {
             var serializer = new Dev2JsonSerializer();
-            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = _directoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
 
             if (file == null)
             {
                 return new List<IDebugState>();
             }
 
-            return serializer.Deserialize<List<IDebugState>>(FileWrapper.ReadAllText(file));
+            return serializer.Deserialize<List<IDebugState>>(_fileWrapper.ReadAllText(file));
         }
 
         IDev2TaskDefinition CreateNewTask(IScheduledResource resource)

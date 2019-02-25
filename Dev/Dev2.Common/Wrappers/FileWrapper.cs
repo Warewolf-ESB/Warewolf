@@ -153,6 +153,8 @@ namespace Dev2.Common.Wrappers
             return f.DirectoryName;
         }
     }
+
+    [ExcludeFromCodeCoverage]
     class RefCountedStreamWriter : IDev2StreamWriter
     {
         public int _count;

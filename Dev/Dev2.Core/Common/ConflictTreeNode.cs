@@ -9,7 +9,6 @@
 */
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace Dev2.Common
@@ -32,9 +31,7 @@ namespace Dev2.Common
             Children.Add((name, node));
         }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IConflictTreeNode other)
-#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (other == null)
             {
@@ -43,10 +40,39 @@ namespace Dev2.Common
             var equals = true;
             equals &= other.UniqueId == UniqueId;
             equals &= other.Activity.Equals(Activity);
-            //TODO: Children comparer does not look right
-            equals &= (other.Children != null || Children == null);
-            equals &= (other.Children == null || Children != null);
-            equals &= (Children == null || Children.SequenceEqual(other.Children ?? new List<(string uniqueId, IConflictTreeNode node)>()));
+
+            equals &= ChildrenEquals(other);
+
+            return equals;
+        }
+
+        private bool ChildrenEquals(IConflictTreeNode other)
+        {
+            if (Children == null && other.Children == null)
+            {
+                return true;
+            }
+            if ((Children == null && other.Children != null) || (Children != null && other.Children == null))
+            {
+                return false;
+            }
+            if (Children.Count != other.Children.Count)
+            {
+                return false;
+            }
+
+            var equals = true;
+            for (int i = 0; i < Children.Count; i++)
+            {
+                equals &= Equals(Children[i].node, other.Children[i].node);
+                equals &= Equals(Children[i].uniqueId, other.Children[i].uniqueId);
+
+                if (!equals)
+                {
+                    break;
+                }
+            }
+
             return equals;
         }
 

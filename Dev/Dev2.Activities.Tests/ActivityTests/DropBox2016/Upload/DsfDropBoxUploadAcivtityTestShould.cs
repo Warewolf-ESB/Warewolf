@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, clientWrapper.Object) { IsUplodValidSuccess = true };
@@ -242,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, clientWrapper.Object) { IsUplodValidSuccess = true };
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, clientWrapper.Object) { IsUplodValidSuccess = true };
@@ -290,7 +290,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, clientWrapper.Object) { IsUplodValidSuccess = true };
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             clientWrapper.Setup(wrapper => wrapper.UploadAsync(It.IsAny<string>(), It.IsAny<WriteMode>(), It.IsAny<bool>(), null, It.IsAny<bool>(), It.IsAny<MemoryStream>()))
                 .Returns(Task.FromResult(TestConstant.FileMetadataInstance.Value));
             mockExecutor.Setup(executor => executor.ExecuteTask(clientWrapper.Object))
@@ -340,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            var clientWrapper = new Mock<IDropboxClientWrapper>();
+            var clientWrapper = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, clientWrapper.Object)
@@ -364,9 +364,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
     public class DsfDropBoxUploadActivityMock : DsfDropBoxUploadActivity
     {
-        readonly IDropboxClientWrapper _dropboxClientWrapper;
+        readonly IDropboxClient _dropboxClientWrapper;
 
-        public DsfDropBoxUploadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor, IDropboxClientWrapper dropboxClientWrapper)
+        public DsfDropBoxUploadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor, IDropboxClient dropboxClientWrapper)
             : base(dropboxClientWrapper)
         {
             _dropboxClientWrapper = dropboxClientWrapper;

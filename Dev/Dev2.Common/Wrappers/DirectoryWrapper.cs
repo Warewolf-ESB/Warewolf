@@ -13,10 +13,11 @@ using Dev2.Common.Interfaces.Wrappers;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.Wrappers
-{ // not required for code coverage this is simply a pass through required for unit testing
-
+{
+    [ExcludeFromCodeCoverage]
     public class DirectoryInfoWrapper : IDirectoryInfo
     {
         readonly DirectoryInfo _info;
@@ -27,6 +28,7 @@ namespace Dev2.Common.Wrappers
         public string FullName => _info.FullName;
     }
 
+    [ExcludeFromCodeCoverage]
     public class DirectoryWrapper : IDirectory
     {
         public string[] GetFiles(string path)

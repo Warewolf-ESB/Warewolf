@@ -1,4 +1,14 @@
-﻿using Dev2.Activities.DropBox2016.Result;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
@@ -6,16 +16,12 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
-using Dropbox.Api;
-using Dropbox.Api.Files;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
-using Dropbox.Api.Stone;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -25,9 +31,10 @@ using Dev2.Common.State;
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Activities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
-    public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable,IEquatable<DsfDropBoxDownloadActivity>
+    public class DsfDropBoxDownloadActivity : DsfDropBoxBaseActivity, IDisposable,IEquatable<DsfDropBoxDownloadActivity>
     {
         public DsfDropBoxDownloadActivity()
+            : this(new DropboxClientWrapperFactory())
         {
             DisplayName = "Download from Dropbox";
             OverwriteFile = false;
@@ -35,18 +42,15 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             DropboxFile = new FileWrapper();
         }
 
-        protected DsfDropBoxDownloadActivity(IDropboxClientWrapper dropboxClientWrapper)
-            :this()
+        protected DsfDropBoxDownloadActivity(IDropboxClientFactory dropboxClientFactory)
+            : base(dropboxClientFactory)
         {
-            _dropboxClientWrapper = dropboxClientWrapper;
         }
 
         public virtual IFile DropboxFile { get; set; }
-        DropboxClient _client;
-        protected IDownloadResponse<FileMetadata> Response;
+
         protected Exception Exception;
         ILocalPathManager _localPathManager;
-        IDropboxClientWrapper _dropboxClientWrapper;
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor) => singleExecutor;
 
@@ -76,20 +80,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [FindMissing]
         public string FromPath { get; set; }
         
-        protected DropboxClient GetClient()
-        {
-            if (_client != null)
-            {
-                return _client;
-            }
-            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
-            {
-                Timeout = TimeSpan.FromMinutes(20)
-            };
-            _client = new DropboxClient(SelectedSource.AccessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
-            return _client;
-        }
-
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -112,13 +102,13 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             evaluatedValues.TryGetValue("FromPath", out var localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
-            _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
-            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
+            SetupDropboxClient(SelectedSource?.AccessToken);
+            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxDownloadSuccessResult dropboxSuccessResult)
             {
-                Response = dropboxSuccessResult.GetDownloadResponse();
-                var bytes = Response.GetContentAsByteArrayAsync().Result;
-                if (Response.Response.IsFile)
+                var response = dropboxSuccessResult;
+                var bytes = response.GetContentAsByteArrayAsync().Result;
+                if (response.Response.IsFile)
                 {
                     LocalPathManager = new LocalPathManager(localFromPath);
                     var validFolder = LocalPathManager.GetFullFileName();
@@ -143,6 +133,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             throw new Exception(executionError);
         }
+
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
@@ -215,7 +207,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         }
         public void Dispose()
         {
-            _client.Dispose();
+            _dropboxClient.Dispose();
         }
 
         public override IEnumerable<StateVariable> GetState()

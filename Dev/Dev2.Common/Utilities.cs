@@ -24,7 +24,7 @@ namespace Dev2.Common
                 return new List<T>();
             }
             var second = e as IList<T> ?? e.ToList();
-            return second.SelectMany(c => f?.Invoke(c).Flatten(f)).Concat(second);
+            return second.SelectMany(c => f.Invoke(c).Flatten(f)).Concat(second);
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
