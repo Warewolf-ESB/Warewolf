@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             var mock = new Mock<IDropboxFileRead>();
             var successResult = new DropboxListFolderSuccesResult(It.IsAny<ListFolderResult>());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()))
                  .Returns(successResult);
             return mock;
         }
@@ -44,8 +44,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(downloadMock);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
-            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
+            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClient>());
+            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()));
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var dropBoxFileRead = new DropboxFileRead(true, null, false, false);
-            var mockDropboxClient = new Mock<IDropboxClientWrapper>();
+            var mockDropboxClient = new Mock<IDropboxClient>();
             mockDropboxClient.Setup(client => client.ListFolderAsync(It.IsAny<ListFolderArg>())).Throws(new Exception());
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

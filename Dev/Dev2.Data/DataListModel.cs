@@ -57,7 +57,6 @@ namespace Dev2.Data
             }
             catch (Exception ex)
             {
-                // Append new root tags ;)
                 toLoad = "<root>" + toLoad + "</root>";
                 xDoc.LoadXml(toLoad);
             }

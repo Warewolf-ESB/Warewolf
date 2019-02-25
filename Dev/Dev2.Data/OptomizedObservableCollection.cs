@@ -17,11 +17,11 @@ namespace Dev2.Data
 {
     public class OptomizedObservableCollection<T> : ObservableCollection<T>
     {
-        bool SuppressOnCollectionChanged;
+        bool _suppressOnCollectionChanged;
 
         public OptomizedObservableCollection()
         {
-            SuppressOnCollectionChanged = false;
+            _suppressOnCollectionChanged = false;
         }
         public void AddRange(IList<T> items)
         {
@@ -35,7 +35,7 @@ namespace Dev2.Data
             {
                 try
                 {
-                    SuppressOnCollectionChanged = true;
+                    _suppressOnCollectionChanged = true;
                     foreach(var item in items)
                     {
                         Add(item);
@@ -44,7 +44,7 @@ namespace Dev2.Data
                 }
                 finally
                 {
-                    SuppressOnCollectionChanged = false;
+                    _suppressOnCollectionChanged = false;
                     OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this));
                 }
             }
@@ -52,7 +52,7 @@ namespace Dev2.Data
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if(!SuppressOnCollectionChanged)
+            if(!_suppressOnCollectionChanged)
             {
                 base.OnCollectionChanged(e);
             }

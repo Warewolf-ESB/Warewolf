@@ -1,4 +1,14 @@
-﻿using Dev2.Common.Interfaces.Wrappers;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Operations;
@@ -7,8 +17,12 @@ using System.IO;
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformBoolIOOperation
+    public abstract class PerformBoolIOOperation : ImpersonationOperation
     {
+        protected PerformBoolIOOperation(ImpersonationDelegate impersonationDelegate) : base(impersonationDelegate)
+        {
+        }
+
         public static enPathType PathIs(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {
             if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
@@ -16,8 +30,9 @@ namespace Dev2.Data.PathOperations
                 return enPathType.Directory;
             }
 
-            if ((FileExist(path, fileWrapper) || DirectoryExist(path, dirWrapper))
-                && !Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
+            var exists = FileExist(path, fileWrapper) || DirectoryExist(path, dirWrapper);
+            var isNotStarWildCard = !Dev2ActivityIOPathUtils.IsStarWildCard(path.Path);
+            if (exists && isNotStarWildCard)
             {
                 var fa = fileWrapper.GetAttributes(path.Path);
                 if ((fa & FileAttributes.Directory) == FileAttributes.Directory)

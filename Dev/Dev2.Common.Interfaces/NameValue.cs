@@ -1,14 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Dev2.Common.Interfaces
 {
-
-    public interface INameValue
-    {
-        string Name { get; set; }
-        string Value { get; set; }
-    }
-
     public class NameValue : INameValue, IEquatable<NameValue>
     {
         protected string _name;
@@ -16,20 +11,14 @@ namespace Dev2.Common.Interfaces
 
         public NameValue()
         {
-
             Name = "";
-
             Value = "";
-
         }
 
         public NameValue(string name, string value)
         {
-
             Name = name;
-
             Value = value;
-
         }
 
 #pragma warning disable S2292
@@ -59,7 +48,6 @@ namespace Dev2.Common.Interfaces
 #pragma warning restore S2292
 
         public override string ToString() => Name;
-
 
         public static bool operator ==(NameValue left, NameValue right) => Equals(left, right);
         public static bool operator !=(NameValue left, NameValue right) => !Equals(left, right);
@@ -101,6 +89,52 @@ namespace Dev2.Common.Interfaces
             {
                 return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);
             }
+        }
+    }
+
+    public class ObservableNameValue : NameValue, INotifyPropertyChanged
+    {
+        public ObservableNameValue()
+        {
+        }
+        public ObservableNameValue(string name, string value)
+            : base(name, value)
+        {
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public override string Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public override string ToString() => Name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

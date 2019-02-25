@@ -11,32 +11,23 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
-    /// <summary>
-    ///     Defines the requirements for a dispatcher of <see cref="IDebugState" /> messages.
-    /// </summary>
     public interface IDebugDispatcher
     {
+        int Count { get; }
 
 
-        /// <summary>
-        ///     Removes the specified workspace from the dispatcher.
-        /// </summary>
-        /// <param name="workspaceId">The ID of workspace to be removed.</param>
-    
+
         void Remove(Guid workspaceId);
 
-        /// <summary>
-        ///     Gets the writer for the given workspace ID.
-        /// </summary>
-        /// <param name="workspaceId">The workspace ID to be queried.</param>
-        /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         IDebugWriter Get(Guid workspaceId);
         void Write(IDebugState debugState);
         void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName);
         void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId,
             string parentInstanceId, IList<IDebugState> remoteDebugItems);
+        void Add(Guid workspaceId, IDebugWriter writer);
+        void Shutdown();
+        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId);
     }
 }

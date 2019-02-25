@@ -186,7 +186,6 @@
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
-    <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComputerName.cs" />
     <Compile Include="Container\IWarewolfQueue.cs" />
@@ -254,7 +253,6 @@
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
     <Compile Include="enIntellisensePartType.cs" />
-    <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\AuthorizationContext.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\LoggerType.cs" />
@@ -359,7 +357,6 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
-    <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IOAuthSource.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
@@ -406,6 +403,7 @@
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
     <Compile Include="IWebSource.cs" />
+    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\IWarewolfLogWriter.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
@@ -417,6 +415,7 @@
     <Compile Include="Monitoring\IWarewolfPerformanceCounterLocater.cs" />
     <Compile Include="Monitoring\IPerformanceCounterCategory.cs" />
     <Compile Include="Monitoring\WarewolfPerfCounterType.cs" />
+    <Compile Include="INameValue.cs" />
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />

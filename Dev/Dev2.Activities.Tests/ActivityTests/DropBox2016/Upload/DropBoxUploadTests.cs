@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         {
             var mock = new Mock<IDropBoxUpload>();
             var fileMetadata = new DropboxUploadSuccessResult(new FileMetadata());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()))
                  .Returns(fileMetadata);
             return mock;
         }
@@ -45,8 +45,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(dropBoxUpload);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            dropBoxUpload.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
-            dropBoxUpload.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
+            dropBoxUpload.Object.ExecuteTask(It.IsAny<IDropboxClient>());
+            dropBoxUpload.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClient>()));
         }
         
       
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropBoxUpload);
             //---------------Execute Test ----------------------
-            var metadata = dropBoxUpload.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
+            var metadata = dropBoxUpload.ExecuteTask(It.IsAny<IDropboxClient>());
             //---------------Test Result -----------------------
             Assert.IsNotNull(metadata);
             Assert.IsInstanceOfType(metadata,typeof(DropboxFailureResult));

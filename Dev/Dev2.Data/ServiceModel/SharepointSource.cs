@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -10,12 +20,12 @@ using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 using Warewolf.Sharepoint;
 
-
-
 namespace Dev2.Data.ServiceModel
 {
     public class SharepointSource : Resource, ISharepointSource, IResourceSource
     {
+        private readonly ISharepointHelperFactory _sharepointHelperFactory;
+
         public string Server { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
@@ -25,15 +35,29 @@ namespace Dev2.Data.ServiceModel
         public string Password { get; set; }
 
         public SharepointSource()
+            :this(new SharepointHelperFactory())
         {
+
+        }
+
+        public SharepointSource(ISharepointHelperFactory sharepointHelperFactory)
+        {
+            _sharepointHelperFactory = sharepointHelperFactory;
             ResourceID = Guid.Empty;
             ResourceType = "SharepointServerSource";
             AuthenticationType = AuthenticationType.Windows;
         }
 
         public SharepointSource(XElement xml)
+            : this(xml, new SharepointHelperFactory())
+        {
+
+        }
+
+        public SharepointSource(XElement xml, ISharepointHelperFactory sharepointHelperFactory)
             : base(xml)
         {
+            _sharepointHelperFactory = sharepointHelperFactory;
             ResourceType = "SharepointServerSource";
             AuthenticationType = AuthenticationType.Windows;
 
@@ -59,12 +83,6 @@ namespace Dev2.Data.ServiceModel
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
 
-        /// <summary>
-        /// Gets the XML representation of this resource.
-        /// </summary>
-        /// <returns>
-        /// The XML representation of this resource.
-        /// </returns>
         public override XElement ToXml()
         {
             var result = base.ToXml();
@@ -128,7 +146,7 @@ namespace Dev2.Data.ServiceModel
                 userName = UserName;
                 password = Password;
             }
-            var sharepointHelper = new SharepointHelper(Server, userName, password, IsSharepointOnline);
+            var sharepointHelper = _sharepointHelperFactory.New(Server, userName, password, IsSharepointOnline);
             return sharepointHelper;
         }
 

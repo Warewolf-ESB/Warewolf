@@ -10,11 +10,13 @@
 
 using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Common.DateAndTime
 {
     public class DateTimeConverterFactory
     {
+        [ExcludeFromCodeCoverage]
         protected DateTimeConverterFactory()
         {
         }

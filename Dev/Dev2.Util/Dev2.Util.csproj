@@ -80,8 +80,6 @@
     </AdditionalFiles>
     <Compile Include="AppUsageStats.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="JsonNetValueSystem.cs" />
-    <Compile Include="jsonpath.cs" />
     <Compile Include="TSqlStatementExtensions.cs" />
     <Compile Include="TypeSwitch.cs" />
     <None Include="Dev2.Util.ruleset" />

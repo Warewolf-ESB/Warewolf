@@ -18,15 +18,9 @@ namespace Dev2.Diagnostics
 {
     public class DebugOutputFilterStrategy : IDebugOutputFilterStrategy
     {
-        #region Class Members
-
         readonly DateTimeToStringConverter _dateTimeToStringConverter;
         readonly TimeSpanToStringConverter _timeSpanToStringConverter;
         readonly EnumToStringConverter _enumToStringConverter;
-
-        #endregion Class Members
-
-        #region Constructor
 
         public DebugOutputFilterStrategy()
         {
@@ -53,15 +47,7 @@ namespace Dev2.Diagnostics
             }
         }
 
-        #endregion Constructor
 
-        #region Methods
-
-        /// <summary>
-        /// Filters the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        /// <param name="filterText"></param>
         public bool Filter(object content, string filterText)
         {
             if(filterText == null)
@@ -148,7 +134,5 @@ namespace Dev2.Diagnostics
 
             return false;
         }
-
-        #endregion Methods
     }
 }
