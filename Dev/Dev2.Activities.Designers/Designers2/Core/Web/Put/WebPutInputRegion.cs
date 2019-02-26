@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
                     _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
                 IsEnabled = true;
             }
@@ -82,7 +82,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
                     _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
             }
             else
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     Headers.Add(new ObservableAwareNameValue(Headers, s =>
                     {
                         _modelItem.SetProperty("Headers",
-                            _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+                            _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                     }));
                 }
             }
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Headers", _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+            _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             var headers2 = new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
-                headers2.Add(new ObservableNameValue(nameValue.Name, nameValue.Value));
+                headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
             return new WebPutInputRegion(_modelItem, _source)
             {
@@ -202,7 +202,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
                     _modelItem.SetProperty("Headers",
-                        _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+                        _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
                 if (region.Headers != null)
                 {
@@ -211,7 +211,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                         Headers.Add(new ObservableAwareNameValue(Headers, s =>
                         {
                             _modelItem.SetProperty("Headers",
-                                _headers.Select(a => new ObservableNameValue(a.Name, a.Value) as INameValue).ToList());
+                                _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                         })
                         { Name = nameValue.Name, Value = nameValue.Value });
                     }

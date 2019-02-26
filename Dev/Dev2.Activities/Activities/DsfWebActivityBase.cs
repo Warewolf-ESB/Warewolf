@@ -44,7 +44,7 @@ namespace Dev2.Activities
             }
             base.GetDebugInputs(env, update);
 
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -108,7 +108,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
-            var headerValues = head as ObservableNameValue[] ?? head.ToArray();
+            var headerValues = head as NameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {
