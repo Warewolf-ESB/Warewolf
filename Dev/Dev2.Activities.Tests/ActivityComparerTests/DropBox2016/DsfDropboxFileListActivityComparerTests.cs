@@ -1,6 +1,15 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Linq;
-using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.State;
 using Dev2.Data.ServiceModel;
@@ -13,12 +22,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -29,12 +39,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_UniqueID_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = Guid.NewGuid().ToString() };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = Guid.NewGuid().ToString() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -42,14 +53,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "a" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "a" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -60,12 +73,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "A" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "ass" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "A" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -76,12 +90,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "AAA" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, DisplayName = "aaa" };
             //---------------Assert DsfDropboxFileListActivity----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -89,14 +104,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "a" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "a" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "a" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -107,12 +124,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "ass" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -123,12 +141,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "AAA" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "aaa" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "AAA" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -137,16 +156,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
 
-      
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "a" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "a" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "a" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -157,12 +175,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "A" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "ass" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "A" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -173,12 +192,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "AAA" };
-            var multiAssign1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, ToPath = "aaa" };
+            var multiAssign = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "AAA" };
+            var multiAssign1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, ToPath = "aaa" };
             //---------------Assert DsfDropboxFileListActivity----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -189,16 +209,17 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_DropBoxSource_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A"};
+            var dropBoxDeleteActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             var dropBoxDeleteActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
             //---------------Execute Test ----------------------
-            dropBoxDeleteActivity.SelectedSource = new DropBoxSource()
+            dropBoxDeleteActivity.SelectedSource = new DropBoxSource
             {
                 ResourceID = Guid.NewGuid()
             };
@@ -210,12 +231,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_DropBoxSource_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var dropBoxDeleteActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A"};
+            var dropBoxDeleteActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
             //---------------Execute Test ----------------------
@@ -228,12 +250,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeMediaInfo_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -246,12 +269,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeMediaInfo_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -261,14 +285,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsRecursive_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -281,12 +307,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsRecursive_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -299,12 +326,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeDeleted_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -317,12 +345,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IncludeDeleted_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -335,12 +364,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -353,12 +383,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -368,16 +399,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFoldersSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -390,12 +421,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFoldersSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -405,16 +437,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
-       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
@@ -427,12 +459,13 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_IsFilesAndFoldersSelected_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropboxFileListActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropboxFileListActivity { UniqueID = uniqueId, Result = "A" };
             //---------------Assert Precondition----------------
             Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
             //---------------Execute Test ----------------------
