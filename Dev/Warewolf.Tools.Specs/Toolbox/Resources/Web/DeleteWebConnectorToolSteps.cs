@@ -227,7 +227,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             {
                 var name = tableRow["Name"];
                 var value = tableRow["Value"];
-                headers.Add(new ObservableNameValue(name, value));
+                headers.Add(new NameValue(name, value));
             }
         }
 
