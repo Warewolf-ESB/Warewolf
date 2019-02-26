@@ -25,7 +25,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
     public class DsfDropBoxDownloadActivityComparerTests
     {
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_UniqueIDEquals_EmptyDropBoxDeleteActivities_IsEqual()
         {
             //---------------Set up test pack-------------------
@@ -41,7 +42,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_UniqueID_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -56,7 +58,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
@@ -72,7 +75,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -88,7 +92,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_Given_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
@@ -103,7 +108,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             Assert.IsFalse(@equals);
         }
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
@@ -119,7 +125,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -135,7 +142,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Result_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
@@ -151,7 +159,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
@@ -167,7 +176,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -183,7 +193,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_FromPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
@@ -199,7 +210,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Same_Object_IsEqual()
         {
             //---------------Set up test pack-------------------
@@ -215,7 +227,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -231,7 +244,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ToPath_Different_Object_Is_Not_Equal_CaseSensitive()
         {
             //---------------Set up test pack-------------------
@@ -247,7 +261,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_DropBoxSource_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -268,7 +283,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_DropBoxSource_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
@@ -286,7 +302,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_OverwriteFile_Different_Object_Is_Not_Equal()
         {
             //---------------Set up test pack-------------------
@@ -304,7 +321,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_OverwriteFile_Same_Object_Is_Equal()
         {
             //---------------Set up test pack-------------------
@@ -323,7 +341,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("DsfDropBoxDownloadActivity_GetState")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetState_ReturnsStateVariable()
         {
             //---------------Set up test pack-------------------
@@ -574,25 +592,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
-        public void DsfDropBoxDownloadActivity_PerformExecution_ExpectAreEqual()
+        public void DsfDropBoxDownloadActivity_PerformExecution_ExpectSuccess()
         {
             //-----------------------Arrange----------------------------
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockDropboxClient = new Mock<IDropboxClient>();
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
-            var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
-            var dropboxDownloadSuccessResult     = new Mock<DropboxDownloadSuccessResult>();
             var mockFile = new Mock<IFile>();
 
             var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
 
             mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
             task.Start();
-            mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
             mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(()=> { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
             mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxDownloadSuccessResult(mockDownloadResponse.Object));
 
             var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
@@ -605,6 +618,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Act--------------------------------
             var list = dsfDropBoxDownloadActivity.TestPerformExecution(dictionery);
             //-----------------------Assert-----------------------------
+            mockDownloadResponse.VerifyAll();
+            mockDropboxClient.VerifyAll();
+            mockDropboxClientFactory.VerifyAll();
+            mockFile.VerifyAll();
             Assert.AreEqual(1,list.Count);
             Assert.AreEqual("Success", list[0]);
         }
@@ -612,44 +629,77 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
-        public void DsfDropBoxDownloadActivity_PerformExecution_ExpectAreEqual1()
+        public void DsfDropBoxDownloadActivity_PerformExecution_ExpectException()
         {
             //-----------------------Arrange----------------------------
-            var mockDSFDataObject = new Mock<IDSFDataObject>();
             var mockDropboxClient = new Mock<IDropboxClient>();
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
-            var dropboxDownloadSuccessResult = new Mock<DropboxDownloadSuccessResult>();
             var mockFile = new Mock<IFile>();
 
             var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
 
             mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
             task.Start();
-            mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
             mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
             mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception()));
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error!")));
 
             var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
-                DropboxFile = mockFile.Object
+                DropboxFile = mockFile.Object,
+                MockSingleExecutor = mockDropboxSingleExecutor,
+            };
+            
+            var dictionery = new Dictionary<string, string> { };
+            dictionery.Add("ToPath", @"C:\Users\temp\testToPath\");
+            dictionery.Add("FromPath", @"C:\Users\temp");
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.ThrowsException<Exception>(()=> dsfDropBoxDownloadActivity.TestPerformExecution(dictionery));
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDownloadActivity))]
+        public void DsfDropBoxDownloadActivity_PerformExecution_ContainsNotFile_ExpectException()
+        {
+            //-----------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
+            var mockFile = new Mock<IFile>();
+
+            var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
+
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            task.Start();
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error: not_file!")));
+
+            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            {
+                DropboxFile = mockFile.Object,
+                MockSingleExecutor = mockDropboxSingleExecutor,
             };
 
             var dictionery = new Dictionary<string, string> { };
-            dictionery.Add("ToPath", "TestToPath");
+            dictionery.Add("ToPath", @"C:\Users\temp\testToPath\");
             dictionery.Add("FromPath", @"C:\Users\temp");
             //-----------------------Act--------------------------------
-            var list = dsfDropBoxDownloadActivity.TestPerformExecution(dictionery);
             //-----------------------Assert-----------------------------
-            Assert.AreEqual(1, list.Count);
-            Assert.AreEqual("Success", list[0]);
+            Assert.ThrowsException<Exception>(() => dsfDropBoxDownloadActivity.TestPerformExecution(dictionery));
+            dsfDropBoxDownloadActivity.Dispose();
         }
     }
 
     class TestDsfDropBoxDownloadActivity : DsfDropBoxDownloadActivity
     {
+        public Mock<IDropboxSingleExecutor<IDropboxResult>> MockSingleExecutor { get; internal set; }
+
         public TestDsfDropBoxDownloadActivity(IDropboxClientFactory dropboxClientFactory)
             :base(dropboxClientFactory)
         {
@@ -667,6 +717,15 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public List<string> TestPerformExecution(Dictionary<string, string> evaluatedValues)
         {
             return base.PerformExecution(evaluatedValues);
+        }
+
+        public override IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
+        {
+            if (MockSingleExecutor is null)
+            {
+                return singleExecutor;
+            }
+            return MockSingleExecutor.Object;
         }
     }
 }
