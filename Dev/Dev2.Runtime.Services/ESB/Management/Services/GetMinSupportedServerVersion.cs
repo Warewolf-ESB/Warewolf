@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
-using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -27,9 +27,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return Version.Parse(min);
             }
             var asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
             var fileName = asm.Location;
-            versionResource.LoadFrom(fileName);
+            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
             var v = new Version(versionResource.FileVersion);
             return v;
         }
