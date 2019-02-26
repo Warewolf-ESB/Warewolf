@@ -48,6 +48,8 @@ namespace Dev2.Instrumentation
 
         public string ProductVersion { get; set; }
 
+        public string InformationalVersion { get; set; }
+
         public RUIResult EnableApplicationResultStatus { get; set; }
 
         public RevulyticsTracker()
@@ -60,9 +62,10 @@ namespace Dev2.Instrumentation
             AesHexKey = AppUsageStats.AesHexKey;
         }
 
-        public void EnableApplicationTracker(string productVersion, string username)
+        public void EnableApplicationTracker(string productVersion, string informationalVersion, string username)
         {
             ProductVersion = productVersion;
+            InformationalVersion = informationalVersion;
             Username = username;
             try
             {
@@ -77,6 +80,7 @@ namespace Dev2.Instrumentation
                     if (sdkResult == RUIResult.ok)
                     {
                         LogErrorResult("EnableApplicationTracker",SetProductVersion());
+                        LogErrorResult("EnableApplicationTracker",SetInformationalVersion());
                         LogErrorResult("EnableApplicationTracker",StartSession());
                     }
                     else
@@ -262,6 +266,32 @@ namespace Dev2.Instrumentation
             catch (Exception e)
             {
                 Dev2Logger.Error("Error in SetProductVersion method", e, Core.RevulyticsSdkError);
+                return result;
+            }
+        }
+
+        public RUIResult SetInformationalVersion()
+        {
+            var result = RUIResult.sdkSuspended;
+            try
+            {
+                Dev2Logger.Warn($"Revulytics.SetInformationalVersion: {InformationalVersion}", "");
+                result = RuiSdk.SetProductBuildNumber(InformationalVersion);
+                return result;
+            }
+            catch (RUISDKCreationException ex)
+            {
+                Dev2Logger.Error("Error in SetInformationalVersion method (RUISDKCreationException)", ex, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (ArgumentNullException e)
+            {
+                Dev2Logger.Error("Error in SetInformationalVersion method (ArgumentNullException)", e, Core.RevulyticsSdkError);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error("Error in SetInformationalVersion method", e, Core.RevulyticsSdkError);
                 return result;
             }
         }
