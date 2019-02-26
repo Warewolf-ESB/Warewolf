@@ -441,7 +441,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
-            service.Headers = new List<INameValue> {new ObservableNameValue {Name="Accept",Value = "[[test1]]" } };
+            service.Headers = new List<INameValue> {new NameValue {Name="Accept",Value = "[[test1]]" } };
             service.RequestBody = "[[test2]]";
             service.RequestUrl = "[[test3]]";
             service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });

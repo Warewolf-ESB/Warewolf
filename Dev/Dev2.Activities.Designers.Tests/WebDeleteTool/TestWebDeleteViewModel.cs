@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
                         new ServiceOutputMapping("a", "b", "c"),
                         new ServiceOutputMapping("d", "e", "f")
                     },
-                Headers = new List<INameValue> { new ObservableNameValue("a", "x") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "QueryString",
                 ServiceName = "dsfBob"
             };
@@ -292,7 +292,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
             deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
-            deleteViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
 #pragma warning disable 4014
             deleteViewModel.TestInputCommand.Execute();
             deleteViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
@@ -323,7 +323,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
             deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
-            deleteViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             deleteViewModel.InputArea.QueryString = "the [[b]]";
 #pragma warning disable 4014
             deleteViewModel.TestInputCommand.Execute();
@@ -357,7 +357,7 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             var deleteViewModel = new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(act), mod);
             deleteViewModel.ManageServiceInputViewModel = new InputViewForTest(deleteViewModel, mod);
             deleteViewModel.SourceRegion.SelectedSource = deleteViewModel.SourceRegion.Sources.First();
-            deleteViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            deleteViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             deleteViewModel.InputArea.QueryString = "the [[b().a]]";
 #pragma warning disable 4014
             deleteViewModel.TestInputCommand.Execute();
