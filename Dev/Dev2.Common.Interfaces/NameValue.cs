@@ -9,18 +9,9 @@ namespace Dev2.Common.Interfaces
 {
     public class NameValue : INameValue, IEquatable<NameValue>
     {
-        #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(NameValue other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -40,19 +31,11 @@ namespace Dev2.Common.Interfaces
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is NameValue nameValue)
             {
-                return false;
+                return Equals(nameValue);
             }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((NameValue)obj);
+            return false;
         }
         
         public override int GetHashCode()
@@ -73,12 +56,8 @@ namespace Dev2.Common.Interfaces
             return !Equals(left, right);
         }
 
-        #endregion
-
         protected string _name;
         protected string _value;
-
-        #region Implementation of INameValue
 
         public NameValue()
         {
@@ -123,22 +102,10 @@ namespace Dev2.Common.Interfaces
             }
         }
 
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
         public override string ToString()
         {
             return Name;
         }
-
-        #endregion
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -146,80 +113,5 @@ namespace Dev2.Common.Interfaces
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-    public class ObservableAwareNameValue : NameValue
-    {
-        readonly ObservableCollection<INameValue> _sourceCollection;
-        readonly Action<string> _update;
-
-        public ObservableAwareNameValue(ObservableCollection<INameValue> sourceCollection, Action<string> update)
-        {
-            _sourceCollection = sourceCollection;
-            _update = update;
-            
-            Name = "";
-
-            Value = "";
-            AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
-            RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
-            
-        }
-
-        void RemoveRow()
-        {
-            if (!ReferenceEquals(_sourceCollection.Last(), this))
-            {
-                _sourceCollection.Remove(this);
-            }
-        }
-
-        void AddRow()
-        {
-            _sourceCollection.Insert(_sourceCollection.IndexOf(this), new ObservableAwareNameValue(_sourceCollection, _update));
-        }
-
-        #region Overrides of NameValue
-
-        public override string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
-                {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
-                }
-                _name = value;
-                _update?.Invoke(_name);
-            }
-        }
-
-        #region Overrides of NameValue
-
-        public override string Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
-                {
-                    _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
-                }
-                _value = value;
-                _update?.Invoke(_value);
-            }
-        }
-        public ICommand RemoveRowCommand { get; set; }
-        public ICommand AddRowCommand { get; set; }
-
-        #endregion
-
-        #endregion
     }
 }
