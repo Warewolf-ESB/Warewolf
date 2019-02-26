@@ -294,7 +294,9 @@ namespace Dev2.Activities
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
