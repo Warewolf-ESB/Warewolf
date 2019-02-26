@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                Headers = new List<INameValue> { new ObservableNameValue("a", "x") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "Bob the builder",
                 ServiceName = "dsfBob"
             };
@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                Headers = new List<INameValue> { new ObservableNameValue("a", "x") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "Bob the builder",
                 ServiceName = "dsfBob"
             };
@@ -113,7 +113,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 Headers = new List<INameValue>()
                 {
-                    new ObservableNameValue("Content-Type","Application/xml")
+                    new NameValue("Content-Type","Application/xml")
                 }
             };
            
@@ -326,7 +326,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
                 SourceId = mod.Sources[0].Id,
                 Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("d", "e", "f") },
-                Headers = new List<INameValue> { new ObservableNameValue("a", "x") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "Bob the builder",
                 ServiceName = "dsfBob"
             };
@@ -354,7 +354,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(vm.PasteResponseVisible);
             vm.PasteResponseAvailable = true;
             Assert.IsTrue(vm.PasteResponseAvailable);
-            var b = new WebServiceDefinition() { Headers = new List<INameValue>() { new ObservableNameValue("a", "b") } };
+            var b = new WebServiceDefinition() { Headers = new List<INameValue>() { new NameValue("a", "b") } };
             vm.Model = b;
             Assert.IsNotNull(vm.Model);
         }
