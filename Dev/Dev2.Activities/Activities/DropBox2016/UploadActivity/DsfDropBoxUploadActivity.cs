@@ -24,9 +24,8 @@ using Dev2.Common.State;
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Activities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
-    public class DsfDropBoxUploadActivity : DsfBaseActivity,IEquatable<DsfDropBoxUploadActivity>, IDisposable
+    public class DsfDropBoxUploadActivity : DsfDropBoxBaseActivity, IEquatable<DsfDropBoxUploadActivity>, IDisposable
     {
-        Common.Interfaces.Wrappers.IDropboxClient _clientWrapper;
         DropboxClient _client;
         bool _addMode;
         bool _overWriteMode;
@@ -35,15 +34,15 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxUploadActivity()
+            : this(new DropboxClientWrapperFactory())
         {            
-            DisplayName = "Upload to Dropbox";
-            OverWriteMode = true;
         }
 
-        public DsfDropBoxUploadActivity(Common.Interfaces.Wrappers.IDropboxClient clientWrapper)
-            :this()
+        public DsfDropBoxUploadActivity(IDropboxClientFactory clientWrapperFactory)
+            :base(clientWrapperFactory)
         {
-            _clientWrapper = clientWrapper;
+            DisplayName = "Upload to Dropbox";
+            OverWriteMode = true;
         }
                 
         public OauthSource SelectedSource { get; set; }
@@ -74,20 +73,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 _overWriteMode = !value;
                 _addMode = value;
             }
-        }              
-
-        protected virtual DropboxClient GetClient()
-        {
-            if (_client != null)
-            {
-                return _client;
-            }
-            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
-            {
-                Timeout = TimeSpan.FromMinutes(20)
-            };
-            _client = new DropboxClient(SelectedSource.AccessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
-            return _client;
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
@@ -110,8 +95,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             var writeMode = GetWriteMode();
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
-            _clientWrapper = _clientWrapper ?? new DropboxClientWrapper(GetClient());
-            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_clientWrapper);
+            SetupDropboxClient(SelectedSource.AccessToken);
+            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
@@ -182,22 +167,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if (obj is DsfDropBoxUploadActivity)
             {
-                return false;
+                return Equals((DsfDropBoxUploadActivity) obj);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfDropBoxUploadActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()
