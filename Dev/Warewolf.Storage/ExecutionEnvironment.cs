@@ -31,9 +31,12 @@ namespace Warewolf.Storage
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         DataStorage.WarewolfEnvironment _env;
+        readonly IBuildIndexMap _buildIndexMap;
 
         public ExecutionEnvironment()
         {
+            _buildIndexMap = new BuildIndexMapHelper(_env);
+
             _env = PublicFunctions.CreateEnv(@"");
             Errors = new HashSet<string>();
             AllErrors = new HashSet<string>();
@@ -383,13 +386,14 @@ namespace Warewolf.Storage
 
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            var exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
+            var expression = exp;
+            var exists = PublicFunctions.RecordsetExpressionExists(expression, _env);
             if (!exists)
             {
-                exp = ToStar(exp);
+                expression = ToStar(expression);
             }
 
-            _env = PublicFunctions.EvalAssignFromList(exp, recsetResult.Item, _env, update, exists);
+            _env = PublicFunctions.EvalAssignFromList(expression, recsetResult.Item, _env, update, exists);
         }
 
         public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -654,83 +658,9 @@ namespace Warewolf.Storage
             }
         }
 
-        // TODO: refactor BuildIndexMap into a helper class that we can test separately
         void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
-            var jsonIdentifierExpression = var;
-            if (jsonIdentifierExpression == null)
-            {
-                return;
-            }
-            if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
-            {
-                var objectName = nameExpression.Item.ObjectName;
-                JContainer obj;
-                JArray arr = null;
-                if (container == null)
-                {
-                    obj = _env.JsonObjects[objectName];
-                    arr = obj as JArray;
-                }
-                else
-                {
-                    var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                    if (props != null)
-                    {
-                        obj = props.First as JContainer;
-                        arr = obj as JArray;
-                    }
-                    else
-                    {
-                        obj = container;
-                    }
-                }
-
-                if (arr != null)
-                {
-                    BuildIndexMapHelper(exp, indexMap, nameExpression, objectName, arr);
-                }
-                else
-                {
-                    if (!nameExpression.Item.Next.IsTerminal)
-                    {
-                        BuildIndexMap(nameExpression.Item.Next, exp, indexMap, obj);
-                    }
-                }
-            }
-            else
-            {
-                if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
-                {
-                    JContainer obj;
-                    var objectName = nestedNameExpression.Item.ObjectName;
-                    if (container == null)
-                    {
-                        obj = _env.JsonObjects[objectName];
-                    }
-                    else
-                    {
-                        var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                        obj = props != null ? props.First as JContainer : container;
-                    }
-                    BuildIndexMap(nestedNameExpression.Item.Next, exp, indexMap, obj);
-                }
-            }
-        }
-
-        private void BuildIndexMapHelper(string exp, List<string> indexMap, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, string objectName, JArray arr)
-        {
-            var indexToInt = AssignEvaluation.indexToInt(LanguageAST.Index.Star, arr).ToList();
-            foreach (var i in indexToInt)
-            {
-                if (!string.IsNullOrEmpty(exp))
-                {
-                    var indexed = objectName + @"(" + i + @")";
-                    var updatedExp = exp.Replace(objectName + @"(*)", indexed);
-                    indexMap.Add(updatedExp);
-                    BuildIndexMap(nameExpression.Item.Next, updatedExp, indexMap, arr[i - 1] as JContainer);
-                }
-            }
+            _buildIndexMap.Build(var, exp, indexMap, container);
         }
 
         public string ToJson()
@@ -769,7 +699,7 @@ namespace Warewolf.Storage
                 _jsonWriter.WritePropertyName("Environment");
                 _jsonWriter.WriteRawValue(VariablesToJson(_env));
             }
-            protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
+            static protected string VariablesToJson(DataStorage.WarewolfEnvironment _env)
             {
                 var stringList = PublicFunctions.EvalEnv(_env);
                 var sb = new StringBuilder(4096);
