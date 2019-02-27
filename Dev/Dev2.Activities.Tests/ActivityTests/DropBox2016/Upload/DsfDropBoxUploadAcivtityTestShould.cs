@@ -193,15 +193,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var dropboxClient = new Mock<IDropboxClient>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, dropboxClient.Object) { IsUplodValidSuccess = true };
-            dsfDropBoxUploadAcivtityMock.FromPath = "File.txt";
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object, dropboxClient.Object)
+            {
+                IsUplodValidSuccess = true,
+                FromPath = "File.txt"
+            };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            
+
             var dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
