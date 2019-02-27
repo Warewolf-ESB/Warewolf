@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces.Wrappers;
@@ -24,8 +34,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
+        [Owner("Siphamndla Dube")]
+        [TestCategory(nameof(DropBoxUpload))]
+        public void DropBoxUpload_CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
         {
             //---------------Set up test pack-------------------
             var dropBoxUpload = CreateDropboxUploadMock().Object;
@@ -36,8 +47,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ExecuteTask_GivenDropBoxUpload_ShouldReturnFileMetadata()
+        [Owner("Siphamndla Dube")]
+        [TestCategory(nameof(DropBoxUpload))]
+        public void DropBoxUpload_ExecuteTask_GivenDropBoxUpload_ShouldReturnFileMetadata()
         {
             //---------------Set up test pack-------------------
             var dropBoxUpload = CreateDropboxUploadMock();
@@ -51,23 +63,25 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         
       
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
+        [Owner("Siphamndla Dube")]
+        [TestCategory(nameof(DropBoxUpload))]
         [ExpectedException(typeof(ArgumentException))]
-        public void CreateNewDropboxUpload_GivenMissingFromPath_ShouldBeInValid()
+        public void DropBoxUpload_CreateNewDropboxUpload_GivenMissingFromPath_ExpectArgumentException()
         {
             //---------------Set up test pack-------------------
             //---------------Execute Test ----------------------
-            new DropBoxUpload(null, "random.txt", "");
+            new DropBoxUpload(false, "random.txt", "");
             //---------------Test Result -----------------------
         } 
         
         
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxUpload_GivenInvalidThenExecute_ShouldReturnFailureResult()
+        [Owner("Siphamndla Dube")]
+        [TestCategory(nameof(DropBoxUpload))]
+        public void DropBoxUpload_ExecuteTask_IsDropboxFailureResult_ExpectTrue()
         {
             //---------------Set up test pack-------------------
-            var dropBoxUpload = new DropBoxUpload(null, "", "random.txt");
+            var dropBoxUpload = new DropBoxUpload(false, "", "random.txt");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropBoxUpload);
             //---------------Execute Test ----------------------
