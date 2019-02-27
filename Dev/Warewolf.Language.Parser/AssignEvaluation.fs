@@ -172,7 +172,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
         asJObj :> JToken
     | NameExpression a -> 
         let asJObj = toJObject obj
-        let myValue = evalResultToString res |> DataString
+        let myValue = evalResultToString res |> DataString      
         addAtomicPropertyToJson asJObj a.Name myValue |> ignore
         asJObj :> JToken
     | _ -> failwith "top level assign cannot be a nested expresssion"

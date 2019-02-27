@@ -491,7 +491,8 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
+            let value = WarewolfAtomRecord.DataString(a.ToString())
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> value)
             if Seq.length data = 1 then
                 WarewolfAtomResult(Seq.exactlyOne data)
             else
