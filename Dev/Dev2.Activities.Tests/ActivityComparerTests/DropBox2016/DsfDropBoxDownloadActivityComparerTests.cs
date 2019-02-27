@@ -276,19 +276,32 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-            //---------------Execute Test ----------------------
-            dropBoxDeleteActivity.SelectedSource = new DropBoxSource
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
-                ResourceID = Guid.NewGuid()
-            };
-            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+                UniqueID = uniqueId,
+                Result = "A"
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                var dsfDropBoxDownloadActivityOther = new TestDsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther));
+                //---------------Execute Test ----------------------
+                dsfDropBoxDownloadActivity.SelectedSource = new DropBoxSource
+                {
+                    ResourceID = Guid.NewGuid()
+                };
+                dsfDropBoxDownloadActivityOther.SelectedSource = new DropBoxSource();
+                var @equals = dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther);
+                //---------------Test Result -----------------------
+                Assert.IsFalse(@equals);
+            }
         }
 
         [TestMethod]
@@ -298,16 +311,29 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-            //---------------Execute Test ----------------------
-            dropBoxDeleteActivity.SelectedSource = new DropBoxSource();
-            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            {
+                UniqueID = uniqueId,
+                Result = "A"
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                var dsfDropBoxDownloadActivityOther = new TestDsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther));
+                //---------------Execute Test ----------------------
+                dsfDropBoxDownloadActivity.SelectedSource = new DropBoxSource();
+                dsfDropBoxDownloadActivityOther.SelectedSource = new DropBoxSource();
+                var @equals = dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(@equals);
+            }
         }
 
         [TestMethod]
@@ -317,16 +343,29 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A", };
-            var rabbitMqActivity1 = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-            //---------------Execute Test ----------------------
-            rabbitMqActivity.OverwriteFile = true;
-            rabbitMqActivity1.OverwriteFile = false;
-            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            {
+                UniqueID = uniqueId,
+                Result = "A",
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                var dsfDropBoxDownloadActivityOther = new TestDsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther));
+                //---------------Execute Test ----------------------
+                dsfDropBoxDownloadActivity.OverwriteFile = true;
+                dsfDropBoxDownloadActivityOther.OverwriteFile = false;
+                var @equals = dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther);
+                //---------------Test Result -----------------------
+                Assert.IsFalse(@equals);
+            }
         }
 
         [TestMethod]
@@ -336,16 +375,29 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var rabbitMqActivity = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            var rabbitMqActivity1 = new DsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-            //---------------Execute Test ----------------------
-            rabbitMqActivity.OverwriteFile = true;
-            rabbitMqActivity1.OverwriteFile = true;
-            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(@equals);
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            {
+                UniqueID = uniqueId,
+                Result = "A"
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                var dsfDropBoxDownloadActivityOther = new TestDsfDropBoxDownloadActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther));
+                //---------------Execute Test ----------------------
+                dsfDropBoxDownloadActivity.OverwriteFile = true;
+                dsfDropBoxDownloadActivityOther.OverwriteFile = true;
+                var @equals = dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(@equals);
+            }
         }
 
         [TestMethod]
@@ -357,21 +409,28 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var uniqueId = Guid.NewGuid();
             var selectedSource = new MockOAuthSource(uniqueId);
 
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //------------Setup for test--------------------------
-            var dropBoxDownloadActivity = new DsfDropBoxDownloadActivity
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
                 SelectedSource = selectedSource,
                 FromPath = "Path_From",
                 ToPath = "Path_To",
                 OverwriteFile = false,
                 Result = "Downloaded"
-            };
-            //------------Execute Test---------------------------
-            var stateItems = dropBoxDownloadActivity.GetState();
-            Assert.AreEqual(5, stateItems.Count());
-
-            var expectedResults = new[]
+            })
             {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                //------------Execute Test---------------------------
+                var stateItems = dsfDropBoxDownloadActivity.GetState();
+                Assert.AreEqual(5, stateItems.Count());
+
+                var expectedResults = new[]
+                {
                 new StateVariable
                 {
                     Name = "SelectedSource.ResourceID",
@@ -404,20 +463,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 }
             };
 
-            var iter = dropBoxDownloadActivity.GetState().Select(
-                (item, index) => new
-                {
-                    value = item,
-                    expectValue = expectedResults[index]
-                }
-                );
+                var iter = dsfDropBoxDownloadActivity.GetState().Select(
+                    (item, index) => new
+                    {
+                        value = item,
+                        expectValue = expectedResults[index]
+                    }
+                    );
 
-            //------------Assert Results-------------------------
-            foreach (var entry in iter)
-            {
-                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
-                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
-                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+                //------------Assert Results-------------------------
+                foreach (var entry in iter)
+                {
+                    Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                    Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                    Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+                }
             }
         }
 
@@ -429,12 +489,19 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            obj = new DsfDropBoxDownloadActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(obj));
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+
+                obj = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object);
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(obj));
+            }
         }
 
         [TestMethod]
@@ -445,12 +512,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            obj = dsfDropBoxDownloadActivity;
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(obj));
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                obj = dsfDropBoxDownloadActivity;
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsTrue(dsfDropBoxDownloadActivity.Equals(obj));
+            }
         }
 
         [TestMethod]
@@ -458,11 +531,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_ObjectEquals_IsNotExpectedObject_ExpectFalse()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(new object()));
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(new object()));
+            }
         }
 
         [TestMethod]
@@ -470,11 +550,19 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_ExpectFalse()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(new DsfDropBoxDownloadActivity()));
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                var dsfDropBoxDownloadActivityOther = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object);
+                Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(dsfDropBoxDownloadActivityOther));
+            }
         }
 
         [TestMethod]
@@ -482,11 +570,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_Equals_IsNull_ExpectFalse()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(null));
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDownloadActivity.Equals(null));
+            }
         }
 
         [TestMethod]
@@ -506,11 +601,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetDebugOutputs_ExecutionEnvironment_IsNull_ExpectFalse()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //-----------------------Arrange----------------------------
-            //-----------------------Act--------------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Assert-----------------------------
-            Assert.AreEqual(0, dsfDropBoxDownloadActivity.GetDebugInputs(null, 0).Count);
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.AreEqual(0, dsfDropBoxDownloadActivity.GetDebugInputs(null, 0).Count);
+            }
         }
 
         [TestMethod]
@@ -520,10 +622,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //-----------------------Arrange----------------------------
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
-            //-----------------------Act--------------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Assert-----------------------------
-            Assert.AreEqual(1, dsfDropBoxDownloadActivity.GetDebugInputs(mockExecutionEnvironment.Object, 0).Count);
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.AreEqual(1, dsfDropBoxDownloadActivity.GetDebugInputs(mockExecutionEnvironment.Object, 0).Count);
+            }
         }
 
         [TestMethod]
@@ -534,13 +644,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var mockLocalPathManager = new Mock<ILocalPathManager>();
 
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
             //-----------------------Act--------------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
                 LocalPathManager = mockLocalPathManager.Object
-            };
-            //-----------------------Assert-----------------------------
-            Assert.AreEqual(mockLocalPathManager.Object, dsfDropBoxDownloadActivity.LocalPathManager);
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.AreEqual(mockLocalPathManager.Object, dsfDropBoxDownloadActivity.LocalPathManager);
+            }
         }
 
         [TestMethod]
@@ -553,15 +670,22 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
             mockDSFDataObject.Setup(o => o.Environment.AddError(It.IsAny<string>()));
 
-            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
                 FromPath = null,
                 ToPath = null
-            };
-            //-----------------------Act--------------------------------
-            dsfDropBoxDownloadActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
-            //-----------------------Assert-----------------------------
-            mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Exactly(3));
+            })
+            {
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+                //-----------------------Assert-----------------------------
+                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Exactly(3));
+            }
         }
 
 
@@ -570,11 +694,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetHashCode_PropertiesNull_IsNull_ExpectTrue()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsNotNull(dsfDropBoxDownloadActivity.GetHashCode());
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object))
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.IsNotNull(dsfDropBoxDownloadActivity.GetHashCode());
+            }
         }
 
         [TestMethod]
@@ -582,16 +713,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestCategory(nameof(DsfDropBoxDownloadActivity))]
         public void DsfDropBoxDownloadActivity_GetHashCode_PropertiesNull_IsNotNull_ExpectTrue()
         {
+            var mockDropboxClient = new Mock<IDropboxClient>();
+
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDownloadActivity = new DsfDropBoxDownloadActivity
+            using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
             {
                 ToPath = "TestToPath",
                 FromPath = "TestFromPath",
                 SelectedSource = new DropBoxSource()
-            };
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsNotNull(dsfDropBoxDownloadActivity.GetHashCode());
+            })
+            {
+                //-----------------------Act--------------------------------
+                dsfDropBoxDownloadActivity.SetupDropboxClient("");
+                //-----------------------Assert-----------------------------
+                Assert.IsNotNull(dsfDropBoxDownloadActivity.GetHashCode());
+            }
         }
 
         [TestMethod]
@@ -605,30 +743,34 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
             var mockFile = new Mock<IFile>();
 
-            var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
-
-            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-            task.Start();
-            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-
-            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
             {
-                DropboxFile = mockFile.Object
-            };
+                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+                task.Start();
+                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            var dictionery = new Dictionary<string, string> { };
-            dictionery.Add("ToPath", "TestToPath");
-            dictionery.Add("FromPath", @"C:\Users\temp");
-            //-----------------------Act--------------------------------
-            var list = dsfDropBoxDownloadActivity.TestPerformExecution(dictionery);
-            //-----------------------Assert-----------------------------
-            mockDownloadResponse.VerifyAll();
-            mockDropboxClient.VerifyAll();
-            mockDropboxClientFactory.VerifyAll();
-            mockFile.VerifyAll();
-            Assert.AreEqual(1, list.Count);
-            Assert.AreEqual("Success", list[0]);
+                using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+                {
+                    DropboxFile = mockFile.Object
+                })
+                {
+                    var dictionary = new Dictionary<string, string>
+                    {
+                        { "ToPath", "TestToPath" },
+                        { "FromPath", @"C:\Users\temp" }
+                    };
+                    //-----------------------Act--------------------------------
+                    var list = dsfDropBoxDownloadActivity.TestPerformExecution(dictionary);
+                    //-----------------------Assert-----------------------------
+                    mockDownloadResponse.VerifyAll();
+                    mockDropboxClient.VerifyAll();
+                    mockDropboxClientFactory.VerifyAll();
+                    mockFile.VerifyAll();
+                    Assert.AreEqual(1, list.Count);
+                    Assert.AreEqual("Success", list[0]);
+                }
+            }
         }
 
         [TestMethod]
@@ -643,26 +785,30 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
             var mockFile = new Mock<IFile>();
 
-            var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
-
-            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-            task.Start();
-            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error!")));
-
-            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
             {
-                DropboxFile = mockFile.Object,
-                MockSingleExecutor = mockDropboxSingleExecutor,
-            };
+                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+                task.Start();
+                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error!")));
 
-            var dictionery = new Dictionary<string, string> { };
-            dictionery.Add("ToPath", @"C:\Users\temp\testToPath\");
-            dictionery.Add("FromPath", @"C:\Users\temp");
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.ThrowsException<Exception>(() => dsfDropBoxDownloadActivity.TestPerformExecution(dictionery));
+                using (var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+                {
+                    DropboxFile = mockFile.Object,
+                    MockSingleExecutor = mockDropboxSingleExecutor
+                })
+                {
+                    var dictionary = new Dictionary<string, string>
+                    {
+                        { "ToPath", @"C:\Users\temp\testToPath\" },
+                        { "FromPath", @"C:\Users\temp" }
+                    };
+                    //-----------------------Act--------------------------------
+                    //-----------------------Assert-----------------------------
+                    Assert.ThrowsException<Exception>(() => dsfDropBoxDownloadActivity.TestPerformExecution(dictionary));
+                }
+            }
         }
 
         [TestMethod]
@@ -677,27 +823,30 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
             var mockFile = new Mock<IFile>();
 
-            var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object);
-
-            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-            task.Start();
-            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error: not_file!")));
-
-            var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
             {
-                DropboxFile = mockFile.Object,
-                MockSingleExecutor = mockDropboxSingleExecutor,
-            };
+                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+                task.Start();
+                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error: not_file!")));
 
-            var dictionery = new Dictionary<string, string> { };
-            dictionery.Add("ToPath", @"C:\Users\temp\testToPath\");
-            dictionery.Add("FromPath", @"C:\Users\temp");
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.ThrowsException<Exception>(() => dsfDropBoxDownloadActivity.TestPerformExecution(dictionery));
-            dsfDropBoxDownloadActivity.Dispose();
+                var dsfDropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity(mockDropboxClientFactory.Object)
+                {
+                    DropboxFile = mockFile.Object,
+                    MockSingleExecutor = mockDropboxSingleExecutor,
+                };
+
+                var dictionary = new Dictionary<string, string>
+                {
+                    { "ToPath", @"C:\Users\temp\testToPath\" },
+                    { "FromPath", @"C:\Users\temp" }
+                };
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.ThrowsException<Exception>(() => dsfDropBoxDownloadActivity.TestPerformExecution(dictionary));
+                dsfDropBoxDownloadActivity.Dispose();
+            }
         }
     }
 
@@ -722,6 +871,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public List<string> TestPerformExecution(Dictionary<string, string> evaluatedValues)
         {
             return base.PerformExecution(evaluatedValues);
+        }
+
+        public new void SetupDropboxClient(string accessToken)
+        {
+            base.SetupDropboxClient(accessToken);
         }
 
         public override IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
