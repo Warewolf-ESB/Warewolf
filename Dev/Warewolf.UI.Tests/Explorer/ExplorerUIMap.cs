@@ -517,7 +517,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            Assert.IsTrue(UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner, 180000), "Timed out waiting for explorer spinner");
         }
 
         [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
