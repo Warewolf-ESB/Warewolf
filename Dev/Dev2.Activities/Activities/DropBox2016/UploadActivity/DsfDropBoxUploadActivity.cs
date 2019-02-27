@@ -1,17 +1,23 @@
-﻿using Dev2.Activities.DropBox2016.Result;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
-using Dropbox.Api;
-using Dropbox.Api.Files;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -24,12 +30,10 @@ using Dev2.Common.State;
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Activities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
-    public class DsfDropBoxUploadActivity : DsfDropBoxBaseActivity, IEquatable<DsfDropBoxUploadActivity>, IDisposable
+    public class DsfDropBoxUploadActivity : DsfDropBoxBaseActivity, IEquatable<DsfDropBoxUploadActivity>
     {
-        DropboxClient _client;
         bool _addMode;
         bool _overWriteMode;
-        protected FileMetadata FileMetadata;
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
@@ -89,17 +93,15 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             base.ExecuteTool(dataObject, update);
         }
-        
+       
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            var writeMode = GetWriteMode();
-            DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
+            DropboxSingleExecutor = new DropBoxUpload(OverWriteMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             SetupDropboxClient(SelectedSource.AccessToken);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {
-                FileMetadata = dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
             if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
@@ -108,16 +110,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             var executionError = Exception.InnerException?.Message ?? Exception.Message;
             throw new Exception(executionError);
-        }
-
-        public WriteMode GetWriteMode()
-        {
-            if (OverWriteMode)
-            {
-                return WriteMode.Overwrite.Instance;
-            }
-
-            return WriteMode.Add.Instance;
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
@@ -186,11 +178,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 hashCode = (hashCode * 397) ^ AddMode.GetHashCode();
                 return hashCode;
             }
-        }
-
-        public void Dispose()
-        {
-            _client.Dispose();
         }
 
         public override IEnumerable<StateVariable> GetState()
