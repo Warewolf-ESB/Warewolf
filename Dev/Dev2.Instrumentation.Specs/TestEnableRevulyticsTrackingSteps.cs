@@ -19,7 +19,8 @@ namespace Dev2.Instrumentation.SpecflowTests
         {
             const string productVersion = "1.0.0.0";
             const string username = "windows\\raju";
-            _tracker.EnableApplicationTracker(productVersion, username);
+            const string infoVersion = "Some extra info...";
+            _tracker.EnableApplicationTracker(productVersion, infoVersion, username);
         }
 
         [Then(@"I will check the status of revulytics tracker")]
