@@ -8,7 +8,7 @@ Scenario: Studio Large Deploy UI Load Test
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	And I Refresh Explorer
-	Then the timer duration is between "5" and "60" seconds
+	Then the timer duration is between "10" and "90" seconds
 	And I Click Deploy Ribbon Button
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost checkbox from the source tab
@@ -33,7 +33,7 @@ Scenario: Studio Large Variable List UI Load Test
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	And I Click VariableList Scalar Row1 Delete Button
-	Then the timer duration is between "20" and "64" seconds
+	Then the timer duration is between "20" and "90" seconds
 	Given I start the timer
 	When I Open Assign Tool Large View
 	And I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
@@ -92,7 +92,7 @@ Scenario: Studio Many Workflow Tests UI Load Test
 	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Delete The First Test
-	Then the timer duration is between "20" and "90" seconds
+	Then the timer duration is between "10" and "90" seconds
 	
 Scenario: Studio Shutdown And Startup UI Load Test
 	Given The Warewolf Studio is running
@@ -103,4 +103,4 @@ Scenario: Studio Shutdown And Startup UI Load Test
 	Given I start the timer
 	When I start the Studio
 	Then The Warewolf Studio is running
-	And the timer duration is between "9" and "60" seconds
+	And the timer duration is between "9" and "90" seconds

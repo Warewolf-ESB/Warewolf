@@ -162,18 +162,18 @@ namespace Warewolf.UI.Tests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
+        public bool WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
         {
-            control.WaitForControlCondition((uicontrol) =>
+            return control.WaitForControlCondition((uicontrol) =>
             {
                 Point point;
                 return !uicontrol.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
+        public bool WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
-            WaitForControlNotVisible(control, searchTimeout);
+            return WaitForControlNotVisible(control, searchTimeout);
         }
 
         [When(@"I Filter the ToolBox with ""(.*)""")]
