@@ -34,8 +34,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -51,8 +51,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = Guid.NewGuid().ToString() };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = Guid.NewGuid().ToString() };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -67,8 +67,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "a" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "a" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "a" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -84,8 +84,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "A" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "ass" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "A" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -101,8 +101,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "AAA" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, DisplayName = "aaa" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "AAA" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, DisplayName = "aaa" };
             //---------------Assert DsfDropBoxUploadActivity----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -117,8 +117,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "a" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "a" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "a" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -134,8 +134,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "ass" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -151,8 +151,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "AAA" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "aaa" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "AAA" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "aaa" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -168,8 +168,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "a" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "a" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "a" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -185,8 +185,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "A" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "ass" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "A" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -202,8 +202,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "AAA" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, FromPath = "aaa" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "AAA" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, FromPath = "aaa" };
             //---------------Assert DsfDropBoxUploadActivity----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -219,8 +219,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "a" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "a" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "a" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "a" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -236,8 +236,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "A" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "ass" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "A" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "ass" };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -253,8 +253,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var multiAssign = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "AAA" };
-            var multiAssign1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, ToPath = "aaa" };
+            var multiAssign = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "AAA" };
+            var multiAssign1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, ToPath = "aaa" };
             //---------------Assert DsfDropBoxUploadActivity----------------
             Assert.IsNotNull(multiAssign);
             //---------------Execute Test ----------------------
@@ -270,21 +270,19 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var dropBoxDeleteActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" })
+            var dropBoxDeleteActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A"};
+            var dropBoxDeleteActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
+            //---------------Execute Test ----------------------
+            dropBoxDeleteActivity.SelectedSource = new DropBoxSource()
             {
-                var dropBoxDeleteActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-                //---------------Execute Test ----------------------
-                dropBoxDeleteActivity.SelectedSource = new DropBoxSource
-                {
-                    ResourceID = Guid.NewGuid()
-                };
-                dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-                var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsFalse(@equals);
-            }
+                ResourceID = Guid.NewGuid()
+            };
+            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
+            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
         }
 
         [TestMethod]
@@ -294,18 +292,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var dropBoxDeleteActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" })
-            {
-                var dropBoxDeleteActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-                //---------------Execute Test ----------------------
-                dropBoxDeleteActivity.SelectedSource = new DropBoxSource();
-                dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-                var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsTrue(@equals);
-            }
+            var dropBoxDeleteActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
+            var dropBoxDeleteActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A"};
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
+            //---------------Execute Test ----------------------
+            dropBoxDeleteActivity.SelectedSource = new DropBoxSource();
+            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
+            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
@@ -315,18 +311,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var rabbitMqActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A", })
-            {
-                var rabbitMqActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-                //---------------Execute Test ----------------------
-                rabbitMqActivity.AddMode = true;
-                rabbitMqActivity1.AddMode = false;
-                var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsFalse(@equals);
-            }
+            var rabbitMqActivity = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
+            //---------------Execute Test ----------------------
+            rabbitMqActivity.AddMode = true;
+            rabbitMqActivity1.AddMode = false;
+            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
         }
 
         [TestMethod]
@@ -336,18 +330,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var rabbitMqActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" })
-            {
-                var rabbitMqActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-                //---------------Execute Test ----------------------
-                rabbitMqActivity.AddMode = true;
-                rabbitMqActivity1.AddMode = true;
-                var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsTrue(@equals);
-            }
+            var rabbitMqActivity = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
+            //---------------Execute Test ----------------------
+            rabbitMqActivity.AddMode = true;
+            rabbitMqActivity1.AddMode = true;
+            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -356,18 +348,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var rabbitMqActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A", })
-            {
-                var rabbitMqActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-                //---------------Execute Test ----------------------
-                rabbitMqActivity.OverWriteMode = true;
-                rabbitMqActivity1.OverWriteMode = false;
-                var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsFalse(@equals);
-            }
+            var rabbitMqActivity = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A", };
+            var rabbitMqActivity1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
+            //---------------Execute Test ----------------------
+            rabbitMqActivity.OverWriteMode = true;
+            rabbitMqActivity1.OverWriteMode = false;
+            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
         }
 
         [TestMethod]
@@ -377,18 +367,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            using (var rabbitMqActivity = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" })
-            {
-                var rabbitMqActivity1 = new DsfDropBoxUploadActivity { UniqueID = uniqueId, Result = "A" };
-                //---------------Assert Precondition----------------
-                Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
-                //---------------Execute Test ----------------------
-                rabbitMqActivity.OverWriteMode = true;
-                rabbitMqActivity1.OverWriteMode = true;
-                var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
-                //---------------Test Result -----------------------
-                Assert.IsTrue(@equals);
-            }
+            var rabbitMqActivity = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            var rabbitMqActivity1 = new DsfDropBoxUploadActivity() { UniqueID = uniqueId, Result = "A" };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(rabbitMqActivity.Equals(rabbitMqActivity1));
+            //---------------Execute Test ----------------------
+            rabbitMqActivity.OverWriteMode = true;
+            rabbitMqActivity1.OverWriteMode = true;
+            var @equals = rabbitMqActivity.Equals(rabbitMqActivity1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
@@ -401,21 +389,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var selectedSource = new MockOAuthSource(uniqueId);
 
             //------------Setup for test--------------------------
-            using (var dropBoxUploadActivity = new DsfDropBoxUploadActivity
+            var dropBoxUploadActivity = new DsfDropBoxUploadActivity
             {
                 SelectedSource = selectedSource,
                 FromPath = "Path_From",
                 ToPath = "Path_To",
                 OverWriteMode = false,
                 Result = "Uploaded"
-            })
-            {
-                //------------Execute Test---------------------------
-                var stateItems = dropBoxUploadActivity.GetState();
-                Assert.AreEqual(5, stateItems.Count());
+            };
+            //------------Execute Test---------------------------
+            var stateItems = dropBoxUploadActivity.GetState();
+            Assert.AreEqual(5, stateItems.Count());
 
-                var expectedResults = new[]
-                {
+            var expectedResults = new[]
+            {
                 new StateVariable
                 {
                     Name = "SelectedSource.ResourceID",
@@ -448,21 +435,20 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 }
             };
 
-                var iter = dropBoxUploadActivity.GetState().Select(
-                    (item, index) => new
-                    {
-                        value = item,
-                        expectValue = expectedResults[index]
-                    }
-                    );
-
-                //------------Assert Results-------------------------
-                foreach (var entry in iter)
+            var iter = dropBoxUploadActivity.GetState().Select(
+                (item, index) => new
                 {
-                    Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
-                    Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
-                    Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+                    value = item,
+                    expectValue = expectedResults[index]
                 }
+                );
+
+            //------------Assert Results-------------------------
+            foreach (var entry in iter)
+            {
+                Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
             }
         }
 
@@ -474,13 +460,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity())
-            {
-                obj = new DsfDropBoxUploadActivity();
-                //-----------------------Act--------------------------------
-                //-----------------------Assert-----------------------------
-                Assert.IsFalse(dsfDropBoxUploadActivity.Equals(obj));
-            }
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity();
+
+            obj = new DsfDropBoxUploadActivity();
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.IsFalse(dsfDropBoxUploadActivity.Equals(obj));
         }
 
         [TestMethod]
@@ -491,13 +476,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity())
-            {
-                obj = dsfDropBoxUploadActivity;
-                //-----------------------Act--------------------------------
-                //-----------------------Assert-----------------------------
-                Assert.IsTrue(dsfDropBoxUploadActivity.Equals(obj));
-            }
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity();
+
+            obj = dsfDropBoxUploadActivity;
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.IsTrue(dsfDropBoxUploadActivity.Equals(obj));
         }
 
         [TestMethod]
@@ -506,12 +490,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxUploadActivity_ObjectEquals_IsNotExpectedObject_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity())
-            {
-                //-----------------------Act--------------------------------
-                //-----------------------Assert-----------------------------
-                Assert.IsFalse(dsfDropBoxUploadActivity.Equals(new object()));
-            }
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity();
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.IsFalse(dsfDropBoxUploadActivity.Equals(new object()));
         }
 
         [TestMethod]
@@ -520,17 +502,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxUploadActivity_Equals_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity())
-            {
-                //-----------------------Act--------------------------------
-                //-----------------------Assert-----------------------------
-                using (var dsfDropBoxUploadActivity1 = new DsfDropBoxUploadActivity())
-                {
-                    //-----------------------Act--------------------------------
-                    //-----------------------Assert-----------------------------
-                    Assert.IsFalse(dsfDropBoxUploadActivity.Equals(dsfDropBoxUploadActivity1));
-                }
-            }
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity();
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.IsFalse(dsfDropBoxUploadActivity.Equals(new DsfDropBoxUploadActivity()));
         }
 
         [TestMethod]
@@ -539,12 +514,10 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxUploadActivity_Equals_IsNull_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity())
-            {
-                //-----------------------Act--------------------------------
-                //-----------------------Assert-----------------------------
-                Assert.IsFalse(dsfDropBoxUploadActivity.Equals(null));
-            }
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity();
+            //-----------------------Act--------------------------------
+            //-----------------------Assert-----------------------------
+            Assert.IsFalse(dsfDropBoxUploadActivity.Equals(null));
         }
 
         [TestMethod]
@@ -566,18 +539,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //--------------------------Arrange----------------------------
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
-            using (var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object)
+            var dsfDropBoxUploadActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object)
             {
                 SelectedSource = new DropBoxSource(),
                 ToPath = "TestToPath",
                 DisplayName = "TestDisplayName"
-            })
-            {
-                //--------------------------Act--------------------------------
-                var getHash = dsfDropBoxUploadActivity.GetHashCode();
-                //--------------------------Assert-----------------------------
-                Assert.IsNotNull(getHash);
-            }
+            };
+            //--------------------------Act--------------------------------
+            var getHash = dsfDropBoxUploadActivity.GetHashCode();
+            //--------------------------Assert-----------------------------
+            Assert.IsNotNull(getHash);
         }
 
         [TestMethod]
@@ -588,13 +559,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //--------------------------Arrange----------------------------
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
 
-            using (var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object))
-            {
-                //--------------------------Act--------------------------------
-                var getHash = dsfDropboxFileListActivity.GetHashCode();
-                //--------------------------Assert-----------------------------
-                Assert.IsNotNull(getHash);
-            }
+            var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object);
+            //--------------------------Act--------------------------------
+            var getHash = dsfDropboxFileListActivity.GetHashCode();
+            //--------------------------Assert-----------------------------
+            Assert.IsNotNull(getHash);
         }
         
 
@@ -606,13 +575,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //--------------------------Arrange----------------------------
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
 
-            using (var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object))
-            {
-                //--------------------------Act--------------------------------
-                var list = dsfDropboxFileListActivity.GetDebugInputs(null, 0);
-                //--------------------------Assert-----------------------------
-                Assert.AreEqual(0, list.Count);
-            }
+            var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object);
+            //--------------------------Act--------------------------------
+            var list = dsfDropboxFileListActivity.GetDebugInputs(null, 0);
+            //--------------------------Assert-----------------------------
+            Assert.AreEqual(0, list.Count);
         }
 
         [TestMethod]
@@ -624,13 +591,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
 
-            using (var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object))
-            {
-                //--------------------------Act--------------------------------
-                var list = dsfDropboxFileListActivity.GetDebugInputs(mockExecutionEnvironment.Object, 0);
-                //--------------------------Assert-----------------------------
-                Assert.AreEqual(2, list.Count);
-            }
+            var dsfDropboxFileListActivity = new DsfDropBoxUploadActivity(mockDropboxClientFactory.Object);
+            //--------------------------Act--------------------------------
+            var list = dsfDropboxFileListActivity.GetDebugInputs(mockExecutionEnvironment.Object, 0);
+            //--------------------------Assert-----------------------------
+            Assert.AreEqual(2, list.Count);
         }
 
 
