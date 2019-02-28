@@ -81,7 +81,9 @@ namespace Dev2.Common.Interfaces.Core
             return Equals((PluginSourceDefinition)obj);
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public override int GetHashCode()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             unchecked
             {
