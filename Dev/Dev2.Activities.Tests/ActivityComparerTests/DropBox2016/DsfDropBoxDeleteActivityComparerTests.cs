@@ -400,6 +400,40 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropBoxDeleteActivity))]
+        [ExpectedException(typeof(Exception))]
+        public void DsfDropBoxDeleteActivity_PerformExecution_DropboxUploadSuccessResult_GivenPaths_ExpectException()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            var dropboxClient = new Mock<IDropboxClient>();
+
+            Task<Metadata> value = null;
+
+            dropboxClient.Setup(wrapper => wrapper.UploadAsync(It.IsAny<string>(), It.IsAny<WriteMode>(), It.IsAny<bool>(), null, It.IsAny<bool>(), It.IsAny<MemoryStream>()))
+                .Returns(Task.FromResult(TestConstant.FileMetadataInstance.Value));
+            dropboxClient.Setup(wrapper => wrapper.DeleteAsync(It.IsAny<string>())).Returns(value);
+
+            mockExecutor.Setup(executor => executor.ExecuteTask(dropboxClient.Object))
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
+            var dsfDropBoxDeleteAcivtityMock = new DsfDropBoxDeleteActivityMock(mockExecutor.Object, dropboxClient.Object)
+            {
+                IsUplodValidSuccess = true,
+                SelectedSource = new DropBoxSource()
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dsfDropBoxDeleteAcivtityMock);
+            //---------------Execute Test ----------------------
+            var location = Assembly.GetExecutingAssembly().Location;
+            var listPerfomBaseExecution = dsfDropBoxDeleteAcivtityMock.PerfomBaseExecution(new Dictionary<string, string>
+            {
+                {"DeletePath",location },
+            });
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropBoxDeleteActivity))]
         public void DsfDropBoxDeleteActivity_ObjectEquals_IsFalse_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
