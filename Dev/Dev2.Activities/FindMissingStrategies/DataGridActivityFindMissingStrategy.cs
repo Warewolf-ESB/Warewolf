@@ -24,7 +24,9 @@ namespace Dev2.FindMissingStrategies
     {
         public Enum HandlesType() => enFindMissingType.DataGridActivity;
         
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public List<string> GetActivityFields(object activity)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             // TODO: refactor into all activities havnig a GetActivityFields() method
             var activityType = activity.GetType();
@@ -340,7 +342,9 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         List<string> GetDsfWebPutActivityFields(object activity)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
             if (activity is DsfWebPutActivity maAct)
@@ -392,7 +396,9 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         List<string> GetDsfWebDeleteActivityFields(object activity)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
             if (activity is DsfWebDeleteActivity maAct)
@@ -440,7 +446,9 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private List<string> GetDsfWebPostActivityFields(object activity)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
             if (activity is DsfWebPostActivity maAct)
