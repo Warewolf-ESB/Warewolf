@@ -61,7 +61,7 @@ Scenario: Studio Large Dependancies Graph UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
-	Then the timer duration is between "10" and "60" seconds
+	Then the timer duration is between "10" and "70" seconds
 	
 Scenario: Studio Many Scheduled Tasks UI Load Test
 	Given The Warewolf Studio is running
