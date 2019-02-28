@@ -160,7 +160,9 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             InitializeDebug(dataObject);
 
