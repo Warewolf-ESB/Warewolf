@@ -286,7 +286,9 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         List<string> GetDsfWebGetActivityFields(object activity)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
             if (activity is DsfWebGetActivity maAct)
