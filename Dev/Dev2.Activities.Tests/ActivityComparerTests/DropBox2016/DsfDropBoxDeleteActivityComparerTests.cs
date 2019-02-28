@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.Result;
-using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
@@ -28,7 +27,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dev2.Tests.Activities.ActivityTests.DropBox2016;
-using Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -231,19 +229,28 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-            //---------------Execute Test ----------------------
-            dropBoxDeleteActivity.SelectedSource = new DropBoxSource()
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dropBoxDeleteActivity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object) { UniqueID = uniqueId, Result = "A" })
             {
-                ResourceID = Guid.NewGuid()
-            };
-            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(equals);
+                dropBoxDeleteActivity.SetupDropboxClient("");
+
+                var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
+                //---------------Execute Test ----------------------
+                dropBoxDeleteActivity.SelectedSource = new DropBoxSource()
+                {
+                    ResourceID = Guid.NewGuid()
+                };
+                dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
+                var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
+                //---------------Test Result -----------------------
+                Assert.IsFalse(equals);
+            }
         }
 
         [TestMethod]
@@ -253,16 +260,29 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
-            var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
-            //---------------Execute Test ----------------------
-            dropBoxDeleteActivity.SelectedSource = new DropBoxSource();
-            dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
-            var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
-            //---------------Test Result -----------------------
-            Assert.IsTrue(equals);
+
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dropBoxDeleteActivity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object)
+            {
+                UniqueID = uniqueId,
+                Result = "A"
+            })
+            {
+                dropBoxDeleteActivity.SetupDropboxClient("");
+
+                var dropBoxDeleteActivity1 = new DsfDropBoxDeleteActivity { UniqueID = uniqueId, Result = "A" };
+                //---------------Assert Precondition----------------
+                Assert.IsTrue(dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1));
+                //---------------Execute Test ----------------------
+                dropBoxDeleteActivity.SelectedSource = new DropBoxSource();
+                dropBoxDeleteActivity1.SelectedSource = new DropBoxSource();
+                var @equals = dropBoxDeleteActivity.Equals(dropBoxDeleteActivity1);
+                //---------------Test Result -----------------------
+                Assert.IsTrue(equals);
+            }
         }
 
         [TestMethod]
@@ -273,16 +293,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid();
             var selectedSource = new MockOAuthSource(uniqueId);
+            
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
             //------------Setup for test--------------------------
-            var dropBoxDeleteActivity = new DsfDropBoxDeleteActivity { SelectedSource = selectedSource, DeletePath = "Path", Result = "Deleted" };
+            using (var dropBoxDeleteActivity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object) { SelectedSource = selectedSource, DeletePath = "Path", Result = "Deleted" })
             {
-                //------------Execute Test---------------------------
-                var stateItems = dropBoxDeleteActivity.GetState();
-                Assert.AreEqual(3, stateItems.Count());
+                dropBoxDeleteActivity.SetupDropboxClient("");
 
-                var expectedResults = new[]
                 {
+                    //------------Execute Test---------------------------
+                    var stateItems = dropBoxDeleteActivity.GetState();
+                    Assert.AreEqual(3, stateItems.Count());
+
+                    var expectedResults = new[]
+                    {
                 new StateVariable
                 {
                     Name = "SelectedSource.ResourceID",
@@ -303,20 +330,21 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 }
             };
 
-                var iter = dropBoxDeleteActivity.GetState().Select(
-                    (item, index) => new
-                    {
-                        value = item,
-                        expectValue = expectedResults[index]
-                    }
-                    );
+                    var iter = dropBoxDeleteActivity.GetState().Select(
+                        (item, index) => new
+                        {
+                            value = item,
+                            expectValue = expectedResults[index]
+                        }
+                        );
 
-                //------------Assert Results-------------------------
-                foreach (var entry in iter)
-                {
-                    Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
-                    Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
-                    Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+                    //------------Assert Results-------------------------
+                    foreach (var entry in iter)
+                    {
+                        Assert.AreEqual(entry.expectValue.Name, entry.value.Name);
+                        Assert.AreEqual(entry.expectValue.Type, entry.value.Type);
+                        Assert.AreEqual(entry.expectValue.Value, entry.value.Value);
+                    }
                 }
             }
         }
@@ -377,12 +405,19 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity();
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            obj = new DsfDropBoxDeleteActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(obj));
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+
+                obj = new DsfDropBoxDeleteActivity();
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(obj));
+            }
         }
 
         [TestMethod]
@@ -393,12 +428,19 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             //-----------------------Arrange----------------------------
             var obj = new object();
 
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity();
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            obj = dsfDropBoxDeleteAcivtity;
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsTrue(dsfDropBoxDeleteAcivtity.Equals(obj));
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+
+                obj = dsfDropBoxDeleteAcivtity;
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsTrue(dsfDropBoxDeleteAcivtity.Equals(obj));
+            }
         }
 
         [TestMethod]
@@ -407,10 +449,17 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_ObjectEquals_IsNotExpectedObject_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(new object()));
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(new object()));
+            }
         }
 
         [TestMethod]
@@ -419,10 +468,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_Equals_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(new DsfDropBoxDeleteActivity()));
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                var dsfDropBoxDeleteActivity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object);
+                Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(dsfDropBoxDeleteActivity));
+            }
         }
 
         [TestMethod]
@@ -431,10 +488,17 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_Equals_IsNull_ExpectFalse()
         {
             //-----------------------Arrange----------------------------
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity();
-            //-----------------------Act--------------------------------
-            //-----------------------Assert-----------------------------
-            Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(null));
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                Assert.IsFalse(dsfDropBoxDeleteAcivtity.Equals(null));
+            }
         }
 
         [TestMethod]
@@ -455,16 +519,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_GetHashCode_Properties_NotNull_ExpertTrue()
         {
             //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity(mockDropboxClientFactory.Object)
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object)
             {
+                
                 SelectedSource = new DropBoxSource(),
                 DisplayName = "TestDisplayName"
-            };
-            //--------------------------Act--------------------------------
-            var getHash = dsfDropBoxDeleteAcivtity.GetHashCode();
-            //--------------------------Assert-----------------------------
-            Assert.IsNotNull(getHash);
+            })
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+                //--------------------------Act--------------------------------
+                var getHash = dsfDropBoxDeleteAcivtity.GetHashCode();
+                //--------------------------Assert-----------------------------
+                Assert.IsNotNull(getHash);
+            }
         }
 
         [TestMethod]
@@ -473,13 +544,18 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         public void DsfDropBoxDeleteActivity_GetHashCode_Properties_IsNull_ExpertTrue()
         {
             //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
             var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
 
-            var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivity(mockDropboxClientFactory.Object);
-            //--------------------------Act--------------------------------
-            var getHash = dsfDropBoxDeleteAcivtity.GetHashCode();
-            //--------------------------Assert-----------------------------
-            Assert.IsNotNull(getHash);
+            using (var dsfDropBoxDeleteAcivtity = new DsfDropBoxDeleteActivityMock(mockDropboxClientFactory.Object))
+            {
+                dsfDropBoxDeleteAcivtity.SetupDropboxClient("");
+                //--------------------------Act--------------------------------
+                var getHash = dsfDropBoxDeleteAcivtity.GetHashCode();
+                //--------------------------Assert-----------------------------
+                Assert.IsNotNull(getHash);
+            }
         }
 
         [TestMethod]
@@ -573,6 +649,12 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
 
         public class DsfDropBoxDeleteActivityMock : DsfDropBoxDeleteActivity
         {
+            public DsfDropBoxDeleteActivityMock(IDropboxClientFactory dropboxClientFactory)
+                : base(dropboxClientFactory)
+            {
+
+            }
+
             public DsfDropBoxDeleteActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor, IDropboxClient dropboxClient
                 )
                 : base(new MyClass(dropboxClient))
@@ -580,7 +662,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 DropboxSingleExecutor = singleExecutor;
             }
 
-            public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+            public static void Execute(out ErrorResultTO tmpErrors)
             {
                 tmpErrors = new ErrorResultTO();
             }
@@ -589,7 +671,11 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             {
                 base.ExecuteTool(dataObject, update);
             }
-            
+
+            public new void SetupDropboxClient(string accessToken)
+            {
+                base.SetupDropboxClient(accessToken);
+            }
 
             public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
             {
