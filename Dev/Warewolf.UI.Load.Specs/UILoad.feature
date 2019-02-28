@@ -1,8 +1,8 @@
-﻿@UILoad
-Feature: UILoad
+﻿Feature: UILoad
 	As a Warewolf Studio user
 	I can only tolerate so much lag
 
+@StudioLargeDeployUILoadTest
 Scenario: Studio Large Deploy UI Load Test
 	Given there are "20" duplicates of All Tools workflow in the explorer
 	And I start the timer
@@ -16,7 +16,8 @@ Scenario: Studio Large Deploy UI Load Test
 	Given I start the timer
 	When I Click Deploy Tab Deploy Button with no version conflict dialog
 	Then the timer duration is between "160" and "320" seconds
-	
+
+@StudioLargeDebugOutUILoadTest
 Scenario: Studio Large Debug Out UI Load Test
 	Given The Warewolf Studio is running
 	When I open "Debug Output UI Load Testing" workflow
@@ -27,6 +28,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	When I Filter the Debug with "Match Item"
 	Then the timer duration is between "60" and "145" seconds
 	
+@StudioLargeVariableListUILoadTest
 Scenario: Studio Large Variable List UI Load Test
 	Given The Warewolf Studio is running
 	When I open "Variable List UI Load Testing" workflow
@@ -40,6 +42,7 @@ Scenario: Studio Large Variable List UI Load Test
 	And I Click Assign Tool Large View Done Button
 	Then the timer duration is between "130" and "360" seconds
 	
+@StudioWithManyLargeWorkflowTabsOpenUILoadTest
 Scenario: Studio With Many Large Workflow Tabs Open UI Load Test
 	Given there are "20" duplicates of All Tools workflow in the explorer
 	And I have "20" All Tools workflows tabs open
@@ -48,6 +51,7 @@ Scenario: Studio With Many Large Workflow Tabs Open UI Load Test
 	And I Open Explorer First Item With Double Click
 	Then the timer duration is between "19" and "90" seconds
 	
+@StudioOpenningLongWorkflowUILoadTest
 Scenario: Studio Openning Long Workflow UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
@@ -57,12 +61,14 @@ Scenario: Studio Openning Long Workflow UI Load Test
 	When I Click Close Workflow Tab Button
 	Then the timer duration is between "10" and "60" seconds
 	
+@StudioLargeDependanciesGraphUILoadTest
 Scenario: Studio Large Dependancies Graph UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
 	Then the timer duration is between "10" and "70" seconds
 	
+@StudioManyScheduledTasksUILoadTest
 Scenario: Studio Many Scheduled Tasks UI Load Test
 	Given The Warewolf Studio is running
 	And I have "100" scheduled tasks
@@ -80,6 +86,7 @@ Scenario: Studio Many Scheduled Tasks UI Load Test
 	When I delete the UI Load Test scheduled task
 	Then the timer duration is between "5" and "30" seconds
 	
+@StudioManyWorkflowTestsUILoadTest
 Scenario: Studio Many Workflow Tests UI Load Test
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "Tests UI Load Testing"
@@ -94,6 +101,7 @@ Scenario: Studio Many Workflow Tests UI Load Test
 	When I Delete The First Test
 	Then the timer duration is between "10" and "90" seconds
 	
+@StudioShutdownAndStartupUILoadTest
 Scenario: Studio Shutdown And Startup UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
