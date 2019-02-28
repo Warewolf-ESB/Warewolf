@@ -814,15 +814,23 @@ let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (valu
     | Some _ -> env
     | _ -> addToJsonObjects env name value
 
+let atomtoJToken (x:WarewolfAtom )=
+    match x with 
+        | Float a -> JToken.FromObject(a)
+        | Int a -> JToken.FromObject(a)
+        | DataString a -> JToken.FromObject(a)
+        | Nothing -> null
+        | PositionedValue (_,b) -> JToken.FromObject(b.ToString())
+
 let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom) = 
     let props = obj.Properties()
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
     match theProp with
     | None -> 
-        obj.Add(new JProperty(name, (atomtoString value))) |> ignore
+        obj.Add(new JProperty(name, (atomtoJToken value))) |> ignore
         obj
     | Some a -> 
-        a.Value <- new JValue(atomtoString value)
+        a.Value <- new JValue(atomtoJToken value)
         obj
 
 let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom seq) = 
@@ -836,9 +844,6 @@ let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) 
     | Some a -> 
         a.Value <- new JArray(valuesAsStrings)
         obj
-
-
-
 
 let deleteValues (exp:string)  (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp

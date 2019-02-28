@@ -1,12 +1,11 @@
 ﻿module EvaluationFunctions
 
 open LanguageAST
-//open LanguageEval
 open Microsoft.FSharp.Text.Lexing
 open DataStorage
 open WarewolfParserInterop
 open CommonFunctions
-open System.Diagnostics.CodeAnalysis
+open Newtonsoft.Json.Linq
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 let mutable ParseCache : Map<string, LanguageExpression> = Map.empty
@@ -488,11 +487,14 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         else failwith "non existent object"
     
     | JsonIdentifierExpression a -> 
-        let jPath = "$." + languageExpressionToJPath (lang)
+        let jPath = "$." + languageExpressionToJPath (lang)       
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
-            let value = WarewolfAtomRecord.DataString(a.ToString())
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> value)
+            
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun x -> match x.Type with
+                                                                     | JTokenType.Integer -> WarewolfAtomRecord.Int(x.Value<int>())
+                                                                     | _ -> WarewolfAtomRecord.DataString(x.ToString()))
+            
             if Seq.length data = 1 then
                 WarewolfAtomResult(Seq.exactlyOne data)
             else
