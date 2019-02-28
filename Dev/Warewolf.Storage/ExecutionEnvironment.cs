@@ -30,16 +30,16 @@ namespace Warewolf.Storage
 {
     public class ExecutionEnvironment : IExecutionEnvironment
     {
-        DataStorage.WarewolfEnvironment _env;
+        protected DataStorage.WarewolfEnvironment _env;
         readonly IBuildIndexMap _buildIndexMap;
 
         public ExecutionEnvironment()
         {
-            _buildIndexMap = new BuildIndexMapHelper(_env);
-
             _env = PublicFunctions.CreateEnv(@"");
             Errors = new HashSet<string>();
             AllErrors = new HashSet<string>();
+
+            _buildIndexMap = new BuildJObjectArrayIndexMapHelper(this);
         }
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update) => Eval(exp, update, false, false);
@@ -190,6 +190,7 @@ namespace Warewolf.Storage
             }
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
+        internal JContainer GetObject(string objectName) => _env.JsonObjects[objectName];
 
         public int GetObjectLength(string recordSetName)
         {
@@ -625,7 +626,8 @@ namespace Warewolf.Storage
 
         public List<string> GetIndexes(string exp)
         {
-            var indexMap = new List<string>();
+            IList<string> indexMap = null;
+
             if (!string.IsNullOrEmpty(exp))
             {
                 var parsedExpression = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(exp);
@@ -634,33 +636,36 @@ namespace Warewolf.Storage
                 {
                     if (parsedExpression is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
                     {
-                        BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
+                        indexMap = _buildIndexMap.Build(jsonIdentifierExpression.Item, exp);
                     }
                 }
                 else
                 {
                     if (parsedExpression.IsRecordSetExpression && parsedExpression is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
                     {
-                        GetIndexAddRecordSetIndexes(exp, indexMap, recSetExpression);
+                        indexMap = GetIndexAddRecordSetIndexes(exp, recSetExpression);
                     }
 
                 }
             }
+
+            if (indexMap is null)
+            {
+                return new List<string>();
+            }
+
             return indexMap.Where(s => !s.Contains(@"(*)")).ToList();
         }
 
-        private void GetIndexAddRecordSetIndexes(string exp, List<string> indexMap, LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
+        private IList<string> GetIndexAddRecordSetIndexes(string exp, LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
         {
+            var indexMap = new List<string>();
             var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
             foreach (var index in indexes)
             {
                 indexMap.Add(exp.Replace(@"(*).", $"({index})."));
             }
-        }
-
-        void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
-        {
-            _buildIndexMap.Build(var, exp, indexMap, container);
+            return indexMap;
         }
 
         public string ToJson()
