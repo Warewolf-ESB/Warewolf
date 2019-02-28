@@ -16,79 +16,66 @@ namespace Warewolf.Storage
 {
     internal interface IBuildIndexMap
     {
-        void Build(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container);
+        IList<string> Build(LanguageAST.JsonIdentifierExpression var, string exp);
     }
-    internal class BuildIndexMapHelper : IBuildIndexMap
+    internal class BuildJObjectArrayIndexMapHelper : IBuildIndexMap
     {
-        readonly DataStorage.WarewolfEnvironment _env;
-        public BuildIndexMapHelper(DataStorage.WarewolfEnvironment env)
+        readonly ExecutionEnvironment _env;
+        readonly List<string>  _indexMap = new List<string>();
+        public BuildJObjectArrayIndexMapHelper(ExecutionEnvironment env)
         {
             _env = env;
         }
-        public void Build(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
+
+        public IList<string> Build(LanguageAST.JsonIdentifierExpression var, string exp)
+        {
+            Build(var, exp, null);
+            return _indexMap;
+        }
+
+        public void Build(LanguageAST.JsonIdentifierExpression var, string exp, JContainer container)
         {
             var jsonIdentifierExpression = var;
-            if (jsonIdentifierExpression == null)
+            if (jsonIdentifierExpression is null)
             {
                 return;
             }
+
             if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
             {
-                var objectName = nameExpression.Item.ObjectName;
-                JContainer obj;
-                JArray arr = null;
-                if (container == null)
-                {
-                    obj = _env.JsonObjects[objectName];
-                    arr = obj as JArray;
-                }
-                else
-                {
-                    var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                    if (props != null)
-                    {
-                        obj = props.First as JContainer;
-                        arr = obj as JArray;
-                    }
-                    else
-                    {
-                        obj = container;
-                    }
-                }
-
-                if (arr != null)
-                {
-                    BuildHelper(exp, indexMap, nameExpression, objectName, arr);
-                }
-                else
-                {
-                    if (!nameExpression.Item.Next.IsTerminal)
-                    {
-                        Build(nameExpression.Item.Next, exp, indexMap, obj);
-                    }
-                }
+                BuildFromIndexNestedNameExpression(exp, container, nameExpression);
             }
             else
             {
                 if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
                 {
-                    JContainer obj;
-                    var objectName = nestedNameExpression.Item.ObjectName;
-                    if (container == null)
-                    {
-                        obj = _env.JsonObjects[objectName];
-                    }
-                    else
-                    {
-                        var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                        obj = props != null ? props.First as JContainer : container;
-                    }
-                    Build(nestedNameExpression.Item.Next, exp, indexMap, obj);
+                    BuildFromNestedNameExpression(exp, container, nestedNameExpression);
+                }
+            }
+            return;
+        }
+
+        private void BuildFromIndexNestedNameExpression(string exp, JContainer container, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
+        {
+            var objectName = nameExpression.Item.ObjectName;
+            JArray arr = null;
+            JContainer obj;
+            obj = TryGetObjectOrArray(container, objectName, ref arr);
+
+            if (arr != null)
+            {
+                BuildIndexFromJArray(exp, nameExpression, objectName, arr);
+            }
+            else
+            {
+                if (!nameExpression.Item.Next.IsTerminal)
+                {
+                    Build(nameExpression.Item.Next, exp, obj);
                 }
             }
         }
 
-        private void BuildHelper(string exp, List<string> indexMap, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, string objectName, JArray arr)
+        private void BuildIndexFromJArray(string exp, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, string objectName, JArray arr)
         {
             var indexToInt = AssignEvaluation.indexToInt(LanguageAST.Index.Star, arr).ToList();
             foreach (var i in indexToInt)
@@ -97,10 +84,51 @@ namespace Warewolf.Storage
                 {
                     var indexed = objectName + @"(" + i + @")";
                     var updatedExp = exp.Replace(objectName + @"(*)", indexed);
-                    indexMap.Add(updatedExp);
-                    Build(nameExpression.Item.Next, updatedExp, indexMap, arr[i - 1] as JContainer);
+                    _indexMap.Add(updatedExp);
+                    Build(nameExpression.Item.Next, updatedExp, arr[i - 1] as JContainer);
                 }
             }
+        }
+
+        private JContainer TryGetObjectOrArray(JContainer container, string objectName, ref JArray arr)
+        {
+            JContainer obj;
+            if (container == null)
+            {
+                obj = _env.GetObject(objectName);
+                arr = obj as JArray;
+            }
+            else
+            {
+                var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
+                if (props != null)
+                {
+                    obj = props.First as JContainer;
+                    arr = obj as JArray;
+                }
+                else
+                {
+                    obj = container;
+                }
+            }
+
+            return obj;
+        }
+
+        private void BuildFromNestedNameExpression(string exp, JContainer container, LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
+        {
+            JContainer obj;
+            var objectName = nestedNameExpression.Item.ObjectName;
+            if (container == null)
+            {
+                obj = _env.GetObject(objectName);
+            }
+            else
+            {
+                var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
+                obj = props != null ? props.First as JContainer : container;
+            }
+            Build(nestedNameExpression.Item.Next, exp, obj);
         }
     }
 }
