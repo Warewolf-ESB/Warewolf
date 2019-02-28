@@ -334,7 +334,9 @@ namespace Dev2.Activities
             _advancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var tokens = complexStatement.Tokens;
             var outputRecordsetName = "";
