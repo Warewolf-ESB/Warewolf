@@ -254,7 +254,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I Select Show Dependencies In Explorer Context Menu for service \"Dependencies Gra" +
                     "ph UI Load Testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 64
- testRunner.Then("the timer duration is between \"10\" and \"60\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is between \"10\" and \"70\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
