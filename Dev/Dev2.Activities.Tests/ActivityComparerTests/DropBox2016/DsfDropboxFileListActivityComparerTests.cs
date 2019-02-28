@@ -950,6 +950,30 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(DsfDropboxFileListActivity))]
+        public void DsfDropboxFileListActivity_TestExecuteTool_ExpertSuccess()
+        {
+            //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object))
+            {
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.TestSetupDropboxClient("");
+                dsfDropboxFileListActivity.ToPath = "TestToPath";
+                dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+                //--------------------------Assert-----------------------------
+                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
         public void DsfDropboxFileListActivity_TestPerformExecution_DropboxExecutionResult_DropboxFailureResult_ExpertException()
         {
             //-----------------------Arrange----------------------------
