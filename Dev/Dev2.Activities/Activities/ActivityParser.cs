@@ -40,9 +40,10 @@ namespace Dev2.Activities
             return ParseDecision(flowdec, seenActivities).FirstOrDefault();
         }
 
-#pragma warning disable S1541disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public IEnumerable<IDev2Activity> ParseToLinkedFlatList(IDev2Activity topLevelActivity)
 #pragma warning restore S1541 // Methods and properties should not be too complex
+
         {
             if (topLevelActivity is DsfDecision roodDecision)
             {
