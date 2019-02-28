@@ -225,7 +225,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private void PerformExecutionOnChannel(string queueName, string prefetch)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (!string.IsNullOrEmpty(TimeOut))
             {
@@ -447,7 +449,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(DsfConsumeRabbitMQActivity other)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (ReferenceEquals(null, other))
             {
@@ -497,7 +501,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return Equals((DsfConsumeRabbitMQActivity)obj);
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public override int GetHashCode()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             unchecked
             {
