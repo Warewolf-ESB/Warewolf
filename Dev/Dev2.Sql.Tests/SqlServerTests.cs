@@ -212,7 +212,6 @@ namespace Dev2.Sql.Tests
         [TestCategory("SqlServer_FetchStoredProcedures")]
 
         public void SqlServer_FetchStoredProcedures_SPReturnsSPs()
-
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IConnectionBuilder>();
@@ -226,17 +225,15 @@ namespace Dev2.Sql.Tests
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
             var somethingAdded = false;
             var funcAdded = false;
-            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
-            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
-            //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
+
             var dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
             dt.Rows.Add("Bob", "SQL_STORED_PROCEDURE", "Dave");
 
-            mockCommand.SetupSequence(command => command.ExecuteReader())
-                .Returns(dt.CreateDataReader());
+            mockCommand.Setup(command => command.ExecuteReader()).Returns(dt.CreateDataReader());
+
             var conn = new Mock<ISqlConnection>();
             conn.Setup(a => a.State).Returns(ConnectionState.Open);
             conn.Setup(a => a.CreateCommand()).Returns(mockCommand.Object);
