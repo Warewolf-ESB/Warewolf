@@ -223,7 +223,9 @@ namespace Dev2.Activities.Sharepoint
             env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue), update);
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         object GetSharepointValue(object sharepointValue)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var type = sharepointValue.GetType();
             var val = sharepointValue;
@@ -293,7 +295,9 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void AddInputDebug(IExecutionEnvironment env, int update)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
