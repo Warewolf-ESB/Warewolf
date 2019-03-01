@@ -26,7 +26,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	Then the timer duration is between "45" and "155" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
-	Then the timer duration is between "60" and "145" seconds
+	Then the timer duration is between "60" and "220" seconds
 	
 @StudioLargeVariableListUILoadTest
 Scenario: Studio Large Variable List UI Load Test
