@@ -161,7 +161,9 @@ namespace Dev2.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             InitializeDebug(dataObject);

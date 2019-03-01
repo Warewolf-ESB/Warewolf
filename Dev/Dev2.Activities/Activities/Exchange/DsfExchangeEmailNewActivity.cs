@@ -290,7 +290,9 @@ namespace Dev2.Activities.Exchange
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             if (updates != null)
             {
