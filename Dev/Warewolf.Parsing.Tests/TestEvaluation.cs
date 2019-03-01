@@ -571,7 +571,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[@Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"22\")" + GlobalConstants.CalculateTextConvertSuffix);
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(22)" + GlobalConstants.CalculateTextConvertSuffix);
         }
 
         [TestMethod]

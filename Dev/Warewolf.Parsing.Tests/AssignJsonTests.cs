@@ -503,9 +503,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Age")))));
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), @"{
-  ""Age"": ""5""
-}");
+            Assert.AreEqual("{\r\n  \"Age\": 5\r\n}", env2.JsonObjects["Bob"].ToString());
         }
 
         [TestMethod]

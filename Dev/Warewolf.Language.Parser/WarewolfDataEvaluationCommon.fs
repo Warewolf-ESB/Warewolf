@@ -830,7 +830,7 @@ let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string)
         obj.Add(new JProperty(name, (atomtoJToken value))) |> ignore
         obj
     | Some a -> 
-        a.Value <- new JValue(atomtoJToken value)
+        a.Value <- new JValue(atomtoString value)
         obj
 
 let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom seq) = 
