@@ -146,7 +146,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private void TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
             if (RecordsLength == string.Empty)
