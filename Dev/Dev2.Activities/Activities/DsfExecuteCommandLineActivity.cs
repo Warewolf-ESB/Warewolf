@@ -140,7 +140,9 @@ namespace Dev2.Activities
             };
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var exeToken = dataObject.ExecutionToken;
 
