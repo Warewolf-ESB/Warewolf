@@ -561,11 +561,18 @@ namespace Warewolf.Storage
                 return recordset;
             }
 
-            var recordSetExpression = rec as LanguageAST.LanguageExpression.RecordSetExpression;
-            var recordSetNameExpression = rec as LanguageAST.LanguageExpression.RecordSetNameExpression;
-
-            var index = recordSetExpression?.Item?.Name ?? recordSetNameExpression?.Item?.Name;
-            return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
+            if (rec is LanguageAST.LanguageExpression.RecordSetExpression recordSetExpression)
+            {
+                var index = recordSetExpression.Item?.Name;
+                return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
+            }
+            if (rec is LanguageAST.LanguageExpression.RecordSetNameExpression recordSetNameExpression)
+            {
+                var index = recordSetNameExpression.Item?.Name;
+                return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
+            }
+            // This is a fail safe
+            throw new Exception("Unhandled Recordset LanguageExpression");
         }
 
         public static bool IsValidRecordSetIndex(string exp) => PublicFunctions.IsValidRecsetExpression(exp);
