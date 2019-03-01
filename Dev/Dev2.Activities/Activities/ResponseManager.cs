@@ -25,7 +25,9 @@ namespace Dev2.Activities
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
         public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj) => PushResponseIntoEnvironment(input, update, dataObj, true);
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (dataObj == null)
             {
