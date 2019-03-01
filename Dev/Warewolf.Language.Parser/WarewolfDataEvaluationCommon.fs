@@ -816,11 +816,11 @@ let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (valu
 
 let atomtoJToken (x:WarewolfAtom )=
     match x with 
-        | Float a -> JToken.FromObject(a)
-        | Int a -> JToken.FromObject(a)
-        | DataString a -> JToken.FromObject(a)
+        | Float a -> new JValue(a)
+        | Int a -> new JValue(a)
+        | DataString a -> new JValue(a)
         | Nothing -> null
-        | PositionedValue (_,b) -> JToken.FromObject(b.ToString())
+        | PositionedValue (_,b) ->  new JValue(b.ToString())
 
 let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom) = 
     let props = obj.Properties()
@@ -830,12 +830,12 @@ let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string)
         obj.Add(new JProperty(name, (atomtoJToken value))) |> ignore
         obj
     | Some a -> 
-        a.Value <- new JValue(atomtoString value)
+        a.Value <- (atomtoJToken value)
         obj
 
 let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom seq) = 
     let props = obj.Properties()
-    let valuesAsStrings = Seq.map atomtoString value
+    let valuesAsStrings = Seq.map atomtoJToken value
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
     match theProp with
     | None -> 
@@ -844,6 +844,9 @@ let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) 
     | Some a -> 
         a.Value <- new JArray(valuesAsStrings)
         obj
+
+
+
 
 let deleteValues (exp:string)  (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp
