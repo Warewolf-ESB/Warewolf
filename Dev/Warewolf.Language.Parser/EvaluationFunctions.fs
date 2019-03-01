@@ -1,11 +1,12 @@
 ﻿module EvaluationFunctions
 
 open LanguageAST
+//open LanguageEval
 open Microsoft.FSharp.Text.Lexing
 open DataStorage
 open WarewolfParserInterop
 open CommonFunctions
-open Newtonsoft.Json.Linq
+open System.Diagnostics.CodeAnalysis
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 let mutable ParseCache : Map<string, LanguageExpression> = Map.empty
@@ -473,7 +474,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
@@ -481,20 +482,16 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey a.Name then 
             let jo = env.JsonObjects.[a.Name]
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString(a.ToString()))
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
     
     | JsonIdentifierExpression a -> 
-        let jPath = "$." + languageExpressionToJPath (lang)       
+        let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 
             let jo = env.JsonObjects.[(jsonIdentifierToName a)]
-            
-            let data = jo.SelectTokens(jPath) |> Seq.map (fun x -> match x.Type with
-                                                                     | JTokenType.Integer -> WarewolfAtomRecord.Int(x.Value<int>())
-                                                                     | _ -> WarewolfAtomRecord.DataString(x.ToString()))
-            
+            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> parseAtom(a.ToString()))
             if Seq.length data = 1 then
                 WarewolfAtomResult(Seq.exactlyOne data)
             else

@@ -181,6 +181,27 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJobjectToJObject_DiffTypes_EvalCorreclty()
+        {
+            //------------Setup for test--------------------------
+
+            var environment = new ExecutionEnvironment();
+            environment.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"NNNN\",\"Age\":32}"), 0);
+
+            //------------Execute Test---------------------------
+            environment.AssignJson(new AssignValue("[[@Person2.Name]]", "[[@Person.Name]]"), 0);
+            environment.AssignJson(new AssignValue("[[@Person2.Age]]", "[[@Person.Age]]"), 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person2]]", 0);            
+
+
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
         public void AssignJArray_MultipleJValues_EvalIndexOneCorreclty()
