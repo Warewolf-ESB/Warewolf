@@ -109,7 +109,9 @@ namespace Dev2.Activities
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void TryExecuteService(int update, IDSFDataObject dataObject, PluginExecutionDto pluginExecutionDto, PluginInvokeArgs args)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             using (var appDomain = PluginServiceExecutionFactory.CreateAppDomain())
             {
