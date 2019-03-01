@@ -77,5 +77,29 @@ namespace Warewolf.Web.UI.Tests
             Assert.IsTrue(driver.IsAlertPresent(), GlobalConstants.IsAlertPresentError);
             Assert.AreEqual(GlobalConstants.LocalWarewolfServerError, driver.CloseAlertAndGetItsText(false), GlobalConstants.AlertText);
         }
+
+        [TestMethod]
+        [DeploymentItem(@"avformat-57.dll")]
+        [DeploymentItem(@"avutil-55.dll")]
+        [DeploymentItem(@"swresample-2.dll")]
+        [DeploymentItem(@"swscale-4.dll")]
+        [DeploymentItem(@"avcodec-57.dll")]
+        [DeploymentItem(@"IEDriverServer.exe")]
+        [DeploymentItem(@"WebDriverProfiles", @"WebDriverProfiles")]
+        [TestCategory("ExecutionLogging")]
+        public void InternetExplorer_ExecutionLogging_ClickRefresh_UITest()
+        {
+            //Generate some test log data
+            driver.CreateWebRequest();
+            driver.GoToUrl();
+
+            Assert.IsTrue(driver.WaitForSpinner());
+            Assert.IsTrue(driver.WaitForExecutionList());
+            Assert.IsTrue(driver.IsExecutionListVisible());
+            string assertMessage = string.Format(GlobalConstants.UserCredentialsShowingError, browserName) + Environment.NewLine + driver.CloseAlertAndGetItsText(false);
+            Assert.IsFalse(driver.IsAlertPresent(), assertMessage);
+
+            driver.ClickUpdateServer();
+        }
     }
 }
