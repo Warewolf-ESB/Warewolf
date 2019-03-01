@@ -23,9 +23,11 @@ namespace Dev2.FindMissingStrategies
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
         public Enum HandlesType() => enFindMissingType.DataGridActivity;
-        
+
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         public List<string> GetActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             // TODO: refactor into all activities havnig a GetActivityFields() method
@@ -196,7 +198,9 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         List<string> GetDsfEnhancedDotNetDllActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var results = new List<string>();
             if (activity is DsfEnhancedDotNetDllActivity maAct)
@@ -289,7 +293,9 @@ namespace Dev2.FindMissingStrategies
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         List<string> GetDsfWebGetActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
@@ -343,7 +349,9 @@ namespace Dev2.FindMissingStrategies
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         List<string> GetDsfWebPutActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
@@ -397,7 +405,9 @@ namespace Dev2.FindMissingStrategies
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         List<string> GetDsfWebDeleteActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();
@@ -447,7 +457,9 @@ namespace Dev2.FindMissingStrategies
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         private List<string> GetDsfWebPostActivityFields(object activity)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var results = new List<string>();

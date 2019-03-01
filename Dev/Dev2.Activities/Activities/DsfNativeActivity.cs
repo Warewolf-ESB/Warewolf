@@ -422,7 +422,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         void DispatchForBeforeState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, Guid remoteID)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (_debugState == null)
@@ -759,7 +761,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (output == null)

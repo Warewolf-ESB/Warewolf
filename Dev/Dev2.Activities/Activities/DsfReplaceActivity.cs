@@ -219,7 +219,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         private void ExecuteEachField(IDSFDataObject dataObject, int update, IDev2ReplaceOperation replaceOperation, ref IErrorResultTO errors, IErrorResultTO allErrors, ref int replacementCount, ref int replacementTotal, ref int counter, string findValue, string replaceWithValue, string s)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (!string.IsNullOrEmpty(findValue))
