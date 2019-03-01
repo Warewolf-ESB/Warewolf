@@ -973,7 +973,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("AssignValue")]
-        public void AssignValue_ObjectToObject()
+        public void AssignValue_ObjectToObject_KeepsInt_DataType()
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
@@ -990,7 +990,53 @@ namespace WarewolfParsingTest
             var token = ((JProperty)value).Value;
             Assert.AreEqual(32, token);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignValue")]
+        public void AssignValue_ObjectToObject_NestedObject_1Level_KeepsInt_DataType()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var jObject = "{\"Number\":32,\"Nested\":{\"Number2\":10,\"Alpha2\":\"Jack\"}}";
+            env.AssignJson(new AssignValue("[[@Person]]", jObject), 0);
 
+            env.AssignJson(new AssignValue("[[@Person2.Nested]]", "[[@Person.Nested]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Number]]", "[[@Person.Number]]"), 0);
+
+            //------------Assert Results-------------------------
+            var jContainer = env.EvalJContainer("[[@Person2()]]");
+            var value = jContainer.Last;
+            var token = ((JProperty)value).Value;
+            Assert.AreEqual(32, token);
+
+            var value2 = jContainer.First;
+            var token2 = ((JProperty)value2).Value;
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignValue")]
+        public void AssignValue_ObjectToObject_NestedObject_2Levels_KeepsInt_DataType()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var jObject = "{\"Number\":32,\"Nested\":{\"Number2\":10,\"Alpha2\":{\"Number2\":10,\"Alpha2\":\"Jack\"}}}";
+            env.AssignJson(new AssignValue("[[@Person]]", jObject), 0);
+
+            env.AssignJson(new AssignValue("[[@Person2.Nested]]", "[[@Person.Nested]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Number]]", "[[@Person.Number]]"), 0);
+
+            //------------Assert Results-------------------------
+            var jContainer = env.EvalJContainer("[[@Person2()]]");
+            var value = jContainer.Last;
+            var token = ((JProperty)value).Value;
+            Assert.AreEqual(32, token);
+
+            var value2 = jContainer.First;
+            var token2 = ((JProperty)value2).Value;
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2);
+
+        }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()
         {
             IEnumerable<IAssignValue> assigns = new List<IAssignValue>
