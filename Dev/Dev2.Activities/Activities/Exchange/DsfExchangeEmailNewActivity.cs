@@ -355,7 +355,9 @@ namespace Dev2.Activities.Exchange
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(DsfExchangeEmailNewActivity other)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (other is null)
             {
