@@ -25,8 +25,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         public enForEachType ForEachType { get; private set; }
 
 
+
         //MO - Changed : new ctor that accepts the new arguments
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             errors = new ErrorResultTO();
             ForEachType = forEachType;
