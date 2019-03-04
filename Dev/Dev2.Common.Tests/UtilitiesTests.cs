@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Moq;
+using System.Threading;
 
 namespace Dev2.Common.Tests
 {
@@ -132,7 +133,7 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             Assert.IsTrue(executed);
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
@@ -149,7 +150,7 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, null);
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
         }
@@ -179,7 +180,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("An anonymous identity cannot perform an impersonation.", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(executed);
@@ -211,7 +212,7 @@ namespace Dev2.Common.Tests
                 executed = true;
             });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(shouldThrow);
@@ -246,7 +247,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("some exception", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.AreEqual(2, executedCount);
