@@ -99,9 +99,9 @@ namespace Warewolf.UI.Load.Specs
         [When(@"I open ""(.*)"" All Tools workflows tabs")]
         public void OpenManyNewWorkflowTabs(string numberOfTabs)
         {
-            for(var i = int.Parse(numberOfTabs); i > 0; i--)
+            ExplorerUIMap.Filter_Explorer("All Tools");
+            for (var i = int.Parse(numberOfTabs); i > 0; i--)
             {
-                ExplorerUIMap.Filter_Explorer("All Tools " + i.ToString());
                 ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
             }
         }
