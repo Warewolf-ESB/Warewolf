@@ -92,7 +92,7 @@ Scenario: Studio Many Workflow Tests UI Load Test
 	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
-	Then the timer duration is between "10" and "60" seconds
+	Then the timer duration is between "10" and "166" seconds
 	Given I start the timer
 	When I Click The Create a New Test Button
 	And I Click Save Ribbon Button And Wait For Save
