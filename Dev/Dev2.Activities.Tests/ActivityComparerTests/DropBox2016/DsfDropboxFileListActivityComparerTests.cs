@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.Result;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.State;
@@ -968,6 +969,142 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
                 //--------------------------Assert-----------------------------
                 mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+            }
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
+        public void DsfDropboxFileListActivity_TestExecuteTool_IncludeDeleted_IsTrue_ExpertSuccess()
+        {
+            //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockListFolderResult = new Mock<IListFolderResult>();
+
+            var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
+            
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+            
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object))
+            {
+                var metadata = new DataNode { IsDeleted = true, IsFile = true, IsFolder = true, PathLower = "Test_PathLower" };
+
+                var list = new List<IDataNode>();
+                list.Add(metadata);
+                
+                mockListFolderResult.Setup(o => o.Entries).Returns(list);
+                dsfDropboxFileListActivity.MockSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+                dsfDropboxFileListActivity.MockSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(mockListFolderResult.Object));
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.ToPath = "TestToPath";
+                dsfDropboxFileListActivity.SelectedSource = new DropBoxSource();
+                dsfDropboxFileListActivity.IncludeDeleted = true;
+                dsfDropboxFileListActivity.IsFoldersSelected = false;
+
+                dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+                //--------------------------Assert-----------------------------
+                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+                Assert.AreEqual(2, dsfDropboxFileListActivity.Files.Count);
+                Assert.AreEqual("Test_PathLower", dsfDropboxFileListActivity.Files[0]);
+            }
+         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
+        public void DsfDropboxFileListActivity_TestExecuteTool_IsFoldersSelected_IsTrue_ExpertSuccess()
+        {
+            //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockListFolderResult = new Mock<IListFolderResult>();
+
+            var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
+
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object))
+            {
+                var metadata = new DataNode { IsDeleted = true, IsFile = true, IsFolder = true, PathLower = "Test_PathLower" };
+
+                var list = new List<IDataNode>();
+                list.Add(metadata);
+                
+                mockListFolderResult.Setup(o => o.Entries).Returns(list);
+                dsfDropboxFileListActivity.MockSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+                dsfDropboxFileListActivity.MockSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(mockListFolderResult.Object));
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.ToPath = "TestToPath";
+                dsfDropboxFileListActivity.SelectedSource = new DropBoxSource();
+                dsfDropboxFileListActivity.IncludeDeleted = false;
+                dsfDropboxFileListActivity.IsFoldersSelected = true;
+
+                dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+                //--------------------------Assert-----------------------------
+                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+                Assert.AreEqual(2, dsfDropboxFileListActivity.Files.Count);
+                Assert.AreEqual("Test_PathLower", dsfDropboxFileListActivity.Files[0]);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfDropboxFileListActivity))]
+        public void DsfDropboxFileListActivity_TestExecuteTool_IsAllTrue_ExpertSuccess()
+        {
+            //--------------------------Arrange----------------------------
+            var mockDropboxClient = new Mock<IDropboxClient>();
+            var mockDropboxClientFactory = new Mock<IDropboxClientFactory>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockListFolderResult = new Mock<IListFolderResult>();;
+
+            var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
+
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockExecutionEnvironment.Setup(o => o.Eval(It.IsAny<string>(), It.IsAny<int>())).Returns(warewolfAtomResult);
+            mockDSFDataObject.Setup(o => o.Environment).Returns(mockExecutionEnvironment.Object);
+
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object))
+            {
+                var metadata = new DataNode { IsDeleted = true, IsFile = true, IsFolder = true, PathLower = "Test_PathLower" };
+                var list = new List<IDataNode>();
+
+                list.Add(metadata);
+
+                mockListFolderResult.Setup(o => o.Entries).Returns(list);
+                dsfDropboxFileListActivity.MockSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+                dsfDropboxFileListActivity.MockSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(mockListFolderResult.Object));
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.ToPath = "TestToPath";
+                dsfDropboxFileListActivity.SelectedSource = new DropBoxSource();
+                dsfDropboxFileListActivity.IncludeDeleted = true;
+                dsfDropboxFileListActivity.IsFoldersSelected = true;
+                dsfDropboxFileListActivity.IsFilesAndFoldersSelected = true;
+
+                dsfDropboxFileListActivity.TestExecuteTool(mockDSFDataObject.Object, 0);
+                //--------------------------Assert-----------------------------
+                mockDSFDataObject.Verify(o => o.Environment.AddError(It.IsAny<string>()), Times.Never);
+                Assert.AreEqual(5, dsfDropboxFileListActivity.Files.Count);
+                Assert.AreEqual("Test_PathLower", dsfDropboxFileListActivity.Files[0]);
+            }
+        }
+
+        class TestMetadata : Metadata
+        {
+            public TestMetadata(string name, string pathLower = null, string pathDisplay = null, string parentSharedFolderId = null)
+                : base(name, pathLower, pathDisplay, parentSharedFolderId)
+            {
+                
             }
         }
 
