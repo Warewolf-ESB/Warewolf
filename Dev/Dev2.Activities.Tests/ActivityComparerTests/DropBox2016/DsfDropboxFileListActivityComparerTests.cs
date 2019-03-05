@@ -1223,6 +1223,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 })
                 {
                     //--------------------------Act--------------------------------
+                    dsfDropboxFileListActivity.TestSetupDropboxClient("");
+
                     var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionary);
                     //--------------------------Assert-----------------------------
                     Assert.AreEqual(1, listPerformExecution.Count);
@@ -1311,6 +1313,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
                 })
                 {
                     //--------------------------Act--------------------------------
+                    dsfDropboxFileListActivity.TestSetupDropboxClient("");
                     var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionery);
                     //--------------------------Assert-----------------------------
                     Assert.AreEqual(1, listPerformExecution.Count);
