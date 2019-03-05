@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,27 +21,34 @@ namespace Dev2.Core.Tests.Network
     {
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenInvalidResourceModel_DoesNotThrow()
         {
             const string xmlData = "";
+            IContextualResourceModel resourceModel = null;
 
-            var result = WebServer.GetWorkflowUri(null, xmlData, UrlType.API);
+            var result = resourceModel.GetWorkflowUri(xmlData, UrlType.API);
 
             Assert.IsNull(result);
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenInvalidEnvironment_DoesNotThrow()
         {
             const string xmlData = "";
             var mockResourceModel = new Mock<IContextualResourceModel>();
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.API);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.API);
 
             Assert.IsNull(result);
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenDisconnectedEnvironment_DoesNotThrow()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -42,12 +59,14 @@ namespace Dev2.Core.Tests.Network
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(o => o.Environment).Returns(mockServer.Object);
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.API);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.API);
 
             Assert.IsNull(result);
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenAPI_UrlType()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -63,12 +82,14 @@ namespace Dev2.Core.Tests.Network
             mockResourceModel.Setup(o => o.Environment).Returns(mockServer.Object);
             mockResourceModel.Setup(o => o.Category).Returns("some category");
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.API);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.API);
 
             Assert.AreEqual("http://somehost:1234/secure/some category.api", result.ToString());
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenAPI_UrlType_CategoryDefaultsToResourceName()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -84,12 +105,14 @@ namespace Dev2.Core.Tests.Network
             mockResourceModel.Setup(o => o.Environment).Returns(mockServer.Object);
             mockResourceModel.Setup(o => o.ResourceName).Returns("some resource name");
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.API);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.API);
 
             Assert.AreEqual("http://somehost:1234/secure/some resource name.api", result.ToString());
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenXml_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
@@ -108,12 +131,14 @@ namespace Dev2.Core.Tests.Network
             mockResourceModel.Setup(o => o.ResourceName).Returns("some resource name");
             mockResourceModel.Setup(o => o.Category).Returns("some category");
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.Xml);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.Xml);
 
             Assert.AreEqual("http://somehost:1234/secure/some category.xml?<xmltag></xmltag>&wid=1c52f5da-2c9d-4320-911e-8fa2d2b1fd62", result.ToString());
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenJson_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
@@ -132,12 +157,14 @@ namespace Dev2.Core.Tests.Network
             mockResourceModel.Setup(o => o.ResourceName).Returns("some resource name");
             mockResourceModel.Setup(o => o.Category).Returns("some category");
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.Json);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.Json);
 
             Assert.AreEqual("http://somehost:1234/secure/some category.json?<xmltag></xmltag>&wid=1c52f5da-2c9d-4320-911e-8fa2d2b1fd62", result.ToString());
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WebServer))]
         public void WebServer_GetWorkflowUri_GivenTests_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
@@ -156,7 +183,7 @@ namespace Dev2.Core.Tests.Network
             mockResourceModel.Setup(o => o.ResourceName).Returns("some resource name");
             mockResourceModel.Setup(o => o.Category).Returns("some category");
 
-            var result = WebServer.GetWorkflowUri(mockResourceModel.Object, xmlData, UrlType.Tests);
+            var result = mockResourceModel.Object.GetWorkflowUri(xmlData, UrlType.Tests);
 
             Assert.AreEqual("http://somehost:1234/secure/some category.tests", result.ToString());
         }
