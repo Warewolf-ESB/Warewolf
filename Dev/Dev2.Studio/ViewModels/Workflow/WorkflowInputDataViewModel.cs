@@ -505,7 +505,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
             JsonData = dataListString;
-            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
+            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
             try
             {
                 if (xml.Descendants().Count() == 1)

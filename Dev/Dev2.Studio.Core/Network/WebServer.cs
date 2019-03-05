@@ -143,6 +143,7 @@ namespace Dev2.Studio.Core.Network
                     relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
                 }
             }
+
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out Uri url);
             return url;
         }
