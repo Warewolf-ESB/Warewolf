@@ -54,6 +54,6 @@ namespace Dev2.Activities.DropBox2016.Result
             _listFolderResult = new DropBoxListFolderResultWrapper(listFolderResult);
         }
 
-        public virtual IListFolderResult GetListFolderResulResult() => _listFolderResult;
+        public virtual IListFolderResult GetListFolderResult() => _listFolderResult;
     }
 }
