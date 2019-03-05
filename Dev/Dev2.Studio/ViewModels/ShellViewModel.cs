@@ -1074,7 +1074,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void RunAllTests(string ResourcePath, Guid resourceId)
+        public void RunAllTests(string ResourcePath, Guid resourceId, IExternalProcessExecutor ProcessExecutor)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
@@ -1088,7 +1088,7 @@ namespace Dev2.Studio.ViewModels
                 var resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
                 if (resourcePath != null)
                 {
-                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath);
+                    _worksurfaceContextManager.RunAllTestsForFolder(resourcePath, ProcessExecutor);
                 }
             }
         }
@@ -1999,5 +1999,10 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
+
+        public void RunAllTests(string ResourcePath, Guid resourceId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
