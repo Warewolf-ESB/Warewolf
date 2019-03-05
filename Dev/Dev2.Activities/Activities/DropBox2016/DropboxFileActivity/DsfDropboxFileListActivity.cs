@@ -96,7 +96,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
-                var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
+                var listFolderResult = dropboxSuccessResult.GetListFolderResult();
                 var metadatas = listFolderResult.Entries;
                 if (IncludeDeleted)
                 {
