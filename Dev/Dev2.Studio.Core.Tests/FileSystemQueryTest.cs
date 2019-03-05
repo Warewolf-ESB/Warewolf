@@ -616,9 +616,9 @@ namespace Dev2.Core.Tests
         public void FileSystemQuery_ShareCollection()
         {
             //------------Execute Test---------------------------
-            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc\");
+            var shareCollection = new ShareCollection(@"\\localhost\");
             //------------Assert Results-------------------------
-            Assert.AreEqual(17, shareCollection.Count);
+            Assert.AreEqual(shareCollection.Count > 0, "Cannot get Windows file shares.");
         }
 
         static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
