@@ -1313,29 +1313,6 @@ namespace Warewolf.Storage.Tests
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]
-        public void ExecutionEnvironment_BuildIndexMap_GivenContainer_ShouldBuildMapForChildObj()
-        {
-            var _environment = new ExecutionEnvironment();
-            _environment.AssignJson(new AssignValue("[[@Person.Child().Name]]", "Bob"), 0);
-
-            // TODO: refactor BuildIndexMap into a helper class that we can test separately
-            var privateObj = new PrivateObject(_environment);
-            var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
-            var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
-            var obj = new JArray("[[@Person.Child().Name]]");
-            if (jsonIdentifierExpression == null)
-            {
-                return;
-            }
-
-            var mapItems = new List<string>();
-            object[] args = { jsonIdentifierExpression.Item, "", mapItems, obj };
-            privateObj.Invoke("BuildIndexMap", args);
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(ExecutionEnvironment))]
         public void ExecutionEnvironment_EvalDelete_Should_Clear_RecordSet()
         {
             var _environment = new ExecutionEnvironment();
