@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenInvalidResourceModel_DoesNotThrow()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenInvalidResourceModel_DoesNotThrow()
         {
             const string xmlData = "";
             IContextualResourceModel resourceModel = null;
@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenInvalidEnvironment_DoesNotThrow()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenInvalidEnvironment_DoesNotThrow()
         {
             const string xmlData = "";
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenDisconnectedEnvironment_DoesNotThrow()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenDisconnectedEnvironment_DoesNotThrow()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
             var mockServer = new Mock<IServer>();
@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenAPI_UrlType()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenAPI_UrlType()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(o => o.WebServerUri).Returns(new Uri("http://somehost:1234/"));
@@ -90,7 +90,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenAPI_UrlType_CategoryDefaultsToResourceName()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenAPI_UrlType_CategoryDefaultsToResourceName()
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(o => o.WebServerUri).Returns(new Uri("http://somehost:1234/"));
@@ -113,7 +113,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenXml_UrlType_CategoryDefaultsToResourceName()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenXml_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -139,7 +139,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenJson_UrlType_CategoryDefaultsToResourceName()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenJson_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -165,7 +165,7 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WebServer))]
-        public void WebServer_GetWorkflowUri_GivenTests_UrlType_CategoryDefaultsToResourceName()
+        public void ResourceModelWebserverUtil_GetWorkflowUri_GivenTests_UrlType_CategoryDefaultsToResourceName()
         {
             const string workspaceId = "1c52f5da-2c9d-4320-911e-8fa2d2b1fd62";
             var mockConnection = new Mock<IEnvironmentConnection>();
