@@ -10,7 +10,6 @@ Scenario: Studio Large Deploy UI Load Test
 	And I Refresh Explorer
 	Then the timer duration is between "10" and "90" seconds
 	And I Click Deploy Ribbon Button
-	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost checkbox from the source tab
 	Given I start the timer
 	Given I start the timer
