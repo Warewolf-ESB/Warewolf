@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -335,7 +336,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendViewInBrowserRequest(string payload)
         {
-            WebServer.OpenInBrowser(_resourceModel, payload);
+            var url = _resourceModel.GetWorkflowUri(payload, UrlType.Xml);
+            if (url != null)
+            {
+                var parameter = "\"" + url + "\"";
+                Process.Start(parameter);
+            }
         }
 
         internal void SendFinishedMessage()

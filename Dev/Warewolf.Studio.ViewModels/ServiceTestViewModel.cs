@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
-            RunAllTestsUrl = WebServer.GetWorkflowUri(resourceModel, "", UrlType.Tests)?.ToString();
+            RunAllTestsUrl = resourceModel.GetWorkflowUri("", UrlType.Tests)?.ToString();
 
             UpdateHelpDescriptor(Resources.Languages.HelpText.ServiceTestGenericHelpText);
 
@@ -2138,7 +2138,7 @@ namespace Warewolf.Studio.ViewModels
 
         string GetWebRunUrlForTest(IServiceTestModel serviceTestModel)
         {
-            var runSelectedTestUrl = WebServer.GetWorkflowUri(ResourceModel, "", UrlType.Tests) + "/" + serviceTestModel.TestName;
+            var runSelectedTestUrl = ResourceModel.GetWorkflowUri("", UrlType.Tests) + "/" + serviceTestModel.TestName;
             if (serviceTestModel.AuthenticationType == AuthenticationType.Public)
             {
                 runSelectedTestUrl = runSelectedTestUrl.Replace("/secure/", "/public/");
