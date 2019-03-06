@@ -289,8 +289,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                                                    TrackEventDebugOutput.ViewInBrowser);
                 }
                 DoSaveActions();
-                string payload = BuildWebPayLoad();
-                SendViewInBrowserRequest(payload);
+                string payload = BuildInputDataList();
+                OpenUriInBrowser(payload);
                 SendFinishedMessage();
                 RequestClose();
             }
@@ -306,8 +306,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!IsInError)
             {              
                 DoSaveActions();
-                var payload = BuildWebPayLoad();
-                SendViewInBrowserRequest(payload);
+                var inputDataList = BuildInputDataList();
+                OpenUriInBrowser(inputDataList);
                 SendFinishedMessage();
                 RequestClose();
             }
@@ -317,7 +317,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string BuildWebPayLoad()
+        public string BuildInputDataList()
         {
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
@@ -334,12 +334,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        protected virtual void SendViewInBrowserRequest(string payload)
+        protected virtual void OpenUriInBrowser(string workflowInputDataList)
         {
-            var url = _resourceModel.GetWorkflowUri(payload, UrlType.Xml);
-            if (url != null)
+            var uri = _resourceModel.GetWorkflowUri(workflowInputDataList, UrlType.Json);
+            if (uri != null)
             {
-                var parameter = "\"" + url + "\"";
+                var url = uri.ToString();
+                var parameter = "\"" + url.Replace("\"", "\\\"") + "\"";
                 Process.Start(parameter);
             }
         }
