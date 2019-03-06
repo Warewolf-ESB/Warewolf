@@ -5,7 +5,7 @@ using System.Threading;
 using TechTalk.SpecFlow;
 using Microsoft.Win32;
 
-namespace Dev2.Activities.Specs
+namespace Warewolf.Tools.Specs
 {
     [Binding]
     class RegionalSettingsSteps
