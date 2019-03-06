@@ -40,7 +40,7 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-            
+
             asyncWorker.Start(() =>
             {
                 var controller = new CommunicationController
@@ -56,7 +56,7 @@ namespace Dev2.Studio.Core.Network
             }, () => { });
         }
 
-        public static void SendErrorOpenInBrowser(IEnumerable<string> exceptionList, string description, string url)
+        public static void SubmitErrorFormUsingWebBrowser(IEnumerable<string> exceptionList, string description, string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             const string PayloadFormat = "\"header\":{0},\"description\":{1},\"type\":3,\"category\":27";
@@ -150,10 +150,11 @@ namespace Dev2.Studio.Core.Network
 
         private static string GetUriExtension(UrlType urlType)
         {
-            var urlExtension = "xml";
+            string urlExtension;
             switch (urlType)
             {
                 case UrlType.Xml:
+                    urlExtension = "xml";
                     break;
 
                 case UrlType.Json:

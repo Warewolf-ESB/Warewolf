@@ -1115,7 +1115,7 @@ namespace Dev2.Core.Tests.Workflows
             SendExecuteRequestPayload = payload;
         }
 
-        protected override void SendViewInBrowserRequest(string payload)
+        protected override void OpenUriInBrowser(string payload)
         {
             SendViewInBrowserRequestHitCount++;
             SendViewInBrowserRequestPayload = payload;
