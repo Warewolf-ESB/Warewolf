@@ -13,27 +13,40 @@ namespace Dev2.Activities.Specs
         [Given(@"The system short date format is ""(.*)"" and the long time format is ""(.*)""")]
         public void GivenTheSystemShortDateFormatIs(string p0, string p1)
         {
-            var serverStartedFilePath = GetRegistryEntry(@"SYSTEM\CurrentControlSet\Services\Warewolf Server", "ImagePath").Replace("Warewolf Server.exe", "ServerStarted");
-            StopServerService();
-            ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_USERS\.DEFAULT\Control Panel\International", "sShortDate", p0);
-            ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International", "sShortDate", p0);
-            ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_USERS\.DEFAULT\Control Panel\International", "sTimeFormat", p1);
-            ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International", "sTimeFormat", p1);
-            StartServerService(serverStartedFilePath);
+            var alreadySet = true;
+            if (GetRegistryEntry(Registry.Users, @".DEFAULT\Control Panel\International", "sShortDate") != p0)
+            {
+                alreadySet = false;
+            }
+            if (GetRegistryEntry(Registry.CurrentUser, @"Control Panel\International", "sShortDate") != p0)
+            {
+                alreadySet = false;
+            }
+            if (GetRegistryEntry(Registry.Users, @".DEFAULT\Control Panel\International", "sTimeFormat") != p1)
+            {
+                alreadySet = false;
+            }
+            if (GetRegistryEntry(Registry.CurrentUser, @"Control Panel\International", "sTimeFormat") != p1)
+            {
+                alreadySet = false;
+            }
+            if (!alreadySet)
+            {
+                var serverStartedFilePath = GetRegistryEntry(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Warewolf Server", "ImagePath").Replace("Warewolf Server.exe", "ServerStarted");
+                StopServerService();
+                ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_USERS\.DEFAULT\Control Panel\International", "sShortDate", p0);
+                ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International", "sShortDate", p0);
+                ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_USERS\.DEFAULT\Control Panel\International", "sTimeFormat", p1);
+                ChangeRegistryEntry(@"Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER\Control Panel\International", "sTimeFormat", p1);
+                StartServerService(serverStartedFilePath);
+            }
         }
 
-        string GetRegistryEntry(string path, string name)
+        string GetRegistryEntry(RegistryKey root, string path, string name)
         {
-            try
+            using (RegistryKey key = root.OpenSubKey(path))
             {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(path))
-                {
-                    return key.GetValue(name) as string;
-                }
-            }
-            catch (Exception ex) 
-            {
-                throw new Exception("Cannot get warewolf server service details from the registry.");
+                return key.GetValue(name) as string;
             }
         }
 
