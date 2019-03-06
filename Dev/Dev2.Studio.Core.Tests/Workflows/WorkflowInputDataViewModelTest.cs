@@ -663,9 +663,9 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel_GetPreviousRow")]
-        public void SetWorkflowInputData_WithObject_ShouldAddToPayload()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_SetXmlData_WithObjectAndRecordSet()
         {
             //------------Setup for test--------------------------
             const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec><Person Description="""" IsEditable=""True"" ColumnIODirection=""Input"" IsJson=""True""><Name></Name><Age></Age></Person></DataList>";
@@ -680,7 +680,7 @@ namespace Dev2.Core.Tests.Workflows
             var personObject = new ComplexObjectItemModel("Person", null, enDev2ColumnArgumentDirection.Input);
             personObject.Children.Add(new ComplexObjectItemModel("Age", personObject, enDev2ColumnArgumentDirection.Input));
             personObject.Children.Add(new ComplexObjectItemModel("Name", personObject, enDev2ColumnArgumentDirection.Input));
-            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { personObject};
+            var complexObjectItemModels = new ObservableCollection<IComplexObjectItemModel> { personObject };
             mockDataListViewModel.Setup(model => model.ComplexObjectCollection).Returns(complexObjectItemModels);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             var serviceDebugInfoModel = new ServiceDebugInfoModel
@@ -693,15 +693,17 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
 
-            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
-            workflowInputDataViewModel.LoadWorkflowInputs();
-            var inputs = workflowInputDataViewModel.WorkflowInputs;
-            Assert.AreEqual(2, inputs.Count);
-            inputs[0].Value = "bob";
-            //------------Execute Test---------------------------
-            workflowInputDataViewModel.SetXmlData();
-            //------------Assert Results-------------------------
-            Assert.AreEqual("<DataList><recjson:Array=\"true\"xmlns:json=\"http://james.newtonking.com/projects/json\"><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>",workflowInputDataViewModel.XmlData.Replace(Environment.NewLine,"").Replace(" ",""));
+            using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID))
+            {
+                workflowInputDataViewModel.LoadWorkflowInputs();
+                var inputs = workflowInputDataViewModel.WorkflowInputs;
+                Assert.AreEqual(2, inputs.Count);
+                inputs[0].Value = "bob";
+                //------------Execute Test---------------------------
+                workflowInputDataViewModel.SetXmlData();
+                //------------Assert Results-------------------------
+                Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+            }
         }
 
         [TestMethod]
