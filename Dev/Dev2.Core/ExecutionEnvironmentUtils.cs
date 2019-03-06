@@ -184,7 +184,7 @@ namespace Dev2
                 {
                     var children = xDoc.DocumentElement.ChildNodes;
                     var dataListTO = new DataListTO(dataList, true);
-                    TryConvert(dataObject, children, dataListTO.Inputs, update);
+                    TryLoadXmlIntoEnvironment(dataObject, children, dataListTO.Inputs, update);
                 }
             }
         }
@@ -316,11 +316,11 @@ namespace Dev2
             TryUpdateEnviromentWithMappings(dataObject, rawPayload, outputs);
         }
 
-        static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
+        static void TryLoadXmlIntoEnvironment(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
         {
             try
             {
-                Convert(dataObject, children, inputDefs, update, level);
+                LoadXmlIntoEnvironment(dataObject, children, inputDefs, update, level);
             }
             finally
             {
@@ -328,7 +328,7 @@ namespace Dev2
             }
         }
 
-        static void Convert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level)
+        static void LoadXmlIntoEnvironment(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level)
         {
             foreach (XmlNode c in children)
             {
@@ -344,17 +344,17 @@ namespace Dev2
                     }
                     else
                     {
-                       ContinueConverting(dataObject, inputDefs, update, level, c);
+                       ContinueLoadingXmlIntoEnvironment(dataObject, inputDefs, update, level, c);
                     }
                 }
             }
         }
 
-        static void ContinueConverting(IDSFDataObject dataObject, List<string> inputDefs, int update, int level, XmlNode c)
+        static void ContinueLoadingXmlIntoEnvironment(IDSFDataObject dataObject, List<string> inputDefs, int update, int level, XmlNode c)
         {
             if (level == 0)
             {
-                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
+                TryLoadXmlIntoEnvironment(dataObject, c.ChildNodes, inputDefs, update, ++level);
             }
         }
 

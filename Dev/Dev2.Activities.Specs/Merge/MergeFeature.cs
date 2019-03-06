@@ -23,6 +23,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Test.Agent;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
+using Dev2.Activities.DropBox2016;
 
 namespace Dev2.Activities.Specs.Merge
 {
@@ -423,6 +424,7 @@ namespace Dev2.Activities.Specs.Merge
         {
             var dev2ActivityIOMapping = typeof(IDev2ActivityIOMapping);
             Type[] excludedTypes = { typeof(DsfBaseActivity),
+                                     typeof(DsfDropBoxBaseActivity),
                                      typeof(DsfActivityAbstract<>),
                                      typeof(DsfMethodBasedActivity),
                                      typeof(DsfWebActivityBase),
