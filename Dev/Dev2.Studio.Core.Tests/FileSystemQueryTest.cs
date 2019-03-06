@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Threading;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Intellisense.Helper;
@@ -618,37 +619,20 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            try
+            //------------Execute Test---------------------------
+            var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
+            if (shareCollection.Count <= 0)
             {
-                //------------Execute Test---------------------------
-                var shareCollection = new ShareCollection(@"\\localhost\");
-                if (shareCollection.Count <= 0)
-                {
-                    shareFolder();
-                    shareCollection = new ShareCollection(@"\\localhost\");
-                }
-                //------------Assert Results-------------------------
-                Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
+                AuthenticateForSharedFolder();
+                Thread.Sleep(1000);
+                shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             }
-            finally
-            {
-                shareFolder(true);
-            }
+            //------------Assert Results-------------------------
+            Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
         }
 
-        static void shareFolder(bool deleteShare = false)
+        static void AuthenticateForSharedFolder()
         {
-            const string dirToUse = "C:\\temp";
-            if (!deleteShare)
-            {
-                if (Directory.Exists(dirToUse))
-                {
-                    Directory.Delete(dirToUse, true);
-                }
-                Directory.CreateDirectory(dirToUse);
-            }
-            var folderName = "Warewolf_Unit_Test_Share";
-            var targetDir = dirToUse;
             var process = new Process();
 
             process.StartInfo = new ProcessStartInfo()
@@ -660,13 +644,9 @@ namespace Dev2.Core.Tests
                 CreateNoWindow = true,
                 ErrorDialog = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
-                FileName = "cmd.exe",
-                Arguments = $"/C net share {folderName}=\"{targetDir}\" /Grant:Everyone,READ"
+                FileName = "net.exe",
+                Arguments = @"use \\rsaklfsvrpdc.dev2.local\apps /USER:dev2\IntegrationTester /PERSISTENT:YES I73573r0"
             };
-            if (deleteShare)
-            {
-                process.StartInfo.Arguments = process.StartInfo.Arguments.Replace($"{folderName}=\"{targetDir}\" /Grant:Everyone,READ", $"\"{folderName}\" /delete");
-            }
 
             process.Start();
             process.WaitForExit();
