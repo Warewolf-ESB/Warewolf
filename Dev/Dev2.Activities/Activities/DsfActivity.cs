@@ -288,7 +288,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DsfActivity;
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var allErrors = new ErrorResultTO();
 
