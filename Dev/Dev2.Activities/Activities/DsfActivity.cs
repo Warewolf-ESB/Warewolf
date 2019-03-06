@@ -435,7 +435,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
 
         }
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         public List<IDebugItem> GetDebugInputs(IExecutionEnvironment env, IDev2LanguageParser parser, int update)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var results = new List<IDebugItem>();
             if (Inputs != null && Inputs.Count > 0)
