@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Dev2.Activities.Utils
 {
-    public class ObservableAwareNameValue : NameValue
+    public class ObservableAwareNameValue : ObservableNameValue
     {
         readonly ObservableCollection<INameValue> _sourceCollection;
         readonly Action<string> _update;

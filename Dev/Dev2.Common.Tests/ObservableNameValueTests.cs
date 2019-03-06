@@ -15,7 +15,7 @@ namespace Dev2.Common.Tests
         {
             var name = "testName";
             var value = "testValue";
-            var result = new NameValue() { Name = name , Value = value } as INameValue;
+            var result = new ObservableNameValue() { Name = name , Value = value } as INameValue;
             Assert.IsNotNull(result);
             Assert.AreEqual("testName", result.Name);
             Assert.AreEqual("testValue", result.Value);
@@ -26,7 +26,7 @@ namespace Dev2.Common.Tests
         [TestCategory(" ObservableNameValue")]
         public void ObservableNameValue_Constructor_Values()
         {
-            var constructor = new NameValue("testName", "testValue");
+            var constructor = new ObservableNameValue("testName", "testValue");
             Assert.IsNotNull(constructor);
             Assert.AreEqual("testName", constructor.Name);
             Assert.AreEqual("testValue", constructor.Value);
@@ -37,7 +37,7 @@ namespace Dev2.Common.Tests
         [TestCategory(" ObservableNameValue")]
         public void ObservableNameValue_OnPropertyChanged()
         {
-            var constructor = new NameValue();
+            var constructor = new ObservableNameValue();
             var receivedEvents = new List<string>();
 
             constructor.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
