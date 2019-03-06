@@ -36,7 +36,7 @@ namespace Warewolf.Tools.Specs
             }
         }
 
-        string GetRegistryEntry(RegistryKey root, string path, string name)
+        public static string GetRegistryEntry(RegistryKey root, string path, string name)
         {
             using (RegistryKey key = root.OpenSubKey(path))
             {
@@ -44,9 +44,9 @@ namespace Warewolf.Tools.Specs
             }
         }
 
-        static void ChangeRegistryEntry(string entryPath, string entryName, string newValue) => ExecutePowershellCommand($"Set-ItemProperty -Path '{entryPath}' -Name {entryName} -Value '{newValue}'");
+        public static void ChangeRegistryEntry(string entryPath, string entryName, string newValue) => ExecutePowershellCommand($"Set-ItemProperty -Path '{entryPath}' -Name {entryName} -Value '{newValue}'");
 
-        static void ExecutePowershellCommand(string command)
+        public static void ExecutePowershellCommand(string command)
         {
             var process = new Process();
 
