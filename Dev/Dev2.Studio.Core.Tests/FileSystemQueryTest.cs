@@ -10,7 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Management;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Intellisense.Helper;
@@ -615,10 +618,58 @@ namespace Dev2.Core.Tests
         [TestCategory("FileSystemQuery_ShareCollection")]
         public void FileSystemQuery_ShareCollection()
         {
-            //------------Execute Test---------------------------
-            var shareCollection = new ShareCollection(@"\\localhost\");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(shareCollection.Count > 0, "Cannot get Windows file shares.");
+            try
+            {
+                //------------Execute Test---------------------------
+                var shareCollection = new ShareCollection(@"\\localhost\");
+                if (shareCollection.Count <= 0)
+                {
+                    shareFolder();
+                    shareCollection = new ShareCollection(@"\\localhost\");
+                }
+                //------------Assert Results-------------------------
+                Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
+            }
+            finally
+            {
+                shareFolder(true);
+            }
+        }
+
+        static void shareFolder(bool deleteShare = false)
+        {
+            const string dirToUse = "C:\\temp";
+            if (!deleteShare)
+            {
+                if (Directory.Exists(dirToUse))
+                {
+                    Directory.Delete(dirToUse, true);
+                }
+                Directory.CreateDirectory(dirToUse);
+            }
+            var folderName = "Warewolf_Unit_Test_Share";
+            var targetDir = dirToUse;
+            var process = new Process();
+
+            process.StartInfo = new ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                ErrorDialog = false,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = "cmd.exe",
+                Arguments = $"/C net share {folderName}=\"{targetDir}\" /Grant:Everyone,READ"
+            };
+            if (deleteShare)
+            {
+                process.StartInfo.Arguments = process.StartInfo.Arguments.Replace($"{folderName}=\"{targetDir}\" /Grant:Everyone,READ", $"\"{folderName}\" /delete");
+            }
+
+            process.Start();
+            process.WaitForExit();
         }
 
         static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
