@@ -7,7 +7,7 @@ import { MatDialogModule, MatPaginatorModule, MatSortModule} from '@angular/mate
 import { BrowserModule, By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../core/custommaterial.module';
 import { LogEntryComponent } from '../logentry/logentry.component';
 import { ExecutionLoggingComponent } from './executionlogging.component';
@@ -33,7 +33,8 @@ describe('ExecutionLoggingComponent', () => {
         HttpClientModule,
         BrowserModule,
         FormsModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ReactiveFormsModule
       ],
       providers:[ExecutionLoggingService],
       schemas: [NO_ERRORS_SCHEMA]
