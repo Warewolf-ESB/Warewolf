@@ -13,6 +13,7 @@ Scenario Outline: Copy file at location
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
 	And the result variable "<resultVar>" will be "<result>"
@@ -62,6 +63,7 @@ Scenario Outline: Copy file at location with overwrite disabled
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
+	And I authenticate for share at "\\RSAKLFSVRPDC\FileSystemShareTestingSite" as user "dev2\IntegrationTester" with password "I73573r0"
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
 	And the result variable "<resultVar>" will be "<result>"
