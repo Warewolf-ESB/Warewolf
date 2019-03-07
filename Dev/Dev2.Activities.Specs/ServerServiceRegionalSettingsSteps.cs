@@ -5,7 +5,6 @@ using System.Threading;
 using TechTalk.SpecFlow;
 using Microsoft.Win32;
 using Warewolf.Tools.Specs;
-using System.Globalization;
 
 namespace Dev2.Activities.Specs
 {
@@ -15,10 +14,6 @@ namespace Dev2.Activities.Specs
         [Given(@"The system short date format is ""(.*)"" and the long time format is ""(.*)""")]
         public void GivenTheSystemShortDateFormatIs(string p0, string p1)
         {
-            var dtfi = CultureInfo.InvariantCulture;
-            dtfi.DateTimeFormat.ShortDatePattern = p0;
-            dtfi.DateTimeFormat.LongTimePattern = p1;
-            Thread.CurrentThread.CurrentCulture = dtfi;
             var alreadySet = true;
             if (RegionalSettingsSteps.GetRegistryEntry(Registry.Users, @".DEFAULT\Control Panel\International", "sShortDate") != p0)
             {

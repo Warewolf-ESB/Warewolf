@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using TechTalk.SpecFlow;
 using Microsoft.Win32;
-using System.Globalization;
-using System.Threading;
 
 namespace Warewolf.Tools.Specs
 {
@@ -13,10 +11,6 @@ namespace Warewolf.Tools.Specs
         public void GivenTheSystemShortDateFormatIs(string p0, string p1)
         {
             var alreadySet = true;
-            var dtfi = CultureInfo.InvariantCulture;
-            dtfi.DateTimeFormat.ShortDatePattern = p0;
-            dtfi.DateTimeFormat.LongTimePattern = p1;
-            Thread.CurrentThread.CurrentCulture = dtfi;
             if (GetRegistryEntry(Registry.Users, @".DEFAULT\Control Panel\International", "sShortDate") != p0)
             {
                 alreadySet = false;
