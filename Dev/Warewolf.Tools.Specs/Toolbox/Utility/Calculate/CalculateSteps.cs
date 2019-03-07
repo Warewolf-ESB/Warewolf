@@ -175,7 +175,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
             else
             {
-                actualValue.Should().Be(expectedResult);
+                if (expectedResult.Contains(" or "))
+                {
+                    var splitter = " or ";
+                    var firstAlternative = expectedResult.Substring(0, expectedResult.IndexOf(splitter));
+                    var secondAlternative = expectedResult.Substring(expectedResult.IndexOf(splitter) + splitter.Length, expectedResult.Length-(expectedResult.IndexOf(splitter) + splitter.Length));
+                    Assert.IsTrue(actualValue == firstAlternative || actualValue == secondAlternative, $"{actualValue} does not equal either {firstAlternative} or {secondAlternative}");
+                }
+                else
+                {
+                    actualValue.Should().Be(expectedResult);
+                }
             }
         }
 
