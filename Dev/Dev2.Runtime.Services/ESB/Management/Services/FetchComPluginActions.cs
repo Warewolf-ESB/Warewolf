@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         TypeName = x.TypeName
                     } as IServiceInput).ToList(),
                     Method = a.Name,
-                    Variables = a.Parameters.Select(x => new ObservableNameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
+                    Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                 } as IPluginAction).ToList();
                 return serializer.SerializeToBuilder(new ExecuteMessage
                 {
