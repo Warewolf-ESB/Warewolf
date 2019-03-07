@@ -177,22 +177,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if (obj is DsfDropBoxDownloadActivity)
             {
-                return false;
+                return Equals((DsfDropBoxDownloadActivity) obj);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfDropBoxDownloadActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()

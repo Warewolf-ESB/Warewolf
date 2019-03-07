@@ -15,7 +15,7 @@ using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
-    public class DsfDropBoxDownloadActivityMock : DsfDropBoxDownloadActivity
+    public class TestDsfDropBoxDownloadActivity : DsfDropBoxDownloadActivity
     {
 
         
