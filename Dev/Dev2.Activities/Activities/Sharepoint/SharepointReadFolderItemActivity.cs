@@ -188,7 +188,9 @@ namespace Dev2.Activities.Sharepoint
             return outputs;
         }
 
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         private void ExecuteConcreteAction(IList<OutputTO> outputs, WarewolfListIterator colItr, SharepointSource sharepointSource, WarewolfIterator inputItr)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
         {
             var path = colItr.FetchNextValue(inputItr);
 

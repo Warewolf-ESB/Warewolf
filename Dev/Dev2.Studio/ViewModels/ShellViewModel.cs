@@ -985,7 +985,7 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.Json, false);
+            var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.Json, false);
             if (workflowUri != null)
             {
                 Clipboard.SetText(workflowUri.ToString());
@@ -1001,7 +1001,7 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
+            var workflowUri = contextualResourceModel.GetWorkflowUri("", UrlType.API);
             if (workflowUri != null)
             {
                 BrowserPopupController.ShowPopup(workflowUri.ToString());

@@ -139,6 +139,7 @@
     <Compile Include="ComPluginServiceDefinition.cs" />
     <Compile Include="Container\WarewolfQueue.cs" />
     <Compile Include="Core\ServerSource.cs" />
+    <Compile Include="DataNode.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\Dev2DateTimeParser.cs" />
     <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
