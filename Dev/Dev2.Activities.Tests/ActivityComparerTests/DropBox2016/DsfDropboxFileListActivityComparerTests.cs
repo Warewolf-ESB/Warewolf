@@ -1119,28 +1119,31 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             var mockDownloadResponse = new Mock<IDownloadResponse<FileMetadata>>();
 
-            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
-            {
-                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-                task.Start();
-                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error!")));
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxFailureResult(new Exception("test error!")));
 
-                using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            {
+                SelectedSource = new DropBoxSource(),
+                MockSingleExecutor = mockDropboxSingleExecutor
+            })
+            {
+                var dictionary = new Dictionary<string, string>
                 {
-                    SelectedSource = new DropBoxSource(),
-                    MockSingleExecutor = mockDropboxSingleExecutor
-                })
+                    { "ToPath", @"C:\Users\temp\testToPath\" },
+                    { "FromPath", @"C:\Users\temp" }
+                };
+                //-----------------------Act--------------------------------
+                //-----------------------Assert-----------------------------
+                try
                 {
-                    var dictionary = new Dictionary<string, string>
-                    {
-                        { "ToPath", @"C:\Users\temp\testToPath\" },
-                        { "FromPath", @"C:\Users\temp" }
-                    };
-                    //-----------------------Act--------------------------------
-                    //-----------------------Assert-----------------------------
-                    Assert.ThrowsException<Exception>(() => dsfDropboxFileListActivity.TestPerformExecution(dictionary));
+                    dsfDropboxFileListActivity.TestPerformExecution(dictionary);
+                    Assert.Fail("Expected exception");
+                } catch (Exception e)
+                {
+                    Assert.AreEqual("test error!", e.Message);
                 }
             }
         }
