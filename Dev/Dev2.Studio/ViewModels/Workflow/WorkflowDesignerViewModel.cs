@@ -627,7 +627,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.SetXmlData(true);
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
 
-                var uri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json, true);
+                var uri = _resourceModel.GetWorkflowUri(buildWebPayLoad, UrlType.Json, true);
                 if (uri != null) {
                     _workflowLinkWithWid = uri.ToString();
                     var startIndex = _workflowLinkWithWid.IndexOf("&wid", StringComparison.InvariantCultureIgnoreCase);
