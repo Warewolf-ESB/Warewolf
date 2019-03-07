@@ -232,7 +232,9 @@ namespace Dev2.Activities
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public string GetCorrectSystemInformation(enTypeOfSystemInformationToGather enTypeOfSystemInformation)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch(enTypeOfSystemInformation)
             {

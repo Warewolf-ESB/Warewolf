@@ -143,7 +143,9 @@ namespace Dev2.Activities
         public override string LabelText { get; }
         public bool MockSelected { get; }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public override List<IDebugItemResult> GetDebugItemResult()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (_evalResult.IsWarewolfAtomResult)
             {

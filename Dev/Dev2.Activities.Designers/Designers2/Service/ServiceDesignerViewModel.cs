@@ -615,7 +615,9 @@ namespace Dev2.Activities.Designers2.Service
         public MappingManager MappingManager { get; }
         public ValidationMemoManager ValidationMemoManager { get; }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         string GetIconPath(Common.Interfaces.Core.DynamicServices.enActionType actionType)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch (actionType)
             {
