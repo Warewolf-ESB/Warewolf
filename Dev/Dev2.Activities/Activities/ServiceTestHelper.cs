@@ -21,7 +21,9 @@ namespace Dev2.Activities
 {
     public static class ServiceTestHelper
     {
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (output == null)
             {

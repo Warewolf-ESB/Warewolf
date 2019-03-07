@@ -58,7 +58,9 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             SetMinHeight();
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void SetMinHeight()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             MinHeight = 250;
             var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;

@@ -85,3 +85,6 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/**
 /Dev/Warewolf.Web.UI.Tests/BrowserWebDrivers/Profiles/Firefox/places.sqlite
 
+/Dev/.sonarlint
+/Dev/UpgradeLog.htm
+/Dev/UpgradeLog2.htm
