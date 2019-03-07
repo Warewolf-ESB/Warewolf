@@ -6,7 +6,9 @@ namespace Dev2.Comparer
 {
     internal class PluginConstructorComparer : IEqualityComparer<IPluginConstructor>
     {
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IPluginConstructor x, IPluginConstructor y)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (x == null && y == null)
             {

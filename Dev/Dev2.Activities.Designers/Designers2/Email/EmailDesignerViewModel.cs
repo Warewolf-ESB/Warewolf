@@ -404,7 +404,9 @@ namespace Dev2.Activities.Designers2.Email
             Errors = result.Count == 0 ? null : result;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         IEnumerable<IActionableErrorInfo> ValidateThis()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             foreach(var error in GetRuleSet("EmailSource", GetDatalistString?.Invoke()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
