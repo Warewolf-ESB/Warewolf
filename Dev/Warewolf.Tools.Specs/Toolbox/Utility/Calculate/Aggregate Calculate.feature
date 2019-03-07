@@ -238,7 +238,7 @@ Scenario Outline: Aggregated Calculation Assign by evaluating variables with fun
 	| 25                  | COS([[[[a]]]])                                             | -0.989992496600445                                     |
 	| 26                  | COSH([[z]])                                                | 11013.232920103300                                     |
 	| 27                  | COUNT([[x]],[[y]],[[[[a]]]])                               | 3                                                      |
-	| 29                  | DATE(2000,[[y]],12)                                        | 2/12/2000 12:00:00.000 AM                              |
+	| 29                  | DATE(2000,[[y]],12)                                        | 2/12/2000 12:00:00.000 AM or 2000/02/12 12:00:00.000 AM|
 	| 30                  | DAY([[x]])                                                 | 1                                                      |
 	| 31                  | DAYS360([[x]],[[y]])                                       | 1                                                      |
 	| 32                  | DB([[e]],[[z]],12,12,12)                                   | 4.66024676978963                                       |
@@ -251,9 +251,8 @@ Scenario Outline: Aggregated Calculation Assign by evaluating variables with fun
 	| 39                  | DELTA([[t]],[[x]])                                         | 0                                                      |
 	| 40                  | DOLLARDE([[z]],[[y]])                                      | 10                                                     |
 	| 41                  | DOLLARFR([[x]],[[z]])                                      | 1                                                      |
-	| 42                  | EDATE([[z]],[[[[a]]]])                                     | 4/10/1900 12:00:00.000 AM                              |
-	| 43                  | EOMONTH([[z]],[[[[a]]]])                                   | 4/30/1900 12:00:00.000 AM                              |
-#	| 44                  | ERROR.TYPE(#NUM!)                                          | 6.00                                                   |
+	| 42                  | EDATE([[z]],[[[[a]]]])                                     | 4/10/1900 12:00:00.000 AM or 1900/04/10 12:00:00.000 AM|
+	| 43                  | EOMONTH([[z]],[[[[a]]]])                                   | 4/30/1900 12:00:00.000 AM or 1900/04/30 12:00:00.000 AM|
 	| 45                  | EVEN([[y]])                                                | 2                                                      |
 	| 46                  | EXP([[x]])                                                 | 2.71828182845905                                       |
 	| 47                  | FACT([[z]])                                                | 3628800                                                |
