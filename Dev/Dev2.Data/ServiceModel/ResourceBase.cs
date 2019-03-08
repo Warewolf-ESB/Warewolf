@@ -246,7 +246,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        string GetResourceTypeFromString(string actionTypeStr)
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        static string GetResourceTypeFromString(string actionTypeStr)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (Enum.TryParse(actionTypeStr, out enActionType actionType))
             {
