@@ -1074,6 +1074,11 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+
+        public void RunAllTests(string ResourcePath, Guid resourceId)
+        {
+            RunAllTests(ResourcePath, resourceId, new ExternalProcessExecutor());
+        }
         public void RunAllTests(string ResourcePath, Guid resourceId, IExternalProcessExecutor ProcessExecutor)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
@@ -1999,10 +2004,5 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
-
-        public void RunAllTests(string ResourcePath, Guid resourceId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
