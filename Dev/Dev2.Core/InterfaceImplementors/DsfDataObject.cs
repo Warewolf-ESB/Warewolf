@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Web;
@@ -416,7 +415,7 @@ namespace Dev2.DynamicServices
         }
 
         // TODO: move WorkflowLogger.ShouldLog configuration to Config.ServerSettings? This does not seem to be used
-        public bool IsDebugMode() => (IsDebug || WorkflowLogger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
+        public bool IsDebugMode() => (IsDebug || RemoteInvoke) && !RunWorkflowAsync;
 
         #endregion
 

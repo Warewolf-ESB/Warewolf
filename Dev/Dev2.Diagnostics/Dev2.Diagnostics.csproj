@@ -98,7 +98,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Logging\EnvironmentVariables.cs" />
     <Compile Include="Logging\Dev2Logger.cs" />
-    <Compile Include="Logging\WorkflowLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
