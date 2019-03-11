@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Moq;
-using System.Threading;
 
 namespace Dev2.Common.Tests
 {
@@ -201,7 +200,7 @@ namespace Dev2.Common.Tests
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-            bool shouldThrow = true;
+            var shouldThrow = true;
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => {
                 if (shouldThrow)
