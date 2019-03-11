@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -77,9 +87,6 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        #region Overrides of DsfActivity
-       
-
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
@@ -100,18 +107,15 @@ namespace Dev2.Activities
             }
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-
-
+            tmpErrors.MergeErrors(_errorsTo);
+            
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
 
         }
-
         
         public IResponseManager ResponseManager { get; set; }
-
         
-
         protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
         {
             return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
@@ -146,9 +150,7 @@ namespace Dev2.Activities
             webclient.BaseAddress = address;
             return webclient;
         }
-
-        #endregion
-
+        
         public bool Equals(DsfWebPostActivity other)
         {
             if (ReferenceEquals(null, other))
