@@ -647,7 +647,9 @@ namespace Dev2.Services.Sql
             return isout;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static int GetSizeForType(OracleDbType dbType)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch (dbType)
             {
