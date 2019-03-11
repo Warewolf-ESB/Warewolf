@@ -262,7 +262,6 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 41                  | DOLLARFR([[x]],[[z]])                                      | 1                        |
 	| 42                  | EDATE([[z]],[[[[a]]]])                                     | 4/10/1900 12:00:00.000 AM|
 	| 43                  | EOMONTH([[z]],[[[[a]]]])                                   | 4/30/1900 12:00:00.000 AM|
-#	| 44                  | ERROR.TYPE(#NUM!)                                          | 6.00                     |
 	| 45                  | EVEN([[y]])                                                | 2                        |
 	| 46                  | EXP([[x]])                                                 | 2.71828182845905         |
 	| 47                  | FACT([[z]])                                                | 3628800                  |
@@ -297,7 +296,6 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 77                  | INT([[s]])                                                 | -1                       |
 	| 78                  | INTRATE(2015,2030,1000,1,4)                                | -23.976                  |
 	| 79                  | IPMT(5,12,100,1000,2000,1)                                 | -833.333358764648        |
-	#| 80                  | IRR([[z]],[[rc(1).set]],2)                                 | -1.5                    |
 	| 81                  | isdbnull([[x]])                                            | False                    |
 	| 82                  | ISBLANK(1)                                                 | False                    |
 	| 83                  | ISERR([[e]])                                               | False                    |
@@ -327,13 +325,11 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 107                 | MROUND([[x]],[[y]])                                        | 2                        |
 	| 108                 | MULTINOMIAL(10,[[x]],2)                                    | 858                      |
 	| 109                 | N([[s]])                                                   | -1                       |
- # move to alternate | 110                                                        | NA()                     | #N/A |
 	| 111                 | NETWORKDAYS(2014,2015)                                     | 2                        |
 	| 112                 | NOT([[[[a]]]])                                             | False                    |
 	| 113                 | NOW()                                                      | [Now]                    |
 	| 114                 | NPER(0.1, 100, 1000, 999,0)                                | -79.74911468163210       |
 	| 115                 | NPV([[z]],[[z]],[[rc(1).set]],[[y]])                       | 0.951915852742299        |
- #                   | 116                                                        | NULL()                   |      |
 	| 117                 | OCT2BIN([[z]],[[z]])                                       | 0000001000               |
 	| 118                 | OCT2DEC([[z]])                                             | 8                        |
 	| 119                 | OCT2HEX(10,2)                                              | 08                       |
@@ -385,8 +381,6 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	| 165                 | WEEKNUM(11011,[[y]])                                       | 8                        |
 	| 166                 | WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])                 | 1/15/1900 12:00:00.000 AM|
 	| 167                 | YEAR(11011)                                                | 1930                     |
-#	| 168                 | FALSE                                                      | FALSE                    |
-#	| 169                 | TRUE                                                       | TRUE                     |
 
 Scenario Outline: Calculate using Recordset input in aggregate functions like SUM
 	Given I have a calculate variable "[[var().int]]" equal to 
