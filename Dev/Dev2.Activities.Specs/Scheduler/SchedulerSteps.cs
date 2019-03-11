@@ -80,6 +80,23 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
+            GrantUserLogonAsBatchJob(userName);
+        }
+
+        static void GrantUserLogonAsBatchJob(string userName)
+        {
+            try
+            {
+                LsaWrapper lsaUtility = new LsaWrapper();
+
+                lsaUtility.SetRight(userName, "SeBatchLogonRight");
+
+                Console.WriteLine("Logon as batch job right is granted successfully to " + userName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
 
