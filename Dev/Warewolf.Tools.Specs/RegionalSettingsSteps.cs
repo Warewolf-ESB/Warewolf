@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using TechTalk.SpecFlow;
 using Microsoft.Win32;
+using System;
 
 namespace Warewolf.Tools.Specs
 {
@@ -62,6 +63,8 @@ namespace Warewolf.Tools.Specs
                 FileName = "powershell.exe",
                 Arguments = $"-ExecutionPolicy Bypass -Command \"{command}\""
             };
+            process.OutputDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
+            process.ErrorDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
 
             process.Start();
             process.WaitForExit();
