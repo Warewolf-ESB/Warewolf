@@ -102,7 +102,6 @@
       <DependentUpon>MergeExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Merge\MergeFeature.cs" />
-    <Compile Include="Scheduler\LsaWrapper.cs" />
     <Compile Include="ServerServiceRegionalSettingsSteps.cs" />
     <Compile Include="Search\Search.cs" />
     <Compile Include="Search\Search.feature.cs">
