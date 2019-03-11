@@ -1634,7 +1634,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table65.AddRow(new string[] {
-                        "[[Result]] = False"});
+                        "[[Result]] ="});
 #line 378
    testRunner.And("the \"GetWebResult\" in Workflow \"GetWebResult\" debug outputs as", ((string)(null)), table65, "And ");
 #line hidden
