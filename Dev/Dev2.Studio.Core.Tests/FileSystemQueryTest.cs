@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -647,8 +648,12 @@ namespace Dev2.Core.Tests
                 FileName = "net.exe",
                 Arguments = $"use {site} /USER:{user} /PERSISTENT:YES {password}"
             };
+            process.OutputDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
+            process.ErrorDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
 
             process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
         }
 
