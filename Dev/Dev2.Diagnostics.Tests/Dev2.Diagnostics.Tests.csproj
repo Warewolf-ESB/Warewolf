@@ -74,7 +74,6 @@
     <Compile Include="DebugMessageRepoTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="Debug\WebDebugMessageRepoTests.cs" />
-    <Compile Include="WorkflowLoggerTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
