@@ -1298,16 +1298,17 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(count, children);
         }
 
-        [Then(@"each nested debug item for ""(.*)"" in WorkFlow ""(.*)"" contains ""(.*)"" child                              \|")]
-        public void ThenEachNestedDebugItemForInWorkFlowContainsChild(string toolName, string workFlowName, int childCount)
+        [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has at least ""(.*)"" nested children")]
+        public void ThenTheInWorkFlowHasAtLeastNestedChildren(string toolName, string workflowName, int count)
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
-            var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID.GetValueOrDefault() == x.ID && a.DisplayName == toolName)));
-
+            var id =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
+            var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
+            Assert.IsTrue(children >= count, $"Not enough children nested inside {toolName} in {workflowName}'s debug output");
         }
 
         [Then(@"each ""(.*)"" contains debug outputs for ""(.*)"" as")]

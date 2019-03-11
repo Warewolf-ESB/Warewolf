@@ -409,7 +409,7 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  And the "ForEachTest1" in WorkFlow "WFForEachInsideforEachLargeTenFifty" debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 10      |
-	  And the "ForEachTest1" in WorkFlow "WFForEachInsideforEachLargeTenFifty" has  "10" nested children
+	  And the "ForEachTest1" in WorkFlow "WFForEachInsideforEachLargeTenFifty" has at least "5" nested children
       And the "ForEachTest2" in step 1 for "ForEachTest1" debug inputs as 
 	  |                 | Number |
 	  | No. of Executes | 50      |
@@ -432,7 +432,7 @@ Scenario: Executing 2 ForEach"s inside a ForEach which contains Assign only
 	  | 14 | [[rec().n]] = | aasdd222      |
 	  | 15 | [[rec().o]] = | 22323asda     |
 	  And the "Testingoutput" in step 50 for "ForEachTest2" debug outputs as
-	  | #  |                                |
+	  | #  |                               |
 	  | 1  | [[rec(50).a]] = 123asda       |
 	  | 2  | [[rec(50).b]] = aaaaa         |
 	  | 3  | [[rec(50).c]] = rrrrrrr       |

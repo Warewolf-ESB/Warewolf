@@ -1482,8 +1482,8 @@ this.FeatureBackground();
    testRunner.And("the \"ForEachTest1\" in WorkFlow \"WFForEachInsideforEachLargeTenFifty\" debug inputs" +
                     " as", ((string)(null)), table69, "And ");
 #line 412
-   testRunner.And("the \"ForEachTest1\" in WorkFlow \"WFForEachInsideforEachLargeTenFifty\" has  \"10\" ne" +
-                    "sted children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("the \"ForEachTest1\" in WorkFlow \"WFForEachInsideforEachLargeTenFifty\" has at least" +
+                    " \"5\" nested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
