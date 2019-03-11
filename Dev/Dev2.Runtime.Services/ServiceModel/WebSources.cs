@@ -175,6 +175,8 @@ namespace Dev2.Runtime.ServiceModel
             {
                 if(webex.Response is HttpWebResponse httpResponse)
                 {
+                    errors.AddError(webex.Message);
+
                     using (var responseStream = httpResponse.GetResponseStream())
                     {
                         var reader = new StreamReader(responseStream);
@@ -192,7 +194,6 @@ namespace Dev2.Runtime.ServiceModel
             }
             finally
             {
-                // clean up client ;)
                 client.Dispose();
             }
 
