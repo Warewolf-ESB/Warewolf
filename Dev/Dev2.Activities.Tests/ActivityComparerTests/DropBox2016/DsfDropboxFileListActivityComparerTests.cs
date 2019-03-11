@@ -1161,33 +1161,29 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
 
             var listFolderResult = new ListFolderResult(new List<Metadata> { new Mock<Metadata>().Object }, "TestCusor", false);
+            
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
 
-            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
+            var dictionary = new Dictionary<string, string>
             {
-                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-                task.Start();
-                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
+                { "ToPath", @"C:\Users\temp\testToPath\" },
+                { "FromPath", @"C:\Users\temp" }
+            };
 
-                var dictionary = new Dictionary<string, string>
-                {
-                    { "ToPath", @"C:\Users\temp\testToPath\" },
-                    { "FromPath", @"C:\Users\temp" }
-                };
-
-                using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
-                {
-                    SelectedSource = new DropBoxSource(),
-                    MockSingleExecutor = mockDropboxSingleExecutor
-                })
-                {
-                    //--------------------------Act--------------------------------
-                    var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionary);
-                    //--------------------------Assert-----------------------------
-                    Assert.AreEqual(1, listPerformExecution.Count);
-                    Assert.AreEqual("Success", listPerformExecution[0]);
-                }
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            {
+                SelectedSource = new DropBoxSource(),
+                MockSingleExecutor = mockDropboxSingleExecutor
+            })
+            {
+                //--------------------------Act--------------------------------
+                var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionary);
+                //--------------------------Assert-----------------------------
+                Assert.AreEqual(1, listPerformExecution.Count);
+                Assert.AreEqual("Success", listPerformExecution[0]);
             }
         }
 
@@ -1203,36 +1199,32 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
 
             var listFolderResult = new ListFolderResult(new List<Metadata> { new Mock<Metadata>().Object }, "TestCusor", false);
+            
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
 
-            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
+            var dictionary = new Dictionary<string, string>
             {
-                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-                task.Start();
-                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
+                { "ToPath", @"C:\Users\temp\testToPath\" },
+                { "FromPath", @"C:\Users\temp" }
+            };
 
-                var dictionary = new Dictionary<string, string>
-                {
-                    { "ToPath", @"C:\Users\temp\testToPath\" },
-                    { "FromPath", @"C:\Users\temp" }
-                };
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            {
+                SelectedSource = new DropBoxSource(),
+                MockSingleExecutor = mockDropboxSingleExecutor,
+                IsFoldersSelected = true
+            })
+            {
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.TestSetupDropboxClient("");
 
-                using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
-                {
-                    SelectedSource = new DropBoxSource(),
-                    MockSingleExecutor = mockDropboxSingleExecutor,
-                    IsFoldersSelected = true
-                })
-                {
-                    //--------------------------Act--------------------------------
-                    dsfDropboxFileListActivity.TestSetupDropboxClient("");
-
-                    var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionary);
-                    //--------------------------Assert-----------------------------
-                    Assert.AreEqual(1, listPerformExecution.Count);
-                    Assert.AreEqual("Success", listPerformExecution[0]);
-                }
+                var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionary);
+                //--------------------------Assert-----------------------------
+                Assert.AreEqual(1, listPerformExecution.Count);
+                Assert.AreEqual("Success", listPerformExecution[0]);
             }
         }
 
@@ -1248,36 +1240,32 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
 
             var listFolderResult = new ListFolderResult(new List<Metadata> { new Mock<Metadata>().Object }, "TestCusor", false);
+            
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
 
-            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
+            var dictionery = new Dictionary<string, string>
             {
-                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-                task.Start();
-                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
+                { "ToPath", @"C:\Users\temp\testToPath\" },
+                { "FromPath", @"C:\Users\temp" }
+            };
 
-                var dictionery = new Dictionary<string, string>
-                {
-                    { "ToPath", @"C:\Users\temp\testToPath\" },
-                    { "FromPath", @"C:\Users\temp" }
-                };
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            {
+                SelectedSource = new DropBoxSource(),
+                MockSingleExecutor = mockDropboxSingleExecutor,
+                IncludeDeleted = true
+            })
+            {
+                dsfDropboxFileListActivity.TestSetupDropboxClient("");
 
-                using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
-                {
-                    SelectedSource = new DropBoxSource(),
-                    MockSingleExecutor = mockDropboxSingleExecutor,
-                    IncludeDeleted = true
-                })
-                {
-                    dsfDropboxFileListActivity.TestSetupDropboxClient("");
-
-                    //--------------------------Act--------------------------------
-                    var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionery);
-                    //--------------------------Assert-----------------------------
-                    Assert.AreEqual(1, listPerformExecution.Count);
-                    Assert.AreEqual("Success", listPerformExecution[0]);
-                }
+                //--------------------------Act--------------------------------
+                var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionery);
+                //--------------------------Assert-----------------------------
+                Assert.AreEqual(1, listPerformExecution.Count);
+                Assert.AreEqual("Success", listPerformExecution[0]);
             }
         }
 
@@ -1293,35 +1281,31 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DropBox2016
             var mockDropboxSingleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
 
             var listFolderResult = new ListFolderResult(new List<Metadata> { new Mock<Metadata>().Object }, "TestCusor", false);
+            
+            mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
+            mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
+            mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
+            mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
 
-            using (var task = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object))
+            var dictionery = new Dictionary<string, string>
             {
-                mockDownloadResponse.Setup(o => o.Response).Returns(new Mock<FileMetadata>().Object);
-                task.Start();
-                mockDropboxClient.Setup(o => o.DownloadAsync(It.IsAny<DownloadArg>())).Returns(() => { var t = new Task<IDownloadResponse<FileMetadata>>(() => mockDownloadResponse.Object); t.Start(); return t; });
-                mockDropboxClientFactory.Setup(o => o.New(It.IsAny<string>(), It.IsAny<HttpClient>())).Returns(mockDropboxClient.Object);
-                mockDropboxSingleExecutor.Setup(o => o.ExecuteTask(It.IsAny<IDropboxClient>())).Returns(new DropboxListFolderSuccesResult(listFolderResult));
+                { "ToPath", @"C:\Users\temp\testToPath\" },
+                { "FromPath", @"C:\Users\temp" }
+            };
 
-                var dictionery = new Dictionary<string, string>
-                {
-                    { "ToPath", @"C:\Users\temp\testToPath\" },
-                    { "FromPath", @"C:\Users\temp" }
-                };
-
-                using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
-                {
-                    SelectedSource = new DropBoxSource(),
-                    MockSingleExecutor = mockDropboxSingleExecutor,
-                    IsFilesAndFoldersSelected = true
-                })
-                {
-                    //--------------------------Act--------------------------------
-                    dsfDropboxFileListActivity.TestSetupDropboxClient("");
-                    var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionery);
-                    //--------------------------Assert-----------------------------
-                    Assert.AreEqual(1, listPerformExecution.Count);
-                    Assert.AreEqual("Success", listPerformExecution[0]);
-                }
+            using (var dsfDropboxFileListActivity = new TestDsfDropboxFileListActivity(mockDropboxClientFactory.Object)
+            {
+                SelectedSource = new DropBoxSource(),
+                MockSingleExecutor = mockDropboxSingleExecutor,
+                IsFilesAndFoldersSelected = true
+            })
+            {
+                //--------------------------Act--------------------------------
+                dsfDropboxFileListActivity.TestSetupDropboxClient("");
+                var listPerformExecution = dsfDropboxFileListActivity.TestPerformExecution(dictionery);
+                //--------------------------Assert-----------------------------
+                Assert.AreEqual(1, listPerformExecution.Count);
+                Assert.AreEqual("Success", listPerformExecution[0]);
             }
         }
 
