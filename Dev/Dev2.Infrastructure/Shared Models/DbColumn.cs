@@ -88,7 +88,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public static Type ConvertSqlDbType(SqlDbType sqlDbType)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             // http://msdn.microsoft.com/en-us/library/system.data.sqldbtype.aspx
             switch (sqlDbType)
