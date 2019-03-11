@@ -615,7 +615,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 217
  testRunner.And(string.Format("I have the Example formula \"{0}\"", fx), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 218
- testRunner.And("The system short date format is \"yyyy/MM/dd\" and the long time format is \"hh:mm:s" +
+ testRunner.And("The system short date format is \"dd/MM/yyyy\" and the long time format is \"hh:mm:s" +
                     "s tt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 219
  testRunner.When("the calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
