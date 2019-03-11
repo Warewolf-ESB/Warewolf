@@ -63,7 +63,9 @@ namespace System.Windows.Controls
         }
         
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This try-catch pattern is used by other popup controls to keep the runtime up.")]
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public void Arrange()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if(Popup == null
                 || PopupChild == null
