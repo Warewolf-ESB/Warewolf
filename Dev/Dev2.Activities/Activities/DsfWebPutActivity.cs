@@ -57,7 +57,21 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            IEnumerable<INameValue> head = null;
+
+            var (head, query, putData) = ConfigureHttp(dataObject, update);
+
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            var webRequestResult = PerformWebRequest(head, query, url, putData);
+
+            tmpErrors.MergeErrors(_errorsTo);
+
+            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+        }
+
+        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
+        {
+            IEnumerable<NameValue> head = null;
             if (Headers != null)
             {
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
@@ -73,12 +87,7 @@ namespace Dev2.Activities
                 putData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PutData, update));
             }
 
-            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebRequest(head, query, url, putData);
-            tmpErrors.MergeErrors(_errorsTo);
-
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+            return (head, query, putData);
         }
 
         public override HttpClient CreateClient(IEnumerable<INameValue> head, string query, WebSource source)

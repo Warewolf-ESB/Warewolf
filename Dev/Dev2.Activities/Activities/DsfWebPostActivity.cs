@@ -90,7 +90,22 @@ namespace Dev2.Activities
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
-            IEnumerable<INameValue> head = null;
+
+            var (head, query, postData) = ConfigureHttp(dataObject, update);
+
+            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
+            var webRequestResult = PerformWebPostRequest(head, query, url, postData);
+
+            tmpErrors.MergeErrors(_errorsTo);
+
+            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+
+        }
+
+        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
+        {
+            IEnumerable<NameValue> head = null;
             if (Headers != null)
             {
                 head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
@@ -103,17 +118,12 @@ namespace Dev2.Activities
             var postData = "";
             if (PostData != null)
             {
-                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));    
+                postData = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(PostData, update));
             }
-            var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData);
-            tmpErrors.MergeErrors(_errorsTo);
-            
-            ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName};
-            ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
 
+            return (head, query, postData);
         }
-        
+
         public IResponseManager ResponseManager { get; set; }
         
         protected virtual string PerformWebPostRequest(IEnumerable<INameValue> head, string query, WebSource source, string postData)
