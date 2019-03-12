@@ -154,7 +154,7 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(10, 14));
             Assert.IsFalse(UIMap.ControlExistsNow(DecisionOrSwitchDialog), "Decision large view dialog still exists after the done button is clicked.");
         }
-        
+
         [When(@"I Click Switch Dialog Done Button")]
         public void Click_Switch_Dialog_Done_Button()
         {
@@ -734,6 +734,15 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         public void Click_Service_Picker_Dialog_First_Service_In_Explorer()
         {
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
+        }
+
+        [Then(@"I Dismiss the Server is Busy Messagebox")]
+        public void Click_Server_Is_Busy_OK()
+        {
+            if (UIMap.ControlExistsNow(MessageBoxWindow.ServerBusyOKButton))
+            {
+                Mouse.Click(MessageBoxWindow.ServerBusyOKButton, new Point(35, 8));
+            }
         }
 
         UIMap UIMap

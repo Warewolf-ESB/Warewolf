@@ -10,8 +10,11 @@ Scenario: Studio Large Deploy UI Load Test
 	And I Refresh Explorer
 	Then the timer duration is between "10" and "90" seconds
 	And I Click Deploy Ribbon Button
+	And I Dismiss the Server is Busy Messagebox
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
+	And I Dismiss the Server is Busy Messagebox
 	And I Select localhost checkbox from the source tab
+	And I Dismiss the Server is Busy Messagebox
 	Given I start the timer
 	Given I start the timer
 	When I Click Deploy Tab Deploy Button with no version conflict dialog

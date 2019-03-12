@@ -40,26 +40,7 @@
     </Group>
   </Configuration>
   <InitializeActions />
-  <ExecuteActions>
-    <MouseAction UIObjectName="DialogsUIMap.MessageBoxWindow.ServerBusyOKButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="35" Y="8" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Server_Is_Busy_OK">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-  </ExecuteActions>
+  <ExecuteActions />
   <CleanupActions />
   <OnErrorActions />
   <Maps>
