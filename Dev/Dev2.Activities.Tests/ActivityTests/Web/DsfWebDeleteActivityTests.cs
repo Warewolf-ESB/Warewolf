@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -20,6 +21,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -423,11 +425,48 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebDeleteActivity))]
+        public void DsfWebDeleteActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        {
+            //-----------------------Arrange-------------------------
+            const string response = "{\"Message\":\"TEST Error\"}";
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestDsfWebDeleteActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    TestShouldError = true
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
+                Assert.AreEqual(response, errorResultTO.FetchErrors()[0]);
+            }
+
+        }
     }
 
     public class TestDsfWebDeleteActivity : DsfWebDeleteActivity
     {
-        #region Overrides of DsfWebPostActivity
+        public bool TestShouldError { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
@@ -435,16 +474,21 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             Head = head;
             QueryRes = query;
+            if (TestShouldError)
+            {
+                base._errorsTo = new ErrorResultTO();
+                base._errorsTo.AddError(ResponseFromWeb);
+            }
             return ResponseFromWeb;
         }
 
         public string QueryRes { get; private set; }
 
         public IEnumerable<INameValue> Head { get; private set; }
-
-        #endregion
-
-
+        public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        {
+            base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+        }
     }
 }
 
