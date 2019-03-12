@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +21,6 @@ using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -111,13 +120,47 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Assert Results-------------------------
             Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
         }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebGetActivity))]
+        public void DsfWebGetActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        {
+            //-----------------------Arrange-------------------------
+            const string response = "{\"Message\":\"TEST Error\"}";
+            var environment = new ExecutionEnvironment();
+
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestDsfWebGetActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    TestShouldError = true
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
+                Assert.AreEqual(response, errorResultTO.FetchErrors()[0]);
+            }
+        }
     }
 
     public class MockEsb : IEsbChannel
     {
-
-        #region Not Implemented
-
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
                                    out ErrorResultTO errors)
         {
@@ -135,12 +178,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Finds the service shape.
-        /// </summary>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="resourceID">Name of the service.</param>
-        /// <returns></returns>
         public StringBuilder FindServiceShape(Guid workspaceID, Guid resourceID)
         {
             return null;
@@ -173,8 +210,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
         }
 
-        #endregion
-
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
                                       out ErrorResultTO errors, int update, bool b)
         {
@@ -186,15 +221,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
     public class TestDsfWebGetActivity : DsfWebGetActivity
     {
-        #region Overrides of DsfWebPutActivity
+        public bool TestShouldError { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
         protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource url)
         {
+            if (TestShouldError)
+            {
+                base._errorsTo = new ErrorResultTO();
+                base._errorsTo.AddError(ResponseFromWeb);
+            }
             return ResponseFromWeb;
         }
-
-        #endregion
+        public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        {
+            base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+        }
     }
 }
