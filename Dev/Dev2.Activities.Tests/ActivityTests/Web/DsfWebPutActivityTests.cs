@@ -1,9 +1,18 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -161,8 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
             }
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
@@ -212,8 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
             }
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
@@ -558,7 +565,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var allContentValues = httpClient.DefaultRequestHeaders.Single(pair => pair.Key == "Content").Value;
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
