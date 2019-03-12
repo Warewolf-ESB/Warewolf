@@ -30,6 +30,19 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     public partial class DialogsUIMap
     {
         
+        /// <summary>
+        /// Click_Server_Is_Busy_OK
+        /// </summary>
+        public void Click_Server_Is_Busy_OK()
+        {
+            #region Variable Declarations
+            WpfButton serverBusyOKButton = this.MessageBoxWindow.ServerBusyOKButton;
+            #endregion
+
+            // Click 'OK' button
+            Mouse.Click(serverBusyOKButton, new Point(35, 8));
+        }
+        
         #region Properties
         public MessageBoxWindow MessageBoxWindow
         {
@@ -605,6 +618,22 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mUIThereareduplicateserText;
             }
         }
+        
+        public WpfButton ServerBusyOKButton
+        {
+            get
+            {
+                if ((this.mServerBusyOKButton == null))
+                {
+                    this.mServerBusyOKButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mServerBusyOKButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "BtnOkCommand";
+                    this.mServerBusyOKButton.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mServerBusyOKButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -653,6 +682,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private WpfText mUITosavearesourcepersmText;
         
         private WpfText mUIThereareduplicateserText;
+        
+        private WpfButton mServerBusyOKButton;
         #endregion
     }
     
