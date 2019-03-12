@@ -175,7 +175,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
             else
             {
-                actualValue.Should().Be(expectedResult);
+                if (expectedResult.StartsWith("{") && expectedResult.EndsWith("}"))
+                {
+                    var expectedResults = expectedResult
+                        .Substring(1, expectedResult.Length - 2)
+                        .Split(new string[] { "} or {" }, StringSplitOptions.None);
+                    actualValue.Should().BeOneOf(expectedResults);
+                }
+                else
+                {
+                    actualValue.Should().Be(expectedResult);
+                }
             }
         }
 
