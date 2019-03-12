@@ -30,19 +30,6 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     public partial class DialogsUIMap
     {
         
-        /// <summary>
-        /// Click_Server_Is_Busy_OK
-        /// </summary>
-        public void Click_Server_Is_Busy_OK()
-        {
-            #region Variable Declarations
-            WpfButton serverBusyOKButton = this.MessageBoxWindow.ServerBusyOKButton;
-            #endregion
-
-            // Click 'OK' button
-            Mouse.Click(serverBusyOKButton, new Point(35, 8));
-        }
-        
         #region Properties
         public MessageBoxWindow MessageBoxWindow
         {
