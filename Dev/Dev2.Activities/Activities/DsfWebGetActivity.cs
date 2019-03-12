@@ -78,9 +78,8 @@ namespace Dev2.Activities
                 tmpErrors.AddError(ErrorResource.QueryIsNull);
                 return;
             }
-            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
-            var query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
 
+            var (head, query, _) = ConfigureHttp(dataObject, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
 
@@ -90,7 +89,9 @@ namespace Dev2.Activities
                 AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
             }
             var webRequestResult = PerformWebRequest(head, query, url);
+
             tmpErrors.MergeErrors(_errorsTo);
+
             ResponseManager = new ResponseManager
             {
                 OutputDescription = OutputDescription,
@@ -100,6 +101,14 @@ namespace Dev2.Activities
             };
             webRequestResult = Scrubber.Scrub(webRequestResult);
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
+        }
+
+        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
+        {
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+            var query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
+
+            return (head, query, null);
         }
 
         public IResponseManager ResponseManager { get; set; }
