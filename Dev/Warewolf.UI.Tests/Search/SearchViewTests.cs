@@ -18,7 +18,7 @@ namespace Warewolf.UI.Tests.Search
         [TestCategory(nameof(Search))]
         public void Shortcut_Cntr_Shift_F_Opens_Search_View()
         {
-            ExplorerUIMap.Click_Explorer_Refresh_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             Keyboard.SendKeys("^+F");
             Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
         }
