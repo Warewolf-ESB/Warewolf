@@ -212,8 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
                                       out ErrorResultTO errors, int update, bool b)
-        {
-                        
+        {           
             errors = new ErrorResultTO();
             return dataObject.Environment;
         }
