@@ -20,7 +20,8 @@ namespace Dev2.Server.Tests
             //-------------------Act----------------------
             new LoadRuntimeConfigurations(mockWriter.Object).Execute();
             //-------------------Assert-------------------
-            mockWriter.Verify(o => o.Write("fail."), Times.AtLeastOnce());
+            mockWriter.Verify(o => o.Write("Loading settings provider...  "), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("fail."), Times.Once);
         }
 
         [TestMethod]
@@ -34,7 +35,8 @@ namespace Dev2.Server.Tests
             //-------------------Act----------------------
             new LoadRuntimeConfigurations(mockWriter.Object).Execute();
             //-------------------Assert-------------------
-            mockWriter.Verify(o => o.WriteLine("done."), Times.Exactly(2));
+            mockWriter.Verify(o => o.Write("Loading settings provider...  "), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("done."), Times.Once);
         }
 
         [TestMethod]
@@ -52,8 +54,8 @@ namespace Dev2.Server.Tests
 
             new LoadRuntimeConfigurations(mockWriter.Object, mockSettingsprovider.Object).Execute();
             //-------------------Assert-------------------
-            mockWriter.Verify(o => o.Write("fail."), Times.AtLeast(2));
-            mockWriter.Verify(o => o.WriteLine(message), Times.Once);
+            mockWriter.Verify(o => o.Write("Loading settings provider...  "), Times.Once);
+            mockWriter.Verify(o => o.WriteLine("fail."), Times.Once);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Dev2
             }
             else
             {
-                _writer.Write("fail.");
+                _writer.WriteLine("fail.");
             }
         }
 
