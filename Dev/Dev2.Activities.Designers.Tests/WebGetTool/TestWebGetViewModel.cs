@@ -260,7 +260,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
-            webget.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
@@ -291,7 +291,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
-            webget.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             webget.InputArea.QueryString = "the [[b]]";
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
@@ -325,7 +325,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
-            webget.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            webget.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             webget.InputArea.QueryString = "the [[b().a]]";
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();

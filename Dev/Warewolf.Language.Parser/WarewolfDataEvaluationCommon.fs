@@ -814,20 +814,28 @@ let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (valu
     | Some _ -> env
     | _ -> addToJsonObjects env name value
 
+let atomtoJToken (x:WarewolfAtom )=
+    match x with 
+        | Float a -> new JValue(a)
+        | Int a -> new JValue(a)
+        | DataString a -> new JValue(a)
+        | Nothing -> null
+        | PositionedValue (_,b) ->  new JValue(b.ToString())
+
 let addAtomicPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom) = 
     let props = obj.Properties()
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
     match theProp with
     | None -> 
-        obj.Add(new JProperty(name, (atomtoString value))) |> ignore
+        obj.Add(new JProperty(name, (atomtoJToken value))) |> ignore
         obj
     | Some a -> 
-        a.Value <- new JValue(atomtoString value)
+        a.Value <- (atomtoJToken value)
         obj
 
 let addArrayPropertyToJson (obj : Newtonsoft.Json.Linq.JObject) (name : string) (value : WarewolfAtom seq) = 
     let props = obj.Properties()
-    let valuesAsStrings = Seq.map atomtoString value
+    let valuesAsStrings = Seq.map atomtoJToken value
     let theProp = Seq.tryFind (fun (a : JProperty) -> a.Name = name) props
     match theProp with
     | None -> 

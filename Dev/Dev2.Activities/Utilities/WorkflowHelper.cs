@@ -270,7 +270,9 @@ namespace Dev2.Utilities
             }
             return false;
         }
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private static bool CompareWorkflows(XmlNode lnode, XmlNode rnode)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (lnode is null || rnode is null)
             {

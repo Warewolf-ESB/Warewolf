@@ -18,6 +18,10 @@ using Newtonsoft.Json;
 
 namespace Dev2.Diagnostics.Debug
 {
+    /**
+     * Uses EsbHub to write DebugState data from Warewolf Server to the Studio. This state data
+     * is received by the Studio as events in ServerProxyWithoutChunking as a SendDebugState event
+     */
     internal class DebugDispatcherImplementation : IDebugDispatcher
     {
         readonly ILogger _dev2Logger;
