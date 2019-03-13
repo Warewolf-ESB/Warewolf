@@ -1012,11 +1012,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("27", "COUNT(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DATE(2000,[[y]],12)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2/12/2000 12:00:00.000 AM or 12/02/2000 12:00:00.000 AM")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{2/12/2000 12:00:00.000 AM} or {12/02/2000 12:00:00.000 AM}")]
         public virtual void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_29()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12)", "2/12/2000 12:00:00.000 AM or 12/02/2000 12:00:00.000 AM", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12)", "{2/12/2000 12:00:00.000 AM} or {12/02/2000 12:00:00.000 AM}", ((string[])(null)));
 #line hidden
         }
         
@@ -1207,11 +1207,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("41", "DOLLAR
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EDATE([[z]],[[[[a]]]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4/10/1900 12:00:00.000 AM or 10/04/1900 12:00:00.000 AM")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{4/10/1900 12:00:00.000 AM} or {10/04/1900 12:00:00.000 AM}")]
         public virtual void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_42()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]]]])", "4/10/1900 12:00:00.000 AM or 10/04/1900 12:00:00.000 AM", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]]]])", "{4/10/1900 12:00:00.000 AM} or {10/04/1900 12:00:00.000 AM}", ((string[])(null)));
 #line hidden
         }
         
@@ -1222,11 +1222,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("42", "EDATE(
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EOMONTH([[z]],[[[[a]]]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4/30/1900 12:00:00.000 AM or 30/04/1900 12:00:00.000 AM")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{4/30/1900 12:00:00.000 AM} or {30/04/1900 12:00:00.000 AM}")]
         public virtual void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_43()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[a]]]])", "4/30/1900 12:00:00.000 AM or 30/04/1900 12:00:00.000 AM", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[a]]]])", "{4/30/1900 12:00:00.000 AM} or {30/04/1900 12:00:00.000 AM}", ((string[])(null)));
 #line hidden
         }
         
@@ -2992,11 +2992,11 @@ this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("165", "WEEKN
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "166")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "166")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1/15/1900 12:00:00.000 AM or 15/01/1900 12:00:00.000 AM")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "{1/15/1900 12:00:00.000 AM} or {15/01/1900 12:00:00.000 AM}")]
         public virtual void AggregatedCalculationAssignByEvaluatingVariablesWithFunctions_166()
         {
 #line 199
-this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])", "1/15/1900 12:00:00.000 AM or 15/01/1900 12:00:00.000 AM", ((string[])(null)));
+this.AggregatedCalculationAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])", "{1/15/1900 12:00:00.000 AM} or {15/01/1900 12:00:00.000 AM}", ((string[])(null)));
 #line hidden
         }
         
