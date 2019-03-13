@@ -38,7 +38,7 @@ namespace Dev2.Activities
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugInputs(env, update);
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -72,7 +72,7 @@ namespace Dev2.Activities
                 tmpErrors.AddError(ErrorResource.QueryIsNull);
                 return;
             }
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
 
 

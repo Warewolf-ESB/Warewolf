@@ -111,6 +111,25 @@ Scenario: Assign a json object value to a json object overwriting the existing v
 	| 2 | [[@Person.Surname]] = Smith	|
 	| 3 | [[@Person.Surname]] = Bob		|
 
+Scenario: Assign a json object value to a json object overwriting the existing value with type
+	Given I assign the value "21" to a json object "[[@Person.FirstName]]"
+	And I assign the value "Smith" to a json object "[[@Person.Surname]]"
+	And I assign the value "[[@Person.FirstName]]" to a json object "[[@Person.Surname]]"
+	When the assign object tool is executed
+	Then the json object "[[@Person.FirstName]]" equals "21"
+	And the json object "[[@Person.Surname]]" equals "21"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable						| New Value						|
+	| 1 | [[@Person.FirstName]] =		| 21							|
+	| 2 | [[@Person.Surname]] =			| Smith							|
+	| 3 | [[@Person.Surname]] = Smith	| [[@Person.FirstName]] = 21	|
+	And the debug output as
+	| # |								|
+	| 1 | [[@Person.FirstName]] = 21	|
+	| 2 | [[@Person.Surname]] = Smith	|
+	| 3 | [[@Person.Surname]] = 21		|
+
 Scenario Outline: Assign a value to an invalid json object
 	Given I assign the value "[[@Person.Score]]" to a json object "<var>"
 	When the assign object tool is executed

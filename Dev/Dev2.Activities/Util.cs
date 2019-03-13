@@ -192,8 +192,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-    
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public static bool Btw(string value, object comparisonValueStart, object comparisonValueEnd)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if(string.IsNullOrEmpty(value))
             {

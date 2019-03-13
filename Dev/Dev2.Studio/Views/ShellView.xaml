@@ -255,6 +255,9 @@
     <!--  START OF LAYOUT  -->
 
     <Grid>
+		<Grid.InputBindings>
+			<KeyBinding Command="{Binding SearchCommand}" Key="F" Modifiers="Ctrl+Shift" />
+		</Grid.InputBindings>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>

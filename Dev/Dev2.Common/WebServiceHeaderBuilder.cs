@@ -20,18 +20,18 @@ namespace Dev2.Common
             var isValidJson = content?.IsValidJson() ?? false;
             if (isValidJson)
             {
-                var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
+                var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
 
-                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+                region.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
             }
             else
             {
                 var isValidXml = content.IsValidXml();
                 if (isValidXml)
                 {
-                    var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
+                    var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
 
-                    region.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+                    region.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
                 }
             }
         }

@@ -2388,7 +2388,7 @@ namespace Dev2.Activities.Specs.Composition
             dsfWebGetActivity.Outputs = outputMapping;
             dsfWebGetActivity.Headers = new List<INameValue>
             {
-                new ObservableNameValue("Content-Type","text/html")
+                new NameValue("Content-Type","text/html")
             };
             dsfWebGetActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);
@@ -2457,7 +2457,7 @@ namespace Dev2.Activities.Specs.Composition
             webPutActivity.Outputs = outputMapping;
             webPutActivity.Headers = new List<INameValue>()
             {
-                new ObservableNameValue("Content-Type","text/html")
+                new NameValue("Content-Type","text/html")
             };
             webPutActivity.QueryString = string.Empty;
             _commonSteps.AddVariableToVariableList(result);

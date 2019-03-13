@@ -271,7 +271,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return debugItem;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void AddEvaluatedDebugInputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update, DebugItem debugItem, string VariableLabelText, string NewFieldLabelText)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (assignValue.Name.EndsWith("()]]"))
             {
