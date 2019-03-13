@@ -281,6 +281,7 @@
     <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
+    <Compile Include="IDataNode.cs" />
     <Compile Include="IDbSource.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDependencyGraphGenerator.cs" />

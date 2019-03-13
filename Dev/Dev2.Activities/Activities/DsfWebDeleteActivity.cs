@@ -33,7 +33,7 @@ namespace Dev2.Activities
             IEnumerable<INameValue> head = null;
             if (Headers != null)
             {
-                head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+                head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
             }
             var query = "";
             if (QueryString != null)

@@ -100,8 +100,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
-            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+            var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationXmlHeader);
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
             var content = "<DataList><a>2</a></DataList>";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(newMock.Object.Headers);
@@ -127,8 +127,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new ObservableNameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
-            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+            var jsonHeader = new NameValue(GlobalConstants.ContentType, GlobalConstants.ApplicationJsonHeader);
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
             var content = "{\"NormalText\":\"\"}";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(newMock.Object.Headers);
@@ -154,8 +154,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new WebServiceHeaderBuilder();
             var newMock = new Mock<IHeaderRegion>();
             newMock.SetupProperty(region => region.Headers);
-            var jsonHeader = new ObservableNameValue();
-            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new ObservableNameValue() };
+            var jsonHeader = new NameValue();
+            newMock.Object.Headers = new ObservableCollection<INameValue> { jsonHeader, new NameValue() };
             var content = "{\"NormalText\":\"\"}";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(newMock.Object.Headers);

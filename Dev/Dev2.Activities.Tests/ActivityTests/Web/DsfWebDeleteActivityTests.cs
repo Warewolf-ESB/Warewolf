@@ -259,7 +259,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[City]]", "PMB", 0);
             environment.Assign("[[CountryName]]", "South Africa", 0);
             var dsfWebDeleteActivity = CreateTestDeleteActivity();
-            dsfWebDeleteActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
+            dsfWebDeleteActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
             dsfWebDeleteActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
@@ -365,7 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebDeleteActivity = CreateTestDeleteActivity();
-            dsfWebDeleteActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
+            dsfWebDeleteActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
             dsfWebDeleteActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             dsfWebDeleteActivity.Outputs = serviceOutputs;

@@ -40,7 +40,7 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-            
+
             asyncWorker.Start(() =>
             {
                 var controller = new CommunicationController
@@ -55,19 +55,8 @@ namespace Dev2.Studio.Core.Network
                 controller.ExecuteCommand<string>(resourceModel.Environment.Connection, resourceModel.Environment.Connection.WorkspaceID);
             }, () => { });
         }
-        
-        public static void OpenInBrowser(IContextualResourceModel resourceModel, string xmlData)
-        {
-            var url = GetWorkflowUri(resourceModel, xmlData, UrlType.Xml);
-            if (url != null)
-            {
-                var parameter = "\"" + url + "\"";
-                Process.Start(parameter);
-            }
-        }
 
-        [ExcludeFromCodeCoverage]
-        public static void SendErrorOpenInBrowser(IEnumerable<string> exceptionList, string description, string url)
+        public static void SubmitErrorFormUsingWebBrowser(IEnumerable<string> exceptionList, string description, string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             const string PayloadFormat = "\"header\":{0},\"description\":{1},\"type\":3,\"category\":27";
@@ -111,53 +100,6 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType) => GetWorkflowUri(resourceModel, xmlData, urlType, true);
-
-        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType, bool addworkflowId)
-        {
-            if (resourceModel?.Environment?.Connection == null || !resourceModel.Environment.IsConnected)
-            {
-                return null;
-            }
-            var environmentConnection = resourceModel.Environment.Connection;
-
-            var urlExtension = "xml";
-            switch (urlType)
-            {
-                case UrlType.Xml:
-                    break;
-
-                case UrlType.Json:
-                    urlExtension = "json";
-                    break;
-    
-                    case UrlType.API:
-                    urlExtension = "api";
-                    break;
-                case UrlType.Tests:
-                    urlExtension = "tests";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("urlType");
-            }
-
-            var category = resourceModel.Category;
-            if (string.IsNullOrEmpty(category))
-            {
-                category = resourceModel.ResourceName;
-            }
-            var relativeUrl = $"/secure/{category}.{urlExtension}";
-            if (urlType != UrlType.API && urlType != UrlType.Tests)
-            {
-                relativeUrl += "?"+xmlData;
-                if (addworkflowId)
-                {
-                    relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
-                }
-            }
-            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out Uri url);
-            return url;
-        }
 
         public static Uri GetInternalServiceUri(string serviceName, IEnvironmentConnection connection)
         {
@@ -169,6 +111,67 @@ namespace Dev2.Studio.Core.Network
             var relativeUrl = string.Format("/internal/{0}", serviceName);
             Uri.TryCreate(connection.WebServerUri, relativeUrl, out Uri url);
             return url;
+        }
+    }
+
+    public static class ResourceModelWebserverUtil
+    {
+
+        public static Uri GetWorkflowUri(this IContextualResourceModel resourceModel, string xmlData, UrlType urlType) => resourceModel.GetWorkflowUri(xmlData, urlType, true);
+
+        public static Uri GetWorkflowUri(this IContextualResourceModel resourceModel, string xmlData, UrlType urlType, bool addworkflowId)
+        {
+            if (resourceModel?.Environment?.Connection == null || !resourceModel.Environment.IsConnected)
+            {
+                return null;
+            }
+            var environmentConnection = resourceModel.Environment.Connection;
+
+            var urlExtension = GetUriExtension(urlType);
+
+            var category = resourceModel.Category;
+            if (string.IsNullOrEmpty(category))
+            {
+                category = resourceModel.ResourceName;
+            }
+            var relativeUrl = $"/secure/{category}.{urlExtension}";
+            if (urlType != UrlType.API && urlType != UrlType.Tests)
+            {
+                relativeUrl += "?" + xmlData;
+                if (addworkflowId)
+                {
+                    relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
+                }
+            }
+
+            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out Uri url);
+            return url;
+        }
+
+        private static string GetUriExtension(UrlType urlType)
+        {
+            string urlExtension;
+            switch (urlType)
+            {
+                case UrlType.Xml:
+                    urlExtension = "xml";
+                    break;
+
+                case UrlType.Json:
+                    urlExtension = "json";
+                    break;
+
+                case UrlType.API:
+                    urlExtension = "api";
+                    break;
+                case UrlType.Tests:
+                    urlExtension = "tests";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("urlType");
+            }
+
+            return urlExtension;
         }
     }
 }

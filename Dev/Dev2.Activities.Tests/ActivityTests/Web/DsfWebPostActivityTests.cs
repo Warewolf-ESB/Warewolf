@@ -329,7 +329,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = new TestDsfWebPostActivity
             {
-                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
@@ -420,7 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = new TestDsfWebPostActivity
             {
-                Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") },
+                Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") },
                 QueryString = "http://www.testing.com/[[CountryName]]",
                 PostData = "This is post:[[Post]]"
             };
@@ -570,7 +570,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var headers = new List<INameValue>
             {
-                new ObservableNameValue("Content","text/json")
+                new NameValue("Content","text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebPostActivity);
