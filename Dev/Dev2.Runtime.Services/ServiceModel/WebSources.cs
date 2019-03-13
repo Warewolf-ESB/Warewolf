@@ -173,10 +173,10 @@ namespace Dev2.Runtime.ServiceModel
             }            
             catch(WebException webex)
             {
-                if(webex.Response is HttpWebResponse httpResponse)
-                {
-                    errors.AddError(webex.Message);
+                errors.AddError(webex.Message);
 
+                if (webex.Response is HttpWebResponse httpResponse)
+                {
                     using (var responseStream = httpResponse.GetResponseStream())
                     {
                         var reader = new StreamReader(responseStream);
