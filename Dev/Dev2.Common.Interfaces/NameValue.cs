@@ -1,10 +1,20 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Dev2.Common.Interfaces
 {
-    public class NameValue : INameValue, IEquatable<NameValue>
+    public class NameValue : INameValue, IEquatable<NameValue>, INotifyPropertyChanged
     {
         protected string _name;
         protected string _value;
@@ -21,41 +31,41 @@ namespace Dev2.Common.Interfaces
             Value = value;
         }
 
-#pragma warning disable S2292
         public virtual string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 _name = value;
+                OnPropertyChanged();
             }
         }
 
         public virtual string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 _value = value;
+                OnPropertyChanged();
             }
         }
-#pragma warning restore S2292
 
         public override string ToString() => Name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public static bool operator ==(NameValue left, NameValue right) => Equals(left, right);
         public static bool operator !=(NameValue left, NameValue right) => !Equals(left, right);
 
-
         public bool Equals(NameValue other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -68,7 +78,7 @@ namespace Dev2.Common.Interfaces
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -89,52 +99,6 @@ namespace Dev2.Common.Interfaces
             {
                 return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);
             }
-        }
-    }
-
-    public class ObservableNameValue : NameValue, INotifyPropertyChanged
-    {
-        public ObservableNameValue()
-        {
-        }
-        public ObservableNameValue(string name, string value)
-            : base(name, value)
-        {
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public override string Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                _value = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public override string ToString() => Name;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

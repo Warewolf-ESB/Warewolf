@@ -165,32 +165,23 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
 
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
+#pragma warning disable S1067 // Expressions should not be too complex
             return base.Equals(other) 
                 && isSourceEqual
                 && string.Equals(ToPath, other.ToPath) 
                 && string.Equals(DisplayName, other.DisplayName) 
                 && OverwriteFile == other.OverwriteFile
                 && string.Equals(FromPath, other.FromPath);
+#pragma warning restore S1067 // Expressions should not be too complex
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if (obj is DsfDropBoxDownloadActivity)
             {
-                return false;
+                return Equals((DsfDropBoxDownloadActivity) obj);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfDropBoxDownloadActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()

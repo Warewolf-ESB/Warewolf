@@ -216,7 +216,11 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
         void AddInputDebug(IExecutionEnvironment env, int update)
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)

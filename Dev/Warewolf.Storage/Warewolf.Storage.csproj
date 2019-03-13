@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildJObjectArrayIndexMapHelper.cs" />
     <Compile Include="ExecutionEnvironment.cs" />
     <Compile Include="FSInteropFunctions.cs" />
     <Compile Include="ScopedEnvironment.cs" />

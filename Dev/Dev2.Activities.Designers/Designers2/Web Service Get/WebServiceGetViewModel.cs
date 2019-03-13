@@ -424,7 +424,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 Path = "",
                 Id = Guid.NewGuid(),
                 PostData = "",
-                Headers = InputArea.Headers.Select(value => new ObservableNameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
+                Headers = InputArea.Headers.Select(value => new NameValue { Name = value.Name, Value = value.Value } as INameValue).ToList(),
                 QueryString = InputArea.QueryString,
                 RequestUrl = SourceRegion.SelectedSource.HostName,
                 Response = "",

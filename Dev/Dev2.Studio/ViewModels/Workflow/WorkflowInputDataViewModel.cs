@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -288,8 +289,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                                                    TrackEventDebugOutput.ViewInBrowser);
                 }
                 DoSaveActions();
-                string payload = BuildWebPayLoad();
-                SendViewInBrowserRequest(payload);
+                string payload = BuildInputDataList();
+                OpenUriInBrowser(payload);
                 SendFinishedMessage();
                 RequestClose();
             }
@@ -305,8 +306,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!IsInError)
             {              
                 DoSaveActions();
-                var payload = BuildWebPayLoad();
-                SendViewInBrowserRequest(payload);
+                var inputDataList = BuildInputDataList();
+                OpenUriInBrowser(inputDataList);
                 SendFinishedMessage();
                 RequestClose();
             }
@@ -316,7 +317,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string BuildWebPayLoad()
+        public string BuildInputDataList()
         {
             var allScalars = WorkflowInputs.All(item => !item.CanHaveMutipleRows && !item.IsObject);
             if (allScalars && WorkflowInputs.Count > 0)
@@ -333,9 +334,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        protected virtual void SendViewInBrowserRequest(string payload)
+        protected virtual void OpenUriInBrowser(string workflowInputDataList)
         {
-            WebServer.OpenInBrowser(_resourceModel, payload);
+            var uri = _resourceModel.GetWorkflowUri(workflowInputDataList, UrlType.Json);
+            if (uri != null)
+            {
+                var url = uri.ToString();
+                var parameter = "\"" + url.Replace("\"", "\\\"") + "\"";
+                Process.Start(parameter);
+            }
         }
 
         internal void SendFinishedMessage()
@@ -499,7 +506,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var dataListString = dataListObject.ToString(Formatting.Indented);
             JsonData = dataListString;
-            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", true);
+            var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
             try
             {
                 if (xml.Descendants().Count() == 1)

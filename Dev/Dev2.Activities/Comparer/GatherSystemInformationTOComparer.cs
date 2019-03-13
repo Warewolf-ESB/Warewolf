@@ -5,7 +5,9 @@ namespace Dev2.Comparer
 {
     internal class GatherSystemInformationTOComparer : IEqualityComparer<GatherSystemInformationTO>
     {
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(GatherSystemInformationTO x, GatherSystemInformationTO y)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (x == null && y == null)
             {

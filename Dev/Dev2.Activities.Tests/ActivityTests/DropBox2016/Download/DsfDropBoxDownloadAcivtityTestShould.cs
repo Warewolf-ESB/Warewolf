@@ -217,18 +217,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock() { IsUplodValidSuccess = true };
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity { IsUplodValidSuccess = true };
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownloadActivityMock);
+            Assert.IsNotNull(dropBoxDownloadActivity);
             //---------------Execute Test ----------------------
             var esbChannel = new Mock<IEsbChannel>().Object;
             var datObj = new Mock<IDSFDataObject>().Object;
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
             
             var errorResultTO = new ErrorResultTO();
-            dropBoxDownloadActivityMock.Execute(esbChannel, datObj, String.Empty, String.Empty, out  errorResultTO, 0);
-            var debugOutputs = dropBoxDownloadActivityMock.GetDebugOutputs(executionEnvironment, 0);
+            dropBoxDownloadActivity.Execute(esbChannel, datObj, String.Empty, String.Empty, out  errorResultTO, 0);
+            var debugOutputs = dropBoxDownloadActivity.GetDebugOutputs(executionEnvironment, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugOutputs.Count);
         }
@@ -241,17 +241,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxDownloadSuccessResult(TestConstant.FileDownloadResponseInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock();
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity();
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownloadActivityMock);
+            Assert.IsNotNull(dropBoxDownloadActivity);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
             var dataObject = datObj.Object;
-            dropBoxDownloadActivityMock.Execute(dataObject, 0);
+            dropBoxDownloadActivity.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
         }
@@ -264,17 +264,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock() { FromPath = "File.txt" };
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity() { FromPath = "File.txt" };
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownloadActivityMock);
+            Assert.IsNotNull(dropBoxDownloadActivity);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
             var dataObject = datObj.Object;
-            dropBoxDownloadActivityMock.Execute(dataObject, 0);
+            dropBoxDownloadActivity.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
         }
@@ -287,17 +287,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock() { FromPath = "File.txt" , ToPath = "Test.a"};
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity() { FromPath = "File.txt" , ToPath = "Test.a"};
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownloadActivityMock);
+            Assert.IsNotNull(dropBoxDownloadActivity);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
             var dataObject = datObj.Object;
-            var dev2Activity = dropBoxDownloadActivityMock.Execute(dataObject, 0);
+            var dev2Activity = dropBoxDownloadActivity.Execute(dataObject, 0);
             //---------------Test Result -----------------------
         }
 
@@ -310,12 +310,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxDownloadSuccessResult(TestConstant.FileDownloadResponseInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock();
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity();
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownloadActivityMock);
+            Assert.IsNotNull(dropBoxDownloadActivity);
             //---------------Execute Test ----------------------
-            dropBoxDownloadActivityMock.PerfomBaseExecution(new Dictionary<string, string>()
+            dropBoxDownloadActivity.PerfomBaseExecution(new Dictionary<string, string>()
             {
                 {"FromPath",""},
                 {"ToPath",""}
@@ -536,22 +536,22 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock() { FromPath = "File.txt", ToPath = "Test.a" };
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropBoxDownloadActivityMock.SelectedSource =
+            var dropBoxDownloadActivity = new TestDsfDropBoxDownloadActivity { FromPath = "File.txt", ToPath = "Test.a" };
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
+            dropBoxDownloadActivity.SelectedSource =
                 new DropBoxSource
                 {
                     AccessToken = "Test"
                 };
-            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropBoxDownloadActivityMock.OverwriteFile = true;
-            dropBoxDownloadActivityMock.ToPath = @"C\test.tst";
-            dropBoxDownloadActivityMock.FromPath = @"C\test.tst";
+            dropBoxDownloadActivity.GetDropboxSingleExecutor(mockExecutor.Object);
+            dropBoxDownloadActivity.OverwriteFile = true;
+            dropBoxDownloadActivity.ToPath = @"C\test.tst";
+            dropBoxDownloadActivity.FromPath = @"C\test.tst";
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
-            var debugInputs = dropBoxDownloadActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            var debugInputs = dropBoxDownloadActivity.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, debugInputs.Count());
         }
