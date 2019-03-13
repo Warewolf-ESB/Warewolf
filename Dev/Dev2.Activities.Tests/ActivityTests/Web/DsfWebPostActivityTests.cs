@@ -654,7 +654,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
                     ResponseFromWeb = response,
-                    TestShouldError = true
+                    HasErrorMessage = "Some error"
                 };
                 //-----------------------Act-----------------------------
                 dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
@@ -668,7 +668,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
     public class TestDsfWebPostActivity : DsfWebPostActivity
     {
-        public bool TestShouldError { get; set; }
+        public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
@@ -677,7 +677,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Head = head;
             QueryRes = query;
             PostValue = postData;
-            if (TestShouldError)
+            if (!string.IsNullOrWhiteSpace(HasErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();
                 base._errorsTo.AddError(ResponseFromWeb);

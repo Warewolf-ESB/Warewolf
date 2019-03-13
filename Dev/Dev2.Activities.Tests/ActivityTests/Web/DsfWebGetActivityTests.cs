@@ -148,13 +148,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     QueryString = "test Query",
                     Headers = new List<INameValue>(),
                     ResponseFromWeb = response,
-                    TestShouldError = true
+                    HadErrorMessage = "Some error"
                 };
                 //-----------------------Act-----------------------------
                 dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
                 //-----------------------Assert--------------------------
                 Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
-                Assert.AreEqual(response, errorResultTO.FetchErrors()[0]);
+                Assert.AreEqual("Some error", errorResultTO.FetchErrors()[0]);
             }
         }
     }
@@ -220,16 +220,16 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
     public class TestDsfWebGetActivity : DsfWebGetActivity
     {
-        public bool TestShouldError { get; set; }
+        public string HadErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
         protected override string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource url)
         {
-            if (TestShouldError)
+            if (!string.IsNullOrWhiteSpace(HadErrorMessage))
             {
                 base._errorsTo = new ErrorResultTO();
-                base._errorsTo.AddError(ResponseFromWeb);
+                base._errorsTo.AddError(HadErrorMessage);
             }
             return ResponseFromWeb;
         }
