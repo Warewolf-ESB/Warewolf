@@ -28,7 +28,7 @@ namespace Dev2.Data.TO
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
-            if (!string.IsNullOrEmpty(msg) && (checkForDuplicates && !_errorList.Contains(msg.ToStringBuilder()) || !checkForDuplicates))
+            if (!string.IsNullOrEmpty(msg) && ((checkForDuplicates && FetchErrors().Count(o => o.Contains(msg)) < 1) || !checkForDuplicates))
             {
                 _errorList.Add(msg.ToStringBuilder());
             }
