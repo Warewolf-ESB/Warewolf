@@ -21,10 +21,7 @@ namespace Dev2.Common.Wrappers
     public class DirectoryInfoWrapper : IDirectoryInfo
     {
         readonly DirectoryInfo _info;
-        public DirectoryInfoWrapper(DirectoryInfo info)
-        {
-            _info = info;
-        }
+        public DirectoryInfoWrapper(DirectoryInfo info) => _info = info;
         public string FullName => _info.FullName;
     }
 
