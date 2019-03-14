@@ -25,16 +25,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     [TestClass]
     public class DateTimeParserTests
     {
-        [ClassInitialize]
-        public static void PreConditions(TestContext testContext)
-        {
-            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-
-            Assert.AreEqual("en-ZA", regionName);
-            Assert.AreEqual("en-ZA", regionNameUI);
-        }
-
         static IDateTimeParser _parser;
         
         public TestContext TestContext { get; set; }
@@ -48,6 +38,12 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public static void MyClassInitialize(TestContext testContext)
         {
             _parser = DateTimeConverterFactory.CreateParser();
+
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -65,9 +61,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         #endregion
 
         #region TryParseDateTime Tests
-            
+
         #region Valid Parse Formats
-            
+
         [TestMethod]
         public void TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
