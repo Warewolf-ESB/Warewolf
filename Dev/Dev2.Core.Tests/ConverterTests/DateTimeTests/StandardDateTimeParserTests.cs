@@ -25,6 +25,16 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     [TestClass]
     public class StandardDateTimeParserTests
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         static IDateTimeParser _parser;
 
         /// <summary>

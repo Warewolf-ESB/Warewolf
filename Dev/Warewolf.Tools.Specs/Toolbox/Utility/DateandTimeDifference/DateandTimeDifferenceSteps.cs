@@ -35,6 +35,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             }
 
             this.scenarioContext = scenarioContext;
+
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
         }
 
         protected override void BuildDataList()

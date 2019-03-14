@@ -17,6 +17,16 @@ namespace Dev2.Common.Tests.DateAndTime
     [TestClass]
     public class DateTimeConverterFactoryTests
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(DateTimeConverterFactory))]

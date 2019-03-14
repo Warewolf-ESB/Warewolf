@@ -9,6 +9,16 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DeleteRecord
     [TestClass]
     public class DsfDateTimeDifferenceActivityComparerTest
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()

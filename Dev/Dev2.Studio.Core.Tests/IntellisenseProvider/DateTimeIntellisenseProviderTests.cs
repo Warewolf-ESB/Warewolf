@@ -23,6 +23,16 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     [TestCategory("Intellisense Provider Core")]
     public class DateTimeIntellisenseProviderTests
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DateTimeIntellisenseProvider_Construct")]
