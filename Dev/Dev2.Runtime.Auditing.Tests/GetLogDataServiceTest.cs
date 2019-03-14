@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
@@ -76,7 +75,7 @@ namespace Dev2.Tests.Runtime.Auditing
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             // test
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
 
             //------------Execute Test---------------------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -102,7 +101,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             Assert.IsNotNull(logEntriesJson);
@@ -134,7 +133,7 @@ namespace Dev2.Tests.Runtime.Auditing
 
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutingUser", principal.Object.ToString().ToStringBuilder() } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
@@ -161,7 +160,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //------------Execute Test---------------------------
             var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionID", expectedExecutionId.ToString().ToStringBuilder() } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
@@ -216,7 +215,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
 
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
@@ -253,7 +252,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("WorkflowID", expectedWorkflowId.ToString().ToStringBuilder());
@@ -285,7 +284,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("ParentID", parentID.ToString().ToStringBuilder());
@@ -317,7 +316,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("ServerID", serverID.ToString().ToStringBuilder());
@@ -347,7 +346,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("WorkflowName", expectedWorkflowName.ToString().ToStringBuilder());
@@ -377,7 +376,7 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
+            _dev2StateAuditLogger.Flush();
 
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
@@ -409,8 +408,8 @@ namespace Dev2.Tests.Runtime.Auditing
             principal.Setup(o => o.Identity).Returns(() => new Mock<IIdentity>().Object);
             TestAuditSetupWithAssignedInputs(expectedWorkflowId, expectedWorkflowName, out _dev2StateAuditLogger, out _activity);
             _dev2StateAuditLogger.NewStateListener(_dSFDataObject).LogExecuteCompleteState(nextActivity.Object);
-            FlushAuditLogging();
-
+            _dev2StateAuditLogger.Flush();
+           
             //---------------Assert Precondition----------------
             var stringBuilders = new Dictionary<string, StringBuilder>();
             stringBuilders.Add("IsRemoteWorkflow", IsRemoteWorkflow.ToString().ToStringBuilder());
@@ -426,28 +425,26 @@ namespace Dev2.Tests.Runtime.Auditing
             }
         }
 
-        void FlushAuditLogging()
+        private Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject)
         {
-            Directory.Delete(@"C:\ProgramData\Warewolf\Audits", true);
-            _dev2StateAuditLogger.Flush();
+            return new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
         }
 
-        Dev2StateAuditLogger GetDev2AuditStateLogger(Mock<IDSFDataObject> mockedDataObject) => new Dev2StateAuditLogger(new DatabaseContextFactory(), new WarewolfQueue());
-
-        void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
+        private void GetMockedDataObject(Guid resourceId, string workflowName, out Mock<IDev2Activity> activity, out Mock<IDSFDataObject> mockedDataObject)
         {
             var executionId = Guid.NewGuid();
+            // setup
             mockedDataObject = SetupDataObjectWithAssignedInputs(resourceId, workflowName, executionId);
             activity = new Mock<IDev2Activity>();
         }
-
-        void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
+        private void TestAuditSetupWithAssignedInputs(Guid resourceId, string workflowName, out IDev2StateAuditLogger dev2AuditStateLogger, out Mock<IDev2Activity> activity)
         {
             GetMockedDataObject(resourceId, workflowName, out activity, out Mock<IDSFDataObject> mockedDataObject);
             dev2AuditStateLogger = GetDev2AuditStateLogger(mockedDataObject);
         }
-        Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
+        private Mock<IDSFDataObject> SetupDataObjectWithAssignedInputs(Guid resourceId, string workflowName, Guid executionId)
         {
+            // mocks
             var mockedDataObject = new Mock<IDSFDataObject>();
             mockedDataObject.Setup(o => o.Environment).Returns(() => new ExecutionEnvironment());
             mockedDataObject.Setup(o => o.ServiceName).Returns(() => workflowName);
