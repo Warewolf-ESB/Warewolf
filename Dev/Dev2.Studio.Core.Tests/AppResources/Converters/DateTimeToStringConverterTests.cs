@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
             //------------Execute Test---------------------------
             var convertedValue = dateTimeToStringConverter.Convert(dateTimeToConvert, null, null, null);
             //------------Assert Results-------------------------
-            Assert.IsTrue("2014/01/02 10:15:52.0520 AM" == convertedValue || "02/01/2014 10:15:52.0520 AM" == convertedValue, "Converted date time string does not contain split seconds.");
+            Assert.IsTrue("2014/01/02 10:15:52.0520 AM" == convertedValue || "02/01/2014 10:15:52.0520 AM" == convertedValue, $"{convertedValue} string does not contain split seconds.");
         }
 
         [TestMethod]
