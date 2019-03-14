@@ -23,14 +23,14 @@ namespace Dev2.Data.TO
     [Serializable]
     public class ErrorResultTO : IErrorResultTO
     {
-        readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
+        readonly IList<string> _errorList = new List<string>();
         
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
             if (!string.IsNullOrEmpty(msg) && ((checkForDuplicates && FetchErrors().Count(o => o.Contains(msg)) < 1) || !checkForDuplicates))
             {
-                _errorList.Add(msg.ToStringBuilder());
+                _errorList.Add(msg);
             }
 
         }
@@ -44,7 +44,7 @@ namespace Dev2.Data.TO
             }
         }
         
-        public IList<string> FetchErrors() => _errorList.Select(e => e.ToString()).ToList();
+        public IList<string> FetchErrors() => _errorList.ToList();
         
         public bool HasErrors() => _errorList.Count > 0;
         
@@ -55,7 +55,7 @@ namespace Dev2.Data.TO
                 // Flipping Union does not appear to work
                 foreach (string wtf in toMerge.FetchErrors())
                 {
-                    _errorList.Add(wtf.ToStringBuilder());
+                    _errorList.Add(wtf);
                 }
 
                 toMerge.ClearErrors();
@@ -70,7 +70,7 @@ namespace Dev2.Data.TO
         {
             var result = new StringBuilder();
 
-            foreach(StringBuilder e in _errorList)
+            foreach(string e in _errorList)
             {
                 result.Append(e);
                 if(_errorList.IndexOf(e) + 1 < _errorList.Count)
@@ -97,9 +97,9 @@ namespace Dev2.Data.TO
             }
 
             var errCnt = 0;
-            foreach (StringBuilder e in _errorList)
+            foreach (string e in _errorList)
             {
-                var formattedMsg = FormatErrorMessage(e.ToString());
+                var formattedMsg = FormatErrorMessage(e);
                 if(asXml)
                 {
                     result.Append(GlobalConstants.InnerErrorTag);
@@ -108,7 +108,6 @@ namespace Dev2.Data.TO
                 }
                 else
                 {
-                    // we want JSON ;)
                     result.Append("\"");
                     result.Append(formattedMsg);
                     result.Append("\"");

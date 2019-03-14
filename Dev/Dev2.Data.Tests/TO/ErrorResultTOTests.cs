@@ -8,7 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Data.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,7 +34,7 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
             Assert.AreEqual("<InnerError>some message</InnerError>", resultTo.MakeDataListReady());
         }
-
+        
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ErrorResultTO))]
@@ -50,6 +52,25 @@ namespace Dev2.Data.Tests.TO
             Assert.AreEqual("<InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_AddError_CheckForDuplicates_False_AddSameError_ExpectAdd()
+        {
+            var resultTo = new ErrorResultTO();
+            resultTo.AddError("some message", false);
+            resultTo.AddError("some message", false);
+            resultTo.AddError("some message", true);
+            resultTo.AddError("deferent message", false);
+
+            Assert.IsTrue(resultTo.HasErrors());
+            Assert.AreEqual(3, resultTo.FetchErrors().Count);
+            Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
+            Assert.AreEqual("some message", resultTo.FetchErrors()[1]);
+            Assert.AreEqual("deferent message", resultTo.FetchErrors()[2]);
+            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
+        }
+        
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]
