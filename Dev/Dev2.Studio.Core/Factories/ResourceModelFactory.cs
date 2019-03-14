@@ -63,7 +63,9 @@ namespace Dev2.Studio.Core.Factories
             return null;
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static IContextualResourceModel SetResourceProperties(string resourceType, string resourceName, string displayName, IContextualResourceModel resource)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             switch (resourceType)
             {
