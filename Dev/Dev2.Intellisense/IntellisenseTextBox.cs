@@ -83,7 +83,9 @@ namespace Dev2.UI
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         protected override void OnPreviewKeyDown(KeyEventArgs e)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             base.OnPreviewKeyDown(e);
             var isOpen = IsDropDownOpen;
