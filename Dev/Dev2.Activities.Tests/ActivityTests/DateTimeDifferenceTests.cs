@@ -21,6 +21,16 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         public TestContext TestContext { get; set; }
 
         #region Positive Test Cases

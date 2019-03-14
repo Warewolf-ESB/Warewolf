@@ -24,6 +24,16 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
     [TestClass]
     public class DateTimeViewModelTests
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         [TestMethod]
         [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
         [Description("DateTime ViewModel clears the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to a blank string")]

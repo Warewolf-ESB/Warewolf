@@ -16,6 +16,16 @@ namespace Dev2.Data.Tests.DecisionsTests
     [TestClass]
     public class IsNotDateTests
     {
+        [ClassInitialize]
+        public static void PreConditions(TestContext testContext)
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GivenSomeString_IsNotDate_Invoke_ReturnsFalse()
