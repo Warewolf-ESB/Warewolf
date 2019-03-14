@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Moq;
+using System.Threading;
 
 namespace Dev2.Common.Tests
 {
@@ -120,6 +121,24 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(executed);
         }
 
+        class MyWindowsIdentity : WindowsIdentity
+        {
+            public int ImpersonateCallCount { get; private set; }
+            protected MyWindowsIdentity(WindowsIdentity identity) : base(identity)
+            {
+            }
+            public static MyWindowsIdentity New(WindowsIdentity identity)
+            {
+                return new MyWindowsIdentity(identity);
+            }
+
+            public override WindowsImpersonationContext Impersonate()
+            {
+                ImpersonateCallCount++;
+                return base.Impersonate();
+            }
+        }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(Utilities))]
@@ -127,13 +146,39 @@ namespace Dev2.Common.Tests
         {
             var executed = false;
             var mockPrincipal = new Mock<IPrincipal>();
+            var identity = MyWindowsIdentity.New(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(identity);
 
             Utilities.OrginalExecutingUser = mockPrincipal.Object;
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             Assert.IsTrue(executed);
+
+            Assert.AreEqual(1, identity.ImpersonateCallCount);
+            Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Utilities))]
+        public void Utilities_PerformActionInsideImpersonatedContext_GivenPrincipalAlreadyImpersonated_ShouldExecuteWithImpersonation()
+        {
+            var executed = false;
+            var mockPrincipal = new Mock<IPrincipal>();
+            var identity = MyWindowsIdentity.New(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(identity);
+
+            Thread.CurrentPrincipal = mockPrincipal.Object;
+
+            Utilities.OrginalExecutingUser = mockPrincipal.Object;
+
+            Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => { executed = true; });
+
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
+            Assert.IsTrue(executed);
+            Assert.AreEqual(0, identity.ImpersonateCallCount);
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
         }
@@ -149,7 +194,7 @@ namespace Dev2.Common.Tests
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, null);
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
 
             Assert.AreEqual(mockPrincipal.Object, Utilities.OrginalExecutingUser);
         }
@@ -179,7 +224,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("An anonymous identity cannot perform an impersonation.", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(executed);
@@ -200,7 +245,7 @@ namespace Dev2.Common.Tests
             mockServerUserPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
             Utilities.ServerUser = mockServerUserPrincipal.Object;
 
-            bool shouldThrow = true;
+            var shouldThrow = true;
 
             Utilities.PerformActionInsideImpersonatedContext(mockPrincipal.Object, () => {
                 if (shouldThrow)
@@ -211,7 +256,7 @@ namespace Dev2.Common.Tests
                 executed = true;
             });
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.IsFalse(shouldThrow);
@@ -246,7 +291,7 @@ namespace Dev2.Common.Tests
                 Assert.AreEqual("some exception", e.Message);
             }
 
-            mockPrincipal.Verify(o => o.Identity, Times.Once);
+            mockPrincipal.Verify(o => o.Identity, Times.Exactly(2));
             mockServerUserPrincipal.Verify(o => o.Identity, Times.Once);
 
             Assert.AreEqual(2, executedCount);
