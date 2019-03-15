@@ -36,7 +36,7 @@ namespace Dev2.Activities
         {
             tmpErrors = new ErrorResultTO();
 
-            var (head, query, _) = ConfirureHttp(dataObject, update);
+            var (head, query, _) = ConfigureHttp(dataObject, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebRequest(head, query, url, string.Empty);
@@ -47,7 +47,7 @@ namespace Dev2.Activities
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
-        private (IEnumerable<NameValue> head, string query, string data) ConfirureHttp(IDSFDataObject dataObject, int update)
+        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
         {
             IEnumerable<NameValue> head = null;
             if (Headers != null)
