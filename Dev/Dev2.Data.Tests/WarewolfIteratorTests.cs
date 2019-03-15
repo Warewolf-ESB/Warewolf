@@ -178,10 +178,6 @@ namespace Dev2.Data.Tests
         [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalarWithCalculate()
         {
-            var cultureInfo = new System.Globalization.CultureInfo("en-US");
-            System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
-
             var item1 = DataStorage.WarewolfAtom.NewDataString("!~calculation~!\"now()\"!~~calculation~!");
 
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(item1);
