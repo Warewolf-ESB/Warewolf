@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Security.Principal;
+using Dev2.Common;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -100,7 +101,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var windowsGroupPermission = new WindowsGroupPermission
             {
                 IsServer = true,
-                WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText
+                WindowsGroup = GlobalConstants.WarewolfGroup
             };
 
             var isInRole = PrincipalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
@@ -125,6 +126,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             Assert.IsFalse(isInRole);
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PrincipalIsInRole))]
@@ -133,22 +135,28 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var mockUserIdentity = new Mock<IUserIdentity>();
             mockUserIdentity.Setup(o => o.Groups).Returns(new List<IGroup> { });
 
-            var windowPrincipal = new WindowsPrincipalWrapper(new WindowsPrincipal(TestWindowsIdentity.New(WindowsIdentity.GetAnonymous())))
+            var windowPrincipal = new WindowsPrincipalWrapper(new WindowsPrincipal(TestWindowsIdentity.New(WindowsIdentity.GetCurrent())))
             {
                 Identity = mockUserIdentity.Object
             };
 
             var isInRole = windowPrincipal.IsWarewolfAdmin();
 
-            Assert.IsFalse(isInRole);
+            Assert.IsTrue(isInRole);
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(PrincipalIsInRole))]
-        public void PrincipalIsInRole_UserIsInWeirdAdminGroup()
+        public void PrincipalIsInRole_UserIsInWeirdAdminGroup_Matching_AdminSid()
         {
+            var adminSid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+
             var mockUserIdentity = new Mock<IUserIdentity>();
-            mockUserIdentity.Setup(o => o.Groups).Returns(new List<IGroup> { });
+            var mockGroup = new Mock<IGroup>();
+            mockGroup.Setup(group => group.Id).Returns(adminSid.Value);
+            var groups = new List<IGroup> { mockGroup.Object };
+            mockUserIdentity.Setup(o => o.Groups).Returns(groups);
 
             var windowPrincipal = new WindowsPrincipalWrapper(new WindowsPrincipal(TestWindowsIdentity.New(WindowsIdentity.GetAnonymous())))
             {
@@ -157,7 +165,29 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             var isInRole = windowPrincipal.IsWarewolfAdmin();
 
-            Assert.IsFalse(isInRole);
+            Assert.IsTrue(isInRole);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(PrincipalIsInRole))]
+        public void PrincipalIsInRole_UserIsInWeirdAdminGroup_Matching_GroupName()
+        {
+            var mockUserIdentity = new Mock<IUserIdentity>();
+            var mockGroup = new Mock<IGroup>();
+            mockGroup.Setup(group => group.Id).Returns("");
+            mockGroup.Setup(group => group.Name).Returns(GlobalConstants.WarewolfGroup);
+            var groups = new List<IGroup> { mockGroup.Object };
+            mockUserIdentity.Setup(o => o.Groups).Returns(groups);
+
+            var windowPrincipal = new WindowsPrincipalWrapper(new WindowsPrincipal(TestWindowsIdentity.New(WindowsIdentity.GetAnonymous())))
+            {
+                Identity = mockUserIdentity.Object
+            };
+
+            var isInRole = windowPrincipal.IsWarewolfAdmin();
+
+            Assert.IsTrue(isInRole);
         }
     }
 

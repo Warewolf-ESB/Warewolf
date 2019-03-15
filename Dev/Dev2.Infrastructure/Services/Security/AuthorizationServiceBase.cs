@@ -104,7 +104,6 @@ namespace Dev2.Services.Security
         bool IsWarewolfAdmin();
     }
     
-
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         private readonly IDirectoryEntryFactory _directoryEntryFactory;
@@ -137,7 +136,7 @@ namespace Dev2.Services.Security
                     ad.Children.SchemaFilter.Add("group");
                     foreach (IDirectoryEntry dChildEntry in ad.Children)
                     {
-                        if (dChildEntry.Name != "Warewolf Administrators")
+                        if (dChildEntry.Name != GlobalConstants.WarewolfGroup)
                         {
                             continue;
                         }
@@ -308,7 +307,7 @@ namespace Dev2.Services.Security
         {
             if (!_isLocalConnection)
             {
-                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
+                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(GlobalConstants.WarewolfGroup));
                 if (adminGroup != null)
                 {
                     groupPermissions.Remove(adminGroup);
@@ -329,7 +328,7 @@ namespace Dev2.Services.Security
             try
             {
                 var windowsGroup = permission.WindowsGroup;
-                if (windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                if (windowsGroup == GlobalConstants.WarewolfGroup)
                 {
                     if (!string.IsNullOrEmpty(principal.Identity.Name))
                     {
@@ -362,18 +361,16 @@ namespace Dev2.Services.Security
         readonly WindowsPrincipal _user;
         public IUserIdentity Identity { get; set; }
 
-
         public WindowsPrincipalWrapper(WindowsPrincipal windowsPrincipal)
         {
             _user = windowsPrincipal;
         }
 
-        public bool IsAdmin => _user.IsInRole(WindowsBuiltInRole.Administrator) || _user.IsInRole(WindowsGroupPermission.BuiltInAdministratorsText) || _user.IsInRole(_adminSid);
-
+        public bool IsAdmin => _user.IsInRole(WindowsBuiltInRole.Administrator) || _user.IsInRole(GlobalConstants.WarewolfGroup) || _user.IsInRole(_adminSid);
 
         public bool IsWarewolfAdmin()
         {
-            if (_user.IsInRole(WindowsGroupPermission.BuiltInAdministratorsText))
+            if (_user.IsInRole(GlobalConstants.WarewolfGroup))
             {
                 return true;
             }
@@ -397,7 +394,7 @@ namespace Dev2.Services.Security
                             var translatedName = group.Name;
                             if (translatedName != null)
                             {
-                                return translatedName == WindowsGroupPermission.BuiltInAdministratorsText;
+                                return translatedName == GlobalConstants.WarewolfGroup;
                             }
                         }
                         catch (Exception)
@@ -421,10 +418,10 @@ namespace Dev2.Services.Security
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    var notAdmin = dChildEntry.Name != WindowsGroupPermission.BuiltInAdministratorsText;
+                    var notAdmin = dChildEntry.Name != GlobalConstants.WarewolfGroup;
                     notAdmin &= dChildEntry.Name != windowsBuiltInRole;
                     notAdmin &= dChildEntry.Name != "Administrators";
-                    notAdmin &= dChildEntry.Name != "BUILTIN\\Administrators";
+                    notAdmin &= dChildEntry.Name != WindowsGroupPermission.AdministratorsText;
 
                     if (notAdmin)
                     {

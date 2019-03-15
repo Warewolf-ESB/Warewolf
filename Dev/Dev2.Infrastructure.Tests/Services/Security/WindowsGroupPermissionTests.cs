@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -177,7 +178,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
-            var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText };
+            var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             //------------Assert Results-------------------------
             Assert.IsFalse(p.IsBuiltInAdministrators);
@@ -205,7 +206,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
-            var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText };
+            var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             //------------Assert Results-------------------------
             Assert.IsTrue(p.IsBuiltInAdministrators);
@@ -341,7 +342,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Assert.IsTrue(p.DeployTo);
             Assert.IsTrue(p.DeployFrom);
             Assert.IsTrue(p.Administrator);
-            Assert.AreEqual(WindowsGroupPermission.BuiltInAdministratorsText, p.WindowsGroup);
+            Assert.AreEqual(GlobalConstants.WarewolfGroup, p.WindowsGroup);
             Assert.AreEqual(Guid.Empty, p.ResourceID);
         }
 

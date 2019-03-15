@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(2, readSecuritySettings.WindowsGroupPermissions.Count);
 
-            Assert.AreEqual(WindowsGroupPermission.BuiltInAdministratorsText, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
+            Assert.AreEqual(GlobalConstants.WarewolfGroup, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].IsServer);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].View);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].Execute);
@@ -373,7 +373,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(2, readSecuritySettings.WindowsGroupPermissions.Count);
 
-            Assert.AreEqual(WindowsGroupPermission.BuiltInAdministratorsText, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
+            Assert.AreEqual(GlobalConstants.WarewolfGroup, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].IsServer);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].View);
             Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].Execute);

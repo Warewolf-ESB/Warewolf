@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -24,7 +25,6 @@ namespace Dev2.Services.Security
             CanChangeName = true;
         }
 
-        public const string BuiltInAdministratorsText = "Warewolf Administrators";
         public const string AdministratorsText = "BuiltIn\\Administrators";
         public const string BuiltInGuestsText = "Public";
 
@@ -46,29 +46,21 @@ namespace Dev2.Services.Security
 
         public bool IsServer
         {
-            get
-            {
-                return _isServer;
-            }
+            get => _isServer;
             set
             {
                 OnPropertyChanged(ref _isServer, value);
                 RemoveRow.RaiseCanExecuteChanged();
             }
         }
-
         
         public Guid ResourceID { get => _resourceId; set => OnPropertyChanged(ref _resourceId, value); }
-
 
         public string ResourceName { get => _resourceName; set => OnPropertyChanged(ref _resourceName, value); }
 
         public string WindowsGroup
         {
-            get
-            {
-                return _windowsGroup;
-            }
+            get => _windowsGroup;
             set
             {
                 OnPropertyChanged(ref _windowsGroup, value);
@@ -81,10 +73,7 @@ namespace Dev2.Services.Security
 
         public bool IsDeleted
         {
-            get
-            {
-                return _isDeleted;
-            }
+            get => _isDeleted;
             set
             {
                 OnPropertyChanged(ref _isDeleted, value);
@@ -134,7 +123,6 @@ namespace Dev2.Services.Security
                            }, o => CanRemove));
 
         public bool CanRemove => !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests && !IsBuiltInAdministrators;
-
 
         public bool View { get => _view; set => OnPropertyChanged(ref _view, value); }
 
@@ -195,7 +183,7 @@ namespace Dev2.Services.Security
         }
 
         [JsonIgnore]
-        public bool IsBuiltInAdministrators => WindowsGroup != null && IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
+        public bool IsBuiltInAdministrators => WindowsGroup != null && IsServer && WindowsGroup.Equals(GlobalConstants.WarewolfGroup, StringComparison.InvariantCultureIgnoreCase);
 
         [JsonIgnore]
         public bool IsBuiltInGuests => IsServer && IsBuiltInGuestsForExecution;
@@ -211,14 +199,13 @@ namespace Dev2.Services.Security
         public static WindowsGroupPermission CreateAdministrators() => new WindowsGroupPermission
         {
             IsServer = true,
-            WindowsGroup = BuiltInAdministratorsText,
+            WindowsGroup = GlobalConstants.WarewolfGroup,
             View = true,
             Execute = true,
             Contribute = true,
             DeployTo = true,
             DeployFrom = true,
             Administrator = true
-
         };
 
         public static WindowsGroupPermission CreateEveryone()
@@ -233,8 +220,7 @@ namespace Dev2.Services.Security
                 DeployTo = true,
                 DeployFrom = true,
                 Administrator = true
-            }
-;
+            };
         }
 
         public static WindowsGroupPermission CreateGuests() => new WindowsGroupPermission
@@ -247,7 +233,6 @@ namespace Dev2.Services.Security
             DeployTo = false,
             DeployFrom = false,
             Administrator = false
-
         };
     }
 }

@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel;
+using Dev2.Common;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -91,7 +92,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var comparer = new WindowsGroupPermissionComparer(ListSortDirection.Ascending, "WindowsGroup");
 
             //------------Execute Test---------------------------
-            var result = comparer.Compare(new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText }, new WindowsGroupPermission());
+            var result = comparer.Compare(new WindowsGroupPermission { IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup }, new WindowsGroupPermission());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(int.MinValue, result);
@@ -106,7 +107,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var comparer = new WindowsGroupPermissionComparer(ListSortDirection.Ascending, "WindowsGroup");
 
             //------------Execute Test---------------------------
-            var result = comparer.Compare(new WindowsGroupPermission(), new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText });
+            var result = comparer.Compare(new WindowsGroupPermission(), new WindowsGroupPermission { IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup });
 
             //------------Assert Results-------------------------
             Assert.AreEqual(int.MaxValue, result);

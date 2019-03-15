@@ -85,9 +85,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (permissionGroup.Count > 0)
             {
                 var adminGrp = permissionGroup[0].WindowsGroup;
-                if (adminGrp == "BuiltIn\\Administrators")
+                if (adminGrp == WindowsGroupPermission.AdministratorsText)
                 {
-                    permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
+                    permissionGroup[0].WindowsGroup = GlobalConstants.WarewolfGroup;
                     decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                 }
             }
