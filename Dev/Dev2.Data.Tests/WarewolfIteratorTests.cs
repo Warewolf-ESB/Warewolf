@@ -178,6 +178,10 @@ namespace Dev2.Data.Tests
         [TestCategory(nameof(WarewolfIterator))]
         public void WarewolfIterator_Construct_GivenScalarWithCalculate()
         {
+            var cultureInfo = new System.Globalization.CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
+
             var item1 = DataStorage.WarewolfAtom.NewDataString("!~calculation~!\"now()\"!~~calculation~!");
 
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(item1);
@@ -191,7 +195,7 @@ namespace Dev2.Data.Tests
             Assert.IsTrue(iterator.HasMoreData());
             var realNow = DateTime.Now;
             var nowString = iterator.GetNextValue();
-            var now = DateTime.Parse(nowString);
+            var now = DateTime.Parse(nowString, System.Globalization.CultureInfo.InvariantCulture);
             Assert.IsTrue(now > realNow);
         }
 
