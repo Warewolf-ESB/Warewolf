@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices;
 using System.Linq;
 using System.Security.Principal;
@@ -24,6 +25,86 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Security
 {
+    public interface IUserIdentity
+    {
+        IEnumerable<IGroup> Groups { get; }
+        bool IsAnonymous { get; }
+        bool IsAuthenticated { get; }
+        bool IsGuest { get; }
+        bool IsSystem { get; }
+        string Name { get; }
+        IWindowsImpersonationContext Impersonate();
+    }
+
+    public interface IGroup
+    {
+        string Id { get; }
+        string Name { get; }
+    }
+
+    public interface IWindowsImpersonationContext
+    {
+
+    }
+
+    class WindowsImpersonationContextWrapper : IWindowsImpersonationContext
+    {
+        readonly WindowsImpersonationContext _windowsImpersonationContext;
+
+        public WindowsImpersonationContextWrapper(WindowsImpersonationContext windowsImpersonationContext)
+        {
+            _windowsImpersonationContext = windowsImpersonationContext;
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    class WindowsGroupWrapper : IGroup
+    {
+        readonly IdentityReference _group;
+
+        public WindowsGroupWrapper(IdentityReference group)
+        {
+            this._group = group;
+        }
+
+        public string Id => _group.Value;
+
+        public string Name => _group.Translate(typeof(NTAccount))?.Value;
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class WindowsIdentityWrapper : IUserIdentity
+    {
+        private readonly WindowsIdentity _windowsIdentity;
+
+        public WindowsIdentityWrapper(WindowsIdentity identity)
+        {
+            _windowsIdentity = identity;
+        }
+
+        public IEnumerable<IGroup> Groups => _windowsIdentity.Groups.Select(group => new WindowsGroupWrapper(group));
+
+        public bool IsAnonymous => _windowsIdentity.IsAnonymous;
+
+        public bool IsAuthenticated => _windowsIdentity.IsAuthenticated;
+
+        public bool IsGuest => _windowsIdentity.IsGuest;
+
+        public bool IsSystem => _windowsIdentity.IsSystem;
+
+        public string Name => _windowsIdentity.Name;
+
+        public IWindowsImpersonationContext Impersonate() => new WindowsImpersonationContextWrapper(_windowsIdentity.Impersonate());
+    }
+
+    public interface IUser
+    {
+        bool IsAdmin { get; }
+
+        bool IsWarewolfAdmin();
+    }
+    
+
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         private readonly IDirectoryEntryFactory _directoryEntryFactory;
@@ -36,6 +117,7 @@ namespace Dev2.Services.Security
         : this(new DirectoryEntryFactory(), securityService, isLocalConnection)
         {
         }
+
         protected AuthorizationServiceBase(IDirectoryEntryFactory directoryEntryFactory, ISecurityService securityService, bool isLocalConnection)
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
@@ -77,7 +159,6 @@ namespace Dev2.Services.Security
 
                 return false;
             };
-
         }
 
         protected virtual bool IsGroupNameAdministrators<T>(T member, string adGroup)
@@ -110,6 +191,7 @@ namespace Dev2.Services.Security
             }
             throw new Exception(ErrorResource.CannotFindGroup);
         }
+
         public event EventHandler PermissionsChanged;
         EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
         readonly object _getPermissionsLock = new object();
@@ -133,13 +215,12 @@ namespace Dev2.Services.Security
             return result;
         }
 
-        public List<WindowsGroupPermission> GetPermissions(IPrincipal user)
+        public List<WindowsGroupPermission> GetPermissions(IPrincipal principal)
         {
             lock (_getPermissionsLock)
             {
-                var serverPermissions = _securityService.Permissions.ToList();
-                var resourcePermissions = serverPermissions.Where(p => IsInRole(user, p) && !p.IsServer).ToList();
-                var serverPermissionsForUser = serverPermissions.Where(p => IsInRole(user, p) && (p.IsServer || p.ResourceID == Guid.Empty)).ToList();
+                var resourcePermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && !permission.IsServer).ToList();
+                var serverPermissionsForUser = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && (permission.IsServer || permission.ResourceID == Guid.Empty)).ToList();
                 var groupPermissions = new List<WindowsGroupPermission>();
                 groupPermissions.AddRange(resourcePermissions);
                 groupPermissions.AddRange(serverPermissionsForUser);
@@ -175,9 +256,7 @@ namespace Dev2.Services.Security
 
         protected void DumpPermissionsOnError(IPrincipal principal)
         {
-
             Dev2Logger.Error(principal.Identity != null ? "PERM DUMP FOR [ " + principal.Identity.Name + " ]" : "PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
-
 
             foreach (var perm in _securityService.Permissions)
             {
@@ -192,25 +271,23 @@ namespace Dev2.Services.Security
             var groupPermissions = getGroupPermissions?.Invoke();
             if (context == AuthorizationContext.Any)
             {
-                groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
-                return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
+                groupPermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission)).ToList();
             }
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
         protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
-            var serverPermissions = _securityService.Permissions;
-            var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
+            var resourcePermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && !permission.IsServer && permission.Matches(resource)).ToList();
             var groupPermissions = new List<WindowsGroupPermission>();
 
-            foreach (var permission in serverPermissions)
+            foreach (var permission in _securityService.Permissions)
             {
                 if (resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
                 {
                     continue;
                 }
-                if (IsInRole(principal, permission) && permission.Matches(resource))
+                if (PrincipalIsInRole.IsInRole(principal, permission) && permission.Matches(resource))
                 {
                     groupPermissions.Add(permission);
                 }
@@ -220,22 +297,43 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
         {
-            var isInRole = false;
+            var groupPermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission)).ToList();
+            FilterAdminGroupForRemote(groupPermissions);
+            return groupPermissions;
+        }
+
+        void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
+        {
+            if (!_isLocalConnection)
+            {
+                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
+                if (adminGroup != null)
+                {
+                    groupPermissions.Remove(adminGroup);
+                }
+            }
+        }
+    }
+
+    public static class PrincipalIsInRole
+    {
+        public static bool IsInRole(IPrincipal principal, WindowsGroupPermission permission)
+        {
             if (principal == null)
             {
-                return p.IsBuiltInGuestsForExecution;
+                return permission.IsBuiltInGuestsForExecution;
             }
+            var isInRole = false;
             try
             {
-                var windowsGroup = p.WindowsGroup;
+                var windowsGroup = permission.WindowsGroup;
                 if (windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
-                    var principleName = principal.Identity.Name;
-                    if (!string.IsNullOrEmpty(principleName))
+                    if (!string.IsNullOrEmpty(principal.Identity.Name))
                     {
-                        return TryIsInRole(principal, windowsGroup);
+                        return new WindowsPrincipalWrapper(principal as WindowsPrincipal).IsWarewolfAdmin();
                     }
                 }
                 else
@@ -245,91 +343,72 @@ namespace Dev2.Services.Security
             }
             catch (ObjectDisposedException e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
                 throw;
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
 
+            return isInRole || permission.IsBuiltInGuestsForExecution;
+        }
+    }
 
-            return isInRole || p.IsBuiltInGuestsForExecution;
+    class WindowsPrincipalWrapper : IUser
+    {
+        static readonly SecurityIdentifier _adminSid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+
+        readonly WindowsPrincipal _user;
+        public IUserIdentity Identity { get; set; }
+
+
+        public WindowsPrincipalWrapper(WindowsPrincipal windowsPrincipal)
+        {
+            _user = windowsPrincipal;
         }
 
-        bool TryIsInRole(IPrincipal principal, string windowsGroup)
+        public bool IsAdmin => _user.IsInRole(WindowsBuiltInRole.Administrator) || _user.IsInRole(WindowsGroupPermission.BuiltInAdministratorsText) || _user.IsInRole(_adminSid);
+
+
+        public bool IsWarewolfAdmin()
         {
-            bool isInRole = principal.IsInRole(windowsGroup);
-            if (!isInRole)
+            if (_user.IsInRole(WindowsGroupPermission.BuiltInAdministratorsText))
             {
-                isInRole = DoFallBackCheck(principal);
+                return true;
             }
-            if (!isInRole)
+            if (IsAdmin)
             {
-                isInRole = IsInRole(principal, windowsGroup);
+                return _user.IsInRole(_adminSid.Value);
             }
-            if (!isInRole)
-            {
-                isInRole = DoFallBackCheck(principal);
-            }
-            return isInRole;
+
+            return IsInBuiltInAdministratorsGroup() || IsUserAdminOnActiveDirectory(_user.Identity.Name);
         }
 
-        static bool IsInRole(IPrincipal principal, string windowsGroup)
-        {
-            bool isInRole;
-            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
-            var windowsPrincipal = principal as WindowsPrincipal;
-            var windowsIdentity = principal.Identity as WindowsIdentity;
-            if (windowsPrincipal != null)
-            {
-                isInRole = IsInRole(windowsGroup, sid, windowsPrincipal, windowsIdentity);
-            }
-            else
-            {
-                isInRole = principal.IsInRole(sid.Value);
-            }
-
-            return isInRole;
-        }
-
-        static bool IsInRole(string windowsGroup, SecurityIdentifier sid, WindowsPrincipal windowsPrincipal, WindowsIdentity windowsIdentity)
-        {
-            bool isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
-            if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)
-            {
-                isInRole = windowsIdentity.Groups.Any(reference =>
-                {
-                    if (reference.Value == sid.Value)
+        bool IsInBuiltInAdministratorsGroup() =>
+                    Identity.Groups.Any(group =>
                     {
-                        return true;
-                    }
-                    try
-                    {
-                        var identityReference = reference.Translate(typeof(NTAccount));
-                        if (identityReference != null)
+                        if (group.Id == _adminSid.Value)
                         {
-                            return identityReference.Value == windowsGroup;
+                            return true;
                         }
-                    }
-                    catch (Exception)
-                    {
+                        try
+                        {
+                            var translatedName = group.Name;
+                            if (translatedName != null)
+                            {
+                                return translatedName == WindowsGroupPermission.BuiltInAdministratorsText;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            return false;
+                        }
                         return false;
-                    }
-                    return false;
-                });
-            }
+                    });
 
-            return isInRole;
-        }
-
-        bool DoFallBackCheck(IPrincipal principal)
+        public static bool IsUserAdminOnActiveDirectory(string username)
         {
-            var username = principal?.Identity?.Name;
-            if (username == null)
-            {
-                return false;
-            }
             var theUser = username;
             var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
             if (domainChar >= 0)
@@ -342,7 +421,12 @@ namespace Dev2.Services.Security
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name != WindowsGroupPermission.BuiltInAdministratorsText && dChildEntry.Name != windowsBuiltInRole && dChildEntry.Name != "Administrators" && dChildEntry.Name != "BUILTIN\\Administrators")
+                    var notAdmin = dChildEntry.Name != WindowsGroupPermission.BuiltInAdministratorsText;
+                    notAdmin &= dChildEntry.Name != windowsBuiltInRole;
+                    notAdmin &= dChildEntry.Name != "Administrators";
+                    notAdmin &= dChildEntry.Name != "BUILTIN\\Administrators";
+
+                    if (notAdmin)
                     {
                         continue;
                     }
@@ -365,25 +449,6 @@ namespace Dev2.Services.Security
                 }
             }
             return false;
-        }
-
-        IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
-        {
-            var groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
-            FilterAdminGroupForRemote(groupPermissions);
-            return groupPermissions;
-        }
-
-        void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
-        {
-            if (!_isLocalConnection)
-            {
-                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
-                if (adminGroup != null)
-                {
-                    groupPermissions.Remove(adminGroup);
-                }
-            }
         }
     }
 }

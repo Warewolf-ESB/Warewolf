@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -32,59 +32,57 @@ namespace Dev2.Infrastructure.Tests.Services.Security
     {
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_Constructor")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AuthorizationServiceBase_Constructor_SecurityServiceIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-
             //------------Execute Test---------------------------
-            
             new TestAuthorizationServiceBase(null);
-            
-
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_Constructor")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_Constructor_PermissionsChangedEvent_WiredUp()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
-
-            //------------Execute Test---------------------------
-            securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, authorizationService.RaisePermissionsChangedHitCount);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object))
+            {
+                //------------Execute Test---------------------------
+                securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, authorizationService.RaisePermissionsChangedHitCount);
+            }
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AuthorizationServiceBase_Constructor")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_Constructor_PermissionsModifiedEventSubscribedTwice_OnlyOneEventIsWiredUp()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
-            authorizationService.PermissionsModified += (sender, args) => { };
-            authorizationService.PermissionsModified += (sender, args) => { };
-            //------------Execute Test---------------------------
-            securityService.Raise(m => m.PermissionsModified += null, EventArgs.Empty, null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, authorizationService.RaisePermissionsModifiedHitCount);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object))
+            {
+                authorizationService.PermissionsModified += (sender, args) => { };
+                authorizationService.PermissionsModified += (sender, args) => { };
+                //------------Execute Test---------------------------
+                securityService.Raise(m => m.PermissionsModified += null, EventArgs.Empty, null);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, authorizationService.RaisePermissionsModifiedHitCount);
+            }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndResourceToBeVerifiedIsNull_False()
         {
             //------------Setup for test--------------------------
@@ -96,18 +94,19 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.IsAuthorized(AuthorizationContext.Contribute, null);
 
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.IsAuthorized(AuthorizationContext.Contribute, null);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsNotInRole_False()
         {
             //------------Setup for test--------------------------
@@ -119,21 +118,21 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
-
-                //------------Assert Results-------------------------
-                Assert.IsFalse(authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                    //------------Assert Results-------------------------
+                    Assert.IsFalse(authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInServerRoleAndHasPermissions_True()
         {
             //------------Setup for test--------------------------
@@ -145,23 +144,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
-
-                //------------Assert Results-------------------------
-                Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                    //------------Assert Results-------------------------
+                    Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInServerRoleAndDoesNotHavePermissions_False()
         {
             //------------Setup for test--------------------------
@@ -173,23 +171,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = ~context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
-
-                //------------Assert Results-------------------------
-                Assert.IsFalse(authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = ~context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, It.IsAny<string>());
+                    //------------Assert Results-------------------------
+                    Assert.IsFalse(authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndHasPermissions_True()
         {
             //------------Setup for test--------------------------
@@ -202,23 +199,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
-
-                //------------Assert Results-------------------------
-                Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                    //------------Assert Results-------------------------
+                    Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndDoesNotHavePermissions_False()
         {
             //------------Setup for test--------------------------
@@ -231,23 +227,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = ~context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
-
-                //------------Assert Results-------------------------
-                Assert.IsFalse(authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = ~context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                    //------------Assert Results-------------------------
+                    Assert.IsFalse(authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_False()
         {
             //------------Setup for test--------------------------
@@ -260,23 +255,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = ~context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
-
-                //------------Assert Results-------------------------
-                Assert.IsFalse(authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = ~context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                    //------------Assert Results-------------------------
+                    Assert.IsFalse(authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_HasDefaultGuestPermissions_WithGivenPermission_True()
         {
             //------------Setup for test--------------------------
@@ -289,23 +283,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                securityPermission.Permissions = context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
-
-                //------------Assert Results-------------------------
-                Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    securityPermission.Permissions = context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                    //------------Assert Results-------------------------
+                    Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInTwoRolesAndOneRoleDeniesAccess_True()
         {
             //------------Setup for test--------------------------
@@ -319,24 +312,23 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            foreach(AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
             {
-                allowPermission.Permissions = context.ToPermissions();
-                denyPermission.Permissions = ~context.ToPermissions();
-
-                //------------Execute Test---------------------------
-                var authorized = authorizationService.IsAuthorized(context, resource.ToString());
-
-                //------------Assert Results-------------------------
-                Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                foreach (AuthorizationContext context in Enum.GetValues(typeof(AuthorizationContext)))
+                {
+                    allowPermission.Permissions = context.ToPermissions();
+                    denyPermission.Permissions = ~context.ToPermissions();
+                    //------------Execute Test---------------------------
+                    var authorized = authorizationService.IsAuthorized(context, resource.ToString());
+                    //------------Assert Results-------------------------
+                    Assert.AreEqual(context != AuthorizationContext.None, authorized);
+                }
             }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_UserHasPermissions_True()
         {
             //------------Setup for test--------------------------
@@ -349,18 +341,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToRemoteServer_WithOnlyBuiltInAdminGroup_UserNotAuthorized()
         {
             //------------Setup for test--------------------------
@@ -373,18 +365,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, false) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object, false) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithOnlyBuiltInAdminGroup_UserIsAuthorized()
         {
             //------------Setup for test--------------------------
@@ -398,18 +390,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup_ExpectTrue()
         {
             //------------Setup for test--------------------------
@@ -438,7 +430,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             Assert.IsTrue(result);
 
-            // Setup rest of test ;)
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
@@ -448,18 +439,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isMember);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+                //------------Assert Results-------------------------
+                Assert.IsTrue(isMember);
+            }
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenNonAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -475,7 +466,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             Assert.IsFalse(result);
 
-            // Setup rest of test ;)
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
@@ -485,20 +475,19 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase( securityService.Object, true, false, true) { User = user.Object };
-            
-            authorizationService.MemberOfAdminOverride = false;
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, false, true) { User = user.Object })
+            {
+                authorizationService.MemberOfAdminOverride = false;
 
-            var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
-
-            //------------Assert Results Again-------------------------
-            Assert.IsFalse(isMemberTestAgain);
-
+                var isMemberTestAgain = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+                //------------Assert Results Again-------------------------
+                Assert.IsFalse(isMemberTestAgain);
+            }
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
         {
             //------------Setup for test--------------------------
@@ -514,7 +503,6 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             Assert.IsFalse(result);
 
-            // Setup rest of test ;)
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
@@ -524,25 +512,22 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, false, true) { User = user.Object };
-            authorizationService.MemberOfAdminOverride = true;
-
-            //------------Execute Test---------------------------
-            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isMember);
-
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, false, true) { User = user.Object })
+            {
+                authorizationService.MemberOfAdminOverride = true;
+                //------------Execute Test---------------------------
+                var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+                //------------Assert Results-------------------------
+                Assert.IsFalse(isMember);
+            }
         }
-
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect_WhenNotDirectlyInWarewolfGroup")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithBuiltInAdminstratorsOnlyWarewolfAdministratorsGroupMember_UserIsAuthorized()
         {
             //------------Setup for test--------------------------
-            // Setup rest of test ;)
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
@@ -552,7 +537,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns<string>(role =>
             {
-                if(role == "Warewolf Administrators")
+                if (role == "Warewolf Administrators")
                 {
                     return false;
                 }
@@ -562,18 +547,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServerWithNullIdentityName_WithOnlyBuiltInAdminGroup_UserIsNotAuthorized()
         {
             //------------Setup for test--------------------------
@@ -586,18 +571,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_UserHasNoPermissions_False()
         {
             //------------Setup for test--------------------------
@@ -610,18 +595,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_HasDefaultGuestPermissions_False()
         {
             var securityPermission = WindowsGroupPermission.CreateGuests();
@@ -632,18 +617,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsFalse(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_HasPermissionGivenInDefaultGuest_True()
         {
             var securityPermission = WindowsGroupPermission.CreateGuests();
@@ -654,18 +639,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var user = new Mock<IPrincipal>();
             user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
 
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
-
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+                //------------Assert Results-------------------------
+                Assert.IsTrue(authorized);
+            }
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationServiceBase_Remove")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_Remove_InvokesSecurityService()
         {
             //------------Setup for test--------------------------
@@ -673,62 +658,18 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             var securityService = new Mock<ISecurityService>();
             securityService.Setup(p => p.Remove(resourceID)).Verifiable();
-            var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
-
-            //------------Execute Test---------------------------
-            authorizationService.Remove(resourceID);
-
-            //------------Assert Results-------------------------
-            securityService.Verify(p => p.Remove(resourceID));
-        }
-        class TestDirectoryEntry : IDirectoryEntry
-        {
-            private string _name;
-
-            public TestDirectoryEntry(string name)
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object))
             {
-                _name = name;
-            }
-            public IDirectoryEntries Children => new TestDirectoryEntries();
-
-            public string SchemaClassName => throw new NotImplementedException();
-
-            public string Name => _name;
-
-            public DirectoryEntry Instance => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-                
-            }
-
-            public object Invoke(string methodName, params object[] args)
-            {
-                if(methodName == "Members" && Name == "Warewolf Administrators")
-                {
-                    return new List<string> { "Administrators".ToString() };
-                }
-                return null;
-            }
-        }
-        class TestDirectoryEntries : IDirectoryEntries
-        {
-
-            public SchemaNameCollection SchemaFilter => new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
-
-            public DirectoryEntries Instance => throw new NotImplementedException();
-
-            public IEnumerator GetEnumerator()
-            {
-                yield return new TestDirectoryEntry("Test Group");
-                yield return new TestDirectoryEntry("Warewolf Administrators");
-                yield return new TestDirectoryEntry("no users");
+                //------------Execute Test---------------------------
+                authorizationService.Remove(resourceID);
+                //------------Assert Results-------------------------
+                securityService.Verify(p => p.Remove(resourceID));
             }
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
         public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenMemberOfAdministrator_ExpectTrue()
         {
             //------------Setup for test--------------------------
@@ -762,18 +703,95 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
-            SchemaNameCollection filterList = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
-            children.Setup(a => a.SchemaFilter).Returns(filterList);
-            var ss = "WinNT://" + Environment.MachineName + ",computer";
-            dir.Setup(a => a.Create(ss)).Returns(new TestDirectoryEntry(ss));
 
-            var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object };
-            authorizationService.MemberOfAdminOverride = true;
-            //------------Execute Test---------------------------
-            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+            using (var directoryEntry = new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0"))
+            {
+                var filterList = directoryEntry.Children.SchemaFilter;
+                children.Setup(a => a.SchemaFilter).Returns(filterList);
+                var ss = "WinNT://" + Environment.MachineName + ",computer";
+                using (var testDirectoryEntry = new TestDirectoryEntry(ss))
+                {
+                    dir.Setup(a => a.Create(ss)).Returns(testDirectoryEntry);
+                }
 
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isMember);
+                using (var authorizationService = new TestAuthorizationServiceBase(dir.Object, securityService.Object, true, true, false) { User = user.Object })
+                {
+                    authorizationService.MemberOfAdminOverride = true;
+                    //------------Execute Test---------------------------
+                    var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+                    //------------Assert Results-------------------------
+                    Assert.IsTrue(isMember);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(AuthorizationServiceBase))]
+        public void AuthorizationServiceBase_GetPermissions()
+        {
+            var securityPermission = WindowsGroupPermission.CreateGuests();
+            securityPermission.View = true;
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
+
+            using (var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object })
+            {
+                //------------Execute Test---------------------------
+                var permissions = authorizationService.GetPermissions(user.Object);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, permissions.Count);
+            }
+        }
+
+        class TestDirectoryEntry : IDirectoryEntry
+        {
+            private string _name;
+
+            public TestDirectoryEntry(string name)
+            {
+                _name = name;
+            }
+
+            public IDirectoryEntries Children => new TestDirectoryEntries();
+
+            public string SchemaClassName => throw new NotImplementedException();
+
+            public string Name => _name;
+
+            public DirectoryEntry Instance => throw new NotImplementedException();
+
+            public void Dispose()
+            {
+
+            }
+
+            public object Invoke(string methodName, params object[] args)
+            {
+                if (methodName == "Members" && Name == "Warewolf Administrators")
+                {
+                    return new List<string> { "Administrators".ToString() };
+                }
+                return null;
+            }
+        }
+
+        class TestDirectoryEntries : IDirectoryEntries
+        {
+            public SchemaNameCollection SchemaFilter => new DirectoryEntry("LDAP://dev2.local", "IntegrationTester", "I73573r0").Children.SchemaFilter;
+
+            public DirectoryEntries Instance => throw new NotImplementedException();
+
+            public IEnumerator GetEnumerator()
+            {
+                yield return new TestDirectoryEntry("Test Group");
+                yield return new TestDirectoryEntry("Warewolf Administrators");
+                yield return new TestDirectoryEntry("no users");
+            }
         }
     }
 }

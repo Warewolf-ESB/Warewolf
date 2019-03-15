@@ -119,6 +119,7 @@
     <Compile Include="PerformanceCounters\WarewolfAverageExecutionTimePerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfCurrentExecutionsPerformanceCounterTests.cs" />
+    <Compile Include="Services\Security\PrincipalIsInRoleTests.cs" />
     <Compile Include="SharedModels\CompileMessageListTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
