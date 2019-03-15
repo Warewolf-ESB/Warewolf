@@ -32,13 +32,13 @@ namespace Dev2.Common.Tests.DateAndTime
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(StandardDateTimeFormatter))]
-        public void StandardDateTimeFormatter_TryFormat_DateTime_Empty_SystemRegionDefaultFormat()
+        public void StandardDateTimeFormatter_TryFormat_DateTime_SystemRegionDefaultFormat()
         {
             IDateTimeOperationTO dateTimeOperationTO = new DateTimeOperationTO
             {
-                DateTime = "",
+                DateTime = "14101988",
                 InputFormat = "ddmmyyyy",
-                OutputFormat = @"yyyy'/'MM'/'dd",
+                OutputFormat = @"",
                 TimeModifierType = "Years",
                 TimeModifierAmount = 23
             };
@@ -48,7 +48,33 @@ namespace Dev2.Common.Tests.DateAndTime
             var formatResult = standardDateTimeFormatter.TryFormat(dateTimeOperationTO, out string result, out string errorMsg);
 
             Assert.IsTrue(formatResult);
-            Assert.AreEqual(DateTime.Now.AddYears(23).ToShortDateString(), result);
+            Assert.AreEqual("01/14/2011 00:10:00", result);
+            Assert.AreEqual("", errorMsg);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(StandardDateTimeFormatter))]
+        public void StandardDateTimeFormatter_TryFormat_DateTime_Empty_SystemRegionDefaultFormat()
+        {
+            var format = System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+            IDateTimeOperationTO dateTimeOperationTO = new DateTimeOperationTO
+            {
+                DateTime = "",
+                InputFormat = "ddmmyyyy",
+                OutputFormat = format.ShortDatePattern,
+                TimeModifierType = "Years",
+                TimeModifierAmount = 23
+            };
+
+            var standardDateTimeFormatter = new StandardDateTimeFormatter();
+
+            var formatResult = standardDateTimeFormatter.TryFormat(dateTimeOperationTO, out string result, out string errorMsg);
+
+            Assert.IsTrue(formatResult);
+            var expectedDate = DateTime.Now.AddYears(23);
+            var expected = expectedDate.ToShortDateString();
+            Assert.AreEqual(expected, result);
             Assert.AreEqual("", errorMsg);
         }
 
