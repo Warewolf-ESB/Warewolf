@@ -9,8 +9,8 @@ namespace Dev2.CustomControls.Tests.Converters
     [TestClass]
     public class IsValidDateTimeConverterTests
     {
-        [ClassInitialize]
-        public static void PreConditions(TestContext testContext)
+        [TestInitialize]
+        public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
             var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;

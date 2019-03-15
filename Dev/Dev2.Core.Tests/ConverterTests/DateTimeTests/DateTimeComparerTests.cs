@@ -21,8 +21,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     [TestClass]
     public class DateTimeComparerTests
     {
-        [ClassInitialize]
-        public static void PreConditions(TestContext testContext)
+        [TestInitialize]
+        public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
             var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;

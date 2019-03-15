@@ -19,8 +19,8 @@ namespace Dev2.Core.Tests.AppResources.Converters
 	[TestCategory("Studio Resources Core")]
     public class DateTimeToStringConverterTests
     {
-        [ClassInitialize]
-        public static void PreConditions(TestContext testContext)
+        [TestInitialize]
+        public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
             var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
