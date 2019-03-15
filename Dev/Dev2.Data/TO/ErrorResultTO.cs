@@ -15,7 +15,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data.TO;
 using Warewolf.Resource.Errors;
-using Dev2.Common.Common;
 using System.Linq;
 
 namespace Dev2.Data.TO
@@ -28,7 +27,7 @@ namespace Dev2.Data.TO
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
-            if (!string.IsNullOrEmpty(msg) && ((checkForDuplicates && FetchErrors().Count(o => o.Contains(msg)) < 1) || !checkForDuplicates))
+            if (!string.IsNullOrEmpty(msg) && ((checkForDuplicates && !_errorList.Any(o => o.Contains(msg))) || !checkForDuplicates))
             {
                 _errorList.Add(msg);
             }
@@ -52,7 +51,6 @@ namespace Dev2.Data.TO
         {
             if (toMerge != null && toMerge.HasErrors())
             {
-                // Flipping Union does not appear to work
                 foreach (string wtf in toMerge.FetchErrors())
                 {
                     _errorList.Add(wtf);
