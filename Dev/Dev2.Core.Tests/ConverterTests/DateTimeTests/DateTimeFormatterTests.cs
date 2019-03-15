@@ -32,6 +32,16 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
+        [TestInitialize]
+        public void PreConditions()
+        {
+            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+            Assert.AreEqual("en-ZA", regionName);
+            Assert.AreEqual("en-ZA", regionNameUI);
+        }
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -40,12 +50,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-
-            Assert.AreEqual("en-ZA", regionName);
-            Assert.AreEqual("en-ZA", regionNameUI);
-
             _formatter = DateTimeConverterFactory.CreateFormatter();
         }
 

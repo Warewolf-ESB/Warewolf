@@ -29,8 +29,8 @@ namespace ActivityUnitTests.ActivityTests
 
     public class DotNetDateTimeDifferenceTests : BaseActivityUnitTest
     {
-        [ClassInitialize]
-        public static void PreConditions(TestContext testContext)
+        [TestInitialize]
+        public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
             var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
