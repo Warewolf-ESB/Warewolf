@@ -39,7 +39,8 @@ namespace Dev2.Common.Tests.DateAndTime
             var formatResult = standardDateTimeFormatter.TryFormat(dateTimeOperationTO, out string result, out string errorMsg);
 
             Assert.IsTrue(formatResult);
-            Assert.IsTrue(DateTime.TryParse(result, new DateTimeFormatInfo() { ShortDatePattern = "yyyy/MM/dd" }, DateTimeStyles.None, out DateTime datetimeResult), $"Failed to parse value: {result} as a DateTime");
+            Assert.IsTrue(DateTime.TryParse(result, out DateTime datetimeResult), $"Failed to parse value: {result} as a DateTime");
+            Assert.AreEqual(datetimeResult.AddYears(-23).ToShortDateString(), DateTime.Now.ToShortDateString(), "Wrong date time returned from DateTime tool.");
             Assert.AreEqual("", errorMsg);
         }
 
