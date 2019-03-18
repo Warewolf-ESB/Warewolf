@@ -27,11 +27,12 @@ namespace Dev2.Data.TO
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
-            if (!string.IsNullOrEmpty(msg) && ((checkForDuplicates && !_errorList.Any(o => o.Contains(msg))) || !checkForDuplicates))
+            var IsErrorDuplicate = (checkForDuplicates && !_errorList.Any(o => o.Contains(msg)));
+
+            if (!string.IsNullOrEmpty(msg) && (IsErrorDuplicate || !checkForDuplicates))
             {
                 _errorList.Add(msg);
             }
-
         }
         
         public void RemoveError(string msg)
@@ -55,7 +56,7 @@ namespace Dev2.Data.TO
                 {
                     _errorList.Add(wtf);
                 }
-
+                
                 toMerge.ClearErrors();
             }
         }
