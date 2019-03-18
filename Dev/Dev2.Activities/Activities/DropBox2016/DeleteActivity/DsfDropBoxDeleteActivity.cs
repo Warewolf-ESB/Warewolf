@@ -98,22 +98,11 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is DsfDropBoxDeleteActivity)
             {
-                return false;
+                return Equals((DsfDropBoxDeleteActivity) obj);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfDropBoxDeleteActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()

@@ -390,7 +390,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             });
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void LoadTableColumns(System.Action continueWith = null)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (!IsTableSelected || _isInitializing)
             {
@@ -547,7 +549,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         IEnumerable<IActionableErrorInfo> ValidateVariables()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var parser = new Dev2DataLanguageParser();
             var allActionableErrors = new List<IActionableErrorInfo>();

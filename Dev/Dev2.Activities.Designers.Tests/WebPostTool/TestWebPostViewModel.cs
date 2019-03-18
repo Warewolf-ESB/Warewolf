@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
                         new ServiceOutputMapping("a", "b", "c"),
                         new ServiceOutputMapping("d", "e", "f")
                     },
-                Headers = new List<INameValue> { new ObservableNameValue("a", "x") },
+                Headers = new List<INameValue> { new NameValue("a", "x") },
                 QueryString = "QueryString",
                 ServiceName = "dsfBob"
             };
@@ -396,7 +396,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var postViewModel = new WebServicePostViewModel(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
@@ -428,7 +428,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var postViewModel = new WebServicePostViewModel(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             postViewModel.InputArea.QueryString = "the [[b]]";
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
@@ -462,7 +462,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             var postViewModel = new WebServicePostViewModel(ModelItemUtils.CreateModelItem(act), mod);
             postViewModel.ManageServiceInputViewModel = new InputViewForTest(postViewModel, mod);
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
-            postViewModel.InputArea.Headers.Add(new ObservableNameValue("[[a]]", "asa"));
+            postViewModel.InputArea.Headers.Add(new NameValue("[[a]]", "asa"));
             postViewModel.InputArea.QueryString = "the [[b().a]]";
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();

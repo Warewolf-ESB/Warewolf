@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
-            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new ObservableNameValue("a", "b") }),
+            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new NameValue("a", "b") }),
                 Tests.TestUtils.ExampleURL, new WebSource());
 
             //---------------Test Result -----------------------
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfWebActivity);
             //---------------Execute Test ----------------------
-            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new ObservableNameValue("a", "b") }), "Wrong.com.", new WebSource() { Address = "Wrong.com." });
+            var httpClient = dsfWebActivity.CreateClient(new List<INameValue>(new[] { new NameValue("a", "b") }), "Wrong.com.", new WebSource() { Address = "Wrong.com." });
             //---------------Test Result -----------------------
             Assert.IsNull(httpClient.BaseAddress);
         }
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
             var headers = new List<INameValue>
             {
-                new ObservableNameValue("Content", "text/json")
+                new NameValue("Content", "text/json")
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(deleteActivityFromBase);
@@ -230,7 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             environment.Assign("[[CountryName]]", "South Africa", 0);
             environment.Assign("[[Post]]", "Some data", 0);
             var dsfWebPostActivity = CreateWebDeleteActivityFromBase();
-            dsfWebPostActivity.Headers = new List<INameValue> { new ObservableNameValue("Header 1", "[[City]]") };
+            dsfWebPostActivity.Headers = new List<INameValue> { new NameValue("Header 1", "[[City]]") };
             dsfWebPostActivity.QueryString = "http://www.testing.com/[[CountryName]]";
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Location", "[[weather().Location]]", "weather"), new ServiceOutputMapping("Time", "[[weather().Time]]", "weather"), new ServiceOutputMapping("Wind", "[[weather().Wind]]", "weather"), new ServiceOutputMapping("Visibility", "[[Visibility]]", "") };
             dsfWebPostActivity.Outputs = serviceOutputs;

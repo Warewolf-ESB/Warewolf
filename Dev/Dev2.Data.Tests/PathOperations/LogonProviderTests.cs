@@ -27,7 +27,7 @@ namespace Dev2.Data.Tests.PathOperations
         {
             var provider = new LogonProvider();
 
-            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @"DEV2\IntegrationTester", "I73573r0", false, null);
+            var ioPath = new Dev2ActivityIOPath(Interfaces.Enums.enActivityIOPathType.FileSystem, @"C:\", @".\LocalSchedulerAdmin", "987Sched#@!", false, null);
             provider.DoLogon(ioPath);
         }
 

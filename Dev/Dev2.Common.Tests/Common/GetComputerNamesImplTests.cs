@@ -96,7 +96,7 @@ namespace Dev2.Common.Tests
         {
             var result = SecurityIdentityForWindows.GetWindowsDomainOrWorkgroupName("");
 
-            Assert.AreEqual(null, result);
+            Assert.IsTrue(result == null || result == "WORKGROUP", "Cannot get Windows domain or workgroupname from username.");
         }
     }
 }

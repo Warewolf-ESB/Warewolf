@@ -190,7 +190,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var headers = new List<INameValue>();
-            var headers2 = new List<INameValue> { new ObservableNameValue("a", "x") };
+            var headers2 = new List<INameValue> { new NameValue("a", "x") };
             var webDelete = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers };
             var webDelete1 = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers2 };
             //---------------Assert Precondition----------------
@@ -207,8 +207,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var headers = new List<INameValue> { new ObservableNameValue("b", "y"), new ObservableNameValue("a", "x") };
-            var headers2 = new List<INameValue> { new ObservableNameValue("a", "x"), new ObservableNameValue("b", "y") };
+            var headers = new List<INameValue> { new NameValue("b", "y"), new NameValue("a", "x") };
+            var headers2 = new List<INameValue> { new NameValue("a", "x"), new NameValue("b", "y") };
             var webDelete = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers};
             var webDelete1 = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers };
             //---------------Assert Precondition----------------
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var headers = new List<INameValue> { new ObservableNameValue("a", "x") };
+            var headers = new List<INameValue> { new NameValue("a", "x") };
             var webDelete = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers};
             var webDelete1 = new DsfWebDeleteActivity() { UniqueID = uniqueId, Headers = headers };
             //---------------Assert Precondition----------------

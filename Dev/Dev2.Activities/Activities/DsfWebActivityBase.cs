@@ -1,10 +1,19 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -17,10 +26,11 @@ using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using System.Net;
 using System.IO;
+using Dev2.Interfaces;
 
 namespace Dev2.Activities
 {
-    public class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
+    public abstract class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
     {
         readonly WebRequestMethod _method;
         const string UserAgent = "User-Agent";
@@ -44,7 +54,7 @@ namespace Dev2.Activities
             }
             base.GetDebugInputs(env, update);
 
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -108,7 +118,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource source, string putData)
         {
-            var headerValues = head as ObservableNameValue[] ?? head.ToArray();
+            var headerValues = head as NameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {

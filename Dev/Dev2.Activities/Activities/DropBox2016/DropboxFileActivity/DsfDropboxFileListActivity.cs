@@ -1,4 +1,14 @@
-﻿using Dev2.Activities.DropBox2016.Result;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
@@ -48,8 +58,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
-
-        protected DsfDropboxFileListActivity(IDropboxClientFactory dropboxClientFactory)
+        
+        public DsfDropboxFileListActivity(IDropboxClientFactory dropboxClientFactory)
             :base(dropboxClientFactory)
         {
             DisplayName = "List Dropbox Contents";
@@ -86,7 +96,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClient);
             if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
-                var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
+                var listFolderResult = dropboxSuccessResult.GetListFolderResult();
                 var metadatas = listFolderResult.Entries;
                 if (IncludeDeleted)
                 {
@@ -192,22 +202,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if (obj is DsfDropboxFileListActivity)
             {
-                return false;
+                return Equals((DsfDropboxFileListActivity)obj);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((DsfDropboxFileListActivity) obj);
+            return false;
         }
 
         public override int GetHashCode()
