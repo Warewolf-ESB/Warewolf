@@ -171,8 +171,10 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
         | _ -> failwith "unspecified error"
         asJObj :> JToken
     | NameExpression a -> 
-        let asJObj = toJObject obj
-        let myValue = evalResultToString res |> DataString
+        let asJObj = toJObject obj       
+        let myValue = match res with
+                        | WarewolfAtomResult atomResult ->  atomResult
+                        | _ -> evalResultToString res |> DataString
         addAtomicPropertyToJson asJObj a.Name myValue |> ignore
         asJObj :> JToken
     | _ -> failwith "top level assign cannot be a nested expresssion"

@@ -85,7 +85,9 @@ namespace Dev2.Activities
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, ErrorResultTO errors)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 

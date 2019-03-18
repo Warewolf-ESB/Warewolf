@@ -1,4 +1,13 @@
-﻿using Dev2.Common;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common.Interfaces;
 using System;
 using System.Collections.ObjectModel;
@@ -7,7 +16,7 @@ using System.Windows.Input;
 
 namespace Dev2.Activities.Utils
 {
-    public class ObservableAwareNameValue : ObservableNameValue
+    public class ObservableAwareNameValue : NameValue
     {
         readonly ObservableCollection<INameValue> _sourceCollection;
         readonly Action<string> _update;
@@ -18,11 +27,10 @@ namespace Dev2.Activities.Utils
             _update = update;
 
             Name = "";
-
             Value = "";
+
             AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
             RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
-
         }
 
         void RemoveRow()
@@ -38,17 +46,12 @@ namespace Dev2.Activities.Utils
             _sourceCollection.Insert(_sourceCollection.IndexOf(this), new ObservableAwareNameValue(_sourceCollection, _update));
         }
 
-        #region Overrides of NameValue
-
         public override string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
+                if (!string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_value) && string.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
                 {
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
@@ -58,17 +61,12 @@ namespace Dev2.Activities.Utils
             }
         }
 
-        #region Overrides of NameValue
-
         public override string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
-                if (!String.IsNullOrEmpty(value) && String.IsNullOrEmpty(_value) && String.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
+                if (!string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_value) && string.IsNullOrEmpty(_name) && ReferenceEquals(_sourceCollection.Last(), this))
                 {
                     _sourceCollection.Add(new ObservableAwareNameValue(_sourceCollection, _update));
                 }
@@ -79,9 +77,5 @@ namespace Dev2.Activities.Utils
         }
         public ICommand RemoveRowCommand { get; set; }
         public ICommand AddRowCommand { get; set; }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                         } as IServiceInput).ToList(),
                         Method = a.Name,
-                        Variables = a.Parameters.Select(x => new ObservableNameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
+                        Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                         Dev2ReturnType = a.Dev2ReturnType,
                         IsObject = a.IsObject,                        
                         IsVoid = a.IsVoid,

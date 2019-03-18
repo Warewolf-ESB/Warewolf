@@ -538,7 +538,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public void Execute(SearchContext searchContext, ErrorResultTO errorResult, IDSFDataObject dataObject, int update)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var env = dataObject.Environment;
 

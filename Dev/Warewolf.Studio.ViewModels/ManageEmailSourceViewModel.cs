@@ -119,36 +119,43 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var errorMessage = string.Empty;
-                switch (columnName)
-                {
-                    case "HostName":
-                        if (string.IsNullOrEmpty(HostName))
-                        {
-                            errorMessage = "HostName cannot be blank.";
-                        }
-                        break;
-                    case "Port":
-                        if (string.IsNullOrEmpty(Port.ToString()) || Port == 0)
-                        {
-                            errorMessage = "Port cannot be blank.";
-                        }
-                        if (Port < 1 || Port > 65535)
-                        {
-                            errorMessage = "Port range must be between 1 and 65535.";
-                        }
-                        break;
-                    case "Timeout":
-                        if (string.IsNullOrEmpty(Timeout.ToString()) || Timeout == 0)
-                        {
-                            errorMessage = "Timeout cannot be blank.";
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                return errorMessage;
+                return GetErrorForColumnName(columnName);
             }
+        }
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
+        private string GetErrorForColumnName(string columnName)
+#pragma warning restore S1541 // Methods and properties should not be too complex
+        {
+            var errorMessage = string.Empty;
+            switch (columnName)
+            {
+                case "HostName":
+                    if (string.IsNullOrEmpty(HostName))
+                    {
+                        errorMessage = "HostName cannot be blank.";
+                    }
+                    break;
+                case "Port":
+                    if (string.IsNullOrEmpty(Port.ToString()) || Port == 0)
+                    {
+                        errorMessage = "Port cannot be blank.";
+                    }
+                    if (Port < 1 || Port > 65535)
+                    {
+                        errorMessage = "Port range must be between 1 and 65535.";
+                    }
+                    break;
+                case "Timeout":
+                    if (string.IsNullOrEmpty(Timeout.ToString()) || Timeout == 0)
+                    {
+                        errorMessage = "Timeout cannot be blank.";
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return errorMessage;
         }
 
         public override string Name
