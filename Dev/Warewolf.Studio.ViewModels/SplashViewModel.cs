@@ -111,8 +111,10 @@ namespace Warewolf.Studio.ViewModels
                 }
             });
         }
-        [ExcludeFromCodeCoverage]
+
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static string GetInformalDate(DateTime d)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var sinceThen = DateTime.Now.Subtract(d);
             var totalDays = (int)sinceThen.TotalDays;
