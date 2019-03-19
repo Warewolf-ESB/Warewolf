@@ -172,7 +172,9 @@ namespace Dev2
             Application.Current.Shutdown();
         }
 
+#pragma warning disable CC0091 // Use static method
         bool IsLocal(Uri sysUri)
+#pragma warning restore CC0091 // Use static method
         {
             if (IsUnc(sysUri))
             {

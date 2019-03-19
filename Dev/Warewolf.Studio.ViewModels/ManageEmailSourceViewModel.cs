@@ -520,7 +520,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void TestConnection()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             _token = new CancellationTokenSource();
             var t = new Task(SetupProgressSpinner, _token.Token);
