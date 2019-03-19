@@ -23,31 +23,31 @@ namespace Dev2.Data.TO
     public class ErrorResultTO : IErrorResultTO
     {
         readonly IList<string> _errorList = new List<string>();
-        
+
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
-            var IsErrorDuplicate = (checkForDuplicates && !_errorList.Any(o => o.Contains(msg)));
+            var IsErrorDuplicate = checkForDuplicates && !_errorList.Any(o => o.Contains(msg));
 
             if (!string.IsNullOrEmpty(msg) && (IsErrorDuplicate || !checkForDuplicates))
             {
                 _errorList.Add(msg);
             }
         }
-        
+
         public void RemoveError(string msg)
         {
-            var found = _errorList.FirstOrDefault(s => s.ToString() == msg);
+            var found = _errorList.FirstOrDefault(s => s == msg);
             if (found != null)
             {
                 _errorList.Remove(found);
             }
         }
-        
+
         public IList<string> FetchErrors() => _errorList.ToList();
-        
+
         public bool HasErrors() => _errorList.Count > 0;
-        
+
         public void MergeErrors(IErrorResultTO toMerge)
         {
             if (toMerge != null && toMerge.HasErrors())
@@ -56,23 +56,24 @@ namespace Dev2.Data.TO
                 {
                     _errorList.Add(wtf);
                 }
-                
+
                 toMerge.ClearErrors();
             }
         }
+
         public void ClearErrors()
         {
             _errorList.Clear();
         }
-        
+
         public string MakeDisplayReady()
         {
             var result = new StringBuilder();
 
-            foreach(string e in _errorList)
+            foreach (string e in _errorList)
             {
                 result.Append(e);
-                if(_errorList.IndexOf(e) + 1 < _errorList.Count)
+                if (_errorList.IndexOf(e) + 1 < _errorList.Count)
                 {
                     result.AppendLine();
                 }
@@ -99,7 +100,7 @@ namespace Dev2.Data.TO
             foreach (string e in _errorList)
             {
                 var formattedMsg = FormatErrorMessage(e);
-                if(asXml)
+                if (asXml)
                 {
                     result.Append(GlobalConstants.InnerErrorTag);
                     result.Append(formattedMsg);
@@ -112,14 +113,14 @@ namespace Dev2.Data.TO
                     result.Append("\"");
 
                     errCnt++;
-                    if(errCnt < _errorList.Count)
+                    if (errCnt < _errorList.Count)
                     {
                         result.Append(",");
                     }
                 }
             }
 
-            if(!asXml)
+            if (!asXml)
             {
                 result.Append("]");
             }
@@ -146,7 +147,7 @@ namespace Dev2.Data.TO
             var result = new ErrorResultTO();
             try
             {
-                if(!string.IsNullOrEmpty(errorsString))
+                if (!string.IsNullOrEmpty(errorsString))
                 {
                     errorsString = string.Concat("<Error>", errorsString, "</Error>");
                     var errorNode = XElement.Parse(errorsString);
@@ -156,14 +157,11 @@ namespace Dev2.Data.TO
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 result.AddError(errorsString);
             }
             return result;
         }
-
-
-
     }
 }
