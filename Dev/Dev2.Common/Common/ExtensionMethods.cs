@@ -23,8 +23,6 @@ namespace Dev2.Common.Common
 {
     public static class ExtensionMethods
     {
-        #region Exception Unrolling
-
         public static string GetAllMessages(this Exception exception)
         {
             var messages = exception.FromHierarchy(ex => ex.InnerException).Select(ex => ex.Message);
@@ -42,11 +40,7 @@ namespace Dev2.Common.Common
 
         public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem)
             where TSource : class => FromHierarchy(source, nextItem, s => s != null);
-
-        #endregion Exception Unrolling
-
-        #region StringBuilder Methods
-
+        
         public static StringBuilder CleanEncodingHeaderForXmlSave(this StringBuilder sb)
         {
             var removeStartIdx = sb.IndexOf("<?", 0, false);
@@ -240,30 +234,43 @@ namespace Dev2.Common.Common
                 return -1;
             }
 
-            int index = 1;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
-                for (int i = startIndex; i < maxSearchLength; ++i)
-                {
-                    index = sb.IndexOf(value, index, length, i);
-
-                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]) && index == length)
-                    {
-                        return i;
-                    }
-                }
-
-                return -1;
+                return GetIndexOfCharactor(sb, value, startIndex, maxSearchLength, length);
             }
 
+            return GetIncrementedIndex(sb, value, escapeChar, startIndex, maxSearchLength, length);
+
+        }
+
+        private static int GetIndexOfCharactor(this StringBuilder sb, string value, int startIndex, int maxSearchLength, int length)
+        {
+            var index = 1;
+
+            for (int i = startIndex; i < maxSearchLength; ++i)
+            {
+                index = sb.IndexOf(value, index, length, i);
+                var IsSbCharAsValue = Char.ToLower(sb[i]) == Char.ToLower(value[0]);
+
+                if (IsSbCharAsValue && index == length)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int GetIncrementedIndex(this StringBuilder sb, string value, string escapeChar, int startIndex, int maxSearchLength, int length)
+        {
             for (int i = startIndex; i < maxSearchLength; ++i)
             {
                 if (sb[i] == value[0])
                 {
-                    index = 1;
+                    var index = 1;
                     while (index < length && sb[i + index] == value[index] || SkipDueToEscapeChar(sb, startIndex, i + index - 1, escapeChar, value))
                     {
                         ++index;
@@ -349,8 +356,6 @@ namespace Dev2.Common.Common
 
             return true;
         }
-
-        #endregion StringBuilder Methods
 
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart) => sb.ExtractXmlAttributeFromUnsafeXml(searchTagStart, "\"");
 
