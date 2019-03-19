@@ -210,8 +210,8 @@ let EvalEnv (env : WarewolfEnvironment) =
             yield jsonObject.Key
             yield "\":"
             yield match jsonObject.Value with
-            | null ->  "null"
-            | _ -> jsonObject.Value.ToString(Formatting.None);
+                  | null ->  "null"
+                  | _ -> jsonObject.Value.ToString(Formatting.None);
 
 
             if i < env.JsonObjects.Count - 1 then
