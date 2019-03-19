@@ -42,14 +42,14 @@ namespace Dev2.Common
 
         static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
         {
-            var IsActualTypeContains = (node.ActualType?.Contains("DsfForEachActivity") ?? false);
+            var IsActualTypeDsfForEachActivity = (node.ActualType?.Contains("DsfForEachActivity") ?? false);
 
             if (source.ContainsKey(node.ID)
-                && (!node.IsAdded || IsActualTypeContains)
+                && (!node.IsAdded || IsActualTypeDsfForEachActivity)
                 && node.StateType != StateType.Duration)//Services have the same Id so, they dont work inside the foreach
             {
                 List<IDebugState> debugStates;
-                if (IsActualTypeContains)
+                if (IsActualTypeDsfForEachActivity)
                 {
                     var states = source[node.ID].DistinctBy(state => new
                     {
