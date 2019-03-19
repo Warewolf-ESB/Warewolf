@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,20 +52,20 @@ namespace Dev2.Common.Tests
             {
                 child1.ParentId = parent1.Id;
             });
-            var parent = new Parent()
+            var parent = new Parent
             {
                 Id = 100,
                 Name = "name",
                 Surname = "surname"
             };
-            var child = new Child()
+            var child = new Child
             {
                 Name = "child",
                 Id = "1"
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map(parent, child, true, "Id", "Name");
+            Mapper.Map(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
             Assert.AreEqual(100, child.ParentId);
@@ -79,13 +79,13 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
-            var parent = new Parent()
+            var parent = new Parent
             {
                 Id = 100,
                 Name = "name",
                 Surname = "surname"
             };
-            var child = new Child()
+            var child = new Child
             {
                 Name = "child",
                 Id = "1"
@@ -108,7 +108,7 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
-            var child = new Child()
+            var child = new Child
             {
                 Name = "child",
                 Id = "1"
@@ -116,7 +116,7 @@ namespace Dev2.Common.Tests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.ThrowsException<ArgumentNullException>(()=> Mapper.Map(default(Parent), child));
+            Assert.ThrowsException<ArgumentNullException>(() => Mapper.Map(default(Parent), child));
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
-            var parent = new Parent()
+            var parent = new Parent
             {
                 Id = 100,
                 Name = "name",
@@ -135,11 +135,11 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map<Parent, Child>(parent, null, true, new string[] { "listItem1", "listItem2", "3" });
+            Mapper.Map<Parent, Child>(parent, null);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
         }
-        
+
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(Mapper))]
@@ -148,20 +148,20 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             Mapper.Clear();
             Mapper.AddMap<Parent, Child>();
-            var parent = new Parent()
+            var parent = new Parent
             {
                 Id = 100,
                 Name = "name",
                 Surname = "surname"
             };
-            var child = new Child()
+            var child = new Child
             {
                 Name = "child",
                 Id = "1"
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map<Parent, Child>(parent, child, true, new string[] { "name", "listItem2", "3" });
+            Mapper.Map<Parent, Child>(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
             Assert.AreNotEqual(parent.Id.ToString(), child.Id);
