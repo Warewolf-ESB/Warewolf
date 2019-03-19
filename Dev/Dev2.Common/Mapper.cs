@@ -90,7 +90,7 @@ namespace Dev2.Common
 
             var compatibleProperties = from targetPropInfo in targetProperties
                                      join sourcePropInfo in sourceProperties on targetPropInfo.Name equals sourcePropInfo.Name
-                                     where sourcePropInfo.PropertyType.Name != targetPropInfo.PropertyType.Name && targetPropInfo.CanWrite
+                                     where sourcePropInfo.PropertyType.Name == targetPropInfo.PropertyType.Name && targetPropInfo.CanWrite
                                      select new
                                      {
                                          ToProperty = targetPropInfo,
@@ -112,7 +112,7 @@ namespace Dev2.Common
 
             var compatibleFields = from targetFieldInfo in targetFields
                               join sourceFieldInfo in sourceFields on targetFieldInfo.Name equals sourceFieldInfo.Name
-                              where sourceFieldInfo.FieldType.Name != targetFieldInfo.FieldType.Name
+                              where sourceFieldInfo.FieldType.Name == targetFieldInfo.FieldType.Name
                               select new
                               {
                                   ToField = targetFieldInfo,
