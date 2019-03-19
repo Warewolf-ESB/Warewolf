@@ -15,36 +15,45 @@ using System.Reflection;
 
 namespace Dev2.Common
 {
+    public interface IFieldAndPropertyMapper
+    {
+        void AddMap<TFrom, TTo>()
+            where TFrom : class
+            where TTo : class;
+        void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo)
+            where TMapFrom : class
+            where TMapTo : class;
+    }
     /// Used in tools that use OutputsRegion to store previous configuration
     /// when changing the tool's configuration
-    public static class Mapper
+    public class FieldAndPropertyMapper : IFieldAndPropertyMapper
     {
-        static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
+        readonly Dictionary<KeyValuePair<Type, Type>, object> _manualMappingCallbacks = new Dictionary<KeyValuePair<Type, Type>, object>();
 
-        public static void Clear()
+        public void Clear()
         {
-            Maps.Clear();
+            _manualMappingCallbacks.Clear();
         }
 
-        public static void AddMap<TFrom, TTo>()
+        public void AddMap<TFrom, TTo>()
             where TFrom : class
             where TTo : class
         {
             AddMap<TFrom, TTo>(null);
         }
 
-        public static void AddMap<TFrom, TTo>(Action<TFrom, TTo> mapFunc)
+        public void AddMap<TFrom, TTo>(Action<TFrom, TTo> mapFunc)
             where TFrom : class
             where TTo : class
         {
             var keyValuePair = new KeyValuePair<Type, Type>(typeof(TFrom), typeof(TTo));
-            if (!Maps.ContainsKey(keyValuePair))
+            if (!_manualMappingCallbacks.ContainsKey(keyValuePair))
             {
-                Maps.Add(keyValuePair, mapFunc);
+                _manualMappingCallbacks.Add(keyValuePair, mapFunc);
             }
         }
 
-        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo)
+        public void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo)
             where TMapFrom : class
             where TMapTo : class
         {
@@ -62,7 +71,7 @@ namespace Dev2.Common
 
             var key = new KeyValuePair<Type, Type>(typeof(TMapFrom), typeof(TMapTo));
 
-            var hasMap = Maps.Any(m => m.Key.Equals(key));
+            var hasMap = _manualMappingCallbacks.Any(m => m.Key.Equals(key));
             if (!hasMap)
             {
                 throw new ArgumentException($"No mapping exists from {mapFrom.GetType().Name} to {tMapTo.GetType().Name}");
@@ -73,9 +82,9 @@ namespace Dev2.Common
             MapFields(mapFrom, tMapTo);
 
             Action<TMapFrom, TMapTo> map = null;
-            if (Maps.ContainsKey(key))
+            if (_manualMappingCallbacks.ContainsKey(key))
             {
-                map = (Action<TMapFrom, TMapTo>)Maps[key];
+                map = (Action<TMapFrom, TMapTo>)_manualMappingCallbacks[key];
             }
 
             map?.Invoke(mapFrom, tMapTo);
