@@ -43,12 +43,12 @@ namespace Dev2.Common.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(Mapper))]
+        [TestCategory(nameof(FieldAndPropertyMapper))]
         public void Mapper_Map_GivenObjects_ShouldMapCorrectly()
         {
-            //---------------Set up test pack-------------------
-            Mapper.Clear();
-            Mapper.AddMap<Parent, Child>((parent1, child1) =>
+            var fieldAndPropertyMapper = new FieldAndPropertyMapper();
+            fieldAndPropertyMapper.Clear();
+            fieldAndPropertyMapper.AddMap<Parent, Child>((parent1, child1) =>
             {
                 child1.ParentId = parent1.Id;
             });
@@ -65,7 +65,7 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map(parent, child);
+            fieldAndPropertyMapper.Map(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
             Assert.AreEqual(100, child.ParentId);
@@ -73,12 +73,12 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(Mapper))]
+        [TestCategory(nameof(FieldAndPropertyMapper))]
         public void Mapper_Map_ObjectsNoActions_ShouldMapCorrectly()
         {
-            //---------------Set up test pack-------------------
-            Mapper.Clear();
-            Mapper.AddMap<Parent, Child>();
+            var fieldAndPropertyMapper = new FieldAndPropertyMapper();
+            fieldAndPropertyMapper.Clear();
+            fieldAndPropertyMapper.AddMap<Parent, Child>();
             var parent = new Parent
             {
                 Id = 100,
@@ -92,7 +92,7 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map(parent, child);
+            fieldAndPropertyMapper.Map(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
             Assert.AreNotEqual(parent.Id.ToString(), child.Id);
@@ -102,12 +102,12 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(Mapper))]
+        [TestCategory(nameof(FieldAndPropertyMapper))]
         public void Mapper_Map_TMapTo_IsNotNull_ExpectArgumentNullException()
         {
-            //---------------Set up test pack-------------------
-            Mapper.Clear();
-            Mapper.AddMap<Parent, Child>();
+            var fieldAndPropertyMapper = new FieldAndPropertyMapper();
+            fieldAndPropertyMapper.Clear();
+            fieldAndPropertyMapper.AddMap<Parent, Child>();
             var child = new Child
             {
                 Name = "child",
@@ -116,17 +116,18 @@ namespace Dev2.Common.Tests
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.ThrowsException<ArgumentNullException>(() => Mapper.Map(default(Parent), child));
+            Assert.ThrowsException<ArgumentNullException>(() => fieldAndPropertyMapper.Map(default(Parent), child));
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(Mapper))]
+        [TestCategory(nameof(FieldAndPropertyMapper))]
         public void Mapper_Map_TMapTo_IsNull_ExpectNoArgumentNullException()
         {
+            var fieldAndPropertyMapper = new FieldAndPropertyMapper();
             //---------------Set up test pack-------------------
-            Mapper.Clear();
-            Mapper.AddMap<Parent, Child>();
+            fieldAndPropertyMapper.Clear();
+            fieldAndPropertyMapper.AddMap<Parent, Child>();
             var parent = new Parent
             {
                 Id = 100,
@@ -135,19 +136,20 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map<Parent, Child>(parent, null);
+            fieldAndPropertyMapper.Map<Parent, Child>(parent, null);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
         }
 
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(Mapper))]
+        [TestCategory(nameof(FieldAndPropertyMapper))]
         public void Mapper_Map_TMapTo_IsNotNull_ExpectNoArgumentNullException()
         {
+            var fieldAndPropertyMapper = new FieldAndPropertyMapper();
             //---------------Set up test pack-------------------
-            Mapper.Clear();
-            Mapper.AddMap<Parent, Child>();
+            fieldAndPropertyMapper.Clear();
+            fieldAndPropertyMapper.AddMap<Parent, Child>();
             var parent = new Parent
             {
                 Id = 100,
@@ -161,7 +163,7 @@ namespace Dev2.Common.Tests
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Mapper.Map<Parent, Child>(parent, child);
+            fieldAndPropertyMapper.Map<Parent, Child>(parent, child);
             //---------------Test Result -----------------------
             Assert.AreEqual(100, parent.Id);
             Assert.AreNotEqual(parent.Id.ToString(), child.Id);
