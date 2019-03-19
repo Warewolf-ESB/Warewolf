@@ -239,14 +239,14 @@ namespace Dev2.Common.Common
 
             if (ignoreCase)
             {
-                return GetIndexOfCharactor(sb, value, startIndex, maxSearchLength, length);
+                return GetIndexOfCharacter(sb, value, startIndex, maxSearchLength, length);
             }
 
-            return GetIncrementedIndex(sb, value, escapeChar, startIndex, maxSearchLength, length);
+            return GetIndexOfCharacter(sb, value, escapeChar, startIndex, maxSearchLength, length);
 
         }
 
-        private static int GetIndexOfCharactor(this StringBuilder sb, string value, int startIndex, int maxSearchLength, int length)
+        private static int GetIndexOfCharacter(this StringBuilder sb, string value, int startIndex, int maxSearchLength, int length)
         {
             var index = 1;
 
@@ -264,7 +264,7 @@ namespace Dev2.Common.Common
             return -1;
         }
 
-        private static int GetIncrementedIndex(this StringBuilder sb, string value, string escapeChar, int startIndex, int maxSearchLength, int length)
+        private static int GetIndexOfCharacter(this StringBuilder sb, string value, string escapeChar, int startIndex, int maxSearchLength, int length)
         {
             for (int i = startIndex; i < maxSearchLength; ++i)
             {
