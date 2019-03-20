@@ -19,6 +19,11 @@ using Dev2.Runtime.WebServer.Security;
 
 namespace Dev2.Runtime.WebServer.Controllers
 {
+    /**
+     * Entry point for web based executions of workflows. This is the entrypoint for any
+     * request that comes from an HTTP, that includes REST and a user executing a workflow
+     * from a web browser
+     */
     [AuthorizeWeb]
     public class WebServerController : AbstractController
     {

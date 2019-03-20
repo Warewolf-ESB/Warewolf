@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -159,7 +160,7 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", jObject),
 
             };
-            
+
 
             //------------Execute Test---------------------------
 
@@ -176,6 +177,27 @@ namespace WarewolfParsingTest
             var container = data.JsonObjects["Person"];
             var obj = container as JArray;
             Assert.IsNotNull(obj);
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJobjectToJObject_DiffTypes_EvalCorreclty()
+        {
+            //------------Setup for test--------------------------
+
+            var environment = new ExecutionEnvironment();
+            environment.AssignJson(new AssignValue("[[@Person]]", "{\"Name\":\"NNNN\",\"Age\":32}"), 0);
+
+            //------------Execute Test---------------------------
+            environment.AssignJson(new AssignValue("[[@Person2.Name]]", "[[@Person.Name]]"), 0);
+            environment.AssignJson(new AssignValue("[[@Person2.Age]]", "[[@Person.Age]]"), 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person2]]", 0);            
+
 
         }
 
@@ -303,7 +325,7 @@ namespace WarewolfParsingTest
 
             var environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe") };
-            
+
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -328,7 +350,7 @@ namespace WarewolfParsingTest
 
             var environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(2).Name]]", "Moe") };
-           
+
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -354,7 +376,7 @@ namespace WarewolfParsingTest
 
             var environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(*).Name]]", "Moe") };
-            
+
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -502,9 +524,7 @@ namespace WarewolfParsingTest
             var env2 = AssignEvaluation.assignGivenAValue(env, result, LanguageAST.JsonIdentifierExpression.NewNestedNameExpression(new LanguageAST.JsonPropertyIdentifier("Bob", LanguageAST.JsonIdentifierExpression.NewNameExpression(new LanguageAST.JsonIdentifier("Age")))));
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Bob"));
-            Assert.AreEqual(env2.JsonObjects["Bob"].ToString(), @"{
-  ""Age"": ""5""
-}");
+            Assert.AreEqual("{\r\n  \"Age\": 5\r\n}", env2.JsonObjects["Bob"].ToString());
         }
 
         [TestMethod]
@@ -737,7 +757,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var arr = new JArray();
             //------------Execute Test---------------------------
-            
+
             var res = AssignEvaluation.indexToInt(LanguageAST.Index.IndexExpression.NewIndexExpression(LanguageAST.LanguageExpression.NewWarewolfAtomExpression(DataStorage.WarewolfAtom.Nothing)), arr);
             //------------Assert Results-------------------------
         }
@@ -819,7 +839,7 @@ namespace WarewolfParsingTest
             var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Name]]");
 
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
-            
+
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
@@ -840,7 +860,7 @@ namespace WarewolfParsingTest
             var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child().Age]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
-            
+
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val2.Item);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
@@ -862,7 +882,7 @@ namespace WarewolfParsingTest
             var parsed2 = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[@Person.Child(*).Name]]");
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
-            
+
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
@@ -887,7 +907,7 @@ namespace WarewolfParsingTest
             var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var val2 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed2;
             var val3 = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed3;
-            
+
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, secondResult, val.Item);
             env2 = AssignEvaluation.assignGivenAValue(env2, thirdResult, val2.Item);
@@ -971,7 +991,73 @@ namespace WarewolfParsingTest
             var parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[[[bob]]]]");
             var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignValue")]
+        public void AssignValue_ObjectToObject_KeepsInt_DataType()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var jObject = "{\"Date\":\"2013-10-21T13:28:06.419Z\",\"Number\":32,\"Alpha\":\"Bob\"}";
+            env.AssignJson(new AssignValue("[[@Person]]", jObject), 0);
 
+            env.AssignJson(new AssignValue("[[@Person2.Date]]", "[[@Person.Date]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Alpha]]", "[[@Person.Alpha]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Number]]", "[[@Person.Number]]"), 0);
+
+            //------------Assert Results-------------------------
+            var jContainer = env.EvalJContainer("[[@Person2()]]");
+            var value = jContainer.Last;
+            var token = ((JProperty)value).Value;
+            Assert.AreEqual(32, token);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignValue")]
+        public void AssignValue_ObjectToObject_NestedObject_1Level_KeepsInt_DataType()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var jObject = "{\"Number\":32,\"Nested\":{\"Number2\":10,\"Alpha2\":\"Jack\"}}";
+            env.AssignJson(new AssignValue("[[@Person]]", jObject), 0);
+
+            env.AssignJson(new AssignValue("[[@Person2.Nested]]", "[[@Person.Nested]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Number]]", "[[@Person.Number]]"), 0);
+
+            //------------Assert Results-------------------------
+            var jContainer = env.EvalJContainer("[[@Person2()]]");
+            var value = jContainer.Last;
+            var token = ((JProperty)value).Value;
+            Assert.AreEqual(32, token);
+
+            var value2 = jContainer.First;
+            var token2 = ((JProperty)value2).Value;
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": \"Jack\"\r\n}", token2);
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("AssignValue")]
+        public void AssignValue_ObjectToObject_NestedObject_2Levels_KeepsInt_DataType()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var jObject = "{\"Number\":32,\"Nested\":{\"Number2\":10,\"Alpha2\":{\"Number2\":10,\"Alpha2\":\"Jack\"}}}";
+            env.AssignJson(new AssignValue("[[@Person]]", jObject), 0);
+
+            env.AssignJson(new AssignValue("[[@Person2.Nested]]", "[[@Person.Nested]]"), 0);
+            env.AssignJson(new AssignValue("[[@Person2.Number]]", "[[@Person.Number]]"), 0);
+
+            //------------Assert Results-------------------------
+            var jContainer = env.EvalJContainer("[[@Person2()]]");
+            var value = jContainer.Last;
+            var token = ((JProperty)value).Value;
+            Assert.AreEqual(32, token);
+
+            var value2 = jContainer.First;
+            var token2 = ((JProperty)value2).Value;
+            Assert.AreEqual("{\r\n  \"Number2\": 10,\r\n  \"Alpha2\": {\r\n    \"Number2\": 10,\r\n    \"Alpha2\": \"Jack\"\r\n  }\r\n}", token2);
+
+        }
         DataStorage.WarewolfEnvironment CreateTestEnvWithData()
         {
             IEnumerable<IAssignValue> assigns = new List<IAssignValue>

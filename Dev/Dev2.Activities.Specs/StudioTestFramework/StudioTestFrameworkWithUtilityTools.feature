@@ -571,4 +571,3 @@ Scenario: Run a passing Test with RabbitMq Object return
 	Then test result is Passed		
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned

@@ -215,9 +215,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 messageList.AddRange(Exception.Select(exceptionUiModel => exceptionUiModel.Message.Replace("Error :", "")));
             }
 
-            var url = Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl;
-
-            AsyncWorker.Start(() => SetupProgressSpinner(messageList, url), () =>
+            AsyncWorker.Start(() => SubmitErrorToUserForum(messageList), () =>
             {
                 Testing = false;
                 RequestClose();
@@ -226,7 +224,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
         }
 
-        void SetupProgressSpinner(List<string> messageList, string url)
+        void SubmitErrorToUserForum(List<string> messageList)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -254,7 +252,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                                  "Warewolf Server log file : " + Environment.NewLine + " " + Environment.NewLine +
                                  ServerLogFile;
 
-            WebServer.SendErrorOpenInBrowser(messageList, description, url);
+            WebServer.SubmitErrorFormUsingWebBrowser(messageList, description, Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl);
         }
 
         public static async Task<string> GetServerLogFile()

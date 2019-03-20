@@ -349,7 +349,9 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         #region CreateTokenizer
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         IDev2Tokenizer CreateTokenizer()
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             _tokenizerValidationErrors.Clear();
 

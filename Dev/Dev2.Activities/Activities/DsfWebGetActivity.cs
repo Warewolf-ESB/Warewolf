@@ -1,7 +1,16 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -31,14 +40,11 @@ namespace Dev2.Activities
         public string QueryString { get; set; }
 
         public IOutputDescription OutputDescription { get; set; }
-
-
-        #region Overrides of DsfNativeActivity<bool>
-
+        
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             base.GetDebugInputs(env, update);
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
@@ -72,9 +78,8 @@ namespace Dev2.Activities
                 tmpErrors.AddError(ErrorResource.QueryIsNull);
                 return;
             }
-            var head = Headers.Select(a => new ObservableNameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
-            var query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
 
+            var (head, query, _) = ConfigureHttp(dataObject, update);
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
 
@@ -84,6 +89,9 @@ namespace Dev2.Activities
                 AddDebugInputItem(new DebugEvalResult(url.Address, "Query String", dataObject.Environment, update));
             }
             var webRequestResult = PerformWebRequest(head, query, url);
+
+            tmpErrors.MergeErrors(_errorsTo);
+
             ResponseManager = new ResponseManager
             {
                 OutputDescription = OutputDescription,
@@ -95,16 +103,21 @@ namespace Dev2.Activities
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
+        private (IEnumerable<NameValue> head, string query, string data) ConfigureHttp(IDSFDataObject dataObject, int update)
+        {
+            var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
+            var query = ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(QueryString, update));
+
+            return (head, query, null);
+        }
+
         public IResponseManager ResponseManager { get; set; }
 
         protected virtual string PerformWebRequest(IEnumerable<INameValue> head, string query, WebSource url)
         {
             return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
-
-        #endregion
-
-
+        
         public DsfWebGetActivity()
         {
             Type = "GET Web Method";
