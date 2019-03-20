@@ -11,7 +11,7 @@ namespace Dev2.Common.Tests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStates_ShouldReturnStates()
+        public void DebugStateTreeBuilder_GivenStates_ShouldReturnStates()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("FlatStates");
@@ -24,7 +24,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStates_ShouldTreeWithChildren()
+        public void DebugStateTreeBuilder_GivenStates_ShouldTreeWithChildren()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("FlatStates");
@@ -42,7 +42,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStates_ShouldAddChildrenCorrectly()
+        public void DebugStateTreeBuilder_GivenStates_ShouldAddChildrenCorrectly()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("FlatStates");
@@ -67,7 +67,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStatesWithForEach_ShouldAddChildrenCorrectly()
+        public void DebugStateTreeBuilder_GivenStatesWithForEach_ShouldAddChildrenCorrectly()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("ForEachWorkFlow");
@@ -89,7 +89,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStatesWithNestesForEach_ShouldAddChildrenCorrectly()
+        public void DebugStateTreeBuilder_GivenStatesWithNestesForEach_ShouldAddChildrenCorrectly()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("NestedForEachWorkFlow");
@@ -115,7 +115,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStatesWithNestesWithService_ShouldAddChildrenCorrectly()
+        public void DebugStateTreeBuilder_GivenStatesWithNestesWithService_ShouldAddChildrenCorrectly()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("ForEachWithHelloWorldTest");
@@ -141,7 +141,7 @@ namespace Dev2.Common.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildTree_GivenStatesAllToolsWorkflow_ShouldAggregateErrors()
+        public void DebugStateTreeBuilder_GivenStatesAllToolsWorkflow_ShouldAggregateErrors()
         {
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("AllTools");
