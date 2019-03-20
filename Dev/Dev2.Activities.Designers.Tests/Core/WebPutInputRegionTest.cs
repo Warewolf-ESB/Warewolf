@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
-            regionToRestore.Headers = new ObservableCollection<INameValue>{new ObservableNameValue("a","b")};
+            regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------

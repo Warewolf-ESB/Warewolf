@@ -276,7 +276,9 @@ namespace Dev2.Activities.Designers2.Decision
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         protected void UpdateDecisionDisplayName(DecisionTO dec)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             var isIfOrDecision = DisplayText.StartsWith("If ") || DisplayText == "Decision";
 

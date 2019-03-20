@@ -175,12 +175,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
             else
             {
-                if (expectedResult.Contains(" or "))
+                if (expectedResult.StartsWith("{") && expectedResult.EndsWith("}"))
                 {
-                    var splitter = " or ";
-                    var firstAlternative = expectedResult.Substring(0, expectedResult.IndexOf(splitter));
-                    var secondAlternative = expectedResult.Substring(expectedResult.IndexOf(splitter) + splitter.Length, expectedResult.Length-(expectedResult.IndexOf(splitter) + splitter.Length));
-                    Assert.IsTrue(actualValue == firstAlternative || actualValue == secondAlternative, $"{actualValue} does not equal either {firstAlternative} or {secondAlternative}");
+                    var expectedResults = expectedResult
+                        .Substring(1, expectedResult.Length - 2)
+                        .Split(new string[] { "} or {" }, StringSplitOptions.None);
+                    actualValue.Should().BeOneOf(expectedResults);
                 }
                 else
                 {

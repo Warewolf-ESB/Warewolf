@@ -6,7 +6,9 @@ namespace Dev2.Comparer
 {
     internal class PluginActionComparer : IEqualityComparer<IPluginAction>
     {
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IPluginAction x, IPluginAction y)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (x == null && y == null)
             {

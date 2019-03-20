@@ -321,7 +321,7 @@
     <Compile Include="ActivityTests\DropBox2016\DropboxUploadSuccessResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
-    <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadActivityTests.cs" />
     <Compile Include="ActivityTests\DsfEnhancedDotNetDllActivityTests.cs" />
     <Compile Include="ActivityTests\DsfSwitchTests.cs" />
     <Compile Include="ActivityTests\DotNetMultiAssignObjectActivityTest.cs" />
