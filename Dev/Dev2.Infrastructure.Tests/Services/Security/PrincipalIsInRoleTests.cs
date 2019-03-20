@@ -25,12 +25,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory(nameof(PrincipalIsInRole))]
         public void PrincipalIsInRole_IsInRole_Principle_IsNull()
         {
+            var principalIsInRole = new PrincipalIsInRole();
             var mockPrinciple = new Mock<IPrincipal>();
             mockPrinciple.Setup(principle => principle.IsInRole(It.IsAny<string>())).Returns(false);
 
             var windowsGroupPermission = new WindowsGroupPermission { IsServer = true };
 
-            var isInRole = PrincipalIsInRole.IsInRole(null, windowsGroupPermission);
+            var isInRole = principalIsInRole.IsInRole(null, windowsGroupPermission);
 
             Assert.IsFalse(isInRole);
         }
@@ -40,12 +41,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory(nameof(PrincipalIsInRole))]
         public void PrincipalIsInRole_IsInRole_Principle_IsNotNull_WindowsGroup_IsNull_ExpectedFalse()
         {
+            var principalIsInRole = new PrincipalIsInRole();
             var mockPrinciple = new Mock<IPrincipal>();
             mockPrinciple.Setup(principle => principle.IsInRole(It.IsAny<string>())).Returns(false);
 
             var windowsGroupPermission = new WindowsGroupPermission { IsServer = true };
 
-            var isInRole = PrincipalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
+            var isInRole = principalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
 
             Assert.IsFalse(isInRole);
         }
@@ -55,12 +57,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory(nameof(PrincipalIsInRole))]
         public void PrincipalIsInRole_IsInRole_Principle_IsNotNull_WindowsGroup_IsNull_ExpectedTrue()
         {
+            var principalIsInRole = new PrincipalIsInRole();
             var mockPrinciple = new Mock<IPrincipal>();
             mockPrinciple.Setup(principle => principle.IsInRole(It.IsAny<string>())).Returns(true);
 
             var windowsGroupPermission = new WindowsGroupPermission { IsServer = true };
 
-            var isInRole = PrincipalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
+            var isInRole = principalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
 
             Assert.IsTrue(isInRole);
         }
@@ -70,6 +73,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory(nameof(PrincipalIsInRole))]
         public void PrincipalIsInRole_IsInRole_WindowsGroup_BuiltInGuestsText_ExpectedTrue()
         {
+            var principalIsInRole = new PrincipalIsInRole();
             var mockIdentity = new Mock<IIdentity>();
             mockIdentity.Setup(identity => identity.Name).Returns("admin");
 
@@ -82,7 +86,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 WindowsGroup = WindowsGroupPermission.BuiltInGuestsText
             };
 
-            var isInRole = PrincipalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
+            var isInRole = principalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
 
             Assert.IsTrue(isInRole);
         }
@@ -92,6 +96,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory(nameof(PrincipalIsInRole))]
         public void PrincipalIsInRole_IsInRole_WindowsGroup_BuiltInAdministratorsText_ExpectedFalse()
         {
+            var principalIsInRole = new PrincipalIsInRole();
             var mockIdentity = new Mock<IIdentity>();
             mockIdentity.Setup(identity => identity.Name).Returns("admin");
 
@@ -104,7 +109,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
                 WindowsGroup = GlobalConstants.WarewolfGroup
             };
 
-            var isInRole = PrincipalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
+            var isInRole = principalIsInRole.IsInRole(mockPrinciple.Object, windowsGroupPermission);
 
             Assert.IsFalse(isInRole);
         }

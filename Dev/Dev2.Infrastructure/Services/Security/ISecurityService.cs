@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Services.Security
 {
@@ -24,5 +26,9 @@ namespace Dev2.Services.Security
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
 
         void Remove(Guid resourceId);
+        bool IsAuthorized(AuthorizationContext context, IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions);
+        List<WindowsGroupPermission> GetDefaultPermissions(IPrincipal principal);
+        List<WindowsGroupPermission> GetResourcePermissions(IPrincipal principal, string resource);
+        List<WindowsGroupPermission> GetAdditionalPermissions(IPrincipal principal, string resource);
     }
 }

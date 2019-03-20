@@ -76,7 +76,7 @@ namespace Dev2.Services.Security
             return permission;
         }
 
-        public static bool Matches(this WindowsGroupPermission permission, string resource)
+        public static bool PermissionMatchesResourceByNameOrId(this WindowsGroupPermission permission, string resource)
         {
             if(permission.IsServer)
             {

@@ -116,6 +116,7 @@ namespace Dev2.Runtime.Security
             _disposing = true;
             if (_configWatcher != null && !_isDisposed)
             {
+                _isDisposed = true;
                 
               
                 _configWatcher.EnableRaisingEvents = false;

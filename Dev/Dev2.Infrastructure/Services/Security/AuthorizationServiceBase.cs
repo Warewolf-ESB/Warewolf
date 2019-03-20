@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Warewolf.Resource.Errors;
+using UserPrincipal = System.DirectoryServices.AccountManagement.UserPrincipal;
 
 namespace Dev2.Services.Security
 {
@@ -103,7 +104,7 @@ namespace Dev2.Services.Security
 
         bool IsWarewolfAdmin();
     }
-    
+
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         private readonly IDirectoryEntryFactory _directoryEntryFactory;
@@ -193,7 +194,6 @@ namespace Dev2.Services.Security
 
         public event EventHandler PermissionsChanged;
         EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
-        readonly object _getPermissionsLock = new object();
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
@@ -209,23 +209,12 @@ namespace Dev2.Services.Security
 
         public virtual Permissions GetResourcePermissions(Guid resourceId)
         {
-            var groupPermissions = GetGroupPermissions(Utilities.OrginalExecutingUser ?? Thread.CurrentPrincipal, resourceId.ToString()).ToList();
+            var groupPermissions = GetGroupPermissionsForResource(Utilities.OrginalExecutingUser ?? Thread.CurrentPrincipal, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
 
-        public List<WindowsGroupPermission> GetPermissions(IPrincipal principal)
-        {
-            lock (_getPermissionsLock)
-            {
-                var resourcePermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && !permission.IsServer).ToList();
-                var serverPermissionsForUser = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && (permission.IsServer || permission.ResourceID == Guid.Empty)).ToList();
-                var groupPermissions = new List<WindowsGroupPermission>();
-                groupPermissions.AddRange(resourcePermissions);
-                groupPermissions.AddRange(serverPermissionsForUser);
-                return groupPermissions;
-            }
-        }
+        public List<WindowsGroupPermission> GetPermissions(IPrincipal principal) => _securityService.GetDefaultPermissions(principal);
 
         public virtual void Remove(Guid resourceId)
         {
@@ -249,11 +238,33 @@ namespace Dev2.Services.Security
             _permissionsModifedHandler?.Invoke(this, e);
         }
 
-        protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
+        protected bool IsAuthorizedToConnect(IPrincipal principal) => _securityService.IsAuthorized(AuthorizationContext.Any, principal,
+            () => {
+                var groupPermissions = _securityService.GetDefaultPermissions(principal);
+                FilterAdminGroupForRemote(groupPermissions);
+                return groupPermissions;
+            });
 
-        public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
+        void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
+        {
+            if (!_isLocalConnection)
+            {
+                groupPermissions.RemoveAll(gr => gr.WindowsGroup.Equals(GlobalConstants.WarewolfGroup));
+            }
+        }
 
-        protected void DumpPermissionsOnError(IPrincipal principal)
+        public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource)
+            => _securityService.IsAuthorized(context, user, () => GetGroupPermissionsForResource(user, resource));
+
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissionsForResource(IPrincipal principal, string resource)
+        {
+            var permissionsForResource = _securityService.GetResourcePermissions(principal, resource);
+            var additionalPermissions = _securityService.GetAdditionalPermissions(principal, resource);
+
+            return additionalPermissions.Union(permissionsForResource);
+        }
+
+        protected void DumpPermissions(IPrincipal principal)
         {
             Dev2Logger.Error(principal.Identity != null ? "PERM DUMP FOR [ " + principal.Identity.Name + " ]" : "PERM DUMP FOR [ NULL USER ]", GlobalConstants.WarewolfError);
 
@@ -263,62 +274,15 @@ namespace Dev2.Services.Security
                 Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]", GlobalConstants.WarewolfError);
             }
         }
-
-        bool IsAuthorized(AuthorizationContext context, IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
-        {
-            var contextPermissions = context.ToPermissions();
-            var groupPermissions = getGroupPermissions?.Invoke();
-            if (context == AuthorizationContext.Any)
-            {
-                groupPermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission)).ToList();
-            }
-            return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
-        }
-
-        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
-        {
-            var resourcePermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission) && !permission.IsServer && permission.Matches(resource)).ToList();
-            var groupPermissions = new List<WindowsGroupPermission>();
-
-            foreach (var permission in _securityService.Permissions)
-            {
-                if (resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
-                {
-                    continue;
-                }
-                if (PrincipalIsInRole.IsInRole(principal, permission) && permission.Matches(resource))
-                {
-                    groupPermissions.Add(permission);
-                }
-            }
-
-            groupPermissions.AddRange(resourcePermissions);
-            return groupPermissions;
-        }
-
-        IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
-        {
-            var groupPermissions = _securityService.Permissions.Where(permission => PrincipalIsInRole.IsInRole(principal, permission)).ToList();
-            FilterAdminGroupForRemote(groupPermissions);
-            return groupPermissions;
-        }
-
-        void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
-        {
-            if (!_isLocalConnection)
-            {
-                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(GlobalConstants.WarewolfGroup));
-                if (adminGroup != null)
-                {
-                    groupPermissions.Remove(adminGroup);
-                }
-            }
-        }
     }
 
-    public static class PrincipalIsInRole
+    public interface IPrincipalIsInRole
     {
-        public static bool IsInRole(IPrincipal principal, WindowsGroupPermission permission)
+        bool IsInRole(IPrincipal principal, WindowsGroupPermission permission);
+    }
+    public class PrincipalIsInRole : IPrincipalIsInRole
+    {
+        public bool IsInRole(IPrincipal principal, WindowsGroupPermission permission)
         {
             if (principal == null)
             {
@@ -330,6 +294,7 @@ namespace Dev2.Services.Security
                 var windowsGroup = permission.WindowsGroup;
                 if (windowsGroup == GlobalConstants.WarewolfGroup)
                 {
+                    var a = UserPrincipal.Current;
                     if (!string.IsNullOrEmpty(principal.Identity.Name))
                     {
                         return new WindowsPrincipalWrapper(principal as WindowsPrincipal).IsWarewolfAdmin();
@@ -364,6 +329,7 @@ namespace Dev2.Services.Security
         public WindowsPrincipalWrapper(WindowsPrincipal windowsPrincipal)
         {
             _user = windowsPrincipal;
+            Identity = new WindowsIdentityWrapper(_user.Identity as WindowsIdentity);
         }
 
         public bool IsAdmin => _user.IsInRole(WindowsBuiltInRole.Administrator) || _user.IsInRole(GlobalConstants.WarewolfGroup) || _user.IsInRole(_adminSid);

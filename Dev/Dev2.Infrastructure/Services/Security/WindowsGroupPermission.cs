@@ -17,6 +17,9 @@ using Newtonsoft.Json;
 
 namespace Dev2.Services.Security
 {
+    ///
+    /// The permission that a Windows group has when interacting with the Warewolf Server.
+    ///
     public class WindowsGroupPermission : ObservableObject, IWindowsGroupPermission
     {
         public WindowsGroupPermission()
@@ -44,6 +47,12 @@ namespace Dev2.Services.Security
         bool _enableCellEditing;
         bool _canChangeName;
 
+        /// <summary>
+        ///  Determines whether this permission entry is a server permission or a resource permission
+        ///  The studio settings persmissions view shows Server permissions in the top panel and
+        ///  Resource permissions in the bottom panel.
+        ///  See: SecurityViewModel
+        /// </summary>
         public bool IsServer
         {
             get => _isServer;

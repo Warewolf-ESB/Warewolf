@@ -37,13 +37,13 @@ namespace Dev2.Security
         public override Permissions GetResourcePermissions(Guid resourceId)
         {
             var principal = _environmentConnection == null ? ClaimsPrincipal.Current : _environmentConnection.Principal;
-            var groupPermissions = GetGroupPermissions(principal, resourceId.ToString()).ToList();
+            var groupPermissions = GetGroupPermissionsForResource(principal, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
 
 
-        protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        protected override IEnumerable<WindowsGroupPermission> GetGroupPermissionsForResource(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
             var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
@@ -57,7 +57,7 @@ namespace Dev2.Security
                 {
                     return serverOnlyPermissions;
                 }
-                var resourcePermissions = serverPermissions.Where(p => p.Matches(resource) && !p.IsServer).ToList();
+                var resourcePermissions = serverPermissions.Where(p => p.PermissionMatchesResourceByNameOrId(resource) && !p.IsServer).ToList();
                 if (resourcePermissions.Any())
                 {
                     if (principal == null)

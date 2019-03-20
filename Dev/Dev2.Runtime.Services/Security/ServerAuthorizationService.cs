@@ -192,12 +192,10 @@ namespace Dev2.Runtime.Security
             {
                 var user = "NULL USER";
 
-
                 if (request.User.Identity != null)
-
                 {
                     user = request.User.Identity.Name;
-                    DumpPermissionsOnError(request.User);
+                    DumpPermissions(request.User);
                 }
                 Dev2Logger.Error("AUTH ERROR FOR USER : " + user, GlobalConstants.WarewolfError);
             }
