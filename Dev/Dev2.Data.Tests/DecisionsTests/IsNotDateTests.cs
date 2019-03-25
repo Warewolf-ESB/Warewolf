@@ -20,7 +20,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
 
             Assert.AreEqual("en-ZA", regionName);
             Assert.AreEqual("en-ZA", regionNameUI);

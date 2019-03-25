@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         public void PreConditions()
         {
             var regionName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            var regionNameUI = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
 
             Assert.AreEqual("en-ZA", regionName);
             Assert.AreEqual("en-ZA", regionNameUI);
