@@ -294,7 +294,6 @@ namespace Dev2.Services.Security
                 var windowsGroup = permission.WindowsGroup;
                 if (windowsGroup == GlobalConstants.WarewolfGroup)
                 {
-                    var a = UserPrincipal.Current;
                     if (!string.IsNullOrEmpty(principal.Identity.Name))
                     {
                         return new WindowsPrincipalWrapper(principal as WindowsPrincipal).IsWarewolfAdmin();
