@@ -80,8 +80,6 @@ namespace Dev2.Activities.Designers2.Core
         }
         public OutputsRegion(IFieldAndPropertyMapper mapper)
         {
-            VerifyArgument.IsNotNull("mapper", mapper);
-
             _mapper = mapper;
             ToolRegionName = "OutputsRegion";
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
