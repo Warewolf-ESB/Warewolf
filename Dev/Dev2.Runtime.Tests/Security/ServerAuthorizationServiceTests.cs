@@ -25,11 +25,9 @@ namespace Dev2.Tests.Runtime.Security
     [TestClass]
     public class ServerAuthorizationServiceTests
     {
-        
-
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_Instance")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_Instance_Singleton()
         {
             //------------Setup for test--------------------------
@@ -43,213 +41,227 @@ namespace Dev2.Tests.Runtime.Security
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_Constructor")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_Constructor_PermissionsChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
-
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.Unknown);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            authorizationService.IsAuthorized(request.Object);
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                authorizationService.IsAuthorized(request.Object);
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
-            //------------Execute Test---------------------------
-            securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
+                //------------Execute Test---------------------------
+                securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+                //------------Assert Results-------------------------
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            }
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServerAuthorizationService_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
 
-            //------------Execute Test---------------------------
-            authorizationService.IsAuthorized(null);
+                //------------Execute Test---------------------------
+                authorizationService.IsAuthorized(null);
+            }
 
             //------------Assert Results-------------------------
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsTrue()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
-            var reciept = new FutureReceipt { PartID = 0, RequestID = Guid.NewGuid(), User = "TestUser" };
-            ResultsCache.Instance.AddResult(reciept, "<x>hello world</x>");
-
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
-
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                var reciept = new FutureReceipt { PartID = 0, RequestID = Guid.NewGuid(), User = "TestUser" };
+                ResultsCache.Instance.AddResult(reciept, "<x>hello world</x>");
 
-            //------------Execute Test---------------------------
-            var result = authorizationService.IsAuthorized(request.Object);
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
-            // Clear the cache out ;)
-            ResultsCache.Instance.FetchResult(reciept);
+                //------------Execute Test---------------------------
+                var result = authorizationService.IsAuthorized(request.Object);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
-            Assert.IsTrue(result);
+                // Clear the cache out ;)
+                ResultsCache.Instance.FetchResult(reciept);
+
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
+                Assert.IsTrue(result);
+            }
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndPayloadFetch_AuthorizationCalculatedAndNotCachedIsTrue()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var reciept = new FutureReceipt { PartID = 0, RequestID = Guid.NewGuid(), User = "TestUser" };
             ResultsCache.Instance.AddResult(reciept, "<x>hello world</x>");
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
-
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbFetchExecutePayloadFragment);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
-            //------------Execute Test---------------------------
-            var result = authorizationService.IsAuthorized(request.Object);
+                //------------Execute Test---------------------------
+                var result = authorizationService.IsAuthorized(request.Object);
 
-            // Clear the cache out ;)
-            ResultsCache.Instance.FetchResult(reciept);
+                // Clear the cache out ;)
+                ResultsCache.Instance.FetchResult(reciept);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
-            Assert.IsTrue(result);
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
+                Assert.IsTrue(result);
+            }
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedNoResultsPendingAndHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
-
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.HubConnect);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
-            //------------Execute Test---------------------------
-            var result = authorizationService.IsAuthorized(request.Object);
+                //------------Execute Test---------------------------
+                var result = authorizationService.IsAuthorized(request.Object);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
-            Assert.IsFalse(result);
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
+                Assert.IsFalse(result);
+            }
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestWhenNotAllowedButResultsPendingAndNotHubConnect_AuthorizationCalculatedAndNotCachedIsFalse()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var reciept = new FutureReceipt { PartID = 0, RequestID = Guid.NewGuid(), User = "TestUser" };
             ResultsCache.Instance.AddResult(reciept, "<x>hello world</x>");
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.Identity.Name).Returns("TestUser");
-
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(false);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.EsbWrite);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
-            //------------Execute Test---------------------------
-            var result = authorizationService.IsAuthorized(request.Object);
+                //------------Execute Test---------------------------
+                var result = authorizationService.IsAuthorized(request.Object);
 
-            // Clear the cache out ;)
-            ResultsCache.Instance.FetchResult(reciept);
+                // Clear the cache out ;)
+                ResultsCache.Instance.FetchResult(reciept);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
-            Assert.IsFalse(result);
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
+                Assert.IsFalse(result);
+            }
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
-
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            Assert.AreEqual(0, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                securityService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), request.Object.User, It.IsAny<Func<IEnumerable<WindowsGroupPermission>>>()))
+                    .Callback(() =>
+                    {
+                        Assert.IsNotNull(securityService.Object.Permissions);
+                    })
+                    .Returns(true);
+                Assert.AreEqual(0, authorizationService.CachedRequestCount);
 
-            //------------Execute Test---------------------------
-            authorizationService.IsAuthorized(request.Object);
+                //------------Execute Test---------------------------
+                authorizationService.IsAuthorized(request.Object);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.Once);
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
+            }
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
         {
             //------------Setup for test--------------------------
@@ -257,83 +269,75 @@ namespace Dev2.Tests.Runtime.Security
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
             securityService.SetupGet(p => p.TimeOutPeriod).Returns(new TimeSpan(0, 2, 0));
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
-            authorizationService.IsAuthorized(request.Object);
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                securityService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), request.Object.User, It.IsAny<Func<IEnumerable<WindowsGroupPermission>>>()))
+                    .Callback(() =>
+                    {
+                        Assert.IsNotNull(securityService.Object.Permissions);
+                    })
+                    .Returns(true);
 
-            //------------Execute Test---------------------------
-            authorizationService.IsAuthorized(request.Object);
+                authorizationService.IsAuthorized(request.Object);
+                securityService.VerifyGet(p => p.Permissions, Times.Once);
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
+                //------------Execute Test---------------------------
+                authorizationService.IsAuthorized(request.Object);
+
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.Once);
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
+            }
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_TimedOutPeriodExpired_ShouldNotGetFromCache()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
             securityService.SetupGet(p => p.TimeOutPeriod).Returns(new TimeSpan(0, 0, 1));
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
+            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url", AuthorizationContext.Any));
             request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
-            authorizationService.IsAuthorized(request.Object);
-            //-------------Assert Preconditions-------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
-            //------------Execute Test---------------------------
-            Thread.Sleep(1200);
-            authorizationService.IsAuthorized(request.Object);
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
+
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                securityService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), request.Object.User, It.IsAny<Func<IEnumerable<WindowsGroupPermission>>>()))
+                    .Callback(() =>
+                    {
+                        Assert.IsNotNull(securityService.Object.Permissions);
+                    })
+                    .Returns(true);
+
+                authorizationService.IsAuthorized(request.Object);
+                //-------------Assert Preconditions-------------------
+                securityService.VerifyGet(p => p.Permissions, Times.Once);
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
+                //------------Execute Test---------------------------
+                Thread.Sleep(1200);
+                authorizationService.IsAuthorized(request.Object);
+                //------------Assert Results-------------------------
+                securityService.VerifyGet(p => p.Permissions, Times.Exactly(2));
+                Assert.AreEqual(1, authorizationService.CachedRequestCount);
+            }
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
-        public void ServerAuthorizationService_IsAuthorized_WithinTimedOutPeriod_ShouldGetFromCache()
-        {
-            //------------Setup for test--------------------------
-            var securityService = new Mock<ISecurityService>();
-            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
-            securityService.SetupGet(p => p.TimeOutPeriod).Returns(new TimeSpan(0, 1, 0));
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
-
-            var request = new Mock<IAuthorizationRequest>();
-            request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
-            request.Setup(r => r.Key).Returns(new Tuple<string, string, AuthorizationContext>("User", "Url",AuthorizationContext.Any));
-            request.Setup(r => r.RequestType).Returns(WebServerRequestType.WebGet);
-            request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
-            authorizationService.IsAuthorized(request.Object);
-            //-------------Assert Preconditions-------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
-            //------------Execute Test---------------------------
-            authorizationService.IsAuthorized(request.Object);
-            //------------Assert Results-------------------------
-            securityService.VerifyGet(p => p.Permissions, Times.AtLeast(1));
-            Assert.AreEqual(1, authorizationService.CachedRequestCount);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_WebInvokeService_CorrectAuthorizations()
         {
             var resourceID = Guid.NewGuid();
@@ -361,8 +365,8 @@ namespace Dev2.Tests.Runtime.Security
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_WebGetXXX_CorrectAuthorizations()
         {
             const string ResourceID = "ed44bc30-7bf0-4b64-a3a3-ad2c15e8eb23";
@@ -391,8 +395,8 @@ namespace Dev2.Tests.Runtime.Security
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_WebExecuteOrBookmarkWorkflow_CorrectAuthorizations()
         {
             var queryString = new Mock<INameValueCollection>();
@@ -410,8 +414,8 @@ namespace Dev2.Tests.Runtime.Security
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_HubConnect_CorrectAuthorizations()
         {
             var queryString = new Mock<INameValueCollection>();
@@ -426,8 +430,8 @@ namespace Dev2.Tests.Runtime.Security
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(ServerAuthorizationService))]
         public void ServerAuthorizationService_IsAuthorized_EsbXXX_CorrectAuthorizations()
         {
             var queryString = new Mock<INameValueCollection>();
@@ -484,7 +488,7 @@ namespace Dev2.Tests.Runtime.Security
                 else
                 {
                     configPermission.ResourceID = Guid.NewGuid();
-                    configPermission.ResourceName = string.Format("TestCategory\\{0}", authorizationRequest.Resource);
+                    configPermission.ResourceName = $"TestCategory\\{authorizationRequest.Resource}";
                 }
             }
 
@@ -495,22 +499,27 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(configPermission, authorizationRequest);
         }
 
-        void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
+        void Verify_IsAuthorized(WindowsGroupPermission groupPermission, TestAuthorizationRequest authRequest)
         {
             //------------Setup for test--------------------------
-            var allowedPermissions = AuthorizationHelpers.ToPermissions(authorizationRequest.AuthorizationContext);
-            var expected = authorizationRequest.UserIsInRole && (configPermissions.Permissions & allowedPermissions) != 0;
+            var allowedPermissions = AuthorizationHelpers.ToPermissions(authRequest.AuthorizationContext);
+            var expected = authRequest.UserIsInRole && (groupPermission.Permissions & allowedPermissions) != 0;
 
             var securityService = new Mock<ISecurityService>();
-            securityService.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
+            securityService.SetupGet(p => p.Permissions).Returns(new[] { groupPermission });
 
-            //------------Execute Test---------------------------
-            var authorized = authorizationService.IsAuthorized(authorizationRequest);
+            using (var authService = new TestServerAuthorizationService(securityService.Object))
+            {
+                securityService.Setup(s => s.IsAuthorized(authRequest.AuthorizationContext, authRequest.User, It.IsAny<Func<IEnumerable<WindowsGroupPermission>>>())).Returns(
+                    () => expected
+                    );
+                //------------Execute Test---------------------------
+                var authorized = authService.IsAuthorized(authRequest);
 
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",
-                authorizationRequest.UserIsInRole, allowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
+                //------------Assert Results-------------------------
+                var message = $"\nUserIsInRole: {authRequest.UserIsInRole}\nAllowed: {allowedPermissions}\nConfig: {groupPermission.Permissions}\nIsServer: {groupPermission.IsServer}\nURL: {authRequest.Url}";
+                Assert.AreEqual(expected, authorized, message);
+            }
         }
 
         [TestMethod]
@@ -522,14 +531,13 @@ namespace Dev2.Tests.Runtime.Security
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
 
-            var authorizationService = new TestServerAuthorizationService(securityService.Object);
-
-            //------------Execute Test---------------------------
-            authorizationService.IsAuthorized(AuthorizationContext.Any, null);
+            using (var authorizationService = new TestServerAuthorizationService(securityService.Object))
+            {
+                //------------Execute Test---------------------------
+                authorizationService.IsAuthorized(AuthorizationContext.Any, null);
+            }
 
             //------------Assert Results-------------------------
         }
-
-
     }
 }
