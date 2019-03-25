@@ -152,6 +152,7 @@
     <Compile Include="Dev2Column.cs" />
     <Compile Include="Dev2DecisionComparer.cs" />
     <Compile Include="Dev2WorkflowSettingsTO.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerMainDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerBaseDriver.cs" />
     <Compile Include="PathOperations\ActivityIOBrokerValidatorDriver.cs" />
