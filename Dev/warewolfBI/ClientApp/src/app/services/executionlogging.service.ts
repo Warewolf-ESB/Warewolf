@@ -19,7 +19,7 @@ export class ExecutionLoggingService extends APIService {
 
     this.serverUrl = ServerUrl.toLowerCase();
     var warewolfUrl = this.serverUrl + "/services/GetLogDataService";
-    let apiURL = `${warewolfUrl}?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
+    let apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
     let params = new HttpParams();
     params = params.set('ExecutionId', ExecutionId);
     params = params.set('filter', filter);

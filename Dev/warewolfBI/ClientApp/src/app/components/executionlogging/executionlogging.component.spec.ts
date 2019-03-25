@@ -18,7 +18,7 @@ let component: ExecutionLoggingComponent;
 let fixture: ComponentFixture<ExecutionLoggingComponent>;
 let mockLogEntry: LogEntry;
 
-describe('ExecutionLoggingComponent', () => {
+describe('Component: ExecutionLoggingComponent', () => {
   
 
   beforeEach(async(() => {

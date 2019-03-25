@@ -20,7 +20,7 @@ let fixture: ComponentFixture<AppComponent>;
 let component: AppComponent;
 const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
-describe('AppComponent', () => {
+describe('Component: AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule,RouterTestingModule],
