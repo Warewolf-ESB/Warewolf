@@ -311,7 +311,6 @@ Scenario: Test Wf With AssignObject And ObjectOutput
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) mock 
 	Given I have a workflow "sequenceMockTestWF"		
