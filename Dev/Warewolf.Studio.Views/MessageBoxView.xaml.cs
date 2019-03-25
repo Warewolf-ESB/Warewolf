@@ -71,18 +71,13 @@ namespace Warewolf.Studio.Views
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         void MessageBoxView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4) && Application.Current != null)
             {
-                var windowCollection = Application.Current.Windows;
-                foreach (var window in windowCollection)
-                {
-                    if (window is Window window1 && window1.Name != "MainViewWindow")
-                    {
-                        window1.Close();
-                    }
-                }
+                CloseAllWindows();
             }
 
             if (e.Key == Key.Escape)
@@ -107,6 +102,18 @@ namespace Warewolf.Studio.Views
                 {
                     BtnNoCommand.Focusable = true;
                     BtnNoCommand.Focus();
+                }
+            }
+        }
+
+        private static void CloseAllWindows()
+        {
+            var windowCollection = Application.Current.Windows;
+            foreach (var window in windowCollection)
+            {
+                if (window is Window window1 && window1.Name != "MainViewWindow")
+                {
+                    window1.Close();
                 }
             }
         }

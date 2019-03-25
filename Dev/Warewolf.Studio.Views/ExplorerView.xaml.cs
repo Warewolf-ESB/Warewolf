@@ -420,7 +420,9 @@ namespace Warewolf.Studio.Views
             }
         }
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         static void ExplorerItemShortcuts(KeyEventArgs e, ExplorerItemViewModel explorerItemViewModel)
+#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             if (e.Key == Key.F2)
             {

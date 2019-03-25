@@ -171,12 +171,6 @@ namespace Dev2.Activities.Specs.TestFramework
             commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
-        [Then(@"test folder is cleaned")]
-        public void ThenTestFolderIsCleaned()
-        {
-            ((ResourceRepository)_environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
-        }
-
         FlowNode CreateFlowNode(Guid id, string displayName)
         {
             return new FlowStep

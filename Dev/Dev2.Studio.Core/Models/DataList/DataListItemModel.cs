@@ -364,7 +364,9 @@ namespace Dev2.Studio.Core.Models.DataList
 
         #endregion Overrides of Object
 
+#pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IDataListItemModel other) => string.Equals(Description, other.Description)
+#pragma warning restore S1541 // Methods and properties should not be too complex
                 && HasError == other.HasError
                 && string.Equals(ErrorMessage, other.ErrorMessage)
                 && IsEditable == other.IsEditable
