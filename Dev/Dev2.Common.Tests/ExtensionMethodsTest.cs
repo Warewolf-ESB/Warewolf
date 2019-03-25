@@ -926,6 +926,19 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_LastIndexOf_StartIndexSetter_IgnoreCase_False_WithSameChar_ExpectSuccess()
+        {
+            //------------Setup for test--------------------------
+            var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
+            //------------Execute Test---------------------------
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "bbb", 8, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, lastIndexOf);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
         public void ExtensionMethods_IsValidXml_InputIsNotXml_ExpectFail()
         {
             //------------Setup for test--------------------------
