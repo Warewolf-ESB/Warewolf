@@ -1,64 +1,87 @@
-import { async, TestBed, inject } from '@angular/core/testing';
+import { async, TestBed, inject, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClientModule, HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpRequest, HttpParams } from '@angular/common/http';
 import { LogEntry } from './../models/logentry.model';
 import { ExecutionLoggingService } from './executionlogging.service';
-import { asyncData } from '../../testing';
 
 describe('Service: ExecutionLoggingService', () => {
-
+  let service: ExecutionLoggingService;
+  let httpMock: HttpTestingController;
+  let http: HttpClient;
+  
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
         HttpClientTestingModule
+      ],
+      providers: [
+        ExecutionLoggingService
       ]
     });
+    service = TestBed.get(ExecutionLoggingService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('default should return list of execution logs from getLogData', async(inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-    var service = new ExecutionLoggingService(http)
+  it('should not immediately connect to the server', () => {
+    httpMock.expectNone({});
+  });
 
-    var ExecutionId = '';
-    var filter = '';
-    var sortOrder = 'asc';
-    var pageNumber = 0;
-    var pageSize = 3;
-    let apiURL = `http://localhost:3142/services/GetLogDataService?ExecutionId=${ExecutionId}&filter=${filter}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&callback=JSONP_CALLBACK`;
+  describe('when fetching all stuff', () => {
+    it('should make a GET request', async(() => {
+      var ExecutionId = 'c03bb708-8c1d-4622-9161-8a945e79f6c0';
+      var filter = '';
+      var sortOrder = 'asc';
+      var pageNumber = 0;
+      var pageSize = 3;
+      var warewolfUrl = "http://localhost:3142/services/GetLogDataService";
+      let apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
-    let expectedResponse: LogEntry[] = [
-      {
-        "$id": "1",
-        "$type": "Dev2.Common.LogEntry, Dev2.Common",
-        "CompletedDateTime": "2018-10-16T12:46:29.886",
-        "ExecutionId": "c03bb708-8c1d-4622-9161-8a945e79f6c0",
-        "ExecutionTime": "52",
-        "Result": null,
-        "StartDateTime": "2018-10-16T12:46:29.834",
-        "Status": "ERROR",
-        "Url": "http://localhost:3142/secure/Test/Api/Unsaved 2.xml?<DataList></DataList>&wid=c14edb3d-a116-4b9e-9072-87578dba5ae6",
-        "User": "'DEV2\Candice.Daniel'"
-      }
-    ];
+      service.getLogData("http://localhost:3142", ExecutionId, filter, sortOrder, pageNumber, pageSize).subscribe();
 
-    service.getLogData(`http://localhost:3142`, ExecutionId, filter, sortOrder, pageNumber, pageSize).subscribe(
-      response => expect(response).toEqual(expectedResponse, 'Expect Execution List'),
+      let req = httpMock.expectOne(`${apiURL}`);
+      expect(req.request.method).toEqual('GET');
+      req.flush([]);
+    }));
+
+    it('should make a GET request and return results', async(() => {
+      var ExecutionId = 'c03bb708-8c1d-4622-9161-8a945e79f6c0';
+      var filter = '';
+      var sortOrder = 'asc';
+      var pageNumber = 0;
+      var pageSize = 3;
+      var warewolfUrl = "http://localhost:3142/services/GetLogDataService";
+      let apiURL = `${warewolfUrl}?ExecutionId='${ExecutionId}'&filter='${filter}'&sortOrder='${sortOrder}'&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+      let expectedResponse: LogEntry[] = [
+        {
+          "$id": "1",
+          "$type": "Dev2.Common.LogEntry, Dev2.Common",
+          "CompletedDateTime": "2018-10-16T12:46:29.886",
+          "ExecutionId": "c03bb708-8c1d-4622-9161-8a945e79f6c0",
+          "ExecutionTime": "52",
+          "Result": null,
+          "StartDateTime": "2018-10-16T12:46:29.834",
+          "Status": "ERROR",
+          "Url": "http://localhost:3142/secure/Test/Api/Unsaved2.xml?<DataList></DataList>&wid=c14edb3d-a116-4b9e-9072-87578dba5ae6",
+          "User": "'DEV2\Candice.Daniel'"
+        }
+      ];
+
+      service.getLogData(`http://localhost:3142`, ExecutionId, filter, sortOrder, pageNumber, pageSize)
+        .subscribe(response =>
+          expect(response).toEqual(expectedResponse),
         fail
       );
 
-    var calls = backend.match((req: HttpRequest<any>) => {
-      var request = req.url === `http://localhost:3142/services/GetLogDataService` &&
-        req.urlWithParams == `${apiURL}` &&
-        req.body == null &&
-        req.method === 'GET';
-      return request;
-    });
+      httpMock.match({
+        url: `${apiURL}`,
+        method: 'GET'
+      })[0].flush(expectedResponse);
 
-    if (calls.length > 0) {
-      calls[0].flush(expectedResponse);
-    }
-    backend.expectOne(`http://localhost:3142/services/GetLogDataService`).flush(expectedResponse);
-    backend.verify();
-  })));
+    }));
+  });
 });
