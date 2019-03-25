@@ -110,7 +110,7 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         [Given(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
         public void Select_LocalServerSource_From_Deploy_Tab_Destination_Server_Combobox()
         {
-            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton.WaitForControlExist(300000);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.LocalServerSourceText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");

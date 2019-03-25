@@ -162,18 +162,18 @@ namespace Warewolf.UI.Tests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        public void WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
+        public bool WaitForControlNotVisible(UITestControl control, int searchTimeout = 60000)
         {
-            control.WaitForControlCondition((uicontrol) =>
+            return control.WaitForControlCondition((uicontrol) =>
             {
                 Point point;
                 return !uicontrol.TryGetClickablePoint(out point);
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        public void WaitForSpinner(UITestControl control, int searchTimeout = 60000)
+        public bool WaitForSpinner(UITestControl control, int searchTimeout = 60000)
         {
-            WaitForControlNotVisible(control, searchTimeout);
+            return WaitForControlNotVisible(control, searchTimeout);
         }
 
         [When(@"I Filter the ToolBox with ""(.*)""")]
@@ -567,8 +567,8 @@ namespace Warewolf.UI.Tests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WaitForControlExist(60000);
-            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+            DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WaitForControlExist(600000);
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button and waiting 10 minutes.");
             WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
         }
 

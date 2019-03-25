@@ -76,7 +76,6 @@ Scenario: Run a test with single scalar inputs and outputs failure
 	  | [[Message]] | Hello Bob. |
 		When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 	
 Scenario: Run a test with mock step
 	Given the test builder is open with existing service "Hello World"	
@@ -227,7 +226,6 @@ Scenario: Run a test with single scalar inputs and outputs
 	  | [[Message]] | Hello Bob. |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 
 Scenario: Run a passing test and change step type
 	Given the test builder is open with existing service "Hello World"	
@@ -263,4 +261,3 @@ Scenario: Run a passing test and change step type
 	Then step "Assign a value to Name if blank (1)" is Pending	
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned

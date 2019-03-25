@@ -58,6 +58,7 @@ Scenario: Example Executing Utility - Date and Time example workflow
 	  Given I have a workflow "Utility - Date and Time Test"
 	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  And The system short date format is "yyyy/MM/dd" and the long time format is "hh:mm:ss tt"
 	  When "Utility - Date and Time Test" is executed
 	  Then the workflow execution has "NO" error
 	  And the tool "Date and Time(1)" with Guid of "d19fbd64-204b-4ecf-8259-b61dd000b504" in WorkFlow "Utility - Date and Time" debug inputs as

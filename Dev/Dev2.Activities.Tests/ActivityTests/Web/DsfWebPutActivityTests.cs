@@ -1,12 +1,22 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -19,9 +29,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
-
-
-
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -162,8 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
             }
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
@@ -213,8 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                 Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
             }
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfWebPutActivity_Execute")]
@@ -560,7 +566,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPutActivity_Execute")]
@@ -594,34 +599,42 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
         }
 
-        /* [TestMethod]
-         [Owner("Nkosinathi Sangweni")]
-         public void PerfomWebRequest_GivenLiveUrl_ShouldReturnResponse()
-         {
-             //---------------Set up test pack-------------------
-             const string putData = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
-                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
-                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
-                                    "\"Temperature\": \"59 F (15 C)\"," +
-                                    "\"DewPoint\": \"41 F (5 C)\"," +
-                                    "\"RelativeHumidity\": \"51%\"," +
-                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
-                                    "\"Status\": \"Success\"" +
-                                    "}";
-             var webSource = new WebSource()
-             {
-                 Address = "http://petstore.swagger.io/v2/pet",
-                 AuthenticationType = AuthenticationType.Windows
-             };
-             var dsfWebPutActivity = new DsfWebPutActivity { PutData = putData };
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(DsfWebPutActivity))]
+        public void DsfWebPutActivity_ExecutionImpl_ErrorResultTO_ReturnErrors_ToActivity_Success()
+        {
+            //-----------------------Arrange-------------------------
+            const string response = "{\"Message\":\"TEST Error\"}";
+            var environment = new ExecutionEnvironment();
 
-             //---------------Assert Precondition----------------
-             Assert.IsNotNull(dsfWebPutActivity);
-             //---------------Execute Test ----------------------
-             dsfWebPutActivity.
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
 
-             //---------------Test Result -----------------------
-         }*/
+            var errorResultTO = new ErrorResultTO();
+
+            using (var service = new WebService(XmlResource.Fetch("WebService")) { RequestResponse = response })
+            {
+                mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+                mockDSFDataObject.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+                var dsfWebGetActivity = new TestDsfWebPutActivity
+                {
+                    OutputDescription = service.GetOutputDescription(),
+                    ResourceID = InArgument<Guid>.FromValue(Guid.Empty),
+                    QueryString = "test Query",
+                    Headers = new List<INameValue>(),
+                    ResponseFromWeb = response,
+                    HasErrorMessage = "Some error"
+                };
+                //-----------------------Act-----------------------------
+                dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out errorResultTO, 0);
+                //-----------------------Assert--------------------------
+                Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
+                Assert.AreEqual("Some error", errorResultTO.FetchErrors()[0]);
+            }
+        }
 
         static TestDsfWebPutActivity CreateWebPutActivityFromBase()
         {
@@ -632,7 +645,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
     public class TestDsfWebPutActivity : DsfWebPutActivity
     {
-        #region Overrides of DsfWebPutActivity
+        public string HasErrorMessage { get; set; }
 
         public string ResponseFromWeb { private get; set; }
 
@@ -641,6 +654,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Head = head;
             QueryRes = query;
             PostValue = putData;
+            if (!string.IsNullOrWhiteSpace(HasErrorMessage))
+            {
+                base._errorsTo = new ErrorResultTO();
+                base._errorsTo.AddError(HasErrorMessage);
+            }
             return ResponseFromWeb;
         }
 
@@ -650,6 +668,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public IEnumerable<INameValue> Head { get; private set; }
 
-        #endregion
+        public void TestExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        {
+            base.ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+        }
     }
 }

@@ -418,7 +418,6 @@ Scenario: Run a passing switch test and change step type
 	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
 	
 Scenario: Duplicate test new test has name
 	Given the test builder is open with "Workflow 1"
