@@ -80,12 +80,8 @@ namespace Dev2.Common.DateAndTime
 
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
-            var getDateTimeFormatParts = new GetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet)
-            {
-                FormatParts = new List<IDateTimeFormatPartTO>()
-            };
-
-            error = getDateTimeFormatParts.Error;
+            var getDateTimeFormatParts = new GetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet);
+            getDateTimeFormatParts.TryGetDateTimeFormatParts();
             getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "m", "Minutes");
             getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "mm", "Minutes");
             getDateTimeFormatParts.FormatParts = ReplaceToken(getDateTimeFormatParts.FormatParts, "M", "Month in single digit");
@@ -115,6 +111,7 @@ namespace Dev2.Common.DateAndTime
                     dev2Format += part.Value;
                 }
             }
+            error = getDateTimeFormatParts.Error;
             return dev2Format;
         }
 
@@ -135,13 +132,13 @@ namespace Dev2.Common.DateAndTime
         public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
             out string error)
         {
-            var getDateTimeFormatParts = new GetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
-            error = getDateTimeFormatParts.Error;
+           var getDateTimeFormatParts = new GetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions);
             formatParts = getDateTimeFormatParts.FormatParts;
+            error = getDateTimeFormatParts.Error;
             return getDateTimeFormatParts.TryGetDateTimeFormatParts();
         }
-   
-      
+
+
         bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {
@@ -182,7 +179,7 @@ namespace Dev2.Common.DateAndTime
                 }
                 if (nothingDied)
                 {
-                    TryCulture(parseAsTime, ref result, error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, getDateTimeFormatParts.FormatParts);
+                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, getDateTimeFormatParts.FormatParts);
                 }
                 else
                 {
@@ -193,7 +190,7 @@ namespace Dev2.Common.DateAndTime
             return nothingDied;
         }
 
-        private void TryCulture(bool parseAsTime, ref IDateTimeResultTO result, string error, ref bool nothingDied, ref string originalInputFormat, ref int culturesTried, int MaxAttempts, char[] dateTimeArray, ref int position, List<IDateTimeFormatPartTO> formatParts)
+        private void TryCulture(bool parseAsTime, ref IDateTimeResultTO result, ref string error, ref bool nothingDied, ref string originalInputFormat, ref int culturesTried, int MaxAttempts, char[] dateTimeArray, ref int position, List<IDateTimeFormatPartTO> formatParts)
         {
             var count = 0;
             while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
@@ -488,7 +485,12 @@ namespace Dev2.Common.DateAndTime
         private readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookups1;
         private readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions;
 
-        public List<IDateTimeFormatPartTO> FormatParts { get; set; }
+        private List<IDateTimeFormatPartTO> _formatParts;
+        public List<IDateTimeFormatPartTO> FormatParts
+        {
+            get => _formatParts;
+            set => _formatParts = value;
+        }
 
         private string _error;
         public string Error
@@ -503,13 +505,13 @@ namespace Dev2.Common.DateAndTime
             _dateTimeFormatForwardLookups1 = dateTimeFormatForwardLookups;
             _dateTimeFormatPartOptions = dateTimeFormatPartOptions;
         }
-        
+
         public bool TryGetDateTimeFormatParts()
         {
             var formatArray = _format.ToArray();
 
-            FormatParts = new List<IDateTimeFormatPartTO>();
-            Error = "";
+            _formatParts = new List<IDateTimeFormatPartTO>();
+            _error = "";
 
             var literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
             var count = 0;
@@ -519,7 +521,7 @@ namespace Dev2.Common.DateAndTime
             {
                 var forwardLookupLength = 0;
 
-                GetLiteralRegionStateOrLength(FormatParts, formatArray, ref literalRegionState, count, ref currentValue, ref forwardLookupLength);
+                GetLiteralRegionStateOrLength(_formatParts, formatArray, ref literalRegionState, count, ref currentValue, ref forwardLookupLength);
 
                 count++;
                 if (forwardLookupLength > 0)
@@ -531,12 +533,12 @@ namespace Dev2.Common.DateAndTime
             if (currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion &&
                 literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
             {
-                FormatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
+                _formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
             }
             else if (currentValue.Length > 0)
             {
                 nothingDied = false;
-                Error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
+                _error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
             }
             else
             {
