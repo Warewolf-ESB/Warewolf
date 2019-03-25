@@ -222,6 +222,7 @@
     <Compile Include="Comparer\SimplePluginComparer.cs" />
     <Compile Include="Comparer\SharepointReadListToComparer.cs" />
     <Compile Include="Comparer\SharepointSearchToComparer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Run Tests.ps1</Link>
