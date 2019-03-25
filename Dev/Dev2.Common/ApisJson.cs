@@ -45,10 +45,8 @@ namespace Dev2.Common
             }
             return Equals((ApisJson)obj);
         }
-
-#pragma warning disable S1541 // Methods and properties should not be too complex
+        
         public override int GetHashCode()
-#pragma warning restore S1541 // Methods and properties should not be too complex
         {
             unchecked
             {
