@@ -376,5 +376,5 @@ Scenario: Executing WebGet Returning False
 	  When "Testing - WebGet" is executed
 	  Then the workflow execution has "NO" error
 	  And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
-	  |              |
-	  | [[Result]] = |
+	  |                     |
+	  | [[Result]] = False |
