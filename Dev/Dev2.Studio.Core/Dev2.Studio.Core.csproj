@@ -195,6 +195,7 @@
     <Compile Include="Equality\ComplexObjectItemModelComparer.cs" />
     <Compile Include="Equality\DataListItemModelComparer.cs" />
     <Compile Include="Equality\DataListViewModelComparer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
@@ -391,6 +392,7 @@
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />
     <None Include="Dev2.Studio.Core.ruleset" />
+    <None Include="runtests.bat" />
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>

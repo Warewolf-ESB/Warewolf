@@ -146,6 +146,7 @@
     <Compile Include="ExplorerTooltips.cs" />
     <Compile Include="FileChooser.cs" />
     <Compile Include="FileChooserModel.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="ManageMySqlSourceViewModel.cs" />
     <Compile Include="ManageOdbcSourceViewModel.cs" />
