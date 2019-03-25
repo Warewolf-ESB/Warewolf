@@ -27,6 +27,7 @@ using Warewolf.Core;
 using Warewolf.Test.Agent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.Toolbox.Database;
+using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -46,6 +47,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
         }
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()

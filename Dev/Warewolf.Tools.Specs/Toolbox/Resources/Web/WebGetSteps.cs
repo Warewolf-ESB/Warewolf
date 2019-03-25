@@ -19,6 +19,8 @@ using Dev2.Activities;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using System.Threading.Tasks;
+using Dev2;
+using Dev2.Common;
 
 namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
 {
@@ -34,6 +36,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Resources.Web
                 throw new ArgumentNullException("scenarioContext");
             }
             this.scenarioContext = scenarioContext;
+            CustomContainer.Register<IFieldAndPropertyMapper>(new FieldAndPropertyMapper());
         }
         WebServiceSourceDefinition _weblocalhostsource;
         WebServiceSourceDefinition _otherwebsource;
