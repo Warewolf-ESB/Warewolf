@@ -596,6 +596,8 @@ namespace Dev2.Data.PathOperations
                 catch (Exception ex)
                 {
                     Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
+                    // throw
+                    return false;
                 }
                 finally
                 {
@@ -890,7 +892,7 @@ namespace Dev2.Data.PathOperations
             bool IsFilePresentStandardFtp(IActivityIOPath path)
             {
                 FtpWebResponse response = null;
-                bool isAlive;
+                bool fileIsPresent;
                 try
                 {
                     var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
@@ -919,12 +921,12 @@ namespace Dev2.Data.PathOperations
                             }
                         }
                     }
-                    isAlive = true;
+                    fileIsPresent = true;
                 }
                 catch (WebException wex)
                 {
                     Dev2Logger.Error(this, wex, GlobalConstants.WarewolfError);
-                    isAlive = false;
+                    fileIsPresent = false;
                 }
                 catch (Exception ex)
                 {
@@ -935,7 +937,7 @@ namespace Dev2.Data.PathOperations
                 {
                     response?.Close();
                 }
-                return isAlive;
+                return fileIsPresent;
             }
 
             bool IsFilePresentSftp(IActivityIOPath path)
