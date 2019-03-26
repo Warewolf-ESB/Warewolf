@@ -422,26 +422,8 @@ namespace Dev2.Common.DateAndTime
             while (partOptionsCount < partOptions.Count)
             {
                 var partOption = partOptions[partOptionsCount];
-
-                string forwardLookupResult;
-                bool predicateRun;
-
-                if (partOption.Length != partOption.ResultLength)
-                {
-                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
-                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                    if (!predicateRun)
-                    {
-                        forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-                        predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                    }
-                }
-                else
-                {
-                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-
-                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                }
+                
+                var (predicateRun, forwardLookupResult) = GetPredicateRunForwardLookupResult(dateTimeArray, startPosition, partOption, passAsTime);
 
                 //
                 // Check length of forward lookup is correct
@@ -457,27 +439,53 @@ namespace Dev2.Common.DateAndTime
                     resultLength = forwardLookupResult.Length;
                     dataFound = true;
 
-                    //
-                    // Decide on the correct value to use
-                    //
-                    IConvertible value;
-                    if (partOption.ActualValue != null)
-                    {
-                        value = partOption.ActualValue;
-                    }
-                    else if (partOption.IsNumeric)
-                    {
-                        value = Convert.ToInt32(forwardLookupResult);
-                    }
-                    else
-                    {
-                        value = forwardLookupResult;
-                    }
-                    partOption.AssignAction?.Invoke(result, passAsTime, value);
+                    partOption.AssignAction?.Invoke(result, passAsTime, GetCorrectTypeValue(partOption, forwardLookupResult));
                 }
-
+                
                 partOptionsCount++;
             }
+        }
+
+        private static IConvertible GetCorrectTypeValue(IDateTimeFormatPartOptionTO partOption, string forwardLookupResult)
+        {
+            IConvertible value;
+            if (partOption.ActualValue != null)
+            {
+                value = partOption.ActualValue;
+            }
+            else if (partOption.IsNumeric)
+            {
+                value = Convert.ToInt32(forwardLookupResult);
+            }
+            else
+            {
+                value = forwardLookupResult;
+            }
+            return value;
+        }
+
+        private static (bool predicateRun, string forwardLookupResult) GetPredicateRunForwardLookupResult(char[] dateTimeArray, int startPosition, IDateTimeFormatPartOptionTO partOption, bool passAsTime)
+        {
+            var forwardLookupResult = string.Empty;
+            var predicateRun = false;
+
+            if (partOption.Length != partOption.ResultLength)
+            {
+                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
+                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                if (!predicateRun)
+                {
+                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                }
+            }
+            else
+            {
+                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+
+                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+            }
+            return (predicateRun, forwardLookupResult);
         }
 
         /// <summary>
