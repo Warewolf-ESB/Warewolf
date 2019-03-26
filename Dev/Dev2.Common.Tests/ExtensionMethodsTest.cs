@@ -913,6 +913,19 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ExtensionMethods))]
+        public void ExtensionMethods_LastIndexOf_StartIndexSetter_IgnoreCase_WithSameChar_ExpectSuccess()
+        {
+            //------------Setup for test--------------------------
+            var value = new StringBuilder("sdf");
+            //------------Execute Test---------------------------
+            var lastIndexOf = ExtensionMethods.LastIndexOf(value, "sDf", 1, true);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, lastIndexOf);
+        }
+
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ExtensionMethods))]
         public void ExtensionMethods_LastIndexOf_StartIndexSetter_IgnoreCase_False_WithSameChar_ExpectFail()
         {
             //------------Setup for test--------------------------
