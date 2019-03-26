@@ -85,11 +85,11 @@ namespace Dev2.Data.Tests.PathOperations
             dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            const string result = "";
+
             try
             {
                 //broker.SetField("_filesToDelete", new List<string>())
-                driver.MoveTmpFileToDestination(dst.Object, tempFileName, result);
+                driver.MoveTmpFileToDestination(dst.Object, tempFileName);
 
             }
             catch (Exception ex)
