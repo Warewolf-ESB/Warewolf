@@ -30,7 +30,8 @@ using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.ViewModels.WorkSurface;
-
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Services.Security;
 
 namespace Dev2.Core.Tests.Workflows
 {
@@ -102,7 +103,6 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
@@ -123,14 +123,102 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_Save_EmptyDataList_Expected_NoErrors()
         {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
             var mockResouce = GetMockResource();
             mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.LoadWorkflowInputs();
-                workflowInputDataviewModel.Save();
+                workflowInputDataviewModel.OkCommand.Execute(null);
                 Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Never);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_OkCommand_IsInError_Expected_ErrorShown()
+        {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
+            {
+                workflowInputDataviewModel.IsInError = true;
+                workflowInputDataviewModel.OkCommand.Execute(null);
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_ViewInBrowserCommand_IsInError_Expected_ErrorNotShown()
+        {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
+            {
+                workflowInputDataviewModel.IsInError = true;
+                workflowInputDataviewModel.ViewInBrowserCommand.Execute(null);
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorNotShown()
+        {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
+            {
+                workflowInputDataviewModel.LoadWorkflowInputs();
+                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Never);
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_WithoutActionTrackingViewInBrowser_Expected_ErrorShown()
+        {
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false));
+            CustomContainer.Register(popupController.Object);
+
+            var mockResouce = GetMockResource();
+            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
+            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
+            {
+                workflowInputDataviewModel.IsInError = true;
+                workflowInputDataviewModel.WithoutActionTrackingViewInBrowser();
+                popupController.Verify(controller => controller.Show(StringResources.DataInput_Error, StringResources.DataInput_Error_Title, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, string.Empty, false, true, false, false, false, false), Times.Once);
             }
         }
 
@@ -169,7 +257,7 @@ namespace Dev2.Core.Tests.Workflows
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.LoadWorkflowInputs();
-                workflowInputDataviewModel.Cancel();
+                workflowInputDataviewModel.CancelCommand.Execute(null);
                 Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
             }
         }
@@ -197,14 +285,13 @@ namespace Dev2.Core.Tests.Workflows
         {
             using (WorkflowInputDataViewModel.Create(null))
             {
-
+                //Expected Exception
             }
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_Create_WithResourceModel_IsValid()
         {
             //------------Setup for test--------------------------
@@ -218,6 +305,27 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
+        public void WorkflowInputDataViewModel_Create_WithResourceModel_AuthorizationService_NotNull()
+        {
+            //------------Setup for test--------------------------
+            var mockAuth = new Mock<IAuthorizationService>();
+
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server => server.AuthorizationService).Returns(mockAuth.Object);
+
+            var mockResouce = GetMockResource();
+            mockResouce.Setup(resource => resource.Environment).Returns(mockServer.Object);
+            //------------Execute Test---------------------------
+            using (var viewModel = WorkflowInputDataViewModel.Create(mockResouce.Object))
+            {
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(viewModel);
+                Assert.IsNotNull(viewModel.DebugTo);
+            }
+        }
 
         [TestMethod]
         [Owner("Rory McGuire")]
@@ -244,10 +352,9 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
-
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_AddRow_WhenNotAllColumnsInput_ExpectNewRowWithOnlyInputColumns()
         {
             //------------Setup for test--------------------------
@@ -290,7 +397,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_AddBlankRow_WhenNotAllColumnsInput_ExpectNewRowWithOnlyInputColumns()
         {
             //------------Setup for test--------------------------
@@ -331,7 +438,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved()
         {
             //------------Setup for test--------------------------
@@ -376,7 +483,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved2()
         {
             //------------Setup for test--------------------------
@@ -434,7 +541,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved4()
         {
             //------------Setup for test--------------------------
@@ -491,7 +598,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved3()
         {
             //------------Setup for test--------------------------
@@ -551,7 +658,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_GetNexRow_WhenNotAllColumnsInput_ExpectRowRemoved()
         {
             //------------Setup for test--------------------------
@@ -592,7 +699,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_GetPreviousRow_WhenNotAllColumnsInput_ExpectRowRemoved()
         {
             //------------Setup for test--------------------------
@@ -633,7 +740,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_GetPreviousRow_NotFound_ExpectItem()
         {
             //------------Setup for test--------------------------
@@ -673,7 +780,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_GetPreviousRow_Null_ExpectNull()
         {
             //------------Setup for test--------------------------
@@ -752,12 +859,13 @@ namespace Dev2.Core.Tests.Workflows
                 workflowInputDataViewModel.SetXmlData();
                 //------------Assert Results-------------------------
                 Assert.AreEqual("<DataList><rec><a>bob</a></rec><Person><Age></Age><Name></Name></Person></DataList>", workflowInputDataViewModel.XmlData.Replace(Environment.NewLine, "").Replace(" ", ""));
+                Assert.AreEqual("{\r\n  \"rec\": [\r\n    {\r\n      \"a\": \"bob\"\r\n    }\r\n  ],\r\n  \"Person\": {\r\n    \"Age\": \"\",\r\n    \"Name\": \"\"\r\n  }\r\n}", workflowInputDataViewModel.JsonData);
             }
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_AddRow_WhenAddingScalarAndNotAllColumnsHaveInput_ExpectNoNewInputs()
         {
             //------------Setup for test--------------------------
@@ -821,7 +929,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_Constructor_DebugTO_Initialized()
         {
             //------------Setup for test--------------------------
@@ -862,7 +970,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_ExecuteWorkflow_InvokesSendExecuteRequest()
         {
             //------------Setup for test--------------------------
@@ -912,7 +1020,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_InvokesSendViewInBrowserRequest_RecSet()
         {
             //------------Setup for test--------------------------
@@ -956,7 +1064,7 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WorkflowInputDataViewModel")]
+        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_InvokesSendViewInBrowserRequest_ScalarsOnly()
         {
             //------------Setup for test--------------------------
@@ -1034,7 +1142,6 @@ namespace Dev2.Core.Tests.Workflows
             }
 
             return recordSets;
-
         }
 
         static IDataListItem CreateScalar(string scalarName, string scalarValue)
@@ -1093,7 +1200,6 @@ namespace Dev2.Core.Tests.Workflows
 
             return new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object);
         }
-
     }
 
     public class WorkflowInputDataViewModelMock : WorkflowInputDataViewModel
@@ -1102,7 +1208,6 @@ namespace Dev2.Core.Tests.Workflows
             : base(serviceDebugInfoModel, debugOutputViewModel.SessionID)
         {
         }
-
 
         public int SendExecuteRequestHitCount { get; private set; }
         public int SendViewInBrowserRequestHitCount { get; private set; }

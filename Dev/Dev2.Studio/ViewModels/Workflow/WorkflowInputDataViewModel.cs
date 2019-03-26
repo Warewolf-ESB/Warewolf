@@ -41,7 +41,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
-        #region Fields
         OptomizedObservableCollection<IDataListItem> _workflowInputs;
         RelayCommand _executeCommmand;
         string _xmlData;
@@ -54,7 +53,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         readonly IPopupController _popupController;
         RelayCommand _cancelCommand;
         readonly IApplicationTracker _applicationTracker;
-        #endregion Fields
 
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
@@ -67,10 +65,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            if (_applicationTracker != null)
-            {
-                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F6Debug);
-            }
+            _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.F6Debug);
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
@@ -146,10 +141,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         
         public bool RememberInputs
         {
-            get
-            {
-                return _rememberInputs;
-            }
+            get => _rememberInputs;
             set
             {
                 _rememberInputs = value;
@@ -159,10 +151,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         
         public string XmlData
         {
-            get
-            {
-                return _xmlData;
-            }
+            get => _xmlData;
             set
             {
                 _xmlData = value;
@@ -172,10 +161,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CanViewInBrowser
         {
-            get
-            {
-                return _canViewInBrowser;
-            }
+            get => _canViewInBrowser;
             set
             {
                 if (value.Equals(_canViewInBrowser))
@@ -190,10 +176,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CanDebug
         {
-            get
-            {
-                return _canDebug;
-            }
+            get => _canDebug;
             set
             {
                 if (value.Equals(_canDebug))
@@ -283,13 +266,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             // Do not log user action in case of error.
             if (!IsInError)
             {
-                if (_applicationTracker != null)
-                {
-                    _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,
-                                                   TrackEventDebugOutput.ViewInBrowser);
-                }
+                _applicationTracker?.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.ViewInBrowser);
                 DoSaveActions();
-                string payload = BuildInputDataList();
+                var payload = BuildInputDataList();
                 OpenUriInBrowser(payload);
                 SendFinishedMessage();
                 RequestClose();
@@ -299,7 +278,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ShowInvalidDataPopupMessage();
             }
         }
-
 
         public void WithoutActionTrackingViewInBrowser()
         {
@@ -380,48 +358,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             WorkflowInputs.AddRange(myList);
         }
 
-        public void AddRow(IDataListItem itemToAdd)
-        {
-            if (itemToAdd != null && itemToAdd.CanHaveMutipleRows)
-            {
-                var recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
-                if (recordset != null)
-                {
-                    AddRow(itemToAdd, recordset);
-                }
-            }
-        }
-
-        void AddRow(IDataListItem itemToAdd, IRecordSet recordset)
-        {
-            var recsetCols = new List<IScalar>();
-            foreach (var column in recordset.Columns)
-            {
-                var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                recsetCols.AddRange(cols);
-            }
-
-            var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-            IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-            var lastItem = dataListItems.Last();
-            var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-            var indexString = lastItem.Index;
-            var indexNum = Convert.ToInt32(indexString) + 1;
-            var lastRow = dataListItems.Where(c => c.Index == indexString);
-            var addRow = false;
-            foreach (var item in lastRow)
-            {
-                if (item.Value != string.Empty)
-                {
-                    addRow = true;
-                }
-            }
-            if (addRow)
-            {
-                AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
-            }
-        }
-
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -496,15 +432,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void SetXmlData() => SetXmlData(false);
         public void SetXmlData(bool includeBlank)
         {
-            var dataListObject = new JObject();
-            var objects = WorkflowInputs.Where(item => item.IsObject);
-            var recSets = WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
-            var scalars = WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
-            AddScalarsToObject(scalars, dataListObject);
-            AddRecordsetsToObject(recSets, dataListObject,includeBlank);
-            AddObjectsToObject(objects, dataListObject);
-
-            var dataListString = dataListObject.ToString(Formatting.Indented);
+            var dataListString = new AddToDatalistObject(this).DataListObject(includeBlank);
             JsonData = dataListString;
             var xml = JsonConvert.DeserializeXNode(dataListString, @"DataList", false);
             try
@@ -518,96 +446,51 @@ namespace Dev2.Studio.ViewModels.Workflow
             catch (Exception e)
             {
                 XmlData = @"Invalid characters entered";
-                Dev2Logger.Error(e.StackTrace, e, "Warewolf Error");
+                Dev2Logger.Error(e.StackTrace, e, GlobalConstants.WarewolfError);
             }
         }
 
         public string JsonData { get; private set; }
 
-        void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
+        public void AddRow(IDataListItem itemToAdd)
         {
-            foreach (var o in objects)
+            if (itemToAdd != null && itemToAdd.CanHaveMutipleRows)
             {
-                AddObjectToObject(dataListObject, o);
-            }
-        }
-
-        private void AddObjectToObject(JObject dataListObject, IDataListItem o)
-        {
-            var json = string.Empty;
-            if (DataListSingleton.ActiveDataList != null)
-            {
-                if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                var recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
+                if (recordset != null)
                 {
-                    var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
-
-                    if (complexObjectItemModel != null)
-                    {
-                        json = complexObjectItemModel.GetJson();
-                    }
+                    AddRow(itemToAdd, recordset);
                 }
-                AddToDataListObject(dataListObject, o, json);
             }
         }
 
-        void AddToDataListObject(JObject dataListObject, IDataListItem o, string json)
+        void AddRow(IDataListItem itemToAdd, IRecordSet recordset)
         {
-            try
+            var recsetCols = new List<IScalar>();
+            foreach (var column in recordset.Columns)
             {
-                var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
-                var value = JsonConvert.DeserializeObject(objValue) as JObject;
-                var prop = value?.Properties().FirstOrDefault(property => property.Name == o.Field);
-                if (prop != null)
+                var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                recsetCols.AddRange(cols);
+            }
+
+            var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+            IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+            var lastItem = dataListItems.Last();
+            var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+            var indexString = lastItem.Index;
+            var indexNum = Convert.ToInt32(indexString) + 1;
+            var lastRow = dataListItems.Where(c => c.Index == indexString);
+            var addRow = false;
+            foreach (var item in lastRow)
+            {
+                if (item.Value != string.Empty)
                 {
-                    value = prop.Value as JObject;
+                    addRow = true;
                 }
-                dataListObject.Add(o.Field, value);
             }
-            catch (Exception)
+            if (addRow)
             {
-                ShowInvalidDataPopupMessage();
-            }
-        }
-
-        static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject, bool includeBlank = false)
-        {
-            var groupedRecsets = recSets.GroupBy(item => item.Recordset);
-            foreach (var groupedRecset in groupedRecsets)
-            {
-                var arrayName = groupedRecset.Key;
-                var newArray = new JArray();
-                var dataListItems = groupedRecset.GroupBy(item => item.Index);
-                foreach (var dataListItem in dataListItems)
-                {
-                    AddRecordsetToObject(newArray, dataListItem, includeBlank);
-                }
-                dataListObject.Add(arrayName, newArray);
-            }
-        }
-
-        private static void AddRecordsetToObject(JArray newArray, IGrouping<string, IDataListItem> dataListItem, bool includeBlank = false)
-        {
-            var jObjForArray = new JObject();
-            var empty = true;
-            foreach (var listItem in dataListItem)
-            {
-                if (!string.IsNullOrEmpty(listItem.Value))
-                {
-                    empty = false;
-                }
-                jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
-            }
-            if (!empty || includeBlank)
-            {
-                newArray.Add(jObjForArray);
-            }
-        }
-
-        static void AddScalarsToObject(IEnumerable<IDataListItem> scalars, JObject dataListObject)
-        {
-            foreach (var dataListItem in scalars)
-            {
-                dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value ?? string.Empty));
+                AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
             }
         }
 
@@ -639,6 +522,37 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var indexNum = Convert.ToInt32(indexString) + 1;
                     indexToSelect = indexToInsertAt + 1;
                     itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
+                }
+            }
+            return itemsAdded;
+        }
+
+        bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
+        {
+            var itemsAdded = false;
+            if (dlItem.CanHaveMutipleRows)
+            {
+                IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
+                string colName = null;
+                foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
+                {
+                    if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
+                    {
+                        WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
+                        {
+                            DisplayValue = string.Concat(dlItem.Recordset, @"(", indexNum, @").", col.Name),
+                            Value = string.Empty,
+                            CanHaveMutipleRows = dlItem.CanHaveMutipleRows,
+                            Recordset = dlItem.Recordset,
+                            Field = col.Name,
+                            Description = col.Description,
+                            Index = indexNum.ToString(CultureInfo.InvariantCulture)
+                        });
+                        indexToInsertAt++;
+                    }
+                    colName = col.Name;
+                    itemsAdded = true;
+
                 }
             }
             return itemsAdded;
@@ -684,37 +598,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
         }
 
-        bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
-        {
-            var itemsAdded = false;
-            if (dlItem.CanHaveMutipleRows)
-            {
-                IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();
-                string colName = null;
-                foreach (var col in recsetCols.Distinct(new ScalarEqualityComparer()))
-                {
-                    if (string.IsNullOrEmpty(colName) || !colName.Equals(col.Name))
-                    {
-                        WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
-                        {
-                            DisplayValue = string.Concat(dlItem.Recordset, @"(", indexNum, @").", col.Name),
-                            Value = string.Empty,
-                            CanHaveMutipleRows = dlItem.CanHaveMutipleRows,
-                            Recordset = dlItem.Recordset,
-                            Field = col.Name,
-                            Description = col.Description,
-                            Index = indexNum.ToString(CultureInfo.InvariantCulture)
-                        });
-                        indexToInsertAt++;
-                    }
-                    colName = col.Name;
-                    itemsAdded = true;
-
-                }
-            }
-            return itemsAdded;
-        }
-
         protected override void OnViewAttached(object view, object context)
         {
             LoadWorkflowInputs();
@@ -735,6 +618,120 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             return result;
+        }
+
+        class AddToDatalistObject
+        {
+            readonly WorkflowInputDataViewModel _workflowInputDataViewModel;
+
+            public AddToDatalistObject(WorkflowInputDataViewModel workflowInputDataViewModel)
+            {
+                _workflowInputDataViewModel = workflowInputDataViewModel;
+            }
+
+            public string DataListObject(bool includeBlank)
+            {
+                var dataListObject = new JObject();
+
+                ScalarsToObject(dataListObject);
+                RecordsetsToObject(dataListObject, includeBlank);
+                ObjectsToObject(dataListObject);
+
+                return dataListObject.ToString(Formatting.Indented);
+            }
+
+            public void ScalarsToObject(JObject dataListObject)
+            {
+                var scalars = _workflowInputDataViewModel.WorkflowInputs.Where(item => !item.CanHaveMutipleRows && !item.IsObject);
+
+                foreach (var dataListItem in scalars)
+                {
+                    dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value ?? string.Empty));
+                }
+            }
+
+            public void RecordsetsToObject(JObject dataListObject, bool includeBlank = false)
+            {
+                var recordsets = _workflowInputDataViewModel.WorkflowInputs.Where(item => item.CanHaveMutipleRows && !item.IsObject);
+
+                var groupedRecordsets = recordsets.GroupBy(item => item.Recordset);
+                foreach (var groupedRecset in groupedRecordsets)
+                {
+                    var arrayName = groupedRecset.Key;
+                    var newArray = new JArray();
+                    var dataListItems = groupedRecset.GroupBy(item => item.Index);
+                    foreach (var dataListItem in dataListItems)
+                    {
+                        AddRecordsetToObject(newArray, dataListItem, includeBlank);
+                    }
+                    dataListObject.Add(arrayName, newArray);
+                }
+            }
+
+            private static void AddRecordsetToObject(JArray newArray, IGrouping<string, IDataListItem> dataListItem, bool includeBlank = false)
+            {
+                var jObjForArray = new JObject();
+                var empty = true;
+                foreach (var listItem in dataListItem)
+                {
+                    if (!string.IsNullOrEmpty(listItem.Value))
+                    {
+                        empty = false;
+                    }
+                    jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
+                }
+                if (!empty || includeBlank)
+                {
+                    newArray.Add(jObjForArray);
+                }
+            }
+
+            public void ObjectsToObject(JObject dataListObject)
+            {
+                var objects = _workflowInputDataViewModel.WorkflowInputs.Where(item => item.IsObject);
+
+                foreach (var o in objects)
+                {
+                    AddObjectToObject(dataListObject, o);
+                }
+            }
+
+            void AddObjectToObject(JObject dataListObject, IDataListItem o)
+            {
+                var json = string.Empty;
+                if (DataListSingleton.ActiveDataList != null)
+                {
+                    if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                    {
+                        var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+
+                        if (complexObjectItemModel != null)
+                        {
+                            json = complexObjectItemModel.GetJson();
+                        }
+                    }
+                    AddToDataListObject(dataListObject, o, json);
+                }
+            }
+
+            void AddToDataListObject(JObject dataListObject, IDataListItem o, string json)
+            {
+                try
+                {
+                    var objValue = string.IsNullOrEmpty(o.Value) ? json : o.Value;
+                    var value = JsonConvert.DeserializeObject(objValue) as JObject;
+                    var prop = value?.Properties().FirstOrDefault(property => property.Name == o.Field);
+                    if (prop != null)
+                    {
+                        value = prop.Value as JObject;
+                    }
+                    dataListObject.Add(o.Field, value);
+                }
+                catch (Exception)
+                {
+                    _workflowInputDataViewModel.ShowInvalidDataPopupMessage();
+                }
+            }
         }
     }
 }
