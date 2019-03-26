@@ -62,6 +62,7 @@
     <Compile Include="BuildConfig.cs" />
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Load Tests.cs" />
     <Compile Include="TestResource.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -208,6 +208,7 @@
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
     <Compile Include="enFindMissingType.cs" />
     <Compile Include="ExecutionEnvironmentUtils.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IActivityParser.cs" />
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />

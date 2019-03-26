@@ -115,6 +115,7 @@
     <Compile Include="Dev2ExecAction.cs" />
     <Compile Include="Dev2TaskEvent.cs" />
     <Compile Include="Dev2TaskEventLog.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IConcreteTriggers.cs" />
     <Compile Include="Dev2MonthlyDowTrigger.cs" />
     <Compile Include="TaskServiceConvertorFactory.cs" />

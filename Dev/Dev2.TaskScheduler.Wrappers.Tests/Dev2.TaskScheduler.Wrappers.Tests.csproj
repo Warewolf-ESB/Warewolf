@@ -87,6 +87,7 @@
     <Compile Include="Dev2TaskSettingsTest.cs" />
     <Compile Include="Dev2TaskTest.cs" />
     <Compile Include="Dev2TriggerTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TaskServiceConvertorFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -253,6 +253,7 @@
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
     <Compile Include="Hosting\ResourceUpgraderTests.cs" />
     <Compile Include="Hosting\ResourceUpgradeTest.cs" />
