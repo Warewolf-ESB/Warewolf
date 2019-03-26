@@ -15,19 +15,7 @@ using System.Globalization;
 namespace Dev2.Common.DateAndTime.TO
 {
     public class DateTimeResultTO : IDateTimeResultTO
-    {
-        #region Constructors
-
-        public DateTimeResultTO()
-        {
-            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName,
-                TimeZoneInfo.Local.DisplayName);
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
+    {      
         public int Years { get; set; }
         public int Months { get; set; }
         public int Days { get; set; }
@@ -42,11 +30,11 @@ namespace Dev2.Common.DateAndTime.TO
         public DateTimeAmPm AmPm { get; set; }
         public string Era { get; set; }
         public ITimeZoneTO TimeZone { get; set; }
-
-        #endregion Properties
-
-        #region Methods
-
+        public DateTimeResultTO()
+        {
+            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName,
+                TimeZoneInfo.Local.DisplayName);
+        }
         public void NormalizeTime()
         {
             if (Is24H && Hours >= 12)
@@ -78,7 +66,6 @@ namespace Dev2.Common.DateAndTime.TO
                 }
             }
         }
-
         public DateTime ToDateTime()
         {
             NormalizeTime();
@@ -149,7 +136,5 @@ namespace Dev2.Common.DateAndTime.TO
 
             return new DateTime(Years, Months, Days, Hours, Minutes, Seconds, Milliseconds);
         }
-
-        #endregion Methods
     }
 }
