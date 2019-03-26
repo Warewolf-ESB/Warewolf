@@ -147,12 +147,9 @@ namespace Dev2.PathOperations
             {
                 var newArgs = new Dev2CRUDOperationTO(true);
 
-                if (!dst.PathExist(dst.IOPath))
+                if (!dst.PathExist(dst.IOPath) && CreateEndPoint(dst, newArgs, true) == ResultBad)
                 {
-                    if (CreateEndPoint(dst, newArgs, true) == ResultBad)
-                    {
-                        return ResultBad;
-                    }
+                    return ResultBad;
                 }
                 if (dst.Put(s, dst.IOPath, newArgs, null, _filesToDelete) < 0)
                 {
