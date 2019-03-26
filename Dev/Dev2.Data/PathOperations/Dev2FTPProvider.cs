@@ -178,20 +178,20 @@ namespace Dev2.Data.PathOperations
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
             var result = false;
-            bool ok;
+            bool okayToCreate;
             if (args.Overwrite)
             {
                 if (_implementation.IsDirectoryAlreadyPresent(dst))
                 {
                     Delete(dst);
                 }
-                ok = true;
+                okayToCreate = true;
             }
             else
             {
-                ok = !_implementation.IsDirectoryAlreadyPresent(dst);
+                okayToCreate = !_implementation.IsDirectoryAlreadyPresent(dst);
             }
-            if (ok)
+            if (okayToCreate)
             {
                 result = _implementation.IsStandardFtp(dst) ? _implementation.CreateDirectoryStandardFtp(dst) : _implementation.CreateDirectorySftp(dst);
             }
