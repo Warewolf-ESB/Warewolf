@@ -24,7 +24,7 @@ namespace Dev2.Server.Tests
     {
         [TestMethod]
         [Owner("Siphamandla Dube")]
-        [TestCategory(nameof(LoadResources))]
+        [TestCategory(nameof(LoadResources))]        
         public void LoadResources_CheckExampleResources_DirectoryExists_True()
         {
             //------------------Arrange---------------
