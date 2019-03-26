@@ -71,38 +71,7 @@ namespace Dev2.PathOperations
             var activityIOPath = dst.IOPath;
             var dirParts = MakeDirectoryParts(activityIOPath, dst.PathSeperator());
 
-            var deepestIndex = -1;
-            var startDepth = dirParts.Count - 1;
-
-            var pos = startDepth;
-
-            while (pos >= 0 && deepestIndex == -1)
-            {
-                var tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
-                                                                                 activityIOPath.Password, true, activityIOPath.PrivateKeyFile);
-                if (!dst.PathExist(tmpPath))
-                {
-                    break;
-                }
-                try
-                {
-                    if (dst.ListDirectory(tmpPath) != null)
-                    {
-                        deepestIndex = pos;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
-                    throw;
-                }
-                finally
-                {
-                    pos--;
-                }
-            }
-
-            var ok = CreateDirectoriesForPath(dst, args, dirParts, deepestIndex, startDepth);
+            var ok = CreateDirectoriesForPath(dst, args, dirParts);
             if (!ok)
             {
                 return ResultBad;
@@ -127,13 +96,14 @@ namespace Dev2.PathOperations
             return ResultBad;
         }
 
-        private bool CreateDirectoriesForPath(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, IList<string> dirParts, int deepestIndex, int startDepth)
+        private bool CreateDirectoriesForPath(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, IList<string> dirParts)
         {
-            var pos = deepestIndex + 1;
+            var maxDepth = dirParts.Count - 1;
+            var pos = 0;
             var origPath = dst.IOPath;
             try
             {
-                while (pos <= startDepth)
+                while (pos <= maxDepth)
                 {
                     var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
                                                                                       dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
