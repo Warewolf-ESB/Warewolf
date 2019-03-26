@@ -114,6 +114,7 @@
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
     <Compile Include="Communication\ResultsCache.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IVariableUtils.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />

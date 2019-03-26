@@ -109,6 +109,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerformanceCounters\WarewolfRequestsPerSecondPerformanceCounterByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfNumberOfErrorsByResourceTests.cs" />
     <Compile Include="PerformanceCounters\WarewolfServicesNotFoundCounterTests.cs" />

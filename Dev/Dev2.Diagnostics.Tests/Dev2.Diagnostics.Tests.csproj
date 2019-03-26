@@ -82,6 +82,7 @@
     <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
     </AdditionalFiles>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PerfCounterBuilderTest.cs" />
     <Compile Include="PerfCountersOpsTests.cs" />
     <Compile Include="PerformanceCounterPersistenceTest.cs" />
