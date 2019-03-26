@@ -163,18 +163,31 @@ namespace Dev2.PathOperations
             string[] tmp;
 
             IList<string> result = new List<string>();
+            var builderPath = new System.Text.StringBuilder();
 
             var splitOn = splitter.ToCharArray();
 
-            if (CommonDataUtils.IsNotFtpTypePath(path))
+            if (CommonDataUtils.IsUncFileTypePath(path.Path))
+            {
+                var uncPath = path.Path.Substring(2);
+                var splitValues = uncPath.Split(splitOn).ToList();
+                builderPath.Append(@"\\");
+                builderPath.Append(splitValues[0]);
+                builderPath.Append(@"\");
+                splitValues.RemoveAt(0);
+                tmp = splitValues.ToArray();
+            }
+            else if (CommonDataUtils.IsNotFtpTypePath(path))
             {
                 tmp = path.Path.Split(splitOn);
-
             }
             else
             {
                 var splitValues = path.Path.Split(new[] { @"://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                builderPath.Append(splitValues[0]);
+                builderPath.Append(@"://");
                 splitValues.RemoveAt(0);
+
                 var newPath = string.Join(@"/", splitValues);
                 tmp = newPath.Split(splitOn);
             }
@@ -186,18 +199,14 @@ namespace Dev2.PathOperations
                 len = tmp.Length - 1;
             }
 
-            var builderPath = string.Empty;
             for (var i = 0; i < len; i++)
             {
                 if (!string.IsNullOrWhiteSpace(tmp[i]))
                 {
-                    builderPath += tmp[i] + splitter;
-                    if (!CommonDataUtils.IsNotFtpTypePath(path) && !builderPath.Contains(@"://"))
-                    {
-                        var splitValues = path.Path.Split(new[] { @"://" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        builderPath = splitValues[0] + @"://" + builderPath;
-                    }
-                    result.Add(CommonDataUtils.IsUncFileTypePath(path.Path) ? @"\\" + builderPath : builderPath);
+                    builderPath.Append(tmp[i]);
+                    builderPath.Append(splitter);
+
+                    result.Add(builderPath.ToString());
                 }
             }
             return result;
