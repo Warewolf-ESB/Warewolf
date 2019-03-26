@@ -80,6 +80,10 @@ namespace Dev2.PathOperations
             {
                 var tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
                                                                                  activityIOPath.Password, true, activityIOPath.PrivateKeyFile);
+                if (!dst.PathExist(tmpPath))
+                {
+                    break;
+                }
                 try
                 {
                     if (dst.ListDirectory(tmpPath) != null)
@@ -133,6 +137,12 @@ namespace Dev2.PathOperations
                 {
                     var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
                                                                                       dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
+
+                    if (dst.PathExist(toCreate))
+                    {
+                        pos++;
+                        continue;
+                    }
                     dst.IOPath = toCreate;
                     if (!CreateDirectory(dst, args))
                     {
