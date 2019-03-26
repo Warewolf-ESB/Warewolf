@@ -17,6 +17,7 @@ using System.Linq;
 using Dev2.Common.TimeZoneBuilder;
 using Warewolf.Resource.Errors;
 using static Dev2.Common.DateAndTime.DateTimeParser;
+using System.Text;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -99,20 +100,14 @@ namespace Dev2.Common.DateAndTime
             //
             // Get input format string for the dotnet parts
             //
-            var dev2Format = "";
+            var dev2Format = new StringBuilder("");
+             
             foreach (IDateTimeFormatPartTO part in getDateTimeFormatParts.FormatParts)
             {
-                if (part.Isliteral)
-                {
-                    dev2Format += "'" + part.Value + "'";
-                }
-                else
-                {
-                    dev2Format += part.Value;
-                }
+                dev2Format.Append(part.Isliteral ? "'" + part.Value + "'" : part.Value);
             }
             error = getDateTimeFormatParts.Error;
-            return dev2Format;
+            return dev2Format.ToString();
         }
 
         List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList,
