@@ -91,7 +91,20 @@ namespace Dev2.Common.Wrappers
         }
 
         public IDirectoryInfo CreateDirectory(string dir) {
-            return new DirectoryInfoWrapper(Directory.CreateDirectory(dir));
+            try
+            {
+                var info = Directory.CreateDirectory(dir);
+                return new DirectoryInfoWrapper(info);
+            }
+            catch (ArgumentException ae)
+            {
+                void thrower(string d, Exception e)
+                {
+                    throw new Exception($"failed creating directory '{d}': {e.Message}");
+                }
+                thrower(dir, ae);
+                return null;
+            }
         }
 
         public IEnumerable<string> EnumerateFiles(string path)

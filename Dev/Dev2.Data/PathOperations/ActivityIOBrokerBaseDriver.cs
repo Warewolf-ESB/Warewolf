@@ -68,7 +68,6 @@ namespace Dev2.PathOperations
 
         public string CreateEndPoint(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, bool createToFile)
         {
-            var result = ResultOk;
             var activityIOPath = dst.IOPath;
             var dirParts = MakeDirectoryParts(activityIOPath, dst.PathSeperator());
 
@@ -91,6 +90,7 @@ namespace Dev2.PathOperations
                 catch (Exception e)
                 {
                     Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                    throw;
                 }
                 finally
                 {
@@ -98,38 +98,57 @@ namespace Dev2.PathOperations
                 }
             }
 
-            pos = deepestIndex + 1;
-            var ok = true;
-
-            var origPath = dst.IOPath;
-
-            while (pos <= startDepth && ok)
-            {
-                var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
-                                                                                  dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
-                dst.IOPath = toCreate;
-                ok = CreateDirectory(dst, args);
-                pos++;
-            }
-
-            dst.IOPath = origPath;
-
+            var ok = CreateDirectoriesForPath(dst, args, dirParts, deepestIndex, startDepth);
             if (!ok)
             {
-                result = ResultBad;
+                return ResultBad;
+            }
+
+
+
+            var shouldCreateFile = dst.PathIs(dst.IOPath) == enPathType.File && createToFile;
+            if (shouldCreateFile)
+            {
+                if (CreateFile(dst, args))
+                {
+                    return ResultOk;
+                }
             }
             else
             {
-                if (dst.PathIs(dst.IOPath) == enPathType.File && createToFile && !CreateFile(dst, args))
-                {
-                    result = ResultBad;
-                }
+                return ResultOk;
             }
 
-            return result;
+
+            return ResultBad;
         }
 
-        IList<string> MakeDirectoryParts(IActivityIOPath path, string splitter)
+        private bool CreateDirectoriesForPath(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, IList<string> dirParts, int deepestIndex, int startDepth)
+        {
+            var pos = deepestIndex + 1;
+            var origPath = dst.IOPath;
+            try
+            {
+                while (pos <= startDepth)
+                {
+                    var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
+                                                                                      dst.IOPath.Password, true, dst.IOPath.PrivateKeyFile);
+                    dst.IOPath = toCreate;
+                    if (!CreateDirectory(dst, args))
+                    {
+                        return false;
+                    }
+                    pos++;
+                }
+            }
+            finally
+            {
+                dst.IOPath = origPath;
+            }
+            return true;
+        }
+
+        static IList<string> MakeDirectoryParts(IActivityIOPath path, string splitter)
         {
             string[] tmp;
 
