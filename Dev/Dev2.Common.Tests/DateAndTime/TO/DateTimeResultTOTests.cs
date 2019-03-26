@@ -31,45 +31,51 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DateTimeResultTO))]
-        public void DateTimeResultTO_NormalizeTime_Is24HisTrue_HoursGreaterThan12()
+        public void DateTimeResultTO_NormalizeHours_Is24HisTrue_HoursGreaterThan12()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Is24H = true;
-            dateTimeResultTO.Hours = 16;
-            dateTimeResultTO.NormalizeTime();
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Is24H = true,
+                Hours = 16
+            };
+            dateTimeResultTO.NormalizeHours();
             Assert.AreEqual(DateTimeAmPm.pm, dateTimeResultTO.AmPm);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DateTimeResultTO))]
-        public void DateTimeResultTO_NormalizeTime_Is24HisFalse_HoursGreaterThan12()
+        public void DateTimeResultTO_NormalizeHours_Is24HisFalse_HoursGreaterThan12()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Is24H = false;
-            dateTimeResultTO.Hours = 16;
-            dateTimeResultTO.NormalizeTime();
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Is24H = false,
+                Hours = 16
+            };
+            dateTimeResultTO.NormalizeHours();
             Assert.AreEqual(DateTimeAmPm.pm, dateTimeResultTO.AmPm);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DateTimeResultTO))]
-        public void DateTimeResultTO_NormalizeTime_AmPm_IsEqual_pm()
+        public void DateTimeResultTO_NormalizeHours_AmPm_IsEqual_pm()
         {
             var dateTimeResultTO = new DateTimeResultTO();
             dateTimeResultTO.Hours = 6;
             dateTimeResultTO.AmPm = DateTimeAmPm.pm;
-            dateTimeResultTO.NormalizeTime();
+            dateTimeResultTO.NormalizeHours();
             Assert.AreEqual(18, dateTimeResultTO.Hours);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(DateTimeResultTO))]
-        public void DateTimeResultTO_NormalizeTime_AmPm_IsEqual_12am()
+        public void DateTimeResultTO_NormalizeHours_AmPm_IsEqual_12am()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Hours = 12;
-            dateTimeResultTO.AmPm = DateTimeAmPm.am;
-            dateTimeResultTO.NormalizeTime();
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Hours = 12,
+                AmPm = DateTimeAmPm.am
+            };
+            dateTimeResultTO.NormalizeHours();
             Assert.AreEqual(0, dateTimeResultTO.Hours);
         }
         [TestMethod]
@@ -87,7 +93,7 @@ namespace Dev2.Common.Tests.DateAndTime.TO
             dateTimeResultTO.DaysOfYear = 0;
             dateTimeResultTO.Weeks = 0;
             
-            var returnDate = dateTimeResultTO.ToDateTime();
+            dateTimeResultTO.ToDateTime();
 
             Assert.AreEqual(1, dateTimeResultTO.Years);
             Assert.AreEqual(1, dateTimeResultTO.Months);
@@ -102,12 +108,14 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestCategory(nameof(DateTimeResultTO))]
         public void DateTimeResultTO_SetProperties_Days_Equal_0_DaysOfWeek_NotEqual_0()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Years = 0;
-            dateTimeResultTO.Months = 0;
-            dateTimeResultTO.DaysOfWeek = 3;
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Years = 0,
+                Months = 0,
+                DaysOfWeek = 3
+            };
 
-            var returnDate = dateTimeResultTO.ToDateTime();
+            dateTimeResultTO.ToDateTime();
 
             Assert.AreEqual(1, dateTimeResultTO.Years);
             Assert.AreEqual(1, dateTimeResultTO.Months);
@@ -119,12 +127,13 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestCategory(nameof(DateTimeResultTO))]
         public void DateTimeResultTO_SetProperties_Months_Equal_0_DaysOfYear_NotEqual_0()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Years = 0;
-            dateTimeResultTO.Months = 0;
-            dateTimeResultTO.DaysOfYear = 20;
-
-            var returnDate = dateTimeResultTO.ToDateTime();
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Years = 0,
+                Months = 0,
+                DaysOfYear = 20
+            };
+            dateTimeResultTO.ToDateTime();
 
             Assert.AreEqual(1, dateTimeResultTO.Years);
             Assert.AreEqual(1, dateTimeResultTO.Months);
@@ -136,13 +145,13 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestCategory(nameof(DateTimeResultTO))]
         public void DateTimeResultTO_SetProperties_Months_Equal_0_Weeks_NotEqual_0()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Years = 0;
-            dateTimeResultTO.Months = 0;
-            dateTimeResultTO.Weeks = 20;
-
-            var returnDate = dateTimeResultTO.ToDateTime();
-
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Years = 0,
+                Months = 0,
+                Weeks = 20
+            };
+            dateTimeResultTO.ToDateTime();
             var tmpDate = CultureInfo.CurrentCulture.Calendar.AddWeeks(new System.DateTime(1, 1, 1), 20);
             var Months = tmpDate.Month;
             var Days = tmpDate.Day;
