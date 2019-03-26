@@ -645,7 +645,7 @@ namespace Dev2.Core.Tests
                 ErrorDialog = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "net.exe",
-                Arguments = @"use \\rsaklfsvrpdc.dev2.local\apps /USER:dev2\IntegrationTester /PERSISTENT:YES I73573r0"
+                Arguments = @"use \\rsaklfsvrpdc.dev2.local\FileSystemShareTestingSite /USER:dev2\IntegrationTester /PERSISTENT:YES I73573r0"
             };
             process.OutputDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
             process.ErrorDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
