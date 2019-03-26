@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.Wrappers
 {
@@ -100,7 +101,7 @@ namespace Dev2.Common.Wrappers
             {
                 void thrower(string d, Exception e)
                 {
-                    throw new Exception($"failed creating directory '{d}': {e.Message}");
+                    throw new Exception(string.Format(ErrorResource.ErrorCreatingDirectory, d, e.Message));
                 }
                 thrower(dir, ae);
                 return null;
