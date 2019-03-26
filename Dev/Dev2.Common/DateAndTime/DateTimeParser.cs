@@ -312,38 +312,21 @@ namespace Dev2.Common.DateAndTime
 
         static bool IsBlankResult(IDateTimeResultTO result)
         {
-            bool IsDaysOfWeekZero = result.AmPm == DateTimeAmPm.am && result.Days == 0 && result.DaysOfWeek == 0;
-            bool IsDaysOfYearZero = GetDaysOfYear(result);
-            return IsDaysOfWeekZero || IsDaysOfYearZero;
-        }
+            var equal = result.AmPm == DateTimeAmPm.am;
+            equal &= result.Days == 0;
+            equal &= result.DaysOfWeek == 0 || result.DaysOfWeek == 1;
+            equal &= result.DaysOfYear == 0;
+            equal &= result.Era == null;
+            equal &= result.Hours == 0;
+            equal &= !result.Is24H;
+            equal &= result.Milliseconds == 0;
+            equal &= result.Minutes == 0;
+            equal &= result.Months == 0;
+            equal &= result.Seconds == 0;
+            equal &= result.Weeks == 0;
+            equal &= result.Years == 0;
 
-        private static bool GetDaysOfYear(IDateTimeResultTO result)
-        {
-            bool IsDayOfWeekEra = GetDayOfWeekYearEra(result);
-            bool Is24Hr = GetHoursNot24Hr(result, IsDayOfWeekEra);
-            bool IsMonthsZero = GetMillMinMonthsZero(result, Is24Hr);
-
-            return GetSecondsWeeksYearsZero(result, IsMonthsZero);
-        }
-
-        private static bool GetSecondsWeeksYearsZero(IDateTimeResultTO result, bool IsMonthsZero)
-        {
-            return IsMonthsZero && result.Seconds == 0 && result.Weeks == 0 && result.Years == 0;
-        }
-
-        private static bool GetMillMinMonthsZero(IDateTimeResultTO result, bool Is24Hr)
-        {
-            return Is24Hr && result.Milliseconds == 0 && result.Minutes == 0 && result.Months == 0;
-        }
-
-        private static bool GetHoursNot24Hr(IDateTimeResultTO result, bool IsDayOfWeekEra)
-        {
-            return IsDayOfWeekEra && result.Hours == 0 && !result.Is24H;
-        }
-
-        private static bool GetDayOfWeekYearEra(IDateTimeResultTO result)
-        {
-            return result.DaysOfWeek == 1 && result.DaysOfYear == 0 && result.Era == null;
+            return equal;
         }
 
         bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
