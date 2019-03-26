@@ -172,10 +172,6 @@
     <Reference Include="TrieNet, Version=1.0.3.26316, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TrieNet.1.0.3.26316\lib\net461\TrieNet.dll</HintPath>
     </Reference>
-    <Reference Include="Vestris.ResourceLib">
-      <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>

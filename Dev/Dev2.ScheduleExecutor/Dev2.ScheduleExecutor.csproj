@@ -36,6 +36,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SonarQubeExclude>true</SonarQubeExclude>
     <TargetFrameworkProfile />
+	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
