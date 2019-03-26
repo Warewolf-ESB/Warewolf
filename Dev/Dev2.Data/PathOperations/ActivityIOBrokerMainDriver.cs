@@ -149,7 +149,10 @@ namespace Dev2.PathOperations
 
                 if (!dst.PathExist(dst.IOPath))
                 {
-                    CreateEndPoint(dst, newArgs, true);
+                    if (CreateEndPoint(dst, newArgs, true) == ResultBad)
+                    {
+                        return ResultBad;
+                    }
                 }
                 if (dst.Put(s, dst.IOPath, newArgs, null, _filesToDelete) < 0)
                 {
