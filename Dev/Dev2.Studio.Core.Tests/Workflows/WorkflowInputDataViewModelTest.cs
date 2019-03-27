@@ -149,7 +149,6 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(popupController.Object);
 
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -169,7 +168,6 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(popupController.Object);
 
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -190,7 +188,6 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(popupController.Object);
 
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -212,7 +209,6 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(popupController.Object);
 
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -228,7 +224,6 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowInputDataViewModel_Close_Updates_WorkflowLink()
         {
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -268,7 +263,6 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowInputDataViewModel_LoadInputs_NullDataList_Expected_Blank_Inputs()
         {
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
@@ -311,13 +305,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowInputDataViewModel_Create_WithResourceModel_AuthorizationService_NotNull()
         {
             //------------Setup for test--------------------------
-            var mockAuth = new Mock<IAuthorizationService>();
-
-            var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.AuthorizationService).Returns(mockAuth.Object);
-
             var mockResouce = GetMockResource();
-            mockResouce.Setup(resource => resource.Environment).Returns(mockServer.Object);
             //------------Execute Test---------------------------
             using (var viewModel = WorkflowInputDataViewModel.Create(mockResouce.Object))
             {
@@ -334,7 +322,6 @@ namespace Dev2.Core.Tests.Workflows
         {
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
             using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
             {
                 workflowInputDataviewModel.LoadWorkflowInputs();
