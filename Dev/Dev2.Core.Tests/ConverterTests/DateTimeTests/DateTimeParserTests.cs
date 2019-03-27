@@ -25,8 +25,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         static IDateTimeParser _parser;
         
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
+        
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -36,13 +35,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             _parser = DateTimeConverterFactory.CreateParser();
         }
-
-        #endregion
-
-        #region TryParseDateTime Tests
-            
-        #region Valid Parse Formats
-            
+           
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
@@ -428,10 +421,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(resultBool, "Cannot parse valid date time.");
             Assert.IsTrue(dateTimeResult.Days == 16 && dateTimeResult.Months == 10 && dateTimeResult.Years == 2044, "Incorrect object returned");
         }
-
-        #endregion Valid Parse Formats
-
-        #region Invalid Parse Formats
         
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_DateTime_Invalid_Expected_FalseReturnedByParserIndicatingItIsUnableToParseTheInput()
@@ -465,11 +454,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsFalse(IsParseable);
             Assert.AreEqual(@"A \'\\\' character must be followed by a \' or preceded by a \\.", result);
         }
-
-        #endregion Invalid Parse Formats
-
-        #region yy Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_yy_Expected_LastTwoDigitsOfYearAreParsed()
         {
@@ -488,11 +473,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion yy Tests
-
-        #region Timezone Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_Z_Expected_TimezoneCorrectlyParsed()
         {
@@ -525,11 +506,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.AreEqual(inputString, dateTimeResult.TimeZone.LongName);
         }
-
-        #endregion Timezone Tests
-
-        #region yyyy Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_yyyy_Expected_FullYearCorrectlyParsedOut()
         {
@@ -548,12 +525,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-
-        #endregion yyyy tests
-
-        #region mm Tetsts
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_mm_Expected_MonthParsedAsDoubleDigit()
         {
@@ -572,11 +544,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion mm Tests
-
-        #region m Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_m_Expected_MonthParsedWithoutPadding()
         {
@@ -595,11 +563,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion m Tests
-
-        #region M Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_M_Expected_MonthAsShorthanfTextReturned()
         {
@@ -618,11 +582,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion M Tests
-
-        #region MM Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_MM_Expected_FullMonthNameReturnedFromParser()
         {
@@ -641,11 +601,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion MM Tests
-
-        #region d Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_d_Expected_DayOfTheMonthReturned()
         {
@@ -664,11 +620,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion d Tests
-
-        #region dd Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_dd_Expected_DayReturnedWithPadding()
         {
@@ -687,11 +639,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dd Tests
-
-        #region DW Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_DW_Expected_DayOfTheWeekReturned()
         {
@@ -711,10 +659,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion DW Tests
-
-        #region dW Tests
-
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_dW_Expected_DayOfTheShortHandParsed()
         {
@@ -733,11 +677,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dW Tests
-
-        #region dw Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_dw_Expected_DayOfTheWeekParsedCorrectlyAsNumber()
         {
@@ -756,11 +696,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dw Tests
-
-        #region dyyyyy Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_dy_Expected_MilleniumParsedOutOfDate()
         {
@@ -779,11 +715,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion dyyyyy Tests
-
-        #region wyyyy Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_w_Expected_Positive()
         {
@@ -804,11 +736,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion wyyyy Tests
-
-        #region 24h Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_24h_Expected_Positive()
         {
@@ -827,11 +755,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion 24h Tests
-
-        #region 12h Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_12h_Expected_Positive()
         {
@@ -850,11 +774,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion 12h Tests
-
-        #region min Tests
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_min_Expected_Positive()
         {
@@ -873,11 +793,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-
-        #endregion min Tests
-
-        #region ss Tests
 
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_ss_Expected_Positive()
@@ -898,10 +813,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        #endregion ss Tests
-
-        #region sp Tests
-
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_sp_Expected_Positive()
         {
@@ -920,10 +831,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion sp Tests
-
-        #region am/pm Tests
 
         [TestMethod]
         public void DateTimeParser_TryParseDateTime_Format_am_Expected_Positive()
@@ -1039,12 +946,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        #endregion am/pm Tests
-
-        #endregion TryParseDateTime Tests
-
-        #region TryParseTime Tests
 
         /// <summary>
         /// Parse time All Arguments valid expected Parsed Correctly
@@ -1480,13 +1381,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorect object returned");
             }
         }
-
-        #endregion TryParseTime Tests
-
-        #region Dot Net Translator
-
-        #region Dates
-
+       
         [TestMethod]
         public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
         {
@@ -1551,11 +1446,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "mm'/'dd'/'yyyy");
         }
-
-        #endregion
-
-        #region Times
-
+       
         [TestMethod]
         public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
         {
@@ -1646,11 +1537,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "24h':'min':'ss'.'fffffff");
         }
-
-        #endregion
-
-        #region Time Zones
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
         {
@@ -1689,11 +1576,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "yyyy'-'mm'-'dd'T'24h':'min':'ss'.'fffffffK");
         }
-
-        #endregion
-
-        #region Special
-
+        
         [TestMethod]
         public void DateTimeParser_TryParseTime_TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
         {
@@ -1745,10 +1628,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.IsTrue(string.IsNullOrEmpty(error));
             Assert.AreEqual(inputFormat, "DW', 'dd' 'MM' 'yyyy' '24h':'min':'ss");
         }
-
-        #endregion
-
-        #endregion
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
