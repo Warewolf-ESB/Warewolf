@@ -14,12 +14,29 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Data.Tests.PathOperations
 {
     [TestClass]
     public class ActivityIOBrokerMainDriverTests
     {
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(ActivityIOBrokerBaseDriver))]
+        public void ActivityIOBrokerBaseDriver_RemoveAllTmpFiles()
+        {
+            var mockFile = new Mock<IFile>();
+            var mockCommon = new Mock<ICommon>();
+
+            var driver = new ActivityIOBrokerBaseDriver(mockFile.Object, mockCommon.Object);
+            driver.CreateTmpFile();
+            driver.CreateTmpFile();
+            driver.RemoveAllTmpFiles();
+
+            mockFile.Verify(o => o.Delete(It.IsAny<string>()), Times.Exactly(2));
+        }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ActivityIOBrokerBaseDriver))]

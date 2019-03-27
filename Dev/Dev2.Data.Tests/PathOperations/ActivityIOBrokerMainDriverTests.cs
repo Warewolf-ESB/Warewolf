@@ -68,40 +68,112 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GiventmpFile_ShouldReturnSucces()
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GiventmpFile()
         {
             //---------------Set up test pack-------------------
             var tempFileName = Path.GetTempFileName();
-            var commonMock = new Mock<ICommon>();
-            var fileMock = new Mock<IFile>();
-            fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
-            var driver = new ActivityIOBrokerMainDriver(fileMock.Object, commonMock.Object);
-            var privateObject = driver;
-            var dst = new Mock<IActivityIOOperationsEndPoint>();
-            dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
-            dst.Setup(point => point.PathSeperator()).Returns(",");
-            dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
-            dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-
             try
             {
-                //broker.SetField("_filesToDelete", new List<string>())
-                driver.MoveTmpFileToDestination(dst.Object, tempFileName);
+                var commonMock = new Mock<ICommon>();
+                var fileMock = new Mock<IFile>();
+                fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
+                var driver = new ActivityIOBrokerMainDriver(fileMock.Object, commonMock.Object);
+                var privateObject = driver;
+                var dst = new Mock<IActivityIOOperationsEndPoint>();
+                dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
+                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
+                dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
 
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
+                dst.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>()))
+                    .Returns<IActivityIOPath>(path => {
+                        if (path.Path.EndsWith(@"\", StringComparison.InvariantCulture))
+                        {
+                            return true;
+                        }
+                        return false;
+                    });
+
+                var result = driver.MoveTmpFileToDestination(dst.Object, tempFileName);
+                Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultOk, result);
+
             }
             finally
             {
                 File.Delete(tempFileName);
             }
+        }
 
-            //---------------Test Result -----------------------
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GivenDirectoryCreateFails_ShouldFail()
+        {
+            //---------------Set up test pack-------------------
+            var tempFileName = Path.GetTempFileName();
+            try
+            {
+                var commonMock = new Mock<ICommon>();
+                var fileMock = new Mock<IFile>();
+                fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
+                var driver = new ActivityIOBrokerMainDriver(fileMock.Object, commonMock.Object);
+                var privateObject = driver;
+                var dst = new Mock<IActivityIOOperationsEndPoint>();
+                dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
+                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
+                dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(1);
+
+                dst.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>()))
+                    .Returns<IActivityIOPath>(path => {
+                        return false;
+                    });
+
+                var result = driver.MoveTmpFileToDestination(dst.Object, tempFileName);
+                Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultBad, result);
+
+            }
+            finally
+            {
+                File.Delete(tempFileName);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory(nameof(Dev2ActivityIOBroker))]
+        public void Dev2ActivityIOBroker_MoveTmpFileToDestination_GivenPutFails_ShouldFail()
+        {
+            //---------------Set up test pack-------------------
+            var tempFileName = Path.GetTempFileName();
+            try
+            {
+                var commonMock = new Mock<ICommon>();
+                var fileMock = new Mock<IFile>();
+                fileMock.Setup(file => file.ReadAllBytes(It.IsAny<string>())).Returns(Encoding.ASCII.GetBytes("Hello world"));
+                var driver = new ActivityIOBrokerMainDriver(fileMock.Object, commonMock.Object);
+                var privateObject = driver;
+                var dst = new Mock<IActivityIOOperationsEndPoint>();
+                dst.Setup(point => point.PathExist(It.IsAny<IActivityIOPath>())).Returns(false);
+                dst.Setup(point => point.PathSeperator()).Returns(@"\");
+                dst.Setup(point => point.IOPath.Path).Returns(tempFileName);
+                dst.Setup(point => point.Put(It.IsAny<Stream>(), It.IsAny<IActivityIOPath>(), It.IsAny<Dev2CRUDOperationTO>(), It.IsAny<string>(), It.IsAny<List<string>>())).Returns(-1);
+
+                dst.Setup(o => o.PathExist(It.IsAny<IActivityIOPath>()))
+                    .Returns<IActivityIOPath>(path => {
+                        return true;
+                    });
+
+                var result = driver.MoveTmpFileToDestination(dst.Object, tempFileName);
+                Assert.AreEqual(ActivityIOBrokerBaseDriver.ResultBad, result);
+
+            }
+            finally
+            {
+                File.Delete(tempFileName);
+            }
         }
     }
 }
