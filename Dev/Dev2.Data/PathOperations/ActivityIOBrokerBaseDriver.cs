@@ -184,22 +184,23 @@ namespace Dev2.PathOperations
 
         bool CreateFile(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
-
-            var result = false;
-
+            // TODO: why create a tmp file here, surely we can just use an empty array as input to the memory stream?
             var tmp = CreateTmpFile();
             using (Stream s = new MemoryStream(_fileWrapper.ReadAllBytes(tmp)))
             {
-
-                if (dst.Put(s, dst.IOPath, args, null, _filesToDelete) >= 0)
+                try
                 {
-                    result = true;
+                    if (dst.Put(s, dst.IOPath, args, null, _filesToDelete) >= 0)
+                    {
+                        return true;
+                    }
                 }
-
-                s.Close();
+                finally {
+                    s.Close();
+                }
             }
 
-            return result;
+            return false;
         }
 
         public bool CreateDirectory(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
