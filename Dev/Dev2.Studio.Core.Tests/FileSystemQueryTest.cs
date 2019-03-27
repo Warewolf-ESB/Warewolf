@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -623,7 +624,7 @@ namespace Dev2.Core.Tests
             var shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             if (shareCollection.Count <= 0)
             {
-                AuthenticateForSharedFolder();
+                AuthenticateForSharedFolder(@"\\rsaklfsvrpdc.dev2.local\apps", @"dev2\IntegrationTester", "I73573r0");
                 Thread.Sleep(1000);
                 shareCollection = new ShareCollection(@"\\rsaklfsvrpdc.dev2.local\");
             }
@@ -631,7 +632,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(shareCollection.Count > 0, "Cannot get shared directory information.");
         }
 
-        static void AuthenticateForSharedFolder()
+        public static void AuthenticateForSharedFolder(string site, string user, string password)
         {
             var process = new Process();
 
@@ -645,12 +646,14 @@ namespace Dev2.Core.Tests
                 ErrorDialog = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "net.exe",
-                Arguments = @"use \\rsaklfsvrpdc.dev2.local\FileSystemShareTestingSite /USER:dev2\IntegrationTester /PERSISTENT:YES I73573r0"
+                Arguments = $"use {site} /USER:{user} /PERSISTENT:YES {password}"
             };
             process.OutputDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
             process.ErrorDataReceived += (sender, arguments) => Console.WriteLine(arguments.Data);
 
             process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
         }
 

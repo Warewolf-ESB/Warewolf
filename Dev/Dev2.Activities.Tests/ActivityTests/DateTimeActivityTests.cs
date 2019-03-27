@@ -14,28 +14,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for DateTimeDifferenceTests
-    /// </summary>
     [TestClass]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
-        #region DateTime Tests
-
-        //Added for BUG 9494
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
@@ -135,9 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
         {
             var now = DateTime.Now;
 
@@ -156,14 +141,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
+            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000 || timeSpan.Add(new TimeSpan(12, 0, 0)).TotalMilliseconds >= 9000, $"{timeSpan.TotalMilliseconds} is not >= 9000 and {timeSpan.Add(new TimeSpan(12, 0, 0)).TotalMilliseconds} is not >= 9000");
         }
 
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
+        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
 
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -171,28 +155,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , currDL
                          , ""
                          , ""
-                         , "sp"
-                         , "Seconds"
-                         , 10
+                         , "MM"
+                         , "Months"
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            if (actual == "0")
-            {
-                Thread.Sleep(11);
-
-                result = ExecuteProcess();
-
-                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-
-                Assert.IsTrue(actual != "0");
-            }
-            Assert.IsTrue(actual != "0");
+            Assert.IsTrue(actual != "0", "Blank input returned invalid value from date time tool.");
         }
-        #endregion DateTime Tests
-
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
