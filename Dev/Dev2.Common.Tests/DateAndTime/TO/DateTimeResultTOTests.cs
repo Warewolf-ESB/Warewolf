@@ -59,9 +59,11 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestCategory(nameof(DateTimeResultTO))]
         public void DateTimeResultTO_NormalizeHours_AmPm_IsEqual_pm()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Hours = 6;
-            dateTimeResultTO.AmPm = DateTimeAmPm.pm;
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Hours = 6,
+                AmPm = DateTimeAmPm.pm
+            };
             dateTimeResultTO.NormalizeHours();
             Assert.AreEqual(18, dateTimeResultTO.Hours);
         }
@@ -83,16 +85,18 @@ namespace Dev2.Common.Tests.DateAndTime.TO
         [TestCategory(nameof(DateTimeResultTO))]
         public void DateTimeResultTO_SetProperties_Everything_Equal_0()
         {
-            var dateTimeResultTO = new DateTimeResultTO();
-            dateTimeResultTO.Years = 0;
-            dateTimeResultTO.Months = 0;
-            dateTimeResultTO.Days = 0;
-            dateTimeResultTO.Hours = 0;
-            dateTimeResultTO.Seconds = 0;
-            dateTimeResultTO.Milliseconds = 0;
-            dateTimeResultTO.DaysOfYear = 0;
-            dateTimeResultTO.Weeks = 0;
-            
+            var dateTimeResultTO = new DateTimeResultTO
+            {
+                Years = 0,
+                Months = 0,
+                Days = 0,
+                Hours = 0,
+                Seconds = 0,
+                Milliseconds = 0,
+                DaysOfYear = 0,
+                Weeks = 0
+            };
+
             dateTimeResultTO.ToDateTime();
 
             Assert.AreEqual(1, dateTimeResultTO.Years);
