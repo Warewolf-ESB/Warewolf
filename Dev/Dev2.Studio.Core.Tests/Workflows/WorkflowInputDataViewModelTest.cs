@@ -300,22 +300,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_Create_WithResourceModel_AuthorizationService_NotNull()
-        {
-            //------------Setup for test--------------------------
-            var mockResouce = GetMockResource();
-            //------------Execute Test---------------------------
-            using (var viewModel = WorkflowInputDataViewModel.Create(mockResouce.Object))
-            {
-                //------------Assert Results-------------------------
-                Assert.IsNotNull(viewModel);
-                Assert.IsNotNull(viewModel.DebugTo);
-            }
-        }
-
-        [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_SetWorkflowInputData_ExtraRows_Expected_Row_Available()
