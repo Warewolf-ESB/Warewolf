@@ -206,7 +206,6 @@ Scenario Outline: Aggregated Calculation Assign by evaluating variables with fun
 	And I have a calculate variable "[[b]]" equal to "3"
 	And I have a calculate variable "[[e]]" equal to "1000"
 	And I have the Example formula "<fx>"
-	And The system short date format is "yyyy/MM/dd" and the long time format is "hh:mm:ss tt"
 	When the aggregate calculate tool is executed
 	Then the calculate result should be "<result>"
 	And the execution has "NO" error
