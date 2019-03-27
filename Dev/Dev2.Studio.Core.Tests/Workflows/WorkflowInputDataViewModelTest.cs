@@ -47,65 +47,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_LoadInputs_Expected_Inputs_Loaded()
-        {
-            var mockResouce = GetMockResource();
-            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
-            {
-                workflowInputDataviewModel.LoadWorkflowInputs();
-                IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
-                for (int i = 1; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
-                {
-                    Assert.AreEqual(testDataListItems[i].DisplayValue, workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
-                    Assert.AreEqual(testDataListItems[i].Value, workflowInputDataviewModel.WorkflowInputs[i].Value);
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_LoadInputsExpectedOnlyInputsLoaded()
-        {
-            var mockResouce = GetMockResource();
-            mockResouce.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
-            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
-            {
-                workflowInputDataviewModel.LoadWorkflowInputs();
-                IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
-                for (int i = 1; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
-                {
-                    Assert.AreEqual(testDataListItems[i].DisplayValue, workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
-                    Assert.AreEqual(testDataListItems[i].Value, workflowInputDataviewModel.WorkflowInputs[i].Value);
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_LoadInputs_BlankXMLData_Expected_Blank_Inputs()
-        {
-            var mockResouce = GetMockResource();
-            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns("<DataList></DataList>");
-            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
-            {
-                workflowInputDataviewModel.LoadWorkflowInputs();
-                foreach (var input in workflowInputDataviewModel.WorkflowInputs)
-                {
-                    Assert.AreEqual(string.Empty, input.Value);
-                }
-            }
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(WorkflowInputDataViewModel))]
         public void WorkflowInputDataViewModel_LoadInputs_BlankDataList_Expected_Blank_Inputs()
         {
             var mockResouce = GetMockResource();
@@ -296,30 +237,6 @@ namespace Dev2.Core.Tests.Workflows
                 //------------Assert Results-------------------------
                 Assert.IsNotNull(viewModel);
                 Assert.IsNotNull(viewModel.DebugTo);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Rory McGuire")]
-        [TestCategory(nameof(WorkflowInputDataViewModel))]
-        public void WorkflowInputDataViewModel_SetWorkflowInputData_ExtraRows_Expected_Row_Available()
-        {
-            var mockResouce = GetMockResource();
-            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            using (var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID))
-            {
-                workflowInputDataviewModel.LoadWorkflowInputs();
-                var inputValues = GetInputTestDataDataNames();
-
-                // Cannot perform Collection Assert due to use of mocks for datalist items to remove dependancies during test
-                for (int i = 0; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
-                {
-                    Assert.AreEqual(inputValues[i].DisplayValue, workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
-                    Assert.AreEqual(inputValues[i].Value, workflowInputDataviewModel.WorkflowInputs[i].Value);
-                    Assert.AreEqual(inputValues[i].CanHaveMutipleRows, workflowInputDataviewModel.WorkflowInputs[i].CanHaveMutipleRows);
-                    Assert.AreEqual(inputValues[i].Index, workflowInputDataviewModel.WorkflowInputs[i].Index);
-                    Assert.AreEqual(inputValues[i].Field, workflowInputDataviewModel.WorkflowInputs[i].Field);
-                }
             }
         }
 
