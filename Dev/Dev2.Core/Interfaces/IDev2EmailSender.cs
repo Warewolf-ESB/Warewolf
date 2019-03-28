@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Microsoft.Exchange.WebServices.Data;

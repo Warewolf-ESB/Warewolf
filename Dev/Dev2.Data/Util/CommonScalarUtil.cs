@@ -1,3 +1,4 @@
+#pragma warning disable
 using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.Util

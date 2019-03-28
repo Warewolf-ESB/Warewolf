@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
 using System.Text;
 using Dev2.Data.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,24 +20,56 @@ namespace Dev2.Data.Tests.TO
     public class ErrorResultTOTests
     {
         [TestMethod]
-        [Owner("Rory McGuire")]
+        [Owner("Siphamandla Dube")]
         [TestCategory(nameof(ErrorResultTO))]
-        public void ErrorResultTO_AddError_CheckForDuplicates()
+        public void ErrorResultTO_AddError_CheckForDuplicates_True_AddSameError_ExpectLstToBeSame()
         {
             var resultTo = new ErrorResultTO();
             resultTo.AddError("some message", true);
             resultTo.AddError("some message", true);
 
             Assert.IsTrue(resultTo.HasErrors());
-            // Bug: this should be passing
-            //Assert.AreEqual(1, resultTo.FetchErrors().Count);
+            Assert.AreEqual(1, resultTo.FetchErrors().Count);
+            Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
+            Assert.AreEqual("<InnerError>some message</InnerError>", resultTo.MakeDataListReady());
+        }
+        
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_AddError_CheckForDuplicates_True_AddNewError_ExpectTrue()
+        {
+            var resultTo = new ErrorResultTO();
+            resultTo.AddError("some message", true);
+            resultTo.AddError("some message", true);
+            resultTo.AddError("deferent message", true);
+
+            Assert.IsTrue(resultTo.HasErrors());
             Assert.AreEqual(2, resultTo.FetchErrors().Count);
             Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
-            // Bug: this should be passing
-            //Assert.AreEqual("<InnerError>some message</InnerError>", resultTo.MakeDataListReady());
-            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>some message</InnerError>", resultTo.MakeDataListReady());
+            Assert.AreEqual("deferent message", resultTo.FetchErrors()[1]);
+            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
         }
 
+        [TestMethod]
+        [Owner("Siphamandla Dube")]
+        [TestCategory(nameof(ErrorResultTO))]
+        public void ErrorResultTO_AddError_CheckForDuplicates_False_AddSameError_ExpectAdd()
+        {
+            var resultTo = new ErrorResultTO();
+            resultTo.AddError("some message", false);
+            resultTo.AddError("some message", false);
+            resultTo.AddError("some message", true);
+            resultTo.AddError("deferent message", false);
+
+            Assert.IsTrue(resultTo.HasErrors());
+            Assert.AreEqual(3, resultTo.FetchErrors().Count);
+            Assert.AreEqual("some message", resultTo.FetchErrors()[0]);
+            Assert.AreEqual("some message", resultTo.FetchErrors()[1]);
+            Assert.AreEqual("deferent message", resultTo.FetchErrors()[2]);
+            Assert.AreEqual("<InnerError>some message</InnerError><InnerError>some message</InnerError><InnerError>deferent message</InnerError>", resultTo.MakeDataListReady());
+        }
+        
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ErrorResultTO))]

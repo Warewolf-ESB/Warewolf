@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.Wrappers
 {
@@ -90,8 +91,24 @@ namespace Dev2.Common.Wrappers
             Directory.Delete(directoryStructureFromPath, recursive);
         }
 
-        public IDirectoryInfo CreateDirectory(string dir) {
-            return new DirectoryInfoWrapper(Directory.CreateDirectory(dir));
+        public IDirectoryInfo CreateDirectory(string dir)
+        {
+            try
+            {
+                var info = Directory.CreateDirectory(dir);
+                return new DirectoryInfoWrapper(info);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Action action = () => throw new ArgumentNullException(string.Format(ErrorResource.ErrorCreatingDirectory, dir, ane.Message));
+                action();
+            }
+            catch (ArgumentException ae)
+            {
+                Action action = () => throw new Exception(string.Format(ErrorResource.ErrorCreatingDirectory, dir, ae.Message));
+                action();
+            }
+            return null;
         }
 
         public IEnumerable<string> EnumerateFiles(string path)

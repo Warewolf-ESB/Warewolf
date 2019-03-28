@@ -106,7 +106,7 @@ namespace Dev2.Data.Tests.PathOperations
             var args = mockArgs.Object;
 
             mockImplementation.Setup(o => o.CreateTmpFile()).Returns("tmp file name");
-            mockImplementation.Setup(o => o.MoveTmpFileToDestination(dst, "tmp file name", ActivityIOBrokerBaseDriver.ResultOk)).Returns(ActivityIOBrokerBaseDriver.ResultOk);
+            mockImplementation.Setup(o => o.MoveTmpFileToDestination(dst, "tmp file name")).Returns(ActivityIOBrokerBaseDriver.ResultOk);
             mockDst.Setup(o => o.RequiresLocalTmpStorage()).Returns(true);
 
             var result = broker.PutRaw(dst, args);
@@ -116,7 +116,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockDst.Verify(o => o.RequiresLocalTmpStorage(), Times.Once);
             mockImplementation.Verify(o => o.CreateTmpFile(), Times.Once);
             mockImplementation.Verify(o => o.WriteToLocalTempStorage(dst, args, "tmp file name"), Times.Once);
-            mockImplementation.Verify(o => o.MoveTmpFileToDestination(dst, "tmp file name", ActivityIOBrokerBaseDriver.ResultOk), Times.Once);
+            mockImplementation.Verify(o => o.MoveTmpFileToDestination(dst, "tmp file name"), Times.Once);
             mockImplementation.Verify(o => o.RemoveAllTmpFiles(), Times.Once);
         }
 
@@ -139,7 +139,7 @@ namespace Dev2.Data.Tests.PathOperations
             var args = mockArgs.Object;
 
             mockImplementation.Setup(o => o.CreateTmpFile()).Returns("tmp file name");
-            mockImplementation.Setup(o => o.WriteToRemoteTempStorage(dst, args, ActivityIOBrokerBaseDriver.ResultOk, "tmp file name")).Returns(ActivityIOBrokerBaseDriver.ResultOk);
+            mockImplementation.Setup(o => o.WriteToRemoteTempStorage(dst, args, "tmp file name")).Returns(ActivityIOBrokerBaseDriver.ResultOk);
 
             var result = broker.PutRaw(dst, args);
 
@@ -149,7 +149,7 @@ namespace Dev2.Data.Tests.PathOperations
             mockDst.Verify(o => o.PathExist(It.IsAny<Dev2ActivityIOPath>()), Times.Once);
 
             mockImplementation.Verify(o => o.CreateTmpFile(), Times.Once);
-            mockImplementation.Verify(o => o.WriteToRemoteTempStorage(dst, args, result, "tmp file name"), Times.Once);
+            mockImplementation.Verify(o => o.WriteToRemoteTempStorage(dst, args, "tmp file name"), Times.Once);
             mockImplementation.Verify(o => o.RemoveTmpFile("tmp file name"), Times.Once);
 
             mockImplementation.Verify(o => o.RemoveAllTmpFiles(), Times.Once);

@@ -5,6 +5,8 @@ using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.Search.SearchUIMapClasses;
+using System.Windows.Forms;
 
 namespace Warewolf.UI.Tests.Workflow
 {
@@ -105,6 +107,21 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
         }
 
+        [TestMethod]
+        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
+        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
+        [TestCategory("Shortcut Keys")]
+        public void Shortcut_Cntr_Shift_F_Opens_Search_View()
+        {
+            UIMap.Click_NewWorkflow_RibbonButton();
+            SendKeys.SendWait("^+F");
+            var isSearchTabOpen = SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists;
+            if (!isSearchTabOpen)
+            {
+                Keyboard.SendKeys(SearchUIMap.MainStudioWindow, "^+F");
+            }
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
@@ -189,20 +206,20 @@ namespace Warewolf.UI.Tests.Workflow
 
         private DeployUIMap _DeployUIMap;
 
-        DataToolsUIMap DataToolsUIMap
+        SearchUIMap SearchUIMap
         {
             get
             {
-                if (_DataToolsUIMap == null)
+                if (_SearchUIMap == null)
                 {
-                    _DataToolsUIMap = new DataToolsUIMap();
+                    _SearchUIMap = new SearchUIMap();
                 }
 
-                return _DataToolsUIMap;
+                return _SearchUIMap;
             }
         }
 
-        private DataToolsUIMap _DataToolsUIMap;
+        private SearchUIMap _SearchUIMap;
 
         #endregion
     }
