@@ -129,10 +129,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
-    testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I authenticate for share at \"\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\" as user \"" +
+                    "dev2\\IntegrationTester\" with password \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -157,14 +160,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected),
                         "String"});
-#line 20
+#line 21
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 23
+#line 24
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -947,47 +950,47 @@ this.UnzipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://rsaklfsvrd
                     string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file validation", exampleTags);
-#line 57
-this.ScenarioSetup(scenarioInfo);
 #line 58
-    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 59
- testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 60
- testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 61
- testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
- testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
- testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
- testRunner.And(string.Format("zip credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 65
- testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("zip credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
-    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And("use private public key for source is \"<sourcePrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
- testRunner.And("use private public key for destination is \"<destinationPrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("use private public key for source is \"<sourcePrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
- testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("use private public key for destination is \"<destinationPrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
- testRunner.And(string.Format("Archive Password as \"{0}\"", archivePassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
- testRunner.When("validating the unzip tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("Archive Password as \"{0}\"", archivePassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("validating the unzip tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 74
- testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 75
-    testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 77
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 78
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1012,7 +1015,7 @@ this.ScenarioSetup(scenarioInfo);
                         "<destinationPrivateKeyFile>",
                         string.Format("{0}", selected),
                         "String"});
-#line 78
+#line 79
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1044,7 +1047,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_0()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("0", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test7.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP9", "dev2", "Q/ulw&]", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1075,7 +1078,7 @@ this.UnzipFileValidation("0", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test7
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_1()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("1", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test12.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP12", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1106,7 +1109,7 @@ this.UnzipFileValidation("1", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_2()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("2", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test13.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP13", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1137,7 +1140,7 @@ this.UnzipFileValidation("2", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_3()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("3", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test14.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP14", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1168,7 +1171,7 @@ this.UnzipFileValidation("3", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_4()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("4", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test10.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP10", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1199,7 +1202,7 @@ this.UnzipFileValidation("4", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_5()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("5", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test11.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP11", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1230,7 +1233,7 @@ this.UnzipFileValidation("5", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_6()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("6", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test15.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP15", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1261,7 +1264,7 @@ this.UnzipFileValidation("6", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_7()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("7", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test16.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP16", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1292,7 +1295,7 @@ this.UnzipFileValidation("7", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_8()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("8", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test17.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP17", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1323,7 +1326,7 @@ this.UnzipFileValidation("8", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_9()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test18.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP18", "dev2", "Q/ulw&]", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1354,7 +1357,7 @@ this.UnzipFileValidation("9", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test1
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_10()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("10", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test19.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP19", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1385,7 +1388,7 @@ this.UnzipFileValidation("10", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_11()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test20.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP20", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1416,7 +1419,7 @@ this.UnzipFileValidation("11", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_12()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("12", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test21.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP21", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1447,7 +1450,7 @@ this.UnzipFileValidation("12", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_13()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test22.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP22", "\"\"", "\"\"", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1478,7 +1481,7 @@ this.UnzipFileValidation("13", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_14()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("14", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test23.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP23", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1509,7 +1512,7 @@ this.UnzipFileValidation("14", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_15()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("15", "[[a]][[b]]", "C:\\Temp\\test24", ".zip", "C:\\Temp\\test24.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP24", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1540,7 +1543,7 @@ this.UnzipFileValidation("15", "[[a]][[b]]", "C:\\Temp\\test24", ".zip", "C:\\Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_16()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("16", "[[a]]\\[[b]]", "C:", "Temp\\test25.zip", "C:\\Temp\\test25.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP25", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1571,7 +1574,7 @@ this.UnzipFileValidation("16", "[[a]]\\[[b]]", "C:", "Temp\\test25.zip", "C:\\Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_17()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("17", "[[a]][[b]].zip", "C:\\Temp\\test", "26", "C:\\Temp\\test26.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP26", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1602,7 +1605,7 @@ this.UnzipFileValidation("17", "[[a]][[b]].zip", "C:\\Temp\\test", "26", "C:\\Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_18()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("18", "[[a]]:[[b]]", "C", "\\Temp\\test27.zip", "C:\\Temp\\test27.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP27", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1633,7 +1636,7 @@ this.UnzipFileValidation("18", "[[a]]:[[b]]", "C", "\\Temp\\test27.zip", "C:\\Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_19()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("19", "C:[[a]][[b]]", "\\Temp\\test", "28.zip", "C:\\Temp\\test28.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP28", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1664,7 +1667,7 @@ this.UnzipFileValidation("19", "C:[[a]][[b]]", "\\Temp\\test", "28.zip", "C:\\Te
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_20()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("20", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\test", "29.zip", "C:\\Temp\\test29.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP29", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1695,7 +1698,7 @@ this.UnzipFileValidation("20", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\test", "29
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_21()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("21", "[[rec(1).a]]\\[[rec(2).a]]", "C:", "Temp\\test30.zip", "C:\\Temp\\test30.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP30", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1726,7 +1729,7 @@ this.UnzipFileValidation("21", "[[rec(1).a]]\\[[rec(2).a]]", "C:", "Temp\\test30
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_22()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("22", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\test", "31.zip", "C:\\Temp\\test31.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP31", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1757,7 +1760,7 @@ this.UnzipFileValidation("22", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\test", "31
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_23()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("23", "[[rec(1).a]]:[[rec(2).a]]", "C", "\\Temp\\test32.zip", "C:\\Temp\\test32.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP32", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1788,7 +1791,7 @@ this.UnzipFileValidation("23", "[[rec(1).a]]:[[rec(2).a]]", "C", "\\Temp\\test32
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_24()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("24", "C:\\[[rec(1).a]][[rec(2).a]]", "Temp\\test", "33.zip", "C:\\Temp\\test33.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP33", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1819,7 +1822,7 @@ this.UnzipFileValidation("24", "C:\\[[rec(1).a]][[rec(2).a]]", "Temp\\test", "33
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_25()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("25", "[[rec(1).a]]", "", "", "C:\\Temp\\test34.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP34", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1850,7 +1853,7 @@ this.UnzipFileValidation("25", "[[rec(1).a]]", "", "", "C:\\Temp\\test34.zip", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_26()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("26", "[[rec(1).a]]", "C:\\Temp\\test35.zip", "\"\"", "C:\\Temp\\test35.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP35", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1881,7 +1884,7 @@ this.UnzipFileValidation("26", "[[rec(1).a]]", "C:\\Temp\\test35.zip", "\"\"", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_27()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("27", "[[rec(1).a]]", "", "", "C:\\Temp\\test36.zip", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP36", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1912,7 +1915,7 @@ this.UnzipFileValidation("27", "[[rec(1).a]]", "", "", "C:\\Temp\\test36.zip", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_28()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("28", "[[sourcePath]]", "C:", "\\Temp\\ZIP37", "C:\\Temp\\test37.zip", "\"\"", "\"\"", "[[a]][[b]]", "C:\\Temp\\ZIP37", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1943,7 +1946,7 @@ this.UnzipFileValidation("28", "[[sourcePath]]", "C:", "\\Temp\\ZIP37", "C:\\Tem
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_29()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("29", "[[sourcePath]]", "C:\\Temp", "ZIP38", "C:\\Temp\\test38.zip", "\"\"", "\"\"", "[[a]]\\[[b]]", "C:\\Temp\\ZIP38", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1974,7 +1977,7 @@ this.UnzipFileValidation("29", "[[sourcePath]]", "C:\\Temp", "ZIP38", "C:\\Temp\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_30()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("30", "[[sourcePath]]", "C:\\", "Temp\\ZIP", "C:\\Temp\\test39.zip", "\"\"", "\"\"", "[[a]][[b]]39", "C:\\Temp\\ZIP39", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2005,7 +2008,7 @@ this.UnzipFileValidation("30", "[[sourcePath]]", "C:\\", "Temp\\ZIP", "C:\\Temp\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_31()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("31", "[[sourcePath]]", "C", "Temp\\ZIP40", "C:\\Temp\\test40.zip", "\"\"", "\"\"", "[[a]]:\\[[b]]", "C:\\Temp\\ZIP40", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2036,7 +2039,7 @@ this.UnzipFileValidation("31", "[[sourcePath]]", "C", "Temp\\ZIP40", "C:\\Temp\\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_32()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("32", "[[sourcePath]]", "\\Temp\\ZIP", "41", "C:\\Temp\\test41.zip", "\"\"", "\"\"", "C:[[a]][[b]]", "C:\\Temp\\ZIP41", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2067,7 +2070,7 @@ this.UnzipFileValidation("32", "[[sourcePath]]", "\\Temp\\ZIP", "41", "C:\\Temp\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_33()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("33", "[[sourcePath]]", "C:\\Temp\\", "ZIP42", "C:\\Temp\\test42.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP42", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2098,7 +2101,7 @@ this.UnzipFileValidation("33", "[[sourcePath]]", "C:\\Temp\\", "ZIP42", "C:\\Tem
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_34()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("34", "[[sourcePath]]", "C:\\Temp", "ZIP43", "C:\\Temp\\test43.zip", "\"\"", "\"\"", "[[rec(1).a]]\\[[rec(2).a]]", "C:\\Temp\\ZIP43", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2129,7 +2132,7 @@ this.UnzipFileValidation("34", "[[sourcePath]]", "C:\\Temp", "ZIP43", "C:\\Temp\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_35()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("35", "[[sourcePath]]", "C:\\Temp\\", "ZIP44", "C:\\Temp\\test44.zip", "\"\"", "\"\"", "[[rec(1).a]][[rec(2).a]]", "C:\\Temp\\ZIP44", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2160,7 +2163,7 @@ this.UnzipFileValidation("35", "[[sourcePath]]", "C:\\Temp\\", "ZIP44", "C:\\Tem
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_36()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("36", "[[sourcePath]]", "C", "\\Temp\\ZIP45", "C:\\Temp\\test45.zip", "\"\"", "\"\"", "[[rec(1).a]]:[[rec(2).a]]", "C:\\Temp\\ZIP45", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2191,7 +2194,7 @@ this.UnzipFileValidation("36", "[[sourcePath]]", "C", "\\Temp\\ZIP45", "C:\\Temp
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_37()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("37", "[[sourcePath]]", "\\", "Temp\\ZIP", "C:\\Temp\\test46.zip", "\"\"", "\"\"", "C:[[rec(1).a]][[rec(2).a]]46", "C:\\Temp\\ZIP46", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2222,7 +2225,7 @@ this.UnzipFileValidation("37", "[[sourcePath]]", "\\", "Temp\\ZIP", "C:\\Temp\\t
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_38()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test47.zip", "\"\"", "\"\"", "", "C:\\Temp\\ZIP47", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2253,7 +2256,7 @@ this.UnzipFileValidation("38", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_39()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("39", "[[sourcePath]]", "C:\\Temp\\ZIP48", "\"\"", "C:\\Temp\\test48.zip", "\"\"", "\"\"", "[[rec(1).a]]", "C:\\Temp\\ZIP48", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2284,7 +2287,7 @@ this.UnzipFileValidation("39", "[[sourcePath]]", "C:\\Temp\\ZIP48", "\"\"", "C:\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void UnzipFileValidation_40()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("40", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test49.zip", "\"\"", "\"\"", "", "C:\\Temp\\ZIP49", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"Success\"", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -2316,7 +2319,7 @@ this.UnzipFileValidation("40", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\test
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Variable name [[a&]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_41()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("41", "[[a&]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP50", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2349,7 +2352,7 @@ this.UnzipFileValidation("41", "[[a&]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Recordset index (**) contains invalid character(s)")]
         public virtual void UnzipFileValidation_42()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("42", "[[rec(**).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP51", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2382,7 +2385,7 @@ this.UnzipFileValidation("42", "[[rec(**).a]]", "\"\"", "\"\"", "", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void UnzipFileValidation_43()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("43", "[[a]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP52", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
 #line hidden
@@ -2415,7 +2418,7 @@ this.UnzipFileValidation("43", "[[a]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[de
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_44()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("44", "[[rec(a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP53", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2448,7 +2451,7 @@ this.UnzipFileValidation("44", "[[rec(a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public virtual void UnzipFileValidation_45()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("45", "c(*()", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP54", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
@@ -2481,7 +2484,7 @@ this.UnzipFileValidation("45", "c(*()", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[d
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)")]
         public virtual void UnzipFileValidation_46()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("46", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP55", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2514,7 +2517,7 @@ this.UnzipFileValidation("46", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public virtual void UnzipFileValidation_47()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("47", "ghjghj", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP56", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
@@ -2547,7 +2550,7 @@ this.UnzipFileValidation("47", "ghjghj", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File or Folder cannot be empty or only white space")]
         public virtual void UnzipFileValidation_48()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("48", "\"\"", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP57", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.File or Folder cannot be empty or only white space", ((string[])(null)));
 #line hidden
@@ -2580,7 +2583,7 @@ this.UnzipFileValidation("48", "\"\"", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[de
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Variable name [[a&]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_49()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("49", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile50.txt", "\"\"", "\"\"", "[[a&]]", "C:\\Temp\\ZIP58", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2613,7 +2616,7 @@ this.UnzipFileValidation("49", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Recordset index (**) contains invalid character(s)")]
         public virtual void UnzipFileValidation_50()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("50", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile51.txt", "\"\"", "\"\"", "[[rec(**).a]]", "C:\\Temp\\ZIP59", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2646,7 +2649,7 @@ this.UnzipFileValidation("50", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void UnzipFileValidation_51()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("51", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile52.txt", "\"\"", "\"\"", "[[a]", "C:\\Temp\\ZIP60", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
 #line hidden
@@ -2679,7 +2682,7 @@ this.UnzipFileValidation("51", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_52()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("52", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile53.txt", "\"\"", "\"\"", "[[rec(a]]", "C:\\Temp\\ZIP61", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2712,7 +2715,7 @@ this.UnzipFileValidation("52", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public virtual void UnzipFileValidation_53()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "c(*()", "\"\"", "\"\"", "C:\\copyfile54.txt", "C:\\Temp\\ZIP62", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
@@ -2745,7 +2748,7 @@ this.UnzipFileValidation("53", "[[sourcePath]]", "\"\"", "\"\"", "c(*()", "\"\""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)")]
         public virtual void UnzipFileValidation_54()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("54", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile55.txt", "\"\"", "\"\"", "[[rec([[inde$x]]).a]]", "C:\\Temp\\ZIP63", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2778,7 +2781,7 @@ this.UnzipFileValidation("54", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public virtual void UnzipFileValidation_55()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("55", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile56.txt", "\"\"", "\"\"", "ghjghj", "C:\\Temp\\ZIP64", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
@@ -2811,7 +2814,7 @@ this.UnzipFileValidation("55", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination cannot be empty or only white space")]
         public virtual void UnzipFileValidation_56()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("56", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile57.txt", "\"\"", "\"\"", "\"\"", "C:\\Temp\\ZIP65", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
                     "tended to access the local file system.", "1.Destination cannot be empty or only white space", ((string[])(null)));
 #line hidden
@@ -2844,7 +2847,7 @@ this.UnzipFileValidation("56", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[a&]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_57()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("57", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile58.txt", "[[a&]]", "String", "[[destPath]]", "C:\\Temp\\ZIP66", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a&]] ] for resource [ C:\\Temp\\copyfile58.txt" +
                     " ]", "1.Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2877,7 +2880,7 @@ this.UnzipFileValidation("57", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Recordset index (**) contains invalid character(s)")]
         public virtual void UnzipFileValidation_58()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("58", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile59.txt", "[[rec(**).a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP67", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec(**).a]] ] for resource [ C:\\Temp\\copyfil" +
                     "e59.txt ]", "1.Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2910,7 +2913,7 @@ this.UnzipFileValidation("58", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void UnzipFileValidation_59()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("59", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile60.txt", "[[a]", "String", "[[destPath]]", "C:\\Temp\\ZIP68", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\Temp\\copyfile60.txt ]" +
                     "", "1.Username - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
 #line hidden
@@ -2943,7 +2946,7 @@ this.UnzipFileValidation("59", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Recordset name [[rec(a]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_60()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("60", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile61.txt", "[[rec(a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP69", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec(a]] ] for resource [ C:\\Temp\\copyfile61." +
                     "txt ]", "1.Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -2976,7 +2979,7 @@ this.UnzipFileValidation("60", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[inde$x]]  contains invalid character(s)")]
         public virtual void UnzipFileValidation_61()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("61", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile62.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP70", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec([[inde$x]]).a]] ] for resource [ C:\\Temp" +
                     "\\copyfile62.txt ]", "1.Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -3009,7 +3012,7 @@ this.UnzipFileValidation("61", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]")]
         public virtual void UnzipFileValidation_62()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile63.txt", "[[a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP71", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a]] ] for resource [ C:\\Temp\\copyfile63.txt " +
                     "]", "1.Failed to authenticate with user [ [[a]] ] for resource [ C:\\copyfile63.txt ]", ((string[])(null)));
 #line hidden
@@ -3042,7 +3045,7 @@ this.UnzipFileValidation("62", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Variable name [[a&]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_63()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("63", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile64.txt", "[[a&]]", "String", "[[destPath]]", "C:\\Temp\\ZIP72", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a&]] ] for resource [ C:\\Temp\\copyfile64.txt" +
                     " ]", "1.Destination Username - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -3075,7 +3078,7 @@ this.UnzipFileValidation("63", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Recordset index (**) contains invalid character(s)")]
         public virtual void UnzipFileValidation_64()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("64", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile65.txt", "[[rec(**).a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP73", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec(**).a]] ] for resource [ C:\\Temp\\copyfil" +
                     "e65.txt ]", "1.Destination Username - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -3109,7 +3112,7 @@ this.UnzipFileValidation("64", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
             "atch")]
         public virtual void UnzipFileValidation_65()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("65", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile66.txt", "[[a]", "String", "[[destPath]]", "C:\\Temp\\ZIP74", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\Temp\\copyfile66.txt ]" +
                     "", "1.Destination Username - Invalid expression: opening and closing brackets don\'t m" +
                     "atch", ((string[])(null)));
@@ -3143,7 +3146,7 @@ this.UnzipFileValidation("65", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_66()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("66", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile67.txt", "[[rec(a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP75", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec(a]] ] for resource [ C:\\Temp\\copyfile67." +
                     "txt ]", "1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -3176,7 +3179,7 @@ this.UnzipFileValidation("66", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)")]
         public virtual void UnzipFileValidation_67()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("67", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile68.txt", "[[rec([[inde$x]]).a]]", "String", "[[destPath]]", "C:\\Temp\\ZIP76", "integrationtester", "I73573r0", "True", "[[result]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[rec([[inde$x]]).a]] ] for resource [ C:\\Temp" +
                     "\\copyfile68.txt ]", "1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)", ((string[])(null)));
 #line hidden
@@ -3209,7 +3212,7 @@ this.UnzipFileValidation("67", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]")]
         public virtual void UnzipFileValidation_68()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile70.txt", "[[a]", "String", "[[destPath]]", "C:\\Temp\\ZIP78", "integrationtester", "I73573r0", "True", "[[result]][[a]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\Temp\\copyfile70.txt ]" +
                     "", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile70.txt ]", ((string[])(null)));
 #line hidden
@@ -3242,7 +3245,7 @@ this.UnzipFileValidation("68", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]")]
         public virtual void UnzipFileValidation_69()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile71.txt", "[[a]", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP79", "integrationtester", "I73573r0", "True", "[[a]]*]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[a] ] for resource [ C:\\Temp\\copyfile71.txt ]" +
                     "", "1.Failed to authenticate with user [ [[a] ] for resource [ C:\\copyfile71.txt ]", ((string[])(null)));
 #line hidden
@@ -3274,7 +3277,7 @@ this.UnzipFileValidation("69", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_70()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("70", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile72.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP80", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3306,7 +3309,7 @@ this.UnzipFileValidation("70", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void UnzipFileValidation_71()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("71", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile73.txt", "[[var]]00]]", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP81", "integrationtester", "I73573r0", "True", "[[var]]00]]", "\"\"", "\"\"", "AN", "True", "Failed to authenticate with user [ [[var]]00]] ] for resource [ C:\\Temp\\copyfile7" +
                     "3.txt ]", "1.Result - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
 #line hidden
@@ -3338,7 +3341,7 @@ this.UnzipFileValidation("71", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[1var]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_72()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("72", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile74.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP82", "integrationtester", "I73573r0", "True", "[[var@]]", "\"\"", "\"\"", "AN", "True", "Result - Variable name [[1var]] contains invalid character(s)", "1.Result - Variable name [[1var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3369,7 +3372,7 @@ this.UnzipFileValidation("72", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         public virtual void UnzipFileValidation_73()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("73", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile75.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP83", "integrationtester", "I73573r0", "True", "[[var[[a]]]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
 #line hidden
         }
@@ -3400,7 +3403,7 @@ this.UnzipFileValidation("73", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_74()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("74", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile76.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP84", "integrationtester", "I73573r0", "True", "[[var.a]]", "\"\"", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3431,7 +3434,7 @@ this.UnzipFileValidation("74", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_75()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("75", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile77.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP85", "integrationtester", "I73573r0", "True", "[[#var]]", "\"\"", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3462,7 +3465,7 @@ this.UnzipFileValidation("75", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_76()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile78.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP86", "integrationtester", "I73573r0", "True", "[[var 1]]", "\"\"", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3493,7 +3496,7 @@ this.UnzipFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec(1).[[rec().1]]]]")]
         public virtual void UnzipFileValidation_77()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("77", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile79.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP87", "integrationtester", "I73573r0", "True", "[[rec(1).[[rec().1]]]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid Region [[rec(1).[[rec().1]]]]", "1.Result - Invalid Region [[rec(1).[[rec().1]]]]", ((string[])(null)));
 #line hidden
         }
@@ -3524,7 +3527,7 @@ this.UnzipFileValidation("77", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_78()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("78", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile80.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP88", "integrationtester", "I73573r0", "True", "[[rec(@).a]]", "\"\"", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3555,7 +3558,7 @@ this.UnzipFileValidation("78", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void UnzipFileValidation_79()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("79", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile81.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP89", "integrationtester", "I73573r0", "True", "[[rec\"()\".a]]", "\"\"", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -3586,7 +3589,7 @@ this.UnzipFileValidation("79", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         public virtual void UnzipFileValidation_80()
         {
-#line 57
+#line 58
 this.UnzipFileValidation("80", "[[sourcePath]]", "\"\"", "\"\"", "C:\\Temp\\copyfile82.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\Temp\\ZIP90", "integrationtester", "I73573r0", "True", "[[rec([[[[b]]]]).a]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
 #line hidden
         }

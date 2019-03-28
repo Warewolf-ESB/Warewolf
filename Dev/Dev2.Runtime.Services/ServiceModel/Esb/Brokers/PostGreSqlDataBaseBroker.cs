@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
