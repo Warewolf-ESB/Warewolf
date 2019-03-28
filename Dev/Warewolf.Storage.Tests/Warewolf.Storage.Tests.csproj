@@ -96,6 +96,7 @@
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="BuildJObjectArrayIndexMapHelperTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="WarewolfAtomIteratorTests.cs" />
     <Compile Include="FsInteropFunctionsTests.cs" />

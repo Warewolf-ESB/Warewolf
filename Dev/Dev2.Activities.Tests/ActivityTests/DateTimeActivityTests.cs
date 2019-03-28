@@ -14,28 +14,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using ActivityUnitTests;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for DateTimeDifferenceTests
-    /// </summary>
     [TestClass]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
-        #region DateTime Tests
-
-        //Added for BUG 9494
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
@@ -133,11 +120,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
         {
             var now = DateTime.Now;
 
@@ -147,51 +132,36 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ""
                          , ""
                          , ""
-                         , "Seconds"
-                         , 10
+                         , ""
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             var actualdt = DateTime.Parse(actual);
-            var timeSpan = actualdt - now;
 
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
+            Assert.IsTrue(DateTime.Now > actualdt && actualdt > now, "expected DateTime to default to DateTime.Now");
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]
-        [Owner("Massimo Guerrera")]
-
-        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
-
+        [TestCategory(nameof(DsfDateTimeActivity))]
+        [Owner("Rory McGuire")]
+        public void DsfDateTimeActivity_ExecuteWithBlankInputAndMonthsOutput_OutputNotZero()
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , ""
                          , ""
-                         , "sp"
-                         , "Seconds"
-                         , 10
+                         , "MM"
+                         , "Months"
+                         , 0
                          , "[[MyTestResult]]");
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            if (actual == "0")
-            {
-                Thread.Sleep(11);
-
-                result = ExecuteProcess();
-
-                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-
-                Assert.IsTrue(actual != "0");
-            }
-            Assert.IsTrue(actual != "0");
+            Assert.AreEqual(DateTime.Now.ToString("MMMM"), actual, "Month mismatch");
         }
-        #endregion DateTime Tests
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

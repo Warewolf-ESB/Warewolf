@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;

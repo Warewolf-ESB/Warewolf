@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.WebServices;
 using System;
