@@ -1,3 +1,4 @@
+#pragma warning disable
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Caliburn.Micro;

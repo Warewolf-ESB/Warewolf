@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
@@ -43,7 +44,7 @@ namespace Warewolf.Storage.Tests
             _environment.CommitAssign();
             _warewolfListIterator = new WarewolfListIterator();
 
-      
+
             _expr1 = new WarewolfIterator(_environment.Eval(Result, 0));
             _expr2 = new WarewolfIterator(_environment.Eval("[[rec().a]]", 0));
 
@@ -113,7 +114,7 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual(3, variablesToIterateOn.Count);
         }
 
-      
+
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory(nameof(WarewolfListIterator))]
@@ -126,12 +127,14 @@ namespace Warewolf.Storage.Tests
             env.Assign("[[rec().a]]", "4", 0);
             env.CommitAssign();
 
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
 
-            var max = warewolfListIterator.GetMax();
-            Assert.AreEqual(1, max);
+                var max = warewolfListIterator.GetMax();
+                Assert.AreEqual(1, max);
+            }
         }
 
         [TestMethod]
@@ -445,12 +448,14 @@ namespace Warewolf.Storage.Tests
         {
             //------------Setup for test--------------------------
             var env = new ExecutionEnvironment();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
-            //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.IsNull(value);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
+                //------------Execute Test---------------------------
+                var value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.IsNull(value);
+            }
         }
 
         [TestMethod]
@@ -465,13 +470,15 @@ namespace Warewolf.Storage.Tests
             env.Assign("[[rec().a]]", "Test4", 0);
             env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
-            //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test5", value);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                //------------Execute Test---------------------------
+                var value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test5", value);
+            }
         }
 
         [TestMethod]
@@ -486,17 +493,19 @@ namespace Warewolf.Storage.Tests
             env.Assign("[[rec().a]]", "Test4", 0);
             env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
-            //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test", value);
-            //------------Execute Test---------------------------
-            value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test2", value);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                //------------Execute Test---------------------------
+                var value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test", value);
+                //------------Execute Test---------------------------
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test2", value);
+            }
         }
 
         [TestMethod]
@@ -511,15 +520,18 @@ namespace Warewolf.Storage.Tests
             env.Assign("[[rec().a]]", "Test4", 0);
             env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(3).a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test4", value);
-            //------------Execute Test---------------------------
-            value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            string value;
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(3).a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test4", value);
+                //------------Execute Test---------------------------
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            }
             //------------Assert Results-------------------------
             Assert.AreEqual("Test4", value);
         }
@@ -533,15 +545,18 @@ namespace Warewolf.Storage.Tests
             var env = new ExecutionEnvironment();
             env.Assign("[[rec().a]]", "Test", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test", value);
-            //------------Execute Test---------------------------
-            value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            string value;
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec(*).a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test", value);
+                //------------Execute Test---------------------------
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            }
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", value);
         }
@@ -555,15 +570,18 @@ namespace Warewolf.Storage.Tests
             var env = new ExecutionEnvironment();
             env.Assign("[[a]]", "Test", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
-            var value = warewolfListIterator.FetchNextValue(warewolfIterator);
-            //------------Assert Results-------------------------
-            Assert.AreEqual("Test", value);
-            //------------Execute Test---------------------------
-            value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            string value;
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+                //------------Assert Results-------------------------
+                Assert.AreEqual("Test", value);
+                //------------Execute Test---------------------------
+                value = warewolfListIterator.FetchNextValue(warewolfIterator);
+            }
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", value);
         }
@@ -581,11 +599,14 @@ namespace Warewolf.Storage.Tests
             env.Assign("[[rec().a]]", "Test4", 0);
             env.Assign("[[rec().a]]", "Test5", 0);
             env.CommitAssign();
-            var warewolfListIterator = new WarewolfListIterator();
-            var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
-            warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
             //------------Execute Test---------------------------
-            var hasMoreData = warewolfListIterator.HasMoreData();
+            bool hasMoreData;
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                var warewolfIterator = new WarewolfIterator(env.Eval("[[rec().a]]", 0));
+                warewolfListIterator.AddVariableToIterateOn(warewolfIterator);
+                hasMoreData = warewolfListIterator.HasMoreData();
+            }
             //------------Assert Results-------------------------
             Assert.IsTrue(hasMoreData);
         }
@@ -606,7 +627,6 @@ namespace Warewolf.Storage.Tests
             //------------Execute Test---------------------------
             var val = listIterator.GetValue(0);
             listIterator.Close();
-            listIterator.Dispose();
             //------------Assert Results-------------------------
             Assert.AreEqual("Success", val);
         }
@@ -624,15 +644,17 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            WarewolfListIterator listIterator;
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
+                listIterator = warewolfListIterator;
+            }
 
-            var listIterator = warewolfListIterator;
             listIterator.Types = new List<Type> { typeof(Guid) };
             //------------Execute Test---------------------------
             var val = listIterator.GetValue(0);
             listIterator.Close();
-            listIterator.Dispose();
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, val);
         }
@@ -650,17 +672,19 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
+                var listIterator = warewolfListIterator;
+            
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(decimal) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                listIterator.Types = new List<Type> { typeof(decimal) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -676,17 +700,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(string) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(string) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -702,17 +727,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(double) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(double) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -728,17 +754,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(float) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(float) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -754,17 +781,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(Int64) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(Int64) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -780,17 +808,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(Int16) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(Int16) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -806,17 +835,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(byte) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(byte) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -832,17 +862,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(char) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected, val);
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(char) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected, val);
+            }
         }
 
         [TestMethod]
@@ -858,17 +889,18 @@ namespace Warewolf.Storage.Tests
             var v = env.Eval("[[a]]", 0);
 
             var iter = new WarewolfIterator(v);
-            var warewolfListIterator = new WarewolfListIterator();
-            warewolfListIterator.AddVariableToIterateOn(iter);
+            using (var warewolfListIterator = new WarewolfListIterator())
+            {
+                warewolfListIterator.AddVariableToIterateOn(iter);
 
-            var listIterator = warewolfListIterator;
-            listIterator.Types = new List<Type> { typeof(DateTime) };
-            //------------Execute Test---------------------------
-            var val = listIterator.GetValue(0);
-            listIterator.Close();
-            listIterator.Dispose();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(expected.ToString(), val.ToString());
+                var listIterator = warewolfListIterator;
+                listIterator.Types = new List<Type> { typeof(DateTime) };
+                //------------Execute Test---------------------------
+                var val = listIterator.GetValue(0);
+                listIterator.Close();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expected.ToString(), val.ToString());
+            }
         }
 
         [TestMethod]
@@ -893,7 +925,7 @@ namespace Warewolf.Storage.Tests
 
             //------------Execute Test---------------------------
             var val = listIterator.GetValues(objects);
-        
+
             //------------Assert Results-------------------------
             Assert.AreEqual(2, val);
         }

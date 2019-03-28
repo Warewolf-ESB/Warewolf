@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using Dev2.Interfaces;
 using System.Data.Linq.Mapping;

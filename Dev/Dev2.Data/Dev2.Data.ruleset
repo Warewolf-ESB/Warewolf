@@ -1,4 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="SonarQube - Warewolf-ESB Sonar way" ToolsVersion="15.0">
   <Include Path="..\sonarqube\warewolf-esbcsharp.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
+    <Rule Id="AD0001" Action="None" />
+  </Rules>
 </RuleSet>

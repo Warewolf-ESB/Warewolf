@@ -16,17 +16,6 @@ namespace Warewolf.UI.Tests.Search
         [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
         [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
         [TestCategory(nameof(Search))]
-        public void Shortcut_Cntr_Shift_F_Opens_Search_View()
-        {
-            UIMap.Click_NewWorkflow_RibbonButton();
-            Keyboard.SendKeys("^+F");
-            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
-        }
-
-        [TestMethod]
-        [DeploymentItem(@"lib\win32\x86\git2-6311e88.dll", @"lib\win32\x86")]
-        [DeploymentItem(@"lib\win32\x64\git2-6311e88.dll", @"lib\win32\x64")]
-        [TestCategory(nameof(Search))]
         public void Clicking_Search_Menu_Item_Opens_Search_View()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));

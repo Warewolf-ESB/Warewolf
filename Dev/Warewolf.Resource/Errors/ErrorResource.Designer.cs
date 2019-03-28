@@ -1033,6 +1033,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed creating directory &apos;{0}&apos; : {1}.
+        /// </summary>
+        public static string ErrorCreatingDirectory {
+            get {
+                return ResourceManager.GetString("ErrorCreatingDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The following error occurred while executing the cancel callback &apos;{0}&apos;..
         /// </summary>
         public static string ErrorDuringCancelCallback {

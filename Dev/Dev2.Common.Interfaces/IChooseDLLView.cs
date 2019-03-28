@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using Microsoft.Practices.Prism.Mvvm;
 
 
