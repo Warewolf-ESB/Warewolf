@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
