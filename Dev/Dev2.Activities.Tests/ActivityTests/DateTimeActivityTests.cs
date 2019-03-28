@@ -124,7 +124,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Rory McGuire")]
         public void DsfDateTimeActivity_ExecuteWithBlankInput_DateTimeNowIsUsed()
         {
-            var now = DateTime.Now;
+            var startTime = DateTime.Now;
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -138,9 +138,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            var actualdt = DateTime.Parse(actual);
+            var parsedResult = DateTime.Parse(actual);
 
-            Assert.IsTrue(DateTime.Now > actualdt && actualdt > now, "expected DateTime to default to DateTime.Now");
+            var endTime = DateTime.Now;
+            Assert.IsTrue(endTime >= parsedResult && parsedResult >= startTime, $"expected a time between starting this test ({startTime}) and ({endTime}) but got: '{parsedResult}'");
         }
 
         [TestMethod]
