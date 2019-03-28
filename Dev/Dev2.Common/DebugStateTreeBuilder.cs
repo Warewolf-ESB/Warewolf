@@ -1,4 +1,4 @@
-﻿
+
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
+#pragma warning disable
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;

@@ -1,3 +1,4 @@
+#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -86,7 +87,7 @@ namespace Dev2.PathOperations
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)
         {
-            var result = ActivityIOBrokerBaseDriver.ResultOk;
+            string tmpFileName = null;
             try
             {
                 FileLock.EnterWriteLock();
@@ -94,28 +95,30 @@ namespace Dev2.PathOperations
                 {
                     var tmp = _implementation.CreateTmpFile();
                     _implementation.WriteToLocalTempStorage(dst, args, tmp);
-                    result = _implementation.MoveTmpFileToDestination(dst, tmp, result);
+                    return _implementation.MoveTmpFileToDestination(dst, tmp);
                 }
                 else
                 {
                     if (dst.PathExist(dst.IOPath))
                     {
-                        var tmp = _implementation.CreateTmpFile();
-                        result = _implementation.WriteToRemoteTempStorage(dst, args, result, tmp);
-                        _implementation.RemoveTmpFile(tmp);
+                        tmpFileName = _implementation.CreateTmpFile();
+                        return _implementation.WriteToRemoteTempStorage(dst, args, tmpFileName);
                     }
                     else
                     {
-                        result = CreateEndPointAndWriteData(dst, args);
+                        return CreateEndPointAndWriteData(dst, args);
                     }
                 }
             }
             finally
             {
+                if (tmpFileName != null)
+                {
+                    _implementation.RemoveTmpFile(tmpFileName);
+                }
                 FileLock.ExitWriteLock();
                 RemoveAllTmpFiles();
             }
-            return result;
         }
 
         private string CreateEndPointAndWriteData(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)
@@ -129,10 +132,8 @@ namespace Dev2.PathOperations
                     ? ActivityIOBrokerBaseDriver.ResultOk
                     : ActivityIOBrokerBaseDriver.ResultBad;
             }
-            else
-            {
-                return ActivityIOBrokerBaseDriver.ResultBad;
-            }
+
+            return ActivityIOBrokerBaseDriver.ResultBad;
         }
 
         public string Delete(IActivityIOOperationsEndPoint src)
@@ -212,17 +213,7 @@ namespace Dev2.PathOperations
                 {
                     if (src.RequiresLocalTmpStorage())
                     {
-                        if (dst.PathIs(dst.IOPath) == enPathType.Directory)
-                        {
-                            dst.IOPath.Path = dst.Combine(_implementation.GetFileNameFromEndPoint(src));
-                        }
-
-                        using (var s = src.Get(src.IOPath, _filesToDelete))
-                        {
-                            var result = dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
-                            s.Close();
-                            return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
-                        }
+                        return CopyRequiresLocalTmpStorage(src, dst, args);
                     }
                     else
                     {
@@ -250,6 +241,21 @@ namespace Dev2.PathOperations
                 RemoveAllTmpFiles();
             }
             return status;
+        }
+
+        private string CopyRequiresLocalTmpStorage(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
+        {
+            if (dst.PathIs(dst.IOPath) == enPathType.Directory)
+            {
+                dst.IOPath.Path = dst.Combine(_implementation.GetFileNameFromEndPoint(src));
+            }
+
+            using (var s = src.Get(src.IOPath, _filesToDelete))
+            {
+                var result = dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
+                s.Close();
+                return result == -1 ? ActivityIOBrokerBaseDriver.ResultBad : ActivityIOBrokerBaseDriver.ResultOk;
+            }
         }
 
         public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)

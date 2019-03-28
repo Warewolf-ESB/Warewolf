@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="ComponentModel\DataListVariableTests.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptorTests.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Settings\ConfigurationTests.cs" />
     <Compile Include="ExtensionMethodsTests.cs" />
     <Compile Include="Settings\LoggingSettingsTests.cs" />

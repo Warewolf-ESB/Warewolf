@@ -1,3 +1,4 @@
+#pragma warning disable
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
