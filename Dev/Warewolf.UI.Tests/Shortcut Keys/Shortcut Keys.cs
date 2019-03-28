@@ -6,6 +6,7 @@ using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Search.SearchUIMapClasses;
+using System.Windows.Forms;
 
 namespace Warewolf.UI.Tests.Workflow
 {
@@ -113,8 +114,12 @@ namespace Warewolf.UI.Tests.Workflow
         public void Shortcut_Cntr_Shift_F_Opens_Search_View()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            Keyboard.SendKeys("^+F");
-            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
+            SendKeys.SendWait("^+F");
+            var isSearchTabOpen = SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists;
+            if (!isSearchTabOpen)
+            {
+                Keyboard.SendKeys(SearchUIMap.MainStudioWindow, "^+F");
+            }
         }
 
         #region Additional test attributes
